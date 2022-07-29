@@ -1,0 +1,214 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B446331B-DD9E-40DD-958A-8D7A1AACA454}</ProjectGuid>
+    <TemplateGuid>{497e31cb-056b-4f31-abb8-447fd55ee5a5}</TemplateGuid>
+    <TargetFrameworkVersion>
+    </TargetFrameworkVersion>
+    <MinimumVisualStudioVersion>12.0</MinimumVisualStudioVersion>
+    <Configuration>Debug</Configuration>
+    <Platform Condition="'$(Platform)' == ''">Win32</Platform>
+    <RootNamespace>MDMA</RootNamespace>
+    <ProjectName>QDMA Reference Driver</ProjectName>
+    <WindowsTargetPlatformVersion>$(LatestTargetPlatformVersion)</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <TargetVersion>Windows10</TargetVersion>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>WindowsKernelModeDriver10.0</PlatformToolset>
+    <ConfigurationType>Driver</ConfigurationType>
+    <DriverType>KMDF</DriverType>
+    <DriverTargetPlatform>Desktop</DriverTargetPlatform>
+    <SupportsPackaging>true</SupportsPackaging>
+    <ALLOW_DATE_TIME>1</ALLOW_DATE_TIME>
+    <SpectreMitigation>false</SpectreMitigation>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <TargetVersion>Windows10</TargetVersion>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>WindowsKernelModeDriver10.0</PlatformToolset>
+    <ConfigurationType>Driver</ConfigurationType>
+    <DriverType>KMDF</DriverType>
+    <DriverTargetPlatform>Desktop</DriverTargetPlatform>
+    <SupportsPackaging>true</SupportsPackaging>
+    <ALLOW_DATE_TIME>1</ALLOW_DATE_TIME>
+    <SpectreMitigation>false</SpectreMitigation>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <TargetVersion>Windows10</TargetVersion>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>WindowsKernelModeDriver10.0</PlatformToolset>
+    <ConfigurationType>Driver</ConfigurationType>
+    <DriverType>KMDF</DriverType>
+    <DriverTargetPlatform>Desktop</DriverTargetPlatform>
+    <SupportsPackaging>true</SupportsPackaging>
+    <ALLOW_DATE_TIME>1</ALLOW_DATE_TIME>
+    <SpectreMitigation>false</SpectreMitigation>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <TargetVersion>Windows10</TargetVersion>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>WindowsKernelModeDriver10.0</PlatformToolset>
+    <ConfigurationType>Driver</ConfigurationType>
+    <DriverType>KMDF</DriverType>
+    <DriverTargetPlatform>Desktop</DriverTargetPlatform>
+    <SupportsPackaging>true</SupportsPackaging>
+    <ALLOW_DATE_TIME>1</ALLOW_DATE_TIME>
+    <SpectreMitigation>false</SpectreMitigation>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
+    <OutDir>$(SolutionDir)build\$(Platform)\$(ConfigurationName)\sys\</OutDir>
+    <IntDir>$(SolutionDir).tmp\$(Platform)\$(ConfigurationName)\$(ProjectName)\</IntDir>
+    <TargetName>QDMA</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
+    <OutDir>$(SolutionDir)build\$(Platform)\$(ConfigurationName)\sys\</OutDir>
+    <IntDir>$(SolutionDir).tmp\$(Platform)\$(ConfigurationName)\$(ProjectName)\</IntDir>
+    <TargetName>QDMA</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
+    <OutDir>$(SolutionDir)build\$(Platform)\$(ConfigurationName)\sys\</OutDir>
+    <TargetName>QDMA</TargetName>
+    <IntDir>$(SolutionDir).tmp\$(Platform)\$(ConfigurationName)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <DebuggerFlavor>DbgengKernelDebugger</DebuggerFlavor>
+    <OutDir>$(SolutionDir)build\$(Platform)\$(ConfigurationName)\sys\</OutDir>
+    <IntDir>$(SolutionDir).tmp\$(Platform)\$(ConfigurationName)\$(ProjectName)\</IntDir>
+    <TargetName>QDMA</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <WppEnabled>true</WppEnabled>
+      <WppRecorderEnabled>false</WppRecorderEnabled>
+      <WppScanConfigurationData Condition="'%(ClCompile.ScanConfigurationData)' == ''">..\..\sys\drv\include\trace.h</WppScanConfigurationData>
+      <WppKernelMode>true</WppKernelMode>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <WppMinimalRebuildFromTracking>false</WppMinimalRebuildFromTracking>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\..\sys\libqdma\include;$(ProjectDir)\..\..\sys\drv\include;$(ProjectDir)\..\..\..\qdma_access;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <WppModuleName>qdma</WppModuleName>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <SupportJustMyCode>false</SupportJustMyCode>
+    </ClCompile>
+    <Inf />
+    <ResourceCompile />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WppEnabled>false</WppEnabled>
+      <WppRecorderEnabled>false</WppRecorderEnabled>
+      <WppScanConfigurationData Condition="'%(ClCompile.ScanConfigurationData)' == ''">..\..\sys\drv\include\trace.h</WppScanConfigurationData>
+      <WppKernelMode>true</WppKernelMode>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <WppMinimalRebuildFromTracking>false</WppMinimalRebuildFromTracking>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\..\sys\libqdma\include;$(ProjectDir)\..\..\sys\drv\include;$(ProjectDir)\..\..\..\qdma_access;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <WppModuleName>qdma</WppModuleName>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+    </ClCompile>
+    <Inf />
+    <Inf />
+    <Inf />
+    <Inf />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <WppEnabled>true</WppEnabled>
+      <WppRecorderEnabled>false</WppRecorderEnabled>
+      <WppScanConfigurationData Condition="'%(ClCompile.ScanConfigurationData)' == ''">..\..\sys\drv\source\trace.h</WppScanConfigurationData>
+      <WppKernelMode>true</WppKernelMode>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <WppMinimalRebuildFromTracking>false</WppMinimalRebuildFromTracking>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\..\sys\libqdma\include;$(ProjectDir)\..\..\sys\drv\include;$(ProjectDir)\..\..\..\qdma_access;$(ProjectDir)\..\..\..\qdma_access\eqdma_soft_access;$(ProjectDir)\..\..\..\qdma_access\qdma_s80_hard_access;$(ProjectDir)\..\..\..\qdma_access\qdma_soft_access;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <WppModuleName>qdma</WppModuleName>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <SupportJustMyCode>false</SupportJustMyCode>
+      <AdditionalOptions>$(ExternalCompilerOptions) %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Inf />
+    <ResourceCompile />
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <WppEnabled>false</WppEnabled>
+      <WppRecorderEnabled>false</WppRecorderEnabled>
+      <WppScanConfigurationData Condition="'%(ClCompile.ScanConfigurationData)' == ''">..\..\sys\drv\source\trace.h</WppScanConfigurationData>
+      <WppKernelMode>true</WppKernelMode>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <WppMinimalRebuildFromTracking>false</WppMinimalRebuildFromTracking>
+      <AdditionalIncludeDirectories>$(ProjectDir)\..\..\sys\libqdma\include;$(ProjectDir)\..\..\sys\drv\include;$(ProjectDir)\..\..\..\qdma_access;$(ProjectDir)\..\..\..\qdma_access\eqdma_soft_access;$(ProjectDir)\..\..\..\qdma_access\qdma_s80_hard_access;$(ProjectDir)\..\..\..\qdma_access\qdma_soft_access;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <WppModuleName>qdma</WppModuleName>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalOptions>$(ExternalCompilerOptions) %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Inf />
+    <Inf />
+    <Inf />
+    <Inf />
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <FilesToPackage Include="$(TargetPath)" />
+  </ItemGroup>
+  <ItemGroup>
+    <Inf Include="..\..\sys\drv\qdma.inf" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\sys\drv\resource\Resource.aps" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\sys\drv\resource\Resource.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\sys\drv\include\qdma_driver_api.h" />
+    <ClInclude Include="..\..\sys\drv\source\device.h" />
+    <ClInclude Include="..\..\sys\drv\source\driver.h" />
+    <ClInclude Include="..\..\sys\drv\source\io_queue.h" />
+    <ClInclude Include="..\..\sys\drv\source\trace.h" />
+    <ClInclude Include="..\..\sys\drv\source\windows_common.h" />
+    <ClInclude Include="..\..\sys\libqdma\include\qdma_exports.h" />
+    <ClInclude Include="..\..\sys\libqdma\include\xversion.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\sys\drv\source\device.cpp" />
+    <ClCompile Include="..\..\sys\drv\source\driver.cpp" />
+    <ClCompile Include="..\..\sys\drv\source\io_queue.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="libqdma.vcxproj">
+      <Project>{b7247473-91d0-4834-af7f-e111d69b376b}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

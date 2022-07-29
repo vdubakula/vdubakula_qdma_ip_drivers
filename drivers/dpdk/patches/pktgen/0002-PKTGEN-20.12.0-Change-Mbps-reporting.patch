@@ -1,0 +1,30 @@
+From 5aa6a3f87adcd31297c31345a0a1ad7084a66aca Mon Sep 17 00:00:00 2001
+From: Suryanarayana Raju Sangani <ssangani@xilinx.com>
+Date: Thu, 27 Feb 2020 05:27:34 -0700
+Subject: [PATCH 2/2] PKTGEN-20.12.0: Change Mbps reporting.
+
+Signed-off-by: Nikhil agarwal <nagarwal.xilinx.com>
+Signed-off-by: Thanneeru Srinivasulu <sthannee@xilinx.com>
+---
+ app/pktgen.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/app/pktgen.h b/app/pktgen.h
+index 20fb943..795ba8f 100644
+--- a/app/pktgen.h
++++ b/app/pktgen.h
+@@ -109,9 +109,9 @@ extern "C" {
+ #define Million                 (uint64_t)(1000000ULL)
+ 
+ #define iBitsTotal(_x) \
+-	(uint64_t)(((_x.ipackets * PKT_OVERHEAD_SIZE) + _x.ibytes) * 8)
++	(uint64_t)((_x.ibytes) * 8)
+ #define oBitsTotal(_x) \
+-	(uint64_t)(((_x.opackets * PKT_OVERHEAD_SIZE) + _x.obytes) * 8)
++	(uint64_t)((_x.obytes) * 8)
+ 
+ #define _do(_exp)       do { _exp; } while ((0))
+ 
+-- 
+2.17.1
+
