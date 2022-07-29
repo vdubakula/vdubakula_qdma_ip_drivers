@@ -1,0 +1,156 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/local_lim.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Minimum guaranteed maximum values for system limits.  Linux version.
+<b><a name="line2">2    </a></b>	   Copyright (C) 1993-2016 Free Software Foundation, Inc.
+<b><a name="line3">3    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line6">6    </a></b>	   modify it under the terms of the GNU Lesser General Public License as
+<b><a name="line7">7    </a></b>	   published by the Free Software Foundation; either version 2.1 of the
+<b><a name="line8">8    </a></b>	   License, or (at your option) any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line13">13   </a></b>	   Lesser General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line16">16   </a></b>	   License along with the GNU C Library; see the file COPYING.LIB.  If
+<b><a name="line17">17   </a></b>	   not, see &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	/* The kernel header pollutes the namespace with the NR_OPEN symbol
+<b><a name="line20">20   </a></b>	   and defines LINK_MAX although filesystems have different maxima.  A
+<b><a name="line21">21   </a></b>	   similar thing is true for OPEN_MAX: the limit can be changed at
+<b><a name="line22">22   </a></b>	   runtime and therefore the macro must not be defined.  Remove this
+<b><a name="line23">23   </a></b>	   after including the header if necessary.  */
+<b><a name="line24">24   </a></b>	#ifndef NR_OPEN
+<b><a name="line25">25   </a></b>	# define <b>__undef_NR_OPEN</b>
+<b><a name="line26">26   </a></b>	#endif
+<b><a name="line27">27   </a></b>	#ifndef LINK_MAX
+<b><a name="line28">28   </a></b>	# define <b>__undef_LINK_MAX</b>
+<b><a name="line29">29   </a></b>	#endif
+<b><a name="line30">30   </a></b>	#ifndef OPEN_MAX
+<b><a name="line31">31   </a></b>	# define <b>__undef_OPEN_MAX</b>
+<b><a name="line32">32   </a></b>	#endif
+<b><a name="line33">33   </a></b>	#ifndef ARG_MAX
+<b><a name="line34">34   </a></b>	# define <b>__undef_ARG_MAX</b>
+<b><a name="line35">35   </a></b>	#endif
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	/* The kernel sources contain a file with all the needed information.  */
+<b><a name="line38">38   </a></b>	#include &lt;linux/limits.h&gt;
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	/* Have to remove NR_OPEN?  */
+<b><a name="line41">41   </a></b>	#ifdef <a href="#line25">__undef_NR_OPEN</a>
+<b><a name="line42">42   </a></b>	# undef <a href="../../../linux/limits.h/code.html#line4">NR_OPEN</a>
+<b><a name="line43">43   </a></b>	# undef <a href="#line25">__undef_NR_OPEN</a>
+<b><a name="line44">44   </a></b>	#endif
+<b><a name="line45">45   </a></b>	/* Have to remove LINK_MAX?  */
+<b><a name="line46">46   </a></b>	#ifdef <a href="#line28">__undef_LINK_MAX</a>
+<b><a name="line47">47   </a></b>	# undef <a href="../../../linux/limits.h/code.html#line8">LINK_MAX</a>
+<b><a name="line48">48   </a></b>	# undef <a href="#line28">__undef_LINK_MAX</a>
+<b><a name="line49">49   </a></b>	#endif
+<b><a name="line50">50   </a></b>	/* Have to remove OPEN_MAX?  */
+<b><a name="line51">51   </a></b>	#ifdef <a href="#line31">__undef_OPEN_MAX</a>
+<b><a name="line52">52   </a></b>	# undef OPEN_MAX
+<b><a name="line53">53   </a></b>	# undef <a href="#line31">__undef_OPEN_MAX</a>
+<b><a name="line54">54   </a></b>	#endif
+<b><a name="line55">55   </a></b>	/* Have to remove ARG_MAX?  */
+<b><a name="line56">56   </a></b>	#ifdef <a href="#line34">__undef_ARG_MAX</a>
+<b><a name="line57">57   </a></b>	# undef <a href="../../../linux/limits.h/code.html#line7">ARG_MAX</a>
+<b><a name="line58">58   </a></b>	# undef <a href="#line34">__undef_ARG_MAX</a>
+<b><a name="line59">59   </a></b>	#endif
+<b><a name="line60">60   </a></b>	
+<b><a name="line61">61   </a></b>	/* The number of data keys per process.  */
+<b><a name="line62">62   </a></b>	#define <b>_POSIX_THREAD_KEYS_MAX</b>	128
+<b><a name="line63">63   </a></b>	/* This is the value this implementation supports.  */
+<b><a name="line64">64   </a></b>	#define <b>PTHREAD_KEYS_MAX</b>	1024
+<b><a name="line65">65   </a></b>	
+<b><a name="line66">66   </a></b>	/* Controlling the iterations of destructors for thread-specific data.  */
+<b><a name="line67">67   </a></b>	#define <b>_POSIX_THREAD_DESTRUCTOR_ITERATIONS</b>	4
+<b><a name="line68">68   </a></b>	/* Number of iterations this implementation does.  */
+<b><a name="line69">69   </a></b>	#define <b>PTHREAD_DESTRUCTOR_ITERATIONS</b>	_POSIX_THREAD_DESTRUCTOR_ITERATIONS
+<b><a name="line70">70   </a></b>	
+<b><a name="line71">71   </a></b>	/* The number of threads per process.  */
+<b><a name="line72">72   </a></b>	#define <b>_POSIX_THREAD_THREADS_MAX</b>	64
+<b><a name="line73">73   </a></b>	/* We have no predefined limit on the number of threads.  */
+<b><a name="line74">74   </a></b>	#undef PTHREAD_THREADS_MAX
+<b><a name="line75">75   </a></b>	
+<b><a name="line76">76   </a></b>	/* Maximum amount by which a process can descrease its asynchronous I/O
+<b><a name="line77">77   </a></b>	   priority level.  */
+<b><a name="line78">78   </a></b>	#define <b>AIO_PRIO_DELTA_MAX</b>	20
+<b><a name="line79">79   </a></b>	
+<b><a name="line80">80   </a></b>	/* Minimum size for a thread.  We are free to choose a reasonable value.  */
+<b><a name="line81">81   </a></b>	#define <b>PTHREAD_STACK_MIN</b>	16384
+<b><a name="line82">82   </a></b>	
+<b><a name="line83">83   </a></b>	/* Maximum number of timer expiration overruns.  */
+<b><a name="line84">84   </a></b>	#define <b>DELAYTIMER_MAX</b>	2147483647
+<b><a name="line85">85   </a></b>	
+<b><a name="line86">86   </a></b>	/* Maximum tty name length.  */
+<b><a name="line87">87   </a></b>	#define <b>TTY_NAME_MAX</b>		32
+<b><a name="line88">88   </a></b>	
+<b><a name="line89">89   </a></b>	/* Maximum login name length.  This is arbitrary.  */
+<b><a name="line90">90   </a></b>	#define <b>LOGIN_NAME_MAX</b>		256
+<b><a name="line91">91   </a></b>	
+<b><a name="line92">92   </a></b>	/* Maximum host name length.  */
+<b><a name="line93">93   </a></b>	#define <b>HOST_NAME_MAX</b>		64
+<b><a name="line94">94   </a></b>	
+<b><a name="line95">95   </a></b>	/* Maximum message queue priority level.  */
+<b><a name="line96">96   </a></b>	#define <b>MQ_PRIO_MAX</b>		32768
+<b><a name="line97">97   </a></b>	
+<b><a name="line98">98   </a></b>	/* Maximum value the semaphore can have.  */
+<b><a name="line99">99   </a></b>	#define <b>SEM_VALUE_MAX</b>   (2147483647)
+<b><a name="line100">100  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

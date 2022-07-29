@@ -1,0 +1,315 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/pthreadtypes.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 2002-2016 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line5">5    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line6">6    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line7">7    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line10">10   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line11">11   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line12">12   </a></b>	   Lesser General Public License for more details.
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line15">15   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line16">16   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	#ifndef _BITS_PTHREADTYPES_H
+<b><a name="line19">19   </a></b>	#define <b>_BITS_PTHREADTYPES_H</b>	1
+<b><a name="line20">20   </a></b>	
+<b><a name="line21">21   </a></b>	#include &lt;bits/wordsize.h&gt;
+<b><a name="line22">22   </a></b>	
+<b><a name="line23">23   </a></b>	#ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a>
+<b><a name="line24">24   </a></b>	# if <a href="../wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line25">25   </a></b>	#  define <b>__SIZEOF_PTHREAD_ATTR_T</b> 56
+<b><a name="line26">26   </a></b>	#  define <b>__SIZEOF_PTHREAD_MUTEX_T</b> 40
+<b><a name="line27">27   </a></b>	#  define <b>__SIZEOF_PTHREAD_MUTEXATTR_T</b> 4
+<b><a name="line28">28   </a></b>	#  define <b>__SIZEOF_PTHREAD_COND_T</b> 48
+<b><a name="line29">29   </a></b>	#  define <b>__SIZEOF_PTHREAD_CONDATTR_T</b> 4
+<b><a name="line30">30   </a></b>	#  define <b>__SIZEOF_PTHREAD_RWLOCK_T</b> 56
+<b><a name="line31">31   </a></b>	#  define <b>__SIZEOF_PTHREAD_RWLOCKATTR_T</b> 8
+<b><a name="line32">32   </a></b>	#  define <b>__SIZEOF_PTHREAD_BARRIER_T</b> 32
+<b><a name="line33">33   </a></b>	#  define <b>__SIZEOF_PTHREAD_BARRIERATTR_T</b> 4
+<b><a name="line34">34   </a></b>	# else
+<b><a name="line35">35   </a></b>	#  define __SIZEOF_PTHREAD_ATTR_T 32
+<b><a name="line36">36   </a></b>	#  define __SIZEOF_PTHREAD_MUTEX_T 32
+<b><a name="line37">37   </a></b>	#  define __SIZEOF_PTHREAD_MUTEXATTR_T 4
+<b><a name="line38">38   </a></b>	#  define __SIZEOF_PTHREAD_COND_T 48
+<b><a name="line39">39   </a></b>	#  define __SIZEOF_PTHREAD_CONDATTR_T 4
+<b><a name="line40">40   </a></b>	#  define __SIZEOF_PTHREAD_RWLOCK_T 44
+<b><a name="line41">41   </a></b>	#  define __SIZEOF_PTHREAD_RWLOCKATTR_T 8
+<b><a name="line42">42   </a></b>	#  define __SIZEOF_PTHREAD_BARRIER_T 20
+<b><a name="line43">43   </a></b>	#  define __SIZEOF_PTHREAD_BARRIERATTR_T 4
+<b><a name="line44">44   </a></b>	# endif
+<b><a name="line45">45   </a></b>	#else
+<b><a name="line46">46   </a></b>	# define __SIZEOF_PTHREAD_ATTR_T 36
+<b><a name="line47">47   </a></b>	# define __SIZEOF_PTHREAD_MUTEX_T 24
+<b><a name="line48">48   </a></b>	# define __SIZEOF_PTHREAD_MUTEXATTR_T 4
+<b><a name="line49">49   </a></b>	# define __SIZEOF_PTHREAD_COND_T 48
+<b><a name="line50">50   </a></b>	# define __SIZEOF_PTHREAD_CONDATTR_T 4
+<b><a name="line51">51   </a></b>	# define __SIZEOF_PTHREAD_RWLOCK_T 32
+<b><a name="line52">52   </a></b>	# define __SIZEOF_PTHREAD_RWLOCKATTR_T 8
+<b><a name="line53">53   </a></b>	# define __SIZEOF_PTHREAD_BARRIER_T 20
+<b><a name="line54">54   </a></b>	# define __SIZEOF_PTHREAD_BARRIERATTR_T 4
+<b><a name="line55">55   </a></b>	#endif
+<b><a name="line56">56   </a></b>	
+<b><a name="line57">57   </a></b>	
+<b><a name="line58">58   </a></b>	/* Thread identifiers.  The structure of the attribute type is not
+<b><a name="line59">59   </a></b>	   exposed on purpose.  */
+<b><a name="line60">60   </a></b>	typedef unsigned long int <b>pthread_t</b>;
+<b><a name="line61">61   </a></b>	
+<b><a name="line62">62   </a></b>	
+<b><a name="line63">63   </a></b>	union <b>pthread_attr_t</b>
+<b><a name="line64">64   </a></b>	{
+<b><a name="line65">65   </a></b>	  char <b>__size</b>[<a href="#line25">__SIZEOF_PTHREAD_ATTR_T</a>];
+<b><a name="line66">66   </a></b>	  long int <b>__align</b>;
+<b><a name="line67">67   </a></b>	};
+<b><a name="line68">68   </a></b>	#ifndef __have_pthread_attr_t
+<b><a name="line69">69   </a></b>	typedef union <a href="#line63">pthread_attr_t</a> <b>pthread_attr_t</b>;
+<b><a name="line70">70   </a></b>	# define <b>__have_pthread_attr_t</b>	1
+<b><a name="line71">71   </a></b>	#endif
+<b><a name="line72">72   </a></b>	
+<b><a name="line73">73   </a></b>	
+<b><a name="line74">74   </a></b>	#ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a>
+<b><a name="line75">75   </a></b>	typedef struct <b>__pthread_internal_list</b>
+<b><a name="line76">76   </a></b>	{
+<b><a name="line77">77   </a></b>	  struct <a href="#line75">__pthread_internal_list</a> *<b>__prev</b>;
+<b><a name="line78">78   </a></b>	  struct <a href="#line75">__pthread_internal_list</a> *<b>__next</b>;
+<b><a name="line79">79   </a></b>	} <b>__pthread_list_t</b>;
+<b><a name="line80">80   </a></b>	#else
+<b><a name="line81">81   </a></b>	typedef struct __pthread_internal_slist
+<b><a name="line82">82   </a></b>	{
+<b><a name="line83">83   </a></b>	  struct __pthread_internal_slist *__next;
+<b><a name="line84">84   </a></b>	} __pthread_slist_t;
+<b><a name="line85">85   </a></b>	#endif
+<b><a name="line86">86   </a></b>	
+<b><a name="line87">87   </a></b>	
+<b><a name="line88">88   </a></b>	/* Data structures for mutex handling.  The structure of the attribute
+<b><a name="line89">89   </a></b>	   type is not exposed on purpose.  */
+<b><a name="line90">90   </a></b>	typedef union
+<b><a name="line91">91   </a></b>	{
+<b><a name="line92">92   </a></b>	  struct <b>__pthread_mutex_s</b>
+<b><a name="line93">93   </a></b>	  {
+<b><a name="line94">94   </a></b>	    int <b>__lock</b>;
+<b><a name="line95">95   </a></b>	    unsigned int <b>__count</b>;
+<b><a name="line96">96   </a></b>	    int <b>__owner</b>;
+<b><a name="line97">97   </a></b>	#ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a>
+<b><a name="line98">98   </a></b>	    unsigned int <b>__nusers</b>;
+<b><a name="line99">99   </a></b>	#endif
+<b><a name="line100">100  </a></b>	    /* KIND must stay at this position in the structure to maintain
+<b><a name="line101">101  </a></b>	       binary compatibility.  */
+<b><a name="line102">102  </a></b>	    int <b>__kind</b>;
+<b><a name="line103">103  </a></b>	#ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a>
+<b><a name="line104">104  </a></b>	    short <b>__spins</b>;
+<b><a name="line105">105  </a></b>	    short <b>__elision</b>;
+<b><a name="line106">106  </a></b>	    <a href="#line79">__pthread_list_t</a> <b>__list</b>;
+<b><a name="line107">107  </a></b>	# define <b>__PTHREAD_MUTEX_HAVE_PREV</b>	1
+<b><a name="line108">108  </a></b>	/* Mutex __spins initializer used by PTHREAD_MUTEX_INITIALIZER.  */
+<b><a name="line109">109  </a></b>	# define <b>__PTHREAD_SPINS</b>             0, 0
+<b><a name="line110">110  </a></b>	#else
+<b><a name="line111">111  </a></b>	    unsigned int __nusers;
+<b><a name="line112">112  </a></b>	    __extension__ union
+<b><a name="line113">113  </a></b>	    {
+<b><a name="line114">114  </a></b>	      struct
+<b><a name="line115">115  </a></b>	      {
+<b><a name="line116">116  </a></b>		short __espins;
+<b><a name="line117">117  </a></b>		short __elision;
+<b><a name="line118">118  </a></b>	# define __spins __elision_data.__espins
+<b><a name="line119">119  </a></b>	# define __elision __elision_data.__elision
+<b><a name="line120">120  </a></b>	# define __PTHREAD_SPINS         { 0, 0 }
+<b><a name="line121">121  </a></b>	      } __elision_data;
+<b><a name="line122">122  </a></b>	      __pthread_slist_t __list;
+<b><a name="line123">123  </a></b>	    };
+<b><a name="line124">124  </a></b>	#endif
+<b><a name="line125">125  </a></b>	  } <b>__data</b>;
+<b><a name="line126">126  </a></b>	  char <b>__size</b>[<a href="#line26">__SIZEOF_PTHREAD_MUTEX_T</a>];
+<b><a name="line127">127  </a></b>	  long int <b>__align</b>;
+<b><a name="line128">128  </a></b>	} <b>pthread_mutex_t</b>;
+<b><a name="line129">129  </a></b>	
+<b><a name="line130">130  </a></b>	typedef union
+<b><a name="line131">131  </a></b>	{
+<b><a name="line132">132  </a></b>	  char <b>__size</b>[<a href="#line27">__SIZEOF_PTHREAD_MUTEXATTR_T</a>];
+<b><a name="line133">133  </a></b>	  int <b>__align</b>;
+<b><a name="line134">134  </a></b>	} <b>pthread_mutexattr_t</b>;
+<b><a name="line135">135  </a></b>	
+<b><a name="line136">136  </a></b>	
+<b><a name="line137">137  </a></b>	/* Data structure for conditional variable handling.  The structure of
+<b><a name="line138">138  </a></b>	   the attribute type is not exposed on purpose.  */
+<b><a name="line139">139  </a></b>	typedef union
+<b><a name="line140">140  </a></b>	{
+<b><a name="line141">141  </a></b>	  struct
+<b><a name="line142">142  </a></b>	  {
+<b><a name="line143">143  </a></b>	    int <b>__lock</b>;
+<b><a name="line144">144  </a></b>	    unsigned int <b>__futex</b>;
+<b><a name="line145">145  </a></b>	    __extension__ unsigned long long int <b>__total_seq</b>;
+<b><a name="line146">146  </a></b>	    __extension__ unsigned long long int <b>__wakeup_seq</b>;
+<b><a name="line147">147  </a></b>	    __extension__ unsigned long long int <b>__woken_seq</b>;
+<b><a name="line148">148  </a></b>	    void *<b>__mutex</b>;
+<b><a name="line149">149  </a></b>	    unsigned int <b>__nwaiters</b>;
+<b><a name="line150">150  </a></b>	    unsigned int <b>__broadcast_seq</b>;
+<b><a name="line151">151  </a></b>	  } <b>__data</b>;
+<b><a name="line152">152  </a></b>	  char <b>__size</b>[<a href="#line28">__SIZEOF_PTHREAD_COND_T</a>];
+<b><a name="line153">153  </a></b>	  __extension__ long long int <b>__align</b>;
+<b><a name="line154">154  </a></b>	} <b>pthread_cond_t</b>;
+<b><a name="line155">155  </a></b>	
+<b><a name="line156">156  </a></b>	typedef union
+<b><a name="line157">157  </a></b>	{
+<b><a name="line158">158  </a></b>	  char <b>__size</b>[<a href="#line29">__SIZEOF_PTHREAD_CONDATTR_T</a>];
+<b><a name="line159">159  </a></b>	  int <b>__align</b>;
+<b><a name="line160">160  </a></b>	} <b>pthread_condattr_t</b>;
+<b><a name="line161">161  </a></b>	
+<b><a name="line162">162  </a></b>	
+<b><a name="line163">163  </a></b>	/* Keys for thread-specific data */
+<b><a name="line164">164  </a></b>	typedef unsigned int <b>pthread_key_t</b>;
+<b><a name="line165">165  </a></b>	
+<b><a name="line166">166  </a></b>	
+<b><a name="line167">167  </a></b>	/* Once-only execution */
+<b><a name="line168">168  </a></b>	typedef int <b>pthread_once_t</b>;
+<b><a name="line169">169  </a></b>	
+<b><a name="line170">170  </a></b>	
+<b><a name="line171">171  </a></b>	#if defined <a href="../../../features.h/code.html#line282">__USE_UNIX98</a> || defined <a href="../../../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line172">172  </a></b>	/* Data structure for read-write lock variable handling.  The
+<b><a name="line173">173  </a></b>	   structure of the attribute type is not exposed on purpose.  */
+<b><a name="line174">174  </a></b>	typedef union
+<b><a name="line175">175  </a></b>	{
+<b><a name="line176">176  </a></b>	# ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a>
+<b><a name="line177">177  </a></b>	  struct
+<b><a name="line178">178  </a></b>	  {
+<b><a name="line179">179  </a></b>	    int <b>__lock</b>;
+<b><a name="line180">180  </a></b>	    unsigned int <b>__nr_readers</b>;
+<b><a name="line181">181  </a></b>	    unsigned int <b>__readers_wakeup</b>;
+<b><a name="line182">182  </a></b>	    unsigned int <b>__writer_wakeup</b>;
+<b><a name="line183">183  </a></b>	    unsigned int <b>__nr_readers_queued</b>;
+<b><a name="line184">184  </a></b>	    unsigned int <b>__nr_writers_queued</b>;
+<b><a name="line185">185  </a></b>	    int <b>__writer</b>;
+<b><a name="line186">186  </a></b>	    int <b>__shared</b>;
+<b><a name="line187">187  </a></b>	    signed char <b>__rwelision</b>;
+<b><a name="line188">188  </a></b>	#  ifdef  __ILP32__
+<b><a name="line189">189  </a></b>	    unsigned char __pad1[3];
+<b><a name="line190">190  </a></b>	#    define __PTHREAD_RWLOCK_ELISION_EXTRA 0, { 0, 0, 0 }
+<b><a name="line191">191  </a></b>	#  else
+<b><a name="line192">192  </a></b>	    unsigned char <b>__pad1</b>[7];
+<b><a name="line193">193  </a></b>	#    define <b>__PTHREAD_RWLOCK_ELISION_EXTRA</b> 0, { 0, 0, 0, 0, 0, 0, 0 }
+<b><a name="line194">194  </a></b>	#  endif
+<b><a name="line195">195  </a></b>	    unsigned long int <b>__pad2</b>;
+<b><a name="line196">196  </a></b>	    /* FLAGS must stay at this position in the structure to maintain
+<b><a name="line197">197  </a></b>	       binary compatibility.  */
+<b><a name="line198">198  </a></b>	    unsigned int <b>__flags</b>;
+<b><a name="line199">199  </a></b>	# define <b>__PTHREAD_RWLOCK_INT_FLAGS_SHARED</b>	1
+<b><a name="line200">200  </a></b>	  } <b>__data</b>;
+<b><a name="line201">201  </a></b>	# else
+<b><a name="line202">202  </a></b>	  struct
+<b><a name="line203">203  </a></b>	  {
+<b><a name="line204">204  </a></b>	    int __lock;
+<b><a name="line205">205  </a></b>	    unsigned int __nr_readers;
+<b><a name="line206">206  </a></b>	    unsigned int __readers_wakeup;
+<b><a name="line207">207  </a></b>	    unsigned int __writer_wakeup;
+<b><a name="line208">208  </a></b>	    unsigned int __nr_readers_queued;
+<b><a name="line209">209  </a></b>	    unsigned int __nr_writers_queued;
+<b><a name="line210">210  </a></b>	    /* FLAGS must stay at this position in the structure to maintain
+<b><a name="line211">211  </a></b>	       binary compatibility.  */
+<b><a name="line212">212  </a></b>	    unsigned char __flags;
+<b><a name="line213">213  </a></b>	    unsigned char __shared;
+<b><a name="line214">214  </a></b>	    signed char __rwelision;
+<b><a name="line215">215  </a></b>	# define __PTHREAD_RWLOCK_ELISION_EXTRA 0
+<b><a name="line216">216  </a></b>	    unsigned char __pad2;
+<b><a name="line217">217  </a></b>	    int __writer;
+<b><a name="line218">218  </a></b>	  } __data;
+<b><a name="line219">219  </a></b>	# endif
+<b><a name="line220">220  </a></b>	  char <b>__size</b>[<a href="#line30">__SIZEOF_PTHREAD_RWLOCK_T</a>];
+<b><a name="line221">221  </a></b>	  long int <b>__align</b>;
+<b><a name="line222">222  </a></b>	} <b>pthread_rwlock_t</b>;
+<b><a name="line223">223  </a></b>	
+<b><a name="line224">224  </a></b>	typedef union
+<b><a name="line225">225  </a></b>	{
+<b><a name="line226">226  </a></b>	  char <b>__size</b>[<a href="#line31">__SIZEOF_PTHREAD_RWLOCKATTR_T</a>];
+<b><a name="line227">227  </a></b>	  long int <b>__align</b>;
+<b><a name="line228">228  </a></b>	} <b>pthread_rwlockattr_t</b>;
+<b><a name="line229">229  </a></b>	#endif
+<b><a name="line230">230  </a></b>	
+<b><a name="line231">231  </a></b>	
+<b><a name="line232">232  </a></b>	#ifdef <a href="../../../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line233">233  </a></b>	/* POSIX spinlock data type.  */
+<b><a name="line234">234  </a></b>	typedef volatile int <b>pthread_spinlock_t</b>;
+<b><a name="line235">235  </a></b>	
+<b><a name="line236">236  </a></b>	
+<b><a name="line237">237  </a></b>	/* POSIX barriers data type.  The structure of the type is
+<b><a name="line238">238  </a></b>	   deliberately not exposed.  */
+<b><a name="line239">239  </a></b>	typedef union
+<b><a name="line240">240  </a></b>	{
+<b><a name="line241">241  </a></b>	  char <b>__size</b>[<a href="#line32">__SIZEOF_PTHREAD_BARRIER_T</a>];
+<b><a name="line242">242  </a></b>	  long int <b>__align</b>;
+<b><a name="line243">243  </a></b>	} <b>pthread_barrier_t</b>;
+<b><a name="line244">244  </a></b>	
+<b><a name="line245">245  </a></b>	typedef union
+<b><a name="line246">246  </a></b>	{
+<b><a name="line247">247  </a></b>	  char <b>__size</b>[<a href="#line33">__SIZEOF_PTHREAD_BARRIERATTR_T</a>];
+<b><a name="line248">248  </a></b>	  int <b>__align</b>;
+<b><a name="line249">249  </a></b>	} <b>pthread_barrierattr_t</b>;
+<b><a name="line250">250  </a></b>	#endif
+<b><a name="line251">251  </a></b>	
+<b><a name="line252">252  </a></b>	
+<b><a name="line253">253  </a></b>	#ifndef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a>
+<b><a name="line254">254  </a></b>	/* Extra attributes for the cleanup functions.  */
+<b><a name="line255">255  </a></b>	# define __cleanup_fct_attribute __attribute__ ((__regparm__ (1)))
+<b><a name="line256">256  </a></b>	#endif
+<b><a name="line257">257  </a></b>	
+<b><a name="line258">258  </a></b>	#endif	/* bits/pthreadtypes.h */
+<b><a name="line259">259  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

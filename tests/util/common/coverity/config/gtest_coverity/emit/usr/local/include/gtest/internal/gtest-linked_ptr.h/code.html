@@ -1,0 +1,300 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/gtest/internal/gtest-linked_ptr.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Copyright 2003 Google Inc.
+<b><a name="line2">2    </a></b>	// All rights reserved.
+<b><a name="line3">3    </a></b>	//
+<b><a name="line4">4    </a></b>	// Redistribution and use in source and binary forms, with or without
+<b><a name="line5">5    </a></b>	// modification, are permitted provided that the following conditions are
+<b><a name="line6">6    </a></b>	// met:
+<b><a name="line7">7    </a></b>	//
+<b><a name="line8">8    </a></b>	//     * Redistributions of source code must retain the above copyright
+<b><a name="line9">9    </a></b>	// notice, this list of conditions and the following disclaimer.
+<b><a name="line10">10   </a></b>	//     * Redistributions in binary form must reproduce the above
+<b><a name="line11">11   </a></b>	// copyright notice, this list of conditions and the following disclaimer
+<b><a name="line12">12   </a></b>	// in the documentation and/or other materials provided with the
+<b><a name="line13">13   </a></b>	// distribution.
+<b><a name="line14">14   </a></b>	//     * Neither the name of Google Inc. nor the names of its
+<b><a name="line15">15   </a></b>	// contributors may be used to endorse or promote products derived from
+<b><a name="line16">16   </a></b>	// this software without specific prior written permission.
+<b><a name="line17">17   </a></b>	//
+<b><a name="line18">18   </a></b>	// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+<b><a name="line19">19   </a></b>	// &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+<b><a name="line20">20   </a></b>	// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+<b><a name="line21">21   </a></b>	// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+<b><a name="line22">22   </a></b>	// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+<b><a name="line23">23   </a></b>	// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+<b><a name="line24">24   </a></b>	// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+<b><a name="line25">25   </a></b>	// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+<b><a name="line26">26   </a></b>	// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+<b><a name="line27">27   </a></b>	// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+<b><a name="line28">28   </a></b>	// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+<b><a name="line29">29   </a></b>	//
+<b><a name="line30">30   </a></b>	// Authors: Dan Egnor (egnor@google.com)
+<b><a name="line31">31   </a></b>	//
+<b><a name="line32">32   </a></b>	// A &quot;smart&quot; pointer type with reference tracking.  Every pointer to a
+<b><a name="line33">33   </a></b>	// particular object is kept on a circular linked list.  When the last pointer
+<b><a name="line34">34   </a></b>	// to an object is destroyed or reassigned, the object is deleted.
+<b><a name="line35">35   </a></b>	//
+<b><a name="line36">36   </a></b>	// Used properly, this deletes the object when the last reference goes away.
+<b><a name="line37">37   </a></b>	// There are several caveats:
+<b><a name="line38">38   </a></b>	// - Like all reference counting schemes, cycles lead to leaks.
+<b><a name="line39">39   </a></b>	// - Each smart pointer is actually two pointers (8 bytes instead of 4).
+<b><a name="line40">40   </a></b>	// - Every time a pointer is assigned, the entire list of pointers to that
+<b><a name="line41">41   </a></b>	//   object is traversed.  This class is therefore NOT SUITABLE when there
+<b><a name="line42">42   </a></b>	//   will often be more than two or three pointers to a particular object.
+<b><a name="line43">43   </a></b>	// - References are only tracked as long as linked_ptr&lt;&gt; objects are copied.
+<b><a name="line44">44   </a></b>	//   If a linked_ptr&lt;&gt; is converted to a raw pointer and back, BAD THINGS
+<b><a name="line45">45   </a></b>	//   will happen (double deletion).
+<b><a name="line46">46   </a></b>	//
+<b><a name="line47">47   </a></b>	// A good use of this class is storing object references in STL containers.
+<b><a name="line48">48   </a></b>	// You can safely put linked_ptr&lt;&gt; in a vector&lt;&gt;.
+<b><a name="line49">49   </a></b>	// Other uses may not be as good.
+<b><a name="line50">50   </a></b>	//
+<b><a name="line51">51   </a></b>	// Note: If you use an incomplete type with linked_ptr&lt;&gt;, the class
+<b><a name="line52">52   </a></b>	// *containing* linked_ptr&lt;&gt; must have a constructor and destructor (even
+<b><a name="line53">53   </a></b>	// if they do nothing!).
+<b><a name="line54">54   </a></b>	//
+<b><a name="line55">55   </a></b>	// Bill Gibbons suggested we use something like this.
+<b><a name="line56">56   </a></b>	//
+<b><a name="line57">57   </a></b>	// Thread Safety:
+<b><a name="line58">58   </a></b>	//   Unlike other linked_ptr implementations, in this implementation
+<b><a name="line59">59   </a></b>	//   a linked_ptr object is thread-safe in the sense that:
+<b><a name="line60">60   </a></b>	//     - it's safe to copy linked_ptr objects concurrently,
+<b><a name="line61">61   </a></b>	//     - it's safe to copy *from* a linked_ptr and read its underlying
+<b><a name="line62">62   </a></b>	//       raw pointer (e.g. via get()) concurrently, and
+<b><a name="line63">63   </a></b>	//     - it's safe to write to two linked_ptrs that point to the same
+<b><a name="line64">64   </a></b>	//       shared object concurrently.
+<b><a name="line65">65   </a></b>	// TODO(wan@google.com): rename this to safe_linked_ptr to avoid
+<b><a name="line66">66   </a></b>	// confusion with normal linked_ptr.
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	#ifndef GTEST_INCLUDE_GTEST_INTERNAL_GTEST_LINKED_PTR_H_
+<b><a name="line69">69   </a></b>	#define <b>GTEST_INCLUDE_GTEST_INTERNAL_GTEST_LINKED_PTR_H_</b>
+<b><a name="line70">70   </a></b>	
+<b><a name="line71">71   </a></b>	#include &lt;stdlib.h&gt;
+<b><a name="line72">72   </a></b>	#include &lt;assert.h&gt;
+<b><a name="line73">73   </a></b>	
+<b><a name="line74">74   </a></b>	#include &quot;gtest/internal/gtest-port.h&quot;
+<b><a name="line75">75   </a></b>	
+<b><a name="line76">76   </a></b>	namespace <a href="../gtest-port.h/code.html#line988">testing</a> {
+<b><a name="line77">77   </a></b>	namespace <a href="../gtest-port.h/code.html#line1003">internal</a> {
+<b><a name="line78">78   </a></b>	
+<b><a name="line79">79   </a></b>	// Protects copying of all linked_ptr objects.
+<b><a name="line80">80   </a></b>	<a href="../gtest-port.h/code.html#line930">GTEST_API_</a> <a href="../gtest-port.h/code.html#line1968">GTEST_DECLARE_STATIC_MUTEX_</a>(g_linked_ptr_mutex);
+<b><a name="line81">81   </a></b>	
+<b><a name="line82">82   </a></b>	// This is used internally by all instances of linked_ptr&lt;&gt;.  It needs to be
+<b><a name="line83">83   </a></b>	// a non-template class because different types of linked_ptr&lt;&gt; can refer to
+<b><a name="line84">84   </a></b>	// the same object (linked_ptr&lt;Superclass&gt;(obj) vs linked_ptr&lt;Subclass&gt;(obj)).
+<b><a name="line85">85   </a></b>	// So, it needs to be possible for different types of linked_ptr to participate
+<b><a name="line86">86   </a></b>	// in the same circular linked list, so we need a single class type here.
+<b><a name="line87">87   </a></b>	//
+<b><a name="line88">88   </a></b>	// DO NOT USE THIS CLASS DIRECTLY YOURSELF.  Use linked_ptr&lt;T&gt;.
+<b><a name="line89">89   </a></b>	class <b>linked_ptr_internal</b> {
+<b><a name="line90">90   </a></b>	 public:
+<b><a name="line91">91   </a></b>	  // Create a new circle that includes only this instance.
+<b><a name="line92">92   </a></b>	  void <b>join_new</b>() {
+<b><a name="line93">93   </a></b>	    <a href="#line142">next_</a> = this;
+<b><a name="line94">94   </a></b>	  }
+<b><a name="line95">95   </a></b>	
+<b><a name="line96">96   </a></b>	  // Many linked_ptr operations may change p.link_ for some linked_ptr
+<b><a name="line97">97   </a></b>	  // variable p in the same circle as this object.  Therefore we need
+<b><a name="line98">98   </a></b>	  // to prevent two such operations from occurring concurrently.
+<b><a name="line99">99   </a></b>	  //
+<b><a name="line100">100  </a></b>	  // Note that different types of linked_ptr objects can coexist in a
+<b><a name="line101">101  </a></b>	  // circle (e.g. linked_ptr&lt;Base&gt;, linked_ptr&lt;Derived1&gt;, and
+<b><a name="line102">102  </a></b>	  // linked_ptr&lt;Derived2&gt;).  Therefore we must use a single mutex to
+<b><a name="line103">103  </a></b>	  // protect all linked_ptr objects.  This can create serious
+<b><a name="line104">104  </a></b>	  // contention in production code, but is acceptable in a testing
+<b><a name="line105">105  </a></b>	  // framework.
+<b><a name="line106">106  </a></b>	
+<b><a name="line107">107  </a></b>	  // Join an existing circle.
+<b><a name="line108">108  </a></b>	  void <b>join</b>(<a href="#line89">linked_ptr_internal</a> const* <b>ptr</b>)
+<b><a name="line109">109  </a></b>	      <a href="../gtest-port.h/code.html#line2534">GTEST_LOCK_EXCLUDED_</a>(g_linked_ptr_mutex) {
+<b><a name="line110">110  </a></b>	    <a href="../gtest-port.h/code.html#line2009">MutexLock</a> <b>lock</b>(&amp;<a href="#line80">g_linked_ptr_mutex</a>);
+<b><a name="line111">111  </a></b>	
+<b><a name="line112">112  </a></b>	    <a href="#line89">linked_ptr_internal</a> const* <b>p</b> = <a href="#line108">ptr</a>;
+<b><a name="line113">113  </a></b>	    while (<a href="#line112">p</a>-&gt;<a href="#line142">next_</a> != <a href="#line108">ptr</a>) {
+<b><a name="line114">114  </a></b>	      <a href="../../../../../include/assert.h/code.html#line88">assert</a>(p-&gt;next_ != this &amp;&amp;
+<b><a name="line115">115  </a></b>	             &quot;Trying to join() a linked ring we are already in. &quot;
+<b><a name="line116">116  </a></b>	             &quot;Is GMock thread safety enabled?&quot;);
+<b><a name="line117">117  </a></b>	      <a href="#line112">p</a> = <a href="#line112">p</a>-&gt;<a href="#line142">next_</a>;
+<b><a name="line118">118  </a></b>	    }
+<b><a name="line119">119  </a></b>	    <a href="#line112">p</a>-&gt;<a href="#line142">next_</a> = this;
+<b><a name="line120">120  </a></b>	    <a href="#line142">next_</a> = <a href="#line108">ptr</a>;
+<b><a name="line121">121  </a></b>	  }
+<b><a name="line122">122  </a></b>	
+<b><a name="line123">123  </a></b>	  // Leave whatever circle we're part of.  Returns true if we were the
+<b><a name="line124">124  </a></b>	  // last member of the circle.  Once this is done, you can join() another.
+<b><a name="line125">125  </a></b>	  bool <b>depart</b>()
+<b><a name="line126">126  </a></b>	      <a href="../gtest-port.h/code.html#line2534">GTEST_LOCK_EXCLUDED_</a>(g_linked_ptr_mutex) {
+<b><a name="line127">127  </a></b>	    <a href="../gtest-port.h/code.html#line2009">MutexLock</a> <b>lock</b>(&amp;<a href="#line80">g_linked_ptr_mutex</a>);
+<b><a name="line128">128  </a></b>	
+<b><a name="line129">129  </a></b>	    if (<a href="#line142">next_</a> == this) return true;
+<b><a name="line130">130  </a></b>	    <a href="#line89">linked_ptr_internal</a> const* <b>p</b> = <a href="#line142">next_</a>;
+<b><a name="line131">131  </a></b>	    while (<a href="#line130">p</a>-&gt;<a href="#line142">next_</a> != this) {
+<b><a name="line132">132  </a></b>	      <a href="../../../../../include/assert.h/code.html#line88">assert</a>(p-&gt;next_ != next_ &amp;&amp;
+<b><a name="line133">133  </a></b>	             &quot;Trying to depart() a linked ring we are not in. &quot;
+<b><a name="line134">134  </a></b>	             &quot;Is GMock thread safety enabled?&quot;);
+<b><a name="line135">135  </a></b>	      <a href="#line130">p</a> = <a href="#line130">p</a>-&gt;<a href="#line142">next_</a>;
+<b><a name="line136">136  </a></b>	    }
+<b><a name="line137">137  </a></b>	    <a href="#line130">p</a>-&gt;<a href="#line142">next_</a> = <a href="#line142">next_</a>;
+<b><a name="line138">138  </a></b>	    return false;
+<b><a name="line139">139  </a></b>	  }
+<b><a name="line140">140  </a></b>	
+<b><a name="line141">141  </a></b>	 private:
+<b><a name="line142">142  </a></b>	  mutable <a href="#line89">linked_ptr_internal</a> const* <b>next_</b>;
+<b><a name="line143">143  </a></b>	};
+<b><a name="line144">144  </a></b>	
+<b><a name="line145">145  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line146">146  </a></b>	class linked_ptr {
+<b><a name="line147">147  </a></b>	 public:
+<b><a name="line148">148  </a></b>	  typedef <a href="#line145">T</a> <b>element_type</b>;
+<b><a name="line149">149  </a></b>	
+<b><a name="line150">150  </a></b>	  // Take over ownership of a raw pointer.  This should happen as soon as
+<b><a name="line151">151  </a></b>	  // possible after the object is created.
+<b><a name="line152">152  </a></b>	  explicit linked_ptr(<a href="#line145">T</a>* <b>ptr</b> = <a href="../../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>) { <a href="#line208">capture</a>(ptr); }
+<b><a name="line153">153  </a></b>	  ~linked_ptr() { <a href="#line204">depart</a>(); }
+<b><a name="line154">154  </a></b>	
+<b><a name="line155">155  </a></b>	  // Copy an existing linked_ptr&lt;&gt;, adding ourselves to the list of references.
+<b><a name="line156">156  </a></b>	  template &lt;typename <b>U</b>&gt; linked_ptr(<a href="#line146">linked_ptr</a>&lt;U&gt; const&amp; ptr) { copy(&amp;ptr); }
+<b><a name="line157">157  </a></b>	  linked_ptr(<a href="#line146">linked_ptr</a> const&amp; <b>ptr</b>) {  // NOLINT
+<b><a name="line158">158  </a></b>	    <a href="../../../../../include/assert.h/code.html#line88">assert</a>(&amp;ptr != this);
+<b><a name="line159">159  </a></b>	    <a href="#line213">copy</a>(&amp;<a href="#line157">ptr</a>);
+<b><a name="line160">160  </a></b>	  }
+<b><a name="line161">161  </a></b>	
+<b><a name="line162">162  </a></b>	  // Assignment releases the old value and acquires the new.
+<b><a name="line163">163  </a></b>	  template &lt;typename <b>U</b>&gt; <a href="#line146">linked_ptr</a>&amp; operator=(<a href="#line146">linked_ptr</a>&lt;U&gt; const&amp; ptr) {
+<b><a name="line164">164  </a></b>	    depart();
+<b><a name="line165">165  </a></b>	    copy(&amp;ptr);
+<b><a name="line166">166  </a></b>	    return *this;
+<b><a name="line167">167  </a></b>	  }
+<b><a name="line168">168  </a></b>	
+<b><a name="line169">169  </a></b>	  <a href="#line146">linked_ptr</a>&amp; operator=(<a href="#line146">linked_ptr</a> const&amp; ptr) {
+<b><a name="line170">170  </a></b>	    if (&amp;ptr != this) {
+<b><a name="line171">171  </a></b>	      depart();
+<b><a name="line172">172  </a></b>	      copy(&amp;ptr);
+<b><a name="line173">173  </a></b>	    }
+<b><a name="line174">174  </a></b>	    return *this;
+<b><a name="line175">175  </a></b>	  }
+<b><a name="line176">176  </a></b>	
+<b><a name="line177">177  </a></b>	  // Smart pointer members.
+<b><a name="line178">178  </a></b>	  void reset(<a href="#line145">T</a>* ptr = <a href="../../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>) {
+<b><a name="line179">179  </a></b>	    depart();
+<b><a name="line180">180  </a></b>	    capture(ptr);
+<b><a name="line181">181  </a></b>	  }
+<b><a name="line182">182  </a></b>	  <a href="#line145">T</a>* get() const { return <a href="#line201">value_</a>; }
+<b><a name="line183">183  </a></b>	  <a href="#line145">T</a>* operator-&gt;() const { return <a href="#line201">value_</a>; }
+<b><a name="line184">184  </a></b>	  <a href="#line145">T</a>&amp; operator*() const { return *value_; }
+<b><a name="line185">185  </a></b>	
+<b><a name="line186">186  </a></b>	  bool operator==(<a href="#line145">T</a>* p) const { return value_ == p; }
+<b><a name="line187">187  </a></b>	  bool operator!=(<a href="#line145">T</a>* p) const { return value_ != p; }
+<b><a name="line188">188  </a></b>	  template &lt;typename <b>U</b>&gt;
+<b><a name="line189">189  </a></b>	  bool operator==(<a href="#line146">linked_ptr</a>&lt;<a href="#line188">U</a>&gt; const&amp; ptr) const {
+<b><a name="line190">190  </a></b>	    return value_ == ptr.get();
+<b><a name="line191">191  </a></b>	  }
+<b><a name="line192">192  </a></b>	  template &lt;typename <b>U</b>&gt;
+<b><a name="line193">193  </a></b>	  bool operator!=(<a href="#line146">linked_ptr</a>&lt;<a href="#line192">U</a>&gt; const&amp; ptr) const {
+<b><a name="line194">194  </a></b>	    return value_ != ptr.get();
+<b><a name="line195">195  </a></b>	  }
+<b><a name="line196">196  </a></b>	
+<b><a name="line197">197  </a></b>	 private:
+<b><a name="line198">198  </a></b>	  template &lt;typename <b>U</b>&gt;
+<b><a name="line199">199  </a></b>	  friend class <a href="#line146">linked_ptr</a>;
+<b><a name="line200">200  </a></b>	
+<b><a name="line201">201  </a></b>	  <a href="#line145">T</a>* <b>value_</b>;
+<b><a name="line202">202  </a></b>	  <a href="#line89">linked_ptr_internal</a> <b>link_</b>;
+<b><a name="line203">203  </a></b>	
+<b><a name="line204">204  </a></b>	  void depart() {
+<b><a name="line205">205  </a></b>	    if (<a href="#line202">link_</a>.<a href="#line125">depart</a>()) <a href="../../../../../include/c++/5/new/code.html#line115">delete</a> <a href="#line201">value_</a>;
+<b><a name="line206">206  </a></b>	  }
+<b><a name="line207">207  </a></b>	
+<b><a name="line208">208  </a></b>	  void capture(<a href="#line145">T</a>* <b>ptr</b>) {
+<b><a name="line209">209  </a></b>	    <a href="#line201">value_</a> = <a href="#line208">ptr</a>;
+<b><a name="line210">210  </a></b>	    <a href="#line202">link_</a>.<a href="#line92">join_new</a>();
+<b><a name="line211">211  </a></b>	  }
+<b><a name="line212">212  </a></b>	
+<b><a name="line213">213  </a></b>	  template &lt;typename <b>U</b>&gt; void copy(<a href="#line146">linked_ptr</a>&lt;U&gt; const* <b>ptr</b>) {
+<b><a name="line214">214  </a></b>	    <a href="#line201">value_</a> = <a href="#line213">ptr</a>-&gt;<a href="#line182">get</a>();
+<b><a name="line215">215  </a></b>	    if (<a href="#line201">value_</a>)
+<b><a name="line216">216  </a></b>	      <a href="#line202">link_</a>.<a href="#line108">join</a>(&amp;<a href="#line213">ptr</a>-&gt;<a href="#line202">link_</a>);
+<b><a name="line217">217  </a></b>	    else
+<b><a name="line218">218  </a></b>	      <a href="#line202">link_</a>.<a href="#line92">join_new</a>();
+<b><a name="line219">219  </a></b>	  }
+<b><a name="line220">220  </a></b>	};
+<b><a name="line221">221  </a></b>	
+<b><a name="line222">222  </a></b>	template&lt;typename <b>T</b>&gt; inline
+<b><a name="line223">223  </a></b>	bool <b>operator==</b>(<a href="#line222">T</a>* ptr, const <a href="#line146">linked_ptr</a>&lt;<a href="#line222">T</a>&gt;&amp; x) {
+<b><a name="line224">224  </a></b>	  return ptr == x.get();
+<b><a name="line225">225  </a></b>	}
+<b><a name="line226">226  </a></b>	
+<b><a name="line227">227  </a></b>	template&lt;typename <b>T</b>&gt; inline
+<b><a name="line228">228  </a></b>	bool <b>operator!=</b>(<a href="#line227">T</a>* ptr, const <a href="#line146">linked_ptr</a>&lt;<a href="#line227">T</a>&gt;&amp; x) {
+<b><a name="line229">229  </a></b>	  return ptr != x.get();
+<b><a name="line230">230  </a></b>	}
+<b><a name="line231">231  </a></b>	
+<b><a name="line232">232  </a></b>	// A function to convert T* into linked_ptr&lt;T&gt;
+<b><a name="line233">233  </a></b>	// Doing e.g. make_linked_ptr(new FooBarBaz&lt;type&gt;(arg)) is a shorter notation
+<b><a name="line234">234  </a></b>	// for linked_ptr&lt;FooBarBaz&lt;type&gt; &gt;(new FooBarBaz&lt;type&gt;(arg))
+<b><a name="line235">235  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line236">236  </a></b>	<a href="#line146">linked_ptr</a>&lt;<a href="#line235">T</a>&gt; <b>make_linked_ptr</b>(<a href="#line235">T</a>* ptr) {
+<b><a name="line237">237  </a></b>	  return linked_ptr&lt;T&gt;(ptr);
+<b><a name="line238">238  </a></b>	}
+<b><a name="line239">239  </a></b>	
+<b><a name="line240">240  </a></b>	}  // namespace internal
+<b><a name="line241">241  </a></b>	}  // namespace testing
+<b><a name="line242">242  </a></b>	
+<b><a name="line243">243  </a></b>	#endif  // GTEST_INCLUDE_GTEST_INTERNAL_GTEST_LINKED_PTR_H_
+<b><a name="line244">244  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

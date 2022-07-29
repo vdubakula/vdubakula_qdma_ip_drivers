@@ -1,0 +1,494 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* O_*, F_*, FD_* bit values for Linux.
+<b><a name="line2">2    </a></b>	   Copyright (C) 2001-2016 Free Software Foundation, Inc.
+<b><a name="line3">3    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line6">6    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line7">7    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line8">8    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line13">13   </a></b>	   Lesser General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line16">16   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line17">17   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	#ifndef	<a href="../../../fcntl.h/code.html#line23">_FCNTL_H</a>
+<b><a name="line20">20   </a></b>	# error &quot;Never use &lt;bits/fcntl-linux.h&gt; directly; include &lt;fcntl.h&gt; instead.&quot;
+<b><a name="line21">21   </a></b>	#endif
+<b><a name="line22">22   </a></b>	
+<b><a name="line23">23   </a></b>	/* This file contains shared definitions between Linux architectures
+<b><a name="line24">24   </a></b>	   and is included by &lt;bits/fcntl.h&gt; to declare them.  The various
+<b><a name="line25">25   </a></b>	   #ifndef cases allow the architecture specific file to define those
+<b><a name="line26">26   </a></b>	   values with different values.
+<b><a name="line27">27   </a></b>	
+<b><a name="line28">28   </a></b>	   A minimal &lt;bits/fcntl.h&gt; contains just:
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	   struct flock {...}
+<b><a name="line31">31   </a></b>	   #ifdef __USE_LARGEFILE64
+<b><a name="line32">32   </a></b>	   struct flock64 {...}
+<b><a name="line33">33   </a></b>	   #endif
+<b><a name="line34">34   </a></b>	   #include &lt;bits/fcntl-linux.h&gt;
+<b><a name="line35">35   </a></b>	*/
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	#ifdef <a href="../../../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line38">38   </a></b>	# include &lt;bits/uio.h&gt;
+<b><a name="line39">39   </a></b>	#endif
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	/* open/fcntl.  */
+<b><a name="line42">42   </a></b>	#define <b>O_ACCMODE</b>	   0003
+<b><a name="line43">43   </a></b>	#define <b>O_RDONLY</b>	     00
+<b><a name="line44">44   </a></b>	#define <b>O_WRONLY</b>	     01
+<b><a name="line45">45   </a></b>	#define <b>O_RDWR</b>		     02
+<b><a name="line46">46   </a></b>	#ifndef O_CREAT
+<b><a name="line47">47   </a></b>	# define <b>O_CREAT</b>	   0100	/* Not fcntl.  */
+<b><a name="line48">48   </a></b>	#endif
+<b><a name="line49">49   </a></b>	#ifndef O_EXCL
+<b><a name="line50">50   </a></b>	# define <b>O_EXCL</b>		   0200	/* Not fcntl.  */
+<b><a name="line51">51   </a></b>	#endif
+<b><a name="line52">52   </a></b>	#ifndef O_NOCTTY
+<b><a name="line53">53   </a></b>	# define <b>O_NOCTTY</b>	   0400	/* Not fcntl.  */
+<b><a name="line54">54   </a></b>	#endif
+<b><a name="line55">55   </a></b>	#ifndef O_TRUNC
+<b><a name="line56">56   </a></b>	# define <b>O_TRUNC</b>	  01000	/* Not fcntl.  */
+<b><a name="line57">57   </a></b>	#endif
+<b><a name="line58">58   </a></b>	#ifndef O_APPEND
+<b><a name="line59">59   </a></b>	# define <b>O_APPEND</b>	  02000
+<b><a name="line60">60   </a></b>	#endif
+<b><a name="line61">61   </a></b>	#ifndef O_NONBLOCK
+<b><a name="line62">62   </a></b>	# define <b>O_NONBLOCK</b>	  04000
+<b><a name="line63">63   </a></b>	#endif
+<b><a name="line64">64   </a></b>	#ifndef O_NDELAY
+<b><a name="line65">65   </a></b>	# define <b>O_NDELAY</b>	O_NONBLOCK
+<b><a name="line66">66   </a></b>	#endif
+<b><a name="line67">67   </a></b>	#ifndef O_SYNC
+<b><a name="line68">68   </a></b>	# define <b>O_SYNC</b>	       04010000
+<b><a name="line69">69   </a></b>	#endif
+<b><a name="line70">70   </a></b>	#define <b>O_FSYNC</b>		O_SYNC
+<b><a name="line71">71   </a></b>	#ifndef O_ASYNC
+<b><a name="line72">72   </a></b>	# define <b>O_ASYNC</b>	 020000
+<b><a name="line73">73   </a></b>	#endif
+<b><a name="line74">74   </a></b>	#ifndef <a href="../fcntl.h/code.html#line24">__O_LARGEFILE</a>
+<b><a name="line75">75   </a></b>	# define __O_LARGEFILE	0100000
+<b><a name="line76">76   </a></b>	#endif
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	#ifndef __O_DIRECTORY
+<b><a name="line79">79   </a></b>	# define <b>__O_DIRECTORY</b>  0200000
+<b><a name="line80">80   </a></b>	#endif
+<b><a name="line81">81   </a></b>	#ifndef __O_NOFOLLOW
+<b><a name="line82">82   </a></b>	# define <b>__O_NOFOLLOW</b>	0400000
+<b><a name="line83">83   </a></b>	#endif
+<b><a name="line84">84   </a></b>	#ifndef __O_CLOEXEC
+<b><a name="line85">85   </a></b>	# define <b>__O_CLOEXEC</b>   02000000
+<b><a name="line86">86   </a></b>	#endif
+<b><a name="line87">87   </a></b>	#ifndef __O_DIRECT
+<b><a name="line88">88   </a></b>	# define <b>__O_DIRECT</b>	 040000
+<b><a name="line89">89   </a></b>	#endif
+<b><a name="line90">90   </a></b>	#ifndef __O_NOATIME
+<b><a name="line91">91   </a></b>	# define <b>__O_NOATIME</b>   01000000
+<b><a name="line92">92   </a></b>	#endif
+<b><a name="line93">93   </a></b>	#ifndef __O_PATH
+<b><a name="line94">94   </a></b>	# define <b>__O_PATH</b>     010000000
+<b><a name="line95">95   </a></b>	#endif
+<b><a name="line96">96   </a></b>	#ifndef __O_DSYNC
+<b><a name="line97">97   </a></b>	# define <b>__O_DSYNC</b>	 010000
+<b><a name="line98">98   </a></b>	#endif
+<b><a name="line99">99   </a></b>	#ifndef __O_TMPFILE
+<b><a name="line100">100  </a></b>	# define <b>__O_TMPFILE</b>   (020000000 | __O_DIRECTORY)
+<b><a name="line101">101  </a></b>	#endif
+<b><a name="line102">102  </a></b>	
+<b><a name="line103">103  </a></b>	#ifndef F_GETLK
+<b><a name="line104">104  </a></b>	# ifndef __USE_FILE_OFFSET64
+<b><a name="line105">105  </a></b>	#  define <b>F_GETLK</b>	5	/* Get record locking info.  */
+<b><a name="line106">106  </a></b>	#  define <b>F_SETLK</b>	6	/* Set record locking info (non-blocking).  */
+<b><a name="line107">107  </a></b>	#  define <b>F_SETLKW</b>	7	/* Set record locking info (blocking).	*/
+<b><a name="line108">108  </a></b>	# else
+<b><a name="line109">109  </a></b>	#  define F_GETLK	F_GETLK64  /* Get record locking info.	*/
+<b><a name="line110">110  </a></b>	#  define F_SETLK	F_SETLK64  /* Set record locking info (non-blocking).*/
+<b><a name="line111">111  </a></b>	#  define F_SETLKW	F_SETLKW64 /* Set record locking info (blocking).  */
+<b><a name="line112">112  </a></b>	# endif
+<b><a name="line113">113  </a></b>	#endif
+<b><a name="line114">114  </a></b>	#ifndef <a href="../fcntl.h/code.html#line29">F_GETLK64</a>
+<b><a name="line115">115  </a></b>	# define F_GETLK64	12	/* Get record locking info.  */
+<b><a name="line116">116  </a></b>	# define F_SETLK64	13	/* Set record locking info (non-blocking).  */
+<b><a name="line117">117  </a></b>	# define F_SETLKW64	14	/* Set record locking info (blocking).	*/
+<b><a name="line118">118  </a></b>	#endif
+<b><a name="line119">119  </a></b>	
+<b><a name="line120">120  </a></b>	/* open file description locks.
+<b><a name="line121">121  </a></b>	
+<b><a name="line122">122  </a></b>	   Usually record locks held by a process are released on *any* close and are
+<b><a name="line123">123  </a></b>	   not inherited across a fork.
+<b><a name="line124">124  </a></b>	
+<b><a name="line125">125  </a></b>	   These cmd values will set locks that conflict with process-associated record
+<b><a name="line126">126  </a></b>	   locks, but are &quot;owned&quot; by the opened file description, not the process.
+<b><a name="line127">127  </a></b>	   This means that they are inherited across fork or clone with CLONE_FILES
+<b><a name="line128">128  </a></b>	   like BSD (flock) locks, and they are only released automatically when the
+<b><a name="line129">129  </a></b>	   last reference to the the file description against which they were acquired
+<b><a name="line130">130  </a></b>	   is put. */
+<b><a name="line131">131  </a></b>	#ifdef <a href="../../../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line132">132  </a></b>	# define <b>F_OFD_GETLK</b>	36
+<b><a name="line133">133  </a></b>	# define <b>F_OFD_SETLK</b>	37
+<b><a name="line134">134  </a></b>	# define <b>F_OFD_SETLKW</b>	38
+<b><a name="line135">135  </a></b>	#endif
+<b><a name="line136">136  </a></b>	
+<b><a name="line137">137  </a></b>	#ifdef <a href="../../../features.h/code.html#line309">__USE_LARGEFILE64</a>
+<b><a name="line138">138  </a></b>	# define <b>O_LARGEFILE</b> __O_LARGEFILE
+<b><a name="line139">139  </a></b>	#endif
+<b><a name="line140">140  </a></b>	
+<b><a name="line141">141  </a></b>	#ifdef <a href="../../../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line142">142  </a></b>	# define <b>O_DIRECTORY</b>	__O_DIRECTORY	/* Must be a directory.	 */
+<b><a name="line143">143  </a></b>	# define <b>O_NOFOLLOW</b>	__O_NOFOLLOW	/* Do not follow links.	 */
+<b><a name="line144">144  </a></b>	# define <b>O_CLOEXEC</b>	__O_CLOEXEC	/* Set close_on_exec.  */
+<b><a name="line145">145  </a></b>	#endif
+<b><a name="line146">146  </a></b>	
+<b><a name="line147">147  </a></b>	#ifdef <a href="../../../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line148">148  </a></b>	# define <b>O_DIRECT</b>	__O_DIRECT	/* Direct disk access.	*/
+<b><a name="line149">149  </a></b>	# define <b>O_NOATIME</b>	__O_NOATIME	/* Do not set atime.  */
+<b><a name="line150">150  </a></b>	# define <b>O_PATH</b>		__O_PATH	/* Resolve pathname but do not open file.  */
+<b><a name="line151">151  </a></b>	# define <b>O_TMPFILE</b>	__O_TMPFILE	/* Atomically create nameless file.  */
+<b><a name="line152">152  </a></b>	#endif
+<b><a name="line153">153  </a></b>	
+<b><a name="line154">154  </a></b>	/* For now, Linux has no separate synchronicitiy options for read
+<b><a name="line155">155  </a></b>	   operations.  We define O_RSYNC therefore as the same as O_SYNC
+<b><a name="line156">156  </a></b>	   since this is a superset.  */
+<b><a name="line157">157  </a></b>	#if defined <a href="../../../features.h/code.html#line257">__USE_POSIX199309</a> || defined <a href="../../../features.h/code.html#line282">__USE_UNIX98</a>
+<b><a name="line158">158  </a></b>	# define <b>O_DSYNC</b>	__O_DSYNC	/* Synchronize data.  */
+<b><a name="line159">159  </a></b>	# if defined __O_RSYNC
+<b><a name="line160">160  </a></b>	#  define O_RSYNC	__O_RSYNC	/* Synchronize read operations.	 */
+<b><a name="line161">161  </a></b>	# else
+<b><a name="line162">162  </a></b>	#  define <b>O_RSYNC</b>	O_SYNC		/* Synchronize read operations.	 */
+<b><a name="line163">163  </a></b>	# endif
+<b><a name="line164">164  </a></b>	#endif
+<b><a name="line165">165  </a></b>	
+<b><a name="line166">166  </a></b>	/* Values for the second argument to `fcntl'.  */
+<b><a name="line167">167  </a></b>	#define <b>F_DUPFD</b>		0	/* Duplicate file descriptor.  */
+<b><a name="line168">168  </a></b>	#define <b>F_GETFD</b>		1	/* Get file descriptor flags.  */
+<b><a name="line169">169  </a></b>	#define <b>F_SETFD</b>		2	/* Set file descriptor flags.  */
+<b><a name="line170">170  </a></b>	#define <b>F_GETFL</b>		3	/* Get file status flags.  */
+<b><a name="line171">171  </a></b>	#define <b>F_SETFL</b>		4	/* Set file status flags.  */
+<b><a name="line172">172  </a></b>	
+<b><a name="line173">173  </a></b>	#ifndef __F_SETOWN
+<b><a name="line174">174  </a></b>	# define <b>__F_SETOWN</b>	8
+<b><a name="line175">175  </a></b>	# define <b>__F_GETOWN</b>	9
+<b><a name="line176">176  </a></b>	#endif
+<b><a name="line177">177  </a></b>	
+<b><a name="line178">178  </a></b>	#if defined <a href="../../../features.h/code.html#line282">__USE_UNIX98</a> || defined <a href="../../../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line179">179  </a></b>	# define <b>F_SETOWN</b>	__F_SETOWN /* Get owner (process receiving SIGIO).  */
+<b><a name="line180">180  </a></b>	# define <b>F_GETOWN</b>	__F_GETOWN /* Set owner (process receiving SIGIO).  */
+<b><a name="line181">181  </a></b>	#endif
+<b><a name="line182">182  </a></b>	
+<b><a name="line183">183  </a></b>	#ifndef __F_SETSIG
+<b><a name="line184">184  </a></b>	# define <b>__F_SETSIG</b>	10	/* Set number of signal to be sent.  */
+<b><a name="line185">185  </a></b>	# define <b>__F_GETSIG</b>	11	/* Get number of signal to be sent.  */
+<b><a name="line186">186  </a></b>	#endif
+<b><a name="line187">187  </a></b>	#ifndef __F_SETOWN_EX
+<b><a name="line188">188  </a></b>	# define <b>__F_SETOWN_EX</b>	15	/* Get owner (thread receiving SIGIO).  */
+<b><a name="line189">189  </a></b>	# define <b>__F_GETOWN_EX</b>	16	/* Set owner (thread receiving SIGIO).  */
+<b><a name="line190">190  </a></b>	#endif
+<b><a name="line191">191  </a></b>	
+<b><a name="line192">192  </a></b>	#ifdef <a href="../../../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line193">193  </a></b>	# define <b>F_SETSIG</b>	__F_SETSIG	/* Set number of signal to be sent.  */
+<b><a name="line194">194  </a></b>	# define <b>F_GETSIG</b>	__F_GETSIG	/* Get number of signal to be sent.  */
+<b><a name="line195">195  </a></b>	# define <b>F_SETOWN_EX</b>	__F_SETOWN_EX	/* Get owner (thread receiving SIGIO).  */
+<b><a name="line196">196  </a></b>	# define <b>F_GETOWN_EX</b>	__F_GETOWN_EX	/* Set owner (thread receiving SIGIO).  */
+<b><a name="line197">197  </a></b>	#endif
+<b><a name="line198">198  </a></b>	
+<b><a name="line199">199  </a></b>	#ifdef <a href="../../../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line200">200  </a></b>	# define <b>F_SETLEASE</b>	1024	/* Set a lease.	 */
+<b><a name="line201">201  </a></b>	# define <b>F_GETLEASE</b>	1025	/* Enquire what lease is active.  */
+<b><a name="line202">202  </a></b>	# define <b>F_NOTIFY</b>	1026	/* Request notifications on a directory.  */
+<b><a name="line203">203  </a></b>	# define <b>F_SETPIPE_SZ</b>	1031	/* Set pipe page size array.  */
+<b><a name="line204">204  </a></b>	# define <b>F_GETPIPE_SZ</b>	1032	/* Set pipe page size array.  */
+<b><a name="line205">205  </a></b>	#endif
+<b><a name="line206">206  </a></b>	#ifdef <a href="../../../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line207">207  </a></b>	# define <b>F_DUPFD_CLOEXEC</b> 1030	/* Duplicate file descriptor with
+<b><a name="line208">208  </a></b>					   close-on-exit set.  */
+<b><a name="line209">209  </a></b>	#endif
+<b><a name="line210">210  </a></b>	
+<b><a name="line211">211  </a></b>	/* For F_[GET|SET]FD.  */
+<b><a name="line212">212  </a></b>	#define <b>FD_CLOEXEC</b>	1	/* Actually anything with low bit set goes */
+<b><a name="line213">213  </a></b>	
+<b><a name="line214">214  </a></b>	#ifndef F_RDLCK
+<b><a name="line215">215  </a></b>	/* For posix fcntl() and `l_type' field of a `struct flock' for lockf().  */
+<b><a name="line216">216  </a></b>	# define <b>F_RDLCK</b>		0	/* Read lock.  */
+<b><a name="line217">217  </a></b>	# define <b>F_WRLCK</b>		1	/* Write lock.	*/
+<b><a name="line218">218  </a></b>	# define <b>F_UNLCK</b>		2	/* Remove lock.	 */
+<b><a name="line219">219  </a></b>	#endif
+<b><a name="line220">220  </a></b>	
+<b><a name="line221">221  </a></b>	
+<b><a name="line222">222  </a></b>	/* For old implementation of BSD flock.  */
+<b><a name="line223">223  </a></b>	#ifndef F_EXLCK
+<b><a name="line224">224  </a></b>	# define <b>F_EXLCK</b>		4	/* or 3 */
+<b><a name="line225">225  </a></b>	# define <b>F_SHLCK</b>		8	/* or 4 */
+<b><a name="line226">226  </a></b>	#endif
+<b><a name="line227">227  </a></b>	
+<b><a name="line228">228  </a></b>	#ifdef <a href="../../../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line229">229  </a></b>	/* Operations for BSD flock, also used by the kernel implementation.  */
+<b><a name="line230">230  </a></b>	# define <b>LOCK_SH</b>	1	/* Shared lock.  */
+<b><a name="line231">231  </a></b>	# define <b>LOCK_EX</b>	2	/* Exclusive lock.  */
+<b><a name="line232">232  </a></b>	# define <b>LOCK_NB</b>	4	/* Or'd with one of the above to prevent
+<b><a name="line233">233  </a></b>					   blocking.  */
+<b><a name="line234">234  </a></b>	# define <b>LOCK_UN</b>	8	/* Remove lock.  */
+<b><a name="line235">235  </a></b>	#endif
+<b><a name="line236">236  </a></b>	
+<b><a name="line237">237  </a></b>	#ifdef <a href="../../../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line238">238  </a></b>	# define <b>LOCK_MAND</b>	32	/* This is a mandatory flock:	*/
+<b><a name="line239">239  </a></b>	# define <b>LOCK_READ</b>	64	/* ... which allows concurrent read operations.	 */
+<b><a name="line240">240  </a></b>	# define <b>LOCK_WRITE</b>	128	/* ... which allows concurrent write operations.  */
+<b><a name="line241">241  </a></b>	# define <b>LOCK_RW</b>	192	/* ... Which allows concurrent read &amp; write operations.	 */
+<b><a name="line242">242  </a></b>	#endif
+<b><a name="line243">243  </a></b>	
+<b><a name="line244">244  </a></b>	#ifdef <a href="../../../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line245">245  </a></b>	/* Types of directory notifications that may be requested with F_NOTIFY.  */
+<b><a name="line246">246  </a></b>	# define <b>DN_ACCESS</b>	0x00000001	/* File accessed.  */
+<b><a name="line247">247  </a></b>	# define <b>DN_MODIFY</b>	0x00000002	/* File modified.  */
+<b><a name="line248">248  </a></b>	# define <b>DN_CREATE</b>	0x00000004	/* File created.  */
+<b><a name="line249">249  </a></b>	# define <b>DN_DELETE</b>	0x00000008	/* File removed.  */
+<b><a name="line250">250  </a></b>	# define <b>DN_RENAME</b>	0x00000010	/* File renamed.  */
+<b><a name="line251">251  </a></b>	# define <b>DN_ATTRIB</b>	0x00000020	/* File changed attributes.  */
+<b><a name="line252">252  </a></b>	# define <b>DN_MULTISHOT</b>	0x80000000	/* Don't remove notifier.  */
+<b><a name="line253">253  </a></b>	#endif
+<b><a name="line254">254  </a></b>	
+<b><a name="line255">255  </a></b>	
+<b><a name="line256">256  </a></b>	#ifdef <a href="../../../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line257">257  </a></b>	/* Owner types.  */
+<b><a name="line258">258  </a></b>	enum <b>__pid_type</b>
+<b><a name="line259">259  </a></b>	  {
+<b><a name="line260">260  </a></b>	    <b>F_OWNER_TID</b> = 0,		/* Kernel thread.  */
+<b><a name="line261">261  </a></b>	    <b>F_OWNER_PID</b>,		/* Process.  */
+<b><a name="line262">262  </a></b>	    <b>F_OWNER_PGRP</b>,		/* Process group.  */
+<b><a name="line263">263  </a></b>	    <b>F_OWNER_GID</b> = <a href="#line262">F_OWNER_PGRP</a>	/* Alternative, obsolete name.  */
+<b><a name="line264">264  </a></b>	  };
+<b><a name="line265">265  </a></b>	
+<b><a name="line266">266  </a></b>	/* Structure to use with F_GETOWN_EX and F_SETOWN_EX.  */
+<b><a name="line267">267  </a></b>	struct <b>f_owner_ex</b>
+<b><a name="line268">268  </a></b>	  {
+<b><a name="line269">269  </a></b>	    enum <a href="#line258">__pid_type</a> <b>type</b>;	/* Owner type of ID.  */
+<b><a name="line270">270  </a></b>	    <a href="../types.h/code.html#line133">__pid_t</a> <b>pid</b>;		/* ID of owner.  */
+<b><a name="line271">271  </a></b>	  };
+<b><a name="line272">272  </a></b>	#endif
+<b><a name="line273">273  </a></b>	
+<b><a name="line274">274  </a></b>	/* Define some more compatibility macros to be backward compatible with
+<b><a name="line275">275  </a></b>	   BSD systems which did not managed to hide these kernel macros.  */
+<b><a name="line276">276  </a></b>	#ifdef	<a href="../../../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line277">277  </a></b>	# define <b>FAPPEND</b>	O_APPEND
+<b><a name="line278">278  </a></b>	# define <b>FFSYNC</b>		O_FSYNC
+<b><a name="line279">279  </a></b>	# define <b>FASYNC</b>		O_ASYNC
+<b><a name="line280">280  </a></b>	# define <b>FNONBLOCK</b>	O_NONBLOCK
+<b><a name="line281">281  </a></b>	# define <b>FNDELAY</b>	O_NDELAY
+<b><a name="line282">282  </a></b>	#endif /* Use misc.  */
+<b><a name="line283">283  </a></b>	
+<b><a name="line284">284  </a></b>	#ifndef __POSIX_FADV_DONTNEED
+<b><a name="line285">285  </a></b>	#  define <b>__POSIX_FADV_DONTNEED</b>	4
+<b><a name="line286">286  </a></b>	#  define <b>__POSIX_FADV_NOREUSE</b>	5
+<b><a name="line287">287  </a></b>	#endif
+<b><a name="line288">288  </a></b>	/* Advise to `posix_fadvise'.  */
+<b><a name="line289">289  </a></b>	#ifdef <a href="../../../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line290">290  </a></b>	# define <b>POSIX_FADV_NORMAL</b>	0 /* No further special treatment.  */
+<b><a name="line291">291  </a></b>	# define <b>POSIX_FADV_RANDOM</b>	1 /* Expect random page references.  */
+<b><a name="line292">292  </a></b>	# define <b>POSIX_FADV_SEQUENTIAL</b>	2 /* Expect sequential page references.	 */
+<b><a name="line293">293  </a></b>	# define <b>POSIX_FADV_WILLNEED</b>	3 /* Will need these pages.  */
+<b><a name="line294">294  </a></b>	# define <b>POSIX_FADV_DONTNEED</b>	__POSIX_FADV_DONTNEED /* Don't need these pages.  */
+<b><a name="line295">295  </a></b>	# define <b>POSIX_FADV_NOREUSE</b>	__POSIX_FADV_NOREUSE /* Data will be accessed once.  */
+<b><a name="line296">296  </a></b>	#endif
+<b><a name="line297">297  </a></b>	
+<b><a name="line298">298  </a></b>	
+<b><a name="line299">299  </a></b>	#ifdef <a href="../../../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line300">300  </a></b>	/* Flags for SYNC_FILE_RANGE.  */
+<b><a name="line301">301  </a></b>	# define <b>SYNC_FILE_RANGE_WAIT_BEFORE</b>	1 /* Wait upon writeout of all pages
+<b><a name="line302">302  </a></b>						     in the range before performing the
+<b><a name="line303">303  </a></b>						     write.  */
+<b><a name="line304">304  </a></b>	# define <b>SYNC_FILE_RANGE_WRITE</b>		2 /* Initiate writeout of all those
+<b><a name="line305">305  </a></b>						     dirty pages in the range which are
+<b><a name="line306">306  </a></b>						     not presently under writeback.  */
+<b><a name="line307">307  </a></b>	# define <b>SYNC_FILE_RANGE_WAIT_AFTER</b>	4 /* Wait upon writeout of all pages in
+<b><a name="line308">308  </a></b>						     the range after performing the
+<b><a name="line309">309  </a></b>						     write.  */
+<b><a name="line310">310  </a></b>	
+<b><a name="line311">311  </a></b>	/* Flags for SPLICE and VMSPLICE.  */
+<b><a name="line312">312  </a></b>	# define <b>SPLICE_F_MOVE</b>		1	/* Move pages instead of copying.  */
+<b><a name="line313">313  </a></b>	# define <b>SPLICE_F_NONBLOCK</b>	2	/* Don't block on the pipe splicing
+<b><a name="line314">314  </a></b>						   (but we may still block on the fd
+<b><a name="line315">315  </a></b>						   we splice from/to).  */
+<b><a name="line316">316  </a></b>	# define <b>SPLICE_F_MORE</b>		4	/* Expect more data.  */
+<b><a name="line317">317  </a></b>	# define <b>SPLICE_F_GIFT</b>		8	/* Pages passed in are a gift.  */
+<b><a name="line318">318  </a></b>	
+<b><a name="line319">319  </a></b>	
+<b><a name="line320">320  </a></b>	/* Flags for fallocate.  */
+<b><a name="line321">321  </a></b>	# define <b>FALLOC_FL_KEEP_SIZE</b>		1 /* Don't extend size of file
+<b><a name="line322">322  </a></b>						     even if offset + len is
+<b><a name="line323">323  </a></b>						     greater than file size.  */
+<b><a name="line324">324  </a></b>	# define <b>FALLOC_FL_PUNCH_HOLE</b>		2 /* Create a hole in the file.  */
+<b><a name="line325">325  </a></b>	# define <b>FALLOC_FL_COLLAPSE_RANGE</b>	8 /* Remove a range of a file
+<b><a name="line326">326  </a></b>						     without leaving a
+<b><a name="line327">327  </a></b>						     hole.  */
+<b><a name="line328">328  </a></b>	# define <b>FALLOC_FL_ZERO_RANGE</b>		16 /* Convert a range of a
+<b><a name="line329">329  </a></b>						      file to zeros.  */
+<b><a name="line330">330  </a></b>	
+<b><a name="line331">331  </a></b>	
+<b><a name="line332">332  </a></b>	/* File handle structure.  */
+<b><a name="line333">333  </a></b>	struct <b>file_handle</b>
+<b><a name="line334">334  </a></b>	{
+<b><a name="line335">335  </a></b>	  unsigned int <b>handle_bytes</b>;
+<b><a name="line336">336  </a></b>	  int <b>handle_type</b>;
+<b><a name="line337">337  </a></b>	  /* File identifier.  */
+<b><a name="line338">338  </a></b>	  unsigned char <b>f_handle</b>[0];
+<b><a name="line339">339  </a></b>	};
+<b><a name="line340">340  </a></b>	
+<b><a name="line341">341  </a></b>	/* Maximum handle size (for now).  */
+<b><a name="line342">342  </a></b>	# define <b>MAX_HANDLE_SZ</b>	128
+<b><a name="line343">343  </a></b>	#endif
+<b><a name="line344">344  </a></b>	
+<b><a name="line345">345  </a></b>	/* Values for `*at' functions.  */
+<b><a name="line346">346  </a></b>	#ifdef <a href="../../../features.h/code.html#line321">__USE_ATFILE</a>
+<b><a name="line347">347  </a></b>	# define <b>AT_FDCWD</b>		-100	/* Special value used to indicate
+<b><a name="line348">348  </a></b>						   the *at functions should use the
+<b><a name="line349">349  </a></b>						   current working directory. */
+<b><a name="line350">350  </a></b>	# define <b>AT_SYMLINK_NOFOLLOW</b>	0x100	/* Do not follow symbolic links.  */
+<b><a name="line351">351  </a></b>	# define <b>AT_REMOVEDIR</b>		0x200	/* Remove directory instead of
+<b><a name="line352">352  </a></b>						   unlinking file.  */
+<b><a name="line353">353  </a></b>	# define <b>AT_SYMLINK_FOLLOW</b>	0x400	/* Follow symbolic links.  */
+<b><a name="line354">354  </a></b>	# ifdef <a href="../../../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line355">355  </a></b>	#  define <b>AT_NO_AUTOMOUNT</b>	0x800	/* Suppress terminal automount
+<b><a name="line356">356  </a></b>						   traversal.  */
+<b><a name="line357">357  </a></b>	#  define <b>AT_EMPTY_PATH</b>		0x1000	/* Allow empty relative pathname.  */
+<b><a name="line358">358  </a></b>	# endif
+<b><a name="line359">359  </a></b>	# define <b>AT_EACCESS</b>		0x200	/* Test access permitted for
+<b><a name="line360">360  </a></b>						   effective IDs, not real IDs.  */
+<b><a name="line361">361  </a></b>	#endif
+<b><a name="line362">362  </a></b>	
+<b><a name="line363">363  </a></b>	<a href="../../sys/cdefs.h/code.html#line98">__BEGIN_DECLS</a>
+<b><a name="line364">364  </a></b>	
+<b><a name="line365">365  </a></b>	#ifdef <a href="../../../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line366">366  </a></b>	
+<b><a name="line367">367  </a></b>	/* Provide kernel hint to read ahead.  */
+<b><a name="line368">368  </a></b>	extern <a href="../../sys/types.h/code.html#line109">ssize_t</a> readahead (int __fd, <a href="../types.h/code.html#line132">__off64_t</a> __offset, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __count)
+<b><a name="line369">369  </a></b>	    <a href="../../sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line370">370  </a></b>	
+<b><a name="line371">371  </a></b>	
+<b><a name="line372">372  </a></b>	/* Selective file content synch'ing.
+<b><a name="line373">373  </a></b>	
+<b><a name="line374">374  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line375">375  </a></b>	   marked with __THROW.  */
+<b><a name="line376">376  </a></b>	extern int sync_file_range (int __fd, <a href="../types.h/code.html#line132">__off64_t</a> __offset, <a href="../types.h/code.html#line132">__off64_t</a> __count,
+<b><a name="line377">377  </a></b>				    unsigned int __flags);
+<b><a name="line378">378  </a></b>	
+<b><a name="line379">379  </a></b>	
+<b><a name="line380">380  </a></b>	/* Splice address range into a pipe.
+<b><a name="line381">381  </a></b>	
+<b><a name="line382">382  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line383">383  </a></b>	   marked with __THROW.  */
+<b><a name="line384">384  </a></b>	extern <a href="../../sys/types.h/code.html#line109">ssize_t</a> vmsplice (int __fdout, const struct <a href="../uio.h/code.html#line43">iovec</a> *__iov,
+<b><a name="line385">385  </a></b>				 <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __count, unsigned int __flags);
+<b><a name="line386">386  </a></b>	
+<b><a name="line387">387  </a></b>	/* Splice two files together.
+<b><a name="line388">388  </a></b>	
+<b><a name="line389">389  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line390">390  </a></b>	   marked with __THROW.  */
+<b><a name="line391">391  </a></b>	extern <a href="../../sys/types.h/code.html#line109">ssize_t</a> splice (int __fdin, <a href="../types.h/code.html#line132">__off64_t</a> *__offin, int __fdout,
+<b><a name="line392">392  </a></b>			       <a href="../types.h/code.html#line132">__off64_t</a> *__offout, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __len,
+<b><a name="line393">393  </a></b>			       unsigned int __flags);
+<b><a name="line394">394  </a></b>	
+<b><a name="line395">395  </a></b>	/* In-kernel implementation of tee for pipe buffers.
+<b><a name="line396">396  </a></b>	
+<b><a name="line397">397  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line398">398  </a></b>	   marked with __THROW.  */
+<b><a name="line399">399  </a></b>	extern <a href="../../sys/types.h/code.html#line109">ssize_t</a> tee (int __fdin, int __fdout, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __len,
+<b><a name="line400">400  </a></b>			    unsigned int __flags);
+<b><a name="line401">401  </a></b>	
+<b><a name="line402">402  </a></b>	/* Reserve storage for the data of the file associated with FD.
+<b><a name="line403">403  </a></b>	
+<b><a name="line404">404  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line405">405  </a></b>	   marked with __THROW.  */
+<b><a name="line406">406  </a></b>	# ifndef __USE_FILE_OFFSET64
+<b><a name="line407">407  </a></b>	extern int fallocate (int __fd, int __mode, <a href="../types.h/code.html#line131">__off_t</a> __offset, <a href="../types.h/code.html#line131">__off_t</a> __len);
+<b><a name="line408">408  </a></b>	# else
+<b><a name="line409">409  </a></b>	#  ifdef __REDIRECT
+<b><a name="line410">410  </a></b>	extern int __REDIRECT (fallocate, (int __fd, int __mode, __off64_t __offset,
+<b><a name="line411">411  </a></b>					   __off64_t __len),
+<b><a name="line412">412  </a></b>			       fallocate64);
+<b><a name="line413">413  </a></b>	#  else
+<b><a name="line414">414  </a></b>	#   define fallocate fallocate64
+<b><a name="line415">415  </a></b>	#  endif
+<b><a name="line416">416  </a></b>	# endif
+<b><a name="line417">417  </a></b>	# ifdef <a href="../../../features.h/code.html#line309">__USE_LARGEFILE64</a>
+<b><a name="line418">418  </a></b>	extern int fallocate64 (int __fd, int __mode, <a href="../types.h/code.html#line132">__off64_t</a> __offset,
+<b><a name="line419">419  </a></b>				<a href="../types.h/code.html#line132">__off64_t</a> __len);
+<b><a name="line420">420  </a></b>	# endif
+<b><a name="line421">421  </a></b>	
+<b><a name="line422">422  </a></b>	
+<b><a name="line423">423  </a></b>	/* Map file name to file handle.  */
+<b><a name="line424">424  </a></b>	extern int name_to_handle_at (int __dfd, const char *__name,
+<b><a name="line425">425  </a></b>				      struct <a href="#line333">file_handle</a> *__handle, int *__mnt_id,
+<b><a name="line426">426  </a></b>				      int __flags) <a href="../../sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line427">427  </a></b>	
+<b><a name="line428">428  </a></b>	/* Open file using the file handle.
+<b><a name="line429">429  </a></b>	
+<b><a name="line430">430  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line431">431  </a></b>	   marked with __THROW.  */
+<b><a name="line432">432  </a></b>	extern int open_by_handle_at (int __mountdirfd, struct <a href="#line333">file_handle</a> *__handle,
+<b><a name="line433">433  </a></b>				      int __flags);
+<b><a name="line434">434  </a></b>	
+<b><a name="line435">435  </a></b>	#endif	/* use GNU */
+<b><a name="line436">436  </a></b>	
+<b><a name="line437">437  </a></b>	<a href="../../sys/cdefs.h/code.html#line99">__END_DECLS</a>
+<b><a name="line438">438  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

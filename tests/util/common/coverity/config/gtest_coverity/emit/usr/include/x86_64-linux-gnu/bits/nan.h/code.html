@@ -1,0 +1,109 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/nan.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* `NAN' constant for IEEE 754 machines.
+<b><a name="line2">2    </a></b>	   Copyright (C) 1992-2016 Free Software Foundation, Inc.
+<b><a name="line3">3    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line6">6    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line7">7    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line8">8    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line13">13   </a></b>	   Lesser General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line16">16   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line17">17   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	#ifndef <a href="../../../math.h/code.html#line24">_MATH_H</a>
+<b><a name="line20">20   </a></b>	# error &quot;Never use &lt;bits/nan.h&gt; directly; include &lt;math.h&gt; instead.&quot;
+<b><a name="line21">21   </a></b>	#endif
+<b><a name="line22">22   </a></b>	
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>	/* IEEE Not A Number.  */
+<b><a name="line25">25   </a></b>	
+<b><a name="line26">26   </a></b>	#if <a href="../../../features.h/code.html#line136">__GNUC_PREREQ</a>(3,3)
+<b><a name="line27">27   </a></b>	
+<b><a name="line28">28   </a></b>	# define <b>NAN</b>	(__builtin_nanf (&quot;&quot;))
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	#elif defined __GNUC__
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	# define NAN \
+<b><a name="line33">33   </a></b>	  (__extension__							      \
+<b><a name="line34">34   </a></b>	   ((union { unsigned __l __attribute__ ((__mode__ (__SI__))); float __d; })  \
+<b><a name="line35">35   </a></b>	    { __l: 0x7fc00000UL }).__d)
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	#else
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	# include &lt;endian.h&gt;
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	# if __BYTE_ORDER == __BIG_ENDIAN
+<b><a name="line42">42   </a></b>	#  define __qnan_bytes		{ 0x7f, 0xc0, 0, 0 }
+<b><a name="line43">43   </a></b>	# endif
+<b><a name="line44">44   </a></b>	# if __BYTE_ORDER == __LITTLE_ENDIAN
+<b><a name="line45">45   </a></b>	#  define __qnan_bytes		{ 0, 0, 0xc0, 0x7f }
+<b><a name="line46">46   </a></b>	# endif
+<b><a name="line47">47   </a></b>	
+<b><a name="line48">48   </a></b>	static union { unsigned char __c[4]; float __d; } __qnan_union
+<b><a name="line49">49   </a></b>	  __attribute__ ((__unused__)) = { __qnan_bytes };
+<b><a name="line50">50   </a></b>	# define NAN	(__qnan_union.__d)
+<b><a name="line51">51   </a></b>	
+<b><a name="line52">52   </a></b>	#endif	/* GCC.  */
+<b><a name="line53">53   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

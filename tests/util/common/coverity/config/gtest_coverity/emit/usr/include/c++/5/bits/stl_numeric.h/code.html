@@ -1,0 +1,444 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/bits/stl_numeric.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Numeric functions implementation -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2001-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/*
+<b><a name="line26">26   </a></b>	 *
+<b><a name="line27">27   </a></b>	 * Copyright (c) 1994
+<b><a name="line28">28   </a></b>	 * Hewlett-Packard Company
+<b><a name="line29">29   </a></b>	 *
+<b><a name="line30">30   </a></b>	 * Permission to use, copy, modify, distribute and sell this software
+<b><a name="line31">31   </a></b>	 * and its documentation for any purpose is hereby granted without fee,
+<b><a name="line32">32   </a></b>	 * provided that the above copyright notice appear in all copies and
+<b><a name="line33">33   </a></b>	 * that both that copyright notice and this permission notice appear
+<b><a name="line34">34   </a></b>	 * in supporting documentation.  Hewlett-Packard Company makes no
+<b><a name="line35">35   </a></b>	 * representations about the suitability of this software for any
+<b><a name="line36">36   </a></b>	 * purpose.  It is provided &quot;as is&quot; without express or implied warranty.
+<b><a name="line37">37   </a></b>	 *
+<b><a name="line38">38   </a></b>	 *
+<b><a name="line39">39   </a></b>	 * Copyright (c) 1996,1997
+<b><a name="line40">40   </a></b>	 * Silicon Graphics Computer Systems, Inc.
+<b><a name="line41">41   </a></b>	 *
+<b><a name="line42">42   </a></b>	 * Permission to use, copy, modify, distribute and sell this software
+<b><a name="line43">43   </a></b>	 * and its documentation for any purpose is hereby granted without fee,
+<b><a name="line44">44   </a></b>	 * provided that the above copyright notice appear in all copies and
+<b><a name="line45">45   </a></b>	 * that both that copyright notice and this permission notice appear
+<b><a name="line46">46   </a></b>	 * in supporting documentation.  Silicon Graphics makes no
+<b><a name="line47">47   </a></b>	 * representations about the suitability of this software for any
+<b><a name="line48">48   </a></b>	 * purpose.  It is provided &quot;as is&quot; without express or implied warranty.
+<b><a name="line49">49   </a></b>	 */
+<b><a name="line50">50   </a></b>	
+<b><a name="line51">51   </a></b>	/** @file bits/stl_numeric.h
+<b><a name="line52">52   </a></b>	 *  This is an internal header file, included by other library headers.
+<b><a name="line53">53   </a></b>	 *  Do not attempt to use it directly. @headername{numeric}
+<b><a name="line54">54   </a></b>	 */
+<b><a name="line55">55   </a></b>	
+<b><a name="line56">56   </a></b>	#ifndef _STL_NUMERIC_H
+<b><a name="line57">57   </a></b>	#define <b>_STL_NUMERIC_H</b> 1
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	#include &lt;bits/concept_check.h&gt;
+<b><a name="line60">60   </a></b>	#include &lt;debug/debug.h&gt;
+<b><a name="line61">61   </a></b>	#include &lt;bits/move.h&gt; // For _GLIBCXX_MOVE
+<b><a name="line62">62   </a></b>	
+<b><a name="line63">63   </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line64">64   </a></b>	
+<b><a name="line65">65   </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line66">66   </a></b>	{
+<b><a name="line67">67   </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line68">68   </a></b>	
+<b><a name="line69">69   </a></b>	  /**
+<b><a name="line70">70   </a></b>	   *  @brief  Create a range of sequentially increasing values.
+<b><a name="line71">71   </a></b>	   *
+<b><a name="line72">72   </a></b>	   *  For each element in the range @p [first,last) assigns @p value and
+<b><a name="line73">73   </a></b>	   *  increments @p value as if by @p ++value.
+<b><a name="line74">74   </a></b>	   *
+<b><a name="line75">75   </a></b>	   *  @param  __first  Start of range.
+<b><a name="line76">76   </a></b>	   *  @param  __last  End of range.
+<b><a name="line77">77   </a></b>	   *  @param  __value  Starting value.
+<b><a name="line78">78   </a></b>	   *  @return  Nothing.
+<b><a name="line79">79   </a></b>	   */
+<b><a name="line80">80   </a></b>	  template&lt;typename <b>_ForwardIterator</b>, typename <b>_Tp</b>&gt;
+<b><a name="line81">81   </a></b>	    void
+<b><a name="line82">82   </a></b>	    iota(<a href="#line80">_ForwardIterator</a> <b>__first</b>, <a href="#line80">_ForwardIterator</a> <b>__last</b>, <a href="#line80">_Tp</a> <b>__value</b>)
+<b><a name="line83">83   </a></b>	    {
+<b><a name="line84">84   </a></b>	      // concept requirements
+<b><a name="line85">85   </a></b>	      <a href="../concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_Mutable_ForwardIteratorConcept&lt;
+<b><a name="line86">86   </a></b>					  _ForwardIterator&gt;)
+<b><a name="line87">87   </a></b>	      <a href="../concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_ConvertibleConcept&lt;_Tp,
+<b><a name="line88">88   </a></b>		    typename iterator_traits&lt;_ForwardIterator&gt;::value_type&gt;)
+<b><a name="line89">89   </a></b>	      <a href="../../debug/debug.h/code.html#line65">__glibcxx_requires_valid_range</a>(__first, __last);
+<b><a name="line90">90   </a></b>	
+<b><a name="line91">91   </a></b>	      for (; <a href="#line82">__first</a> <a href="../stl_iterator.h/code.html#line841">!=</a> <a href="#line82">__last</a>; <a href="../stl_iterator.h/code.html#line761">++</a><a href="#line82">__first</a>)
+<b><a name="line92">92   </a></b>		{
+<b><a name="line93">93   </a></b>		  <a href="../stl_iterator.h/code.html#line753">*</a><a href="#line82">__first</a> = <a href="#line82">__value</a>;
+<b><a name="line94">94   </a></b>		  ++<a href="#line82">__value</a>;
+<b><a name="line95">95   </a></b>		}
+<b><a name="line96">96   </a></b>	    }
+<b><a name="line97">97   </a></b>	
+<b><a name="line98">98   </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line99">99   </a></b>	} // namespace std
+<b><a name="line100">100  </a></b>	
+<b><a name="line101">101  </a></b>	#endif
+<b><a name="line102">102  </a></b>	
+<b><a name="line103">103  </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line104">104  </a></b>	{
+<b><a name="line105">105  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line372">_GLIBCXX_BEGIN_NAMESPACE_ALGO</a>
+<b><a name="line106">106  </a></b>	
+<b><a name="line107">107  </a></b>	  /**
+<b><a name="line108">108  </a></b>	   *  @brief  Accumulate values in a range.
+<b><a name="line109">109  </a></b>	   *
+<b><a name="line110">110  </a></b>	   *  Accumulates the values in the range [first,last) using operator+().  The
+<b><a name="line111">111  </a></b>	   *  initial value is @a init.  The values are processed in order.
+<b><a name="line112">112  </a></b>	   *
+<b><a name="line113">113  </a></b>	   *  @param  __first  Start of range.
+<b><a name="line114">114  </a></b>	   *  @param  __last  End of range.
+<b><a name="line115">115  </a></b>	   *  @param  __init  Starting value to add other values to.
+<b><a name="line116">116  </a></b>	   *  @return  The final sum.
+<b><a name="line117">117  </a></b>	   */
+<b><a name="line118">118  </a></b>	  template&lt;typename <b>_InputIterator</b>, typename <b>_Tp</b>&gt;
+<b><a name="line119">119  </a></b>	    inline <a href="#line118">_Tp</a>
+<b><a name="line120">120  </a></b>	    <b>accumulate</b>(<a href="#line118">_InputIterator</a> __first, <a href="#line118">_InputIterator</a> __last, <a href="#line118">_Tp</a> __init)
+<b><a name="line121">121  </a></b>	    {
+<b><a name="line122">122  </a></b>	      // concept requirements
+<b><a name="line123">123  </a></b>	      <a href="../concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_InputIteratorConcept&lt;_InputIterator&gt;)
+<b><a name="line124">124  </a></b>	      <a href="../../debug/debug.h/code.html#line65">__glibcxx_requires_valid_range</a>(__first, __last);
+<b><a name="line125">125  </a></b>	
+<b><a name="line126">126  </a></b>	      for (; __first != __last; ++__first)
+<b><a name="line127">127  </a></b>		__init = __init + *__first;
+<b><a name="line128">128  </a></b>	      return __init;
+<b><a name="line129">129  </a></b>	    }
+<b><a name="line130">130  </a></b>	
+<b><a name="line131">131  </a></b>	  /**
+<b><a name="line132">132  </a></b>	   *  @brief  Accumulate values in a range with operation.
+<b><a name="line133">133  </a></b>	   *
+<b><a name="line134">134  </a></b>	   *  Accumulates the values in the range [first,last) using the function
+<b><a name="line135">135  </a></b>	   *  object @p __binary_op.  The initial value is @p __init.  The values are
+<b><a name="line136">136  </a></b>	   *  processed in order.
+<b><a name="line137">137  </a></b>	   *
+<b><a name="line138">138  </a></b>	   *  @param  __first  Start of range.
+<b><a name="line139">139  </a></b>	   *  @param  __last  End of range.
+<b><a name="line140">140  </a></b>	   *  @param  __init  Starting value to add other values to.
+<b><a name="line141">141  </a></b>	   *  @param  __binary_op  Function object to accumulate with.
+<b><a name="line142">142  </a></b>	   *  @return  The final sum.
+<b><a name="line143">143  </a></b>	   */
+<b><a name="line144">144  </a></b>	  template&lt;typename <b>_InputIterator</b>, typename <b>_Tp</b>, typename <b>_BinaryOperation</b>&gt;
+<b><a name="line145">145  </a></b>	    inline <a href="#line144">_Tp</a>
+<b><a name="line146">146  </a></b>	    accumulate(<a href="#line144">_InputIterator</a> <b>__first</b>, <a href="#line144">_InputIterator</a> <b>__last</b>, <a href="#line144">_Tp</a> <b>__init</b>,
+<b><a name="line147">147  </a></b>		       <a href="#line144">_BinaryOperation</a> <b>__binary_op</b>)
+<b><a name="line148">148  </a></b>	    {
+<b><a name="line149">149  </a></b>	      // concept requirements
+<b><a name="line150">150  </a></b>	      <a href="../concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_InputIteratorConcept&lt;_InputIterator&gt;)
+<b><a name="line151">151  </a></b>	      <a href="../../debug/debug.h/code.html#line65">__glibcxx_requires_valid_range</a>(__first, __last);
+<b><a name="line152">152  </a></b>	
+<b><a name="line153">153  </a></b>	      for (; <a href="#line146">__first</a> <a href="../stl_iterator.h/code.html#line841">!=</a> <a href="#line146">__last</a>; <a href="../stl_iterator.h/code.html#line761">++</a><a href="#line146">__first</a>)
+<b><a name="line154">154  </a></b>		<a href="#line146">__init</a> = <a href="#line147">__binary_op</a>(<a href="#line146">__init</a>, <a href="../stl_iterator.h/code.html#line753">*</a><a href="#line146">__first</a>);
+<b><a name="line155">155  </a></b>	      return <a href="#line146">__init</a>;
+<b><a name="line156">156  </a></b>	    }
+<b><a name="line157">157  </a></b>	
+<b><a name="line158">158  </a></b>	  /**
+<b><a name="line159">159  </a></b>	   *  @brief  Compute inner product of two ranges.
+<b><a name="line160">160  </a></b>	   *
+<b><a name="line161">161  </a></b>	   *  Starting with an initial value of @p __init, multiplies successive
+<b><a name="line162">162  </a></b>	   *  elements from the two ranges and adds each product into the accumulated
+<b><a name="line163">163  </a></b>	   *  value using operator+().  The values in the ranges are processed in
+<b><a name="line164">164  </a></b>	   *  order.
+<b><a name="line165">165  </a></b>	   *
+<b><a name="line166">166  </a></b>	   *  @param  __first1  Start of range 1.
+<b><a name="line167">167  </a></b>	   *  @param  __last1  End of range 1.
+<b><a name="line168">168  </a></b>	   *  @param  __first2  Start of range 2.
+<b><a name="line169">169  </a></b>	   *  @param  __init  Starting value to add other values to.
+<b><a name="line170">170  </a></b>	   *  @return  The final inner product.
+<b><a name="line171">171  </a></b>	   */
+<b><a name="line172">172  </a></b>	  template&lt;typename <b>_InputIterator1</b>, typename <b>_InputIterator2</b>, typename <b>_Tp</b>&gt;
+<b><a name="line173">173  </a></b>	    inline <a href="#line172">_Tp</a>
+<b><a name="line174">174  </a></b>	    <b>inner_product</b>(<a href="#line172">_InputIterator1</a> __first1, <a href="#line172">_InputIterator1</a> __last1,
+<b><a name="line175">175  </a></b>			  <a href="#line172">_InputIterator2</a> __first2, <a href="#line172">_Tp</a> __init)
+<b><a name="line176">176  </a></b>	    {
+<b><a name="line177">177  </a></b>	      // concept requirements
+<b><a name="line178">178  </a></b>	      <a href="../concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_InputIteratorConcept&lt;_InputIterator1&gt;)
+<b><a name="line179">179  </a></b>	      <a href="../concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_InputIteratorConcept&lt;_InputIterator2&gt;)
+<b><a name="line180">180  </a></b>	      <a href="../../debug/debug.h/code.html#line65">__glibcxx_requires_valid_range</a>(__first1, __last1);
+<b><a name="line181">181  </a></b>	
+<b><a name="line182">182  </a></b>	      for (; __first1 != __last1; ++__first1, ++__first2)
+<b><a name="line183">183  </a></b>		__init = __init + (*__first1 * *__first2);
+<b><a name="line184">184  </a></b>	      return __init;
+<b><a name="line185">185  </a></b>	    }
+<b><a name="line186">186  </a></b>	
+<b><a name="line187">187  </a></b>	  /**
+<b><a name="line188">188  </a></b>	   *  @brief  Compute inner product of two ranges.
+<b><a name="line189">189  </a></b>	   *
+<b><a name="line190">190  </a></b>	   *  Starting with an initial value of @p __init, applies @p __binary_op2 to
+<b><a name="line191">191  </a></b>	   *  successive elements from the two ranges and accumulates each result into
+<b><a name="line192">192  </a></b>	   *  the accumulated value using @p __binary_op1.  The values in the ranges are
+<b><a name="line193">193  </a></b>	   *  processed in order.
+<b><a name="line194">194  </a></b>	   *
+<b><a name="line195">195  </a></b>	   *  @param  __first1  Start of range 1.
+<b><a name="line196">196  </a></b>	   *  @param  __last1  End of range 1.
+<b><a name="line197">197  </a></b>	   *  @param  __first2  Start of range 2.
+<b><a name="line198">198  </a></b>	   *  @param  __init  Starting value to add other values to.
+<b><a name="line199">199  </a></b>	   *  @param  __binary_op1  Function object to accumulate with.
+<b><a name="line200">200  </a></b>	   *  @param  __binary_op2  Function object to apply to pairs of input values.
+<b><a name="line201">201  </a></b>	   *  @return  The final inner product.
+<b><a name="line202">202  </a></b>	   */
+<b><a name="line203">203  </a></b>	  template&lt;typename <b>_InputIterator1</b>, typename <b>_InputIterator2</b>, typename <b>_Tp</b>,
+<b><a name="line204">204  </a></b>		   typename <b>_BinaryOperation1</b>, typename <b>_BinaryOperation2</b>&gt;
+<b><a name="line205">205  </a></b>	    inline <a href="#line203">_Tp</a>
+<b><a name="line206">206  </a></b>	    <b>inner_product</b>(<a href="#line203">_InputIterator1</a> __first1, <a href="#line203">_InputIterator1</a> __last1,
+<b><a name="line207">207  </a></b>			  <a href="#line203">_InputIterator2</a> __first2, <a href="#line203">_Tp</a> __init,
+<b><a name="line208">208  </a></b>			  <a href="#line204">_BinaryOperation1</a> __binary_op1,
+<b><a name="line209">209  </a></b>			  <a href="#line204">_BinaryOperation2</a> __binary_op2)
+<b><a name="line210">210  </a></b>	    {
+<b><a name="line211">211  </a></b>	      // concept requirements
+<b><a name="line212">212  </a></b>	      <a href="../concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_InputIteratorConcept&lt;_InputIterator1&gt;)
+<b><a name="line213">213  </a></b>	      <a href="../concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_InputIteratorConcept&lt;_InputIterator2&gt;)
+<b><a name="line214">214  </a></b>	      <a href="../../debug/debug.h/code.html#line65">__glibcxx_requires_valid_range</a>(__first1, __last1);
+<b><a name="line215">215  </a></b>	
+<b><a name="line216">216  </a></b>	      for (; __first1 != __last1; ++__first1, ++__first2)
+<b><a name="line217">217  </a></b>		__init = __binary_op1(__init, __binary_op2(*__first1, *__first2));
+<b><a name="line218">218  </a></b>	      return __init;
+<b><a name="line219">219  </a></b>	    }
+<b><a name="line220">220  </a></b>	
+<b><a name="line221">221  </a></b>	  /**
+<b><a name="line222">222  </a></b>	   *  @brief  Return list of partial sums
+<b><a name="line223">223  </a></b>	   *
+<b><a name="line224">224  </a></b>	   *  Accumulates the values in the range [first,last) using the @c + operator.
+<b><a name="line225">225  </a></b>	   *  As each successive input value is added into the total, that partial sum
+<b><a name="line226">226  </a></b>	   *  is written to @p __result.  Therefore, the first value in @p __result is
+<b><a name="line227">227  </a></b>	   *  the first value of the input, the second value in @p __result is the sum
+<b><a name="line228">228  </a></b>	   *  of the first and second input values, and so on.
+<b><a name="line229">229  </a></b>	   *
+<b><a name="line230">230  </a></b>	   *  @param  __first  Start of input range.
+<b><a name="line231">231  </a></b>	   *  @param  __last  End of input range.
+<b><a name="line232">232  </a></b>	   *  @param  __result  Output sum.
+<b><a name="line233">233  </a></b>	   *  @return  Iterator pointing just beyond the values written to __result.
+<b><a name="line234">234  </a></b>	   */
+<b><a name="line235">235  </a></b>	  template&lt;typename <b>_InputIterator</b>, typename <b>_OutputIterator</b>&gt;
+<b><a name="line236">236  </a></b>	    <a href="#line235">_OutputIterator</a>
+<b><a name="line237">237  </a></b>	    <b>partial_sum</b>(<a href="#line235">_InputIterator</a> __first, <a href="#line235">_InputIterator</a> __last,
+<b><a name="line238">238  </a></b>			<a href="#line235">_OutputIterator</a> __result)
+<b><a name="line239">239  </a></b>	    {
+<b><a name="line240">240  </a></b>	      typedef typename iterator_traits&lt;_InputIterator&gt;::value_type _ValueType;
+<b><a name="line241">241  </a></b>	
+<b><a name="line242">242  </a></b>	      // concept requirements
+<b><a name="line243">243  </a></b>	      <a href="../concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_InputIteratorConcept&lt;_InputIterator&gt;)
+<b><a name="line244">244  </a></b>	      <a href="../concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_OutputIteratorConcept&lt;_OutputIterator,
+<b><a name="line245">245  </a></b>					                         _ValueType&gt;)
+<b><a name="line246">246  </a></b>	      <a href="../../debug/debug.h/code.html#line65">__glibcxx_requires_valid_range</a>(__first, __last);
+<b><a name="line247">247  </a></b>	
+<b><a name="line248">248  </a></b>	      if (__first == __last)
+<b><a name="line249">249  </a></b>		return __result;
+<b><a name="line250">250  </a></b>	      _ValueType __value = *__first;
+<b><a name="line251">251  </a></b>	      *__result = __value;
+<b><a name="line252">252  </a></b>	      while (++__first != __last)
+<b><a name="line253">253  </a></b>		{
+<b><a name="line254">254  </a></b>		  __value = __value + *__first;
+<b><a name="line255">255  </a></b>		  *++__result = __value;
+<b><a name="line256">256  </a></b>		}
+<b><a name="line257">257  </a></b>	      return ++__result;
+<b><a name="line258">258  </a></b>	    }
+<b><a name="line259">259  </a></b>	
+<b><a name="line260">260  </a></b>	  /**
+<b><a name="line261">261  </a></b>	   *  @brief  Return list of partial sums
+<b><a name="line262">262  </a></b>	   *
+<b><a name="line263">263  </a></b>	   *  Accumulates the values in the range [first,last) using @p __binary_op.
+<b><a name="line264">264  </a></b>	   *  As each successive input value is added into the total, that partial sum
+<b><a name="line265">265  </a></b>	   *  is written to @p __result.  Therefore, the first value in @p __result is
+<b><a name="line266">266  </a></b>	   *  the first value of the input, the second value in @p __result is the sum
+<b><a name="line267">267  </a></b>	   *  of the first and second input values, and so on.
+<b><a name="line268">268  </a></b>	   *
+<b><a name="line269">269  </a></b>	   *  @param  __first  Start of input range.
+<b><a name="line270">270  </a></b>	   *  @param  __last  End of input range.
+<b><a name="line271">271  </a></b>	   *  @param  __result  Output sum.
+<b><a name="line272">272  </a></b>	   *  @param  __binary_op  Function object.
+<b><a name="line273">273  </a></b>	   *  @return  Iterator pointing just beyond the values written to __result.
+<b><a name="line274">274  </a></b>	   */
+<b><a name="line275">275  </a></b>	  template&lt;typename <b>_InputIterator</b>, typename <b>_OutputIterator</b>,
+<b><a name="line276">276  </a></b>		   typename <b>_BinaryOperation</b>&gt;
+<b><a name="line277">277  </a></b>	    <a href="#line275">_OutputIterator</a>
+<b><a name="line278">278  </a></b>	    <b>partial_sum</b>(<a href="#line275">_InputIterator</a> __first, <a href="#line275">_InputIterator</a> __last,
+<b><a name="line279">279  </a></b>			<a href="#line275">_OutputIterator</a> __result, <a href="#line276">_BinaryOperation</a> __binary_op)
+<b><a name="line280">280  </a></b>	    {
+<b><a name="line281">281  </a></b>	      typedef typename iterator_traits&lt;_InputIterator&gt;::value_type _ValueType;
+<b><a name="line282">282  </a></b>	
+<b><a name="line283">283  </a></b>	      // concept requirements
+<b><a name="line284">284  </a></b>	      <a href="../concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_InputIteratorConcept&lt;_InputIterator&gt;)
+<b><a name="line285">285  </a></b>	      <a href="../concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_OutputIteratorConcept&lt;_OutputIterator,
+<b><a name="line286">286  </a></b>					                         _ValueType&gt;)
+<b><a name="line287">287  </a></b>	      <a href="../../debug/debug.h/code.html#line65">__glibcxx_requires_valid_range</a>(__first, __last);
+<b><a name="line288">288  </a></b>	
+<b><a name="line289">289  </a></b>	      if (__first == __last)
+<b><a name="line290">290  </a></b>		return __result;
+<b><a name="line291">291  </a></b>	      _ValueType __value = *__first;
+<b><a name="line292">292  </a></b>	      *__result = __value;
+<b><a name="line293">293  </a></b>	      while (++__first != __last)
+<b><a name="line294">294  </a></b>		{
+<b><a name="line295">295  </a></b>		  __value = __binary_op(__value, *__first);
+<b><a name="line296">296  </a></b>		  *++__result = __value;
+<b><a name="line297">297  </a></b>		}
+<b><a name="line298">298  </a></b>	      return ++__result;
+<b><a name="line299">299  </a></b>	    }
+<b><a name="line300">300  </a></b>	
+<b><a name="line301">301  </a></b>	  /**
+<b><a name="line302">302  </a></b>	   *  @brief  Return differences between adjacent values.
+<b><a name="line303">303  </a></b>	   *
+<b><a name="line304">304  </a></b>	   *  Computes the difference between adjacent values in the range
+<b><a name="line305">305  </a></b>	   *  [first,last) using operator-() and writes the result to @p __result.
+<b><a name="line306">306  </a></b>	   *
+<b><a name="line307">307  </a></b>	   *  @param  __first  Start of input range.
+<b><a name="line308">308  </a></b>	   *  @param  __last  End of input range.
+<b><a name="line309">309  </a></b>	   *  @param  __result  Output sums.
+<b><a name="line310">310  </a></b>	   *  @return  Iterator pointing just beyond the values written to result.
+<b><a name="line311">311  </a></b>	   *
+<b><a name="line312">312  </a></b>	   *  _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line313">313  </a></b>	   *  DR 539. partial_sum and adjacent_difference should mention requirements
+<b><a name="line314">314  </a></b>	   */
+<b><a name="line315">315  </a></b>	  template&lt;typename <b>_InputIterator</b>, typename <b>_OutputIterator</b>&gt;
+<b><a name="line316">316  </a></b>	    <a href="#line315">_OutputIterator</a>
+<b><a name="line317">317  </a></b>	    <b>adjacent_difference</b>(<a href="#line315">_InputIterator</a> __first,
+<b><a name="line318">318  </a></b>				<a href="#line315">_InputIterator</a> __last, <a href="#line315">_OutputIterator</a> __result)
+<b><a name="line319">319  </a></b>	    {
+<b><a name="line320">320  </a></b>	      typedef typename iterator_traits&lt;_InputIterator&gt;::value_type _ValueType;
+<b><a name="line321">321  </a></b>	
+<b><a name="line322">322  </a></b>	      // concept requirements
+<b><a name="line323">323  </a></b>	      <a href="../concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_InputIteratorConcept&lt;_InputIterator&gt;)
+<b><a name="line324">324  </a></b>	      <a href="../concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_OutputIteratorConcept&lt;_OutputIterator,
+<b><a name="line325">325  </a></b>					                         _ValueType&gt;)
+<b><a name="line326">326  </a></b>	      <a href="../../debug/debug.h/code.html#line65">__glibcxx_requires_valid_range</a>(__first, __last);
+<b><a name="line327">327  </a></b>	
+<b><a name="line328">328  </a></b>	      if (__first == __last)
+<b><a name="line329">329  </a></b>		return __result;
+<b><a name="line330">330  </a></b>	      _ValueType __value = *__first;
+<b><a name="line331">331  </a></b>	      *__result = __value;
+<b><a name="line332">332  </a></b>	      while (++__first != __last)
+<b><a name="line333">333  </a></b>		{
+<b><a name="line334">334  </a></b>		  _ValueType __tmp = *__first;
+<b><a name="line335">335  </a></b>		  *++__result = __tmp - __value;
+<b><a name="line336">336  </a></b>		  __value = <a href="../move.h/code.html#line152">_GLIBCXX_MOVE</a>(__tmp);
+<b><a name="line337">337  </a></b>		}
+<b><a name="line338">338  </a></b>	      return ++__result;
+<b><a name="line339">339  </a></b>	    }
+<b><a name="line340">340  </a></b>	
+<b><a name="line341">341  </a></b>	  /**
+<b><a name="line342">342  </a></b>	   *  @brief  Return differences between adjacent values.
+<b><a name="line343">343  </a></b>	   *
+<b><a name="line344">344  </a></b>	   *  Computes the difference between adjacent values in the range
+<b><a name="line345">345  </a></b>	   *  [__first,__last) using the function object @p __binary_op and writes the
+<b><a name="line346">346  </a></b>	   *  result to @p __result.
+<b><a name="line347">347  </a></b>	   *
+<b><a name="line348">348  </a></b>	   *  @param  __first  Start of input range.
+<b><a name="line349">349  </a></b>	   *  @param  __last  End of input range.
+<b><a name="line350">350  </a></b>	   *  @param  __result  Output sum.
+<b><a name="line351">351  </a></b>	   *  @param  __binary_op Function object.
+<b><a name="line352">352  </a></b>	   *  @return  Iterator pointing just beyond the values written to result.
+<b><a name="line353">353  </a></b>	   *
+<b><a name="line354">354  </a></b>	   *  _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line355">355  </a></b>	   *  DR 539. partial_sum and adjacent_difference should mention requirements
+<b><a name="line356">356  </a></b>	   */
+<b><a name="line357">357  </a></b>	  template&lt;typename <b>_InputIterator</b>, typename <b>_OutputIterator</b>,
+<b><a name="line358">358  </a></b>		   typename <b>_BinaryOperation</b>&gt;
+<b><a name="line359">359  </a></b>	    <a href="#line357">_OutputIterator</a>
+<b><a name="line360">360  </a></b>	    <b>adjacent_difference</b>(<a href="#line357">_InputIterator</a> __first, <a href="#line357">_InputIterator</a> __last,
+<b><a name="line361">361  </a></b>				<a href="#line357">_OutputIterator</a> __result, <a href="#line358">_BinaryOperation</a> __binary_op)
+<b><a name="line362">362  </a></b>	    {
+<b><a name="line363">363  </a></b>	      typedef typename iterator_traits&lt;_InputIterator&gt;::value_type _ValueType;
+<b><a name="line364">364  </a></b>	
+<b><a name="line365">365  </a></b>	      // concept requirements
+<b><a name="line366">366  </a></b>	      <a href="../concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_InputIteratorConcept&lt;_InputIterator&gt;)
+<b><a name="line367">367  </a></b>	      <a href="../concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_OutputIteratorConcept&lt;_OutputIterator,
+<b><a name="line368">368  </a></b>					                         _ValueType&gt;)
+<b><a name="line369">369  </a></b>	      <a href="../../debug/debug.h/code.html#line65">__glibcxx_requires_valid_range</a>(__first, __last);
+<b><a name="line370">370  </a></b>	
+<b><a name="line371">371  </a></b>	      if (__first == __last)
+<b><a name="line372">372  </a></b>		return __result;
+<b><a name="line373">373  </a></b>	      _ValueType __value = *__first;
+<b><a name="line374">374  </a></b>	      *__result = __value;
+<b><a name="line375">375  </a></b>	      while (++__first != __last)
+<b><a name="line376">376  </a></b>		{
+<b><a name="line377">377  </a></b>		  _ValueType __tmp = *__first;
+<b><a name="line378">378  </a></b>		  *++__result = __binary_op(__tmp, __value);
+<b><a name="line379">379  </a></b>		  __value = <a href="../move.h/code.html#line152">_GLIBCXX_MOVE</a>(__tmp);
+<b><a name="line380">380  </a></b>		}
+<b><a name="line381">381  </a></b>	      return ++__result;
+<b><a name="line382">382  </a></b>	    }
+<b><a name="line383">383  </a></b>	
+<b><a name="line384">384  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line376">_GLIBCXX_END_NAMESPACE_ALGO</a>
+<b><a name="line385">385  </a></b>	} // namespace std
+<b><a name="line386">386  </a></b>	
+<b><a name="line387">387  </a></b>	#endif /* _STL_NUMERIC_H */
+<b><a name="line388">388  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

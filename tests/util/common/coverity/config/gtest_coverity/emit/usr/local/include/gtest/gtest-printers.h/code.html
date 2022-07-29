@@ -1,0 +1,1050 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/gtest/gtest-printers.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Copyright 2007, Google Inc.
+<b><a name="line2">2    </a></b>	// All rights reserved.
+<b><a name="line3">3    </a></b>	//
+<b><a name="line4">4    </a></b>	// Redistribution and use in source and binary forms, with or without
+<b><a name="line5">5    </a></b>	// modification, are permitted provided that the following conditions are
+<b><a name="line6">6    </a></b>	// met:
+<b><a name="line7">7    </a></b>	//
+<b><a name="line8">8    </a></b>	//     * Redistributions of source code must retain the above copyright
+<b><a name="line9">9    </a></b>	// notice, this list of conditions and the following disclaimer.
+<b><a name="line10">10   </a></b>	//     * Redistributions in binary form must reproduce the above
+<b><a name="line11">11   </a></b>	// copyright notice, this list of conditions and the following disclaimer
+<b><a name="line12">12   </a></b>	// in the documentation and/or other materials provided with the
+<b><a name="line13">13   </a></b>	// distribution.
+<b><a name="line14">14   </a></b>	//     * Neither the name of Google Inc. nor the names of its
+<b><a name="line15">15   </a></b>	// contributors may be used to endorse or promote products derived from
+<b><a name="line16">16   </a></b>	// this software without specific prior written permission.
+<b><a name="line17">17   </a></b>	//
+<b><a name="line18">18   </a></b>	// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+<b><a name="line19">19   </a></b>	// &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+<b><a name="line20">20   </a></b>	// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+<b><a name="line21">21   </a></b>	// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+<b><a name="line22">22   </a></b>	// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+<b><a name="line23">23   </a></b>	// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+<b><a name="line24">24   </a></b>	// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+<b><a name="line25">25   </a></b>	// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+<b><a name="line26">26   </a></b>	// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+<b><a name="line27">27   </a></b>	// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+<b><a name="line28">28   </a></b>	// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+<b><a name="line29">29   </a></b>	//
+<b><a name="line30">30   </a></b>	// Author: wan@google.com (Zhanyong Wan)
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	// Google Test - The Google C++ Testing Framework
+<b><a name="line33">33   </a></b>	//
+<b><a name="line34">34   </a></b>	// This file implements a universal value printer that can print a
+<b><a name="line35">35   </a></b>	// value of any type T:
+<b><a name="line36">36   </a></b>	//
+<b><a name="line37">37   </a></b>	//   void ::testing::internal::UniversalPrinter&lt;T&gt;::Print(value, ostream_ptr);
+<b><a name="line38">38   </a></b>	//
+<b><a name="line39">39   </a></b>	// A user can teach this function how to print a class type T by
+<b><a name="line40">40   </a></b>	// defining either operator&lt;&lt;() or PrintTo() in the namespace that
+<b><a name="line41">41   </a></b>	// defines T.  More specifically, the FIRST defined function in the
+<b><a name="line42">42   </a></b>	// following list will be used (assuming T is defined in namespace
+<b><a name="line43">43   </a></b>	// foo):
+<b><a name="line44">44   </a></b>	//
+<b><a name="line45">45   </a></b>	//   1. foo::PrintTo(const T&amp;, ostream*)
+<b><a name="line46">46   </a></b>	//   2. operator&lt;&lt;(ostream&amp;, const T&amp;) defined in either foo or the
+<b><a name="line47">47   </a></b>	//      global namespace.
+<b><a name="line48">48   </a></b>	//
+<b><a name="line49">49   </a></b>	// If none of the above is defined, it will print the debug string of
+<b><a name="line50">50   </a></b>	// the value if it is a protocol buffer, or print the raw bytes in the
+<b><a name="line51">51   </a></b>	// value otherwise.
+<b><a name="line52">52   </a></b>	//
+<b><a name="line53">53   </a></b>	// To aid debugging: when T is a reference type, the address of the
+<b><a name="line54">54   </a></b>	// value is also printed; when T is a (const) char pointer, both the
+<b><a name="line55">55   </a></b>	// pointer value and the NUL-terminated string it points to are
+<b><a name="line56">56   </a></b>	// printed.
+<b><a name="line57">57   </a></b>	//
+<b><a name="line58">58   </a></b>	// We also provide some convenient wrappers:
+<b><a name="line59">59   </a></b>	//
+<b><a name="line60">60   </a></b>	//   // Prints a value to a string.  For a (const or not) char
+<b><a name="line61">61   </a></b>	//   // pointer, the NUL-terminated string (but not the pointer) is
+<b><a name="line62">62   </a></b>	//   // printed.
+<b><a name="line63">63   </a></b>	//   std::string ::testing::PrintToString(const T&amp; value);
+<b><a name="line64">64   </a></b>	//
+<b><a name="line65">65   </a></b>	//   // Prints a value tersely: for a reference type, the referenced
+<b><a name="line66">66   </a></b>	//   // value (but not the address) is printed; for a (const or not) char
+<b><a name="line67">67   </a></b>	//   // pointer, the NUL-terminated string (but not the pointer) is
+<b><a name="line68">68   </a></b>	//   // printed.
+<b><a name="line69">69   </a></b>	//   void ::testing::internal::UniversalTersePrint(const T&amp; value, ostream*);
+<b><a name="line70">70   </a></b>	//
+<b><a name="line71">71   </a></b>	//   // Prints value using the type inferred by the compiler.  The difference
+<b><a name="line72">72   </a></b>	//   // from UniversalTersePrint() is that this function prints both the
+<b><a name="line73">73   </a></b>	//   // pointer and the NUL-terminated string for a (const or not) char pointer.
+<b><a name="line74">74   </a></b>	//   void ::testing::internal::UniversalPrint(const T&amp; value, ostream*);
+<b><a name="line75">75   </a></b>	//
+<b><a name="line76">76   </a></b>	//   // Prints the fields of a tuple tersely to a string vector, one
+<b><a name="line77">77   </a></b>	//   // element for each field. Tuple support must be enabled in
+<b><a name="line78">78   </a></b>	//   // gtest-port.h.
+<b><a name="line79">79   </a></b>	//   std::vector&lt;string&gt; UniversalTersePrintTupleFieldsToStrings(
+<b><a name="line80">80   </a></b>	//       const Tuple&amp; value);
+<b><a name="line81">81   </a></b>	//
+<b><a name="line82">82   </a></b>	// Known limitation:
+<b><a name="line83">83   </a></b>	//
+<b><a name="line84">84   </a></b>	// The print primitives print the elements of an STL-style container
+<b><a name="line85">85   </a></b>	// using the compiler-inferred type of *iter where iter is a
+<b><a name="line86">86   </a></b>	// const_iterator of the container.  When const_iterator is an input
+<b><a name="line87">87   </a></b>	// iterator but not a forward iterator, this inferred type may not
+<b><a name="line88">88   </a></b>	// match value_type, and the print output may be incorrect.  In
+<b><a name="line89">89   </a></b>	// practice, this is rarely a problem as for most containers
+<b><a name="line90">90   </a></b>	// const_iterator is a forward iterator.  We'll fix this if there's an
+<b><a name="line91">91   </a></b>	// actual need for it.  Note that this fix cannot rely on value_type
+<b><a name="line92">92   </a></b>	// being defined as many user-defined container types don't have
+<b><a name="line93">93   </a></b>	// value_type.
+<b><a name="line94">94   </a></b>	
+<b><a name="line95">95   </a></b>	#ifndef GTEST_INCLUDE_GTEST_GTEST_PRINTERS_H_
+<b><a name="line96">96   </a></b>	#define <b>GTEST_INCLUDE_GTEST_GTEST_PRINTERS_H_</b>
+<b><a name="line97">97   </a></b>	
+<b><a name="line98">98   </a></b>	#include &lt;ostream&gt;  // NOLINT
+<b><a name="line99">99   </a></b>	#include &lt;sstream&gt;
+<b><a name="line100">100  </a></b>	#include &lt;string&gt;
+<b><a name="line101">101  </a></b>	#include &lt;utility&gt;
+<b><a name="line102">102  </a></b>	#include &lt;vector&gt;
+<b><a name="line103">103  </a></b>	#include &quot;gtest/internal/gtest-port.h&quot;
+<b><a name="line104">104  </a></b>	#include &quot;gtest/internal/gtest-internal.h&quot;
+<b><a name="line105">105  </a></b>	
+<b><a name="line106">106  </a></b>	#if <a href="../internal/gtest-port.h/code.html#line369">GTEST_HAS_STD_TUPLE_</a>
+<b><a name="line107">107  </a></b>	# include &lt;tuple&gt;
+<b><a name="line108">108  </a></b>	#endif
+<b><a name="line109">109  </a></b>	
+<b><a name="line110">110  </a></b>	namespace <a href="../internal/gtest-port.h/code.html#line988">testing</a> {
+<b><a name="line111">111  </a></b>	
+<b><a name="line112">112  </a></b>	// Definitions in the 'internal' and 'internal2' name spaces are
+<b><a name="line113">113  </a></b>	// subject to change without notice.  DO NOT USE THEM IN USER CODE!
+<b><a name="line114">114  </a></b>	namespace <b>internal2</b> {
+<b><a name="line115">115  </a></b>	
+<b><a name="line116">116  </a></b>	// Prints the given number of bytes in the given object to the given
+<b><a name="line117">117  </a></b>	// ostream.
+<b><a name="line118">118  </a></b>	<a href="../internal/gtest-port.h/code.html#line930">GTEST_API_</a> void PrintBytesInObjectTo(const unsigned char* obj_bytes,
+<b><a name="line119">119  </a></b>	                                     <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> count,
+<b><a name="line120">120  </a></b>	                                     ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os);
+<b><a name="line121">121  </a></b>	
+<b><a name="line122">122  </a></b>	// For selecting which printer to use when a given type has neither &lt;&lt;
+<b><a name="line123">123  </a></b>	// nor PrintTo().
+<b><a name="line124">124  </a></b>	enum <b>TypeKind</b> {
+<b><a name="line125">125  </a></b>	  <b>kProtobuf</b>,              // a protobuf type
+<b><a name="line126">126  </a></b>	  <b>kConvertibleToInteger</b>,  // a type implicitly convertible to BiggestInt
+<b><a name="line127">127  </a></b>	                          // (e.g. a named or unnamed enum type)
+<b><a name="line128">128  </a></b>	  <b>kOtherType</b>              // anything else
+<b><a name="line129">129  </a></b>	};
+<b><a name="line130">130  </a></b>	
+<b><a name="line131">131  </a></b>	// TypeWithoutFormatter&lt;T, kTypeKind&gt;::PrintValue(value, os) is called
+<b><a name="line132">132  </a></b>	// by the universal printer to print a value of type T when neither
+<b><a name="line133">133  </a></b>	// operator&lt;&lt; nor PrintTo() is defined for T, where kTypeKind is the
+<b><a name="line134">134  </a></b>	// &quot;kind&quot; of T as defined by enum TypeKind.
+<b><a name="line135">135  </a></b>	template &lt;typename <b>T</b>, <a href="#line124">TypeKind</a> <b>kTypeKind</b>&gt;
+<b><a name="line136">136  </a></b>	class TypeWithoutFormatter {
+<b><a name="line137">137  </a></b>	 public:
+<b><a name="line138">138  </a></b>	  // This default version is called when kTypeKind is kOtherType.
+<b><a name="line139">139  </a></b>	  static void PrintValue(const <a href="#line135">T</a>&amp; <b>value</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line140">140  </a></b>	    <a href="#line118">PrintBytesInObjectTo</a>(reinterpret_cast&lt;const unsigned char*&gt;(&amp;<a href="#line139">value</a>),
+<b><a name="line141">141  </a></b>	                         sizeof(<a href="#line139">value</a>), <a href="#line139">os</a>);
+<b><a name="line142">142  </a></b>	  }
+<b><a name="line143">143  </a></b>	};
+<b><a name="line144">144  </a></b>	
+<b><a name="line145">145  </a></b>	// We print a protobuf using its ShortDebugString() when the string
+<b><a name="line146">146  </a></b>	// doesn't exceed this many characters; otherwise we print it using
+<b><a name="line147">147  </a></b>	// DebugString() for better readability.
+<b><a name="line148">148  </a></b>	const <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>kProtobufOneLinerMaxLength</b> = 50;
+<b><a name="line149">149  </a></b>	
+<b><a name="line150">150  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line151">151  </a></b>	class <b>TypeWithoutFormatter</b>&lt;<a href="#line150">T</a>, <a href="#line125">kProtobuf</a>&gt; {
+<b><a name="line152">152  </a></b>	 public:
+<b><a name="line153">153  </a></b>	  static void <b>PrintValue</b>(const <a href="#line150">T</a>&amp; value, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os) {
+<b><a name="line154">154  </a></b>	    const ::testing::internal::string short_str = value.ShortDebugString();
+<b><a name="line155">155  </a></b>	    const ::testing::internal::string pretty_str =
+<b><a name="line156">156  </a></b>	        short_str.length() &lt;= kProtobufOneLinerMaxLength ?
+<b><a name="line157">157  </a></b>	        short_str : (&quot;\n&quot; + value.DebugString());
+<b><a name="line158">158  </a></b>	    *os &lt;&lt; (&quot;&lt;&quot; + pretty_str + &quot;&gt;&quot;);
+<b><a name="line159">159  </a></b>	  }
+<b><a name="line160">160  </a></b>	};
+<b><a name="line161">161  </a></b>	
+<b><a name="line162">162  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line163">163  </a></b>	class <b>TypeWithoutFormatter</b>&lt;<a href="#line162">T</a>, <a href="#line126">kConvertibleToInteger</a>&gt; {
+<b><a name="line164">164  </a></b>	 public:
+<b><a name="line165">165  </a></b>	  // Since T has no &lt;&lt; operator or PrintTo() but can be implicitly
+<b><a name="line166">166  </a></b>	  // converted to BiggestInt, we print it as a BiggestInt.
+<b><a name="line167">167  </a></b>	  //
+<b><a name="line168">168  </a></b>	  // Most likely T is an enum type (either named or unnamed), in which
+<b><a name="line169">169  </a></b>	  // case printing it as an integer is the desired behavior.  In case
+<b><a name="line170">170  </a></b>	  // T is not an enum, printing it as an integer is the best we can do
+<b><a name="line171">171  </a></b>	  // given that it has no user-defined printer.
+<b><a name="line172">172  </a></b>	  static void <b>PrintValue</b>(const <a href="#line162">T</a>&amp; value, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os) {
+<b><a name="line173">173  </a></b>	    const internal::BiggestInt kBigInt = value;
+<b><a name="line174">174  </a></b>	    *os &lt;&lt; kBigInt;
+<b><a name="line175">175  </a></b>	  }
+<b><a name="line176">176  </a></b>	};
+<b><a name="line177">177  </a></b>	
+<b><a name="line178">178  </a></b>	// Prints the given value to the given ostream.  If the value is a
+<b><a name="line179">179  </a></b>	// protocol message, its debug string is printed; if it's an enum or
+<b><a name="line180">180  </a></b>	// of a type implicitly convertible to BiggestInt, it's printed as an
+<b><a name="line181">181  </a></b>	// integer; otherwise the bytes in the value are printed.  This is
+<b><a name="line182">182  </a></b>	// what UniversalPrinter&lt;T&gt;::Print() does when it knows nothing about
+<b><a name="line183">183  </a></b>	// type T and T has neither &lt;&lt; operator nor PrintTo().
+<b><a name="line184">184  </a></b>	//
+<b><a name="line185">185  </a></b>	// A user can override this behavior for a class type Foo by defining
+<b><a name="line186">186  </a></b>	// a &lt;&lt; operator in the namespace where Foo is defined.
+<b><a name="line187">187  </a></b>	//
+<b><a name="line188">188  </a></b>	// We put this operator in namespace 'internal2' instead of 'internal'
+<b><a name="line189">189  </a></b>	// to simplify the implementation, as much code in 'internal' needs to
+<b><a name="line190">190  </a></b>	// use &lt;&lt; in STL, which would conflict with our own &lt;&lt; were it defined
+<b><a name="line191">191  </a></b>	// in 'internal'.
+<b><a name="line192">192  </a></b>	//
+<b><a name="line193">193  </a></b>	// Note that this operator&lt;&lt; takes a generic std::basic_ostream&lt;Char,
+<b><a name="line194">194  </a></b>	// CharTraits&gt; type instead of the more restricted std::ostream.  If
+<b><a name="line195">195  </a></b>	// we define it to take an std::ostream instead, we'll get an
+<b><a name="line196">196  </a></b>	// &quot;ambiguous overloads&quot; compiler error when trying to print a type
+<b><a name="line197">197  </a></b>	// Foo that supports streaming to std::basic_ostream&lt;Char,
+<b><a name="line198">198  </a></b>	// CharTraits&gt;, as the compiler cannot tell whether
+<b><a name="line199">199  </a></b>	// operator&lt;&lt;(std::ostream&amp;, const T&amp;) or
+<b><a name="line200">200  </a></b>	// operator&lt;&lt;(std::basic_stream&lt;Char, CharTraits&gt;, const Foo&amp;) is more
+<b><a name="line201">201  </a></b>	// specific.
+<b><a name="line202">202  </a></b>	template &lt;typename <b>Char</b>, typename <b>CharTraits</b>, typename <b>T</b>&gt;
+<b><a name="line203">203  </a></b>	::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line202">Char</a>, <a href="#line202">CharTraits</a>&gt;&amp; operator&lt;&lt;(
+<b><a name="line204">204  </a></b>	    ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line202">Char</a>, <a href="#line202">CharTraits</a>&gt;&amp; <b>os</b>, const <a href="#line202">T</a>&amp; <b>x</b>) {
+<b><a name="line205">205  </a></b>	  <a href="#line136">TypeWithoutFormatter</a>&lt;<a href="#line202">T</a>,
+<b><a name="line206">206  </a></b>	      (<a href="../internal/gtest-port.h/code.html#line1003">internal</a>::<a href="../internal/gtest-internal.h/code.html#line903">IsAProtocolMessage</a>&lt;<a href="#line202">T</a>&gt;::<a href="../internal/gtest-port.h/code.html#line2205">value</a> ? <a href="#line125">kProtobuf</a> :
+<b><a name="line207">207  </a></b>	       <a href="../internal/gtest-port.h/code.html#line1003">internal</a>::<a href="../internal/gtest-internal.h/code.html#line855">ImplicitlyConvertible</a>&lt;const <a href="#line202">T</a>&amp;, <a href="../internal/gtest-port.h/code.html#line1003">internal</a>::<a href="../internal/gtest-port.h/code.html#line2241">BiggestInt</a>&gt;::<a href="../internal/gtest-internal.h/code.html#line891">value</a> ?
+<b><a name="line208">208  </a></b>	       <a href="#line126">kConvertibleToInteger</a> : <a href="#line128">kOtherType</a>)&gt;::<a href="#line139">PrintValue</a>(<a href="#line204">x</a>, &amp;<a href="#line204">os</a>);
+<b><a name="line209">209  </a></b>	  return <a href="#line204">os</a>;
+<b><a name="line210">210  </a></b>	}
+<b><a name="line211">211  </a></b>	
+<b><a name="line212">212  </a></b>	}  // namespace internal2
+<b><a name="line213">213  </a></b>	}  // namespace testing
+<b><a name="line214">214  </a></b>	
+<b><a name="line215">215  </a></b>	// This namespace MUST NOT BE NESTED IN ::testing, or the name look-up
+<b><a name="line216">216  </a></b>	// magic needed for implementing UniversalPrinter won't work.
+<b><a name="line217">217  </a></b>	namespace <b>testing_internal</b> {
+<b><a name="line218">218  </a></b>	
+<b><a name="line219">219  </a></b>	// Used to print a value that is not an STL-style container when the
+<b><a name="line220">220  </a></b>	// user doesn't define PrintTo() for it.
+<b><a name="line221">221  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line222">222  </a></b>	void DefaultPrintNonContainerTo(const <a href="#line221">T</a>&amp; <b>value</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line223">223  </a></b>	  // With the following statement, during unqualified name lookup,
+<b><a name="line224">224  </a></b>	  // testing::internal2::operator&lt;&lt; appears as if it was declared in
+<b><a name="line225">225  </a></b>	  // the nearest enclosing namespace that contains both
+<b><a name="line226">226  </a></b>	  // ::testing_internal and ::testing::internal2, i.e. the global
+<b><a name="line227">227  </a></b>	  // namespace.  For more details, refer to the C++ Standard section
+<b><a name="line228">228  </a></b>	  // 7.3.4-1 [namespace.udir].  This allows us to fall back onto
+<b><a name="line229">229  </a></b>	  // testing::internal2::operator&lt;&lt; in case T doesn't come with a &lt;&lt;
+<b><a name="line230">230  </a></b>	  // operator.
+<b><a name="line231">231  </a></b>	  //
+<b><a name="line232">232  </a></b>	  // We cannot write 'using ::testing::internal2::operator&lt;&lt;;', which
+<b><a name="line233">233  </a></b>	  // gcc 3.3 fails to compile due to a compiler bug.
+<b><a name="line234">234  </a></b>	  using namespace ::<a href="../internal/gtest-port.h/code.html#line988">testing</a>::<a href="#line114">internal2</a>;  // NOLINT
+<b><a name="line235">235  </a></b>	
+<b><a name="line236">236  </a></b>	  // Assuming T is defined in namespace foo, in the next statement,
+<b><a name="line237">237  </a></b>	  // the compiler will consider all of:
+<b><a name="line238">238  </a></b>	  //
+<b><a name="line239">239  </a></b>	  //   1. foo::operator&lt;&lt; (thanks to Koenig look-up),
+<b><a name="line240">240  </a></b>	  //   2. ::operator&lt;&lt; (as the current namespace is enclosed in ::),
+<b><a name="line241">241  </a></b>	  //   3. testing::internal2::operator&lt;&lt; (thanks to the using statement above).
+<b><a name="line242">242  </a></b>	  //
+<b><a name="line243">243  </a></b>	  // The operator&lt;&lt; whose type matches T best will be picked.
+<b><a name="line244">244  </a></b>	  //
+<b><a name="line245">245  </a></b>	  // We deliberately allow #2 to be a candidate, as sometimes it's
+<b><a name="line246">246  </a></b>	  // impossible to define #1 (e.g. when foo is ::std, defining
+<b><a name="line247">247  </a></b>	  // anything in it is undefined behavior unless you are a compiler
+<b><a name="line248">248  </a></b>	  // vendor.).
+<b><a name="line249">249  </a></b>	  *<a href="#line222">os</a> <a href="#line203">&lt;&lt;</a> <a href="#line222">value</a>;
+<b><a name="line250">250  </a></b>	}
+<b><a name="line251">251  </a></b>	
+<b><a name="line252">252  </a></b>	}  // namespace testing_internal
+<b><a name="line253">253  </a></b>	
+<b><a name="line254">254  </a></b>	namespace <a href="../internal/gtest-port.h/code.html#line988">testing</a> {
+<b><a name="line255">255  </a></b>	namespace <a href="../internal/gtest-port.h/code.html#line1003">internal</a> {
+<b><a name="line256">256  </a></b>	
+<b><a name="line257">257  </a></b>	// FormatForComparison&lt;ToPrint, OtherOperand&gt;::Format(value) formats a
+<b><a name="line258">258  </a></b>	// value of type ToPrint that is an operand of a comparison assertion
+<b><a name="line259">259  </a></b>	// (e.g. ASSERT_EQ).  OtherOperand is the type of the other operand in
+<b><a name="line260">260  </a></b>	// the comparison, and is used to help determine the best way to
+<b><a name="line261">261  </a></b>	// format the value.  In particular, when the value is a C string
+<b><a name="line262">262  </a></b>	// (char pointer) and the other operand is an STL string object, we
+<b><a name="line263">263  </a></b>	// want to format the C string as a string, since we know it is
+<b><a name="line264">264  </a></b>	// compared by value with the string object.  If the value is a char
+<b><a name="line265">265  </a></b>	// pointer but the other operand is not an STL string object, we don't
+<b><a name="line266">266  </a></b>	// know whether the pointer is supposed to point to a NUL-terminated
+<b><a name="line267">267  </a></b>	// string, and thus want to print it as a pointer to be safe.
+<b><a name="line268">268  </a></b>	//
+<b><a name="line269">269  </a></b>	// INTERNAL IMPLEMENTATION - DO NOT USE IN A USER PROGRAM.
+<b><a name="line270">270  </a></b>	
+<b><a name="line271">271  </a></b>	// The default case.
+<b><a name="line272">272  </a></b>	template &lt;typename <b>ToPrint</b>, typename <b>OtherOperand</b>&gt;
+<b><a name="line273">273  </a></b>	class FormatForComparison {
+<b><a name="line274">274  </a></b>	 public:
+<b><a name="line275">275  </a></b>	  static ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/bits/stringfwd.h/code.html#line74">string</a> Format(const <a href="#line272">ToPrint</a>&amp; <b>value</b>) {
+<b><a name="line276">276  </a></b>	    return ::<a href="../internal/gtest-port.h/code.html#line988">testing</a>::<a href="#line980">PrintToString</a>(<a href="#line275">value</a>);
+<b><a name="line277">277  </a></b>	  }
+<b><a name="line278">278  </a></b>	};
+<b><a name="line279">279  </a></b>	
+<b><a name="line280">280  </a></b>	// Array.
+<b><a name="line281">281  </a></b>	template &lt;typename <b>ToPrint</b>, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>N</b>, typename <b>OtherOperand</b>&gt;
+<b><a name="line282">282  </a></b>	class <b>FormatForComparison</b>&lt;<a href="#line281">ToPrint</a>[<a href="#line281">N</a>], <a href="#line281">OtherOperand</a>&gt; {
+<b><a name="line283">283  </a></b>	 public:
+<b><a name="line284">284  </a></b>	  static ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/bits/stringfwd.h/code.html#line74">string</a> <b>Format</b>(const <a href="#line281">ToPrint</a>* value) {
+<b><a name="line285">285  </a></b>	    return FormatForComparison&lt;const ToPrint*, OtherOperand&gt;::Format(value);
+<b><a name="line286">286  </a></b>	  }
+<b><a name="line287">287  </a></b>	};
+<b><a name="line288">288  </a></b>	
+<b><a name="line289">289  </a></b>	// By default, print C string as pointers to be safe, as we don't know
+<b><a name="line290">290  </a></b>	// whether they actually point to a NUL-terminated string.
+<b><a name="line291">291  </a></b>	
+<b><a name="line292">292  </a></b>	#define <b>GTEST_IMPL_FORMAT_C_STRING_AS_POINTER_</b>(CharType)                \
+<b><a name="line293">293  </a></b>	  template &lt;typename OtherOperand&gt;                                      \
+<b><a name="line294">294  </a></b>	  class FormatForComparison&lt;CharType*, OtherOperand&gt; {                  \
+<b><a name="line295">295  </a></b>	   public:                                                              \
+<b><a name="line296">296  </a></b>	    static ::std::string Format(CharType* value) {                      \
+<b><a name="line297">297  </a></b>	      return ::testing::PrintToString(static_cast&lt;const void*&gt;(value)); \
+<b><a name="line298">298  </a></b>	    }                                                                   \
+<b><a name="line299">299  </a></b>	  }
+<b><a name="line300">300  </a></b>	
+<b><a name="line301">301  </a></b>	<a href="#line292">GTEST_IMPL_FORMAT_C_STRING_AS_POINTER_</a>(char);
+<b><a name="line302">302  </a></b>	<a href="#line292">GTEST_IMPL_FORMAT_C_STRING_AS_POINTER_</a>(const char);
+<b><a name="line303">303  </a></b>	<a href="#line292">GTEST_IMPL_FORMAT_C_STRING_AS_POINTER_</a>(wchar_t);
+<b><a name="line304">304  </a></b>	<a href="#line292">GTEST_IMPL_FORMAT_C_STRING_AS_POINTER_</a>(const wchar_t);
+<b><a name="line305">305  </a></b>	
+<b><a name="line306">306  </a></b>	#undef <a href="#line292">GTEST_IMPL_FORMAT_C_STRING_AS_POINTER_</a>
+<b><a name="line307">307  </a></b>	
+<b><a name="line308">308  </a></b>	// If a C string is compared with an STL string object, we know it's meant
+<b><a name="line309">309  </a></b>	// to point to a NUL-terminated string, and thus can print it as a string.
+<b><a name="line310">310  </a></b>	
+<b><a name="line311">311  </a></b>	#define <b>GTEST_IMPL_FORMAT_C_STRING_AS_STRING_</b>(CharType, OtherStringType) \
+<b><a name="line312">312  </a></b>	  template &lt;&gt;                                                           \
+<b><a name="line313">313  </a></b>	  class FormatForComparison&lt;CharType*, OtherStringType&gt; {               \
+<b><a name="line314">314  </a></b>	   public:                                                              \
+<b><a name="line315">315  </a></b>	    static ::std::string Format(CharType* value) {                      \
+<b><a name="line316">316  </a></b>	      return ::testing::PrintToString(value);                           \
+<b><a name="line317">317  </a></b>	    }                                                                   \
+<b><a name="line318">318  </a></b>	  }
+<b><a name="line319">319  </a></b>	
+<b><a name="line320">320  </a></b>	<a href="#line311">GTEST_IMPL_FORMAT_C_STRING_AS_STRING_</a>(char, ::std::string);
+<b><a name="line321">321  </a></b>	<a href="#line311">GTEST_IMPL_FORMAT_C_STRING_AS_STRING_</a>(const char, ::std::string);
+<b><a name="line322">322  </a></b>	
+<b><a name="line323">323  </a></b>	#if <a href="../internal/gtest-port.h/code.html#line508">GTEST_HAS_GLOBAL_STRING</a>
+<b><a name="line324">324  </a></b>	GTEST_IMPL_FORMAT_C_STRING_AS_STRING_(char, ::string);
+<b><a name="line325">325  </a></b>	GTEST_IMPL_FORMAT_C_STRING_AS_STRING_(const char, ::string);
+<b><a name="line326">326  </a></b>	#endif
+<b><a name="line327">327  </a></b>	
+<b><a name="line328">328  </a></b>	#if <a href="../internal/gtest-port.h/code.html#line529">GTEST_HAS_GLOBAL_WSTRING</a>
+<b><a name="line329">329  </a></b>	GTEST_IMPL_FORMAT_C_STRING_AS_STRING_(wchar_t, ::wstring);
+<b><a name="line330">330  </a></b>	GTEST_IMPL_FORMAT_C_STRING_AS_STRING_(const wchar_t, ::wstring);
+<b><a name="line331">331  </a></b>	#endif
+<b><a name="line332">332  </a></b>	
+<b><a name="line333">333  </a></b>	#if <a href="../internal/gtest-port.h/code.html#line521">GTEST_HAS_STD_WSTRING</a>
+<b><a name="line334">334  </a></b>	<a href="#line311">GTEST_IMPL_FORMAT_C_STRING_AS_STRING_</a>(wchar_t, ::std::wstring);
+<b><a name="line335">335  </a></b>	<a href="#line311">GTEST_IMPL_FORMAT_C_STRING_AS_STRING_</a>(const wchar_t, ::std::wstring);
+<b><a name="line336">336  </a></b>	#endif
+<b><a name="line337">337  </a></b>	
+<b><a name="line338">338  </a></b>	#undef <a href="#line311">GTEST_IMPL_FORMAT_C_STRING_AS_STRING_</a>
+<b><a name="line339">339  </a></b>	
+<b><a name="line340">340  </a></b>	// Formats a comparison assertion (e.g. ASSERT_EQ, EXPECT_LT, and etc)
+<b><a name="line341">341  </a></b>	// operand to be used in a failure message.  The type (but not value)
+<b><a name="line342">342  </a></b>	// of the other operand may affect the format.  This allows us to
+<b><a name="line343">343  </a></b>	// print a char* as a raw pointer when it is compared against another
+<b><a name="line344">344  </a></b>	// char* or void*, and print it as a C string when it is compared
+<b><a name="line345">345  </a></b>	// against an std::string object, for example.
+<b><a name="line346">346  </a></b>	//
+<b><a name="line347">347  </a></b>	// INTERNAL IMPLEMENTATION - DO NOT USE IN A USER PROGRAM.
+<b><a name="line348">348  </a></b>	template &lt;typename <b>T1</b>, typename <b>T2</b>&gt;
+<b><a name="line349">349  </a></b>	<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/bits/stringfwd.h/code.html#line74">string</a> FormatForComparisonFailureMessage(
+<b><a name="line350">350  </a></b>	    const <a href="#line348">T1</a>&amp; <b>value</b>, const <a href="#line348">T2</a>&amp; /* other_operand */) {
+<b><a name="line351">351  </a></b>	  return <a href="#line273">FormatForComparison</a>&lt;<a href="#line348">T1</a>, <a href="#line348">T2</a>&gt;::<a href="#line275">Format</a>(<a href="#line350">value</a>);
+<b><a name="line352">352  </a></b>	}
+<b><a name="line353">353  </a></b>	
+<b><a name="line354">354  </a></b>	// UniversalPrinter&lt;T&gt;::Print(value, ostream_ptr) prints the given
+<b><a name="line355">355  </a></b>	// value to the given ostream.  The caller must ensure that
+<b><a name="line356">356  </a></b>	// 'ostream_ptr' is not NULL, or the behavior is undefined.
+<b><a name="line357">357  </a></b>	//
+<b><a name="line358">358  </a></b>	// We define UniversalPrinter as a class template (as opposed to a
+<b><a name="line359">359  </a></b>	// function template), as we need to partially specialize it for
+<b><a name="line360">360  </a></b>	// reference types, which cannot be done with function templates.
+<b><a name="line361">361  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line362">362  </a></b>	class UniversalPrinter;
+<b><a name="line363">363  </a></b>	
+<b><a name="line364">364  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line365">365  </a></b>	void UniversalPrint(const <a href="#line364">T</a>&amp; value, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os);
+<b><a name="line366">366  </a></b>	
+<b><a name="line367">367  </a></b>	// Used to print an STL-style container when the user doesn't define
+<b><a name="line368">368  </a></b>	// a PrintTo() for it.
+<b><a name="line369">369  </a></b>	template &lt;typename <b>C</b>&gt;
+<b><a name="line370">370  </a></b>	void DefaultPrintTo(<a href="../internal/gtest-internal.h/code.html#line930">IsContainer</a> /* dummy */,
+<b><a name="line371">371  </a></b>	                    <a href="../internal/gtest-port.h/code.html#line2209">false_type</a> /* is not a pointer */,
+<b><a name="line372">372  </a></b>	                    const <a href="#line369">C</a>&amp; <b>container</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line373">373  </a></b>	  const <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>kMaxCount</b> = 32;  // The maximum number of elements to print.
+<b><a name="line374">374  </a></b>	  *<a href="#line372">os</a> <a href="../../../../include/c++/5/ostream/code.html#line508">&lt;&lt;</a> '{';
+<b><a name="line375">375  </a></b>	  <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>count</b> = 0;
+<b><a name="line376">376  </a></b>	  for (typename <a href="#line369">C</a>::<a href="../../../../include/c++/5/bits/stl_vector.h/code.html#line233">const_iterator</a> <b>it</b> = <a href="#line372">container</a>.<a href="../../../../include/c++/5/bits/stl_vector.h/code.html#line556">begin</a>();
+<b><a name="line377">377  </a></b>	       <a href="#line376">it</a> <a href="../../../../include/c++/5/bits/stl_iterator.h/code.html#line841">!=</a> <a href="#line372">container</a>.<a href="../../../../include/c++/5/bits/stl_vector.h/code.html#line574">end</a>(); <a href="../../../../include/c++/5/bits/stl_iterator.h/code.html#line761">++</a><a href="#line376">it</a>, ++<a href="#line375">count</a>) {
+<b><a name="line378">378  </a></b>	    if (<a href="#line375">count</a> &gt; 0) {
+<b><a name="line379">379  </a></b>	      *<a href="#line372">os</a> <a href="../../../../include/c++/5/ostream/code.html#line508">&lt;&lt;</a> ',';
+<b><a name="line380">380  </a></b>	      if (<a href="#line375">count</a> == <a href="#line373">kMaxCount</a>) {  // Enough has been printed.
+<b><a name="line381">381  </a></b>	        *<a href="#line372">os</a> <a href="../../../../include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot; ...&quot;;
+<b><a name="line382">382  </a></b>	        break;
+<b><a name="line383">383  </a></b>	      }
+<b><a name="line384">384  </a></b>	    }
+<b><a name="line385">385  </a></b>	    *<a href="#line372">os</a> <a href="../../../../include/c++/5/ostream/code.html#line508">&lt;&lt;</a> ' ';
+<b><a name="line386">386  </a></b>	    // We cannot call PrintTo(*it, os) here as PrintTo() doesn't
+<b><a name="line387">387  </a></b>	    // handle *it being a native array.
+<b><a name="line388">388  </a></b>	    <a href="../internal/gtest-port.h/code.html#line1003">internal</a>::<a href="#line365">UniversalPrint</a>(<a href="../../../../include/c++/5/bits/stl_iterator.h/code.html#line753">*</a><a href="#line376">it</a>, <a href="#line372">os</a>);
+<b><a name="line389">389  </a></b>	  }
+<b><a name="line390">390  </a></b>	
+<b><a name="line391">391  </a></b>	  if (<a href="#line375">count</a> &gt; 0) {
+<b><a name="line392">392  </a></b>	    *<a href="#line372">os</a> <a href="../../../../include/c++/5/ostream/code.html#line508">&lt;&lt;</a> ' ';
+<b><a name="line393">393  </a></b>	  }
+<b><a name="line394">394  </a></b>	  *<a href="#line372">os</a> <a href="../../../../include/c++/5/ostream/code.html#line508">&lt;&lt;</a> '}';
+<b><a name="line395">395  </a></b>	}
+<b><a name="line396">396  </a></b>	
+<b><a name="line397">397  </a></b>	// Used to print a pointer that is neither a char pointer nor a member
+<b><a name="line398">398  </a></b>	// pointer, when the user doesn't define PrintTo() for it.  (A member
+<b><a name="line399">399  </a></b>	// variable pointer or member function pointer doesn't really point to
+<b><a name="line400">400  </a></b>	// a location in the address space.  Their representation is
+<b><a name="line401">401  </a></b>	// implementation-defined.  Therefore they will be printed as raw
+<b><a name="line402">402  </a></b>	// bytes.)
+<b><a name="line403">403  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line404">404  </a></b>	void <b>DefaultPrintTo</b>(<a href="../internal/gtest-internal.h/code.html#line938">IsNotContainer</a> /* dummy */,
+<b><a name="line405">405  </a></b>	                    <a href="../internal/gtest-port.h/code.html#line2210">true_type</a> /* is a pointer */,
+<b><a name="line406">406  </a></b>	                    <a href="#line403">T</a>* <b>p</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line407">407  </a></b>	  if (<a href="#line406">p</a> == <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>) {
+<b><a name="line408">408  </a></b>	    *<a href="#line406">os</a> <a href="../../../../include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;NULL&quot;;
+<b><a name="line409">409  </a></b>	  } else {
+<b><a name="line410">410  </a></b>	    // C++ doesn't allow casting from a function pointer to any object
+<b><a name="line411">411  </a></b>	    // pointer.
+<b><a name="line412">412  </a></b>	    //
+<b><a name="line413">413  </a></b>	    // IsTrue() silences warnings: &quot;Condition is always true&quot;,
+<b><a name="line414">414  </a></b>	    // &quot;unreachable code&quot;.
+<b><a name="line415">415  </a></b>	    if (<a href="../internal/gtest-port.h/code.html#line1108">IsTrue</a>(<a href="../internal/gtest-internal.h/code.html#line855">ImplicitlyConvertible</a>&lt;<a href="#line403">T</a>*, const void*&gt;::<a href="../internal/gtest-internal.h/code.html#line891">value</a>)) {
+<b><a name="line416">416  </a></b>	      // T is not a function type.  We just call &lt;&lt; to print p,
+<b><a name="line417">417  </a></b>	      // relying on ADL to pick up user-defined &lt;&lt; for their pointer
+<b><a name="line418">418  </a></b>	      // types, if any.
+<b><a name="line419">419  </a></b>	      *<a href="#line406">os</a> <a href="../../../../include/c++/5/ostream/code.html#line245">&lt;&lt;</a> <a href="#line406">p</a>;
+<b><a name="line420">420  </a></b>	    } else {
+<b><a name="line421">421  </a></b>	      // T is a function type, so '*os &lt;&lt; p' doesn't do what we want
+<b><a name="line422">422  </a></b>	      // (it just prints p as bool).  We want to print p as a const
+<b><a name="line423">423  </a></b>	      // void*.  However, we cannot cast it to const void* directly,
+<b><a name="line424">424  </a></b>	      // even using reinterpret_cast, as earlier versions of gcc
+<b><a name="line425">425  </a></b>	      // (e.g. 3.4.5) cannot compile the cast when p is a function
+<b><a name="line426">426  </a></b>	      // pointer.  Casting to UInt64 first solves the problem.
+<b><a name="line427">427  </a></b>	      *<a href="#line406">os</a> <a href="../../../../include/c++/5/ostream/code.html#line245">&lt;&lt;</a> reinterpret_cast&lt;const void*&gt;(
+<b><a name="line428">428  </a></b>	          reinterpret_cast&lt;<a href="../internal/gtest-port.h/code.html#line1003">internal</a>::<a href="../internal/gtest-port.h/code.html#line2497">UInt64</a>&gt;(<a href="#line406">p</a>));
+<b><a name="line429">429  </a></b>	    }
+<b><a name="line430">430  </a></b>	  }
+<b><a name="line431">431  </a></b>	}
+<b><a name="line432">432  </a></b>	
+<b><a name="line433">433  </a></b>	// Used to print a non-container, non-pointer value when the user
+<b><a name="line434">434  </a></b>	// doesn't define PrintTo() for it.
+<b><a name="line435">435  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line436">436  </a></b>	void DefaultPrintTo(<a href="../internal/gtest-internal.h/code.html#line938">IsNotContainer</a> /* dummy */,
+<b><a name="line437">437  </a></b>	                    <a href="../internal/gtest-port.h/code.html#line2209">false_type</a> /* is not a pointer */,
+<b><a name="line438">438  </a></b>	                    const <a href="#line435">T</a>&amp; <b>value</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line439">439  </a></b>	  ::<a href="#line217">testing_internal</a>::<a href="#line222">DefaultPrintNonContainerTo</a>(<a href="#line438">value</a>, <a href="#line438">os</a>);
+<b><a name="line440">440  </a></b>	}
+<b><a name="line441">441  </a></b>	
+<b><a name="line442">442  </a></b>	// Prints the given value using the &lt;&lt; operator if it has one;
+<b><a name="line443">443  </a></b>	// otherwise prints the bytes in it.  This is what
+<b><a name="line444">444  </a></b>	// UniversalPrinter&lt;T&gt;::Print() does when PrintTo() is not specialized
+<b><a name="line445">445  </a></b>	// or overloaded for type T.
+<b><a name="line446">446  </a></b>	//
+<b><a name="line447">447  </a></b>	// A user can override this behavior for a class type Foo by defining
+<b><a name="line448">448  </a></b>	// an overload of PrintTo() in the namespace where Foo is defined.  We
+<b><a name="line449">449  </a></b>	// give the user this option as sometimes defining a &lt;&lt; operator for
+<b><a name="line450">450  </a></b>	// Foo is not desirable (e.g. the coding style may prevent doing it,
+<b><a name="line451">451  </a></b>	// or there is already a &lt;&lt; operator but it doesn't do what the user
+<b><a name="line452">452  </a></b>	// wants).
+<b><a name="line453">453  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line454">454  </a></b>	void PrintTo(const <a href="#line453">T</a>&amp; <b>value</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line455">455  </a></b>	  // DefaultPrintTo() is overloaded.  The type of its first two
+<b><a name="line456">456  </a></b>	  // arguments determine which version will be picked.  If T is an
+<b><a name="line457">457  </a></b>	  // STL-style container, the version for container will be called; if
+<b><a name="line458">458  </a></b>	  // T is a pointer, the pointer version will be called; otherwise the
+<b><a name="line459">459  </a></b>	  // generic version will be called.
+<b><a name="line460">460  </a></b>	  //
+<b><a name="line461">461  </a></b>	  // Note that we check for container types here, prior to we check
+<b><a name="line462">462  </a></b>	  // for protocol message types in our operator&lt;&lt;.  The rationale is:
+<b><a name="line463">463  </a></b>	  //
+<b><a name="line464">464  </a></b>	  // For protocol messages, we want to give people a chance to
+<b><a name="line465">465  </a></b>	  // override Google Mock's format by defining a PrintTo() or
+<b><a name="line466">466  </a></b>	  // operator&lt;&lt;.  For STL containers, other formats can be
+<b><a name="line467">467  </a></b>	  // incompatible with Google Mock's format for the container
+<b><a name="line468">468  </a></b>	  // elements; therefore we check for container types here to ensure
+<b><a name="line469">469  </a></b>	  // that our format is used.
+<b><a name="line470">470  </a></b>	  //
+<b><a name="line471">471  </a></b>	  // The second argument of DefaultPrintTo() is needed to bypass a bug
+<b><a name="line472">472  </a></b>	  // in Symbian's C++ compiler that prevents it from picking the right
+<b><a name="line473">473  </a></b>	  // overload between:
+<b><a name="line474">474  </a></b>	  //
+<b><a name="line475">475  </a></b>	  //   PrintTo(const T&amp; x, ...);
+<b><a name="line476">476  </a></b>	  //   PrintTo(T* x, ...);
+<b><a name="line477">477  </a></b>	  <a href="#line370">DefaultPrintTo</a>(<a href="../internal/gtest-internal.h/code.html#line932">IsContainerTest</a>&lt;<a href="#line453">T</a>&gt;(0), <a href="../internal/gtest-port.h/code.html#line2213">is_pointer</a>&lt;<a href="#line453">T</a>&gt;(), <a href="#line454">value</a>, <a href="#line454">os</a>);
+<b><a name="line478">478  </a></b>	}
+<b><a name="line479">479  </a></b>	
+<b><a name="line480">480  </a></b>	// The following list of PrintTo() overloads tells
+<b><a name="line481">481  </a></b>	// UniversalPrinter&lt;T&gt;::Print() how to print standard types (built-in
+<b><a name="line482">482  </a></b>	// types, strings, plain arrays, and pointers).
+<b><a name="line483">483  </a></b>	
+<b><a name="line484">484  </a></b>	// Overloads for various char types.
+<b><a name="line485">485  </a></b>	<a href="../internal/gtest-port.h/code.html#line930">GTEST_API_</a> void PrintTo(unsigned char c, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os);
+<b><a name="line486">486  </a></b>	<a href="../internal/gtest-port.h/code.html#line930">GTEST_API_</a> void PrintTo(signed char c, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os);
+<b><a name="line487">487  </a></b>	inline void <b>PrintTo</b>(char <b>c</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line488">488  </a></b>	  // When printing a plain char, we always treat it as unsigned.  This
+<b><a name="line489">489  </a></b>	  // way, the output won't be affected by whether the compiler thinks
+<b><a name="line490">490  </a></b>	  // char is signed or not.
+<b><a name="line491">491  </a></b>	  <a href="#line485">PrintTo</a>(static_cast&lt;unsigned char&gt;(<a href="#line487">c</a>), <a href="#line487">os</a>);
+<b><a name="line492">492  </a></b>	}
+<b><a name="line493">493  </a></b>	
+<b><a name="line494">494  </a></b>	// Overloads for other simple built-in types.
+<b><a name="line495">495  </a></b>	inline void <b>PrintTo</b>(bool <b>x</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line496">496  </a></b>	  *<a href="#line495">os</a> <a href="../../../../include/c++/5/ostream/code.html#line556">&lt;&lt;</a> (<a href="#line495">x</a> ? &quot;true&quot; : &quot;false&quot;);
+<b><a name="line497">497  </a></b>	}
+<b><a name="line498">498  </a></b>	
+<b><a name="line499">499  </a></b>	// Overload for wchar_t type.
+<b><a name="line500">500  </a></b>	// Prints a wchar_t as a symbol if it is printable or as its internal
+<b><a name="line501">501  </a></b>	// code otherwise and also as its decimal code (except for L'\0').
+<b><a name="line502">502  </a></b>	// The L'\0' char is printed as &quot;L'\\0'&quot;. The decimal code is printed
+<b><a name="line503">503  </a></b>	// as signed integer when wchar_t is implemented by the compiler
+<b><a name="line504">504  </a></b>	// as a signed type and is printed as an unsigned integer when wchar_t
+<b><a name="line505">505  </a></b>	// is implemented as an unsigned type.
+<b><a name="line506">506  </a></b>	<a href="../internal/gtest-port.h/code.html#line930">GTEST_API_</a> void PrintTo(wchar_t wc, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os);
+<b><a name="line507">507  </a></b>	
+<b><a name="line508">508  </a></b>	// Overloads for C strings.
+<b><a name="line509">509  </a></b>	<a href="../internal/gtest-port.h/code.html#line930">GTEST_API_</a> void PrintTo(const char* s, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os);
+<b><a name="line510">510  </a></b>	inline void <b>PrintTo</b>(char* <b>s</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line511">511  </a></b>	  <a href="#line509">PrintTo</a>(<a href="../internal/gtest-port.h/code.html#line1343">ImplicitCast_</a>&lt;const char*&gt;(<a href="#line510">s</a>), <a href="#line510">os</a>);
+<b><a name="line512">512  </a></b>	}
+<b><a name="line513">513  </a></b>	
+<b><a name="line514">514  </a></b>	// signed/unsigned char is often used for representing binary data, so
+<b><a name="line515">515  </a></b>	// we print pointers to it as void* to be safe.
+<b><a name="line516">516  </a></b>	inline void <b>PrintTo</b>(const signed char* <b>s</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line517">517  </a></b>	  <a href="#line454">PrintTo</a>(<a href="../internal/gtest-port.h/code.html#line1343">ImplicitCast_</a>&lt;const void*&gt;(<a href="#line516">s</a>), <a href="#line516">os</a>);
+<b><a name="line518">518  </a></b>	}
+<b><a name="line519">519  </a></b>	inline void <b>PrintTo</b>(signed char* <b>s</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line520">520  </a></b>	  <a href="#line454">PrintTo</a>(<a href="../internal/gtest-port.h/code.html#line1343">ImplicitCast_</a>&lt;const void*&gt;(<a href="#line519">s</a>), <a href="#line519">os</a>);
+<b><a name="line521">521  </a></b>	}
+<b><a name="line522">522  </a></b>	inline void <b>PrintTo</b>(const unsigned char* <b>s</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line523">523  </a></b>	  <a href="#line454">PrintTo</a>(<a href="../internal/gtest-port.h/code.html#line1343">ImplicitCast_</a>&lt;const void*&gt;(<a href="#line522">s</a>), <a href="#line522">os</a>);
+<b><a name="line524">524  </a></b>	}
+<b><a name="line525">525  </a></b>	inline void <b>PrintTo</b>(unsigned char* <b>s</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line526">526  </a></b>	  <a href="#line454">PrintTo</a>(<a href="../internal/gtest-port.h/code.html#line1343">ImplicitCast_</a>&lt;const void*&gt;(<a href="#line525">s</a>), <a href="#line525">os</a>);
+<b><a name="line527">527  </a></b>	}
+<b><a name="line528">528  </a></b>	
+<b><a name="line529">529  </a></b>	// MSVC can be configured to define wchar_t as a typedef of unsigned
+<b><a name="line530">530  </a></b>	// short.  It defines _NATIVE_WCHAR_T_DEFINED when wchar_t is a native
+<b><a name="line531">531  </a></b>	// type.  When wchar_t is a typedef, defining an overload for const
+<b><a name="line532">532  </a></b>	// wchar_t* would cause unsigned short* be printed as a wide string,
+<b><a name="line533">533  </a></b>	// possibly causing invalid memory accesses.
+<b><a name="line534">534  </a></b>	#if !defined(_MSC_VER) || defined(_NATIVE_WCHAR_T_DEFINED)
+<b><a name="line535">535  </a></b>	// Overloads for wide C strings
+<b><a name="line536">536  </a></b>	<a href="../internal/gtest-port.h/code.html#line930">GTEST_API_</a> void PrintTo(const wchar_t* s, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os);
+<b><a name="line537">537  </a></b>	inline void <b>PrintTo</b>(wchar_t* <b>s</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line538">538  </a></b>	  <a href="#line536">PrintTo</a>(<a href="../internal/gtest-port.h/code.html#line1343">ImplicitCast_</a>&lt;const wchar_t*&gt;(<a href="#line537">s</a>), <a href="#line537">os</a>);
+<b><a name="line539">539  </a></b>	}
+<b><a name="line540">540  </a></b>	#endif
+<b><a name="line541">541  </a></b>	
+<b><a name="line542">542  </a></b>	// Overload for C arrays.  Multi-dimensional arrays are printed
+<b><a name="line543">543  </a></b>	// properly.
+<b><a name="line544">544  </a></b>	
+<b><a name="line545">545  </a></b>	// Prints the given number of elements in an array, without printing
+<b><a name="line546">546  </a></b>	// the curly braces.
+<b><a name="line547">547  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line548">548  </a></b>	void <b>PrintRawArrayTo</b>(const <a href="#line547">T</a> a[], <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> count, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os) {
+<b><a name="line549">549  </a></b>	  UniversalPrint(a[0], os);
+<b><a name="line550">550  </a></b>	  for (size_t i = 1; i != count; i++) {
+<b><a name="line551">551  </a></b>	    *os &lt;&lt; &quot;, &quot;;
+<b><a name="line552">552  </a></b>	    UniversalPrint(a[i], os);
+<b><a name="line553">553  </a></b>	  }
+<b><a name="line554">554  </a></b>	}
+<b><a name="line555">555  </a></b>	
+<b><a name="line556">556  </a></b>	// Overloads for ::string and ::std::string.
+<b><a name="line557">557  </a></b>	#if <a href="../internal/gtest-port.h/code.html#line508">GTEST_HAS_GLOBAL_STRING</a>
+<b><a name="line558">558  </a></b>	GTEST_API_ void PrintStringTo(const ::string&amp;s, ::std::ostream* os);
+<b><a name="line559">559  </a></b>	inline void PrintTo(const ::string&amp; s, ::std::ostream* os) {
+<b><a name="line560">560  </a></b>	  PrintStringTo(s, os);
+<b><a name="line561">561  </a></b>	}
+<b><a name="line562">562  </a></b>	#endif  // GTEST_HAS_GLOBAL_STRING
+<b><a name="line563">563  </a></b>	
+<b><a name="line564">564  </a></b>	<a href="../internal/gtest-port.h/code.html#line930">GTEST_API_</a> void PrintStringTo(const ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/bits/stringfwd.h/code.html#line74">string</a>&amp;s, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os);
+<b><a name="line565">565  </a></b>	inline void <b>PrintTo</b>(const ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/bits/stringfwd.h/code.html#line74">string</a>&amp; <b>s</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line566">566  </a></b>	  <a href="#line564">PrintStringTo</a>(<a href="#line565">s</a>, <a href="#line565">os</a>);
+<b><a name="line567">567  </a></b>	}
+<b><a name="line568">568  </a></b>	
+<b><a name="line569">569  </a></b>	// Overloads for ::wstring and ::std::wstring.
+<b><a name="line570">570  </a></b>	#if <a href="../internal/gtest-port.h/code.html#line529">GTEST_HAS_GLOBAL_WSTRING</a>
+<b><a name="line571">571  </a></b>	GTEST_API_ void PrintWideStringTo(const ::wstring&amp;s, ::std::ostream* os);
+<b><a name="line572">572  </a></b>	inline void PrintTo(const ::wstring&amp; s, ::std::ostream* os) {
+<b><a name="line573">573  </a></b>	  PrintWideStringTo(s, os);
+<b><a name="line574">574  </a></b>	}
+<b><a name="line575">575  </a></b>	#endif  // GTEST_HAS_GLOBAL_WSTRING
+<b><a name="line576">576  </a></b>	
+<b><a name="line577">577  </a></b>	#if <a href="../internal/gtest-port.h/code.html#line521">GTEST_HAS_STD_WSTRING</a>
+<b><a name="line578">578  </a></b>	<a href="../internal/gtest-port.h/code.html#line930">GTEST_API_</a> void PrintWideStringTo(const ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/bits/stringfwd.h/code.html#line78">wstring</a>&amp;s, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os);
+<b><a name="line579">579  </a></b>	inline void <b>PrintTo</b>(const ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/bits/stringfwd.h/code.html#line78">wstring</a>&amp; <b>s</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line580">580  </a></b>	  <a href="#line578">PrintWideStringTo</a>(<a href="#line579">s</a>, <a href="#line579">os</a>);
+<b><a name="line581">581  </a></b>	}
+<b><a name="line582">582  </a></b>	#endif  // GTEST_HAS_STD_WSTRING
+<b><a name="line583">583  </a></b>	
+<b><a name="line584">584  </a></b>	#if <a href="../internal/gtest-port.h/code.html#line634">GTEST_HAS_TR1_TUPLE</a> || <a href="../internal/gtest-port.h/code.html#line369">GTEST_HAS_STD_TUPLE_</a>
+<b><a name="line585">585  </a></b>	// Helper function for printing a tuple.  T must be instantiated with
+<b><a name="line586">586  </a></b>	// a tuple type.
+<b><a name="line587">587  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line588">588  </a></b>	void PrintTupleTo(const <a href="#line587">T</a>&amp; t, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os);
+<b><a name="line589">589  </a></b>	#endif  // GTEST_HAS_TR1_TUPLE || GTEST_HAS_STD_TUPLE_
+<b><a name="line590">590  </a></b>	
+<b><a name="line591">591  </a></b>	#if <a href="../internal/gtest-port.h/code.html#line634">GTEST_HAS_TR1_TUPLE</a>
+<b><a name="line592">592  </a></b>	// Overload for ::std::tr1::tuple.  Needed for printing function arguments,
+<b><a name="line593">593  </a></b>	// which are packed as tuples.
+<b><a name="line594">594  </a></b>	
+<b><a name="line595">595  </a></b>	// Overloaded PrintTo() for tuples of various arities.  We support
+<b><a name="line596">596  </a></b>	// tuples of up-to 10 fields.  The following implementation works
+<b><a name="line597">597  </a></b>	// regardless of whether tr1::tuple is implemented using the
+<b><a name="line598">598  </a></b>	// non-standard variadic template feature or not.
+<b><a name="line599">599  </a></b>	
+<b><a name="line600">600  </a></b>	inline void <b>PrintTo</b>(const ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../internal/gtest-port.h/code.html#line697">tr1</a>::<a href="../../../../include/c++/5/tuple/code.html#line463">tuple</a>&lt;&gt;&amp; <b>t</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line601">601  </a></b>	  <a href="#line588">PrintTupleTo</a>(<a href="#line600">t</a>, <a href="#line600">os</a>);
+<b><a name="line602">602  </a></b>	}
+<b><a name="line603">603  </a></b>	
+<b><a name="line604">604  </a></b>	template &lt;typename <b>T1</b>&gt;
+<b><a name="line605">605  </a></b>	void <b>PrintTo</b>(const ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../internal/gtest-port.h/code.html#line697">tr1</a>::<a href="../../../../include/c++/5/bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line604">T1</a>&gt;&amp; t, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os) {
+<b><a name="line606">606  </a></b>	  PrintTupleTo(t, os);
+<b><a name="line607">607  </a></b>	}
+<b><a name="line608">608  </a></b>	
+<b><a name="line609">609  </a></b>	template &lt;typename <b>T1</b>, typename <b>T2</b>&gt;
+<b><a name="line610">610  </a></b>	void <b>PrintTo</b>(const ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../internal/gtest-port.h/code.html#line697">tr1</a>::<a href="../../../../include/c++/5/bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line609">T1</a>, <a href="#line609">T2</a>&gt;&amp; t, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os) {
+<b><a name="line611">611  </a></b>	  PrintTupleTo(t, os);
+<b><a name="line612">612  </a></b>	}
+<b><a name="line613">613  </a></b>	
+<b><a name="line614">614  </a></b>	template &lt;typename <b>T1</b>, typename <b>T2</b>, typename <b>T3</b>&gt;
+<b><a name="line615">615  </a></b>	void <b>PrintTo</b>(const ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../internal/gtest-port.h/code.html#line697">tr1</a>::<a href="../../../../include/c++/5/bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line614">T1</a>, <a href="#line614">T2</a>, <a href="#line614">T3</a>&gt;&amp; t, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os) {
+<b><a name="line616">616  </a></b>	  PrintTupleTo(t, os);
+<b><a name="line617">617  </a></b>	}
+<b><a name="line618">618  </a></b>	
+<b><a name="line619">619  </a></b>	template &lt;typename <b>T1</b>, typename <b>T2</b>, typename <b>T3</b>, typename <b>T4</b>&gt;
+<b><a name="line620">620  </a></b>	void <b>PrintTo</b>(const ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../internal/gtest-port.h/code.html#line697">tr1</a>::<a href="../../../../include/c++/5/bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line619">T1</a>, <a href="#line619">T2</a>, <a href="#line619">T3</a>, <a href="#line619">T4</a>&gt;&amp; t, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os) {
+<b><a name="line621">621  </a></b>	  PrintTupleTo(t, os);
+<b><a name="line622">622  </a></b>	}
+<b><a name="line623">623  </a></b>	
+<b><a name="line624">624  </a></b>	template &lt;typename <b>T1</b>, typename <b>T2</b>, typename <b>T3</b>, typename <b>T4</b>, typename <b>T5</b>&gt;
+<b><a name="line625">625  </a></b>	void <b>PrintTo</b>(const ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../internal/gtest-port.h/code.html#line697">tr1</a>::<a href="../../../../include/c++/5/bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line624">T1</a>, <a href="#line624">T2</a>, <a href="#line624">T3</a>, <a href="#line624">T4</a>, <a href="#line624">T5</a>&gt;&amp; t,
+<b><a name="line626">626  </a></b>	             ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os) {
+<b><a name="line627">627  </a></b>	  PrintTupleTo(t, os);
+<b><a name="line628">628  </a></b>	}
+<b><a name="line629">629  </a></b>	
+<b><a name="line630">630  </a></b>	template &lt;typename <b>T1</b>, typename <b>T2</b>, typename <b>T3</b>, typename <b>T4</b>, typename <b>T5</b>,
+<b><a name="line631">631  </a></b>	          typename <b>T6</b>&gt;
+<b><a name="line632">632  </a></b>	void <b>PrintTo</b>(const ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../internal/gtest-port.h/code.html#line697">tr1</a>::<a href="../../../../include/c++/5/bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line630">T1</a>, <a href="#line630">T2</a>, <a href="#line630">T3</a>, <a href="#line630">T4</a>, <a href="#line630">T5</a>, <a href="#line631">T6</a>&gt;&amp; t,
+<b><a name="line633">633  </a></b>	             ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os) {
+<b><a name="line634">634  </a></b>	  PrintTupleTo(t, os);
+<b><a name="line635">635  </a></b>	}
+<b><a name="line636">636  </a></b>	
+<b><a name="line637">637  </a></b>	template &lt;typename <b>T1</b>, typename <b>T2</b>, typename <b>T3</b>, typename <b>T4</b>, typename <b>T5</b>,
+<b><a name="line638">638  </a></b>	          typename <b>T6</b>, typename <b>T7</b>&gt;
+<b><a name="line639">639  </a></b>	void <b>PrintTo</b>(const ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../internal/gtest-port.h/code.html#line697">tr1</a>::<a href="../../../../include/c++/5/bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line637">T1</a>, <a href="#line637">T2</a>, <a href="#line637">T3</a>, <a href="#line637">T4</a>, <a href="#line637">T5</a>, <a href="#line638">T6</a>, <a href="#line638">T7</a>&gt;&amp; t,
+<b><a name="line640">640  </a></b>	             ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os) {
+<b><a name="line641">641  </a></b>	  PrintTupleTo(t, os);
+<b><a name="line642">642  </a></b>	}
+<b><a name="line643">643  </a></b>	
+<b><a name="line644">644  </a></b>	template &lt;typename <b>T1</b>, typename <b>T2</b>, typename <b>T3</b>, typename <b>T4</b>, typename <b>T5</b>,
+<b><a name="line645">645  </a></b>	          typename <b>T6</b>, typename <b>T7</b>, typename <b>T8</b>&gt;
+<b><a name="line646">646  </a></b>	void <b>PrintTo</b>(const ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../internal/gtest-port.h/code.html#line697">tr1</a>::<a href="../../../../include/c++/5/bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line644">T1</a>, <a href="#line644">T2</a>, <a href="#line644">T3</a>, <a href="#line644">T4</a>, <a href="#line644">T5</a>, <a href="#line645">T6</a>, <a href="#line645">T7</a>, <a href="#line645">T8</a>&gt;&amp; t,
+<b><a name="line647">647  </a></b>	             ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os) {
+<b><a name="line648">648  </a></b>	  PrintTupleTo(t, os);
+<b><a name="line649">649  </a></b>	}
+<b><a name="line650">650  </a></b>	
+<b><a name="line651">651  </a></b>	template &lt;typename <b>T1</b>, typename <b>T2</b>, typename <b>T3</b>, typename <b>T4</b>, typename <b>T5</b>,
+<b><a name="line652">652  </a></b>	          typename <b>T6</b>, typename <b>T7</b>, typename <b>T8</b>, typename <b>T9</b>&gt;
+<b><a name="line653">653  </a></b>	void <b>PrintTo</b>(const ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../internal/gtest-port.h/code.html#line697">tr1</a>::<a href="../../../../include/c++/5/bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line651">T1</a>, <a href="#line651">T2</a>, <a href="#line651">T3</a>, <a href="#line651">T4</a>, <a href="#line651">T5</a>, <a href="#line652">T6</a>, <a href="#line652">T7</a>, <a href="#line652">T8</a>, <a href="#line652">T9</a>&gt;&amp; t,
+<b><a name="line654">654  </a></b>	             ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os) {
+<b><a name="line655">655  </a></b>	  PrintTupleTo(t, os);
+<b><a name="line656">656  </a></b>	}
+<b><a name="line657">657  </a></b>	
+<b><a name="line658">658  </a></b>	template &lt;typename <b>T1</b>, typename <b>T2</b>, typename <b>T3</b>, typename <b>T4</b>, typename <b>T5</b>,
+<b><a name="line659">659  </a></b>	          typename <b>T6</b>, typename <b>T7</b>, typename <b>T8</b>, typename <b>T9</b>, typename <b>T10</b>&gt;
+<b><a name="line660">660  </a></b>	void <b>PrintTo</b>(
+<b><a name="line661">661  </a></b>	    const ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../internal/gtest-port.h/code.html#line697">tr1</a>::<a href="../../../../include/c++/5/bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line658">T1</a>, <a href="#line658">T2</a>, <a href="#line658">T3</a>, <a href="#line658">T4</a>, <a href="#line658">T5</a>, <a href="#line659">T6</a>, <a href="#line659">T7</a>, <a href="#line659">T8</a>, <a href="#line659">T9</a>, <a href="#line659">T10</a>&gt;&amp; t,
+<b><a name="line662">662  </a></b>	    ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os) {
+<b><a name="line663">663  </a></b>	  PrintTupleTo(t, os);
+<b><a name="line664">664  </a></b>	}
+<b><a name="line665">665  </a></b>	#endif  // GTEST_HAS_TR1_TUPLE
+<b><a name="line666">666  </a></b>	
+<b><a name="line667">667  </a></b>	#if <a href="../internal/gtest-port.h/code.html#line369">GTEST_HAS_STD_TUPLE_</a>
+<b><a name="line668">668  </a></b>	template &lt;typename... <b>Types</b>&gt;
+<b><a name="line669">669  </a></b>	void <b>PrintTo</b>(const ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line668">Types</a>...&gt;&amp; t, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os) {
+<b><a name="line670">670  </a></b>	  PrintTupleTo(t, os);
+<b><a name="line671">671  </a></b>	}
+<b><a name="line672">672  </a></b>	#endif  // GTEST_HAS_STD_TUPLE_
+<b><a name="line673">673  </a></b>	
+<b><a name="line674">674  </a></b>	// Overload for std::pair.
+<b><a name="line675">675  </a></b>	template &lt;typename <b>T1</b>, typename <b>T2</b>&gt;
+<b><a name="line676">676  </a></b>	void <b>PrintTo</b>(const ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line675">T1</a>, <a href="#line675">T2</a>&gt;&amp; value, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os) {
+<b><a name="line677">677  </a></b>	  *os &lt;&lt; '(';
+<b><a name="line678">678  </a></b>	  // We cannot use UniversalPrint(value.first, os) here, as T1 may be
+<b><a name="line679">679  </a></b>	  // a reference type.  The same for printing value.second.
+<b><a name="line680">680  </a></b>	  UniversalPrinter&lt;T1&gt;::Print(value.first, os);
+<b><a name="line681">681  </a></b>	  *os &lt;&lt; &quot;, &quot;;
+<b><a name="line682">682  </a></b>	  UniversalPrinter&lt;T2&gt;::Print(value.second, os);
+<b><a name="line683">683  </a></b>	  *os &lt;&lt; ')';
+<b><a name="line684">684  </a></b>	}
+<b><a name="line685">685  </a></b>	
+<b><a name="line686">686  </a></b>	// Implements printing a non-reference type T by letting the compiler
+<b><a name="line687">687  </a></b>	// pick the right overload of PrintTo() for T.
+<b><a name="line688">688  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line689">689  </a></b>	class UniversalPrinter {
+<b><a name="line690">690  </a></b>	 public:
+<b><a name="line691">691  </a></b>	  // MSVC warns about adding const to a function type, so we want to
+<b><a name="line692">692  </a></b>	  // disable the warning.
+<b><a name="line693">693  </a></b>	  <a href="../internal/gtest-port.h/code.html#line317">GTEST_DISABLE_MSC_WARNINGS_PUSH_</a>(4180)
+<b><a name="line694">694  </a></b>	
+<b><a name="line695">695  </a></b>	  // Note: we deliberately don't call this PrintTo(), as that name
+<b><a name="line696">696  </a></b>	  // conflicts with ::testing::internal::PrintTo in the body of the
+<b><a name="line697">697  </a></b>	  // function.
+<b><a name="line698">698  </a></b>	  static void Print(const <a href="#line688">T</a>&amp; <b>value</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line699">699  </a></b>	    // By default, ::testing::internal::PrintTo() is used for printing
+<b><a name="line700">700  </a></b>	    // the value.
+<b><a name="line701">701  </a></b>	    //
+<b><a name="line702">702  </a></b>	    // Thanks to Koenig look-up, if T is a class and has its own
+<b><a name="line703">703  </a></b>	    // PrintTo() function defined in its namespace, that function will
+<b><a name="line704">704  </a></b>	    // be visible here.  Since it is more specific than the generic ones
+<b><a name="line705">705  </a></b>	    // in ::testing::internal, it will be picked by the compiler in the
+<b><a name="line706">706  </a></b>	    // following statement - exactly what we want.
+<b><a name="line707">707  </a></b>	    <a href="#line579">PrintTo</a>(<a href="#line698">value</a>, <a href="#line698">os</a>);
+<b><a name="line708">708  </a></b>	  }
+<b><a name="line709">709  </a></b>	
+<b><a name="line710">710  </a></b>	  <a href="../internal/gtest-port.h/code.html#line318">GTEST_DISABLE_MSC_WARNINGS_POP_</a>()
+<b><a name="line711">711  </a></b>	};
+<b><a name="line712">712  </a></b>	
+<b><a name="line713">713  </a></b>	// UniversalPrintArray(begin, len, os) prints an array of 'len'
+<b><a name="line714">714  </a></b>	// elements, starting at address 'begin'.
+<b><a name="line715">715  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line716">716  </a></b>	void <b>UniversalPrintArray</b>(const <a href="#line715">T</a>* begin, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> len, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os) {
+<b><a name="line717">717  </a></b>	  if (len == 0) {
+<b><a name="line718">718  </a></b>	    *os &lt;&lt; &quot;{}&quot;;
+<b><a name="line719">719  </a></b>	  } else {
+<b><a name="line720">720  </a></b>	    *os &lt;&lt; &quot;{ &quot;;
+<b><a name="line721">721  </a></b>	    const size_t kThreshold = 18;
+<b><a name="line722">722  </a></b>	    const size_t kChunkSize = 8;
+<b><a name="line723">723  </a></b>	    // If the array has more than kThreshold elements, we'll have to
+<b><a name="line724">724  </a></b>	    // omit some details by printing only the first and the last
+<b><a name="line725">725  </a></b>	    // kChunkSize elements.
+<b><a name="line726">726  </a></b>	    // TODO(wan@google.com): let the user control the threshold using a flag.
+<b><a name="line727">727  </a></b>	    if (len &lt;= kThreshold) {
+<b><a name="line728">728  </a></b>	      PrintRawArrayTo(begin, len, os);
+<b><a name="line729">729  </a></b>	    } else {
+<b><a name="line730">730  </a></b>	      PrintRawArrayTo(begin, kChunkSize, os);
+<b><a name="line731">731  </a></b>	      *os &lt;&lt; &quot;, ..., &quot;;
+<b><a name="line732">732  </a></b>	      PrintRawArrayTo(begin + len - kChunkSize, kChunkSize, os);
+<b><a name="line733">733  </a></b>	    }
+<b><a name="line734">734  </a></b>	    *os &lt;&lt; &quot; }&quot;;
+<b><a name="line735">735  </a></b>	  }
+<b><a name="line736">736  </a></b>	}
+<b><a name="line737">737  </a></b>	// This overload prints a (const) char array compactly.
+<b><a name="line738">738  </a></b>	<a href="../internal/gtest-port.h/code.html#line930">GTEST_API_</a> void UniversalPrintArray(
+<b><a name="line739">739  </a></b>	    const char* begin, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> len, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os);
+<b><a name="line740">740  </a></b>	
+<b><a name="line741">741  </a></b>	// This overload prints a (const) wchar_t array compactly.
+<b><a name="line742">742  </a></b>	<a href="../internal/gtest-port.h/code.html#line930">GTEST_API_</a> void UniversalPrintArray(
+<b><a name="line743">743  </a></b>	    const wchar_t* begin, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> len, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os);
+<b><a name="line744">744  </a></b>	
+<b><a name="line745">745  </a></b>	// Implements printing an array type T[N].
+<b><a name="line746">746  </a></b>	template &lt;typename <b>T</b>, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>N</b>&gt;
+<b><a name="line747">747  </a></b>	class <b>UniversalPrinter</b>&lt;<a href="#line746">T</a>[<a href="#line746">N</a>]&gt; {
+<b><a name="line748">748  </a></b>	 public:
+<b><a name="line749">749  </a></b>	  // Prints the given array, omitting some elements when there are too
+<b><a name="line750">750  </a></b>	  // many.
+<b><a name="line751">751  </a></b>	  static void <b>Print</b>(const <a href="#line746">T</a> (&amp;a)[<a href="#line746">N</a>], ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os) {
+<b><a name="line752">752  </a></b>	    UniversalPrintArray(a, N, os);
+<b><a name="line753">753  </a></b>	  }
+<b><a name="line754">754  </a></b>	};
+<b><a name="line755">755  </a></b>	
+<b><a name="line756">756  </a></b>	// Implements printing a reference type T&amp;.
+<b><a name="line757">757  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line758">758  </a></b>	class <b>UniversalPrinter</b>&lt;<a href="#line757">T</a>&amp;&gt; {
+<b><a name="line759">759  </a></b>	 public:
+<b><a name="line760">760  </a></b>	  // MSVC warns about adding const to a function type, so we want to
+<b><a name="line761">761  </a></b>	  // disable the warning.
+<b><a name="line762">762  </a></b>	  <a href="../internal/gtest-port.h/code.html#line317">GTEST_DISABLE_MSC_WARNINGS_PUSH_</a>(4180)
+<b><a name="line763">763  </a></b>	
+<b><a name="line764">764  </a></b>	  static void <b>Print</b>(const <a href="#line757">T</a>&amp; value, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os) {
+<b><a name="line765">765  </a></b>	    // Prints the address of the value.  We use reinterpret_cast here
+<b><a name="line766">766  </a></b>	    // as static_cast doesn't compile when T is a function type.
+<b><a name="line767">767  </a></b>	    *os &lt;&lt; &quot;@&quot; &lt;&lt; reinterpret_cast&lt;const void*&gt;(&amp;value) &lt;&lt; &quot; &quot;;
+<b><a name="line768">768  </a></b>	
+<b><a name="line769">769  </a></b>	    // Then prints the value itself.
+<b><a name="line770">770  </a></b>	    UniversalPrint(value, os);
+<b><a name="line771">771  </a></b>	  }
+<b><a name="line772">772  </a></b>	
+<b><a name="line773">773  </a></b>	  <a href="../internal/gtest-port.h/code.html#line318">GTEST_DISABLE_MSC_WARNINGS_POP_</a>()
+<b><a name="line774">774  </a></b>	};
+<b><a name="line775">775  </a></b>	
+<b><a name="line776">776  </a></b>	// Prints a value tersely: for a reference type, the referenced value
+<b><a name="line777">777  </a></b>	// (but not the address) is printed; for a (const) char pointer, the
+<b><a name="line778">778  </a></b>	// NUL-terminated string (but not the pointer) is printed.
+<b><a name="line779">779  </a></b>	
+<b><a name="line780">780  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line781">781  </a></b>	class UniversalTersePrinter {
+<b><a name="line782">782  </a></b>	 public:
+<b><a name="line783">783  </a></b>	  static void Print(const <a href="#line780">T</a>&amp; <b>value</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line784">784  </a></b>	    <a href="#line852">UniversalPrint</a>(<a href="#line783">value</a>, <a href="#line783">os</a>);
+<b><a name="line785">785  </a></b>	  }
+<b><a name="line786">786  </a></b>	};
+<b><a name="line787">787  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line788">788  </a></b>	class <b>UniversalTersePrinter</b>&lt;<a href="#line787">T</a>&amp;&gt; {
+<b><a name="line789">789  </a></b>	 public:
+<b><a name="line790">790  </a></b>	  static void <b>Print</b>(const <a href="#line787">T</a>&amp; value, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os) {
+<b><a name="line791">791  </a></b>	    UniversalPrint(value, os);
+<b><a name="line792">792  </a></b>	  }
+<b><a name="line793">793  </a></b>	};
+<b><a name="line794">794  </a></b>	template &lt;typename <b>T</b>, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>N</b>&gt;
+<b><a name="line795">795  </a></b>	class <b>UniversalTersePrinter</b>&lt;<a href="#line794">T</a>[<a href="#line794">N</a>]&gt; {
+<b><a name="line796">796  </a></b>	 public:
+<b><a name="line797">797  </a></b>	  static void <b>Print</b>(const <a href="#line794">T</a> (&amp;value)[<a href="#line794">N</a>], ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os) {
+<b><a name="line798">798  </a></b>	    UniversalPrinter&lt;T[N]&gt;::Print(value, os);
+<b><a name="line799">799  </a></b>	  }
+<b><a name="line800">800  </a></b>	};
+<b><a name="line801">801  </a></b>	template &lt;&gt;
+<b><a name="line802">802  </a></b>	class <b>UniversalTersePrinter</b>&lt;const char*&gt; {
+<b><a name="line803">803  </a></b>	 public:
+<b><a name="line804">804  </a></b>	  static void <b>Print</b>(const char* <b>str</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line805">805  </a></b>	    if (<a href="#line804">str</a> == <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>) {
+<b><a name="line806">806  </a></b>	      *<a href="#line804">os</a> <a href="../../../../include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;NULL&quot;;
+<b><a name="line807">807  </a></b>	    } else {
+<b><a name="line808">808  </a></b>	      <a href="#line365">UniversalPrint</a>(<a href="../internal/gtest-port.h/code.html#line1097">string</a>(<a href="#line804">str</a>), <a href="#line804">os</a>);
+<b><a name="line809">809  </a></b>	    }
+<b><a name="line810">810  </a></b>	  }
+<b><a name="line811">811  </a></b>	};
+<b><a name="line812">812  </a></b>	template &lt;&gt;
+<b><a name="line813">813  </a></b>	class <b>UniversalTersePrinter</b>&lt;char*&gt; {
+<b><a name="line814">814  </a></b>	 public:
+<b><a name="line815">815  </a></b>	  static void <b>Print</b>(char* <b>str</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line816">816  </a></b>	    <a href="#line781">UniversalTersePrinter</a>&lt;const char*&gt;::<a href="#line804">Print</a>(<a href="#line815">str</a>, <a href="#line815">os</a>);
+<b><a name="line817">817  </a></b>	  }
+<b><a name="line818">818  </a></b>	};
+<b><a name="line819">819  </a></b>	
+<b><a name="line820">820  </a></b>	#if <a href="../internal/gtest-port.h/code.html#line521">GTEST_HAS_STD_WSTRING</a>
+<b><a name="line821">821  </a></b>	template &lt;&gt;
+<b><a name="line822">822  </a></b>	class <b>UniversalTersePrinter</b>&lt;const wchar_t*&gt; {
+<b><a name="line823">823  </a></b>	 public:
+<b><a name="line824">824  </a></b>	  static void <b>Print</b>(const wchar_t* <b>str</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line825">825  </a></b>	    if (<a href="#line824">str</a> == <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>) {
+<b><a name="line826">826  </a></b>	      *<a href="#line824">os</a> <a href="../../../../include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;NULL&quot;;
+<b><a name="line827">827  </a></b>	    } else {
+<b><a name="line828">828  </a></b>	      <a href="#line365">UniversalPrint</a>(::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/bits/stringfwd.h/code.html#line78">wstring</a>(<a href="#line824">str</a>), <a href="#line824">os</a>);
+<b><a name="line829">829  </a></b>	    }
+<b><a name="line830">830  </a></b>	  }
+<b><a name="line831">831  </a></b>	};
+<b><a name="line832">832  </a></b>	#endif
+<b><a name="line833">833  </a></b>	
+<b><a name="line834">834  </a></b>	template &lt;&gt;
+<b><a name="line835">835  </a></b>	class <b>UniversalTersePrinter</b>&lt;wchar_t*&gt; {
+<b><a name="line836">836  </a></b>	 public:
+<b><a name="line837">837  </a></b>	  static void <b>Print</b>(wchar_t* <b>str</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line838">838  </a></b>	    <a href="#line781">UniversalTersePrinter</a>&lt;const wchar_t*&gt;::<a href="#line824">Print</a>(<a href="#line837">str</a>, <a href="#line837">os</a>);
+<b><a name="line839">839  </a></b>	  }
+<b><a name="line840">840  </a></b>	};
+<b><a name="line841">841  </a></b>	
+<b><a name="line842">842  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line843">843  </a></b>	void <b>UniversalTersePrint</b>(const <a href="#line842">T</a>&amp; value, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os) {
+<b><a name="line844">844  </a></b>	  UniversalTersePrinter&lt;T&gt;::Print(value, os);
+<b><a name="line845">845  </a></b>	}
+<b><a name="line846">846  </a></b>	
+<b><a name="line847">847  </a></b>	// Prints a value using the type inferred by the compiler.  The
+<b><a name="line848">848  </a></b>	// difference between this and UniversalTersePrint() is that for a
+<b><a name="line849">849  </a></b>	// (const) char pointer, this prints both the pointer and the
+<b><a name="line850">850  </a></b>	// NUL-terminated string.
+<b><a name="line851">851  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line852">852  </a></b>	void <a href="#line365">UniversalPrint</a>(const <a href="#line851">T</a>&amp; <b>value</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line853">853  </a></b>	  // A workarond for the bug in VC++ 7.1 that prevents us from instantiating
+<b><a name="line854">854  </a></b>	  // UniversalPrinter with T directly.
+<b><a name="line855">855  </a></b>	  typedef <a href="#line851">T</a> <b>T1</b>;
+<b><a name="line856">856  </a></b>	  <a href="#line689">UniversalPrinter</a>&lt;<a href="#line855">T1</a>&gt;::<a href="#line698">Print</a>(<a href="#line852">value</a>, <a href="#line852">os</a>);
+<b><a name="line857">857  </a></b>	}
+<b><a name="line858">858  </a></b>	
+<b><a name="line859">859  </a></b>	typedef ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="../internal/gtest-port.h/code.html#line1097">string</a>&gt; <b>Strings</b>;
+<b><a name="line860">860  </a></b>	
+<b><a name="line861">861  </a></b>	// TuplePolicy&lt;TupleT&gt; must provide:
+<b><a name="line862">862  </a></b>	// - tuple_size
+<b><a name="line863">863  </a></b>	//     size of tuple TupleT.
+<b><a name="line864">864  </a></b>	// - get&lt;size_t I&gt;(const TupleT&amp; t)
+<b><a name="line865">865  </a></b>	//     static function extracting element I of tuple TupleT.
+<b><a name="line866">866  </a></b>	// - tuple_element&lt;size_t I&gt;::type
+<b><a name="line867">867  </a></b>	//     type of element I of tuple TupleT.
+<b><a name="line868">868  </a></b>	template &lt;typename <b>TupleT</b>&gt;
+<b><a name="line869">869  </a></b>	struct TuplePolicy;
+<b><a name="line870">870  </a></b>	
+<b><a name="line871">871  </a></b>	#if <a href="../internal/gtest-port.h/code.html#line634">GTEST_HAS_TR1_TUPLE</a>
+<b><a name="line872">872  </a></b>	template &lt;typename <b>TupleT</b>&gt;
+<b><a name="line873">873  </a></b>	struct TuplePolicy {
+<b><a name="line874">874  </a></b>	  typedef <a href="#line872">TupleT</a> <b>Tuple</b>;
+<b><a name="line875">875  </a></b>	  static const <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> tuple_size = ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../internal/gtest-port.h/code.html#line697">tr1</a>::<a href="../../../../include/c++/5/utility/code.html#line82">tuple_size</a>&lt;<a href="#line874">Tuple</a>&gt;::value;
+<b><a name="line876">876  </a></b>	
+<b><a name="line877">877  </a></b>	  template &lt;<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>I</b>&gt;
+<b><a name="line878">878  </a></b>	  struct <b>tuple_element</b> : ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../internal/gtest-port.h/code.html#line697">tr1</a>::<a href="../../../../include/c++/5/utility/code.html#line85">tuple_element</a>&lt;<a href="#line877">I</a>, <a href="#line874">Tuple</a>&gt; {};
+<b><a name="line879">879  </a></b>	
+<b><a name="line880">880  </a></b>	  template &lt;<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>I</b>&gt;
+<b><a name="line881">881  </a></b>	  static typename <a href="../internal/gtest-internal.h/code.html#line830">AddReference</a>&lt;
+<b><a name="line882">882  </a></b>	      const typename ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../internal/gtest-port.h/code.html#line697">tr1</a>::<a href="../../../../include/c++/5/utility/code.html#line85">tuple_element</a>&lt;<a href="#line880">I</a>, <a href="#line874">Tuple</a>&gt;::type&gt;::type <b>get</b>(
+<b><a name="line883">883  </a></b>	      const <a href="#line874">Tuple</a>&amp; tuple) {
+<b><a name="line884">884  </a></b>	    return ::std::tr1::get&lt;I&gt;(tuple);
+<b><a name="line885">885  </a></b>	  }
+<b><a name="line886">886  </a></b>	};
+<b><a name="line887">887  </a></b>	template &lt;typename <b>TupleT</b>&gt;
+<b><a name="line888">888  </a></b>	const <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <a href="#line869">TuplePolicy</a>&lt;<a href="#line887">TupleT</a>&gt;::<b>tuple_size</b>;
+<b><a name="line889">889  </a></b>	#endif  // GTEST_HAS_TR1_TUPLE
+<b><a name="line890">890  </a></b>	
+<b><a name="line891">891  </a></b>	#if <a href="../internal/gtest-port.h/code.html#line369">GTEST_HAS_STD_TUPLE_</a>
+<b><a name="line892">892  </a></b>	template &lt;typename... <b>Types</b>&gt;
+<b><a name="line893">893  </a></b>	struct <b>TuplePolicy</b>&lt; ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line892">Types</a>...&gt; &gt; {
+<b><a name="line894">894  </a></b>	  typedef ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/tuple/code.html#line463">tuple</a>&lt;<a href="#line892">Types</a>...&gt; <b>Tuple</b>;
+<b><a name="line895">895  </a></b>	  static const <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> tuple_size = ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/utility/code.html#line82">tuple_size</a>&lt;<a href="#line894">Tuple</a>&gt;::<a href="../../../../include/c++/5/type_traits/code.html#line71">value</a>;
+<b><a name="line896">896  </a></b>	
+<b><a name="line897">897  </a></b>	  template &lt;<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>I</b>&gt;
+<b><a name="line898">898  </a></b>	  struct <b>tuple_element</b> : ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/utility/code.html#line85">tuple_element</a>&lt;<a href="#line897">I</a>, <a href="#line894">Tuple</a>&gt; {};
+<b><a name="line899">899  </a></b>	
+<b><a name="line900">900  </a></b>	  template &lt;<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>I</b>&gt;
+<b><a name="line901">901  </a></b>	  static const typename ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/utility/code.html#line85">tuple_element</a>&lt;<a href="#line900">I</a>, <a href="#line894">Tuple</a>&gt;::type&amp; <b>get</b>(
+<b><a name="line902">902  </a></b>	      const <a href="#line894">Tuple</a>&amp; tuple) {
+<b><a name="line903">903  </a></b>	    return ::std::get&lt;I&gt;(tuple);
+<b><a name="line904">904  </a></b>	  }
+<b><a name="line905">905  </a></b>	};
+<b><a name="line906">906  </a></b>	template &lt;typename... <b>Types</b>&gt;
+<b><a name="line907">907  </a></b>	const <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <a href="#line893">TuplePolicy</a>&lt; ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line906">Types</a>...&gt; &gt;::<b>tuple_size</b>;
+<b><a name="line908">908  </a></b>	#endif  // GTEST_HAS_STD_TUPLE_
+<b><a name="line909">909  </a></b>	
+<b><a name="line910">910  </a></b>	#if <a href="../internal/gtest-port.h/code.html#line634">GTEST_HAS_TR1_TUPLE</a> || <a href="../internal/gtest-port.h/code.html#line369">GTEST_HAS_STD_TUPLE_</a>
+<b><a name="line911">911  </a></b>	// This helper template allows PrintTo() for tuples and
+<b><a name="line912">912  </a></b>	// UniversalTersePrintTupleFieldsToStrings() to be defined by
+<b><a name="line913">913  </a></b>	// induction on the number of tuple fields.  The idea is that
+<b><a name="line914">914  </a></b>	// TuplePrefixPrinter&lt;N&gt;::PrintPrefixTo(t, os) prints the first N
+<b><a name="line915">915  </a></b>	// fields in tuple t, and can be defined in terms of
+<b><a name="line916">916  </a></b>	// TuplePrefixPrinter&lt;N - 1&gt;.
+<b><a name="line917">917  </a></b>	//
+<b><a name="line918">918  </a></b>	// The inductive case.
+<b><a name="line919">919  </a></b>	template &lt;<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>N</b>&gt;
+<b><a name="line920">920  </a></b>	struct TuplePrefixPrinter {
+<b><a name="line921">921  </a></b>	  // Prints the first N fields of a tuple.
+<b><a name="line922">922  </a></b>	  template &lt;typename <b>Tuple</b>&gt;
+<b><a name="line923">923  </a></b>	  static void <b>PrintPrefixTo</b>(const <a href="#line922">Tuple</a>&amp; t, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* os) {
+<b><a name="line924">924  </a></b>	    TuplePrefixPrinter&lt;N - 1&gt;::PrintPrefixTo(t, os);
+<b><a name="line925">925  </a></b>	    <a href="../internal/gtest-port.h/code.html#line897">GTEST_INTENTIONAL_CONST_COND_PUSH_</a>()
+<b><a name="line926">926  </a></b>	    if (N &gt; 1) {
+<b><a name="line927">927  </a></b>	    <a href="../internal/gtest-port.h/code.html#line899">GTEST_INTENTIONAL_CONST_COND_POP_</a>()
+<b><a name="line928">928  </a></b>	      *os &lt;&lt; &quot;, &quot;;
+<b><a name="line929">929  </a></b>	    }
+<b><a name="line930">930  </a></b>	    UniversalPrinter&lt;
+<b><a name="line931">931  </a></b>	        typename TuplePolicy&lt;Tuple&gt;::template tuple_element&lt;N - 1&gt;::type&gt;
+<b><a name="line932">932  </a></b>	        ::Print(TuplePolicy&lt;Tuple&gt;::template get&lt;N - 1&gt;(t), os);
+<b><a name="line933">933  </a></b>	  }
+<b><a name="line934">934  </a></b>	
+<b><a name="line935">935  </a></b>	  // Tersely prints the first N fields of a tuple to a string vector,
+<b><a name="line936">936  </a></b>	  // one element for each field.
+<b><a name="line937">937  </a></b>	  template &lt;typename <b>Tuple</b>&gt;
+<b><a name="line938">938  </a></b>	  static void <b>TersePrintPrefixToStrings</b>(const <a href="#line937">Tuple</a>&amp; t, <a href="#line859">Strings</a>* strings) {
+<b><a name="line939">939  </a></b>	    TuplePrefixPrinter&lt;N - 1&gt;::TersePrintPrefixToStrings(t, strings);
+<b><a name="line940">940  </a></b>	    ::std::stringstream ss;
+<b><a name="line941">941  </a></b>	    UniversalTersePrint(TuplePolicy&lt;Tuple&gt;::template get&lt;N - 1&gt;(t), &amp;ss);
+<b><a name="line942">942  </a></b>	    strings-&gt;push_back(ss.str());
+<b><a name="line943">943  </a></b>	  }
+<b><a name="line944">944  </a></b>	};
+<b><a name="line945">945  </a></b>	
+<b><a name="line946">946  </a></b>	// Base case.
+<b><a name="line947">947  </a></b>	template &lt;&gt;
+<b><a name="line948">948  </a></b>	struct <b>TuplePrefixPrinter</b>&lt;0&gt; {
+<b><a name="line949">949  </a></b>	  template &lt;typename <b>Tuple</b>&gt;
+<b><a name="line950">950  </a></b>	  static void PrintPrefixTo(const <a href="#line949">Tuple</a>&amp;, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>*) {}
+<b><a name="line951">951  </a></b>	
+<b><a name="line952">952  </a></b>	  template &lt;typename <b>Tuple</b>&gt;
+<b><a name="line953">953  </a></b>	  static void <b>TersePrintPrefixToStrings</b>(const <a href="#line952">Tuple</a>&amp;, <a href="#line859">Strings</a>*) {}
+<b><a name="line954">954  </a></b>	};
+<b><a name="line955">955  </a></b>	
+<b><a name="line956">956  </a></b>	// Helper function for printing a tuple.
+<b><a name="line957">957  </a></b>	// Tuple must be either std::tr1::tuple or std::tuple type.
+<b><a name="line958">958  </a></b>	template &lt;typename <b>Tuple</b>&gt;
+<b><a name="line959">959  </a></b>	void <a href="#line588">PrintTupleTo</a>(const <a href="#line958">Tuple</a>&amp; <b>t</b>, ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line960">960  </a></b>	  *<a href="#line959">os</a> <a href="../../../../include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;(&quot;;
+<b><a name="line961">961  </a></b>	  <a href="#line920">TuplePrefixPrinter</a>&lt;<a href="#line873">TuplePolicy</a>&lt;<a href="#line958">Tuple</a>&gt;::<a href="#line895">tuple_size</a>&gt;::<a href="#line950">PrintPrefixTo</a>(<a href="#line959">t</a>, <a href="#line959">os</a>);
+<b><a name="line962">962  </a></b>	  *<a href="#line959">os</a> <a href="../../../../include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;)&quot;;
+<b><a name="line963">963  </a></b>	}
+<b><a name="line964">964  </a></b>	
+<b><a name="line965">965  </a></b>	// Prints the fields of a tuple tersely to a string vector, one
+<b><a name="line966">966  </a></b>	// element for each field.  See the comment before
+<b><a name="line967">967  </a></b>	// UniversalTersePrint() for how we define &quot;tersely&quot;.
+<b><a name="line968">968  </a></b>	template &lt;typename <b>Tuple</b>&gt;
+<b><a name="line969">969  </a></b>	<a href="#line859">Strings</a> <b>UniversalTersePrintTupleFieldsToStrings</b>(const <a href="#line968">Tuple</a>&amp; value) {
+<b><a name="line970">970  </a></b>	  Strings result;
+<b><a name="line971">971  </a></b>	  TuplePrefixPrinter&lt;TuplePolicy&lt;Tuple&gt;::tuple_size&gt;::
+<b><a name="line972">972  </a></b>	      TersePrintPrefixToStrings(value, &amp;result);
+<b><a name="line973">973  </a></b>	  return result;
+<b><a name="line974">974  </a></b>	}
+<b><a name="line975">975  </a></b>	#endif  // GTEST_HAS_TR1_TUPLE || GTEST_HAS_STD_TUPLE_
+<b><a name="line976">976  </a></b>	
+<b><a name="line977">977  </a></b>	}  // namespace internal
+<b><a name="line978">978  </a></b>	
+<b><a name="line979">979  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line980">980  </a></b>	::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/bits/stringfwd.h/code.html#line74">string</a> PrintToString(const <a href="#line979">T</a>&amp; <b>value</b>) {
+<b><a name="line981">981  </a></b>	  ::<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line156">stringstream</a> <b>ss</b>;
+<b><a name="line982">982  </a></b>	  <a href="../internal/gtest-port.h/code.html#line1003">internal</a>::<a href="#line781">UniversalTersePrinter</a>&lt;<a href="#line979">T</a>&gt;::<a href="#line783">Print</a>(<a href="#line980">value</a>, &amp;<a href="#line981">ss</a>);
+<b><a name="line983">983  </a></b>	  return <a href="#line981">ss</a>.<a href="../../../../include/c++/5/sstream/code.html#line765">str</a>();
+<b><a name="line984">984  </a></b>	}
+<b><a name="line985">985  </a></b>	
+<b><a name="line986">986  </a></b>	}  // namespace testing
+<b><a name="line987">987  </a></b>	
+<b><a name="line988">988  </a></b>	// Include any custom printer added by the local installation.
+<b><a name="line989">989  </a></b>	// We must include this header at the end to make sure it can use the
+<b><a name="line990">990  </a></b>	// declarations from this file.
+<b><a name="line991">991  </a></b>	#include &quot;gtest/internal/custom/gtest-printers.h&quot;
+<b><a name="line992">992  </a></b>	
+<b><a name="line993">993  </a></b>	#endif  // GTEST_INCLUDE_GTEST_GTEST_PRINTERS_H_
+<b><a name="line994">994  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

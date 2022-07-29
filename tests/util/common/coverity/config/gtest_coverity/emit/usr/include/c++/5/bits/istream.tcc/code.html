@@ -1,0 +1,1149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/bits/istream.tcc</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// istream classes -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 1997-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file bits/istream.tcc
+<b><a name="line26">26   </a></b>	 *  This is an internal header file, included by other library headers.
+<b><a name="line27">27   </a></b>	 *  Do not attempt to use it directly. @headername{istream}
+<b><a name="line28">28   </a></b>	 */
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	//
+<b><a name="line31">31   </a></b>	// ISO C++ 14882: 27.6.1  Input streams
+<b><a name="line32">32   </a></b>	//
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	#ifndef _ISTREAM_TCC
+<b><a name="line35">35   </a></b>	#define <b>_ISTREAM_TCC</b> 1
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	#pragma GCC system_header
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	#include &lt;bits/cxxabi_forced.h&gt;
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line42">42   </a></b>	{
+<b><a name="line43">43   </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line44">44   </a></b>	
+<b><a name="line45">45   </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line46">46   </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line45">_CharT</a>, <a href="#line45">_Traits</a>&gt;::<a href="../../istream/code.html#line107">sentry</a>::
+<b><a name="line47">47   </a></b>	    <b>sentry</b>(<a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line45">_CharT</a>, <a href="#line45">_Traits</a>&gt;&amp; __in, bool __noskip) : _M_ok(false)
+<b><a name="line48">48   </a></b>	    {
+<b><a name="line49">49   </a></b>	      ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line50">50   </a></b>	      if (__in.good())
+<b><a name="line51">51   </a></b>		{
+<b><a name="line52">52   </a></b>		  if (__in.tie())
+<b><a name="line53">53   </a></b>		    __in.tie()-&gt;flush();
+<b><a name="line54">54   </a></b>		  if (!__noskip &amp;&amp; bool(__in.flags() &amp; ios_base::skipws))
+<b><a name="line55">55   </a></b>		    {
+<b><a name="line56">56   </a></b>		      const __int_type __eof = traits_type::eof();
+<b><a name="line57">57   </a></b>		      __streambuf_type* __sb = __in.rdbuf();
+<b><a name="line58">58   </a></b>		      __int_type __c = __sb-&gt;sgetc();
+<b><a name="line59">59   </a></b>	
+<b><a name="line60">60   </a></b>		      const __ctype_type&amp; __ct = __check_facet(__in._M_ctype);
+<b><a name="line61">61   </a></b>		      while (!traits_type::eq_int_type(__c, __eof)
+<b><a name="line62">62   </a></b>			     &amp;&amp; __ct.is(ctype_base::space, 
+<b><a name="line63">63   </a></b>					traits_type::to_char_type(__c)))
+<b><a name="line64">64   </a></b>			__c = __sb-&gt;snextc();
+<b><a name="line65">65   </a></b>	
+<b><a name="line66">66   </a></b>		      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line67">67   </a></b>		      // 195. Should basic_istream::sentry's constructor ever
+<b><a name="line68">68   </a></b>		      // set eofbit?
+<b><a name="line69">69   </a></b>		      if (traits_type::eq_int_type(__c, __eof))
+<b><a name="line70">70   </a></b>			__err |= ios_base::eofbit;
+<b><a name="line71">71   </a></b>		    }
+<b><a name="line72">72   </a></b>		}
+<b><a name="line73">73   </a></b>	
+<b><a name="line74">74   </a></b>	      if (__in.good() &amp;&amp; __err == ios_base::goodbit)
+<b><a name="line75">75   </a></b>		_M_ok = true;
+<b><a name="line76">76   </a></b>	      else
+<b><a name="line77">77   </a></b>		{
+<b><a name="line78">78   </a></b>		  __err |= ios_base::failbit;
+<b><a name="line79">79   </a></b>		  __in.setstate(__err);
+<b><a name="line80">80   </a></b>		}
+<b><a name="line81">81   </a></b>	    }
+<b><a name="line82">82   </a></b>	
+<b><a name="line83">83   </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line84">84   </a></b>	    template&lt;typename <b>_ValueT</b>&gt;
+<b><a name="line85">85   </a></b>	      <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line83">_CharT</a>, <a href="#line83">_Traits</a>&gt;&amp;
+<b><a name="line86">86   </a></b>	      <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line83">_CharT</a>, <a href="#line83">_Traits</a>&gt;::
+<b><a name="line87">87   </a></b>	      <b>_M_extract</b>(<a href="#line84">_ValueT</a>&amp; __v)
+<b><a name="line88">88   </a></b>	      {
+<b><a name="line89">89   </a></b>		sentry __cerb(*this, false);
+<b><a name="line90">90   </a></b>		if (__cerb)
+<b><a name="line91">91   </a></b>		  {
+<b><a name="line92">92   </a></b>		    ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line93">93   </a></b>		    <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line94">94   </a></b>		      {
+<b><a name="line95">95   </a></b>			const __num_get_type&amp; __ng = __check_facet(this-&gt;_M_num_get);
+<b><a name="line96">96   </a></b>			__ng.get(*this, 0, *this, __err, __v);
+<b><a name="line97">97   </a></b>		      }
+<b><a name="line98">98   </a></b>		    <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line99">99   </a></b>		      {
+<b><a name="line100">100  </a></b>			this-&gt;_M_setstate(ios_base::badbit);
+<b><a name="line101">101  </a></b>			<a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line102">102  </a></b>		      }
+<b><a name="line103">103  </a></b>		    <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line104">104  </a></b>		      { this-&gt;_M_setstate(ios_base::badbit); }
+<b><a name="line105">105  </a></b>		    if (__err)
+<b><a name="line106">106  </a></b>		      this-&gt;setstate(__err);
+<b><a name="line107">107  </a></b>		  }
+<b><a name="line108">108  </a></b>		return *this;
+<b><a name="line109">109  </a></b>	      }
+<b><a name="line110">110  </a></b>	
+<b><a name="line111">111  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line112">112  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line111">_CharT</a>, <a href="#line111">_Traits</a>&gt;&amp;
+<b><a name="line113">113  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line111">_CharT</a>, <a href="#line111">_Traits</a>&gt;::
+<b><a name="line114">114  </a></b>	    <b>operator&gt;&gt;</b>(short&amp; __n)
+<b><a name="line115">115  </a></b>	    {
+<b><a name="line116">116  </a></b>	      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line117">117  </a></b>	      // 118. basic_istream uses nonexistent num_get member functions.
+<b><a name="line118">118  </a></b>	      sentry __cerb(*this, false);
+<b><a name="line119">119  </a></b>	      if (__cerb)
+<b><a name="line120">120  </a></b>		{
+<b><a name="line121">121  </a></b>		  ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line122">122  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line123">123  </a></b>		    {
+<b><a name="line124">124  </a></b>		      long __l;
+<b><a name="line125">125  </a></b>		      const __num_get_type&amp; __ng = __check_facet(this-&gt;_M_num_get);
+<b><a name="line126">126  </a></b>		      __ng.get(*this, 0, *this, __err, __l);
+<b><a name="line127">127  </a></b>	
+<b><a name="line128">128  </a></b>		      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line129">129  </a></b>		      // 696. istream::operator&gt;&gt;(int&amp;) broken.
+<b><a name="line130">130  </a></b>		      if (__l &lt; __gnu_cxx::__numeric_traits&lt;short&gt;::__min)
+<b><a name="line131">131  </a></b>			{
+<b><a name="line132">132  </a></b>			  __err |= ios_base::failbit;
+<b><a name="line133">133  </a></b>			  __n = __gnu_cxx::__numeric_traits&lt;short&gt;::__min;
+<b><a name="line134">134  </a></b>			}
+<b><a name="line135">135  </a></b>		      else if (__l &gt; __gnu_cxx::__numeric_traits&lt;short&gt;::__max)
+<b><a name="line136">136  </a></b>			{
+<b><a name="line137">137  </a></b>			  __err |= ios_base::failbit;
+<b><a name="line138">138  </a></b>			  __n = __gnu_cxx::__numeric_traits&lt;short&gt;::__max;
+<b><a name="line139">139  </a></b>			}
+<b><a name="line140">140  </a></b>		      else
+<b><a name="line141">141  </a></b>			__n = short(__l);
+<b><a name="line142">142  </a></b>		    }
+<b><a name="line143">143  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line144">144  </a></b>		    {
+<b><a name="line145">145  </a></b>		      this-&gt;_M_setstate(ios_base::badbit);
+<b><a name="line146">146  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line147">147  </a></b>		    }
+<b><a name="line148">148  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line149">149  </a></b>		    { this-&gt;_M_setstate(ios_base::badbit); }
+<b><a name="line150">150  </a></b>		  if (__err)
+<b><a name="line151">151  </a></b>		    this-&gt;setstate(__err);
+<b><a name="line152">152  </a></b>		}
+<b><a name="line153">153  </a></b>	      return *this;
+<b><a name="line154">154  </a></b>	    }
+<b><a name="line155">155  </a></b>	
+<b><a name="line156">156  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line157">157  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line156">_CharT</a>, <a href="#line156">_Traits</a>&gt;&amp;
+<b><a name="line158">158  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line156">_CharT</a>, <a href="#line156">_Traits</a>&gt;::
+<b><a name="line159">159  </a></b>	    <b>operator&gt;&gt;</b>(int&amp; __n)
+<b><a name="line160">160  </a></b>	    {
+<b><a name="line161">161  </a></b>	      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line162">162  </a></b>	      // 118. basic_istream uses nonexistent num_get member functions.
+<b><a name="line163">163  </a></b>	      sentry __cerb(*this, false);
+<b><a name="line164">164  </a></b>	      if (__cerb)
+<b><a name="line165">165  </a></b>		{
+<b><a name="line166">166  </a></b>		  ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line167">167  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line168">168  </a></b>		    {
+<b><a name="line169">169  </a></b>		      long __l;
+<b><a name="line170">170  </a></b>		      const __num_get_type&amp; __ng = __check_facet(this-&gt;_M_num_get);
+<b><a name="line171">171  </a></b>		      __ng.get(*this, 0, *this, __err, __l);
+<b><a name="line172">172  </a></b>	
+<b><a name="line173">173  </a></b>		      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line174">174  </a></b>		      // 696. istream::operator&gt;&gt;(int&amp;) broken.
+<b><a name="line175">175  </a></b>		      if (__l &lt; __gnu_cxx::__numeric_traits&lt;int&gt;::__min)
+<b><a name="line176">176  </a></b>			{
+<b><a name="line177">177  </a></b>			  __err |= ios_base::failbit;
+<b><a name="line178">178  </a></b>			  __n = __gnu_cxx::__numeric_traits&lt;int&gt;::__min;
+<b><a name="line179">179  </a></b>			}
+<b><a name="line180">180  </a></b>		      else if (__l &gt; __gnu_cxx::__numeric_traits&lt;int&gt;::__max)
+<b><a name="line181">181  </a></b>			{
+<b><a name="line182">182  </a></b>			  __err |= ios_base::failbit;	      
+<b><a name="line183">183  </a></b>			  __n = __gnu_cxx::__numeric_traits&lt;int&gt;::__max;
+<b><a name="line184">184  </a></b>			}
+<b><a name="line185">185  </a></b>		      else
+<b><a name="line186">186  </a></b>			__n = int(__l);
+<b><a name="line187">187  </a></b>		    }
+<b><a name="line188">188  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line189">189  </a></b>		    {
+<b><a name="line190">190  </a></b>		      this-&gt;_M_setstate(ios_base::badbit);
+<b><a name="line191">191  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line192">192  </a></b>		    }
+<b><a name="line193">193  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line194">194  </a></b>		    { this-&gt;_M_setstate(ios_base::badbit); }
+<b><a name="line195">195  </a></b>		  if (__err)
+<b><a name="line196">196  </a></b>		    this-&gt;setstate(__err);
+<b><a name="line197">197  </a></b>		}
+<b><a name="line198">198  </a></b>	      return *this;
+<b><a name="line199">199  </a></b>	    }
+<b><a name="line200">200  </a></b>	
+<b><a name="line201">201  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line202">202  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line201">_CharT</a>, <a href="#line201">_Traits</a>&gt;&amp;
+<b><a name="line203">203  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line201">_CharT</a>, <a href="#line201">_Traits</a>&gt;::
+<b><a name="line204">204  </a></b>	    <b>operator&gt;&gt;</b>(<a href="../../istream/code.html#line69">__streambuf_type</a>* __sbout)
+<b><a name="line205">205  </a></b>	    {
+<b><a name="line206">206  </a></b>	      ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line207">207  </a></b>	      sentry __cerb(*this, false);
+<b><a name="line208">208  </a></b>	      if (__cerb &amp;&amp; __sbout)
+<b><a name="line209">209  </a></b>		{
+<b><a name="line210">210  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line211">211  </a></b>		    {
+<b><a name="line212">212  </a></b>		      bool __ineof;
+<b><a name="line213">213  </a></b>		      if (!__copy_streambufs_eof(this-&gt;rdbuf(), __sbout, __ineof))
+<b><a name="line214">214  </a></b>			__err |= ios_base::failbit;
+<b><a name="line215">215  </a></b>		      if (__ineof)
+<b><a name="line216">216  </a></b>			__err |= ios_base::eofbit;
+<b><a name="line217">217  </a></b>		    }
+<b><a name="line218">218  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line219">219  </a></b>		    {
+<b><a name="line220">220  </a></b>		      this-&gt;_M_setstate(ios_base::failbit);
+<b><a name="line221">221  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line222">222  </a></b>		    }
+<b><a name="line223">223  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line224">224  </a></b>		    { this-&gt;_M_setstate(ios_base::failbit); }
+<b><a name="line225">225  </a></b>		}
+<b><a name="line226">226  </a></b>	      else if (!__sbout)
+<b><a name="line227">227  </a></b>		__err |= ios_base::failbit;
+<b><a name="line228">228  </a></b>	      if (__err)
+<b><a name="line229">229  </a></b>		this-&gt;setstate(__err);
+<b><a name="line230">230  </a></b>	      return *this;
+<b><a name="line231">231  </a></b>	    }
+<b><a name="line232">232  </a></b>	
+<b><a name="line233">233  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line234">234  </a></b>	    typename <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line233">_CharT</a>, <a href="#line233">_Traits</a>&gt;::<a href="../../istream/code.html#line63">int_type</a>
+<b><a name="line235">235  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line233">_CharT</a>, <a href="#line233">_Traits</a>&gt;::
+<b><a name="line236">236  </a></b>	    <b>get</b>(void)
+<b><a name="line237">237  </a></b>	    {
+<b><a name="line238">238  </a></b>	      const int_type __eof = traits_type::eof();
+<b><a name="line239">239  </a></b>	      int_type __c = __eof;
+<b><a name="line240">240  </a></b>	      _M_gcount = 0;
+<b><a name="line241">241  </a></b>	      ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line242">242  </a></b>	      sentry __cerb(*this, true);
+<b><a name="line243">243  </a></b>	      if (__cerb)
+<b><a name="line244">244  </a></b>		{
+<b><a name="line245">245  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line246">246  </a></b>		    {
+<b><a name="line247">247  </a></b>		      __c = this-&gt;rdbuf()-&gt;sbumpc();
+<b><a name="line248">248  </a></b>		      // 27.6.1.1 paragraph 3
+<b><a name="line249">249  </a></b>		      if (!traits_type::eq_int_type(__c, __eof))
+<b><a name="line250">250  </a></b>			_M_gcount = 1;
+<b><a name="line251">251  </a></b>		      else
+<b><a name="line252">252  </a></b>			__err |= ios_base::eofbit;
+<b><a name="line253">253  </a></b>		    }
+<b><a name="line254">254  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line255">255  </a></b>		    {
+<b><a name="line256">256  </a></b>		      this-&gt;_M_setstate(ios_base::badbit);
+<b><a name="line257">257  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line258">258  </a></b>		    }
+<b><a name="line259">259  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line260">260  </a></b>		    { this-&gt;_M_setstate(ios_base::badbit); }
+<b><a name="line261">261  </a></b>		}
+<b><a name="line262">262  </a></b>	      if (!_M_gcount)
+<b><a name="line263">263  </a></b>		__err |= ios_base::failbit;
+<b><a name="line264">264  </a></b>	      if (__err)
+<b><a name="line265">265  </a></b>		this-&gt;setstate(__err);
+<b><a name="line266">266  </a></b>	      return __c;
+<b><a name="line267">267  </a></b>	    }
+<b><a name="line268">268  </a></b>	
+<b><a name="line269">269  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line270">270  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line269">_CharT</a>, <a href="#line269">_Traits</a>&gt;&amp;
+<b><a name="line271">271  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line269">_CharT</a>, <a href="#line269">_Traits</a>&gt;::
+<b><a name="line272">272  </a></b>	    <b>get</b>(<a href="../../istream/code.html#line62">char_type</a>&amp; __c)
+<b><a name="line273">273  </a></b>	    {
+<b><a name="line274">274  </a></b>	      _M_gcount = 0;
+<b><a name="line275">275  </a></b>	      ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line276">276  </a></b>	      sentry __cerb(*this, true);
+<b><a name="line277">277  </a></b>	      if (__cerb)
+<b><a name="line278">278  </a></b>		{
+<b><a name="line279">279  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line280">280  </a></b>		    {
+<b><a name="line281">281  </a></b>		      const int_type __cb = this-&gt;rdbuf()-&gt;sbumpc();
+<b><a name="line282">282  </a></b>		      // 27.6.1.1 paragraph 3
+<b><a name="line283">283  </a></b>		      if (!traits_type::eq_int_type(__cb, traits_type::eof()))
+<b><a name="line284">284  </a></b>			{
+<b><a name="line285">285  </a></b>			  _M_gcount = 1;
+<b><a name="line286">286  </a></b>			  __c = traits_type::to_char_type(__cb);
+<b><a name="line287">287  </a></b>			}
+<b><a name="line288">288  </a></b>		      else
+<b><a name="line289">289  </a></b>			__err |= ios_base::eofbit;
+<b><a name="line290">290  </a></b>		    }
+<b><a name="line291">291  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line292">292  </a></b>		    {
+<b><a name="line293">293  </a></b>		      this-&gt;_M_setstate(ios_base::badbit);
+<b><a name="line294">294  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line295">295  </a></b>		    }
+<b><a name="line296">296  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line297">297  </a></b>		    { this-&gt;_M_setstate(ios_base::badbit); }
+<b><a name="line298">298  </a></b>		}
+<b><a name="line299">299  </a></b>	      if (!_M_gcount)
+<b><a name="line300">300  </a></b>		__err |= ios_base::failbit;
+<b><a name="line301">301  </a></b>	      if (__err)
+<b><a name="line302">302  </a></b>		this-&gt;setstate(__err);
+<b><a name="line303">303  </a></b>	      return *this;
+<b><a name="line304">304  </a></b>	    }
+<b><a name="line305">305  </a></b>	
+<b><a name="line306">306  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line307">307  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line306">_CharT</a>, <a href="#line306">_Traits</a>&gt;&amp;
+<b><a name="line308">308  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line306">_CharT</a>, <a href="#line306">_Traits</a>&gt;::
+<b><a name="line309">309  </a></b>	    <b>get</b>(<a href="../../istream/code.html#line62">char_type</a>* __s, <a href="../postypes.h/code.html#line98">streamsize</a> __n, <a href="../../istream/code.html#line62">char_type</a> __delim)
+<b><a name="line310">310  </a></b>	    {
+<b><a name="line311">311  </a></b>	      _M_gcount = 0;
+<b><a name="line312">312  </a></b>	      ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line313">313  </a></b>	      sentry __cerb(*this, true);
+<b><a name="line314">314  </a></b>	      if (__cerb)
+<b><a name="line315">315  </a></b>		{
+<b><a name="line316">316  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line317">317  </a></b>		    {
+<b><a name="line318">318  </a></b>		      const int_type __idelim = traits_type::to_int_type(__delim);
+<b><a name="line319">319  </a></b>		      const int_type __eof = traits_type::eof();
+<b><a name="line320">320  </a></b>		      __streambuf_type* __sb = this-&gt;rdbuf();
+<b><a name="line321">321  </a></b>		      int_type __c = __sb-&gt;sgetc();
+<b><a name="line322">322  </a></b>	
+<b><a name="line323">323  </a></b>		      while (_M_gcount + 1 &lt; __n
+<b><a name="line324">324  </a></b>			     &amp;&amp; !traits_type::eq_int_type(__c, __eof)
+<b><a name="line325">325  </a></b>			     &amp;&amp; !traits_type::eq_int_type(__c, __idelim))
+<b><a name="line326">326  </a></b>			{
+<b><a name="line327">327  </a></b>			  *__s++ = traits_type::to_char_type(__c);
+<b><a name="line328">328  </a></b>			  ++_M_gcount;
+<b><a name="line329">329  </a></b>			  __c = __sb-&gt;snextc();
+<b><a name="line330">330  </a></b>			}
+<b><a name="line331">331  </a></b>		      if (traits_type::eq_int_type(__c, __eof))
+<b><a name="line332">332  </a></b>			__err |= ios_base::eofbit;
+<b><a name="line333">333  </a></b>		    }
+<b><a name="line334">334  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line335">335  </a></b>		    {
+<b><a name="line336">336  </a></b>		      this-&gt;_M_setstate(ios_base::badbit);
+<b><a name="line337">337  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line338">338  </a></b>		    }
+<b><a name="line339">339  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line340">340  </a></b>		    { this-&gt;_M_setstate(ios_base::badbit); }
+<b><a name="line341">341  </a></b>		}
+<b><a name="line342">342  </a></b>	      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line343">343  </a></b>	      // 243. get and getline when sentry reports failure.
+<b><a name="line344">344  </a></b>	      if (__n &gt; 0)
+<b><a name="line345">345  </a></b>		*__s = char_type();
+<b><a name="line346">346  </a></b>	      if (!_M_gcount)
+<b><a name="line347">347  </a></b>		__err |= ios_base::failbit;
+<b><a name="line348">348  </a></b>	      if (__err)
+<b><a name="line349">349  </a></b>		this-&gt;setstate(__err);
+<b><a name="line350">350  </a></b>	      return *this;
+<b><a name="line351">351  </a></b>	    }
+<b><a name="line352">352  </a></b>	
+<b><a name="line353">353  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line354">354  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line353">_CharT</a>, <a href="#line353">_Traits</a>&gt;&amp;
+<b><a name="line355">355  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line353">_CharT</a>, <a href="#line353">_Traits</a>&gt;::
+<b><a name="line356">356  </a></b>	    <b>get</b>(<a href="../../istream/code.html#line69">__streambuf_type</a>&amp; __sb, <a href="../../istream/code.html#line62">char_type</a> __delim)
+<b><a name="line357">357  </a></b>	    {
+<b><a name="line358">358  </a></b>	      _M_gcount = 0;
+<b><a name="line359">359  </a></b>	      ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line360">360  </a></b>	      sentry __cerb(*this, true);
+<b><a name="line361">361  </a></b>	      if (__cerb)
+<b><a name="line362">362  </a></b>		{
+<b><a name="line363">363  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line364">364  </a></b>		    {
+<b><a name="line365">365  </a></b>		      const int_type __idelim = traits_type::to_int_type(__delim);
+<b><a name="line366">366  </a></b>		      const int_type __eof = traits_type::eof();
+<b><a name="line367">367  </a></b>		      __streambuf_type* __this_sb = this-&gt;rdbuf();
+<b><a name="line368">368  </a></b>		      int_type __c = __this_sb-&gt;sgetc();
+<b><a name="line369">369  </a></b>		      char_type __c2 = traits_type::to_char_type(__c);
+<b><a name="line370">370  </a></b>	
+<b><a name="line371">371  </a></b>		      while (!traits_type::eq_int_type(__c, __eof)
+<b><a name="line372">372  </a></b>			     &amp;&amp; !traits_type::eq_int_type(__c, __idelim)
+<b><a name="line373">373  </a></b>			     &amp;&amp; !traits_type::eq_int_type(__sb.sputc(__c2), __eof))
+<b><a name="line374">374  </a></b>			{
+<b><a name="line375">375  </a></b>			  ++_M_gcount;
+<b><a name="line376">376  </a></b>			  __c = __this_sb-&gt;snextc();
+<b><a name="line377">377  </a></b>			  __c2 = traits_type::to_char_type(__c);
+<b><a name="line378">378  </a></b>			}
+<b><a name="line379">379  </a></b>		      if (traits_type::eq_int_type(__c, __eof))
+<b><a name="line380">380  </a></b>			__err |= ios_base::eofbit;
+<b><a name="line381">381  </a></b>		    }
+<b><a name="line382">382  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line383">383  </a></b>		    {
+<b><a name="line384">384  </a></b>		      this-&gt;_M_setstate(ios_base::badbit);
+<b><a name="line385">385  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line386">386  </a></b>		    }
+<b><a name="line387">387  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line388">388  </a></b>		    { this-&gt;_M_setstate(ios_base::badbit); }
+<b><a name="line389">389  </a></b>		}
+<b><a name="line390">390  </a></b>	      if (!_M_gcount)
+<b><a name="line391">391  </a></b>		__err |= ios_base::failbit;
+<b><a name="line392">392  </a></b>	      if (__err)
+<b><a name="line393">393  </a></b>		this-&gt;setstate(__err);
+<b><a name="line394">394  </a></b>	      return *this;
+<b><a name="line395">395  </a></b>	    }
+<b><a name="line396">396  </a></b>	
+<b><a name="line397">397  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line398">398  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line397">_CharT</a>, <a href="#line397">_Traits</a>&gt;&amp;
+<b><a name="line399">399  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line397">_CharT</a>, <a href="#line397">_Traits</a>&gt;::
+<b><a name="line400">400  </a></b>	    <b>getline</b>(<a href="../../istream/code.html#line62">char_type</a>* __s, <a href="../postypes.h/code.html#line98">streamsize</a> __n, <a href="../../istream/code.html#line62">char_type</a> __delim)
+<b><a name="line401">401  </a></b>	    {
+<b><a name="line402">402  </a></b>	      _M_gcount = 0;
+<b><a name="line403">403  </a></b>	      ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line404">404  </a></b>	      sentry __cerb(*this, true);
+<b><a name="line405">405  </a></b>	      if (__cerb)
+<b><a name="line406">406  </a></b>	        {
+<b><a name="line407">407  </a></b>	          <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line408">408  </a></b>	            {
+<b><a name="line409">409  </a></b>	              const int_type __idelim = traits_type::to_int_type(__delim);
+<b><a name="line410">410  </a></b>	              const int_type __eof = traits_type::eof();
+<b><a name="line411">411  </a></b>	              __streambuf_type* __sb = this-&gt;rdbuf();
+<b><a name="line412">412  </a></b>	              int_type __c = __sb-&gt;sgetc();
+<b><a name="line413">413  </a></b>	
+<b><a name="line414">414  </a></b>	              while (_M_gcount + 1 &lt; __n
+<b><a name="line415">415  </a></b>	                     &amp;&amp; !traits_type::eq_int_type(__c, __eof)
+<b><a name="line416">416  </a></b>	                     &amp;&amp; !traits_type::eq_int_type(__c, __idelim))
+<b><a name="line417">417  </a></b>	                {
+<b><a name="line418">418  </a></b>	                  *__s++ = traits_type::to_char_type(__c);
+<b><a name="line419">419  </a></b>	                  __c = __sb-&gt;snextc();
+<b><a name="line420">420  </a></b>	                  ++_M_gcount;
+<b><a name="line421">421  </a></b>	                }
+<b><a name="line422">422  </a></b>	              if (traits_type::eq_int_type(__c, __eof))
+<b><a name="line423">423  </a></b>	                __err |= ios_base::eofbit;
+<b><a name="line424">424  </a></b>	              else
+<b><a name="line425">425  </a></b>	                {
+<b><a name="line426">426  </a></b>	                  if (traits_type::eq_int_type(__c, __idelim))
+<b><a name="line427">427  </a></b>	                    {
+<b><a name="line428">428  </a></b>	                      __sb-&gt;sbumpc();
+<b><a name="line429">429  </a></b>	                      ++_M_gcount;
+<b><a name="line430">430  </a></b>	                    }
+<b><a name="line431">431  </a></b>	                  else
+<b><a name="line432">432  </a></b>	                    __err |= ios_base::failbit;
+<b><a name="line433">433  </a></b>	                }
+<b><a name="line434">434  </a></b>	            }
+<b><a name="line435">435  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line436">436  </a></b>		    {
+<b><a name="line437">437  </a></b>		      this-&gt;_M_setstate(ios_base::badbit);
+<b><a name="line438">438  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line439">439  </a></b>		    }
+<b><a name="line440">440  </a></b>	          <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line441">441  </a></b>	            { this-&gt;_M_setstate(ios_base::badbit); }
+<b><a name="line442">442  </a></b>	        }
+<b><a name="line443">443  </a></b>	      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line444">444  </a></b>	      // 243. get and getline when sentry reports failure.
+<b><a name="line445">445  </a></b>	      if (__n &gt; 0)
+<b><a name="line446">446  </a></b>		*__s = char_type();
+<b><a name="line447">447  </a></b>	      if (!_M_gcount)
+<b><a name="line448">448  </a></b>	        __err |= ios_base::failbit;
+<b><a name="line449">449  </a></b>	      if (__err)
+<b><a name="line450">450  </a></b>	        this-&gt;setstate(__err);
+<b><a name="line451">451  </a></b>	      return *this;
+<b><a name="line452">452  </a></b>	    }
+<b><a name="line453">453  </a></b>	
+<b><a name="line454">454  </a></b>	  // We provide three overloads, since the first two are much simpler
+<b><a name="line455">455  </a></b>	  // than the general case. Also, the latter two can thus adopt the
+<b><a name="line456">456  </a></b>	  // same &quot;batchy&quot; strategy used by getline above.
+<b><a name="line457">457  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line458">458  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line457">_CharT</a>, <a href="#line457">_Traits</a>&gt;&amp;
+<b><a name="line459">459  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line457">_CharT</a>, <a href="#line457">_Traits</a>&gt;::
+<b><a name="line460">460  </a></b>	    <b>ignore</b>(void)
+<b><a name="line461">461  </a></b>	    {
+<b><a name="line462">462  </a></b>	      _M_gcount = 0;
+<b><a name="line463">463  </a></b>	      sentry __cerb(*this, true);
+<b><a name="line464">464  </a></b>	      if (__cerb)
+<b><a name="line465">465  </a></b>		{
+<b><a name="line466">466  </a></b>		  ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line467">467  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line468">468  </a></b>		    {
+<b><a name="line469">469  </a></b>		      const int_type __eof = traits_type::eof();
+<b><a name="line470">470  </a></b>		      __streambuf_type* __sb = this-&gt;rdbuf();
+<b><a name="line471">471  </a></b>	
+<b><a name="line472">472  </a></b>		      if (traits_type::eq_int_type(__sb-&gt;sbumpc(), __eof))
+<b><a name="line473">473  </a></b>			__err |= ios_base::eofbit;
+<b><a name="line474">474  </a></b>		      else
+<b><a name="line475">475  </a></b>			_M_gcount = 1;
+<b><a name="line476">476  </a></b>		    }
+<b><a name="line477">477  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line478">478  </a></b>		    {
+<b><a name="line479">479  </a></b>		      this-&gt;_M_setstate(ios_base::badbit);
+<b><a name="line480">480  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line481">481  </a></b>		    }
+<b><a name="line482">482  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line483">483  </a></b>		    { this-&gt;_M_setstate(ios_base::badbit); }
+<b><a name="line484">484  </a></b>		  if (__err)
+<b><a name="line485">485  </a></b>		    this-&gt;setstate(__err);
+<b><a name="line486">486  </a></b>		}
+<b><a name="line487">487  </a></b>	      return *this;
+<b><a name="line488">488  </a></b>	    }
+<b><a name="line489">489  </a></b>	
+<b><a name="line490">490  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line491">491  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line490">_CharT</a>, <a href="#line490">_Traits</a>&gt;&amp;
+<b><a name="line492">492  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line490">_CharT</a>, <a href="#line490">_Traits</a>&gt;::
+<b><a name="line493">493  </a></b>	    <b>ignore</b>(<a href="../postypes.h/code.html#line98">streamsize</a> __n)
+<b><a name="line494">494  </a></b>	    {
+<b><a name="line495">495  </a></b>	      _M_gcount = 0;
+<b><a name="line496">496  </a></b>	      sentry __cerb(*this, true);
+<b><a name="line497">497  </a></b>	      if (__cerb &amp;&amp; __n &gt; 0)
+<b><a name="line498">498  </a></b>	        {
+<b><a name="line499">499  </a></b>	          ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line500">500  </a></b>	          <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line501">501  </a></b>	            {
+<b><a name="line502">502  </a></b>	              const int_type __eof = traits_type::eof();
+<b><a name="line503">503  </a></b>	              __streambuf_type* __sb = this-&gt;rdbuf();
+<b><a name="line504">504  </a></b>	              int_type __c = __sb-&gt;sgetc();
+<b><a name="line505">505  </a></b>	
+<b><a name="line506">506  </a></b>		      // N.B. On LFS-enabled platforms streamsize is still 32 bits
+<b><a name="line507">507  </a></b>		      // wide: if we want to implement the standard mandated behavior
+<b><a name="line508">508  </a></b>		      // for n == max() (see 27.6.1.3/24) we are at risk of signed
+<b><a name="line509">509  </a></b>		      // integer overflow: thus these contortions. Also note that,
+<b><a name="line510">510  </a></b>		      // by definition, when more than 2G chars are actually ignored,
+<b><a name="line511">511  </a></b>		      // _M_gcount (the return value of gcount, that is) cannot be
+<b><a name="line512">512  </a></b>		      // really correct, being unavoidably too small.
+<b><a name="line513">513  </a></b>		      bool __large_ignore = false;
+<b><a name="line514">514  </a></b>		      while (true)
+<b><a name="line515">515  </a></b>			{
+<b><a name="line516">516  </a></b>			  while (_M_gcount &lt; __n
+<b><a name="line517">517  </a></b>				 &amp;&amp; !traits_type::eq_int_type(__c, __eof))
+<b><a name="line518">518  </a></b>			    {
+<b><a name="line519">519  </a></b>			      ++_M_gcount;
+<b><a name="line520">520  </a></b>			      __c = __sb-&gt;snextc();
+<b><a name="line521">521  </a></b>			    }
+<b><a name="line522">522  </a></b>			  if (__n == __gnu_cxx::__numeric_traits&lt;streamsize&gt;::__max
+<b><a name="line523">523  </a></b>			      &amp;&amp; !traits_type::eq_int_type(__c, __eof))
+<b><a name="line524">524  </a></b>			    {
+<b><a name="line525">525  </a></b>			      _M_gcount =
+<b><a name="line526">526  </a></b>				__gnu_cxx::__numeric_traits&lt;streamsize&gt;::__min;
+<b><a name="line527">527  </a></b>			      __large_ignore = true;
+<b><a name="line528">528  </a></b>			    }
+<b><a name="line529">529  </a></b>			  else
+<b><a name="line530">530  </a></b>			    break;
+<b><a name="line531">531  </a></b>			}
+<b><a name="line532">532  </a></b>	
+<b><a name="line533">533  </a></b>		      if (__large_ignore)
+<b><a name="line534">534  </a></b>			_M_gcount = __gnu_cxx::__numeric_traits&lt;streamsize&gt;::__max;
+<b><a name="line535">535  </a></b>	
+<b><a name="line536">536  </a></b>		      if (traits_type::eq_int_type(__c, __eof))
+<b><a name="line537">537  </a></b>	                __err |= ios_base::eofbit;
+<b><a name="line538">538  </a></b>	            }
+<b><a name="line539">539  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line540">540  </a></b>		    {
+<b><a name="line541">541  </a></b>		      this-&gt;_M_setstate(ios_base::badbit);
+<b><a name="line542">542  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line543">543  </a></b>		    }
+<b><a name="line544">544  </a></b>	          <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line545">545  </a></b>	            { this-&gt;_M_setstate(ios_base::badbit); }
+<b><a name="line546">546  </a></b>	          if (__err)
+<b><a name="line547">547  </a></b>	            this-&gt;setstate(__err);
+<b><a name="line548">548  </a></b>	        }
+<b><a name="line549">549  </a></b>	      return *this;
+<b><a name="line550">550  </a></b>	    }
+<b><a name="line551">551  </a></b>	
+<b><a name="line552">552  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line553">553  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line552">_CharT</a>, <a href="#line552">_Traits</a>&gt;&amp;
+<b><a name="line554">554  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line552">_CharT</a>, <a href="#line552">_Traits</a>&gt;::
+<b><a name="line555">555  </a></b>	    <b>ignore</b>(<a href="../postypes.h/code.html#line98">streamsize</a> __n, <a href="../../istream/code.html#line63">int_type</a> __delim)
+<b><a name="line556">556  </a></b>	    {
+<b><a name="line557">557  </a></b>	      _M_gcount = 0;
+<b><a name="line558">558  </a></b>	      sentry __cerb(*this, true);
+<b><a name="line559">559  </a></b>	      if (__cerb &amp;&amp; __n &gt; 0)
+<b><a name="line560">560  </a></b>	        {
+<b><a name="line561">561  </a></b>	          ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line562">562  </a></b>	          <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line563">563  </a></b>	            {
+<b><a name="line564">564  </a></b>	              const int_type __eof = traits_type::eof();
+<b><a name="line565">565  </a></b>	              __streambuf_type* __sb = this-&gt;rdbuf();
+<b><a name="line566">566  </a></b>	              int_type __c = __sb-&gt;sgetc();
+<b><a name="line567">567  </a></b>	
+<b><a name="line568">568  </a></b>		      // See comment above.
+<b><a name="line569">569  </a></b>		      bool __large_ignore = false;
+<b><a name="line570">570  </a></b>		      while (true)
+<b><a name="line571">571  </a></b>			{
+<b><a name="line572">572  </a></b>			  while (_M_gcount &lt; __n
+<b><a name="line573">573  </a></b>				 &amp;&amp; !traits_type::eq_int_type(__c, __eof)
+<b><a name="line574">574  </a></b>				 &amp;&amp; !traits_type::eq_int_type(__c, __delim))
+<b><a name="line575">575  </a></b>			    {
+<b><a name="line576">576  </a></b>			      ++_M_gcount;
+<b><a name="line577">577  </a></b>			      __c = __sb-&gt;snextc();
+<b><a name="line578">578  </a></b>			    }
+<b><a name="line579">579  </a></b>			  if (__n == __gnu_cxx::__numeric_traits&lt;streamsize&gt;::__max
+<b><a name="line580">580  </a></b>			      &amp;&amp; !traits_type::eq_int_type(__c, __eof)
+<b><a name="line581">581  </a></b>			      &amp;&amp; !traits_type::eq_int_type(__c, __delim))
+<b><a name="line582">582  </a></b>			    {
+<b><a name="line583">583  </a></b>			      _M_gcount =
+<b><a name="line584">584  </a></b>				__gnu_cxx::__numeric_traits&lt;streamsize&gt;::__min;
+<b><a name="line585">585  </a></b>			      __large_ignore = true;
+<b><a name="line586">586  </a></b>			    }
+<b><a name="line587">587  </a></b>			  else
+<b><a name="line588">588  </a></b>			    break;
+<b><a name="line589">589  </a></b>			}
+<b><a name="line590">590  </a></b>	
+<b><a name="line591">591  </a></b>		      if (__large_ignore)
+<b><a name="line592">592  </a></b>			_M_gcount = __gnu_cxx::__numeric_traits&lt;streamsize&gt;::__max;
+<b><a name="line593">593  </a></b>	
+<b><a name="line594">594  </a></b>	              if (traits_type::eq_int_type(__c, __eof))
+<b><a name="line595">595  </a></b>	                __err |= ios_base::eofbit;
+<b><a name="line596">596  </a></b>		      else if (traits_type::eq_int_type(__c, __delim))
+<b><a name="line597">597  </a></b>			{
+<b><a name="line598">598  </a></b>			  if (_M_gcount
+<b><a name="line599">599  </a></b>			      &lt; __gnu_cxx::__numeric_traits&lt;streamsize&gt;::__max)
+<b><a name="line600">600  </a></b>			    ++_M_gcount;
+<b><a name="line601">601  </a></b>			  __sb-&gt;sbumpc();
+<b><a name="line602">602  </a></b>			}
+<b><a name="line603">603  </a></b>	            }
+<b><a name="line604">604  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line605">605  </a></b>		    {
+<b><a name="line606">606  </a></b>		      this-&gt;_M_setstate(ios_base::badbit);
+<b><a name="line607">607  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line608">608  </a></b>		    }
+<b><a name="line609">609  </a></b>	          <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line610">610  </a></b>	            { this-&gt;_M_setstate(ios_base::badbit); }
+<b><a name="line611">611  </a></b>	          if (__err)
+<b><a name="line612">612  </a></b>	            this-&gt;setstate(__err);
+<b><a name="line613">613  </a></b>	        }
+<b><a name="line614">614  </a></b>	      return *this;
+<b><a name="line615">615  </a></b>	    }
+<b><a name="line616">616  </a></b>	
+<b><a name="line617">617  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line618">618  </a></b>	    typename <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line617">_CharT</a>, <a href="#line617">_Traits</a>&gt;::<a href="../../istream/code.html#line63">int_type</a>
+<b><a name="line619">619  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line617">_CharT</a>, <a href="#line617">_Traits</a>&gt;::
+<b><a name="line620">620  </a></b>	    <b>peek</b>(void)
+<b><a name="line621">621  </a></b>	    {
+<b><a name="line622">622  </a></b>	      int_type __c = traits_type::eof();
+<b><a name="line623">623  </a></b>	      _M_gcount = 0;
+<b><a name="line624">624  </a></b>	      sentry __cerb(*this, true);
+<b><a name="line625">625  </a></b>	      if (__cerb)
+<b><a name="line626">626  </a></b>		{
+<b><a name="line627">627  </a></b>		  ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line628">628  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line629">629  </a></b>		    {
+<b><a name="line630">630  </a></b>		      __c = this-&gt;rdbuf()-&gt;sgetc();
+<b><a name="line631">631  </a></b>		      if (traits_type::eq_int_type(__c, traits_type::eof()))
+<b><a name="line632">632  </a></b>			__err |= ios_base::eofbit;
+<b><a name="line633">633  </a></b>		    }
+<b><a name="line634">634  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line635">635  </a></b>		    {
+<b><a name="line636">636  </a></b>		      this-&gt;_M_setstate(ios_base::badbit);
+<b><a name="line637">637  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line638">638  </a></b>		    }
+<b><a name="line639">639  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line640">640  </a></b>		    { this-&gt;_M_setstate(ios_base::badbit); }
+<b><a name="line641">641  </a></b>		  if (__err)
+<b><a name="line642">642  </a></b>		    this-&gt;setstate(__err);
+<b><a name="line643">643  </a></b>		}
+<b><a name="line644">644  </a></b>	      return __c;
+<b><a name="line645">645  </a></b>	    }
+<b><a name="line646">646  </a></b>	
+<b><a name="line647">647  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line648">648  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line647">_CharT</a>, <a href="#line647">_Traits</a>&gt;&amp;
+<b><a name="line649">649  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line647">_CharT</a>, <a href="#line647">_Traits</a>&gt;::
+<b><a name="line650">650  </a></b>	    <b>read</b>(<a href="../../istream/code.html#line62">char_type</a>* __s, <a href="../postypes.h/code.html#line98">streamsize</a> __n)
+<b><a name="line651">651  </a></b>	    {
+<b><a name="line652">652  </a></b>	      _M_gcount = 0;
+<b><a name="line653">653  </a></b>	      sentry __cerb(*this, true);
+<b><a name="line654">654  </a></b>	      if (__cerb)
+<b><a name="line655">655  </a></b>		{
+<b><a name="line656">656  </a></b>		  ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line657">657  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line658">658  </a></b>		    {
+<b><a name="line659">659  </a></b>		      _M_gcount = this-&gt;rdbuf()-&gt;sgetn(__s, __n);
+<b><a name="line660">660  </a></b>		      if (_M_gcount != __n)
+<b><a name="line661">661  </a></b>			__err |= (ios_base::eofbit | ios_base::failbit);
+<b><a name="line662">662  </a></b>		    }
+<b><a name="line663">663  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line664">664  </a></b>		    {
+<b><a name="line665">665  </a></b>		      this-&gt;_M_setstate(ios_base::badbit);
+<b><a name="line666">666  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line667">667  </a></b>		    }
+<b><a name="line668">668  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line669">669  </a></b>		    { this-&gt;_M_setstate(ios_base::badbit); }
+<b><a name="line670">670  </a></b>		  if (__err)
+<b><a name="line671">671  </a></b>		    this-&gt;setstate(__err);
+<b><a name="line672">672  </a></b>		}
+<b><a name="line673">673  </a></b>	      return *this;
+<b><a name="line674">674  </a></b>	    }
+<b><a name="line675">675  </a></b>	
+<b><a name="line676">676  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line677">677  </a></b>	    <a href="../postypes.h/code.html#line98">streamsize</a>
+<b><a name="line678">678  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line676">_CharT</a>, <a href="#line676">_Traits</a>&gt;::
+<b><a name="line679">679  </a></b>	    <b>readsome</b>(<a href="../../istream/code.html#line62">char_type</a>* __s, <a href="../postypes.h/code.html#line98">streamsize</a> __n)
+<b><a name="line680">680  </a></b>	    {
+<b><a name="line681">681  </a></b>	      _M_gcount = 0;
+<b><a name="line682">682  </a></b>	      sentry __cerb(*this, true);
+<b><a name="line683">683  </a></b>	      if (__cerb)
+<b><a name="line684">684  </a></b>		{
+<b><a name="line685">685  </a></b>		  ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line686">686  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line687">687  </a></b>		    {
+<b><a name="line688">688  </a></b>		      // Cannot compare int_type with streamsize generically.
+<b><a name="line689">689  </a></b>		      const streamsize __num = this-&gt;rdbuf()-&gt;in_avail();
+<b><a name="line690">690  </a></b>		      if (__num &gt; 0)
+<b><a name="line691">691  </a></b>			_M_gcount = this-&gt;rdbuf()-&gt;sgetn(__s, std::min(__num, __n));
+<b><a name="line692">692  </a></b>		      else if (__num == -1)
+<b><a name="line693">693  </a></b>			__err |= ios_base::eofbit;
+<b><a name="line694">694  </a></b>		    }
+<b><a name="line695">695  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line696">696  </a></b>		    {
+<b><a name="line697">697  </a></b>		      this-&gt;_M_setstate(ios_base::badbit);
+<b><a name="line698">698  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line699">699  </a></b>		    }
+<b><a name="line700">700  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line701">701  </a></b>		    { this-&gt;_M_setstate(ios_base::badbit); }
+<b><a name="line702">702  </a></b>		  if (__err)
+<b><a name="line703">703  </a></b>		    this-&gt;setstate(__err);
+<b><a name="line704">704  </a></b>		}
+<b><a name="line705">705  </a></b>	      return _M_gcount;
+<b><a name="line706">706  </a></b>	    }
+<b><a name="line707">707  </a></b>	
+<b><a name="line708">708  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line709">709  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line708">_CharT</a>, <a href="#line708">_Traits</a>&gt;&amp;
+<b><a name="line710">710  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line708">_CharT</a>, <a href="#line708">_Traits</a>&gt;::
+<b><a name="line711">711  </a></b>	    <b>putback</b>(<a href="../../istream/code.html#line62">char_type</a> __c)
+<b><a name="line712">712  </a></b>	    {
+<b><a name="line713">713  </a></b>	      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line714">714  </a></b>	      // 60. What is a formatted input function?
+<b><a name="line715">715  </a></b>	      _M_gcount = 0;
+<b><a name="line716">716  </a></b>	      // Clear eofbit per N3168.
+<b><a name="line717">717  </a></b>	      this-&gt;clear(this-&gt;rdstate() &amp; ~ios_base::eofbit);
+<b><a name="line718">718  </a></b>	      sentry __cerb(*this, true);
+<b><a name="line719">719  </a></b>	      if (__cerb)
+<b><a name="line720">720  </a></b>		{
+<b><a name="line721">721  </a></b>		  ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line722">722  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line723">723  </a></b>		    {
+<b><a name="line724">724  </a></b>		      const int_type __eof = traits_type::eof();
+<b><a name="line725">725  </a></b>		      __streambuf_type* __sb = this-&gt;rdbuf();
+<b><a name="line726">726  </a></b>		      if (!__sb
+<b><a name="line727">727  </a></b>			  || traits_type::eq_int_type(__sb-&gt;sputbackc(__c), __eof))
+<b><a name="line728">728  </a></b>			__err |= ios_base::badbit;
+<b><a name="line729">729  </a></b>		    }
+<b><a name="line730">730  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line731">731  </a></b>		    {
+<b><a name="line732">732  </a></b>		      this-&gt;_M_setstate(ios_base::badbit);
+<b><a name="line733">733  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line734">734  </a></b>		    }
+<b><a name="line735">735  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line736">736  </a></b>		    { this-&gt;_M_setstate(ios_base::badbit); }
+<b><a name="line737">737  </a></b>		  if (__err)
+<b><a name="line738">738  </a></b>		    this-&gt;setstate(__err);
+<b><a name="line739">739  </a></b>		}
+<b><a name="line740">740  </a></b>	      return *this;
+<b><a name="line741">741  </a></b>	    }
+<b><a name="line742">742  </a></b>	
+<b><a name="line743">743  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line744">744  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line743">_CharT</a>, <a href="#line743">_Traits</a>&gt;&amp;
+<b><a name="line745">745  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line743">_CharT</a>, <a href="#line743">_Traits</a>&gt;::
+<b><a name="line746">746  </a></b>	    <b>unget</b>(void)
+<b><a name="line747">747  </a></b>	    {
+<b><a name="line748">748  </a></b>	      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line749">749  </a></b>	      // 60. What is a formatted input function?
+<b><a name="line750">750  </a></b>	      _M_gcount = 0;
+<b><a name="line751">751  </a></b>	      // Clear eofbit per N3168.
+<b><a name="line752">752  </a></b>	      this-&gt;clear(this-&gt;rdstate() &amp; ~ios_base::eofbit);
+<b><a name="line753">753  </a></b>	      sentry __cerb(*this, true);
+<b><a name="line754">754  </a></b>	      if (__cerb)
+<b><a name="line755">755  </a></b>		{
+<b><a name="line756">756  </a></b>		  ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line757">757  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line758">758  </a></b>		    {
+<b><a name="line759">759  </a></b>		      const int_type __eof = traits_type::eof();
+<b><a name="line760">760  </a></b>		      __streambuf_type* __sb = this-&gt;rdbuf();
+<b><a name="line761">761  </a></b>		      if (!__sb
+<b><a name="line762">762  </a></b>			  || traits_type::eq_int_type(__sb-&gt;sungetc(), __eof))
+<b><a name="line763">763  </a></b>			__err |= ios_base::badbit;
+<b><a name="line764">764  </a></b>		    }
+<b><a name="line765">765  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line766">766  </a></b>		    {
+<b><a name="line767">767  </a></b>		      this-&gt;_M_setstate(ios_base::badbit);
+<b><a name="line768">768  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line769">769  </a></b>		    }
+<b><a name="line770">770  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line771">771  </a></b>		    { this-&gt;_M_setstate(ios_base::badbit); }
+<b><a name="line772">772  </a></b>		  if (__err)
+<b><a name="line773">773  </a></b>		    this-&gt;setstate(__err);
+<b><a name="line774">774  </a></b>		}
+<b><a name="line775">775  </a></b>	      return *this;
+<b><a name="line776">776  </a></b>	    }
+<b><a name="line777">777  </a></b>	
+<b><a name="line778">778  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line779">779  </a></b>	    int
+<b><a name="line780">780  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line778">_CharT</a>, <a href="#line778">_Traits</a>&gt;::
+<b><a name="line781">781  </a></b>	    <b>sync</b>(void)
+<b><a name="line782">782  </a></b>	    {
+<b><a name="line783">783  </a></b>	      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line784">784  </a></b>	      // DR60.  Do not change _M_gcount.
+<b><a name="line785">785  </a></b>	      int __ret = -1;
+<b><a name="line786">786  </a></b>	      sentry __cerb(*this, true);
+<b><a name="line787">787  </a></b>	      if (__cerb)
+<b><a name="line788">788  </a></b>		{
+<b><a name="line789">789  </a></b>		  ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line790">790  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line791">791  </a></b>		    {
+<b><a name="line792">792  </a></b>		      __streambuf_type* __sb = this-&gt;rdbuf();
+<b><a name="line793">793  </a></b>		      if (__sb)
+<b><a name="line794">794  </a></b>			{
+<b><a name="line795">795  </a></b>			  if (__sb-&gt;pubsync() == -1)
+<b><a name="line796">796  </a></b>			    __err |= ios_base::badbit;
+<b><a name="line797">797  </a></b>			  else
+<b><a name="line798">798  </a></b>			    __ret = 0;
+<b><a name="line799">799  </a></b>			}
+<b><a name="line800">800  </a></b>		    }
+<b><a name="line801">801  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line802">802  </a></b>		    {
+<b><a name="line803">803  </a></b>		      this-&gt;_M_setstate(ios_base::badbit);
+<b><a name="line804">804  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line805">805  </a></b>		    }
+<b><a name="line806">806  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line807">807  </a></b>		    { this-&gt;_M_setstate(ios_base::badbit); }
+<b><a name="line808">808  </a></b>		  if (__err)
+<b><a name="line809">809  </a></b>		    this-&gt;setstate(__err);
+<b><a name="line810">810  </a></b>		}
+<b><a name="line811">811  </a></b>	      return __ret;
+<b><a name="line812">812  </a></b>	    }
+<b><a name="line813">813  </a></b>	
+<b><a name="line814">814  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line815">815  </a></b>	    typename <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line814">_CharT</a>, <a href="#line814">_Traits</a>&gt;::<a href="../../istream/code.html#line64">pos_type</a>
+<b><a name="line816">816  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line814">_CharT</a>, <a href="#line814">_Traits</a>&gt;::
+<b><a name="line817">817  </a></b>	    <b>tellg</b>(void)
+<b><a name="line818">818  </a></b>	    {
+<b><a name="line819">819  </a></b>	      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line820">820  </a></b>	      // DR60.  Do not change _M_gcount.
+<b><a name="line821">821  </a></b>	      pos_type __ret = pos_type(-1);
+<b><a name="line822">822  </a></b>	      sentry __cerb(*this, true);
+<b><a name="line823">823  </a></b>	      if (__cerb)
+<b><a name="line824">824  </a></b>		{
+<b><a name="line825">825  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line826">826  </a></b>		    {
+<b><a name="line827">827  </a></b>		      if (!this-&gt;fail())
+<b><a name="line828">828  </a></b>			__ret = this-&gt;rdbuf()-&gt;pubseekoff(0, ios_base::cur,
+<b><a name="line829">829  </a></b>							  ios_base::in);
+<b><a name="line830">830  </a></b>		    }
+<b><a name="line831">831  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line832">832  </a></b>		    {
+<b><a name="line833">833  </a></b>		      this-&gt;_M_setstate(ios_base::badbit);
+<b><a name="line834">834  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line835">835  </a></b>		    }
+<b><a name="line836">836  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line837">837  </a></b>		    { this-&gt;_M_setstate(ios_base::badbit); }
+<b><a name="line838">838  </a></b>		}
+<b><a name="line839">839  </a></b>	      return __ret;
+<b><a name="line840">840  </a></b>	    }
+<b><a name="line841">841  </a></b>	
+<b><a name="line842">842  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line843">843  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line842">_CharT</a>, <a href="#line842">_Traits</a>&gt;&amp;
+<b><a name="line844">844  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line842">_CharT</a>, <a href="#line842">_Traits</a>&gt;::
+<b><a name="line845">845  </a></b>	    <b>seekg</b>(<a href="../../istream/code.html#line64">pos_type</a> __pos)
+<b><a name="line846">846  </a></b>	    {
+<b><a name="line847">847  </a></b>	      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line848">848  </a></b>	      // DR60.  Do not change _M_gcount.
+<b><a name="line849">849  </a></b>	      // Clear eofbit per N3168.
+<b><a name="line850">850  </a></b>	      this-&gt;clear(this-&gt;rdstate() &amp; ~ios_base::eofbit);
+<b><a name="line851">851  </a></b>	      sentry __cerb(*this, true);
+<b><a name="line852">852  </a></b>	      if (__cerb)
+<b><a name="line853">853  </a></b>		{
+<b><a name="line854">854  </a></b>		  ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line855">855  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line856">856  </a></b>		    {
+<b><a name="line857">857  </a></b>		      if (!this-&gt;fail())
+<b><a name="line858">858  </a></b>			{
+<b><a name="line859">859  </a></b>			  // 136.  seekp, seekg setting wrong streams?
+<b><a name="line860">860  </a></b>			  const pos_type __p = this-&gt;rdbuf()-&gt;pubseekpos(__pos,
+<b><a name="line861">861  </a></b>									 ios_base::in);
+<b><a name="line862">862  </a></b>			  
+<b><a name="line863">863  </a></b>			  // 129.  Need error indication from seekp() and seekg()
+<b><a name="line864">864  </a></b>			  if (__p == pos_type(off_type(-1)))
+<b><a name="line865">865  </a></b>			    __err |= ios_base::failbit;
+<b><a name="line866">866  </a></b>			}
+<b><a name="line867">867  </a></b>		    }
+<b><a name="line868">868  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line869">869  </a></b>		    {
+<b><a name="line870">870  </a></b>		      this-&gt;_M_setstate(ios_base::badbit);
+<b><a name="line871">871  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line872">872  </a></b>		    }
+<b><a name="line873">873  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line874">874  </a></b>		    { this-&gt;_M_setstate(ios_base::badbit); }
+<b><a name="line875">875  </a></b>		  if (__err)
+<b><a name="line876">876  </a></b>		    this-&gt;setstate(__err);
+<b><a name="line877">877  </a></b>		}
+<b><a name="line878">878  </a></b>	      return *this;
+<b><a name="line879">879  </a></b>	    }
+<b><a name="line880">880  </a></b>	
+<b><a name="line881">881  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line882">882  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line881">_CharT</a>, <a href="#line881">_Traits</a>&gt;&amp;
+<b><a name="line883">883  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line881">_CharT</a>, <a href="#line881">_Traits</a>&gt;::
+<b><a name="line884">884  </a></b>	    <b>seekg</b>(<a href="../../istream/code.html#line65">off_type</a> __off, <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="../ios_base.h/code.html#line461">seekdir</a> __dir)
+<b><a name="line885">885  </a></b>	    {
+<b><a name="line886">886  </a></b>	      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line887">887  </a></b>	      // DR60.  Do not change _M_gcount.
+<b><a name="line888">888  </a></b>	      // Clear eofbit per N3168.
+<b><a name="line889">889  </a></b>	      this-&gt;clear(this-&gt;rdstate() &amp; ~ios_base::eofbit);
+<b><a name="line890">890  </a></b>	      sentry __cerb(*this, true);
+<b><a name="line891">891  </a></b>	      if (__cerb)
+<b><a name="line892">892  </a></b>		{
+<b><a name="line893">893  </a></b>		  ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line894">894  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line895">895  </a></b>		    {
+<b><a name="line896">896  </a></b>		      if (!this-&gt;fail())
+<b><a name="line897">897  </a></b>			{
+<b><a name="line898">898  </a></b>			  // 136.  seekp, seekg setting wrong streams?
+<b><a name="line899">899  </a></b>			  const pos_type __p = this-&gt;rdbuf()-&gt;pubseekoff(__off, __dir,
+<b><a name="line900">900  </a></b>									 ios_base::in);
+<b><a name="line901">901  </a></b>		      
+<b><a name="line902">902  </a></b>			  // 129.  Need error indication from seekp() and seekg()
+<b><a name="line903">903  </a></b>			  if (__p == pos_type(off_type(-1)))
+<b><a name="line904">904  </a></b>			    __err |= ios_base::failbit;
+<b><a name="line905">905  </a></b>			}
+<b><a name="line906">906  </a></b>		    }
+<b><a name="line907">907  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line908">908  </a></b>		    {
+<b><a name="line909">909  </a></b>		      this-&gt;_M_setstate(ios_base::badbit);
+<b><a name="line910">910  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line911">911  </a></b>		    }
+<b><a name="line912">912  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line913">913  </a></b>		    { this-&gt;_M_setstate(ios_base::badbit); }
+<b><a name="line914">914  </a></b>		  if (__err)
+<b><a name="line915">915  </a></b>		    this-&gt;setstate(__err);
+<b><a name="line916">916  </a></b>		}
+<b><a name="line917">917  </a></b>	      return *this;
+<b><a name="line918">918  </a></b>	    }
+<b><a name="line919">919  </a></b>	
+<b><a name="line920">920  </a></b>	  // 27.6.1.2.3 Character extraction templates
+<b><a name="line921">921  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line922">922  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line921">_CharT</a>, <a href="#line921">_Traits</a>&gt;&amp;
+<b><a name="line923">923  </a></b>	    operator&gt;&gt;(<a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line921">_CharT</a>, <a href="#line921">_Traits</a>&gt;&amp; __in, <a href="#line921">_CharT</a>&amp; __c)
+<b><a name="line924">924  </a></b>	    {
+<b><a name="line925">925  </a></b>	      typedef basic_istream&lt;_CharT, _Traits&gt;		__istream_type;
+<b><a name="line926">926  </a></b>	      typedef typename __istream_type::int_type         __int_type;
+<b><a name="line927">927  </a></b>	
+<b><a name="line928">928  </a></b>	      typename __istream_type::sentry __cerb(__in, false);
+<b><a name="line929">929  </a></b>	      if (__cerb)
+<b><a name="line930">930  </a></b>		{
+<b><a name="line931">931  </a></b>		  ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line932">932  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line933">933  </a></b>		    {
+<b><a name="line934">934  </a></b>		      const __int_type __cb = __in.rdbuf()-&gt;sbumpc();
+<b><a name="line935">935  </a></b>		      if (!_Traits::eq_int_type(__cb, _Traits::eof()))
+<b><a name="line936">936  </a></b>			__c = _Traits::to_char_type(__cb);
+<b><a name="line937">937  </a></b>		      else
+<b><a name="line938">938  </a></b>			__err |= (ios_base::eofbit | ios_base::failbit);
+<b><a name="line939">939  </a></b>		    }
+<b><a name="line940">940  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line941">941  </a></b>		    {
+<b><a name="line942">942  </a></b>		      __in._M_setstate(ios_base::badbit);
+<b><a name="line943">943  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line944">944  </a></b>		    }
+<b><a name="line945">945  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line946">946  </a></b>		    { __in._M_setstate(ios_base::badbit); }
+<b><a name="line947">947  </a></b>		  if (__err)
+<b><a name="line948">948  </a></b>		    __in.setstate(__err);
+<b><a name="line949">949  </a></b>		}
+<b><a name="line950">950  </a></b>	      return __in;
+<b><a name="line951">951  </a></b>	    }
+<b><a name="line952">952  </a></b>	
+<b><a name="line953">953  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line954">954  </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line953">_CharT</a>, <a href="#line953">_Traits</a>&gt;&amp;
+<b><a name="line955">955  </a></b>	    operator&gt;&gt;(<a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line953">_CharT</a>, <a href="#line953">_Traits</a>&gt;&amp; __in, <a href="#line953">_CharT</a>* __s)
+<b><a name="line956">956  </a></b>	    {
+<b><a name="line957">957  </a></b>	      typedef basic_istream&lt;_CharT, _Traits&gt;		__istream_type;
+<b><a name="line958">958  </a></b>	      typedef basic_streambuf&lt;_CharT, _Traits&gt;          __streambuf_type;
+<b><a name="line959">959  </a></b>	      typedef typename _Traits::int_type		int_type;
+<b><a name="line960">960  </a></b>	      typedef _CharT					char_type;
+<b><a name="line961">961  </a></b>	      typedef ctype&lt;_CharT&gt;				__ctype_type;
+<b><a name="line962">962  </a></b>	
+<b><a name="line963">963  </a></b>	      streamsize __extracted = 0;
+<b><a name="line964">964  </a></b>	      ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line965">965  </a></b>	      typename __istream_type::sentry __cerb(__in, false);
+<b><a name="line966">966  </a></b>	      if (__cerb)
+<b><a name="line967">967  </a></b>		{
+<b><a name="line968">968  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line969">969  </a></b>		    {
+<b><a name="line970">970  </a></b>		      // Figure out how many characters to extract.
+<b><a name="line971">971  </a></b>		      streamsize __num = __in.width();
+<b><a name="line972">972  </a></b>		      if (__num &lt;= 0)
+<b><a name="line973">973  </a></b>			__num = __gnu_cxx::__numeric_traits&lt;streamsize&gt;::__max;
+<b><a name="line974">974  </a></b>	
+<b><a name="line975">975  </a></b>		      const __ctype_type&amp; __ct = use_facet&lt;__ctype_type&gt;(__in.getloc());
+<b><a name="line976">976  </a></b>	
+<b><a name="line977">977  </a></b>		      const int_type __eof = _Traits::eof();
+<b><a name="line978">978  </a></b>		      __streambuf_type* __sb = __in.rdbuf();
+<b><a name="line979">979  </a></b>		      int_type __c = __sb-&gt;sgetc();
+<b><a name="line980">980  </a></b>	
+<b><a name="line981">981  </a></b>		      while (__extracted &lt; __num - 1
+<b><a name="line982">982  </a></b>			     &amp;&amp; !_Traits::eq_int_type(__c, __eof)
+<b><a name="line983">983  </a></b>			     &amp;&amp; !__ct.is(ctype_base::space,
+<b><a name="line984">984  </a></b>					 _Traits::to_char_type(__c)))
+<b><a name="line985">985  </a></b>			{
+<b><a name="line986">986  </a></b>			  *__s++ = _Traits::to_char_type(__c);
+<b><a name="line987">987  </a></b>			  ++__extracted;
+<b><a name="line988">988  </a></b>			  __c = __sb-&gt;snextc();
+<b><a name="line989">989  </a></b>			}
+<b><a name="line990">990  </a></b>		      if (_Traits::eq_int_type(__c, __eof))
+<b><a name="line991">991  </a></b>			__err |= ios_base::eofbit;
+<b><a name="line992">992  </a></b>	
+<b><a name="line993">993  </a></b>		      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line994">994  </a></b>		      // 68.  Extractors for char* should store null at end
+<b><a name="line995">995  </a></b>		      *__s = char_type();
+<b><a name="line996">996  </a></b>		      __in.width(0);
+<b><a name="line997">997  </a></b>		    }
+<b><a name="line998">998  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line999">999  </a></b>		    {
+<b><a name="line1000">1000 </a></b>		      __in._M_setstate(ios_base::badbit);
+<b><a name="line1001">1001 </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line1002">1002 </a></b>		    }
+<b><a name="line1003">1003 </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line1004">1004 </a></b>		    { __in._M_setstate(ios_base::badbit); }
+<b><a name="line1005">1005 </a></b>		}
+<b><a name="line1006">1006 </a></b>	      if (!__extracted)
+<b><a name="line1007">1007 </a></b>		__err |= ios_base::failbit;
+<b><a name="line1008">1008 </a></b>	      if (__err)
+<b><a name="line1009">1009 </a></b>		__in.setstate(__err);
+<b><a name="line1010">1010 </a></b>	      return __in;
+<b><a name="line1011">1011 </a></b>	    }
+<b><a name="line1012">1012 </a></b>	
+<b><a name="line1013">1013 </a></b>	  // 27.6.1.4 Standard basic_istream manipulators
+<b><a name="line1014">1014 </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line1015">1015 </a></b>	    <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line1014">_CharT</a>, <a href="#line1014">_Traits</a>&gt;&amp;
+<b><a name="line1016">1016 </a></b>	    ws(<a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line1014">_CharT</a>, <a href="#line1014">_Traits</a>&gt;&amp; __in)
+<b><a name="line1017">1017 </a></b>	    {
+<b><a name="line1018">1018 </a></b>	      typedef basic_istream&lt;_CharT, _Traits&gt;		__istream_type;
+<b><a name="line1019">1019 </a></b>	      typedef basic_streambuf&lt;_CharT, _Traits&gt;          __streambuf_type;
+<b><a name="line1020">1020 </a></b>	      typedef typename __istream_type::int_type		__int_type;
+<b><a name="line1021">1021 </a></b>	      typedef ctype&lt;_CharT&gt;				__ctype_type;
+<b><a name="line1022">1022 </a></b>	
+<b><a name="line1023">1023 </a></b>	      const __ctype_type&amp; __ct = use_facet&lt;__ctype_type&gt;(__in.getloc());
+<b><a name="line1024">1024 </a></b>	      const __int_type __eof = _Traits::eof();
+<b><a name="line1025">1025 </a></b>	      __streambuf_type* __sb = __in.rdbuf();
+<b><a name="line1026">1026 </a></b>	      __int_type __c = __sb-&gt;sgetc();
+<b><a name="line1027">1027 </a></b>	
+<b><a name="line1028">1028 </a></b>	      while (!_Traits::eq_int_type(__c, __eof)
+<b><a name="line1029">1029 </a></b>		     &amp;&amp; __ct.is(ctype_base::space, _Traits::to_char_type(__c)))
+<b><a name="line1030">1030 </a></b>		__c = __sb-&gt;snextc();
+<b><a name="line1031">1031 </a></b>	
+<b><a name="line1032">1032 </a></b>	       if (_Traits::eq_int_type(__c, __eof))
+<b><a name="line1033">1033 </a></b>		 __in.setstate(ios_base::eofbit);
+<b><a name="line1034">1034 </a></b>	      return __in;
+<b><a name="line1035">1035 </a></b>	    }
+<b><a name="line1036">1036 </a></b>	
+<b><a name="line1037">1037 </a></b>	  // Inhibit implicit instantiations for required instantiations,
+<b><a name="line1038">1038 </a></b>	  // which are defined via explicit instantiations elsewhere.
+<b><a name="line1039">1039 </a></b>	#if <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line149">_GLIBCXX_EXTERN_TEMPLATE</a>
+<b><a name="line1040">1040 </a></b>	  extern template class <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;char&gt;;
+<b><a name="line1041">1041 </a></b>	  extern template <a href="../../iosfwd/code.html#line138">istream</a>&amp; ws(<a href="../../iosfwd/code.html#line138">istream</a>&amp;);
+<b><a name="line1042">1042 </a></b>	  extern template <a href="../../iosfwd/code.html#line138">istream</a>&amp; operator&gt;&gt;(<a href="../../iosfwd/code.html#line138">istream</a>&amp;, char&amp;);
+<b><a name="line1043">1043 </a></b>	  extern template <a href="../../iosfwd/code.html#line138">istream</a>&amp; operator&gt;&gt;(<a href="../../iosfwd/code.html#line138">istream</a>&amp;, char*);
+<b><a name="line1044">1044 </a></b>	  extern template <a href="../../iosfwd/code.html#line138">istream</a>&amp; operator&gt;&gt;(<a href="../../iosfwd/code.html#line138">istream</a>&amp;, unsigned char&amp;);
+<b><a name="line1045">1045 </a></b>	  extern template <a href="../../iosfwd/code.html#line138">istream</a>&amp; operator&gt;&gt;(<a href="../../iosfwd/code.html#line138">istream</a>&amp;, signed char&amp;);
+<b><a name="line1046">1046 </a></b>	  extern template <a href="../../iosfwd/code.html#line138">istream</a>&amp; operator&gt;&gt;(<a href="../../iosfwd/code.html#line138">istream</a>&amp;, unsigned char*);
+<b><a name="line1047">1047 </a></b>	  extern template <a href="../../iosfwd/code.html#line138">istream</a>&amp; operator&gt;&gt;(<a href="../../iosfwd/code.html#line138">istream</a>&amp;, signed char*);
+<b><a name="line1048">1048 </a></b>	
+<b><a name="line1049">1049 </a></b>	  extern template <a href="../../iosfwd/code.html#line138">istream</a>&amp; <a href="../../iosfwd/code.html#line138">istream</a>::_M_extract(unsigned short&amp;);
+<b><a name="line1050">1050 </a></b>	  extern template <a href="../../iosfwd/code.html#line138">istream</a>&amp; <a href="../../iosfwd/code.html#line138">istream</a>::_M_extract(unsigned int&amp;);  
+<b><a name="line1051">1051 </a></b>	  extern template <a href="../../iosfwd/code.html#line138">istream</a>&amp; <a href="../../iosfwd/code.html#line138">istream</a>::_M_extract(long&amp;);
+<b><a name="line1052">1052 </a></b>	  extern template <a href="../../iosfwd/code.html#line138">istream</a>&amp; <a href="../../iosfwd/code.html#line138">istream</a>::_M_extract(unsigned long&amp;);
+<b><a name="line1053">1053 </a></b>	  extern template <a href="../../iosfwd/code.html#line138">istream</a>&amp; <a href="../../iosfwd/code.html#line138">istream</a>::_M_extract(bool&amp;);
+<b><a name="line1054">1054 </a></b>	#ifdef <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1385">_GLIBCXX_USE_LONG_LONG</a>
+<b><a name="line1055">1055 </a></b>	  extern template <a href="../../iosfwd/code.html#line138">istream</a>&amp; <a href="../../iosfwd/code.html#line138">istream</a>::_M_extract(long long&amp;);
+<b><a name="line1056">1056 </a></b>	  extern template <a href="../../iosfwd/code.html#line138">istream</a>&amp; <a href="../../iosfwd/code.html#line138">istream</a>::_M_extract(unsigned long long&amp;);
+<b><a name="line1057">1057 </a></b>	#endif
+<b><a name="line1058">1058 </a></b>	  extern template <a href="../../iosfwd/code.html#line138">istream</a>&amp; <a href="../../iosfwd/code.html#line138">istream</a>::_M_extract(float&amp;);
+<b><a name="line1059">1059 </a></b>	  extern template <a href="../../iosfwd/code.html#line138">istream</a>&amp; <a href="../../iosfwd/code.html#line138">istream</a>::_M_extract(double&amp;);
+<b><a name="line1060">1060 </a></b>	  extern template <a href="../../iosfwd/code.html#line138">istream</a>&amp; <a href="../../iosfwd/code.html#line138">istream</a>::_M_extract(long double&amp;);
+<b><a name="line1061">1061 </a></b>	  extern template <a href="../../iosfwd/code.html#line138">istream</a>&amp; <a href="../../iosfwd/code.html#line138">istream</a>::_M_extract(void*&amp;);
+<b><a name="line1062">1062 </a></b>	
+<b><a name="line1063">1063 </a></b>	  extern template class <a href="../../iosfwd/code.html#line89">basic_iostream</a>&lt;char&gt;;
+<b><a name="line1064">1064 </a></b>	
+<b><a name="line1065">1065 </a></b>	#ifdef <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1432">_GLIBCXX_USE_WCHAR_T</a>
+<b><a name="line1066">1066 </a></b>	  extern template class <a href="../../iosfwd/code.html#line83">basic_istream</a>&lt;wchar_t&gt;;
+<b><a name="line1067">1067 </a></b>	  extern template <a href="../../iosfwd/code.html#line178">wistream</a>&amp; ws(<a href="../../iosfwd/code.html#line178">wistream</a>&amp;);
+<b><a name="line1068">1068 </a></b>	  extern template <a href="../../iosfwd/code.html#line178">wistream</a>&amp; operator&gt;&gt;(<a href="../../iosfwd/code.html#line178">wistream</a>&amp;, wchar_t&amp;);
+<b><a name="line1069">1069 </a></b>	  extern template <a href="../../iosfwd/code.html#line178">wistream</a>&amp; operator&gt;&gt;(<a href="../../iosfwd/code.html#line178">wistream</a>&amp;, wchar_t*);
+<b><a name="line1070">1070 </a></b>	
+<b><a name="line1071">1071 </a></b>	  extern template <a href="../../iosfwd/code.html#line178">wistream</a>&amp; <a href="../../iosfwd/code.html#line178">wistream</a>::_M_extract(unsigned short&amp;);
+<b><a name="line1072">1072 </a></b>	  extern template <a href="../../iosfwd/code.html#line178">wistream</a>&amp; <a href="../../iosfwd/code.html#line178">wistream</a>::_M_extract(unsigned int&amp;);  
+<b><a name="line1073">1073 </a></b>	  extern template <a href="../../iosfwd/code.html#line178">wistream</a>&amp; <a href="../../iosfwd/code.html#line178">wistream</a>::_M_extract(long&amp;);
+<b><a name="line1074">1074 </a></b>	  extern template <a href="../../iosfwd/code.html#line178">wistream</a>&amp; <a href="../../iosfwd/code.html#line178">wistream</a>::_M_extract(unsigned long&amp;);
+<b><a name="line1075">1075 </a></b>	  extern template <a href="../../iosfwd/code.html#line178">wistream</a>&amp; <a href="../../iosfwd/code.html#line178">wistream</a>::_M_extract(bool&amp;);
+<b><a name="line1076">1076 </a></b>	#ifdef <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1385">_GLIBCXX_USE_LONG_LONG</a>
+<b><a name="line1077">1077 </a></b>	  extern template <a href="../../iosfwd/code.html#line178">wistream</a>&amp; <a href="../../iosfwd/code.html#line178">wistream</a>::_M_extract(long long&amp;);
+<b><a name="line1078">1078 </a></b>	  extern template <a href="../../iosfwd/code.html#line178">wistream</a>&amp; <a href="../../iosfwd/code.html#line178">wistream</a>::_M_extract(unsigned long long&amp;);
+<b><a name="line1079">1079 </a></b>	#endif
+<b><a name="line1080">1080 </a></b>	  extern template <a href="../../iosfwd/code.html#line178">wistream</a>&amp; <a href="../../iosfwd/code.html#line178">wistream</a>::_M_extract(float&amp;);
+<b><a name="line1081">1081 </a></b>	  extern template <a href="../../iosfwd/code.html#line178">wistream</a>&amp; <a href="../../iosfwd/code.html#line178">wistream</a>::_M_extract(double&amp;);
+<b><a name="line1082">1082 </a></b>	  extern template <a href="../../iosfwd/code.html#line178">wistream</a>&amp; <a href="../../iosfwd/code.html#line178">wistream</a>::_M_extract(long double&amp;);
+<b><a name="line1083">1083 </a></b>	  extern template <a href="../../iosfwd/code.html#line178">wistream</a>&amp; <a href="../../iosfwd/code.html#line178">wistream</a>::_M_extract(void*&amp;);
+<b><a name="line1084">1084 </a></b>	
+<b><a name="line1085">1085 </a></b>	  extern template class <a href="../../iosfwd/code.html#line89">basic_iostream</a>&lt;wchar_t&gt;;
+<b><a name="line1086">1086 </a></b>	#endif
+<b><a name="line1087">1087 </a></b>	#endif
+<b><a name="line1088">1088 </a></b>	
+<b><a name="line1089">1089 </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line1090">1090 </a></b>	} // namespace std
+<b><a name="line1091">1091 </a></b>	
+<b><a name="line1092">1092 </a></b>	#endif
+<b><a name="line1093">1093 </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

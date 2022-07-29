@@ -1,0 +1,1541 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/bits/locale_facets_nonio.tcc</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Locale support -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2007-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file bits/locale_facets_nonio.tcc
+<b><a name="line26">26   </a></b>	 *  This is an internal header file, included by other library headers.
+<b><a name="line27">27   </a></b>	 *  Do not attempt to use it directly. @headername{locale}
+<b><a name="line28">28   </a></b>	 */
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	#ifndef _LOCALE_FACETS_NONIO_TCC
+<b><a name="line31">31   </a></b>	#define <b>_LOCALE_FACETS_NONIO_TCC</b> 1
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	#pragma GCC system_header
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line36">36   </a></b>	{
+<b><a name="line37">37   </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	  template&lt;typename <b>_CharT</b>, bool <b>_Intl</b>&gt;
+<b><a name="line40">40   </a></b>	    struct <b>__use_cache</b>&lt;<a href="../locale_facets_nonio.h/code.html#line952">__moneypunct_cache</a>&lt;<a href="#line39">_CharT</a>, <a href="#line39">_Intl</a>&gt; &gt;
+<b><a name="line41">41   </a></b>	    {
+<b><a name="line42">42   </a></b>	      const <a href="../locale_facets_nonio.h/code.html#line952">__moneypunct_cache</a>&lt;<a href="#line39">_CharT</a>, <a href="#line39">_Intl</a>&gt;*
+<b><a name="line43">43   </a></b>	      <b>operator()</b> (const <a href="../localefwd.h/code.html#line55">locale</a>&amp; __loc) const
+<b><a name="line44">44   </a></b>	      {
+<b><a name="line45">45   </a></b>		const size_t __i = moneypunct&lt;_CharT, _Intl&gt;::id._M_id();
+<b><a name="line46">46   </a></b>		const locale::facet** __caches = __loc._M_impl-&gt;_M_caches;
+<b><a name="line47">47   </a></b>		if (!__caches[__i])
+<b><a name="line48">48   </a></b>		  {
+<b><a name="line49">49   </a></b>		    __moneypunct_cache&lt;_CharT, _Intl&gt;* __tmp = 0;
+<b><a name="line50">50   </a></b>		    <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line51">51   </a></b>		      {
+<b><a name="line52">52   </a></b>			__tmp = new __moneypunct_cache&lt;_CharT, _Intl&gt;;
+<b><a name="line53">53   </a></b>			__tmp-&gt;_M_cache(__loc);
+<b><a name="line54">54   </a></b>		      }
+<b><a name="line55">55   </a></b>		    <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line56">56   </a></b>		      {
+<b><a name="line57">57   </a></b>			delete __tmp;
+<b><a name="line58">58   </a></b>			<a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line59">59   </a></b>		      }
+<b><a name="line60">60   </a></b>		    __loc._M_impl-&gt;_M_install_cache(__tmp, __i);
+<b><a name="line61">61   </a></b>		  }
+<b><a name="line62">62   </a></b>		return static_cast&lt;
+<b><a name="line63">63   </a></b>		  const __moneypunct_cache&lt;_CharT, _Intl&gt;*&gt;(__caches[__i]);
+<b><a name="line64">64   </a></b>	      }
+<b><a name="line65">65   </a></b>	    };
+<b><a name="line66">66   </a></b>	
+<b><a name="line67">67   </a></b>	  template&lt;typename <b>_CharT</b>, bool <b>_Intl</b>&gt;
+<b><a name="line68">68   </a></b>	    void
+<b><a name="line69">69   </a></b>	    <a href="../locale_facets_nonio.h/code.html#line952">__moneypunct_cache</a>&lt;<a href="#line67">_CharT</a>, <a href="#line67">_Intl</a>&gt;::<b>_M_cache</b>(const <a href="../localefwd.h/code.html#line55">locale</a>&amp; __loc)
+<b><a name="line70">70   </a></b>	    {
+<b><a name="line71">71   </a></b>	      const moneypunct&lt;_CharT, _Intl&gt;&amp; __mp =
+<b><a name="line72">72   </a></b>		use_facet&lt;moneypunct&lt;_CharT, _Intl&gt; &gt;(__loc);
+<b><a name="line73">73   </a></b>	
+<b><a name="line74">74   </a></b>	      _M_decimal_point = __mp.decimal_point();
+<b><a name="line75">75   </a></b>	      _M_thousands_sep = __mp.thousands_sep();
+<b><a name="line76">76   </a></b>	      _M_frac_digits = __mp.frac_digits();
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	      char* __grouping = 0;
+<b><a name="line79">79   </a></b>	      _CharT* __curr_symbol = 0;
+<b><a name="line80">80   </a></b>	      _CharT* __positive_sign = 0;
+<b><a name="line81">81   </a></b>	      _CharT* __negative_sign = 0;     
+<b><a name="line82">82   </a></b>	      <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line83">83   </a></b>		{
+<b><a name="line84">84   </a></b>		  const string&amp; __g = __mp.grouping();
+<b><a name="line85">85   </a></b>		  _M_grouping_size = __g.size();
+<b><a name="line86">86   </a></b>		  __grouping = new char[_M_grouping_size];
+<b><a name="line87">87   </a></b>		  __g.copy(__grouping, _M_grouping_size);
+<b><a name="line88">88   </a></b>		  _M_use_grouping = (_M_grouping_size
+<b><a name="line89">89   </a></b>				     &amp;&amp; static_cast&lt;signed char&gt;(__grouping[0]) &gt; 0
+<b><a name="line90">90   </a></b>				     &amp;&amp; (__grouping[0]
+<b><a name="line91">91   </a></b>					 != __gnu_cxx::__numeric_traits&lt;char&gt;::__max));
+<b><a name="line92">92   </a></b>	
+<b><a name="line93">93   </a></b>		  const basic_string&lt;_CharT&gt;&amp; __cs = __mp.curr_symbol();
+<b><a name="line94">94   </a></b>		  _M_curr_symbol_size = __cs.size();
+<b><a name="line95">95   </a></b>		  __curr_symbol = new _CharT[_M_curr_symbol_size];
+<b><a name="line96">96   </a></b>		  __cs.copy(__curr_symbol, _M_curr_symbol_size);
+<b><a name="line97">97   </a></b>	
+<b><a name="line98">98   </a></b>		  const basic_string&lt;_CharT&gt;&amp; __ps = __mp.positive_sign();
+<b><a name="line99">99   </a></b>		  _M_positive_sign_size = __ps.size();
+<b><a name="line100">100  </a></b>		  __positive_sign = new _CharT[_M_positive_sign_size];
+<b><a name="line101">101  </a></b>		  __ps.copy(__positive_sign, _M_positive_sign_size);
+<b><a name="line102">102  </a></b>	
+<b><a name="line103">103  </a></b>		  const basic_string&lt;_CharT&gt;&amp; __ns = __mp.negative_sign();
+<b><a name="line104">104  </a></b>		  _M_negative_sign_size = __ns.size();
+<b><a name="line105">105  </a></b>		  __negative_sign = new _CharT[_M_negative_sign_size];
+<b><a name="line106">106  </a></b>		  __ns.copy(__negative_sign, _M_negative_sign_size);
+<b><a name="line107">107  </a></b>	
+<b><a name="line108">108  </a></b>		  _M_pos_format = __mp.pos_format();
+<b><a name="line109">109  </a></b>		  _M_neg_format = __mp.neg_format();
+<b><a name="line110">110  </a></b>	
+<b><a name="line111">111  </a></b>		  const ctype&lt;_CharT&gt;&amp; __ct = use_facet&lt;ctype&lt;_CharT&gt; &gt;(__loc);
+<b><a name="line112">112  </a></b>		  __ct.widen(money_base::_S_atoms,
+<b><a name="line113">113  </a></b>			     money_base::_S_atoms + money_base::_S_end, _M_atoms);
+<b><a name="line114">114  </a></b>	
+<b><a name="line115">115  </a></b>		  _M_grouping = __grouping;
+<b><a name="line116">116  </a></b>		  _M_curr_symbol = __curr_symbol;
+<b><a name="line117">117  </a></b>		  _M_positive_sign = __positive_sign;
+<b><a name="line118">118  </a></b>		  _M_negative_sign = __negative_sign;
+<b><a name="line119">119  </a></b>		  _M_allocated = true;
+<b><a name="line120">120  </a></b>		}
+<b><a name="line121">121  </a></b>	      <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line122">122  </a></b>		{
+<b><a name="line123">123  </a></b>		  delete [] __grouping;
+<b><a name="line124">124  </a></b>		  delete [] __curr_symbol;
+<b><a name="line125">125  </a></b>		  delete [] __positive_sign;
+<b><a name="line126">126  </a></b>		  delete [] __negative_sign;
+<b><a name="line127">127  </a></b>		  <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line128">128  </a></b>		}
+<b><a name="line129">129  </a></b>	    }
+<b><a name="line130">130  </a></b>	
+<b><a name="line131">131  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line407">_GLIBCXX_BEGIN_NAMESPACE_LDBL_OR_CXX11</a>
+<b><a name="line132">132  </a></b>	
+<b><a name="line133">133  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_InIter</b>&gt;
+<b><a name="line134">134  </a></b>	    template&lt;bool <b>_Intl</b>&gt;
+<b><a name="line135">135  </a></b>	      <a href="#line133">_InIter</a>
+<b><a name="line136">136  </a></b>	      <a href="../localefwd.h/code.html#line183">money_get</a>&lt;<a href="#line133">_CharT</a>, <a href="#line133">_InIter</a>&gt;::
+<b><a name="line137">137  </a></b>	      <b>_M_extract</b>(<a href="../locale_facets_nonio.h/code.html#line1473">iter_type</a> __beg, <a href="../locale_facets_nonio.h/code.html#line1473">iter_type</a> __end, <a href="../../iosfwd/code.html#line74">ios_base</a>&amp; __io,
+<b><a name="line138">138  </a></b>			 <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="../ios_base.h/code.html#line398">iostate</a>&amp; __err, <a href="../stringfwd.h/code.html#line74">string</a>&amp; __units) const
+<b><a name="line139">139  </a></b>	      {
+<b><a name="line140">140  </a></b>		typedef char_traits&lt;_CharT&gt;			  __traits_type;
+<b><a name="line141">141  </a></b>		typedef typename string_type::size_type	          size_type;	
+<b><a name="line142">142  </a></b>		typedef money_base::part			  part;
+<b><a name="line143">143  </a></b>		typedef __moneypunct_cache&lt;_CharT, _Intl&gt;         __cache_type;
+<b><a name="line144">144  </a></b>		
+<b><a name="line145">145  </a></b>		const locale&amp; __loc = __io._M_getloc();
+<b><a name="line146">146  </a></b>		const ctype&lt;_CharT&gt;&amp; __ctype = use_facet&lt;ctype&lt;_CharT&gt; &gt;(__loc);
+<b><a name="line147">147  </a></b>	
+<b><a name="line148">148  </a></b>		__use_cache&lt;__cache_type&gt; __uc;
+<b><a name="line149">149  </a></b>		const __cache_type* __lc = __uc(__loc);
+<b><a name="line150">150  </a></b>		const char_type* __lit = __lc-&gt;_M_atoms;
+<b><a name="line151">151  </a></b>	
+<b><a name="line152">152  </a></b>		// Deduced sign.
+<b><a name="line153">153  </a></b>		bool __negative = false;
+<b><a name="line154">154  </a></b>		// Sign size.
+<b><a name="line155">155  </a></b>		size_type __sign_size = 0;
+<b><a name="line156">156  </a></b>		// True if sign is mandatory.
+<b><a name="line157">157  </a></b>		const bool __mandatory_sign = (__lc-&gt;_M_positive_sign_size
+<b><a name="line158">158  </a></b>					       &amp;&amp; __lc-&gt;_M_negative_sign_size);
+<b><a name="line159">159  </a></b>		// String of grouping info from thousands_sep plucked from __units.
+<b><a name="line160">160  </a></b>		string __grouping_tmp;
+<b><a name="line161">161  </a></b>		if (__lc-&gt;_M_use_grouping)
+<b><a name="line162">162  </a></b>		  __grouping_tmp.reserve(32);
+<b><a name="line163">163  </a></b>		// Last position before the decimal point.
+<b><a name="line164">164  </a></b>		int __last_pos = 0;
+<b><a name="line165">165  </a></b>		// Separator positions, then, possibly, fractional digits.
+<b><a name="line166">166  </a></b>		int __n = 0;
+<b><a name="line167">167  </a></b>		// If input iterator is in a valid state.
+<b><a name="line168">168  </a></b>		bool __testvalid = true;
+<b><a name="line169">169  </a></b>		// Flag marking when a decimal point is found.
+<b><a name="line170">170  </a></b>		bool __testdecfound = false;
+<b><a name="line171">171  </a></b>	
+<b><a name="line172">172  </a></b>		// The tentative returned string is stored here.
+<b><a name="line173">173  </a></b>		string __res;
+<b><a name="line174">174  </a></b>		__res.reserve(32);
+<b><a name="line175">175  </a></b>	
+<b><a name="line176">176  </a></b>		const char_type* __lit_zero = __lit + money_base::_S_zero;
+<b><a name="line177">177  </a></b>		const money_base::pattern __p = __lc-&gt;_M_neg_format;
+<b><a name="line178">178  </a></b>		for (int __i = 0; __i &lt; 4 &amp;&amp; __testvalid; ++__i)
+<b><a name="line179">179  </a></b>		  {
+<b><a name="line180">180  </a></b>		    const part __which = static_cast&lt;part&gt;(__p.field[__i]);
+<b><a name="line181">181  </a></b>		    switch (__which)
+<b><a name="line182">182  </a></b>		      {
+<b><a name="line183">183  </a></b>		      case money_base::symbol:
+<b><a name="line184">184  </a></b>			// According to 22.2.6.1.2, p2, symbol is required
+<b><a name="line185">185  </a></b>			// if (__io.flags() &amp; ios_base::showbase), otherwise
+<b><a name="line186">186  </a></b>			// is optional and consumed only if other characters
+<b><a name="line187">187  </a></b>			// are needed to complete the format.
+<b><a name="line188">188  </a></b>			if (__io.flags() &amp; ios_base::showbase || __sign_size &gt; 1
+<b><a name="line189">189  </a></b>			    || __i == 0
+<b><a name="line190">190  </a></b>			    || (__i == 1 &amp;&amp; (__mandatory_sign
+<b><a name="line191">191  </a></b>					     || (static_cast&lt;part&gt;(__p.field[0])
+<b><a name="line192">192  </a></b>						 == money_base::sign)
+<b><a name="line193">193  </a></b>					     || (static_cast&lt;part&gt;(__p.field[2])
+<b><a name="line194">194  </a></b>						 == money_base::space)))
+<b><a name="line195">195  </a></b>			    || (__i == 2 &amp;&amp; ((static_cast&lt;part&gt;(__p.field[3])
+<b><a name="line196">196  </a></b>					      == money_base::value)
+<b><a name="line197">197  </a></b>					     || (__mandatory_sign
+<b><a name="line198">198  </a></b>						 &amp;&amp; (static_cast&lt;part&gt;(__p.field[3])
+<b><a name="line199">199  </a></b>						     == money_base::sign)))))
+<b><a name="line200">200  </a></b>			  {
+<b><a name="line201">201  </a></b>			    const size_type __len = __lc-&gt;_M_curr_symbol_size;
+<b><a name="line202">202  </a></b>			    size_type __j = 0;
+<b><a name="line203">203  </a></b>			    for (; __beg != __end &amp;&amp; __j &lt; __len
+<b><a name="line204">204  </a></b>				   &amp;&amp; *__beg == __lc-&gt;_M_curr_symbol[__j];
+<b><a name="line205">205  </a></b>				 ++__beg, ++__j);
+<b><a name="line206">206  </a></b>			    if (__j != __len
+<b><a name="line207">207  </a></b>				&amp;&amp; (__j || __io.flags() &amp; ios_base::showbase))
+<b><a name="line208">208  </a></b>			      __testvalid = false;
+<b><a name="line209">209  </a></b>			  }
+<b><a name="line210">210  </a></b>			break;
+<b><a name="line211">211  </a></b>		      case money_base::sign:
+<b><a name="line212">212  </a></b>			// Sign might not exist, or be more than one character long.
+<b><a name="line213">213  </a></b>			if (__lc-&gt;_M_positive_sign_size &amp;&amp; __beg != __end
+<b><a name="line214">214  </a></b>			    &amp;&amp; *__beg == __lc-&gt;_M_positive_sign[0])
+<b><a name="line215">215  </a></b>			  {
+<b><a name="line216">216  </a></b>			    __sign_size = __lc-&gt;_M_positive_sign_size;
+<b><a name="line217">217  </a></b>			    ++__beg;
+<b><a name="line218">218  </a></b>			  }
+<b><a name="line219">219  </a></b>			else if (__lc-&gt;_M_negative_sign_size &amp;&amp; __beg != __end
+<b><a name="line220">220  </a></b>				 &amp;&amp; *__beg == __lc-&gt;_M_negative_sign[0])
+<b><a name="line221">221  </a></b>			  {
+<b><a name="line222">222  </a></b>			    __negative = true;
+<b><a name="line223">223  </a></b>			    __sign_size = __lc-&gt;_M_negative_sign_size;
+<b><a name="line224">224  </a></b>			    ++__beg;
+<b><a name="line225">225  </a></b>			  }
+<b><a name="line226">226  </a></b>			else if (__lc-&gt;_M_positive_sign_size
+<b><a name="line227">227  </a></b>				 &amp;&amp; !__lc-&gt;_M_negative_sign_size)
+<b><a name="line228">228  </a></b>			  // &quot;... if no sign is detected, the result is given the sign
+<b><a name="line229">229  </a></b>			  // that corresponds to the source of the empty string&quot;
+<b><a name="line230">230  </a></b>			  __negative = true;
+<b><a name="line231">231  </a></b>			else if (__mandatory_sign)
+<b><a name="line232">232  </a></b>			  __testvalid = false;
+<b><a name="line233">233  </a></b>			break;
+<b><a name="line234">234  </a></b>		      case money_base::value:
+<b><a name="line235">235  </a></b>			// Extract digits, remove and stash away the
+<b><a name="line236">236  </a></b>			// grouping of found thousands separators.
+<b><a name="line237">237  </a></b>			for (; __beg != __end; ++__beg)
+<b><a name="line238">238  </a></b>			  {
+<b><a name="line239">239  </a></b>			    const char_type __c = *__beg;
+<b><a name="line240">240  </a></b>			    const char_type* __q = __traits_type::find(__lit_zero, 
+<b><a name="line241">241  </a></b>								       10, __c);
+<b><a name="line242">242  </a></b>			    if (__q != 0)
+<b><a name="line243">243  </a></b>			      {
+<b><a name="line244">244  </a></b>				__res += money_base::_S_atoms[__q - __lit];
+<b><a name="line245">245  </a></b>				++__n;
+<b><a name="line246">246  </a></b>			      }
+<b><a name="line247">247  </a></b>			    else if (__c == __lc-&gt;_M_decimal_point 
+<b><a name="line248">248  </a></b>				     &amp;&amp; !__testdecfound)
+<b><a name="line249">249  </a></b>			      {
+<b><a name="line250">250  </a></b>				if (__lc-&gt;_M_frac_digits &lt;= 0)
+<b><a name="line251">251  </a></b>				  break;
+<b><a name="line252">252  </a></b>	
+<b><a name="line253">253  </a></b>				__last_pos = __n;
+<b><a name="line254">254  </a></b>				__n = 0;
+<b><a name="line255">255  </a></b>				__testdecfound = true;
+<b><a name="line256">256  </a></b>			      }
+<b><a name="line257">257  </a></b>			    else if (__lc-&gt;_M_use_grouping
+<b><a name="line258">258  </a></b>				     &amp;&amp; __c == __lc-&gt;_M_thousands_sep
+<b><a name="line259">259  </a></b>				     &amp;&amp; !__testdecfound)
+<b><a name="line260">260  </a></b>			      {
+<b><a name="line261">261  </a></b>				if (__n)
+<b><a name="line262">262  </a></b>				  {
+<b><a name="line263">263  </a></b>				    // Mark position for later analysis.
+<b><a name="line264">264  </a></b>				    __grouping_tmp += static_cast&lt;char&gt;(__n);
+<b><a name="line265">265  </a></b>				    __n = 0;
+<b><a name="line266">266  </a></b>				  }
+<b><a name="line267">267  </a></b>				else
+<b><a name="line268">268  </a></b>				  {
+<b><a name="line269">269  </a></b>				    __testvalid = false;
+<b><a name="line270">270  </a></b>				    break;
+<b><a name="line271">271  </a></b>				  }
+<b><a name="line272">272  </a></b>			      }
+<b><a name="line273">273  </a></b>			    else
+<b><a name="line274">274  </a></b>			      break;
+<b><a name="line275">275  </a></b>			  }
+<b><a name="line276">276  </a></b>			if (__res.empty())
+<b><a name="line277">277  </a></b>			  __testvalid = false;
+<b><a name="line278">278  </a></b>			break;
+<b><a name="line279">279  </a></b>		      case money_base::space:
+<b><a name="line280">280  </a></b>			// At least one space is required.
+<b><a name="line281">281  </a></b>			if (__beg != __end &amp;&amp; __ctype.is(ctype_base::space, *__beg))
+<b><a name="line282">282  </a></b>			  ++__beg;
+<b><a name="line283">283  </a></b>			else
+<b><a name="line284">284  </a></b>			  __testvalid = false;
+<b><a name="line285">285  </a></b>		      case money_base::none:
+<b><a name="line286">286  </a></b>			// Only if not at the end of the pattern.
+<b><a name="line287">287  </a></b>			if (__i != 3)
+<b><a name="line288">288  </a></b>			  for (; __beg != __end
+<b><a name="line289">289  </a></b>				 &amp;&amp; __ctype.is(ctype_base::space, *__beg); ++__beg);
+<b><a name="line290">290  </a></b>			break;
+<b><a name="line291">291  </a></b>		      }
+<b><a name="line292">292  </a></b>		  }
+<b><a name="line293">293  </a></b>	
+<b><a name="line294">294  </a></b>		// Need to get the rest of the sign characters, if they exist.
+<b><a name="line295">295  </a></b>		if (__sign_size &gt; 1 &amp;&amp; __testvalid)
+<b><a name="line296">296  </a></b>		  {
+<b><a name="line297">297  </a></b>		    const char_type* __sign = __negative ? __lc-&gt;_M_negative_sign
+<b><a name="line298">298  </a></b>		                                         : __lc-&gt;_M_positive_sign;
+<b><a name="line299">299  </a></b>		    size_type __i = 1;
+<b><a name="line300">300  </a></b>		    for (; __beg != __end &amp;&amp; __i &lt; __sign_size
+<b><a name="line301">301  </a></b>			   &amp;&amp; *__beg == __sign[__i]; ++__beg, ++__i);
+<b><a name="line302">302  </a></b>		    
+<b><a name="line303">303  </a></b>		    if (__i != __sign_size)
+<b><a name="line304">304  </a></b>		      __testvalid = false;
+<b><a name="line305">305  </a></b>		  }
+<b><a name="line306">306  </a></b>	
+<b><a name="line307">307  </a></b>		if (__testvalid)
+<b><a name="line308">308  </a></b>		  {
+<b><a name="line309">309  </a></b>		    // Strip leading zeros.
+<b><a name="line310">310  </a></b>		    if (__res.size() &gt; 1)
+<b><a name="line311">311  </a></b>		      {
+<b><a name="line312">312  </a></b>			const size_type __first = __res.find_first_not_of('0');
+<b><a name="line313">313  </a></b>			const bool __only_zeros = __first == string::npos;
+<b><a name="line314">314  </a></b>			if (__first)
+<b><a name="line315">315  </a></b>			  __res.erase(0, __only_zeros ? __res.size() - 1 : __first);
+<b><a name="line316">316  </a></b>		      }
+<b><a name="line317">317  </a></b>	
+<b><a name="line318">318  </a></b>		    // 22.2.6.1.2, p4
+<b><a name="line319">319  </a></b>		    if (__negative &amp;&amp; __res[0] != '0')
+<b><a name="line320">320  </a></b>		      __res.insert(__res.begin(), '-');
+<b><a name="line321">321  </a></b>		    
+<b><a name="line322">322  </a></b>		    // Test for grouping fidelity.
+<b><a name="line323">323  </a></b>		    if (__grouping_tmp.size())
+<b><a name="line324">324  </a></b>		      {
+<b><a name="line325">325  </a></b>			// Add the ending grouping.
+<b><a name="line326">326  </a></b>			__grouping_tmp += static_cast&lt;char&gt;(__testdecfound ? __last_pos
+<b><a name="line327">327  </a></b>							                   : __n);
+<b><a name="line328">328  </a></b>			if (!std::__verify_grouping(__lc-&gt;_M_grouping,
+<b><a name="line329">329  </a></b>						    __lc-&gt;_M_grouping_size,
+<b><a name="line330">330  </a></b>						    __grouping_tmp))
+<b><a name="line331">331  </a></b>			  __err |= ios_base::failbit;
+<b><a name="line332">332  </a></b>		      }
+<b><a name="line333">333  </a></b>		    
+<b><a name="line334">334  </a></b>		    // Iff not enough digits were supplied after the decimal-point.
+<b><a name="line335">335  </a></b>		    if (__testdecfound &amp;&amp; __n != __lc-&gt;_M_frac_digits)
+<b><a name="line336">336  </a></b>		      __testvalid = false;
+<b><a name="line337">337  </a></b>		  }
+<b><a name="line338">338  </a></b>	
+<b><a name="line339">339  </a></b>		// Iff valid sequence is not recognized.
+<b><a name="line340">340  </a></b>		if (!__testvalid)
+<b><a name="line341">341  </a></b>		  __err |= ios_base::failbit;
+<b><a name="line342">342  </a></b>		else
+<b><a name="line343">343  </a></b>		  __units.swap(__res);
+<b><a name="line344">344  </a></b>		
+<b><a name="line345">345  </a></b>		// Iff no more characters are available.
+<b><a name="line346">346  </a></b>		if (__beg == __end)
+<b><a name="line347">347  </a></b>		  __err |= ios_base::eofbit;
+<b><a name="line348">348  </a></b>		return __beg;
+<b><a name="line349">349  </a></b>	      }
+<b><a name="line350">350  </a></b>	
+<b><a name="line351">351  </a></b>	#if defined _GLIBCXX_LONG_DOUBLE_COMPAT &amp;&amp; defined __LONG_DOUBLE_128__ \
+<b><a name="line352">352  </a></b>	      &amp;&amp; <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line212">_GLIBCXX_USE_CXX11_ABI</a> == 0
+<b><a name="line353">353  </a></b>	  template&lt;typename _CharT, typename _InIter&gt;
+<b><a name="line354">354  </a></b>	    _InIter
+<b><a name="line355">355  </a></b>	    money_get&lt;_CharT, _InIter&gt;::
+<b><a name="line356">356  </a></b>	    __do_get(iter_type __beg, iter_type __end, bool __intl, ios_base&amp; __io,
+<b><a name="line357">357  </a></b>		     ios_base::iostate&amp; __err, double&amp; __units) const
+<b><a name="line358">358  </a></b>	    {
+<b><a name="line359">359  </a></b>	      string __str;
+<b><a name="line360">360  </a></b>	      __beg = __intl ? _M_extract&lt;true&gt;(__beg, __end, __io, __err, __str)
+<b><a name="line361">361  </a></b>	                     : _M_extract&lt;false&gt;(__beg, __end, __io, __err, __str);
+<b><a name="line362">362  </a></b>	      std::__convert_to_v(__str.c_str(), __units, __err, _S_get_c_locale());
+<b><a name="line363">363  </a></b>	      return __beg;
+<b><a name="line364">364  </a></b>	    }
+<b><a name="line365">365  </a></b>	#endif
+<b><a name="line366">366  </a></b>	
+<b><a name="line367">367  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_InIter</b>&gt;
+<b><a name="line368">368  </a></b>	    <a href="#line367">_InIter</a>
+<b><a name="line369">369  </a></b>	    <a href="../localefwd.h/code.html#line183">money_get</a>&lt;<a href="#line367">_CharT</a>, <a href="#line367">_InIter</a>&gt;::
+<b><a name="line370">370  </a></b>	    <b>do_get</b>(<a href="../locale_facets_nonio.h/code.html#line1473">iter_type</a> __beg, <a href="../locale_facets_nonio.h/code.html#line1473">iter_type</a> __end, bool __intl, <a href="../../iosfwd/code.html#line74">ios_base</a>&amp; __io,
+<b><a name="line371">371  </a></b>		   <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="../ios_base.h/code.html#line398">iostate</a>&amp; __err, long double&amp; __units) const
+<b><a name="line372">372  </a></b>	    {
+<b><a name="line373">373  </a></b>	      string __str;
+<b><a name="line374">374  </a></b>	      __beg = __intl ? _M_extract&lt;true&gt;(__beg, __end, __io, __err, __str)
+<b><a name="line375">375  </a></b>		             : _M_extract&lt;false&gt;(__beg, __end, __io, __err, __str);
+<b><a name="line376">376  </a></b>	      std::__convert_to_v(__str.c_str(), __units, __err, _S_get_c_locale());
+<b><a name="line377">377  </a></b>	      return __beg;
+<b><a name="line378">378  </a></b>	    }
+<b><a name="line379">379  </a></b>	
+<b><a name="line380">380  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_InIter</b>&gt;
+<b><a name="line381">381  </a></b>	    <a href="#line380">_InIter</a>
+<b><a name="line382">382  </a></b>	    <a href="../localefwd.h/code.html#line183">money_get</a>&lt;<a href="#line380">_CharT</a>, <a href="#line380">_InIter</a>&gt;::
+<b><a name="line383">383  </a></b>	    <b>do_get</b>(<a href="../locale_facets_nonio.h/code.html#line1473">iter_type</a> __beg, <a href="../locale_facets_nonio.h/code.html#line1473">iter_type</a> __end, bool __intl, <a href="../../iosfwd/code.html#line74">ios_base</a>&amp; __io,
+<b><a name="line384">384  </a></b>		   <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="../ios_base.h/code.html#line398">iostate</a>&amp; __err, <a href="../locale_facets_nonio.h/code.html#line1474">string_type</a>&amp; __digits) const
+<b><a name="line385">385  </a></b>	    {
+<b><a name="line386">386  </a></b>	      typedef typename string::size_type                  size_type;
+<b><a name="line387">387  </a></b>	
+<b><a name="line388">388  </a></b>	      const locale&amp; __loc = __io._M_getloc();
+<b><a name="line389">389  </a></b>	      const ctype&lt;_CharT&gt;&amp; __ctype = use_facet&lt;ctype&lt;_CharT&gt; &gt;(__loc);
+<b><a name="line390">390  </a></b>	
+<b><a name="line391">391  </a></b>	      string __str;
+<b><a name="line392">392  </a></b>	      __beg = __intl ? _M_extract&lt;true&gt;(__beg, __end, __io, __err, __str)
+<b><a name="line393">393  </a></b>		             : _M_extract&lt;false&gt;(__beg, __end, __io, __err, __str);
+<b><a name="line394">394  </a></b>	      const size_type __len = __str.size();
+<b><a name="line395">395  </a></b>	      if (__len)
+<b><a name="line396">396  </a></b>		{
+<b><a name="line397">397  </a></b>		  __digits.resize(__len);
+<b><a name="line398">398  </a></b>		  __ctype.widen(__str.data(), __str.data() + __len, &amp;__digits[0]);
+<b><a name="line399">399  </a></b>		}
+<b><a name="line400">400  </a></b>	      return __beg;
+<b><a name="line401">401  </a></b>	    }
+<b><a name="line402">402  </a></b>	
+<b><a name="line403">403  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_OutIter</b>&gt;
+<b><a name="line404">404  </a></b>	    template&lt;bool <b>_Intl</b>&gt;
+<b><a name="line405">405  </a></b>	      <a href="#line403">_OutIter</a>
+<b><a name="line406">406  </a></b>	      <a href="../localefwd.h/code.html#line185">money_put</a>&lt;<a href="#line403">_CharT</a>, <a href="#line403">_OutIter</a>&gt;::
+<b><a name="line407">407  </a></b>	      <b>_M_insert</b>(<a href="../locale_facets_nonio.h/code.html#line1625">iter_type</a> __s, <a href="../../iosfwd/code.html#line74">ios_base</a>&amp; __io, <a href="../locale_facets_nonio.h/code.html#line1624">char_type</a> __fill,
+<b><a name="line408">408  </a></b>			const <a href="../locale_facets_nonio.h/code.html#line1626">string_type</a>&amp; __digits) const
+<b><a name="line409">409  </a></b>	      {
+<b><a name="line410">410  </a></b>		typedef typename string_type::size_type	          size_type;
+<b><a name="line411">411  </a></b>		typedef money_base::part                          part;
+<b><a name="line412">412  </a></b>		typedef __moneypunct_cache&lt;_CharT, _Intl&gt;         __cache_type;
+<b><a name="line413">413  </a></b>	      
+<b><a name="line414">414  </a></b>		const locale&amp; __loc = __io._M_getloc();
+<b><a name="line415">415  </a></b>		const ctype&lt;_CharT&gt;&amp; __ctype = use_facet&lt;ctype&lt;_CharT&gt; &gt;(__loc);
+<b><a name="line416">416  </a></b>	
+<b><a name="line417">417  </a></b>		__use_cache&lt;__cache_type&gt; __uc;
+<b><a name="line418">418  </a></b>		const __cache_type* __lc = __uc(__loc);
+<b><a name="line419">419  </a></b>		const char_type* __lit = __lc-&gt;_M_atoms;
+<b><a name="line420">420  </a></b>	
+<b><a name="line421">421  </a></b>		// Determine if negative or positive formats are to be used, and
+<b><a name="line422">422  </a></b>		// discard leading negative_sign if it is present.
+<b><a name="line423">423  </a></b>		const char_type* __beg = __digits.data();
+<b><a name="line424">424  </a></b>	
+<b><a name="line425">425  </a></b>		money_base::pattern __p;
+<b><a name="line426">426  </a></b>		const char_type* __sign;
+<b><a name="line427">427  </a></b>		size_type __sign_size;
+<b><a name="line428">428  </a></b>		if (!(*__beg == __lit[money_base::_S_minus]))
+<b><a name="line429">429  </a></b>		  {
+<b><a name="line430">430  </a></b>		    __p = __lc-&gt;_M_pos_format;
+<b><a name="line431">431  </a></b>		    __sign = __lc-&gt;_M_positive_sign;
+<b><a name="line432">432  </a></b>		    __sign_size = __lc-&gt;_M_positive_sign_size;
+<b><a name="line433">433  </a></b>		  }
+<b><a name="line434">434  </a></b>		else
+<b><a name="line435">435  </a></b>		  {
+<b><a name="line436">436  </a></b>		    __p = __lc-&gt;_M_neg_format;
+<b><a name="line437">437  </a></b>		    __sign = __lc-&gt;_M_negative_sign;
+<b><a name="line438">438  </a></b>		    __sign_size = __lc-&gt;_M_negative_sign_size;
+<b><a name="line439">439  </a></b>		    if (__digits.size())
+<b><a name="line440">440  </a></b>		      ++__beg;
+<b><a name="line441">441  </a></b>		  }
+<b><a name="line442">442  </a></b>	       
+<b><a name="line443">443  </a></b>		// Look for valid numbers in the ctype facet within input digits.
+<b><a name="line444">444  </a></b>		size_type __len = __ctype.scan_not(ctype_base::digit, __beg,
+<b><a name="line445">445  </a></b>						   __beg + __digits.size()) - __beg;
+<b><a name="line446">446  </a></b>		if (__len)
+<b><a name="line447">447  </a></b>		  {
+<b><a name="line448">448  </a></b>		    // Assume valid input, and attempt to format.
+<b><a name="line449">449  </a></b>		    // Break down input numbers into base components, as follows:
+<b><a name="line450">450  </a></b>		    //   final_value = grouped units + (decimal point) + (digits)
+<b><a name="line451">451  </a></b>		    string_type __value;
+<b><a name="line452">452  </a></b>		    __value.reserve(2 * __len);
+<b><a name="line453">453  </a></b>	
+<b><a name="line454">454  </a></b>		    // Add thousands separators to non-decimal digits, per
+<b><a name="line455">455  </a></b>		    // grouping rules.
+<b><a name="line456">456  </a></b>		    long __paddec = __len - __lc-&gt;_M_frac_digits;
+<b><a name="line457">457  </a></b>		    if (__paddec &gt; 0)
+<b><a name="line458">458  </a></b>	  	      {
+<b><a name="line459">459  </a></b>			if (__lc-&gt;_M_frac_digits &lt; 0)
+<b><a name="line460">460  </a></b>			  __paddec = __len;
+<b><a name="line461">461  </a></b>	  		if (__lc-&gt;_M_grouping_size)
+<b><a name="line462">462  </a></b>	  		  {
+<b><a name="line463">463  </a></b>			    __value.assign(2 * __paddec, char_type());
+<b><a name="line464">464  </a></b>	 		    _CharT* __vend = 
+<b><a name="line465">465  </a></b>			      std::__add_grouping(&amp;__value[0], __lc-&gt;_M_thousands_sep,
+<b><a name="line466">466  </a></b>						  __lc-&gt;_M_grouping,
+<b><a name="line467">467  </a></b>						  __lc-&gt;_M_grouping_size,
+<b><a name="line468">468  </a></b>						  __beg, __beg + __paddec);
+<b><a name="line469">469  </a></b>			    __value.erase(__vend - &amp;__value[0]);
+<b><a name="line470">470  </a></b>	  		  }
+<b><a name="line471">471  </a></b>	  		else
+<b><a name="line472">472  </a></b>			  __value.assign(__beg, __paddec);
+<b><a name="line473">473  </a></b>		      }
+<b><a name="line474">474  </a></b>	
+<b><a name="line475">475  </a></b>		    // Deal with decimal point, decimal digits.
+<b><a name="line476">476  </a></b>		    if (__lc-&gt;_M_frac_digits &gt; 0)
+<b><a name="line477">477  </a></b>		      {
+<b><a name="line478">478  </a></b>			__value += __lc-&gt;_M_decimal_point;
+<b><a name="line479">479  </a></b>			if (__paddec &gt;= 0)
+<b><a name="line480">480  </a></b>			  __value.append(__beg + __paddec, __lc-&gt;_M_frac_digits);
+<b><a name="line481">481  </a></b>			else
+<b><a name="line482">482  </a></b>			  {
+<b><a name="line483">483  </a></b>			    // Have to pad zeros in the decimal position.
+<b><a name="line484">484  </a></b>			    __value.append(-__paddec, __lit[money_base::_S_zero]);
+<b><a name="line485">485  </a></b>			    __value.append(__beg, __len);
+<b><a name="line486">486  </a></b>			  }
+<b><a name="line487">487  </a></b>	  	      }
+<b><a name="line488">488  </a></b>	  
+<b><a name="line489">489  </a></b>		    // Calculate length of resulting string.
+<b><a name="line490">490  </a></b>		    const ios_base::fmtflags __f = __io.flags() 
+<b><a name="line491">491  </a></b>		                                   &amp; ios_base::adjustfield;
+<b><a name="line492">492  </a></b>		    __len = __value.size() + __sign_size;
+<b><a name="line493">493  </a></b>		    __len += ((__io.flags() &amp; ios_base::showbase)
+<b><a name="line494">494  </a></b>			      ? __lc-&gt;_M_curr_symbol_size : 0);
+<b><a name="line495">495  </a></b>	
+<b><a name="line496">496  </a></b>		    string_type __res;
+<b><a name="line497">497  </a></b>		    __res.reserve(2 * __len);
+<b><a name="line498">498  </a></b>		    
+<b><a name="line499">499  </a></b>		    const size_type __width = static_cast&lt;size_type&gt;(__io.width());  
+<b><a name="line500">500  </a></b>		    const bool __testipad = (__f == ios_base::internal
+<b><a name="line501">501  </a></b>					     &amp;&amp; __len &lt; __width);
+<b><a name="line502">502  </a></b>		    // Fit formatted digits into the required pattern.
+<b><a name="line503">503  </a></b>		    for (int __i = 0; __i &lt; 4; ++__i)
+<b><a name="line504">504  </a></b>		      {
+<b><a name="line505">505  </a></b>			const part __which = static_cast&lt;part&gt;(__p.field[__i]);
+<b><a name="line506">506  </a></b>			switch (__which)
+<b><a name="line507">507  </a></b>			  {
+<b><a name="line508">508  </a></b>			  case money_base::symbol:
+<b><a name="line509">509  </a></b>			    if (__io.flags() &amp; ios_base::showbase)
+<b><a name="line510">510  </a></b>			      __res.append(__lc-&gt;_M_curr_symbol,
+<b><a name="line511">511  </a></b>					   __lc-&gt;_M_curr_symbol_size);
+<b><a name="line512">512  </a></b>			    break;
+<b><a name="line513">513  </a></b>			  case money_base::sign:
+<b><a name="line514">514  </a></b>			    // Sign might not exist, or be more than one
+<b><a name="line515">515  </a></b>			    // character long. In that case, add in the rest
+<b><a name="line516">516  </a></b>			    // below.
+<b><a name="line517">517  </a></b>			    if (__sign_size)
+<b><a name="line518">518  </a></b>			      __res += __sign[0];
+<b><a name="line519">519  </a></b>			    break;
+<b><a name="line520">520  </a></b>			  case money_base::value:
+<b><a name="line521">521  </a></b>			    __res += __value;
+<b><a name="line522">522  </a></b>			    break;
+<b><a name="line523">523  </a></b>			  case money_base::space:
+<b><a name="line524">524  </a></b>			    // At least one space is required, but if internal
+<b><a name="line525">525  </a></b>			    // formatting is required, an arbitrary number of
+<b><a name="line526">526  </a></b>			    // fill spaces will be necessary.
+<b><a name="line527">527  </a></b>			    if (__testipad)
+<b><a name="line528">528  </a></b>			      __res.append(__width - __len, __fill);
+<b><a name="line529">529  </a></b>			    else
+<b><a name="line530">530  </a></b>			      __res += __fill;
+<b><a name="line531">531  </a></b>			    break;
+<b><a name="line532">532  </a></b>			  case money_base::none:
+<b><a name="line533">533  </a></b>			    if (__testipad)
+<b><a name="line534">534  </a></b>			      __res.append(__width - __len, __fill);
+<b><a name="line535">535  </a></b>			    break;
+<b><a name="line536">536  </a></b>			  }
+<b><a name="line537">537  </a></b>		      }
+<b><a name="line538">538  </a></b>		    
+<b><a name="line539">539  </a></b>		    // Special case of multi-part sign parts.
+<b><a name="line540">540  </a></b>		    if (__sign_size &gt; 1)
+<b><a name="line541">541  </a></b>		      __res.append(__sign + 1, __sign_size - 1);
+<b><a name="line542">542  </a></b>		    
+<b><a name="line543">543  </a></b>		    // Pad, if still necessary.
+<b><a name="line544">544  </a></b>		    __len = __res.size();
+<b><a name="line545">545  </a></b>		    if (__width &gt; __len)
+<b><a name="line546">546  </a></b>		      {
+<b><a name="line547">547  </a></b>			if (__f == ios_base::left)
+<b><a name="line548">548  </a></b>			  // After.
+<b><a name="line549">549  </a></b>			  __res.append(__width - __len, __fill);
+<b><a name="line550">550  </a></b>			else
+<b><a name="line551">551  </a></b>			  // Before.
+<b><a name="line552">552  </a></b>			  __res.insert(0, __width - __len, __fill);
+<b><a name="line553">553  </a></b>			__len = __width;
+<b><a name="line554">554  </a></b>		      }
+<b><a name="line555">555  </a></b>		    
+<b><a name="line556">556  </a></b>		    // Write resulting, fully-formatted string to output iterator.
+<b><a name="line557">557  </a></b>		    __s = std::__write(__s, __res.data(), __len);
+<b><a name="line558">558  </a></b>		  }
+<b><a name="line559">559  </a></b>		__io.width(0);
+<b><a name="line560">560  </a></b>		return __s;    
+<b><a name="line561">561  </a></b>	      }
+<b><a name="line562">562  </a></b>	
+<b><a name="line563">563  </a></b>	#if defined _GLIBCXX_LONG_DOUBLE_COMPAT &amp;&amp; defined __LONG_DOUBLE_128__ \
+<b><a name="line564">564  </a></b>	      &amp;&amp; <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line212">_GLIBCXX_USE_CXX11_ABI</a> == 0
+<b><a name="line565">565  </a></b>	  template&lt;typename _CharT, typename _OutIter&gt;
+<b><a name="line566">566  </a></b>	    _OutIter
+<b><a name="line567">567  </a></b>	    money_put&lt;_CharT, _OutIter&gt;::
+<b><a name="line568">568  </a></b>	    __do_put(iter_type __s, bool __intl, ios_base&amp; __io, char_type __fill,
+<b><a name="line569">569  </a></b>		     double __units) const
+<b><a name="line570">570  </a></b>	    { return this-&gt;do_put(__s, __intl, __io, __fill, (long double) __units); }
+<b><a name="line571">571  </a></b>	#endif
+<b><a name="line572">572  </a></b>	
+<b><a name="line573">573  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_OutIter</b>&gt;
+<b><a name="line574">574  </a></b>	    <a href="#line573">_OutIter</a>
+<b><a name="line575">575  </a></b>	    <a href="../localefwd.h/code.html#line185">money_put</a>&lt;<a href="#line573">_CharT</a>, <a href="#line573">_OutIter</a>&gt;::
+<b><a name="line576">576  </a></b>	    <b>do_put</b>(<a href="../locale_facets_nonio.h/code.html#line1625">iter_type</a> __s, bool __intl, <a href="../../iosfwd/code.html#line74">ios_base</a>&amp; __io, <a href="../locale_facets_nonio.h/code.html#line1624">char_type</a> __fill,
+<b><a name="line577">577  </a></b>		   long double __units) const
+<b><a name="line578">578  </a></b>	    {
+<b><a name="line579">579  </a></b>	      const locale __loc = __io.getloc();
+<b><a name="line580">580  </a></b>	      const ctype&lt;_CharT&gt;&amp; __ctype = use_facet&lt;ctype&lt;_CharT&gt; &gt;(__loc);
+<b><a name="line581">581  </a></b>	#ifdef <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1309">_GLIBCXX_USE_C99</a>
+<b><a name="line582">582  </a></b>	      // First try a buffer perhaps big enough.
+<b><a name="line583">583  </a></b>	      int __cs_size = 64;
+<b><a name="line584">584  </a></b>	      char* __cs = static_cast&lt;char*&gt;(__builtin_alloca(__cs_size));
+<b><a name="line585">585  </a></b>	      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line586">586  </a></b>	      // 328. Bad sprintf format modifier in money_put&lt;&gt;::do_put()
+<b><a name="line587">587  </a></b>	      int __len = std::__convert_from_v(_S_get_c_locale(), __cs, __cs_size,
+<b><a name="line588">588  </a></b>						&quot;%.*Lf&quot;, 0, __units);
+<b><a name="line589">589  </a></b>	      // If the buffer was not large enough, try again with the correct size.
+<b><a name="line590">590  </a></b>	      if (__len &gt;= __cs_size)
+<b><a name="line591">591  </a></b>		{
+<b><a name="line592">592  </a></b>		  __cs_size = __len + 1;
+<b><a name="line593">593  </a></b>		  __cs = static_cast&lt;char*&gt;(__builtin_alloca(__cs_size));
+<b><a name="line594">594  </a></b>		  __len = std::__convert_from_v(_S_get_c_locale(), __cs, __cs_size,
+<b><a name="line595">595  </a></b>						&quot;%.*Lf&quot;, 0, __units);
+<b><a name="line596">596  </a></b>		}
+<b><a name="line597">597  </a></b>	#else
+<b><a name="line598">598  </a></b>	      // max_exponent10 + 1 for the integer part, + 2 for sign and '\0'.
+<b><a name="line599">599  </a></b>	      const int __cs_size =
+<b><a name="line600">600  </a></b>		__gnu_cxx::__numeric_traits&lt;long double&gt;::__max_exponent10 + 3;
+<b><a name="line601">601  </a></b>	      char* __cs = static_cast&lt;char*&gt;(__builtin_alloca(__cs_size));
+<b><a name="line602">602  </a></b>	      int __len = std::__convert_from_v(_S_get_c_locale(), __cs, 0, &quot;%.*Lf&quot;, 
+<b><a name="line603">603  </a></b>						0, __units);
+<b><a name="line604">604  </a></b>	#endif
+<b><a name="line605">605  </a></b>	      string_type __digits(__len, char_type());
+<b><a name="line606">606  </a></b>	      __ctype.widen(__cs, __cs + __len, &amp;__digits[0]);
+<b><a name="line607">607  </a></b>	      return __intl ? _M_insert&lt;true&gt;(__s, __io, __fill, __digits)
+<b><a name="line608">608  </a></b>		            : _M_insert&lt;false&gt;(__s, __io, __fill, __digits);
+<b><a name="line609">609  </a></b>	    }
+<b><a name="line610">610  </a></b>	
+<b><a name="line611">611  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_OutIter</b>&gt;
+<b><a name="line612">612  </a></b>	    <a href="#line611">_OutIter</a>
+<b><a name="line613">613  </a></b>	    <a href="../localefwd.h/code.html#line185">money_put</a>&lt;<a href="#line611">_CharT</a>, <a href="#line611">_OutIter</a>&gt;::
+<b><a name="line614">614  </a></b>	    <b>do_put</b>(<a href="../locale_facets_nonio.h/code.html#line1625">iter_type</a> __s, bool __intl, <a href="../../iosfwd/code.html#line74">ios_base</a>&amp; __io, <a href="../locale_facets_nonio.h/code.html#line1624">char_type</a> __fill,
+<b><a name="line615">615  </a></b>		   const <a href="../locale_facets_nonio.h/code.html#line1626">string_type</a>&amp; __digits) const
+<b><a name="line616">616  </a></b>	    { return __intl ? _M_insert&lt;true&gt;(__s, __io, __fill, __digits)
+<b><a name="line617">617  </a></b>		            : _M_insert&lt;false&gt;(__s, __io, __fill, __digits); }
+<b><a name="line618">618  </a></b>	
+<b><a name="line619">619  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line408">_GLIBCXX_END_NAMESPACE_LDBL_OR_CXX11</a>
+<b><a name="line620">620  </a></b>	
+<b><a name="line621">621  </a></b>	  // NB: Not especially useful. Without an ios_base object or some
+<b><a name="line622">622  </a></b>	  // kind of locale reference, we are left clawing at the air where
+<b><a name="line623">623  </a></b>	  // the side of the mountain used to be...
+<b><a name="line624">624  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_InIter</b>&gt;
+<b><a name="line625">625  </a></b>	    <a href="../localefwd.h/code.html#line167">time_base</a>::<a href="../locale_facets_nonio.h/code.html#line55">dateorder</a>
+<b><a name="line626">626  </a></b>	    <a href="../localefwd.h/code.html#line170">time_get</a>&lt;<a href="#line624">_CharT</a>, <a href="#line624">_InIter</a>&gt;::<b>do_date_order</b>() const
+<b><a name="line627">627  </a></b>	    { return time_base::no_order; }
+<b><a name="line628">628  </a></b>	
+<b><a name="line629">629  </a></b>	  // Expand a strftime format string and parse it.  E.g., do_get_date() may
+<b><a name="line630">630  </a></b>	  // pass %m/%d/%Y =&gt; extracted characters.
+<b><a name="line631">631  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_InIter</b>&gt;
+<b><a name="line632">632  </a></b>	    <a href="#line631">_InIter</a>
+<b><a name="line633">633  </a></b>	    <a href="../localefwd.h/code.html#line170">time_get</a>&lt;<a href="#line631">_CharT</a>, <a href="#line631">_InIter</a>&gt;::
+<b><a name="line634">634  </a></b>	    <b>_M_extract_via_format</b>(<a href="../locale_facets_nonio.h/code.html#line373">iter_type</a> __beg, <a href="../locale_facets_nonio.h/code.html#line373">iter_type</a> __end, <a href="../../iosfwd/code.html#line74">ios_base</a>&amp; __io,
+<b><a name="line635">635  </a></b>				  <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="../ios_base.h/code.html#line398">iostate</a>&amp; __err, <a href="../../../../wchar.h/code.html#line137">tm</a>* __tm,
+<b><a name="line636">636  </a></b>				  const <a href="#line631">_CharT</a>* __format) const
+<b><a name="line637">637  </a></b>	    {
+<b><a name="line638">638  </a></b>	      const locale&amp; __loc = __io._M_getloc();
+<b><a name="line639">639  </a></b>	      const __timepunct&lt;_CharT&gt;&amp; __tp = use_facet&lt;__timepunct&lt;_CharT&gt; &gt;(__loc);
+<b><a name="line640">640  </a></b>	      const ctype&lt;_CharT&gt;&amp; __ctype = use_facet&lt;ctype&lt;_CharT&gt; &gt;(__loc);
+<b><a name="line641">641  </a></b>	      const size_t __len = char_traits&lt;_CharT&gt;::length(__format);
+<b><a name="line642">642  </a></b>	
+<b><a name="line643">643  </a></b>	      ios_base::iostate __tmperr = ios_base::goodbit;
+<b><a name="line644">644  </a></b>	      size_t __i = 0;
+<b><a name="line645">645  </a></b>	      for (; __beg != __end &amp;&amp; __i &lt; __len &amp;&amp; !__tmperr; ++__i)
+<b><a name="line646">646  </a></b>		{
+<b><a name="line647">647  </a></b>		  if (__ctype.narrow(__format[__i], 0) == '%')
+<b><a name="line648">648  </a></b>		    {
+<b><a name="line649">649  </a></b>		      // Verify valid formatting code, attempt to extract.
+<b><a name="line650">650  </a></b>		      char __c = __ctype.narrow(__format[++__i], 0);
+<b><a name="line651">651  </a></b>		      int __mem = 0;
+<b><a name="line652">652  </a></b>		      if (__c == 'E' || __c == 'O')
+<b><a name="line653">653  </a></b>			__c = __ctype.narrow(__format[++__i], 0);
+<b><a name="line654">654  </a></b>		      switch (__c)
+<b><a name="line655">655  </a></b>			{
+<b><a name="line656">656  </a></b>			  const char* __cs;
+<b><a name="line657">657  </a></b>			  _CharT __wcs[10];
+<b><a name="line658">658  </a></b>			case 'a':
+<b><a name="line659">659  </a></b>			  // Abbreviated weekday name [tm_wday]
+<b><a name="line660">660  </a></b>			  const char_type*  __days1[7];
+<b><a name="line661">661  </a></b>			  __tp._M_days_abbreviated(__days1);
+<b><a name="line662">662  </a></b>			  __beg = _M_extract_name(__beg, __end, __tm-&gt;tm_wday, __days1,
+<b><a name="line663">663  </a></b>						  7, __io, __tmperr);
+<b><a name="line664">664  </a></b>			  break;
+<b><a name="line665">665  </a></b>			case 'A':
+<b><a name="line666">666  </a></b>			  // Weekday name [tm_wday].
+<b><a name="line667">667  </a></b>			  const char_type*  __days2[7];
+<b><a name="line668">668  </a></b>			  __tp._M_days(__days2);
+<b><a name="line669">669  </a></b>			  __beg = _M_extract_name(__beg, __end, __tm-&gt;tm_wday, __days2,
+<b><a name="line670">670  </a></b>						  7, __io, __tmperr);
+<b><a name="line671">671  </a></b>			  break;
+<b><a name="line672">672  </a></b>			case 'h':
+<b><a name="line673">673  </a></b>			case 'b':
+<b><a name="line674">674  </a></b>			  // Abbreviated month name [tm_mon]
+<b><a name="line675">675  </a></b>			  const char_type*  __months1[12];
+<b><a name="line676">676  </a></b>			  __tp._M_months_abbreviated(__months1);
+<b><a name="line677">677  </a></b>			  __beg = _M_extract_name(__beg, __end, __tm-&gt;tm_mon, 
+<b><a name="line678">678  </a></b>						  __months1, 12, __io, __tmperr);
+<b><a name="line679">679  </a></b>			  break;
+<b><a name="line680">680  </a></b>			case 'B':
+<b><a name="line681">681  </a></b>			  // Month name [tm_mon].
+<b><a name="line682">682  </a></b>			  const char_type*  __months2[12];
+<b><a name="line683">683  </a></b>			  __tp._M_months(__months2);
+<b><a name="line684">684  </a></b>			  __beg = _M_extract_name(__beg, __end, __tm-&gt;tm_mon, 
+<b><a name="line685">685  </a></b>						  __months2, 12, __io, __tmperr);
+<b><a name="line686">686  </a></b>			  break;
+<b><a name="line687">687  </a></b>			case 'c':
+<b><a name="line688">688  </a></b>			  // Default time and date representation.
+<b><a name="line689">689  </a></b>			  const char_type*  __dt[2];
+<b><a name="line690">690  </a></b>			  __tp._M_date_time_formats(__dt);
+<b><a name="line691">691  </a></b>			  __beg = _M_extract_via_format(__beg, __end, __io, __tmperr, 
+<b><a name="line692">692  </a></b>							__tm, __dt[0]);
+<b><a name="line693">693  </a></b>			  break;
+<b><a name="line694">694  </a></b>			case 'd':
+<b><a name="line695">695  </a></b>			  // Day [01, 31]. [tm_mday]
+<b><a name="line696">696  </a></b>			  __beg = _M_extract_num(__beg, __end, __tm-&gt;tm_mday, 1, 31, 2,
+<b><a name="line697">697  </a></b>						 __io, __tmperr);
+<b><a name="line698">698  </a></b>			  break;
+<b><a name="line699">699  </a></b>			case 'e':
+<b><a name="line700">700  </a></b>			  // Day [1, 31], with single digits preceded by
+<b><a name="line701">701  </a></b>			  // space. [tm_mday]
+<b><a name="line702">702  </a></b>			  if (__ctype.is(ctype_base::space, *__beg))
+<b><a name="line703">703  </a></b>			    __beg = _M_extract_num(++__beg, __end, __tm-&gt;tm_mday, 1, 9,
+<b><a name="line704">704  </a></b>						   1, __io, __tmperr);
+<b><a name="line705">705  </a></b>			  else
+<b><a name="line706">706  </a></b>			    __beg = _M_extract_num(__beg, __end, __tm-&gt;tm_mday, 10, 31,
+<b><a name="line707">707  </a></b>						   2, __io, __tmperr);
+<b><a name="line708">708  </a></b>			  break;
+<b><a name="line709">709  </a></b>			case 'D':
+<b><a name="line710">710  </a></b>			  // Equivalent to %m/%d/%y.[tm_mon, tm_mday, tm_year]
+<b><a name="line711">711  </a></b>			  __cs = &quot;%m/%d/%y&quot;;
+<b><a name="line712">712  </a></b>			  __ctype.widen(__cs, __cs + 9, __wcs);
+<b><a name="line713">713  </a></b>			  __beg = _M_extract_via_format(__beg, __end, __io, __tmperr, 
+<b><a name="line714">714  </a></b>							__tm, __wcs);
+<b><a name="line715">715  </a></b>			  break;
+<b><a name="line716">716  </a></b>			case 'H':
+<b><a name="line717">717  </a></b>			  // Hour [00, 23]. [tm_hour]
+<b><a name="line718">718  </a></b>			  __beg = _M_extract_num(__beg, __end, __tm-&gt;tm_hour, 0, 23, 2,
+<b><a name="line719">719  </a></b>						 __io, __tmperr);
+<b><a name="line720">720  </a></b>			  break;
+<b><a name="line721">721  </a></b>			case 'I':
+<b><a name="line722">722  </a></b>			  // Hour [01, 12]. [tm_hour]
+<b><a name="line723">723  </a></b>			  __beg = _M_extract_num(__beg, __end, __tm-&gt;tm_hour, 1, 12, 2,
+<b><a name="line724">724  </a></b>						 __io, __tmperr);
+<b><a name="line725">725  </a></b>			  break;
+<b><a name="line726">726  </a></b>			case 'm':
+<b><a name="line727">727  </a></b>			  // Month [01, 12]. [tm_mon]
+<b><a name="line728">728  </a></b>			  __beg = _M_extract_num(__beg, __end, __mem, 1, 12, 2, 
+<b><a name="line729">729  </a></b>						 __io, __tmperr);
+<b><a name="line730">730  </a></b>			  if (!__tmperr)
+<b><a name="line731">731  </a></b>			    __tm-&gt;tm_mon = __mem - 1;
+<b><a name="line732">732  </a></b>			  break;
+<b><a name="line733">733  </a></b>			case 'M':
+<b><a name="line734">734  </a></b>			  // Minute [00, 59]. [tm_min]
+<b><a name="line735">735  </a></b>			  __beg = _M_extract_num(__beg, __end, __tm-&gt;tm_min, 0, 59, 2,
+<b><a name="line736">736  </a></b>						 __io, __tmperr);
+<b><a name="line737">737  </a></b>			  break;
+<b><a name="line738">738  </a></b>			case 'n':
+<b><a name="line739">739  </a></b>			  if (__ctype.narrow(*__beg, 0) == '\n')
+<b><a name="line740">740  </a></b>			    ++__beg;
+<b><a name="line741">741  </a></b>			  else
+<b><a name="line742">742  </a></b>			    __tmperr |= ios_base::failbit;
+<b><a name="line743">743  </a></b>			  break;
+<b><a name="line744">744  </a></b>			case 'R':
+<b><a name="line745">745  </a></b>			  // Equivalent to (%H:%M).
+<b><a name="line746">746  </a></b>			  __cs = &quot;%H:%M&quot;;
+<b><a name="line747">747  </a></b>			  __ctype.widen(__cs, __cs + 6, __wcs);
+<b><a name="line748">748  </a></b>			  __beg = _M_extract_via_format(__beg, __end, __io, __tmperr, 
+<b><a name="line749">749  </a></b>							__tm, __wcs);
+<b><a name="line750">750  </a></b>			  break;
+<b><a name="line751">751  </a></b>			case 'S':
+<b><a name="line752">752  </a></b>			  // Seconds. [tm_sec]
+<b><a name="line753">753  </a></b>			  // [00, 60] in C99 (one leap-second), [00, 61] in C89.
+<b><a name="line754">754  </a></b>	#ifdef <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1309">_GLIBCXX_USE_C99</a>
+<b><a name="line755">755  </a></b>			  __beg = _M_extract_num(__beg, __end, __tm-&gt;tm_sec, 0, 60, 2,
+<b><a name="line756">756  </a></b>	#else
+<b><a name="line757">757  </a></b>			  __beg = _M_extract_num(__beg, __end, __tm-&gt;tm_sec, 0, 61, 2,
+<b><a name="line758">758  </a></b>	#endif
+<b><a name="line759">759  </a></b>						 __io, __tmperr);
+<b><a name="line760">760  </a></b>			  break;
+<b><a name="line761">761  </a></b>			case 't':
+<b><a name="line762">762  </a></b>			  if (__ctype.narrow(*__beg, 0) == '\t')
+<b><a name="line763">763  </a></b>			    ++__beg;
+<b><a name="line764">764  </a></b>			  else
+<b><a name="line765">765  </a></b>			    __tmperr |= ios_base::failbit;
+<b><a name="line766">766  </a></b>			  break;
+<b><a name="line767">767  </a></b>			case 'T':
+<b><a name="line768">768  </a></b>			  // Equivalent to (%H:%M:%S).
+<b><a name="line769">769  </a></b>			  __cs = &quot;%H:%M:%S&quot;;
+<b><a name="line770">770  </a></b>			  __ctype.widen(__cs, __cs + 9, __wcs);
+<b><a name="line771">771  </a></b>			  __beg = _M_extract_via_format(__beg, __end, __io, __tmperr, 
+<b><a name="line772">772  </a></b>							__tm, __wcs);
+<b><a name="line773">773  </a></b>			  break;
+<b><a name="line774">774  </a></b>			case 'x':
+<b><a name="line775">775  </a></b>			  // Locale's date.
+<b><a name="line776">776  </a></b>			  const char_type*  __dates[2];
+<b><a name="line777">777  </a></b>			  __tp._M_date_formats(__dates);
+<b><a name="line778">778  </a></b>			  __beg = _M_extract_via_format(__beg, __end, __io, __tmperr, 
+<b><a name="line779">779  </a></b>							__tm, __dates[0]);
+<b><a name="line780">780  </a></b>			  break;
+<b><a name="line781">781  </a></b>			case 'X':
+<b><a name="line782">782  </a></b>			  // Locale's time.
+<b><a name="line783">783  </a></b>			  const char_type*  __times[2];
+<b><a name="line784">784  </a></b>			  __tp._M_time_formats(__times);
+<b><a name="line785">785  </a></b>			  __beg = _M_extract_via_format(__beg, __end, __io, __tmperr, 
+<b><a name="line786">786  </a></b>							__tm, __times[0]);
+<b><a name="line787">787  </a></b>			  break;
+<b><a name="line788">788  </a></b>			case 'y':
+<b><a name="line789">789  </a></b>			case 'C': // C99
+<b><a name="line790">790  </a></b>			  // Two digit year.
+<b><a name="line791">791  </a></b>			case 'Y':
+<b><a name="line792">792  </a></b>			  // Year [1900).
+<b><a name="line793">793  </a></b>			  // NB: We parse either two digits, implicitly years since
+<b><a name="line794">794  </a></b>			  // 1900, or 4 digits, full year.  In both cases we can 
+<b><a name="line795">795  </a></b>			  // reconstruct [tm_year].  See also libstdc++/26701.
+<b><a name="line796">796  </a></b>			  __beg = _M_extract_num(__beg, __end, __mem, 0, 9999, 4,
+<b><a name="line797">797  </a></b>						 __io, __tmperr);
+<b><a name="line798">798  </a></b>			  if (!__tmperr)
+<b><a name="line799">799  </a></b>			    __tm-&gt;tm_year = __mem &lt; 0 ? __mem + 100 : __mem - 1900;
+<b><a name="line800">800  </a></b>			  break;
+<b><a name="line801">801  </a></b>			case 'Z':
+<b><a name="line802">802  </a></b>			  // Timezone info.
+<b><a name="line803">803  </a></b>			  if (__ctype.is(ctype_base::upper, *__beg))
+<b><a name="line804">804  </a></b>			    {
+<b><a name="line805">805  </a></b>			      int __tmp;
+<b><a name="line806">806  </a></b>			      __beg = _M_extract_name(__beg, __end, __tmp,
+<b><a name="line807">807  </a></b>					       __timepunct_cache&lt;_CharT&gt;::_S_timezones,
+<b><a name="line808">808  </a></b>						      14, __io, __tmperr);
+<b><a name="line809">809  </a></b>	
+<b><a name="line810">810  </a></b>			      // GMT requires special effort.
+<b><a name="line811">811  </a></b>			      if (__beg != __end &amp;&amp; !__tmperr &amp;&amp; __tmp == 0
+<b><a name="line812">812  </a></b>				  &amp;&amp; (*__beg == __ctype.widen('-')
+<b><a name="line813">813  </a></b>				      || *__beg == __ctype.widen('+')))
+<b><a name="line814">814  </a></b>				{
+<b><a name="line815">815  </a></b>				  __beg = _M_extract_num(__beg, __end, __tmp, 0, 23, 2,
+<b><a name="line816">816  </a></b>							 __io, __tmperr);
+<b><a name="line817">817  </a></b>				  __beg = _M_extract_num(__beg, __end, __tmp, 0, 59, 2,
+<b><a name="line818">818  </a></b>							 __io, __tmperr);
+<b><a name="line819">819  </a></b>				}
+<b><a name="line820">820  </a></b>			    }
+<b><a name="line821">821  </a></b>			  else
+<b><a name="line822">822  </a></b>			    __tmperr |= ios_base::failbit;
+<b><a name="line823">823  </a></b>			  break;
+<b><a name="line824">824  </a></b>			default:
+<b><a name="line825">825  </a></b>			  // Not recognized.
+<b><a name="line826">826  </a></b>			  __tmperr |= ios_base::failbit;
+<b><a name="line827">827  </a></b>			}
+<b><a name="line828">828  </a></b>		    }
+<b><a name="line829">829  </a></b>		  else
+<b><a name="line830">830  </a></b>		    {
+<b><a name="line831">831  </a></b>		      // Verify format and input match, extract and discard.
+<b><a name="line832">832  </a></b>		      if (__format[__i] == *__beg)
+<b><a name="line833">833  </a></b>			++__beg;
+<b><a name="line834">834  </a></b>		      else
+<b><a name="line835">835  </a></b>			__tmperr |= ios_base::failbit;
+<b><a name="line836">836  </a></b>		    }
+<b><a name="line837">837  </a></b>		}
+<b><a name="line838">838  </a></b>	
+<b><a name="line839">839  </a></b>	      if (__tmperr || __i != __len)
+<b><a name="line840">840  </a></b>		__err |= ios_base::failbit;
+<b><a name="line841">841  </a></b>	  
+<b><a name="line842">842  </a></b>	      return __beg;
+<b><a name="line843">843  </a></b>	    }
+<b><a name="line844">844  </a></b>	
+<b><a name="line845">845  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_InIter</b>&gt;
+<b><a name="line846">846  </a></b>	    <a href="#line845">_InIter</a>
+<b><a name="line847">847  </a></b>	    <a href="../localefwd.h/code.html#line170">time_get</a>&lt;<a href="#line845">_CharT</a>, <a href="#line845">_InIter</a>&gt;::
+<b><a name="line848">848  </a></b>	    <b>_M_extract_num</b>(<a href="../locale_facets_nonio.h/code.html#line373">iter_type</a> __beg, <a href="../locale_facets_nonio.h/code.html#line373">iter_type</a> __end, int&amp; __member,
+<b><a name="line849">849  </a></b>			   int __min, int __max, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> __len,
+<b><a name="line850">850  </a></b>			   <a href="../../iosfwd/code.html#line74">ios_base</a>&amp; __io, <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="../ios_base.h/code.html#line398">iostate</a>&amp; __err) const
+<b><a name="line851">851  </a></b>	    {
+<b><a name="line852">852  </a></b>	      const locale&amp; __loc = __io._M_getloc();
+<b><a name="line853">853  </a></b>	      const ctype&lt;_CharT&gt;&amp; __ctype = use_facet&lt;ctype&lt;_CharT&gt; &gt;(__loc);
+<b><a name="line854">854  </a></b>	
+<b><a name="line855">855  </a></b>	      // As-is works for __len = 1, 2, 4, the values actually used.
+<b><a name="line856">856  </a></b>	      int __mult = __len == 2 ? 10 : (__len == 4 ? 1000 : 1);
+<b><a name="line857">857  </a></b>	
+<b><a name="line858">858  </a></b>	      ++__min;
+<b><a name="line859">859  </a></b>	      size_t __i = 0;
+<b><a name="line860">860  </a></b>	      int __value = 0;
+<b><a name="line861">861  </a></b>	      for (; __beg != __end &amp;&amp; __i &lt; __len; ++__beg, ++__i)
+<b><a name="line862">862  </a></b>		{
+<b><a name="line863">863  </a></b>		  const char __c = __ctype.narrow(*__beg, '*');
+<b><a name="line864">864  </a></b>		  if (__c &gt;= '0' &amp;&amp; __c &lt;= '9')
+<b><a name="line865">865  </a></b>		    {
+<b><a name="line866">866  </a></b>		      __value = __value * 10 + (__c - '0');
+<b><a name="line867">867  </a></b>		      const int __valuec = __value * __mult;
+<b><a name="line868">868  </a></b>		      if (__valuec &gt; __max || __valuec + __mult &lt; __min)
+<b><a name="line869">869  </a></b>			break;
+<b><a name="line870">870  </a></b>		      __mult /= 10;
+<b><a name="line871">871  </a></b>		    }
+<b><a name="line872">872  </a></b>		  else
+<b><a name="line873">873  </a></b>		    break;
+<b><a name="line874">874  </a></b>		}
+<b><a name="line875">875  </a></b>	      if (__i == __len)
+<b><a name="line876">876  </a></b>		__member = __value;
+<b><a name="line877">877  </a></b>	      // Special encoding for do_get_year, 'y', and 'Y' above.
+<b><a name="line878">878  </a></b>	      else if (__len == 4 &amp;&amp; __i == 2)
+<b><a name="line879">879  </a></b>		__member = __value - 100;
+<b><a name="line880">880  </a></b>	      else
+<b><a name="line881">881  </a></b>		__err |= ios_base::failbit;
+<b><a name="line882">882  </a></b>	
+<b><a name="line883">883  </a></b>	      return __beg;
+<b><a name="line884">884  </a></b>	    }
+<b><a name="line885">885  </a></b>	
+<b><a name="line886">886  </a></b>	  // Assumptions:
+<b><a name="line887">887  </a></b>	  // All elements in __names are unique.
+<b><a name="line888">888  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_InIter</b>&gt;
+<b><a name="line889">889  </a></b>	    <a href="#line888">_InIter</a>
+<b><a name="line890">890  </a></b>	    <a href="../localefwd.h/code.html#line170">time_get</a>&lt;<a href="#line888">_CharT</a>, <a href="#line888">_InIter</a>&gt;::
+<b><a name="line891">891  </a></b>	    <b>_M_extract_name</b>(<a href="../locale_facets_nonio.h/code.html#line373">iter_type</a> __beg, <a href="../locale_facets_nonio.h/code.html#line373">iter_type</a> __end, int&amp; __member,
+<b><a name="line892">892  </a></b>			    const <a href="#line888">_CharT</a>** __names, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> __indexlen,
+<b><a name="line893">893  </a></b>			    <a href="../../iosfwd/code.html#line74">ios_base</a>&amp; __io, <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="../ios_base.h/code.html#line398">iostate</a>&amp; __err) const
+<b><a name="line894">894  </a></b>	    {
+<b><a name="line895">895  </a></b>	      typedef char_traits&lt;_CharT&gt;		__traits_type;
+<b><a name="line896">896  </a></b>	      const locale&amp; __loc = __io._M_getloc();
+<b><a name="line897">897  </a></b>	      const ctype&lt;_CharT&gt;&amp; __ctype = use_facet&lt;ctype&lt;_CharT&gt; &gt;(__loc);
+<b><a name="line898">898  </a></b>	
+<b><a name="line899">899  </a></b>	      int* __matches = static_cast&lt;int*&gt;(__builtin_alloca(sizeof(int)
+<b><a name="line900">900  </a></b>								  * __indexlen));
+<b><a name="line901">901  </a></b>	      size_t __nmatches = 0;
+<b><a name="line902">902  </a></b>	      size_t __pos = 0;
+<b><a name="line903">903  </a></b>	      bool __testvalid = true;
+<b><a name="line904">904  </a></b>	      const char_type* __name;
+<b><a name="line905">905  </a></b>	
+<b><a name="line906">906  </a></b>	      // Look for initial matches.
+<b><a name="line907">907  </a></b>	      // NB: Some of the locale data is in the form of all lowercase
+<b><a name="line908">908  </a></b>	      // names, and some is in the form of initially-capitalized
+<b><a name="line909">909  </a></b>	      // names. Look for both.
+<b><a name="line910">910  </a></b>	      if (__beg != __end)
+<b><a name="line911">911  </a></b>		{
+<b><a name="line912">912  </a></b>		  const char_type __c = *__beg;
+<b><a name="line913">913  </a></b>		  for (size_t __i1 = 0; __i1 &lt; __indexlen; ++__i1)
+<b><a name="line914">914  </a></b>		    if (__c == __names[__i1][0]
+<b><a name="line915">915  </a></b>			|| __c == __ctype.toupper(__names[__i1][0]))
+<b><a name="line916">916  </a></b>		      __matches[__nmatches++] = __i1;
+<b><a name="line917">917  </a></b>		}
+<b><a name="line918">918  </a></b>	
+<b><a name="line919">919  </a></b>	      while (__nmatches &gt; 1)
+<b><a name="line920">920  </a></b>		{
+<b><a name="line921">921  </a></b>		  // Find smallest matching string.
+<b><a name="line922">922  </a></b>		  size_t __minlen = __traits_type::length(__names[__matches[0]]);
+<b><a name="line923">923  </a></b>		  for (size_t __i2 = 1; __i2 &lt; __nmatches; ++__i2)
+<b><a name="line924">924  </a></b>		    __minlen = std::min(__minlen,
+<b><a name="line925">925  </a></b>				      __traits_type::length(__names[__matches[__i2]]));
+<b><a name="line926">926  </a></b>		  ++__beg, ++__pos;
+<b><a name="line927">927  </a></b>		  if (__pos &lt; __minlen &amp;&amp; __beg != __end)
+<b><a name="line928">928  </a></b>		    for (size_t __i3 = 0; __i3 &lt; __nmatches;)
+<b><a name="line929">929  </a></b>		      {
+<b><a name="line930">930  </a></b>			__name = __names[__matches[__i3]];
+<b><a name="line931">931  </a></b>			if (!(__name[__pos] == *__beg))
+<b><a name="line932">932  </a></b>			  __matches[__i3] = __matches[--__nmatches];
+<b><a name="line933">933  </a></b>			else
+<b><a name="line934">934  </a></b>			  ++__i3;
+<b><a name="line935">935  </a></b>		      }
+<b><a name="line936">936  </a></b>		  else
+<b><a name="line937">937  </a></b>		    break;
+<b><a name="line938">938  </a></b>		}
+<b><a name="line939">939  </a></b>	
+<b><a name="line940">940  </a></b>	      if (__nmatches == 1)
+<b><a name="line941">941  </a></b>		{
+<b><a name="line942">942  </a></b>		  // Make sure found name is completely extracted.
+<b><a name="line943">943  </a></b>		  ++__beg, ++__pos;
+<b><a name="line944">944  </a></b>		  __name = __names[__matches[0]];
+<b><a name="line945">945  </a></b>		  const size_t __len = __traits_type::length(__name);
+<b><a name="line946">946  </a></b>		  while (__pos &lt; __len &amp;&amp; __beg != __end &amp;&amp; __name[__pos] == *__beg)
+<b><a name="line947">947  </a></b>		    ++__beg, ++__pos;
+<b><a name="line948">948  </a></b>	
+<b><a name="line949">949  </a></b>		  if (__len == __pos)
+<b><a name="line950">950  </a></b>		    __member = __matches[0];
+<b><a name="line951">951  </a></b>		  else
+<b><a name="line952">952  </a></b>		    __testvalid = false;
+<b><a name="line953">953  </a></b>		}
+<b><a name="line954">954  </a></b>	      else
+<b><a name="line955">955  </a></b>		__testvalid = false;
+<b><a name="line956">956  </a></b>	      if (!__testvalid)
+<b><a name="line957">957  </a></b>		__err |= ios_base::failbit;
+<b><a name="line958">958  </a></b>	
+<b><a name="line959">959  </a></b>	      return __beg;
+<b><a name="line960">960  </a></b>	    }
+<b><a name="line961">961  </a></b>	
+<b><a name="line962">962  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_InIter</b>&gt;
+<b><a name="line963">963  </a></b>	    <a href="#line962">_InIter</a>
+<b><a name="line964">964  </a></b>	    <a href="../localefwd.h/code.html#line170">time_get</a>&lt;<a href="#line962">_CharT</a>, <a href="#line962">_InIter</a>&gt;::
+<b><a name="line965">965  </a></b>	    <b>_M_extract_wday_or_month</b>(<a href="../locale_facets_nonio.h/code.html#line373">iter_type</a> __beg, <a href="../locale_facets_nonio.h/code.html#line373">iter_type</a> __end, int&amp; __member,
+<b><a name="line966">966  </a></b>				     const <a href="#line962">_CharT</a>** __names, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> __indexlen,
+<b><a name="line967">967  </a></b>				     <a href="../../iosfwd/code.html#line74">ios_base</a>&amp; __io, <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="../ios_base.h/code.html#line398">iostate</a>&amp; __err) const
+<b><a name="line968">968  </a></b>	    {
+<b><a name="line969">969  </a></b>	      typedef char_traits&lt;_CharT&gt;		__traits_type;
+<b><a name="line970">970  </a></b>	      const locale&amp; __loc = __io._M_getloc();
+<b><a name="line971">971  </a></b>	      const ctype&lt;_CharT&gt;&amp; __ctype = use_facet&lt;ctype&lt;_CharT&gt; &gt;(__loc);
+<b><a name="line972">972  </a></b>	
+<b><a name="line973">973  </a></b>	      int* __matches = static_cast&lt;int*&gt;(__builtin_alloca(2 * sizeof(int)
+<b><a name="line974">974  </a></b>								  * __indexlen));
+<b><a name="line975">975  </a></b>	      size_t __nmatches = 0;
+<b><a name="line976">976  </a></b>	      size_t* __matches_lengths = 0;
+<b><a name="line977">977  </a></b>	      size_t __pos = 0;
+<b><a name="line978">978  </a></b>	
+<b><a name="line979">979  </a></b>	      if (__beg != __end)
+<b><a name="line980">980  </a></b>		{
+<b><a name="line981">981  </a></b>		  const char_type __c = *__beg;
+<b><a name="line982">982  </a></b>		  for (size_t __i = 0; __i &lt; 2 * __indexlen; ++__i)
+<b><a name="line983">983  </a></b>		    if (__c == __names[__i][0]
+<b><a name="line984">984  </a></b>			|| __c == __ctype.toupper(__names[__i][0]))
+<b><a name="line985">985  </a></b>		      __matches[__nmatches++] = __i;
+<b><a name="line986">986  </a></b>		}
+<b><a name="line987">987  </a></b>	
+<b><a name="line988">988  </a></b>	      if (__nmatches)
+<b><a name="line989">989  </a></b>		{
+<b><a name="line990">990  </a></b>		  ++__beg, ++__pos;
+<b><a name="line991">991  </a></b>	
+<b><a name="line992">992  </a></b>		  __matches_lengths
+<b><a name="line993">993  </a></b>		    = static_cast&lt;size_t*&gt;(__builtin_alloca(sizeof(size_t)
+<b><a name="line994">994  </a></b>							    * __nmatches));
+<b><a name="line995">995  </a></b>		  for (size_t __i = 0; __i &lt; __nmatches; ++__i)
+<b><a name="line996">996  </a></b>		    __matches_lengths[__i]
+<b><a name="line997">997  </a></b>		      = __traits_type::length(__names[__matches[__i]]);
+<b><a name="line998">998  </a></b>		}
+<b><a name="line999">999  </a></b>	
+<b><a name="line1000">1000 </a></b>	      for (; __beg != __end; ++__beg, ++__pos)
+<b><a name="line1001">1001 </a></b>		{
+<b><a name="line1002">1002 </a></b>		  size_t __nskipped = 0;
+<b><a name="line1003">1003 </a></b>		  const char_type __c = *__beg;
+<b><a name="line1004">1004 </a></b>		  for (size_t __i = 0; __i &lt; __nmatches;)
+<b><a name="line1005">1005 </a></b>		    {
+<b><a name="line1006">1006 </a></b>		      const char_type* __name = __names[__matches[__i]];
+<b><a name="line1007">1007 </a></b>		      if (__pos &gt;= __matches_lengths[__i])
+<b><a name="line1008">1008 </a></b>			++__nskipped, ++__i;
+<b><a name="line1009">1009 </a></b>		      else if (!(__name[__pos] == __c))
+<b><a name="line1010">1010 </a></b>			{
+<b><a name="line1011">1011 </a></b>			  --__nmatches;
+<b><a name="line1012">1012 </a></b>			  __matches[__i] = __matches[__nmatches];
+<b><a name="line1013">1013 </a></b>			  __matches_lengths[__i] = __matches_lengths[__nmatches];
+<b><a name="line1014">1014 </a></b>			}
+<b><a name="line1015">1015 </a></b>		      else
+<b><a name="line1016">1016 </a></b>			++__i;
+<b><a name="line1017">1017 </a></b>		    }
+<b><a name="line1018">1018 </a></b>		  if (__nskipped == __nmatches)
+<b><a name="line1019">1019 </a></b>		    break;
+<b><a name="line1020">1020 </a></b>		}
+<b><a name="line1021">1021 </a></b>	
+<b><a name="line1022">1022 </a></b>	      if ((__nmatches == 1 &amp;&amp; __matches_lengths[0] == __pos)
+<b><a name="line1023">1023 </a></b>		  || (__nmatches == 2 &amp;&amp; (__matches_lengths[0] == __pos
+<b><a name="line1024">1024 </a></b>					  || __matches_lengths[1] == __pos)))
+<b><a name="line1025">1025 </a></b>		__member = (__matches[0] &gt;= __indexlen
+<b><a name="line1026">1026 </a></b>			    ? __matches[0] - __indexlen : __matches[0]);
+<b><a name="line1027">1027 </a></b>	      else
+<b><a name="line1028">1028 </a></b>		__err |= ios_base::failbit;
+<b><a name="line1029">1029 </a></b>	
+<b><a name="line1030">1030 </a></b>	      return __beg;
+<b><a name="line1031">1031 </a></b>	    }
+<b><a name="line1032">1032 </a></b>	
+<b><a name="line1033">1033 </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_InIter</b>&gt;
+<b><a name="line1034">1034 </a></b>	    <a href="#line1033">_InIter</a>
+<b><a name="line1035">1035 </a></b>	    <a href="../localefwd.h/code.html#line170">time_get</a>&lt;<a href="#line1033">_CharT</a>, <a href="#line1033">_InIter</a>&gt;::
+<b><a name="line1036">1036 </a></b>	    <b>do_get_time</b>(<a href="../locale_facets_nonio.h/code.html#line373">iter_type</a> __beg, <a href="../locale_facets_nonio.h/code.html#line373">iter_type</a> __end, <a href="../../iosfwd/code.html#line74">ios_base</a>&amp; __io,
+<b><a name="line1037">1037 </a></b>			<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="../ios_base.h/code.html#line398">iostate</a>&amp; __err, <a href="../../../../wchar.h/code.html#line137">tm</a>* __tm) const
+<b><a name="line1038">1038 </a></b>	    {
+<b><a name="line1039">1039 </a></b>	      const locale&amp; __loc = __io._M_getloc();
+<b><a name="line1040">1040 </a></b>	      const __timepunct&lt;_CharT&gt;&amp; __tp = use_facet&lt;__timepunct&lt;_CharT&gt; &gt;(__loc);
+<b><a name="line1041">1041 </a></b>	      const char_type*  __times[2];
+<b><a name="line1042">1042 </a></b>	      __tp._M_time_formats(__times);
+<b><a name="line1043">1043 </a></b>	      __beg = _M_extract_via_format(__beg, __end, __io, __err, 
+<b><a name="line1044">1044 </a></b>					    __tm, __times[0]);
+<b><a name="line1045">1045 </a></b>	      if (__beg == __end)
+<b><a name="line1046">1046 </a></b>		__err |= ios_base::eofbit;
+<b><a name="line1047">1047 </a></b>	      return __beg;
+<b><a name="line1048">1048 </a></b>	    }
+<b><a name="line1049">1049 </a></b>	
+<b><a name="line1050">1050 </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_InIter</b>&gt;
+<b><a name="line1051">1051 </a></b>	    <a href="#line1050">_InIter</a>
+<b><a name="line1052">1052 </a></b>	    <a href="../localefwd.h/code.html#line170">time_get</a>&lt;<a href="#line1050">_CharT</a>, <a href="#line1050">_InIter</a>&gt;::
+<b><a name="line1053">1053 </a></b>	    <b>do_get_date</b>(<a href="../locale_facets_nonio.h/code.html#line373">iter_type</a> __beg, <a href="../locale_facets_nonio.h/code.html#line373">iter_type</a> __end, <a href="../../iosfwd/code.html#line74">ios_base</a>&amp; __io,
+<b><a name="line1054">1054 </a></b>			<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="../ios_base.h/code.html#line398">iostate</a>&amp; __err, <a href="../../../../wchar.h/code.html#line137">tm</a>* __tm) const
+<b><a name="line1055">1055 </a></b>	    {
+<b><a name="line1056">1056 </a></b>	      const locale&amp; __loc = __io._M_getloc();
+<b><a name="line1057">1057 </a></b>	      const __timepunct&lt;_CharT&gt;&amp; __tp = use_facet&lt;__timepunct&lt;_CharT&gt; &gt;(__loc);
+<b><a name="line1058">1058 </a></b>	      const char_type*  __dates[2];
+<b><a name="line1059">1059 </a></b>	      __tp._M_date_formats(__dates);
+<b><a name="line1060">1060 </a></b>	      __beg = _M_extract_via_format(__beg, __end, __io, __err, 
+<b><a name="line1061">1061 </a></b>					    __tm, __dates[0]);
+<b><a name="line1062">1062 </a></b>	      if (__beg == __end)
+<b><a name="line1063">1063 </a></b>		__err |= ios_base::eofbit;
+<b><a name="line1064">1064 </a></b>	      return __beg;
+<b><a name="line1065">1065 </a></b>	    }
+<b><a name="line1066">1066 </a></b>	
+<b><a name="line1067">1067 </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_InIter</b>&gt;
+<b><a name="line1068">1068 </a></b>	    <a href="#line1067">_InIter</a>
+<b><a name="line1069">1069 </a></b>	    <a href="../localefwd.h/code.html#line170">time_get</a>&lt;<a href="#line1067">_CharT</a>, <a href="#line1067">_InIter</a>&gt;::
+<b><a name="line1070">1070 </a></b>	    <b>do_get_weekday</b>(<a href="../locale_facets_nonio.h/code.html#line373">iter_type</a> __beg, <a href="../locale_facets_nonio.h/code.html#line373">iter_type</a> __end, <a href="../../iosfwd/code.html#line74">ios_base</a>&amp; __io,
+<b><a name="line1071">1071 </a></b>			   <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="../ios_base.h/code.html#line398">iostate</a>&amp; __err, <a href="../../../../wchar.h/code.html#line137">tm</a>* __tm) const
+<b><a name="line1072">1072 </a></b>	    {
+<b><a name="line1073">1073 </a></b>	      const locale&amp; __loc = __io._M_getloc();
+<b><a name="line1074">1074 </a></b>	      const __timepunct&lt;_CharT&gt;&amp; __tp = use_facet&lt;__timepunct&lt;_CharT&gt; &gt;(__loc);
+<b><a name="line1075">1075 </a></b>	      const ctype&lt;_CharT&gt;&amp; __ctype = use_facet&lt;ctype&lt;_CharT&gt; &gt;(__loc);
+<b><a name="line1076">1076 </a></b>	      const char_type* __days[14];
+<b><a name="line1077">1077 </a></b>	      __tp._M_days_abbreviated(__days);
+<b><a name="line1078">1078 </a></b>	      __tp._M_days(__days + 7);
+<b><a name="line1079">1079 </a></b>	      int __tmpwday;
+<b><a name="line1080">1080 </a></b>	      ios_base::iostate __tmperr = ios_base::goodbit;
+<b><a name="line1081">1081 </a></b>	
+<b><a name="line1082">1082 </a></b>	      __beg = _M_extract_wday_or_month(__beg, __end, __tmpwday, __days, 7,
+<b><a name="line1083">1083 </a></b>					       __io, __tmperr);
+<b><a name="line1084">1084 </a></b>	      if (!__tmperr)
+<b><a name="line1085">1085 </a></b>		__tm-&gt;tm_wday = __tmpwday;
+<b><a name="line1086">1086 </a></b>	      else
+<b><a name="line1087">1087 </a></b>		__err |= ios_base::failbit;
+<b><a name="line1088">1088 </a></b>	
+<b><a name="line1089">1089 </a></b>	      if (__beg == __end)
+<b><a name="line1090">1090 </a></b>		__err |= ios_base::eofbit;
+<b><a name="line1091">1091 </a></b>	      return __beg;
+<b><a name="line1092">1092 </a></b>	     }
+<b><a name="line1093">1093 </a></b>	
+<b><a name="line1094">1094 </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_InIter</b>&gt;
+<b><a name="line1095">1095 </a></b>	    <a href="#line1094">_InIter</a>
+<b><a name="line1096">1096 </a></b>	    <a href="../localefwd.h/code.html#line170">time_get</a>&lt;<a href="#line1094">_CharT</a>, <a href="#line1094">_InIter</a>&gt;::
+<b><a name="line1097">1097 </a></b>	    <b>do_get_monthname</b>(<a href="../locale_facets_nonio.h/code.html#line373">iter_type</a> __beg, <a href="../locale_facets_nonio.h/code.html#line373">iter_type</a> __end,
+<b><a name="line1098">1098 </a></b>	                     <a href="../../iosfwd/code.html#line74">ios_base</a>&amp; __io, <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="../ios_base.h/code.html#line398">iostate</a>&amp; __err, <a href="../../../../wchar.h/code.html#line137">tm</a>* __tm) const
+<b><a name="line1099">1099 </a></b>	    {
+<b><a name="line1100">1100 </a></b>	      const locale&amp; __loc = __io._M_getloc();
+<b><a name="line1101">1101 </a></b>	      const __timepunct&lt;_CharT&gt;&amp; __tp = use_facet&lt;__timepunct&lt;_CharT&gt; &gt;(__loc);
+<b><a name="line1102">1102 </a></b>	      const ctype&lt;_CharT&gt;&amp; __ctype = use_facet&lt;ctype&lt;_CharT&gt; &gt;(__loc);
+<b><a name="line1103">1103 </a></b>	      const char_type*  __months[24];
+<b><a name="line1104">1104 </a></b>	      __tp._M_months_abbreviated(__months);
+<b><a name="line1105">1105 </a></b>	      __tp._M_months(__months + 12);
+<b><a name="line1106">1106 </a></b>	      int __tmpmon;
+<b><a name="line1107">1107 </a></b>	      ios_base::iostate __tmperr = ios_base::goodbit;
+<b><a name="line1108">1108 </a></b>	
+<b><a name="line1109">1109 </a></b>	      __beg = _M_extract_wday_or_month(__beg, __end, __tmpmon, __months, 12,
+<b><a name="line1110">1110 </a></b>					       __io, __tmperr);
+<b><a name="line1111">1111 </a></b>	      if (!__tmperr)
+<b><a name="line1112">1112 </a></b>		__tm-&gt;tm_mon = __tmpmon;
+<b><a name="line1113">1113 </a></b>	      else
+<b><a name="line1114">1114 </a></b>		__err |= ios_base::failbit;
+<b><a name="line1115">1115 </a></b>	
+<b><a name="line1116">1116 </a></b>	      if (__beg == __end)
+<b><a name="line1117">1117 </a></b>		__err |= ios_base::eofbit;
+<b><a name="line1118">1118 </a></b>	      return __beg;
+<b><a name="line1119">1119 </a></b>	    }
+<b><a name="line1120">1120 </a></b>	
+<b><a name="line1121">1121 </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_InIter</b>&gt;
+<b><a name="line1122">1122 </a></b>	    <a href="#line1121">_InIter</a>
+<b><a name="line1123">1123 </a></b>	    <a href="../localefwd.h/code.html#line170">time_get</a>&lt;<a href="#line1121">_CharT</a>, <a href="#line1121">_InIter</a>&gt;::
+<b><a name="line1124">1124 </a></b>	    <b>do_get_year</b>(<a href="../locale_facets_nonio.h/code.html#line373">iter_type</a> __beg, <a href="../locale_facets_nonio.h/code.html#line373">iter_type</a> __end, <a href="../../iosfwd/code.html#line74">ios_base</a>&amp; __io,
+<b><a name="line1125">1125 </a></b>			<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="../ios_base.h/code.html#line398">iostate</a>&amp; __err, <a href="../../../../wchar.h/code.html#line137">tm</a>* __tm) const
+<b><a name="line1126">1126 </a></b>	    {
+<b><a name="line1127">1127 </a></b>	      const locale&amp; __loc = __io._M_getloc();
+<b><a name="line1128">1128 </a></b>	      const ctype&lt;_CharT&gt;&amp; __ctype = use_facet&lt;ctype&lt;_CharT&gt; &gt;(__loc);
+<b><a name="line1129">1129 </a></b>	      int __tmpyear;
+<b><a name="line1130">1130 </a></b>	      ios_base::iostate __tmperr = ios_base::goodbit;
+<b><a name="line1131">1131 </a></b>	
+<b><a name="line1132">1132 </a></b>	      __beg = _M_extract_num(__beg, __end, __tmpyear, 0, 9999, 4,
+<b><a name="line1133">1133 </a></b>				     __io, __tmperr);
+<b><a name="line1134">1134 </a></b>	      if (!__tmperr)
+<b><a name="line1135">1135 </a></b>		__tm-&gt;tm_year = __tmpyear &lt; 0 ? __tmpyear + 100 : __tmpyear - 1900;
+<b><a name="line1136">1136 </a></b>	      else
+<b><a name="line1137">1137 </a></b>		__err |= ios_base::failbit;
+<b><a name="line1138">1138 </a></b>	
+<b><a name="line1139">1139 </a></b>	      if (__beg == __end)
+<b><a name="line1140">1140 </a></b>		__err |= ios_base::eofbit;
+<b><a name="line1141">1141 </a></b>	      return __beg;
+<b><a name="line1142">1142 </a></b>	    }
+<b><a name="line1143">1143 </a></b>	
+<b><a name="line1144">1144 </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line1145">1145 </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_InIter</b>&gt;
+<b><a name="line1146">1146 </a></b>	    inline
+<b><a name="line1147">1147 </a></b>	    <a href="#line1145">_InIter</a>
+<b><a name="line1148">1148 </a></b>	    <a href="../localefwd.h/code.html#line170">time_get</a>&lt;<a href="#line1145">_CharT</a>, <a href="#line1145">_InIter</a>&gt;::
+<b><a name="line1149">1149 </a></b>	    <b>get</b>(<a href="../locale_facets_nonio.h/code.html#line373">iter_type</a> __s, <a href="../locale_facets_nonio.h/code.html#line373">iter_type</a> __end, <a href="../../iosfwd/code.html#line74">ios_base</a>&amp; __io,
+<b><a name="line1150">1150 </a></b>	        <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="../ios_base.h/code.html#line398">iostate</a>&amp; __err, <a href="../../../../wchar.h/code.html#line137">tm</a>* __tm, const <a href="../locale_facets_nonio.h/code.html#line372">char_type</a>* __fmt,
+<b><a name="line1151">1151 </a></b>	        const <a href="../locale_facets_nonio.h/code.html#line372">char_type</a>* __fmtend) const
+<b><a name="line1152">1152 </a></b>	    {
+<b><a name="line1153">1153 </a></b>	      const locale&amp; __loc = __io._M_getloc();
+<b><a name="line1154">1154 </a></b>	      ctype&lt;_CharT&gt; const&amp; __ctype = use_facet&lt;ctype&lt;_CharT&gt; &gt;(__loc);
+<b><a name="line1155">1155 </a></b>	      __err = ios_base::goodbit;
+<b><a name="line1156">1156 </a></b>	      while (__fmt != __fmtend &amp;&amp;
+<b><a name="line1157">1157 </a></b>	             __err == ios_base::goodbit)
+<b><a name="line1158">1158 </a></b>	        {
+<b><a name="line1159">1159 </a></b>	          if (__s == __end)
+<b><a name="line1160">1160 </a></b>	            {
+<b><a name="line1161">1161 </a></b>	              __err = ios_base::eofbit | ios_base::failbit;
+<b><a name="line1162">1162 </a></b>	              break;
+<b><a name="line1163">1163 </a></b>	            }
+<b><a name="line1164">1164 </a></b>	          else if (__ctype.narrow(*__fmt, 0) == '%')
+<b><a name="line1165">1165 </a></b>	            {
+<b><a name="line1166">1166 </a></b>	              char __format;
+<b><a name="line1167">1167 </a></b>	              char __mod = 0;
+<b><a name="line1168">1168 </a></b>	              if (++__fmt == __fmtend)
+<b><a name="line1169">1169 </a></b>	                {
+<b><a name="line1170">1170 </a></b>	                  __err = ios_base::failbit;
+<b><a name="line1171">1171 </a></b>	                  break;
+<b><a name="line1172">1172 </a></b>	                }
+<b><a name="line1173">1173 </a></b>	              const char __c = __ctype.narrow(*__fmt, 0);
+<b><a name="line1174">1174 </a></b>	              if (__c != 'E' &amp;&amp; __c != 'O')
+<b><a name="line1175">1175 </a></b>	                __format = __c;
+<b><a name="line1176">1176 </a></b>	              else if (++__fmt != __fmtend)
+<b><a name="line1177">1177 </a></b>	                {
+<b><a name="line1178">1178 </a></b>	                  __mod = __c;
+<b><a name="line1179">1179 </a></b>	                  __format = __ctype.narrow(*__fmt, 0);
+<b><a name="line1180">1180 </a></b>	                }
+<b><a name="line1181">1181 </a></b>	              else
+<b><a name="line1182">1182 </a></b>	                {
+<b><a name="line1183">1183 </a></b>	                  __err = ios_base::failbit;
+<b><a name="line1184">1184 </a></b>	                  break;
+<b><a name="line1185">1185 </a></b>	                }
+<b><a name="line1186">1186 </a></b>	              __s = this-&gt;do_get(__s, __end, __io, __err, __tm, __format,
+<b><a name="line1187">1187 </a></b>					 __mod);
+<b><a name="line1188">1188 </a></b>	              ++__fmt;
+<b><a name="line1189">1189 </a></b>	            }
+<b><a name="line1190">1190 </a></b>	          else if (__ctype.is(ctype_base::space, *__fmt))
+<b><a name="line1191">1191 </a></b>	            {
+<b><a name="line1192">1192 </a></b>	              ++__fmt;
+<b><a name="line1193">1193 </a></b>	              while (__fmt != __fmtend &amp;&amp;
+<b><a name="line1194">1194 </a></b>	                     __ctype.is(ctype_base::space, *__fmt))
+<b><a name="line1195">1195 </a></b>	                ++__fmt;
+<b><a name="line1196">1196 </a></b>	
+<b><a name="line1197">1197 </a></b>	              while (__s != __end &amp;&amp;
+<b><a name="line1198">1198 </a></b>	                     __ctype.is(ctype_base::space, *__s))
+<b><a name="line1199">1199 </a></b>	                ++__s;
+<b><a name="line1200">1200 </a></b>	            }
+<b><a name="line1201">1201 </a></b>	          // TODO real case-insensitive comparison
+<b><a name="line1202">1202 </a></b>	          else if (__ctype.tolower(*__s) == __ctype.tolower(*__fmt) ||
+<b><a name="line1203">1203 </a></b>	                   __ctype.toupper(*__s) == __ctype.toupper(*__fmt))
+<b><a name="line1204">1204 </a></b>	            {
+<b><a name="line1205">1205 </a></b>	              ++__s;
+<b><a name="line1206">1206 </a></b>	              ++__fmt;
+<b><a name="line1207">1207 </a></b>	            }
+<b><a name="line1208">1208 </a></b>	          else
+<b><a name="line1209">1209 </a></b>	            {
+<b><a name="line1210">1210 </a></b>	              __err = ios_base::failbit;
+<b><a name="line1211">1211 </a></b>	              break;
+<b><a name="line1212">1212 </a></b>	            }
+<b><a name="line1213">1213 </a></b>	        }
+<b><a name="line1214">1214 </a></b>	      return __s;
+<b><a name="line1215">1215 </a></b>	    }
+<b><a name="line1216">1216 </a></b>	
+<b><a name="line1217">1217 </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_InIter</b>&gt;
+<b><a name="line1218">1218 </a></b>	    inline
+<b><a name="line1219">1219 </a></b>	    <a href="#line1217">_InIter</a>
+<b><a name="line1220">1220 </a></b>	    <a href="../localefwd.h/code.html#line170">time_get</a>&lt;<a href="#line1217">_CharT</a>, <a href="#line1217">_InIter</a>&gt;::
+<b><a name="line1221">1221 </a></b>	    <b>do_get</b>(<a href="../locale_facets_nonio.h/code.html#line373">iter_type</a> __beg, <a href="../locale_facets_nonio.h/code.html#line373">iter_type</a> __end, <a href="../../iosfwd/code.html#line74">ios_base</a>&amp; __io,
+<b><a name="line1222">1222 </a></b>	           <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="../ios_base.h/code.html#line398">iostate</a>&amp; __err, <a href="../../../../wchar.h/code.html#line137">tm</a>* __tm,
+<b><a name="line1223">1223 </a></b>	           char __format, char __mod) const
+<b><a name="line1224">1224 </a></b>	    {
+<b><a name="line1225">1225 </a></b>	      const locale&amp; __loc = __io._M_getloc();
+<b><a name="line1226">1226 </a></b>	      ctype&lt;_CharT&gt; const&amp; __ctype = use_facet&lt;ctype&lt;_CharT&gt; &gt;(__loc);
+<b><a name="line1227">1227 </a></b>	      __err = ios_base::goodbit;
+<b><a name="line1228">1228 </a></b>	
+<b><a name="line1229">1229 </a></b>	      char_type __fmt[4];
+<b><a name="line1230">1230 </a></b>	      __fmt[0] = __ctype.widen('%');
+<b><a name="line1231">1231 </a></b>	      if (!__mod)
+<b><a name="line1232">1232 </a></b>	        {
+<b><a name="line1233">1233 </a></b>	          __fmt[1] = __format;
+<b><a name="line1234">1234 </a></b>	          __fmt[2] = char_type();
+<b><a name="line1235">1235 </a></b>	        }
+<b><a name="line1236">1236 </a></b>	      else
+<b><a name="line1237">1237 </a></b>	        {
+<b><a name="line1238">1238 </a></b>	          __fmt[1] = __mod;
+<b><a name="line1239">1239 </a></b>	          __fmt[2] = __format;
+<b><a name="line1240">1240 </a></b>	          __fmt[3] = char_type();
+<b><a name="line1241">1241 </a></b>	        }
+<b><a name="line1242">1242 </a></b>	
+<b><a name="line1243">1243 </a></b>	      __beg = _M_extract_via_format(__beg, __end, __io, __err, __tm, __fmt);
+<b><a name="line1244">1244 </a></b>	      if (__beg == __end)
+<b><a name="line1245">1245 </a></b>		__err |= ios_base::eofbit;
+<b><a name="line1246">1246 </a></b>	      return __beg;
+<b><a name="line1247">1247 </a></b>	    }
+<b><a name="line1248">1248 </a></b>	
+<b><a name="line1249">1249 </a></b>	#endif // __cplusplus &gt;= 201103L
+<b><a name="line1250">1250 </a></b>	
+<b><a name="line1251">1251 </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_OutIter</b>&gt;
+<b><a name="line1252">1252 </a></b>	    <a href="#line1251">_OutIter</a>
+<b><a name="line1253">1253 </a></b>	    <a href="../localefwd.h/code.html#line175">time_put</a>&lt;<a href="#line1251">_CharT</a>, <a href="#line1251">_OutIter</a>&gt;::
+<b><a name="line1254">1254 </a></b>	    <b>put</b>(<a href="../locale_facets_nonio.h/code.html#line802">iter_type</a> __s, <a href="../../iosfwd/code.html#line74">ios_base</a>&amp; __io, <a href="../locale_facets_nonio.h/code.html#line801">char_type</a> __fill, const <a href="../../../../wchar.h/code.html#line137">tm</a>* __tm,
+<b><a name="line1255">1255 </a></b>		const <a href="#line1251">_CharT</a>* __beg, const <a href="#line1251">_CharT</a>* __end) const
+<b><a name="line1256">1256 </a></b>	    {
+<b><a name="line1257">1257 </a></b>	      const locale&amp; __loc = __io._M_getloc();
+<b><a name="line1258">1258 </a></b>	      ctype&lt;_CharT&gt; const&amp; __ctype = use_facet&lt;ctype&lt;_CharT&gt; &gt;(__loc);
+<b><a name="line1259">1259 </a></b>	      for (; __beg != __end; ++__beg)
+<b><a name="line1260">1260 </a></b>		if (__ctype.narrow(*__beg, 0) != '%')
+<b><a name="line1261">1261 </a></b>		  {
+<b><a name="line1262">1262 </a></b>		    *__s = *__beg;
+<b><a name="line1263">1263 </a></b>		    ++__s;
+<b><a name="line1264">1264 </a></b>		  }
+<b><a name="line1265">1265 </a></b>		else if (++__beg != __end)
+<b><a name="line1266">1266 </a></b>		  {
+<b><a name="line1267">1267 </a></b>		    char __format;
+<b><a name="line1268">1268 </a></b>		    char __mod = 0;
+<b><a name="line1269">1269 </a></b>		    const char __c = __ctype.narrow(*__beg, 0);
+<b><a name="line1270">1270 </a></b>		    if (__c != 'E' &amp;&amp; __c != 'O')
+<b><a name="line1271">1271 </a></b>		      __format = __c;
+<b><a name="line1272">1272 </a></b>		    else if (++__beg != __end)
+<b><a name="line1273">1273 </a></b>		      {
+<b><a name="line1274">1274 </a></b>			__mod = __c;
+<b><a name="line1275">1275 </a></b>			__format = __ctype.narrow(*__beg, 0);
+<b><a name="line1276">1276 </a></b>		      }
+<b><a name="line1277">1277 </a></b>		    else
+<b><a name="line1278">1278 </a></b>		      break;
+<b><a name="line1279">1279 </a></b>		    __s = this-&gt;do_put(__s, __io, __fill, __tm, __format, __mod);
+<b><a name="line1280">1280 </a></b>		  }
+<b><a name="line1281">1281 </a></b>		else
+<b><a name="line1282">1282 </a></b>		  break;
+<b><a name="line1283">1283 </a></b>	      return __s;
+<b><a name="line1284">1284 </a></b>	    }
+<b><a name="line1285">1285 </a></b>	
+<b><a name="line1286">1286 </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_OutIter</b>&gt;
+<b><a name="line1287">1287 </a></b>	    <a href="#line1286">_OutIter</a>
+<b><a name="line1288">1288 </a></b>	    <a href="../localefwd.h/code.html#line175">time_put</a>&lt;<a href="#line1286">_CharT</a>, <a href="#line1286">_OutIter</a>&gt;::
+<b><a name="line1289">1289 </a></b>	    <b>do_put</b>(<a href="../locale_facets_nonio.h/code.html#line802">iter_type</a> __s, <a href="../../iosfwd/code.html#line74">ios_base</a>&amp; __io, <a href="../locale_facets_nonio.h/code.html#line801">char_type</a>, const <a href="../../../../wchar.h/code.html#line137">tm</a>* __tm,
+<b><a name="line1290">1290 </a></b>		   char __format, char __mod) const
+<b><a name="line1291">1291 </a></b>	    {
+<b><a name="line1292">1292 </a></b>	      const locale&amp; __loc = __io._M_getloc();
+<b><a name="line1293">1293 </a></b>	      ctype&lt;_CharT&gt; const&amp; __ctype = use_facet&lt;ctype&lt;_CharT&gt; &gt;(__loc);
+<b><a name="line1294">1294 </a></b>	      __timepunct&lt;_CharT&gt; const&amp; __tp = use_facet&lt;__timepunct&lt;_CharT&gt; &gt;(__loc);
+<b><a name="line1295">1295 </a></b>	
+<b><a name="line1296">1296 </a></b>	      // NB: This size is arbitrary. Should this be a data member,
+<b><a name="line1297">1297 </a></b>	      // initialized at construction?
+<b><a name="line1298">1298 </a></b>	      const size_t __maxlen = 128;
+<b><a name="line1299">1299 </a></b>	      char_type __res[__maxlen];
+<b><a name="line1300">1300 </a></b>	
+<b><a name="line1301">1301 </a></b>	      // NB: In IEE 1003.1-200x, and perhaps other locale models, it
+<b><a name="line1302">1302 </a></b>	      // is possible that the format character will be longer than one
+<b><a name="line1303">1303 </a></b>	      // character. Possibilities include 'E' or 'O' followed by a
+<b><a name="line1304">1304 </a></b>	      // format character: if __mod is not the default argument, assume
+<b><a name="line1305">1305 </a></b>	      // it's a valid modifier.
+<b><a name="line1306">1306 </a></b>	      char_type __fmt[4];
+<b><a name="line1307">1307 </a></b>	      __fmt[0] = __ctype.widen('%');
+<b><a name="line1308">1308 </a></b>	      if (!__mod)
+<b><a name="line1309">1309 </a></b>		{
+<b><a name="line1310">1310 </a></b>		  __fmt[1] = __format;
+<b><a name="line1311">1311 </a></b>		  __fmt[2] = char_type();
+<b><a name="line1312">1312 </a></b>		}
+<b><a name="line1313">1313 </a></b>	      else
+<b><a name="line1314">1314 </a></b>		{
+<b><a name="line1315">1315 </a></b>		  __fmt[1] = __mod;
+<b><a name="line1316">1316 </a></b>		  __fmt[2] = __format;
+<b><a name="line1317">1317 </a></b>		  __fmt[3] = char_type();
+<b><a name="line1318">1318 </a></b>		}
+<b><a name="line1319">1319 </a></b>	
+<b><a name="line1320">1320 </a></b>	      __tp._M_put(__res, __maxlen, __fmt, __tm);
+<b><a name="line1321">1321 </a></b>	
+<b><a name="line1322">1322 </a></b>	      // Write resulting, fully-formatted string to output iterator.
+<b><a name="line1323">1323 </a></b>	      return std::__write(__s, __res, char_traits&lt;char_type&gt;::length(__res));
+<b><a name="line1324">1324 </a></b>	    }
+<b><a name="line1325">1325 </a></b>	
+<b><a name="line1326">1326 </a></b>	
+<b><a name="line1327">1327 </a></b>	  // Inhibit implicit instantiations for required instantiations,
+<b><a name="line1328">1328 </a></b>	  // which are defined via explicit instantiations elsewhere.
+<b><a name="line1329">1329 </a></b>	#if <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line149">_GLIBCXX_EXTERN_TEMPLATE</a>
+<b><a name="line1330">1330 </a></b>	  extern template class <a href="../locale_facets_nonio.h/code.html#line1022">moneypunct</a>&lt;char, false&gt;;
+<b><a name="line1331">1331 </a></b>	  extern template class <a href="../locale_facets_nonio.h/code.html#line1022">moneypunct</a>&lt;char, true&gt;;
+<b><a name="line1332">1332 </a></b>	  extern template class <a href="../locale_facets_nonio.h/code.html#line1412">moneypunct_byname</a>&lt;char, false&gt;;
+<b><a name="line1333">1333 </a></b>	  extern template class <a href="../locale_facets_nonio.h/code.html#line1412">moneypunct_byname</a>&lt;char, true&gt;;
+<b><a name="line1334">1334 </a></b>	  extern template class <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line406">_GLIBCXX_NAMESPACE_LDBL_OR_CXX11</a> <a href="../locale_facets_nonio.h/code.html#line1466">money_get</a>&lt;char&gt;;
+<b><a name="line1335">1335 </a></b>	  extern template class <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line406">_GLIBCXX_NAMESPACE_LDBL_OR_CXX11</a> <a href="../locale_facets_nonio.h/code.html#line1619">money_put</a>&lt;char&gt;;
+<b><a name="line1336">1336 </a></b>	  extern template class <a href="../locale_facets_nonio.h/code.html#line174">__timepunct</a>&lt;char&gt;;
+<b><a name="line1337">1337 </a></b>	  extern template class <a href="../locale_facets_nonio.h/code.html#line795">time_put</a>&lt;char&gt;;
+<b><a name="line1338">1338 </a></b>	  extern template class <a href="../locale_facets_nonio.h/code.html#line891">time_put_byname</a>&lt;char&gt;;
+<b><a name="line1339">1339 </a></b>	  extern template class <a href="../locale_facets_nonio.h/code.html#line366">time_get</a>&lt;char&gt;;
+<b><a name="line1340">1340 </a></b>	  extern template class <a href="../locale_facets_nonio.h/code.html#line758">time_get_byname</a>&lt;char&gt;;
+<b><a name="line1341">1341 </a></b>	  extern template class <a href="../localefwd.h/code.html#line198">messages</a>&lt;char&gt;;
+<b><a name="line1342">1342 </a></b>	  extern template class <a href="../locale_facets_nonio.h/code.html#line1981">messages_byname</a>&lt;char&gt;;
+<b><a name="line1343">1343 </a></b>	
+<b><a name="line1344">1344 </a></b>	  extern template
+<b><a name="line1345">1345 </a></b>	    const <a href="../locale_facets_nonio.h/code.html#line1022">moneypunct</a>&lt;char, true&gt;&amp;
+<b><a name="line1346">1346 </a></b>	    use_facet&lt;<a href="../locale_facets_nonio.h/code.html#line1022">moneypunct</a>&lt;char, true&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1347">1347 </a></b>	
+<b><a name="line1348">1348 </a></b>	  extern template
+<b><a name="line1349">1349 </a></b>	    const <a href="../locale_facets_nonio.h/code.html#line1022">moneypunct</a>&lt;char, false&gt;&amp;
+<b><a name="line1350">1350 </a></b>	    use_facet&lt;<a href="../locale_facets_nonio.h/code.html#line1022">moneypunct</a>&lt;char, false&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1351">1351 </a></b>	
+<b><a name="line1352">1352 </a></b>	  extern template
+<b><a name="line1353">1353 </a></b>	    const <a href="../locale_facets_nonio.h/code.html#line1619">money_put</a>&lt;char&gt;&amp;
+<b><a name="line1354">1354 </a></b>	    use_facet&lt;<a href="../locale_facets_nonio.h/code.html#line1619">money_put</a>&lt;char&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1355">1355 </a></b>	
+<b><a name="line1356">1356 </a></b>	  extern template
+<b><a name="line1357">1357 </a></b>	    const <a href="../locale_facets_nonio.h/code.html#line1466">money_get</a>&lt;char&gt;&amp;
+<b><a name="line1358">1358 </a></b>	    use_facet&lt;<a href="../locale_facets_nonio.h/code.html#line1466">money_get</a>&lt;char&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1359">1359 </a></b>	
+<b><a name="line1360">1360 </a></b>	  extern template
+<b><a name="line1361">1361 </a></b>	    const <a href="../locale_facets_nonio.h/code.html#line174">__timepunct</a>&lt;char&gt;&amp;
+<b><a name="line1362">1362 </a></b>	    use_facet&lt;<a href="../locale_facets_nonio.h/code.html#line174">__timepunct</a>&lt;char&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1363">1363 </a></b>	
+<b><a name="line1364">1364 </a></b>	  extern template
+<b><a name="line1365">1365 </a></b>	    const <a href="../locale_facets_nonio.h/code.html#line795">time_put</a>&lt;char&gt;&amp;
+<b><a name="line1366">1366 </a></b>	    use_facet&lt;<a href="../locale_facets_nonio.h/code.html#line795">time_put</a>&lt;char&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1367">1367 </a></b>	
+<b><a name="line1368">1368 </a></b>	  extern template
+<b><a name="line1369">1369 </a></b>	    const <a href="../locale_facets_nonio.h/code.html#line366">time_get</a>&lt;char&gt;&amp;
+<b><a name="line1370">1370 </a></b>	    use_facet&lt;<a href="../locale_facets_nonio.h/code.html#line366">time_get</a>&lt;char&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1371">1371 </a></b>	
+<b><a name="line1372">1372 </a></b>	  extern template
+<b><a name="line1373">1373 </a></b>	    const <a href="../localefwd.h/code.html#line198">messages</a>&lt;char&gt;&amp;
+<b><a name="line1374">1374 </a></b>	    use_facet&lt;<a href="../localefwd.h/code.html#line198">messages</a>&lt;char&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1375">1375 </a></b>	
+<b><a name="line1376">1376 </a></b>	  extern template
+<b><a name="line1377">1377 </a></b>	    bool
+<b><a name="line1378">1378 </a></b>	    has_facet&lt;<a href="../locale_facets_nonio.h/code.html#line1022">moneypunct</a>&lt;char&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1379">1379 </a></b>	
+<b><a name="line1380">1380 </a></b>	  extern template
+<b><a name="line1381">1381 </a></b>	    bool
+<b><a name="line1382">1382 </a></b>	    has_facet&lt;<a href="../locale_facets_nonio.h/code.html#line1619">money_put</a>&lt;char&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1383">1383 </a></b>	
+<b><a name="line1384">1384 </a></b>	  extern template
+<b><a name="line1385">1385 </a></b>	    bool
+<b><a name="line1386">1386 </a></b>	    has_facet&lt;<a href="../locale_facets_nonio.h/code.html#line1466">money_get</a>&lt;char&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1387">1387 </a></b>	
+<b><a name="line1388">1388 </a></b>	  extern template
+<b><a name="line1389">1389 </a></b>	    bool
+<b><a name="line1390">1390 </a></b>	    has_facet&lt;<a href="../locale_facets_nonio.h/code.html#line174">__timepunct</a>&lt;char&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1391">1391 </a></b>	
+<b><a name="line1392">1392 </a></b>	  extern template
+<b><a name="line1393">1393 </a></b>	    bool
+<b><a name="line1394">1394 </a></b>	    has_facet&lt;<a href="../locale_facets_nonio.h/code.html#line795">time_put</a>&lt;char&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1395">1395 </a></b>	
+<b><a name="line1396">1396 </a></b>	  extern template
+<b><a name="line1397">1397 </a></b>	    bool
+<b><a name="line1398">1398 </a></b>	    has_facet&lt;<a href="../locale_facets_nonio.h/code.html#line366">time_get</a>&lt;char&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1399">1399 </a></b>	
+<b><a name="line1400">1400 </a></b>	  extern template
+<b><a name="line1401">1401 </a></b>	    bool
+<b><a name="line1402">1402 </a></b>	    has_facet&lt;<a href="../localefwd.h/code.html#line198">messages</a>&lt;char&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1403">1403 </a></b>	
+<b><a name="line1404">1404 </a></b>	#ifdef <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1432">_GLIBCXX_USE_WCHAR_T</a>
+<b><a name="line1405">1405 </a></b>	  extern template class <a href="../locale_facets_nonio.h/code.html#line1022">moneypunct</a>&lt;wchar_t, false&gt;;
+<b><a name="line1406">1406 </a></b>	  extern template class <a href="../locale_facets_nonio.h/code.html#line1022">moneypunct</a>&lt;wchar_t, true&gt;;
+<b><a name="line1407">1407 </a></b>	  extern template class <a href="../locale_facets_nonio.h/code.html#line1412">moneypunct_byname</a>&lt;wchar_t, false&gt;;
+<b><a name="line1408">1408 </a></b>	  extern template class <a href="../locale_facets_nonio.h/code.html#line1412">moneypunct_byname</a>&lt;wchar_t, true&gt;;
+<b><a name="line1409">1409 </a></b>	  extern template class <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line406">_GLIBCXX_NAMESPACE_LDBL_OR_CXX11</a> <a href="../locale_facets_nonio.h/code.html#line1466">money_get</a>&lt;wchar_t&gt;;
+<b><a name="line1410">1410 </a></b>	  extern template class <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line406">_GLIBCXX_NAMESPACE_LDBL_OR_CXX11</a> <a href="../locale_facets_nonio.h/code.html#line1619">money_put</a>&lt;wchar_t&gt;;
+<b><a name="line1411">1411 </a></b>	  extern template class <a href="../locale_facets_nonio.h/code.html#line174">__timepunct</a>&lt;wchar_t&gt;;
+<b><a name="line1412">1412 </a></b>	  extern template class <a href="../locale_facets_nonio.h/code.html#line795">time_put</a>&lt;wchar_t&gt;;
+<b><a name="line1413">1413 </a></b>	  extern template class <a href="../locale_facets_nonio.h/code.html#line891">time_put_byname</a>&lt;wchar_t&gt;;
+<b><a name="line1414">1414 </a></b>	  extern template class <a href="../locale_facets_nonio.h/code.html#line366">time_get</a>&lt;wchar_t&gt;;
+<b><a name="line1415">1415 </a></b>	  extern template class <a href="../locale_facets_nonio.h/code.html#line758">time_get_byname</a>&lt;wchar_t&gt;;
+<b><a name="line1416">1416 </a></b>	  extern template class <a href="../localefwd.h/code.html#line198">messages</a>&lt;wchar_t&gt;;
+<b><a name="line1417">1417 </a></b>	  extern template class <a href="../locale_facets_nonio.h/code.html#line1981">messages_byname</a>&lt;wchar_t&gt;;
+<b><a name="line1418">1418 </a></b>	
+<b><a name="line1419">1419 </a></b>	  extern template
+<b><a name="line1420">1420 </a></b>	    const <a href="../locale_facets_nonio.h/code.html#line1022">moneypunct</a>&lt;wchar_t, true&gt;&amp;
+<b><a name="line1421">1421 </a></b>	    use_facet&lt;<a href="../locale_facets_nonio.h/code.html#line1022">moneypunct</a>&lt;wchar_t, true&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1422">1422 </a></b>	
+<b><a name="line1423">1423 </a></b>	  extern template
+<b><a name="line1424">1424 </a></b>	    const <a href="../locale_facets_nonio.h/code.html#line1022">moneypunct</a>&lt;wchar_t, false&gt;&amp;
+<b><a name="line1425">1425 </a></b>	    use_facet&lt;<a href="../locale_facets_nonio.h/code.html#line1022">moneypunct</a>&lt;wchar_t, false&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1426">1426 </a></b>	
+<b><a name="line1427">1427 </a></b>	  extern template
+<b><a name="line1428">1428 </a></b>	    const <a href="../locale_facets_nonio.h/code.html#line1619">money_put</a>&lt;wchar_t&gt;&amp;
+<b><a name="line1429">1429 </a></b>	    use_facet&lt;<a href="../locale_facets_nonio.h/code.html#line1619">money_put</a>&lt;wchar_t&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1430">1430 </a></b>	
+<b><a name="line1431">1431 </a></b>	  extern template
+<b><a name="line1432">1432 </a></b>	    const <a href="../locale_facets_nonio.h/code.html#line1466">money_get</a>&lt;wchar_t&gt;&amp;
+<b><a name="line1433">1433 </a></b>	    use_facet&lt;<a href="../locale_facets_nonio.h/code.html#line1466">money_get</a>&lt;wchar_t&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1434">1434 </a></b>	
+<b><a name="line1435">1435 </a></b>	  extern template
+<b><a name="line1436">1436 </a></b>	    const <a href="../locale_facets_nonio.h/code.html#line174">__timepunct</a>&lt;wchar_t&gt;&amp;
+<b><a name="line1437">1437 </a></b>	    use_facet&lt;<a href="../locale_facets_nonio.h/code.html#line174">__timepunct</a>&lt;wchar_t&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1438">1438 </a></b>	
+<b><a name="line1439">1439 </a></b>	  extern template
+<b><a name="line1440">1440 </a></b>	    const <a href="../locale_facets_nonio.h/code.html#line795">time_put</a>&lt;wchar_t&gt;&amp;
+<b><a name="line1441">1441 </a></b>	    use_facet&lt;<a href="../locale_facets_nonio.h/code.html#line795">time_put</a>&lt;wchar_t&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1442">1442 </a></b>	
+<b><a name="line1443">1443 </a></b>	  extern template
+<b><a name="line1444">1444 </a></b>	    const <a href="../locale_facets_nonio.h/code.html#line366">time_get</a>&lt;wchar_t&gt;&amp;
+<b><a name="line1445">1445 </a></b>	    use_facet&lt;<a href="../locale_facets_nonio.h/code.html#line366">time_get</a>&lt;wchar_t&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1446">1446 </a></b>	
+<b><a name="line1447">1447 </a></b>	  extern template
+<b><a name="line1448">1448 </a></b>	    const <a href="../localefwd.h/code.html#line198">messages</a>&lt;wchar_t&gt;&amp;
+<b><a name="line1449">1449 </a></b>	    use_facet&lt;<a href="../localefwd.h/code.html#line198">messages</a>&lt;wchar_t&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1450">1450 </a></b>	
+<b><a name="line1451">1451 </a></b>	  extern template
+<b><a name="line1452">1452 </a></b>	    bool
+<b><a name="line1453">1453 </a></b>	    has_facet&lt;<a href="../locale_facets_nonio.h/code.html#line1022">moneypunct</a>&lt;wchar_t&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1454">1454 </a></b>	
+<b><a name="line1455">1455 </a></b>	  extern template
+<b><a name="line1456">1456 </a></b>	    bool
+<b><a name="line1457">1457 </a></b>	    has_facet&lt;<a href="../locale_facets_nonio.h/code.html#line1619">money_put</a>&lt;wchar_t&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1458">1458 </a></b>	
+<b><a name="line1459">1459 </a></b>	  extern template
+<b><a name="line1460">1460 </a></b>	    bool
+<b><a name="line1461">1461 </a></b>	    has_facet&lt;<a href="../locale_facets_nonio.h/code.html#line1466">money_get</a>&lt;wchar_t&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1462">1462 </a></b>	
+<b><a name="line1463">1463 </a></b>	  extern template
+<b><a name="line1464">1464 </a></b>	    bool
+<b><a name="line1465">1465 </a></b>	    has_facet&lt;<a href="../locale_facets_nonio.h/code.html#line174">__timepunct</a>&lt;wchar_t&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1466">1466 </a></b>	
+<b><a name="line1467">1467 </a></b>	  extern template
+<b><a name="line1468">1468 </a></b>	    bool
+<b><a name="line1469">1469 </a></b>	    has_facet&lt;<a href="../locale_facets_nonio.h/code.html#line795">time_put</a>&lt;wchar_t&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1470">1470 </a></b>	
+<b><a name="line1471">1471 </a></b>	  extern template
+<b><a name="line1472">1472 </a></b>	    bool
+<b><a name="line1473">1473 </a></b>	    has_facet&lt;<a href="../locale_facets_nonio.h/code.html#line366">time_get</a>&lt;wchar_t&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1474">1474 </a></b>	
+<b><a name="line1475">1475 </a></b>	  extern template
+<b><a name="line1476">1476 </a></b>	    bool
+<b><a name="line1477">1477 </a></b>	    has_facet&lt;<a href="../localefwd.h/code.html#line198">messages</a>&lt;wchar_t&gt; &gt;(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line1478">1478 </a></b>	#endif
+<b><a name="line1479">1479 </a></b>	#endif
+<b><a name="line1480">1480 </a></b>	
+<b><a name="line1481">1481 </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line1482">1482 </a></b>	} // namespace std
+<b><a name="line1483">1483 </a></b>	
+<b><a name="line1484">1484 </a></b>	#endif
+<b><a name="line1485">1485 </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

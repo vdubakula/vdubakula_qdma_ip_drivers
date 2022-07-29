@@ -1,0 +1,230 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/xlnx/xlnx_dpdk/xlnx_pci.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/*
+<b><a name="line2">2    </a></b>	 * xlnx_pci.h
+<b><a name="line3">3    </a></b>	 *
+<b><a name="line4">4    </a></b>	 *  Created on: Feb 5, 2018
+<b><a name="line5">5    </a></b>	 *      Author: alexande
+<b><a name="line6">6    </a></b>	 */
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	#ifndef QDMA_TEST_XLNX_XLNX_PCI_H_
+<b><a name="line9">9    </a></b>	#define <b>QDMA_TEST_XLNX_XLNX_PCI_H_</b>
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	#include &lt;cerrno&gt;
+<b><a name="line12">12   </a></b>	#include &lt;cstddef&gt;
+<b><a name="line13">13   </a></b>	#include &lt;cstdint&gt;
+<b><a name="line14">14   </a></b>	#include &lt;cstring&gt;
+<b><a name="line15">15   </a></b>	#include &lt;iostream&gt;
+<b><a name="line16">16   </a></b>	#include &lt;iomanip&gt;
+<b><a name="line17">17   </a></b>	#include &lt;fstream&gt;
+<b><a name="line18">18   </a></b>	#include &lt;sstream&gt;
+<b><a name="line19">19   </a></b>	#include &lt;string&gt;
+<b><a name="line20">20   </a></b>	#include &lt;system_error&gt;
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	#include &lt;fcntl.h&gt;
+<b><a name="line23">23   </a></b>	#include &lt;sys/mman.h&gt;
+<b><a name="line24">24   </a></b>	#include &lt;unistd.h&gt;
+<b><a name="line25">25   </a></b>	#include &lt;rte_eal.h&gt; /**&gt; rte_eal_init */
+<b><a name="line26">26   </a></b>	#include &lt;rte_debug.h&gt; /**&gt; for rte_panic */
+<b><a name="line27">27   </a></b>	#include &lt;rte_ethdev_pci.h&gt;
+<b><a name="line28">28   </a></b>	#include &lt;rte_ethdev.h&gt; /**&gt; rte_eth_rx_burst */
+<b><a name="line29">29   </a></b>	#include &lt;rte_errno.h&gt; /**&gt; rte_errno global var */
+<b><a name="line30">30   </a></b>	#include &lt;rte_memzone.h&gt; /**&gt; rte_memzone_dump */
+<b><a name="line31">31   </a></b>	#include &lt;rte_memcpy.h&gt;
+<b><a name="line32">32   </a></b>	#include &lt;rte_malloc.h&gt;
+<b><a name="line33">33   </a></b>	#include &lt;rte_cycles.h&gt;
+<b><a name="line34">34   </a></b>	#include &lt;rte_log.h&gt;
+<b><a name="line35">35   </a></b>	#include &lt;rte_string_fns.h&gt;
+<b><a name="line36">36   </a></b>	#include &lt;rte_mbuf.h&gt;
+<b><a name="line37">37   </a></b>	#include &lt;getopt.h&gt;
+<b><a name="line38">38   </a></b>	#include &quot;qdma_dpdk.h&quot;
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	extern struct <a href="/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line29">rte_eth_dev</a> <a href="/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line639">rte_eth_devices</a>[<a href="/usr/local/include/dpdk/rte_config.h/code.html#line82">RTE_MAX_ETHPORTS</a>];
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	struct <b>pci_id</b> {
+<b><a name="line44">44   </a></b>	    unsigned <b>bus</b> = 0;
+<b><a name="line45">45   </a></b>	    unsigned <b>dev</b> = 0;
+<b><a name="line46">46   </a></b>	    unsigned <b>fn</b> = 0;
+<b><a name="line47">47   </a></b>	};
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	inline <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stringfwd.h/code.html#line74">string</a> <b>to_string</b>(<a href="#line43">pci_id</a> <b>id</b>) {
+<b><a name="line50">50   </a></b>	    // 01:02:3
+<b><a name="line51">51   </a></b>	    // where bus_id=0x01, dev_id=0x02, fn_id=3
+<b><a name="line52">52   </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/iosfwd/code.html#line156">stringstream</a> <b>ss</b>;
+<b><a name="line53">53   </a></b>	    <a href="#line52">ss</a> <a href="/usr/include/c++/5/ostream/code.html#line127">&lt;&lt;</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/ios_base.h/code.html#line1024">hex</a> <a href="/usr/include/c++/5/iomanip/code.html#line178">&lt;&lt;</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/iomanip/code.html#line165">setfill</a>('0');
+<b><a name="line54">54   </a></b>	    <a href="#line52">ss</a> <a href="/usr/include/c++/5/iomanip/code.html#line238">&lt;&lt;</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/iomanip/code.html#line225">setw</a>(2) <a href="/usr/include/c++/5/ostream/code.html#line192">&lt;&lt;</a> <a href="#line49">id</a>.<a href="#line44">bus</a> <a href="/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;:&quot;;
+<b><a name="line55">55   </a></b>	    <a href="#line52">ss</a> <a href="/usr/include/c++/5/iomanip/code.html#line238">&lt;&lt;</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/iomanip/code.html#line225">setw</a>(2) <a href="/usr/include/c++/5/ostream/code.html#line192">&lt;&lt;</a> <a href="#line49">id</a>.<a href="#line45">dev</a> <a href="/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;.&quot;;
+<b><a name="line56">56   </a></b>	    <a href="#line52">ss</a> <a href="/usr/include/c++/5/ostream/code.html#line192">&lt;&lt;</a> <a href="#line49">id</a>.<a href="#line46">fn</a>;
+<b><a name="line57">57   </a></b>	    return <a href="#line52">ss</a>.<a href="/usr/include/c++/5/sstream/code.html#line765">str</a>();
+<b><a name="line58">58   </a></b>	}
+<b><a name="line59">59   </a></b>	
+<b><a name="line60">60   </a></b>	class <b>pcie_bar</b>{
+<b><a name="line61">61   </a></b>	public:
+<b><a name="line62">62   </a></b>	
+<b><a name="line63">63   </a></b>		<b>pcie_bar</b> (<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>id</b>, <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>bar</b>) {
+<b><a name="line64">64   </a></b>			<a href="#line162">bar_num</a> = <a href="#line63">bar</a>;
+<b><a name="line65">65   </a></b>			<a href="#line163">m_id</a> = <a href="#line63">id</a>;
+<b><a name="line66">66   </a></b>			<a href="#line43">pci_id</a> <b>bdf</b>;
+<b><a name="line67">67   </a></b>			struct <a href="/usr/local/include/dpdk/rte_bus_pci.h/code.html#line37">rte_pci_device</a> *<b>pci_dev</b>;
+<b><a name="line68">68   </a></b>			<a href="#line67">pci_dev</a> = <a href="/usr/local/include/dpdk/rte_bus_pci.h/code.html#line82">RTE_ETH_DEV_TO_PCI</a>(&amp;rte_eth_devices[m_id]);
+<b><a name="line69">69   </a></b>			<a href="#line66">bdf</a>.<a href="#line44">bus</a> = <a href="#line67">pci_dev</a>-&gt;<a href="/usr/local/include/dpdk/rte_bus_pci.h/code.html#line60">addr</a>.<a href="/usr/local/include/dpdk/rte_pci.h/code.html#line63">bus</a>;
+<b><a name="line70">70   </a></b>			<a href="#line66">bdf</a>.<a href="#line45">dev</a> = <a href="#line67">pci_dev</a>-&gt;<a href="/usr/local/include/dpdk/rte_bus_pci.h/code.html#line60">addr</a>.<a href="/usr/local/include/dpdk/rte_pci.h/code.html#line64">devid</a>;
+<b><a name="line71">71   </a></b>			<a href="#line66">bdf</a>.<a href="#line46">fn</a> = <a href="#line67">pci_dev</a>-&gt;<a href="/usr/local/include/dpdk/rte_bus_pci.h/code.html#line60">addr</a>.<a href="/usr/local/include/dpdk/rte_pci.h/code.html#line65">function</a>;
+<b><a name="line72">72   </a></b>	
+<b><a name="line73">73   </a></b>			const auto <b>dev_path</b> = <a href="#line143">get_device_resource_path</a>(<a href="#line66">bdf</a>);
+<b><a name="line74">74   </a></b>			const auto <b>bar_path</b> = <a href="#line152">get_bar_resource_path</a>(<a href="#line66">bdf</a>, <a href="#line63">bar</a>);
+<b><a name="line75">75   </a></b>			<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/iosfwd/code.html#line162">ifstream</a> <b>resource_map</b>(<a href="#line73">dev_path</a>);
+<b><a name="line76">76   </a></b>	
+<b><a name="line77">77   </a></b>			for (<a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>i</b> = 0; i &lt;= <a href="#line63">bar</a>; i++) {
+<b><a name="line78">78   </a></b>				<a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>start</b>, <b>end</b>, <b>flags</b>;
+<b><a name="line79">79   </a></b>				<a href="#line75">resource_map</a> <a href="/usr/include/c++/5/istream/code.html#line131">&gt;&gt;</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/ios_base.h/code.html#line1024">hex</a> <a href="/usr/include/c++/5/istream/code.html#line190">&gt;&gt;</a> <a href="#line78">start</a> <a href="/usr/include/c++/5/istream/code.html#line190">&gt;&gt;</a> <a href="#line78">end</a> <a href="/usr/include/c++/5/istream/code.html#line190">&gt;&gt;</a> <a href="#line78">flags</a>;
+<b><a name="line80">80   </a></b>				if (<a href="#line77">i</a> == <a href="#line63">bar</a>) {
+<b><a name="line81">81   </a></b>					<a href="#line160">mapped_size</a> = <a href="#line78">end</a> - <a href="#line78">start</a> + 1;
+<b><a name="line82">82   </a></b>				}
+<b><a name="line83">83   </a></b>			}
+<b><a name="line84">84   </a></b>	
+<b><a name="line85">85   </a></b>			int <b>fd</b> = <a href="/usr/include/fcntl.h/code.html#line156">open</a>(<a href="#line74">bar_path</a>.<a href="/usr/include/c++/5/bits/basic_string.h/code.html#line1887">c_str</a>(), <a href="/usr/include/x86_64-linux-gnu/bits/fcntl-linux.h/code.html#line45">O_RDWR</a>);
+<b><a name="line86">86   </a></b>			if (<a href="#line85">fd</a> &lt; 0) {
+<b><a name="line87">87   </a></b>				throw <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/system_error/code.html#line49">system_error</a>(<a href="/usr/include/x86_64-linux-gnu/bits/errno.h/code.html#line54">errno</a>, <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/system_error/code.html#line126">system_category</a>(),
+<b><a name="line88">88   </a></b>						&quot;Failed to open bar resource! &quot; <a href="/usr/include/c++/5/bits/basic_string.tcc/code.html#line1151">+</a> <a href="#line74">bar_path</a>);
+<b><a name="line89">89   </a></b>			}
+<b><a name="line90">90   </a></b>	
+<b><a name="line91">91   </a></b>			<a href="#line159">base</a> = <a href="/usr/include/x86_64-linux-gnu/sys/mman.h/code.html#line57">mmap</a>(nullptr, <a href="#line160">mapped_size</a>, <a href="/usr/include/x86_64-linux-gnu/bits/mman-linux.h/code.html#line36">PROT_WRITE</a> | <a href="/usr/include/x86_64-linux-gnu/bits/mman-linux.h/code.html#line35">PROT_READ</a>, <a href="/usr/include/x86_64-linux-gnu/bits/mman-linux.h/code.html#line45">MAP_SHARED</a>, <a href="#line85">fd</a>, 0);
+<b><a name="line92">92   </a></b>			<a href="/usr/include/unistd.h/code.html#line356">close</a>(<a href="#line85">fd</a>);
+<b><a name="line93">93   </a></b>	
+<b><a name="line94">94   </a></b>			if (<a href="#line159">base</a> == <a href="/usr/include/x86_64-linux-gnu/sys/mman.h/code.html#line44">MAP_FAILED</a>) {
+<b><a name="line95">95   </a></b>				<a href="#line161">mmap_fallback</a> = 1;
+<b><a name="line96">96   </a></b>				<a href="#line162">bar_num</a> = <a href="#line63">bar</a>;
+<b><a name="line97">97   </a></b>				<a href="#line163">m_id</a> = <a href="#line63">id</a>;
+<b><a name="line98">98   </a></b>			}
+<b><a name="line99">99   </a></b>		}
+<b><a name="line100">100  </a></b>	
+<b><a name="line101">101  </a></b>	    <b>~pcie_bar</b>() {
+<b><a name="line102">102  </a></b>	        if (<a href="#line159">base</a> &amp;&amp; !<a href="#line161">mmap_fallback</a>) {
+<b><a name="line103">103  </a></b>	            <a href="/usr/include/x86_64-linux-gnu/sys/mman.h/code.html#line76">munmap</a>(<a href="#line159">base</a>, <a href="#line160">mapped_size</a>);
+<b><a name="line104">104  </a></b>	        }
+<b><a name="line105">105  </a></b>	    }
+<b><a name="line106">106  </a></b>	
+<b><a name="line107">107  </a></b>	    <b>pcie_bar</b> (const <a href="#line60">pcie_bar</a>&amp; rhs) = delete;
+<b><a name="line108">108  </a></b>	    <a href="#line60">pcie_bar</a>&amp; <b>operator=</b>(const <a href="#line60">pcie_bar</a>&amp; rhs) = delete;
+<b><a name="line109">109  </a></b>	
+<b><a name="line110">110  </a></b>	    // Define move constructor and move assignment
+<b><a name="line111">111  </a></b>	    <b>pcie_bar</b>(<a href="#line60">pcie_bar</a> &amp;&amp; <b>rhs</b>)  {
+<b><a name="line112">112  </a></b>	        *this <a href="#line114">=</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/move.h/code.html#line101">move</a>(<a href="#line111">rhs</a>);
+<b><a name="line113">113  </a></b>	    }
+<b><a name="line114">114  </a></b>	    <a href="#line60">pcie_bar</a>&amp; <b>operator=</b>(<a href="#line60">pcie_bar</a>&amp;&amp; <b>rhs</b>) {
+<b><a name="line115">115  </a></b>	        if (this != &amp;<a href="#line114">rhs</a>) {
+<b><a name="line116">116  </a></b>	            <a href="#line159">base</a> = <a href="#line114">rhs</a>.<a href="#line159">base</a>; //pilfer
+<b><a name="line117">117  </a></b>	            <a href="#line114">rhs</a>.<a href="#line159">base</a> = nullptr; //reset
+<b><a name="line118">118  </a></b>	        }
+<b><a name="line119">119  </a></b>	        return *this;
+<b><a name="line120">120  </a></b>	    };
+<b><a name="line121">121  </a></b>	
+<b><a name="line122">122  </a></b>		template&lt;typename <b>T</b> = <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a>&gt;
+<b><a name="line123">123  </a></b>	    void <b>write</b>(<a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>address</b>, <a href="#line122">T</a> <b>t</b>) {
+<b><a name="line124">124  </a></b>	    	<a href="../../../../include/qdma_dpdk.h/code.html#line198">qdma_pci_write_reg</a>(&amp;<a href="/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line639">rte_eth_devices</a>[<a href="#line163">m_id</a>], <a href="#line162">bar_num</a>, <a href="#line123">address</a>, <a href="#line123">t</a>);
+<b><a name="line125">125  </a></b>	    }
+<b><a name="line126">126  </a></b>	
+<b><a name="line127">127  </a></b>		template&lt;typename <b>T</b> = <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a>&gt;
+<b><a name="line128">128  </a></b>	    <a href="#line127">T</a> <b>read</b>(<a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>address</b>) {
+<b><a name="line129">129  </a></b>	    	<a href="#line127">T</a> <b>reg_val</b> = (<a href="#line127">T</a>) <a href="../../../../include/qdma_dpdk.h/code.html#line197">qdma_pci_read_reg</a>(&amp;<a href="/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line639">rte_eth_devices</a>[<a href="#line163">m_id</a>], <a href="#line162">bar_num</a>, <a href="#line128">address</a>);
+<b><a name="line130">130  </a></b>	    	return <a href="#line129">reg_val</a>;
+<b><a name="line131">131  </a></b>	    }
+<b><a name="line132">132  </a></b>	
+<b><a name="line133">133  </a></b>	    template&lt;typename <b>T</b> = <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a>&gt;
+<b><a name="line134">134  </a></b>	    void <b>write</b>(<a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>address</b>, <a href="#line133">T</a>* <b>t</b>, <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>array_size</b>) {
+<b><a name="line135">135  </a></b>	    		<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line208">memcpy</a>(<a href="#line166">get_aligned_addr</a>&lt;<a href="#line133">T</a>&gt;(<a href="#line134">address</a>), <a href="#line134">t</a>, <a href="#line134">array_size</a> * sizeof(<a href="#line133">T</a>));
+<b><a name="line136">136  </a></b>	    }
+<b><a name="line137">137  </a></b>	
+<b><a name="line138">138  </a></b>	    template&lt;typename <b>T</b> = <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a>&gt;
+<b><a name="line139">139  </a></b>	    void <b>read</b>(<a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>address</b>, <a href="#line138">T</a>* <b>t</b>, <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>array_size</b>) {
+<b><a name="line140">140  </a></b>	        	<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line208">memcpy</a>(<a href="#line139">t</a>, <a href="#line166">get_aligned_addr</a>&lt;<a href="#line138">T</a>&gt;(<a href="#line139">address</a>), <a href="#line139">array_size</a> * sizeof(<a href="#line138">T</a>));
+<b><a name="line141">141  </a></b>	     }
+<b><a name="line142">142  </a></b>	
+<b><a name="line143">143  </a></b>	    static <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stringfwd.h/code.html#line74">string</a> <b>get_device_resource_path</b>(<a href="#line43">pci_id</a> <b>id</b>) {
+<b><a name="line144">144  </a></b>	        // /sys/bus/pci/devices/0000:01:02:3/resource
+<b><a name="line145">145  </a></b>	        // where bus_id=0x01, dev_id=0x02, fn_id=3
+<b><a name="line146">146  </a></b>	        <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/iosfwd/code.html#line156">stringstream</a> <b>ss</b>;
+<b><a name="line147">147  </a></b>	        <a href="#line146">ss</a> <a href="/usr/include/c++/5/ostream/code.html#line127">&lt;&lt;</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/ios_base.h/code.html#line1024">hex</a> <a href="/usr/include/c++/5/iomanip/code.html#line178">&lt;&lt;</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/iomanip/code.html#line165">setfill</a>('0');
+<b><a name="line148">148  </a></b>	        <a href="#line146">ss</a> <a href="/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;/sys/bus/pci/devices/0000:&quot; <a href="/usr/include/c++/5/bits/basic_string.h/code.html#line5172">&lt;&lt;</a> <a href="#line49">to_string</a>(<a href="#line143">id</a>) <a href="/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;/resource&quot;;
+<b><a name="line149">149  </a></b>	        return <a href="#line146">ss</a>.<a href="/usr/include/c++/5/sstream/code.html#line765">str</a>();
+<b><a name="line150">150  </a></b>	    }
+<b><a name="line151">151  </a></b>	
+<b><a name="line152">152  </a></b>	    static <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stringfwd.h/code.html#line74">string</a> <b>get_bar_resource_path</b>(<a href="#line43">pci_id</a> <b>id</b>, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>bar</b>) {
+<b><a name="line153">153  </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/iosfwd/code.html#line156">stringstream</a> <b>ss</b>;
+<b><a name="line154">154  </a></b>	    <a href="#line153">ss</a> <a href="/usr/include/c++/5/bits/basic_string.h/code.html#line5172">&lt;&lt;</a> <a href="#line143">get_device_resource_path</a>(<a href="#line152">id</a>) <a href="/usr/include/c++/5/ostream/code.html#line192">&lt;&lt;</a> <a href="#line152">bar</a>;
+<b><a name="line155">155  </a></b>	        return <a href="#line153">ss</a>.<a href="/usr/include/c++/5/sstream/code.html#line765">str</a>();
+<b><a name="line156">156  </a></b>	    }
+<b><a name="line157">157  </a></b>	
+<b><a name="line158">158  </a></b>	protected:
+<b><a name="line159">159  </a></b>	    void* <b>base</b> = nullptr;
+<b><a name="line160">160  </a></b>	    <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>mapped_size</b> = 0;
+<b><a name="line161">161  </a></b>	    bool <b>mmap_fallback</b> = 0;
+<b><a name="line162">162  </a></b>	    unsigned int <b>bar_num</b> = 0;
+<b><a name="line163">163  </a></b>	    <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>m_id</b>;
+<b><a name="line164">164  </a></b>	
+<b><a name="line165">165  </a></b>	    template&lt;typename <b>T</b> = <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a>&gt;
+<b><a name="line166">166  </a></b>	    <a href="#line165">T</a>* <b>get_aligned_addr</b>(<a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>address</b>) {
+<b><a name="line167">167  </a></b>	        return &amp;static_cast&lt;<a href="#line165">T</a>*&gt;(<a href="#line159">base</a>)[<a href="#line166">address</a> / sizeof(<a href="#line165">T</a>)];
+<b><a name="line168">168  </a></b>	    }
+<b><a name="line169">169  </a></b>	
+<b><a name="line170">170  </a></b>	
+<b><a name="line171">171  </a></b>	};
+<b><a name="line172">172  </a></b>	
+<b><a name="line173">173  </a></b>	#endif /* QDMA_TEST_XLNX_XLNX_PCI_H_ */
+<b><a name="line174">174  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

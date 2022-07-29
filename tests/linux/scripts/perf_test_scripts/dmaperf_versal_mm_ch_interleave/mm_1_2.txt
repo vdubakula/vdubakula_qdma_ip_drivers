@@ -1,0 +1,21 @@
+name=mm_1_2
+mode=mm #mode
+dir=bi #dir
+pf_range=0:0 #no spaces
+q_range=0:1 #no spaces
+flags= #no spaces
+wb_acc=5
+tmr_idx=9
+cntr_idx=7
+trig_mode=cntr_tmr
+rngidx=0
+ram_width=15 #31 bits - 2^31 = 2GB
+runtime=30 #secs
+num_threads=6
+bidir_en=1
+num_pkt=64
+pkt_sz=64
+mm_chnl=2 #Odd Qs to MM Channnel 1, Even Qs to MM Channel 0
+offset=0
+offset_ch1=0x20100000000 #Aperture offset for Channel 1 in case mm_chnl=2 
+dump_en=1

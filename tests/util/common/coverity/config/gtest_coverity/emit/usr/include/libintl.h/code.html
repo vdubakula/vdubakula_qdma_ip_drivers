@@ -1,0 +1,180 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/libintl.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Message catalogs for internationalization.
+<b><a name="line2">2    </a></b>	   Copyright (C) 1995-2016 Free Software Foundation, Inc.
+<b><a name="line3">3    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line4">4    </a></b>	   This file is derived from the file libgettext.h in the GNU gettext package.
+<b><a name="line5">5    </a></b>	
+<b><a name="line6">6    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line7">7    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line8">8    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line9">9    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line14">14   </a></b>	   Lesser General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line17">17   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line18">18   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	#ifndef _LIBINTL_H
+<b><a name="line21">21   </a></b>	#define <b>_LIBINTL_H</b>	1
+<b><a name="line22">22   </a></b>	
+<b><a name="line23">23   </a></b>	#include &lt;features.h&gt;
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/* We define an additional symbol to signal that we use the GNU
+<b><a name="line26">26   </a></b>	   implementation of gettext.  */
+<b><a name="line27">27   </a></b>	#define <b>__USE_GNU_GETTEXT</b> 1
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	/* Provide information about the supported file formats.  Returns the
+<b><a name="line30">30   </a></b>	   maximum minor revision number supported for a given major revision.  */
+<b><a name="line31">31   </a></b>	#define <b>__GNU_GETTEXT_SUPPORTED_REVISION</b>(major) \
+<b><a name="line32">32   </a></b>	  ((major) == 0 ? 1 : -1)
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line98">__BEGIN_DECLS</a>
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	/* Look up MSGID in the current default message catalog for the current
+<b><a name="line37">37   </a></b>	   LC_MESSAGES locale.  If not found, returns MSGID itself (the default
+<b><a name="line38">38   </a></b>	   text).  */
+<b><a name="line39">39   </a></b>	extern char *gettext (const char *__msgid)
+<b><a name="line40">40   </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line266">__attribute_format_arg__</a> (1);
+<b><a name="line41">41   </a></b>	
+<b><a name="line42">42   </a></b>	/* Look up MSGID in the DOMAINNAME message catalog for the current
+<b><a name="line43">43   </a></b>	   LC_MESSAGES locale.  */
+<b><a name="line44">44   </a></b>	extern char *dgettext (const char *__domainname, const char *__msgid)
+<b><a name="line45">45   </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line266">__attribute_format_arg__</a> (2);
+<b><a name="line46">46   </a></b>	extern char *__dgettext (const char *__domainname, const char *__msgid)
+<b><a name="line47">47   </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line266">__attribute_format_arg__</a> (2);
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	/* Look up MSGID in the DOMAINNAME message catalog for the current CATEGORY
+<b><a name="line50">50   </a></b>	   locale.  */
+<b><a name="line51">51   </a></b>	extern char *dcgettext (const char *__domainname,
+<b><a name="line52">52   </a></b>				const char *__msgid, int __category)
+<b><a name="line53">53   </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line266">__attribute_format_arg__</a> (2);
+<b><a name="line54">54   </a></b>	extern char *__dcgettext (const char *__domainname,
+<b><a name="line55">55   </a></b>				  const char *__msgid, int __category)
+<b><a name="line56">56   </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line266">__attribute_format_arg__</a> (2);
+<b><a name="line57">57   </a></b>	
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	/* Similar to `gettext' but select the plural form corresponding to the
+<b><a name="line60">60   </a></b>	   number N.  */
+<b><a name="line61">61   </a></b>	extern char *ngettext (const char *__msgid1, const char *__msgid2,
+<b><a name="line62">62   </a></b>			       unsigned long int __n)
+<b><a name="line63">63   </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line266">__attribute_format_arg__</a> (1) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line266">__attribute_format_arg__</a> (2);
+<b><a name="line64">64   </a></b>	
+<b><a name="line65">65   </a></b>	/* Similar to `dgettext' but select the plural form corresponding to the
+<b><a name="line66">66   </a></b>	   number N.  */
+<b><a name="line67">67   </a></b>	extern char *dngettext (const char *__domainname, const char *__msgid1,
+<b><a name="line68">68   </a></b>				const char *__msgid2, unsigned long int __n)
+<b><a name="line69">69   </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line266">__attribute_format_arg__</a> (2) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line266">__attribute_format_arg__</a> (3);
+<b><a name="line70">70   </a></b>	
+<b><a name="line71">71   </a></b>	/* Similar to `dcgettext' but select the plural form corresponding to the
+<b><a name="line72">72   </a></b>	   number N.  */
+<b><a name="line73">73   </a></b>	extern char *dcngettext (const char *__domainname, const char *__msgid1,
+<b><a name="line74">74   </a></b>				 const char *__msgid2, unsigned long int __n,
+<b><a name="line75">75   </a></b>				 int __category)
+<b><a name="line76">76   </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line266">__attribute_format_arg__</a> (2) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line266">__attribute_format_arg__</a> (3);
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	
+<b><a name="line79">79   </a></b>	/* Set the current default message catalog to DOMAINNAME.
+<b><a name="line80">80   </a></b>	   If DOMAINNAME is null, return the current default.
+<b><a name="line81">81   </a></b>	   If DOMAINNAME is &quot;&quot;, reset to the default of &quot;messages&quot;.  */
+<b><a name="line82">82   </a></b>	extern char *textdomain (const char *__domainname) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line83">83   </a></b>	
+<b><a name="line84">84   </a></b>	/* Specify that the DOMAINNAME message catalog will be found
+<b><a name="line85">85   </a></b>	   in DIRNAME rather than in the system locale data base.  */
+<b><a name="line86">86   </a></b>	extern char *bindtextdomain (const char *__domainname,
+<b><a name="line87">87   </a></b>				     const char *__dirname) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line88">88   </a></b>	
+<b><a name="line89">89   </a></b>	/* Specify the character encoding in which the messages from the
+<b><a name="line90">90   </a></b>	   DOMAINNAME message catalog will be returned.  */
+<b><a name="line91">91   </a></b>	extern char *bind_textdomain_codeset (const char *__domainname,
+<b><a name="line92">92   </a></b>					      const char *__codeset) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line93">93   </a></b>	
+<b><a name="line94">94   </a></b>	
+<b><a name="line95">95   </a></b>	/* Optimized version of the function above.  */
+<b><a name="line96">96   </a></b>	#if defined __OPTIMIZE__ &amp;&amp; !defined __cplusplus
+<b><a name="line97">97   </a></b>	
+<b><a name="line98">98   </a></b>	/* We need NULL for `gettext'.  */
+<b><a name="line99">99   </a></b>	# define __need_NULL
+<b><a name="line100">100  </a></b>	# include &lt;stddef.h&gt;
+<b><a name="line101">101  </a></b>	
+<b><a name="line102">102  </a></b>	/* We need LC_MESSAGES for `dgettext'.  */
+<b><a name="line103">103  </a></b>	# include &lt;locale.h&gt;
+<b><a name="line104">104  </a></b>	
+<b><a name="line105">105  </a></b>	/* These must be macros.  Inlined functions are useless because the
+<b><a name="line106">106  </a></b>	   `__builtin_constant_p' predicate in dcgettext would always return
+<b><a name="line107">107  </a></b>	   false.  */
+<b><a name="line108">108  </a></b>	
+<b><a name="line109">109  </a></b>	# define gettext(msgid) dgettext (NULL, msgid)
+<b><a name="line110">110  </a></b>	
+<b><a name="line111">111  </a></b>	# define dgettext(domainname, msgid) \
+<b><a name="line112">112  </a></b>	  dcgettext (domainname, msgid, LC_MESSAGES)
+<b><a name="line113">113  </a></b>	
+<b><a name="line114">114  </a></b>	# define ngettext(msgid1, msgid2, n) dngettext (NULL, msgid1, msgid2, n)
+<b><a name="line115">115  </a></b>	
+<b><a name="line116">116  </a></b>	# define dngettext(domainname, msgid1, msgid2, n) \
+<b><a name="line117">117  </a></b>	  dcngettext (domainname, msgid1, msgid2, n, LC_MESSAGES)
+<b><a name="line118">118  </a></b>	
+<b><a name="line119">119  </a></b>	#endif	/* Optimizing.  */
+<b><a name="line120">120  </a></b>	
+<b><a name="line121">121  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line99">__END_DECLS</a>
+<b><a name="line122">122  </a></b>	
+<b><a name="line123">123  </a></b>	#endif /* libintl.h */
+<b><a name="line124">124  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

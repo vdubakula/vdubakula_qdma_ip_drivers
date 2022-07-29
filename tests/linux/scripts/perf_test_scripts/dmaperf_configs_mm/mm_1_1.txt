@@ -1,0 +1,18 @@
+name=mm_1_1
+mode=mm #mode
+dir=bi #dir
+pf_range=0:0 #no spaces
+q_range=0:0 #no spaces
+flags= #no spaces
+wb_acc=5
+tmr_idx=9
+cntr_idx=7
+trig_mode=cntr_tmr
+rngidx=0
+ram_width=15 #31 bits - 2^31 = 2GB
+runtime=30 #secs
+num_threads=8
+bidir_en=1
+num_pkt=64
+pkt_sz=64
+dump_en=1

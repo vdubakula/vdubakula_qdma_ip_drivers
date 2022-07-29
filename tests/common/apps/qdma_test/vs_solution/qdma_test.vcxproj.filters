@@ -1,0 +1,92 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{c61de329-345b-4600-b808-3b1f2ec7c93a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include">
+      <UniqueIdentifier>{320624fe-1c77-4cc7-a19f-dc6c29675970}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="config">
+      <UniqueIdentifier>{3e696077-52b2-4c9f-9ead-04a550472830}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\src\main.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="win_helper_src\getopt.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\qdma\qdma_windows\qdma_instance.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\qdma\qdma_windows\qdma_queue.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\test\pcie_tests.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\test\mm_tests.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\test\st_tests.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\test\threaded_dma_tests.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config">
+      <Filter>config</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="win_helper_src\getopt.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\test_env.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\qdma\qdma_windows\qdma_device.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\xlnx\xlnx_windows\xlnx_pci.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\qdma\qdma_windows\qdma_instance.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\qdma\qdma_common\qdma_instance_abs.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\qdma\qdma_windows\qdma_queue.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\qdma\qdma_common\example_design_ctrl.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\qdma\qdma_common\qdma_queue_abs.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="win_helper_src\win_helper.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\xlnx\xlnx_common\xlnx_gtest_ext.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\util\xlnx_util.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\xlnx\xlnx_common\xlnx_os.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="win_helper_src\qdma_driver_api.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\xlnx\xlnx_windows\xlnx_device_file.h">
+      <Filter>include</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,377 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_memzone.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2010-2014 Intel Corporation
+<b><a name="line3">3    </a></b>	 */
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	#ifndef _RTE_MEMZONE_H_
+<b><a name="line6">6    </a></b>	#define <b>_RTE_MEMZONE_H_</b>
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	/**
+<b><a name="line9">9    </a></b>	 * @file
+<b><a name="line10">10   </a></b>	 * RTE Memzone
+<b><a name="line11">11   </a></b>	 *
+<b><a name="line12">12   </a></b>	 * The goal of the memzone allocator is to reserve contiguous
+<b><a name="line13">13   </a></b>	 * portions of physical memory. These zones are identified by a name.
+<b><a name="line14">14   </a></b>	 *
+<b><a name="line15">15   </a></b>	 * The memzone descriptors are shared by all partitions and are
+<b><a name="line16">16   </a></b>	 * located in a known place of physical memory. This zone is accessed
+<b><a name="line17">17   </a></b>	 * using rte_eal_get_configuration(). The lookup (by name) of a
+<b><a name="line18">18   </a></b>	 * memory zone can be done in any partition and returns the same
+<b><a name="line19">19   </a></b>	 * physical address.
+<b><a name="line20">20   </a></b>	 *
+<b><a name="line21">21   </a></b>	 * A reserved memory zone cannot be unreserved. The reservation shall
+<b><a name="line22">22   </a></b>	 * be done at initialization time only.
+<b><a name="line23">23   </a></b>	 */
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	#include &lt;stdio.h&gt;
+<b><a name="line26">26   </a></b>	#include &lt;rte_compat.h&gt;
+<b><a name="line27">27   </a></b>	#include &lt;rte_memory.h&gt;
+<b><a name="line28">28   </a></b>	#include &lt;rte_common.h&gt;
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	#ifdef __cplusplus
+<b><a name="line31">31   </a></b>	extern &quot;C&quot; {
+<b><a name="line32">32   </a></b>	#endif
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	#define <b>RTE_MEMZONE_2MB</b>            0x00000001   /**&lt; Use 2MB pages. */
+<b><a name="line35">35   </a></b>	#define <b>RTE_MEMZONE_1GB</b>            0x00000002   /**&lt; Use 1GB pages. */
+<b><a name="line36">36   </a></b>	#define <b>RTE_MEMZONE_16MB</b>           0x00000100   /**&lt; Use 16MB pages. */
+<b><a name="line37">37   </a></b>	#define <b>RTE_MEMZONE_16GB</b>           0x00000200   /**&lt; Use 16GB pages. */
+<b><a name="line38">38   </a></b>	#define <b>RTE_MEMZONE_256KB</b>          0x00010000   /**&lt; Use 256KB pages. */
+<b><a name="line39">39   </a></b>	#define <b>RTE_MEMZONE_256MB</b>          0x00020000   /**&lt; Use 256MB pages. */
+<b><a name="line40">40   </a></b>	#define <b>RTE_MEMZONE_512MB</b>          0x00040000   /**&lt; Use 512MB pages. */
+<b><a name="line41">41   </a></b>	#define <b>RTE_MEMZONE_4GB</b>            0x00080000   /**&lt; Use 4GB pages. */
+<b><a name="line42">42   </a></b>	#define <b>RTE_MEMZONE_SIZE_HINT_ONLY</b> 0x00000004   /**&lt; Use available page size */
+<b><a name="line43">43   </a></b>	#define <b>RTE_MEMZONE_IOVA_CONTIG</b>    0x00100000   /**&lt; Ask for IOVA-contiguous memzone. */
+<b><a name="line44">44   </a></b>	
+<b><a name="line45">45   </a></b>	/**
+<b><a name="line46">46   </a></b>	 * A structure describing a memzone, which is a contiguous portion of
+<b><a name="line47">47   </a></b>	 * physical memory identified by a name.
+<b><a name="line48">48   </a></b>	 */
+<b><a name="line49">49   </a></b>	struct <b>rte_memzone</b> {
+<b><a name="line50">50   </a></b>	
+<b><a name="line51">51   </a></b>	#define <b>RTE_MEMZONE_NAMESIZE</b> 32       /**&lt; Maximum length of memory zone name.*/
+<b><a name="line52">52   </a></b>		char <b>name</b>[<a href="#line51">RTE_MEMZONE_NAMESIZE</a>];  /**&lt; Name of the memory zone. */
+<b><a name="line53">53   </a></b>	
+<b><a name="line54">54   </a></b>		<a href="../rte_common.h/code.html#line37">RTE_STD_C11</a>
+<b><a name="line55">55   </a></b>		union {
+<b><a name="line56">56   </a></b>			<a href="../rte_memory.h/code.html#line71">phys_addr_t</a> <b>phys_addr</b>;        /**&lt; deprecated - Start physical address. */
+<b><a name="line57">57   </a></b>			<a href="../rte_memory.h/code.html#line80">rte_iova_t</a> <b>iova</b>;              /**&lt; Start IO address. */
+<b><a name="line58">58   </a></b>		};
+<b><a name="line59">59   </a></b>		<a href="../rte_common.h/code.html#line37">RTE_STD_C11</a>
+<b><a name="line60">60   </a></b>		union {
+<b><a name="line61">61   </a></b>			void *<b>addr</b>;                   /**&lt; Start virtual address. */
+<b><a name="line62">62   </a></b>			<a href="../../../../include/stdint.h/code.html#line55">uint64_t</a> <b>addr_64</b>;             /**&lt; Makes sure addr is always 64-bits */
+<b><a name="line63">63   </a></b>		};
+<b><a name="line64">64   </a></b>		<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>len</b>;                       /**&lt; Length of the memzone. */
+<b><a name="line65">65   </a></b>	
+<b><a name="line66">66   </a></b>		<a href="../../../../include/stdint.h/code.html#line55">uint64_t</a> <b>hugepage_sz</b>;             /**&lt; The page size of underlying memory */
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>		<a href="../../../../include/stdint.h/code.html#line38">int32_t</a> <b>socket_id</b>;                /**&lt; NUMA socket ID. */
+<b><a name="line69">69   </a></b>	
+<b><a name="line70">70   </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>flags</b>;                   /**&lt; Characteristics of this memzone. */
+<b><a name="line71">71   </a></b>	} __attribute__((__packed__));
+<b><a name="line72">72   </a></b>	
+<b><a name="line73">73   </a></b>	/**
+<b><a name="line74">74   </a></b>	 * Reserve a portion of physical memory.
+<b><a name="line75">75   </a></b>	 *
+<b><a name="line76">76   </a></b>	 * This function reserves some memory and returns a pointer to a
+<b><a name="line77">77   </a></b>	 * correctly filled memzone descriptor. If the allocation cannot be
+<b><a name="line78">78   </a></b>	 * done, return NULL.
+<b><a name="line79">79   </a></b>	 *
+<b><a name="line80">80   </a></b>	 * @note Reserving memzones with len set to 0 will only attempt to allocate
+<b><a name="line81">81   </a></b>	 *   memzones from memory that is already available. It will not trigger any
+<b><a name="line82">82   </a></b>	 *   new allocations.
+<b><a name="line83">83   </a></b>	 *
+<b><a name="line84">84   </a></b>	 * @note: When reserving memzones with len set to 0, it is preferable to also
+<b><a name="line85">85   </a></b>	 *   set a valid socket_id. Setting socket_id to SOCKET_ID_ANY is supported, but
+<b><a name="line86">86   </a></b>	 *   will likely not yield expected results. Specifically, the resulting memzone
+<b><a name="line87">87   </a></b>	 *   may not necessarily be the biggest memzone available, but rather biggest
+<b><a name="line88">88   </a></b>	 *   memzone available on socket id corresponding to an lcore from which
+<b><a name="line89">89   </a></b>	 *   reservation was called.
+<b><a name="line90">90   </a></b>	 *
+<b><a name="line91">91   </a></b>	 * @param name
+<b><a name="line92">92   </a></b>	 *   The name of the memzone. If it already exists, the function will
+<b><a name="line93">93   </a></b>	 *   fail and return NULL.
+<b><a name="line94">94   </a></b>	 * @param len
+<b><a name="line95">95   </a></b>	 *   The size of the memory to be reserved. If it
+<b><a name="line96">96   </a></b>	 *   is 0, the biggest contiguous zone will be reserved.
+<b><a name="line97">97   </a></b>	 * @param socket_id
+<b><a name="line98">98   </a></b>	 *   The socket identifier in the case of
+<b><a name="line99">99   </a></b>	 *   NUMA. The value can be SOCKET_ID_ANY if there is no NUMA
+<b><a name="line100">100  </a></b>	 *   constraint for the reserved zone.
+<b><a name="line101">101  </a></b>	 * @param flags
+<b><a name="line102">102  </a></b>	 *   The flags parameter is used to request memzones to be
+<b><a name="line103">103  </a></b>	 *   taken from specifically sized hugepages.
+<b><a name="line104">104  </a></b>	 *   - RTE_MEMZONE_2MB - Reserved from 2MB pages
+<b><a name="line105">105  </a></b>	 *   - RTE_MEMZONE_1GB - Reserved from 1GB pages
+<b><a name="line106">106  </a></b>	 *   - RTE_MEMZONE_16MB - Reserved from 16MB pages
+<b><a name="line107">107  </a></b>	 *   - RTE_MEMZONE_16GB - Reserved from 16GB pages
+<b><a name="line108">108  </a></b>	 *   - RTE_MEMZONE_256KB - Reserved from 256KB pages
+<b><a name="line109">109  </a></b>	 *   - RTE_MEMZONE_256MB - Reserved from 256MB pages
+<b><a name="line110">110  </a></b>	 *   - RTE_MEMZONE_512MB - Reserved from 512MB pages
+<b><a name="line111">111  </a></b>	 *   - RTE_MEMZONE_4GB - Reserved from 4GB pages
+<b><a name="line112">112  </a></b>	 *   - RTE_MEMZONE_SIZE_HINT_ONLY - Allow alternative page size to be used if
+<b><a name="line113">113  </a></b>	 *                                  the requested page size is unavailable.
+<b><a name="line114">114  </a></b>	 *                                  If this flag is not set, the function
+<b><a name="line115">115  </a></b>	 *                                  will return error on an unavailable size
+<b><a name="line116">116  </a></b>	 *                                  request.
+<b><a name="line117">117  </a></b>	 *   - RTE_MEMZONE_IOVA_CONTIG - Ensure reserved memzone is IOVA-contiguous.
+<b><a name="line118">118  </a></b>	 *                               This option should be used when allocating
+<b><a name="line119">119  </a></b>	 *                               memory intended for hardware rings etc.
+<b><a name="line120">120  </a></b>	 * @return
+<b><a name="line121">121  </a></b>	 *   A pointer to a correctly-filled read-only memzone descriptor, or NULL
+<b><a name="line122">122  </a></b>	 *   on error.
+<b><a name="line123">123  </a></b>	 *   On error case, rte_errno will be set appropriately:
+<b><a name="line124">124  </a></b>	 *    - E_RTE_NO_CONFIG - function could not get pointer to rte_config structure
+<b><a name="line125">125  </a></b>	 *    - E_RTE_SECONDARY - function was called from a secondary process instance
+<b><a name="line126">126  </a></b>	 *    - ENOSPC - the maximum number of memzones has already been allocated
+<b><a name="line127">127  </a></b>	 *    - EEXIST - a memzone with the same name already exists
+<b><a name="line128">128  </a></b>	 *    - ENOMEM - no appropriate memory area found in which to create memzone
+<b><a name="line129">129  </a></b>	 *    - EINVAL - invalid parameters
+<b><a name="line130">130  </a></b>	 */
+<b><a name="line131">131  </a></b>	const struct <a href="#line49">rte_memzone</a> *rte_memzone_reserve(const char *name,
+<b><a name="line132">132  </a></b>						      <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> len, int socket_id,
+<b><a name="line133">133  </a></b>						      unsigned flags);
+<b><a name="line134">134  </a></b>	
+<b><a name="line135">135  </a></b>	/**
+<b><a name="line136">136  </a></b>	 * Reserve a portion of physical memory with alignment on a specified
+<b><a name="line137">137  </a></b>	 * boundary.
+<b><a name="line138">138  </a></b>	 *
+<b><a name="line139">139  </a></b>	 * This function reserves some memory with alignment on a specified
+<b><a name="line140">140  </a></b>	 * boundary, and returns a pointer to a correctly filled memzone
+<b><a name="line141">141  </a></b>	 * descriptor. If the allocation cannot be done or if the alignment
+<b><a name="line142">142  </a></b>	 * is not a power of 2, returns NULL.
+<b><a name="line143">143  </a></b>	 *
+<b><a name="line144">144  </a></b>	 * @note Reserving memzones with len set to 0 will only attempt to allocate
+<b><a name="line145">145  </a></b>	 *   memzones from memory that is already available. It will not trigger any
+<b><a name="line146">146  </a></b>	 *   new allocations.
+<b><a name="line147">147  </a></b>	 *
+<b><a name="line148">148  </a></b>	 * @note: When reserving memzones with len set to 0, it is preferable to also
+<b><a name="line149">149  </a></b>	 *   set a valid socket_id. Setting socket_id to SOCKET_ID_ANY is supported, but
+<b><a name="line150">150  </a></b>	 *   will likely not yield expected results. Specifically, the resulting memzone
+<b><a name="line151">151  </a></b>	 *   may not necessarily be the biggest memzone available, but rather biggest
+<b><a name="line152">152  </a></b>	 *   memzone available on socket id corresponding to an lcore from which
+<b><a name="line153">153  </a></b>	 *   reservation was called.
+<b><a name="line154">154  </a></b>	 *
+<b><a name="line155">155  </a></b>	 * @param name
+<b><a name="line156">156  </a></b>	 *   The name of the memzone. If it already exists, the function will
+<b><a name="line157">157  </a></b>	 *   fail and return NULL.
+<b><a name="line158">158  </a></b>	 * @param len
+<b><a name="line159">159  </a></b>	 *   The size of the memory to be reserved. If it
+<b><a name="line160">160  </a></b>	 *   is 0, the biggest contiguous zone will be reserved.
+<b><a name="line161">161  </a></b>	 * @param socket_id
+<b><a name="line162">162  </a></b>	 *   The socket identifier in the case of
+<b><a name="line163">163  </a></b>	 *   NUMA. The value can be SOCKET_ID_ANY if there is no NUMA
+<b><a name="line164">164  </a></b>	 *   constraint for the reserved zone.
+<b><a name="line165">165  </a></b>	 * @param flags
+<b><a name="line166">166  </a></b>	 *   The flags parameter is used to request memzones to be
+<b><a name="line167">167  </a></b>	 *   taken from specifically sized hugepages.
+<b><a name="line168">168  </a></b>	 *   - RTE_MEMZONE_2MB - Reserved from 2MB pages
+<b><a name="line169">169  </a></b>	 *   - RTE_MEMZONE_1GB - Reserved from 1GB pages
+<b><a name="line170">170  </a></b>	 *   - RTE_MEMZONE_16MB - Reserved from 16MB pages
+<b><a name="line171">171  </a></b>	 *   - RTE_MEMZONE_16GB - Reserved from 16GB pages
+<b><a name="line172">172  </a></b>	 *   - RTE_MEMZONE_256KB - Reserved from 256KB pages
+<b><a name="line173">173  </a></b>	 *   - RTE_MEMZONE_256MB - Reserved from 256MB pages
+<b><a name="line174">174  </a></b>	 *   - RTE_MEMZONE_512MB - Reserved from 512MB pages
+<b><a name="line175">175  </a></b>	 *   - RTE_MEMZONE_4GB - Reserved from 4GB pages
+<b><a name="line176">176  </a></b>	 *   - RTE_MEMZONE_SIZE_HINT_ONLY - Allow alternative page size to be used if
+<b><a name="line177">177  </a></b>	 *                                  the requested page size is unavailable.
+<b><a name="line178">178  </a></b>	 *                                  If this flag is not set, the function
+<b><a name="line179">179  </a></b>	 *                                  will return error on an unavailable size
+<b><a name="line180">180  </a></b>	 *                                  request.
+<b><a name="line181">181  </a></b>	 *   - RTE_MEMZONE_IOVA_CONTIG - Ensure reserved memzone is IOVA-contiguous.
+<b><a name="line182">182  </a></b>	 *                               This option should be used when allocating
+<b><a name="line183">183  </a></b>	 *                               memory intended for hardware rings etc.
+<b><a name="line184">184  </a></b>	 * @param align
+<b><a name="line185">185  </a></b>	 *   Alignment for resulting memzone. Must be a power of 2.
+<b><a name="line186">186  </a></b>	 * @return
+<b><a name="line187">187  </a></b>	 *   A pointer to a correctly-filled read-only memzone descriptor, or NULL
+<b><a name="line188">188  </a></b>	 *   on error.
+<b><a name="line189">189  </a></b>	 *   On error case, rte_errno will be set appropriately:
+<b><a name="line190">190  </a></b>	 *    - E_RTE_NO_CONFIG - function could not get pointer to rte_config structure
+<b><a name="line191">191  </a></b>	 *    - E_RTE_SECONDARY - function was called from a secondary process instance
+<b><a name="line192">192  </a></b>	 *    - ENOSPC - the maximum number of memzones has already been allocated
+<b><a name="line193">193  </a></b>	 *    - EEXIST - a memzone with the same name already exists
+<b><a name="line194">194  </a></b>	 *    - ENOMEM - no appropriate memory area found in which to create memzone
+<b><a name="line195">195  </a></b>	 *    - EINVAL - invalid parameters
+<b><a name="line196">196  </a></b>	 */
+<b><a name="line197">197  </a></b>	const struct <a href="#line49">rte_memzone</a> *rte_memzone_reserve_aligned(const char *name,
+<b><a name="line198">198  </a></b>				<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> len, int socket_id,
+<b><a name="line199">199  </a></b>				unsigned flags, unsigned align);
+<b><a name="line200">200  </a></b>	
+<b><a name="line201">201  </a></b>	/**
+<b><a name="line202">202  </a></b>	 * Reserve a portion of physical memory with specified alignment and
+<b><a name="line203">203  </a></b>	 * boundary.
+<b><a name="line204">204  </a></b>	 *
+<b><a name="line205">205  </a></b>	 * This function reserves some memory with specified alignment and
+<b><a name="line206">206  </a></b>	 * boundary, and returns a pointer to a correctly filled memzone
+<b><a name="line207">207  </a></b>	 * descriptor. If the allocation cannot be done or if the alignment
+<b><a name="line208">208  </a></b>	 * or boundary are not a power of 2, returns NULL.
+<b><a name="line209">209  </a></b>	 * Memory buffer is reserved in a way, that it wouldn't cross specified
+<b><a name="line210">210  </a></b>	 * boundary. That implies that requested length should be less or equal
+<b><a name="line211">211  </a></b>	 * then boundary.
+<b><a name="line212">212  </a></b>	 *
+<b><a name="line213">213  </a></b>	 * @note Reserving memzones with len set to 0 will only attempt to allocate
+<b><a name="line214">214  </a></b>	 *   memzones from memory that is already available. It will not trigger any
+<b><a name="line215">215  </a></b>	 *   new allocations.
+<b><a name="line216">216  </a></b>	 *
+<b><a name="line217">217  </a></b>	 * @note: When reserving memzones with len set to 0, it is preferable to also
+<b><a name="line218">218  </a></b>	 *   set a valid socket_id. Setting socket_id to SOCKET_ID_ANY is supported, but
+<b><a name="line219">219  </a></b>	 *   will likely not yield expected results. Specifically, the resulting memzone
+<b><a name="line220">220  </a></b>	 *   may not necessarily be the biggest memzone available, but rather biggest
+<b><a name="line221">221  </a></b>	 *   memzone available on socket id corresponding to an lcore from which
+<b><a name="line222">222  </a></b>	 *   reservation was called.
+<b><a name="line223">223  </a></b>	 *
+<b><a name="line224">224  </a></b>	 * @param name
+<b><a name="line225">225  </a></b>	 *   The name of the memzone. If it already exists, the function will
+<b><a name="line226">226  </a></b>	 *   fail and return NULL.
+<b><a name="line227">227  </a></b>	 * @param len
+<b><a name="line228">228  </a></b>	 *   The size of the memory to be reserved. If it
+<b><a name="line229">229  </a></b>	 *   is 0, the biggest contiguous zone will be reserved.
+<b><a name="line230">230  </a></b>	 * @param socket_id
+<b><a name="line231">231  </a></b>	 *   The socket identifier in the case of
+<b><a name="line232">232  </a></b>	 *   NUMA. The value can be SOCKET_ID_ANY if there is no NUMA
+<b><a name="line233">233  </a></b>	 *   constraint for the reserved zone.
+<b><a name="line234">234  </a></b>	 * @param flags
+<b><a name="line235">235  </a></b>	 *   The flags parameter is used to request memzones to be
+<b><a name="line236">236  </a></b>	 *   taken from specifically sized hugepages.
+<b><a name="line237">237  </a></b>	 *   - RTE_MEMZONE_2MB - Reserved from 2MB pages
+<b><a name="line238">238  </a></b>	 *   - RTE_MEMZONE_1GB - Reserved from 1GB pages
+<b><a name="line239">239  </a></b>	 *   - RTE_MEMZONE_16MB - Reserved from 16MB pages
+<b><a name="line240">240  </a></b>	 *   - RTE_MEMZONE_16GB - Reserved from 16GB pages
+<b><a name="line241">241  </a></b>	 *   - RTE_MEMZONE_256KB - Reserved from 256KB pages
+<b><a name="line242">242  </a></b>	 *   - RTE_MEMZONE_256MB - Reserved from 256MB pages
+<b><a name="line243">243  </a></b>	 *   - RTE_MEMZONE_512MB - Reserved from 512MB pages
+<b><a name="line244">244  </a></b>	 *   - RTE_MEMZONE_4GB - Reserved from 4GB pages
+<b><a name="line245">245  </a></b>	 *   - RTE_MEMZONE_SIZE_HINT_ONLY - Allow alternative page size to be used if
+<b><a name="line246">246  </a></b>	 *                                  the requested page size is unavailable.
+<b><a name="line247">247  </a></b>	 *                                  If this flag is not set, the function
+<b><a name="line248">248  </a></b>	 *                                  will return error on an unavailable size
+<b><a name="line249">249  </a></b>	 *                                  request.
+<b><a name="line250">250  </a></b>	 *   - RTE_MEMZONE_IOVA_CONTIG - Ensure reserved memzone is IOVA-contiguous.
+<b><a name="line251">251  </a></b>	 *                               This option should be used when allocating
+<b><a name="line252">252  </a></b>	 *                               memory intended for hardware rings etc.
+<b><a name="line253">253  </a></b>	 * @param align
+<b><a name="line254">254  </a></b>	 *   Alignment for resulting memzone. Must be a power of 2.
+<b><a name="line255">255  </a></b>	 * @param bound
+<b><a name="line256">256  </a></b>	 *   Boundary for resulting memzone. Must be a power of 2 or zero.
+<b><a name="line257">257  </a></b>	 *   Zero value implies no boundary condition.
+<b><a name="line258">258  </a></b>	 * @return
+<b><a name="line259">259  </a></b>	 *   A pointer to a correctly-filled read-only memzone descriptor, or NULL
+<b><a name="line260">260  </a></b>	 *   on error.
+<b><a name="line261">261  </a></b>	 *   On error case, rte_errno will be set appropriately:
+<b><a name="line262">262  </a></b>	 *    - E_RTE_NO_CONFIG - function could not get pointer to rte_config structure
+<b><a name="line263">263  </a></b>	 *    - E_RTE_SECONDARY - function was called from a secondary process instance
+<b><a name="line264">264  </a></b>	 *    - ENOSPC - the maximum number of memzones has already been allocated
+<b><a name="line265">265  </a></b>	 *    - EEXIST - a memzone with the same name already exists
+<b><a name="line266">266  </a></b>	 *    - ENOMEM - no appropriate memory area found in which to create memzone
+<b><a name="line267">267  </a></b>	 *    - EINVAL - invalid parameters
+<b><a name="line268">268  </a></b>	 */
+<b><a name="line269">269  </a></b>	const struct <a href="#line49">rte_memzone</a> *rte_memzone_reserve_bounded(const char *name,
+<b><a name="line270">270  </a></b>				<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> len, int socket_id,
+<b><a name="line271">271  </a></b>				unsigned flags, unsigned align, unsigned bound);
+<b><a name="line272">272  </a></b>	
+<b><a name="line273">273  </a></b>	/**
+<b><a name="line274">274  </a></b>	 * Free a memzone.
+<b><a name="line275">275  </a></b>	 *
+<b><a name="line276">276  </a></b>	 * @param mz
+<b><a name="line277">277  </a></b>	 *   A pointer to the memzone
+<b><a name="line278">278  </a></b>	 * @return
+<b><a name="line279">279  </a></b>	 *  -EINVAL - invalid parameter.
+<b><a name="line280">280  </a></b>	 *  0 - success
+<b><a name="line281">281  </a></b>	 */
+<b><a name="line282">282  </a></b>	int rte_memzone_free(const struct <a href="#line49">rte_memzone</a> *mz);
+<b><a name="line283">283  </a></b>	
+<b><a name="line284">284  </a></b>	/**
+<b><a name="line285">285  </a></b>	 * Lookup for a memzone.
+<b><a name="line286">286  </a></b>	 *
+<b><a name="line287">287  </a></b>	 * Get a pointer to a descriptor of an already reserved memory
+<b><a name="line288">288  </a></b>	 * zone identified by the name given as an argument.
+<b><a name="line289">289  </a></b>	 *
+<b><a name="line290">290  </a></b>	 * @param name
+<b><a name="line291">291  </a></b>	 *   The name of the memzone.
+<b><a name="line292">292  </a></b>	 * @return
+<b><a name="line293">293  </a></b>	 *   A pointer to a read-only memzone descriptor.
+<b><a name="line294">294  </a></b>	 */
+<b><a name="line295">295  </a></b>	const struct <a href="#line49">rte_memzone</a> *rte_memzone_lookup(const char *name);
+<b><a name="line296">296  </a></b>	
+<b><a name="line297">297  </a></b>	/**
+<b><a name="line298">298  </a></b>	 * Dump all reserved memzones to a file.
+<b><a name="line299">299  </a></b>	 *
+<b><a name="line300">300  </a></b>	 * @param f
+<b><a name="line301">301  </a></b>	 *   A pointer to a file for output
+<b><a name="line302">302  </a></b>	 */
+<b><a name="line303">303  </a></b>	void rte_memzone_dump(<a href="../../../../include/stdio.h/code.html#line48">FILE</a> *f);
+<b><a name="line304">304  </a></b>	
+<b><a name="line305">305  </a></b>	/**
+<b><a name="line306">306  </a></b>	 * Walk list of all memzones
+<b><a name="line307">307  </a></b>	 *
+<b><a name="line308">308  </a></b>	 * @param func
+<b><a name="line309">309  </a></b>	 *   Iterator function
+<b><a name="line310">310  </a></b>	 * @param arg
+<b><a name="line311">311  </a></b>	 *   Argument passed to iterator
+<b><a name="line312">312  </a></b>	 */
+<b><a name="line313">313  </a></b>	void rte_memzone_walk(void (*func)(const struct <a href="#line49">rte_memzone</a> *, void *arg),
+<b><a name="line314">314  </a></b>			      void *arg);
+<b><a name="line315">315  </a></b>	
+<b><a name="line316">316  </a></b>	#ifdef __cplusplus
+<b><a name="line317">317  </a></b>	}
+<b><a name="line318">318  </a></b>	#endif
+<b><a name="line319">319  </a></b>	
+<b><a name="line320">320  </a></b>	#endif /* _RTE_MEMZONE_H_ */
+<b><a name="line321">321  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

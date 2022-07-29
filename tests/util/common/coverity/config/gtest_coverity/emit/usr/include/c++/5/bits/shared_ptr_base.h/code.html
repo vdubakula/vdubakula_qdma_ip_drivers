@@ -1,0 +1,1650 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/bits/shared_ptr_base.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// shared_ptr and weak_ptr implementation details -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2007-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	// GCC Note: Based on files from version 1.32.0 of the Boost library.
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>	//  shared_count.hpp
+<b><a name="line28">28   </a></b>	//  Copyright (c) 2001, 2002, 2003 Peter Dimov and Multi Media Ltd.
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	//  shared_ptr.hpp
+<b><a name="line31">31   </a></b>	//  Copyright (C) 1998, 1999 Greg Colvin and Beman Dawes.
+<b><a name="line32">32   </a></b>	//  Copyright (C) 2001, 2002, 2003 Peter Dimov
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	//  weak_ptr.hpp
+<b><a name="line35">35   </a></b>	//  Copyright (C) 2001, 2002, 2003 Peter Dimov
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	//  enable_shared_from_this.hpp
+<b><a name="line38">38   </a></b>	//  Copyright (C) 2002 Peter Dimov
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	// Distributed under the Boost Software License, Version 1.0. (See
+<b><a name="line41">41   </a></b>	// accompanying file LICENSE_1_0.txt or copy at
+<b><a name="line42">42   </a></b>	// http://www.boost.org/LICENSE_1_0.txt)
+<b><a name="line43">43   </a></b>	
+<b><a name="line44">44   </a></b>	/** @file bits/shared_ptr_base.h
+<b><a name="line45">45   </a></b>	 *  This is an internal header file, included by other library headers.
+<b><a name="line46">46   </a></b>	 *  Do not attempt to use it directly. @headername{memory}
+<b><a name="line47">47   </a></b>	 */
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	#ifndef _SHARED_PTR_BASE_H
+<b><a name="line50">50   </a></b>	#define <b>_SHARED_PTR_BASE_H</b> 1
+<b><a name="line51">51   </a></b>	
+<b><a name="line52">52   </a></b>	#include &lt;bits/allocated_ptr.h&gt;
+<b><a name="line53">53   </a></b>	#include &lt;ext/aligned_buffer.h&gt;
+<b><a name="line54">54   </a></b>	
+<b><a name="line55">55   </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line56">56   </a></b>	{
+<b><a name="line57">57   </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	#if <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line78">_GLIBCXX_USE_DEPRECATED</a>
+<b><a name="line60">60   </a></b>	  template&lt;typename&gt; class <a href="../unique_ptr.h/code.html#line49">auto_ptr</a>;
+<b><a name="line61">61   </a></b>	#endif
+<b><a name="line62">62   </a></b>	
+<b><a name="line63">63   </a></b>	 /**
+<b><a name="line64">64   </a></b>	   *  @brief  Exception possibly thrown by @c shared_ptr.
+<b><a name="line65">65   </a></b>	   *  @ingroup exceptions
+<b><a name="line66">66   </a></b>	   */
+<b><a name="line67">67   </a></b>	  class <b>bad_weak_ptr</b> : public <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../exception/code.html#line60">exception</a>
+<b><a name="line68">68   </a></b>	  {
+<b><a name="line69">69   </a></b>	  public:
+<b><a name="line70">70   </a></b>	    virtual char const*
+<b><a name="line71">71   </a></b>	    what() const noexcept;
+<b><a name="line72">72   </a></b>	
+<b><a name="line73">73   </a></b>	    virtual ~bad_weak_ptr() noexcept;    
+<b><a name="line74">74   </a></b>	  };
+<b><a name="line75">75   </a></b>	
+<b><a name="line76">76   </a></b>	  // Substitute for bad_weak_ptr object in the case of -fno-exceptions.
+<b><a name="line77">77   </a></b>	  inline void
+<b><a name="line78">78   </a></b>	  <b>__throw_bad_weak_ptr</b>()
+<b><a name="line79">79   </a></b>	  { <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line133">_GLIBCXX_THROW_OR_ABORT</a>(bad_weak_ptr()); }
+<b><a name="line80">80   </a></b>	
+<b><a name="line81">81   </a></b>	  using <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a>;
+<b><a name="line82">82   </a></b>	  using <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../ext/concurrence.h/code.html#line53">__default_lock_policy</a>;
+<b><a name="line83">83   </a></b>	  using <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../ext/concurrence.h/code.html#line49">_S_single</a>;
+<b><a name="line84">84   </a></b>	  using <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../ext/concurrence.h/code.html#line49">_S_mutex</a>;
+<b><a name="line85">85   </a></b>	  using <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../ext/concurrence.h/code.html#line49">_S_atomic</a>;
+<b><a name="line86">86   </a></b>	
+<b><a name="line87">87   </a></b>	  // Empty helper class except when the template argument is _S_mutex.
+<b><a name="line88">88   </a></b>	  template&lt;<a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line89">89   </a></b>	    class _Mutex_base
+<b><a name="line90">90   </a></b>	    {
+<b><a name="line91">91   </a></b>	    protected:
+<b><a name="line92">92   </a></b>	      // The atomic policy uses fully-fenced builtins, single doesn't care.
+<b><a name="line93">93   </a></b>	      enum { <b>_S_need_barriers</b> = 0 };
+<b><a name="line94">94   </a></b>	    };
+<b><a name="line95">95   </a></b>	
+<b><a name="line96">96   </a></b>	  template&lt;&gt;
+<b><a name="line97">97   </a></b>	    class <b>_Mutex_base</b>&lt;<a href="../../ext/concurrence.h/code.html#line49">_S_mutex</a>&gt;
+<b><a name="line98">98   </a></b>	    : public <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../ext/concurrence.h/code.html#line118">__mutex</a>
+<b><a name="line99">99   </a></b>	    {
+<b><a name="line100">100  </a></b>	    protected:
+<b><a name="line101">101  </a></b>	      // This policy is used when atomic builtins are not available.
+<b><a name="line102">102  </a></b>	      // The replacement atomic operations might not have the necessary
+<b><a name="line103">103  </a></b>	      // memory barriers.
+<b><a name="line104">104  </a></b>	      enum { <b>_S_need_barriers</b> = 1 };
+<b><a name="line105">105  </a></b>	    };
+<b><a name="line106">106  </a></b>	
+<b><a name="line107">107  </a></b>	  template&lt;<a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b> = <a href="../../ext/concurrence.h/code.html#line53">__default_lock_policy</a>&gt;
+<b><a name="line108">108  </a></b>	    class _Sp_counted_base
+<b><a name="line109">109  </a></b>	    : public <a href="#line89">_Mutex_base</a>&lt;<a href="#line107">_Lp</a>&gt;
+<b><a name="line110">110  </a></b>	    {
+<b><a name="line111">111  </a></b>	    public:  
+<b><a name="line112">112  </a></b>	      _Sp_counted_base() noexcept
+<b><a name="line113">113  </a></b>	      : <a href="#line207">_M_use_count</a>(1), <a href="#line208">_M_weak_count</a>(1) { }
+<b><a name="line114">114  </a></b>	      
+<b><a name="line115">115  </a></b>	      virtual
+<b><a name="line116">116  </a></b>	      ~_Sp_counted_base() noexcept
+<b><a name="line117">117  </a></b>	      { }
+<b><a name="line118">118  </a></b>	  
+<b><a name="line119">119  </a></b>	      // Called when _M_use_count drops to zero, to release the resources
+<b><a name="line120">120  </a></b>	      // managed by *this.
+<b><a name="line121">121  </a></b>	      virtual void
+<b><a name="line122">122  </a></b>	      _M_dispose() noexcept = 0;
+<b><a name="line123">123  </a></b>	      
+<b><a name="line124">124  </a></b>	      // Called when _M_weak_count drops to zero.
+<b><a name="line125">125  </a></b>	      virtual void
+<b><a name="line126">126  </a></b>	      _M_destroy() noexcept
+<b><a name="line127">127  </a></b>	      { <a href="../../new/code.html#line115">delete</a> this; }
+<b><a name="line128">128  </a></b>	      
+<b><a name="line129">129  </a></b>	      virtual void*
+<b><a name="line130">130  </a></b>	      _M_get_deleter(const <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../exception_ptr.h/code.html#line47">type_info</a>&amp;) noexcept = 0;
+<b><a name="line131">131  </a></b>	
+<b><a name="line132">132  </a></b>	      void
+<b><a name="line133">133  </a></b>	      _M_add_ref_copy()
+<b><a name="line134">134  </a></b>	      { __gnu_cxx::__atomic_add_dispatch(&amp;_M_use_count, 1); }
+<b><a name="line135">135  </a></b>	  
+<b><a name="line136">136  </a></b>	      void
+<b><a name="line137">137  </a></b>	      _M_add_ref_lock();
+<b><a name="line138">138  </a></b>	
+<b><a name="line139">139  </a></b>	      bool
+<b><a name="line140">140  </a></b>	      _M_add_ref_lock_nothrow();
+<b><a name="line141">141  </a></b>	
+<b><a name="line142">142  </a></b>	      void
+<b><a name="line143">143  </a></b>	      _M_release() noexcept
+<b><a name="line144">144  </a></b>	      {
+<b><a name="line145">145  </a></b>	        // Be race-detector-friendly.  For more info see bits/c++config.
+<b><a name="line146">146  </a></b>	        <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line463">_GLIBCXX_SYNCHRONIZATION_HAPPENS_BEFORE</a>(&amp;_M_use_count);
+<b><a name="line147">147  </a></b>		if (<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../ext/atomicity.h/code.html#line78">__exchange_and_add_dispatch</a>(&amp;<a href="#line207">_M_use_count</a>, -1) == 1)
+<b><a name="line148">148  </a></b>		  {
+<b><a name="line149">149  </a></b>	            <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line466">_GLIBCXX_SYNCHRONIZATION_HAPPENS_AFTER</a>(&amp;_M_use_count);
+<b><a name="line150">150  </a></b>		    <a href="#line122">_M_dispose</a>();
+<b><a name="line151">151  </a></b>		    // There must be a memory barrier between dispose() and destroy()
+<b><a name="line152">152  </a></b>		    // to ensure that the effects of dispose() are observed in the
+<b><a name="line153">153  </a></b>		    // thread that runs destroy().
+<b><a name="line154">154  </a></b>		    // See http://gcc.gnu.org/ml/libstdc++/2005-11/msg00136.html
+<b><a name="line155">155  </a></b>		    if (<a href="#line89">_Mutex_base</a>&lt;<a href="#line107">_Lp</a>&gt;::<a href="#line93">_S_need_barriers</a>)
+<b><a name="line156">156  </a></b>		      {
+<b><a name="line157">157  </a></b>		        <a href="../../ext/atomicity.h/code.html#line111">_GLIBCXX_READ_MEM_BARRIER</a>;
+<b><a name="line158">158  </a></b>		        <a href="../../ext/atomicity.h/code.html#line114">_GLIBCXX_WRITE_MEM_BARRIER</a>;
+<b><a name="line159">159  </a></b>		      }
+<b><a name="line160">160  </a></b>	
+<b><a name="line161">161  </a></b>	            // Be race-detector-friendly.  For more info see bits/c++config.
+<b><a name="line162">162  </a></b>	            <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line463">_GLIBCXX_SYNCHRONIZATION_HAPPENS_BEFORE</a>(&amp;_M_weak_count);
+<b><a name="line163">163  </a></b>		    if (<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../ext/atomicity.h/code.html#line78">__exchange_and_add_dispatch</a>(&amp;<a href="#line208">_M_weak_count</a>,
+<b><a name="line164">164  </a></b>							       -1) == 1)
+<b><a name="line165">165  </a></b>	              {
+<b><a name="line166">166  </a></b>	                <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line466">_GLIBCXX_SYNCHRONIZATION_HAPPENS_AFTER</a>(&amp;_M_weak_count);
+<b><a name="line167">167  </a></b>		        <a href="#line126">_M_destroy</a>();
+<b><a name="line168">168  </a></b>	              }
+<b><a name="line169">169  </a></b>		  }
+<b><a name="line170">170  </a></b>	      }
+<b><a name="line171">171  </a></b>	  
+<b><a name="line172">172  </a></b>	      void
+<b><a name="line173">173  </a></b>	      _M_weak_add_ref() noexcept
+<b><a name="line174">174  </a></b>	      { __gnu_cxx::__atomic_add_dispatch(&amp;_M_weak_count, 1); }
+<b><a name="line175">175  </a></b>	
+<b><a name="line176">176  </a></b>	      void
+<b><a name="line177">177  </a></b>	      _M_weak_release() noexcept
+<b><a name="line178">178  </a></b>	      {
+<b><a name="line179">179  </a></b>	        // Be race-detector-friendly. For more info see bits/c++config.
+<b><a name="line180">180  </a></b>	        <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line463">_GLIBCXX_SYNCHRONIZATION_HAPPENS_BEFORE</a>(&amp;_M_weak_count);
+<b><a name="line181">181  </a></b>		if (__gnu_cxx::__exchange_and_add_dispatch(&amp;_M_weak_count, -1) == 1)
+<b><a name="line182">182  </a></b>		  {
+<b><a name="line183">183  </a></b>	            <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line466">_GLIBCXX_SYNCHRONIZATION_HAPPENS_AFTER</a>(&amp;_M_weak_count);
+<b><a name="line184">184  </a></b>		    if (_Mutex_base&lt;_Lp&gt;::_S_need_barriers)
+<b><a name="line185">185  </a></b>		      {
+<b><a name="line186">186  </a></b>		        // See _M_release(),
+<b><a name="line187">187  </a></b>		        // destroy() must observe results of dispose()
+<b><a name="line188">188  </a></b>		        <a href="../../ext/atomicity.h/code.html#line111">_GLIBCXX_READ_MEM_BARRIER</a>;
+<b><a name="line189">189  </a></b>		        <a href="../../ext/atomicity.h/code.html#line114">_GLIBCXX_WRITE_MEM_BARRIER</a>;
+<b><a name="line190">190  </a></b>		      }
+<b><a name="line191">191  </a></b>		    _M_destroy();
+<b><a name="line192">192  </a></b>		  }
+<b><a name="line193">193  </a></b>	      }
+<b><a name="line194">194  </a></b>	  
+<b><a name="line195">195  </a></b>	      long
+<b><a name="line196">196  </a></b>	      _M_get_use_count() const noexcept
+<b><a name="line197">197  </a></b>	      {
+<b><a name="line198">198  </a></b>	        // No memory barrier is used here so there is no synchronization
+<b><a name="line199">199  </a></b>	        // with other threads.
+<b><a name="line200">200  </a></b>	        return <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line86">__atomic_load_n</a>(&amp;<a href="#line207">_M_use_count</a>, <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line672">__ATOMIC_RELAXED</a>);
+<b><a name="line201">201  </a></b>	      }
+<b><a name="line202">202  </a></b>	
+<b><a name="line203">203  </a></b>	    private:  
+<b><a name="line204">204  </a></b>	      <b>_Sp_counted_base</b>(<a href="#line108">_Sp_counted_base</a> const&amp;) = delete;
+<b><a name="line205">205  </a></b>	      <a href="#line108">_Sp_counted_base</a>&amp; <b>operator=</b>(<a href="#line108">_Sp_counted_base</a> const&amp;) = delete;
+<b><a name="line206">206  </a></b>	
+<b><a name="line207">207  </a></b>	      <a href="../../../../x86_64-linux-gnu/c++/5/bits/atomic_word.h/code.html#line32">_Atomic_word</a>  <b>_M_use_count</b>;     // #shared
+<b><a name="line208">208  </a></b>	      <a href="../../../../x86_64-linux-gnu/c++/5/bits/atomic_word.h/code.html#line32">_Atomic_word</a>  <b>_M_weak_count</b>;    // #weak + (#shared != 0)
+<b><a name="line209">209  </a></b>	    };
+<b><a name="line210">210  </a></b>	
+<b><a name="line211">211  </a></b>	  template&lt;&gt;
+<b><a name="line212">212  </a></b>	    inline void
+<b><a name="line213">213  </a></b>	    <a href="#line108">_Sp_counted_base</a>&lt;<a href="../../ext/concurrence.h/code.html#line49">_S_single</a>&gt;::
+<b><a name="line214">214  </a></b>	    <b>_M_add_ref_lock</b>()
+<b><a name="line215">215  </a></b>	    {
+<b><a name="line216">216  </a></b>	      if (<a href="#line207">_M_use_count</a> == 0)
+<b><a name="line217">217  </a></b>		<a href="#line78">__throw_bad_weak_ptr</a>();
+<b><a name="line218">218  </a></b>	      ++<a href="#line207">_M_use_count</a>;
+<b><a name="line219">219  </a></b>	    }
+<b><a name="line220">220  </a></b>	
+<b><a name="line221">221  </a></b>	  template&lt;&gt;
+<b><a name="line222">222  </a></b>	    inline void
+<b><a name="line223">223  </a></b>	    <a href="#line108">_Sp_counted_base</a>&lt;<a href="../../ext/concurrence.h/code.html#line49">_S_mutex</a>&gt;::
+<b><a name="line224">224  </a></b>	    <b>_M_add_ref_lock</b>()
+<b><a name="line225">225  </a></b>	    {
+<b><a name="line226">226  </a></b>	      <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../ext/concurrence.h/code.html#line231">__scoped_lock</a> <b>sentry</b>(*this);
+<b><a name="line227">227  </a></b>	      if (<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../ext/atomicity.h/code.html#line78">__exchange_and_add_dispatch</a>(&amp;<a href="#line207">_M_use_count</a>, 1) == 0)
+<b><a name="line228">228  </a></b>		{
+<b><a name="line229">229  </a></b>		  <a href="#line207">_M_use_count</a> = 0;
+<b><a name="line230">230  </a></b>		  <a href="#line78">__throw_bad_weak_ptr</a>();
+<b><a name="line231">231  </a></b>		}
+<b><a name="line232">232  </a></b>	    }
+<b><a name="line233">233  </a></b>	
+<b><a name="line234">234  </a></b>	  template&lt;&gt; 
+<b><a name="line235">235  </a></b>	    inline void
+<b><a name="line236">236  </a></b>	    <a href="#line108">_Sp_counted_base</a>&lt;<a href="../../ext/concurrence.h/code.html#line49">_S_atomic</a>&gt;::
+<b><a name="line237">237  </a></b>	    <b>_M_add_ref_lock</b>()
+<b><a name="line238">238  </a></b>	    {
+<b><a name="line239">239  </a></b>	      // Perform lock-free add-if-not-zero operation.
+<b><a name="line240">240  </a></b>	      <a href="../../../../x86_64-linux-gnu/c++/5/bits/atomic_word.h/code.html#line32">_Atomic_word</a> <b>__count</b> = <a href="#line196">_M_get_use_count</a>();
+<b><a name="line241">241  </a></b>	      do
+<b><a name="line242">242  </a></b>		{
+<b><a name="line243">243  </a></b>		  if (<a href="#line240">__count</a> == 0)
+<b><a name="line244">244  </a></b>		    <a href="#line78">__throw_bad_weak_ptr</a>();
+<b><a name="line245">245  </a></b>		  // Replace the current counter value with the old value + 1, as
+<b><a name="line246">246  </a></b>		  // long as it's not changed meanwhile. 
+<b><a name="line247">247  </a></b>		}
+<b><a name="line248">248  </a></b>	      while (!<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line101">__atomic_compare_exchange_n</a>(&amp;<a href="#line207">_M_use_count</a>, &amp;<a href="#line240">__count</a>, <a href="#line240">__count</a> + 1,
+<b><a name="line249">249  </a></b>						  true, <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line858">__ATOMIC_ACQ_REL</a>, 
+<b><a name="line250">250  </a></b>						  <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line672">__ATOMIC_RELAXED</a>));
+<b><a name="line251">251  </a></b>	    }
+<b><a name="line252">252  </a></b>	
+<b><a name="line253">253  </a></b>	  template&lt;&gt;
+<b><a name="line254">254  </a></b>	    inline bool
+<b><a name="line255">255  </a></b>	    <a href="#line108">_Sp_counted_base</a>&lt;<a href="../../ext/concurrence.h/code.html#line49">_S_single</a>&gt;::
+<b><a name="line256">256  </a></b>	    <b>_M_add_ref_lock_nothrow</b>()
+<b><a name="line257">257  </a></b>	    {
+<b><a name="line258">258  </a></b>	      if (<a href="#line207">_M_use_count</a> == 0)
+<b><a name="line259">259  </a></b>		return false;
+<b><a name="line260">260  </a></b>	      ++<a href="#line207">_M_use_count</a>;
+<b><a name="line261">261  </a></b>	      return true;
+<b><a name="line262">262  </a></b>	    }
+<b><a name="line263">263  </a></b>	
+<b><a name="line264">264  </a></b>	  template&lt;&gt;
+<b><a name="line265">265  </a></b>	    inline bool
+<b><a name="line266">266  </a></b>	    <a href="#line108">_Sp_counted_base</a>&lt;<a href="../../ext/concurrence.h/code.html#line49">_S_mutex</a>&gt;::
+<b><a name="line267">267  </a></b>	    <b>_M_add_ref_lock_nothrow</b>()
+<b><a name="line268">268  </a></b>	    {
+<b><a name="line269">269  </a></b>	      <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../ext/concurrence.h/code.html#line231">__scoped_lock</a> <b>sentry</b>(*this);
+<b><a name="line270">270  </a></b>	      if (<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../ext/atomicity.h/code.html#line78">__exchange_and_add_dispatch</a>(&amp;<a href="#line207">_M_use_count</a>, 1) == 0)
+<b><a name="line271">271  </a></b>		{
+<b><a name="line272">272  </a></b>		  <a href="#line207">_M_use_count</a> = 0;
+<b><a name="line273">273  </a></b>		  return false;
+<b><a name="line274">274  </a></b>		}
+<b><a name="line275">275  </a></b>	      return true;
+<b><a name="line276">276  </a></b>	    }
+<b><a name="line277">277  </a></b>	
+<b><a name="line278">278  </a></b>	  template&lt;&gt;
+<b><a name="line279">279  </a></b>	    inline bool
+<b><a name="line280">280  </a></b>	    <a href="#line108">_Sp_counted_base</a>&lt;<a href="../../ext/concurrence.h/code.html#line49">_S_atomic</a>&gt;::
+<b><a name="line281">281  </a></b>	    <b>_M_add_ref_lock_nothrow</b>()
+<b><a name="line282">282  </a></b>	    {
+<b><a name="line283">283  </a></b>	      // Perform lock-free add-if-not-zero operation.
+<b><a name="line284">284  </a></b>	      <a href="../../../../x86_64-linux-gnu/c++/5/bits/atomic_word.h/code.html#line32">_Atomic_word</a> <b>__count</b> = <a href="#line196">_M_get_use_count</a>();
+<b><a name="line285">285  </a></b>	      do
+<b><a name="line286">286  </a></b>		{
+<b><a name="line287">287  </a></b>		  if (<a href="#line284">__count</a> == 0)
+<b><a name="line288">288  </a></b>		    return false;
+<b><a name="line289">289  </a></b>		  // Replace the current counter value with the old value + 1, as
+<b><a name="line290">290  </a></b>		  // long as it's not changed meanwhile.
+<b><a name="line291">291  </a></b>		}
+<b><a name="line292">292  </a></b>	      while (!<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line101">__atomic_compare_exchange_n</a>(&amp;<a href="#line207">_M_use_count</a>, &amp;<a href="#line284">__count</a>, <a href="#line284">__count</a> + 1,
+<b><a name="line293">293  </a></b>						  true, <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line858">__ATOMIC_ACQ_REL</a>,
+<b><a name="line294">294  </a></b>						  <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line672">__ATOMIC_RELAXED</a>));
+<b><a name="line295">295  </a></b>	      return true;
+<b><a name="line296">296  </a></b>	    }
+<b><a name="line297">297  </a></b>	
+<b><a name="line298">298  </a></b>	  template&lt;&gt;
+<b><a name="line299">299  </a></b>	    inline void
+<b><a name="line300">300  </a></b>	    <a href="#line108">_Sp_counted_base</a>&lt;<a href="../../ext/concurrence.h/code.html#line49">_S_single</a>&gt;::<b>_M_add_ref_copy</b>()
+<b><a name="line301">301  </a></b>	    { ++<a href="#line207">_M_use_count</a>; }
+<b><a name="line302">302  </a></b>	
+<b><a name="line303">303  </a></b>	  template&lt;&gt;
+<b><a name="line304">304  </a></b>	    inline void
+<b><a name="line305">305  </a></b>	    <a href="#line108">_Sp_counted_base</a>&lt;<a href="../../ext/concurrence.h/code.html#line49">_S_single</a>&gt;::<b>_M_release</b>() noexcept
+<b><a name="line306">306  </a></b>	    {
+<b><a name="line307">307  </a></b>	      if (--<a href="#line207">_M_use_count</a> == 0)
+<b><a name="line308">308  </a></b>	        {
+<b><a name="line309">309  </a></b>	          <a href="#line122">_M_dispose</a>();
+<b><a name="line310">310  </a></b>	          if (--<a href="#line208">_M_weak_count</a> == 0)
+<b><a name="line311">311  </a></b>	            <a href="#line126">_M_destroy</a>();
+<b><a name="line312">312  </a></b>	        }
+<b><a name="line313">313  </a></b>	    }
+<b><a name="line314">314  </a></b>	
+<b><a name="line315">315  </a></b>	  template&lt;&gt;
+<b><a name="line316">316  </a></b>	    inline void
+<b><a name="line317">317  </a></b>	    <a href="#line108">_Sp_counted_base</a>&lt;<a href="../../ext/concurrence.h/code.html#line49">_S_single</a>&gt;::<b>_M_weak_add_ref</b>() noexcept
+<b><a name="line318">318  </a></b>	    { ++<a href="#line208">_M_weak_count</a>; }
+<b><a name="line319">319  </a></b>	
+<b><a name="line320">320  </a></b>	  template&lt;&gt;
+<b><a name="line321">321  </a></b>	    inline void
+<b><a name="line322">322  </a></b>	    <a href="#line108">_Sp_counted_base</a>&lt;<a href="../../ext/concurrence.h/code.html#line49">_S_single</a>&gt;::<b>_M_weak_release</b>() noexcept
+<b><a name="line323">323  </a></b>	    {
+<b><a name="line324">324  </a></b>	      if (--<a href="#line208">_M_weak_count</a> == 0)
+<b><a name="line325">325  </a></b>	        <a href="#line126">_M_destroy</a>();
+<b><a name="line326">326  </a></b>	    }
+<b><a name="line327">327  </a></b>	
+<b><a name="line328">328  </a></b>	  template&lt;&gt;
+<b><a name="line329">329  </a></b>	    inline long
+<b><a name="line330">330  </a></b>	    <a href="#line108">_Sp_counted_base</a>&lt;<a href="../../ext/concurrence.h/code.html#line49">_S_single</a>&gt;::<b>_M_get_use_count</b>() const noexcept
+<b><a name="line331">331  </a></b>	    { return <a href="#line207">_M_use_count</a>; }
+<b><a name="line332">332  </a></b>	
+<b><a name="line333">333  </a></b>	
+<b><a name="line334">334  </a></b>	  // Forward declarations.
+<b><a name="line335">335  </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b> = <a href="../../ext/concurrence.h/code.html#line53">__default_lock_policy</a>&gt;
+<b><a name="line336">336  </a></b>	    class __shared_ptr;
+<b><a name="line337">337  </a></b>	
+<b><a name="line338">338  </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b> = <a href="../../ext/concurrence.h/code.html#line53">__default_lock_policy</a>&gt;
+<b><a name="line339">339  </a></b>	    class __weak_ptr;
+<b><a name="line340">340  </a></b>	
+<b><a name="line341">341  </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b> = <a href="../../ext/concurrence.h/code.html#line53">__default_lock_policy</a>&gt;
+<b><a name="line342">342  </a></b>	    class __enable_shared_from_this;
+<b><a name="line343">343  </a></b>	
+<b><a name="line344">344  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line345">345  </a></b>	    class shared_ptr;
+<b><a name="line346">346  </a></b>	
+<b><a name="line347">347  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line348">348  </a></b>	    class weak_ptr;
+<b><a name="line349">349  </a></b>	
+<b><a name="line350">350  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line351">351  </a></b>	    struct owner_less;
+<b><a name="line352">352  </a></b>	
+<b><a name="line353">353  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line354">354  </a></b>	    class enable_shared_from_this;
+<b><a name="line355">355  </a></b>	
+<b><a name="line356">356  </a></b>	  template&lt;<a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b> = <a href="../../ext/concurrence.h/code.html#line53">__default_lock_policy</a>&gt;
+<b><a name="line357">357  </a></b>	    class __weak_count;
+<b><a name="line358">358  </a></b>	
+<b><a name="line359">359  </a></b>	  template&lt;<a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b> = <a href="../../ext/concurrence.h/code.html#line53">__default_lock_policy</a>&gt;
+<b><a name="line360">360  </a></b>	    class __shared_count;
+<b><a name="line361">361  </a></b>	
+<b><a name="line362">362  </a></b>	
+<b><a name="line363">363  </a></b>	  // Counted ptr with no deleter or allocator support
+<b><a name="line364">364  </a></b>	  template&lt;typename <b>_Ptr</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line365">365  </a></b>	    class _Sp_counted_ptr final : public <a href="#line108">_Sp_counted_base</a>&lt;<a href="#line364">_Lp</a>&gt;
+<b><a name="line366">366  </a></b>	    {
+<b><a name="line367">367  </a></b>	    public:
+<b><a name="line368">368  </a></b>	      explicit
+<b><a name="line369">369  </a></b>	      _Sp_counted_ptr(<a href="#line364">_Ptr</a> __p) noexcept
+<b><a name="line370">370  </a></b>	      : _M_ptr(__p) { }
+<b><a name="line371">371  </a></b>	
+<b><a name="line372">372  </a></b>	      virtual void
+<b><a name="line373">373  </a></b>	      _M_dispose() noexcept
+<b><a name="line374">374  </a></b>	      { delete _M_ptr; }
+<b><a name="line375">375  </a></b>	
+<b><a name="line376">376  </a></b>	      virtual void
+<b><a name="line377">377  </a></b>	      _M_destroy() noexcept
+<b><a name="line378">378  </a></b>	      { <a href="../../new/code.html#line115">delete</a> this; }
+<b><a name="line379">379  </a></b>	
+<b><a name="line380">380  </a></b>	      virtual void*
+<b><a name="line381">381  </a></b>	      _M_get_deleter(const <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../exception_ptr.h/code.html#line47">type_info</a>&amp;) noexcept
+<b><a name="line382">382  </a></b>	      { return nullptr; }
+<b><a name="line383">383  </a></b>	
+<b><a name="line384">384  </a></b>	      <b>_Sp_counted_ptr</b>(const <a href="#line365">_Sp_counted_ptr</a>&amp;) = delete;
+<b><a name="line385">385  </a></b>	      <a href="#line365">_Sp_counted_ptr</a>&amp; <b>operator=</b>(const <a href="#line365">_Sp_counted_ptr</a>&amp;) = delete;
+<b><a name="line386">386  </a></b>	
+<b><a name="line387">387  </a></b>	    private:
+<b><a name="line388">388  </a></b>	      <a href="#line364">_Ptr</a>             <b>_M_ptr</b>;
+<b><a name="line389">389  </a></b>	    };
+<b><a name="line390">390  </a></b>	
+<b><a name="line391">391  </a></b>	  template&lt;&gt;
+<b><a name="line392">392  </a></b>	    inline void
+<b><a name="line393">393  </a></b>	    <a href="#line365">_Sp_counted_ptr</a>&lt;<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>, <a href="../../ext/concurrence.h/code.html#line49">_S_single</a>&gt;::<b>_M_dispose</b>() noexcept { }
+<b><a name="line394">394  </a></b>	
+<b><a name="line395">395  </a></b>	  template&lt;&gt;
+<b><a name="line396">396  </a></b>	    inline void
+<b><a name="line397">397  </a></b>	    <a href="#line365">_Sp_counted_ptr</a>&lt;<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>, <a href="../../ext/concurrence.h/code.html#line49">_S_mutex</a>&gt;::<b>_M_dispose</b>() noexcept { }
+<b><a name="line398">398  </a></b>	
+<b><a name="line399">399  </a></b>	  template&lt;&gt;
+<b><a name="line400">400  </a></b>	    inline void
+<b><a name="line401">401  </a></b>	    <a href="#line365">_Sp_counted_ptr</a>&lt;<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>, <a href="../../ext/concurrence.h/code.html#line49">_S_atomic</a>&gt;::<b>_M_dispose</b>() noexcept { }
+<b><a name="line402">402  </a></b>	
+<b><a name="line403">403  </a></b>	  template&lt;int <b>_Nm</b>, typename <b>_Tp</b>,
+<b><a name="line404">404  </a></b>		   bool <b>__use_ebo</b> = !__is_final(<a href="#line403">_Tp</a>) &amp;&amp; __is_empty(<a href="#line403">_Tp</a>)&gt;
+<b><a name="line405">405  </a></b>	    struct _Sp_ebo_helper;
+<b><a name="line406">406  </a></b>	
+<b><a name="line407">407  </a></b>	  /// Specialization using EBO.
+<b><a name="line408">408  </a></b>	  template&lt;int <b>_Nm</b>, typename <b>_Tp</b>&gt;
+<b><a name="line409">409  </a></b>	    struct <b>_Sp_ebo_helper</b>&lt;<a href="#line408">_Nm</a>, <a href="#line408">_Tp</a>, true&gt; : private <a href="#line408">_Tp</a>
+<b><a name="line410">410  </a></b>	    {
+<b><a name="line411">411  </a></b>	      explicit _Sp_ebo_helper(const <a href="#line408">_Tp</a>&amp; <b>__tp</b>) : <a href="#line408">_Tp</a>(__tp) { }
+<b><a name="line412">412  </a></b>	
+<b><a name="line413">413  </a></b>	      static <a href="#line408">_Tp</a>&amp;
+<b><a name="line414">414  </a></b>	      _S_get(<a href="#line405">_Sp_ebo_helper</a>&amp; <b>__eboh</b>) { return static_cast&lt;<a href="#line408">_Tp</a>&amp;&gt;(__eboh); }
+<b><a name="line415">415  </a></b>	    };
+<b><a name="line416">416  </a></b>	
+<b><a name="line417">417  </a></b>	  /// Specialization not using EBO.
+<b><a name="line418">418  </a></b>	  template&lt;int <b>_Nm</b>, typename <b>_Tp</b>&gt;
+<b><a name="line419">419  </a></b>	    struct <b>_Sp_ebo_helper</b>&lt;<a href="#line418">_Nm</a>, <a href="#line418">_Tp</a>, false&gt;
+<b><a name="line420">420  </a></b>	    {
+<b><a name="line421">421  </a></b>	      explicit _Sp_ebo_helper(const <a href="#line418">_Tp</a>&amp; <b>__tp</b>) : <a href="#line428">_M_tp</a>(__tp) { }
+<b><a name="line422">422  </a></b>	
+<b><a name="line423">423  </a></b>	      static <a href="#line418">_Tp</a>&amp;
+<b><a name="line424">424  </a></b>	      _S_get(<a href="#line405">_Sp_ebo_helper</a>&amp; <b>__eboh</b>)
+<b><a name="line425">425  </a></b>	      { return <a href="#line424">__eboh</a>.<a href="#line428">_M_tp</a>; }
+<b><a name="line426">426  </a></b>	
+<b><a name="line427">427  </a></b>	    private:
+<b><a name="line428">428  </a></b>	      <a href="#line418">_Tp</a> <b>_M_tp</b>;
+<b><a name="line429">429  </a></b>	    };
+<b><a name="line430">430  </a></b>	
+<b><a name="line431">431  </a></b>	  // Support for custom deleter and/or allocator
+<b><a name="line432">432  </a></b>	  template&lt;typename <b>_Ptr</b>, typename <b>_Deleter</b>, typename <b>_Alloc</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line433">433  </a></b>	    class _Sp_counted_deleter final : public <a href="#line108">_Sp_counted_base</a>&lt;<a href="#line432">_Lp</a>&gt;
+<b><a name="line434">434  </a></b>	    {
+<b><a name="line435">435  </a></b>	      class _Impl : <a href="#line405">_Sp_ebo_helper</a>&lt;0, <a href="#line432">_Deleter</a>&gt;, <a href="#line405">_Sp_ebo_helper</a>&lt;1, <a href="#line432">_Alloc</a>&gt;
+<b><a name="line436">436  </a></b>	      {
+<b><a name="line437">437  </a></b>		typedef <a href="#line405">_Sp_ebo_helper</a>&lt;0, <a href="#line432">_Deleter</a>&gt;	<b>_Del_base</b>;
+<b><a name="line438">438  </a></b>		typedef <a href="#line405">_Sp_ebo_helper</a>&lt;1, <a href="#line432">_Alloc</a>&gt;	<b>_Alloc_base</b>;
+<b><a name="line439">439  </a></b>	
+<b><a name="line440">440  </a></b>	      public:
+<b><a name="line441">441  </a></b>		_Impl(<a href="#line432">_Ptr</a> <b>__p</b>, <a href="#line432">_Deleter</a> <b>__d</b>, const <a href="#line432">_Alloc</a>&amp; <b>__a</b>) noexcept
+<b><a name="line442">442  </a></b>		: <a href="#line448">_M_ptr</a>(<a href="#line441">__p</a>), <a href="#line437">_Del_base</a>(<a href="#line441">__d</a>), <a href="#line438">_Alloc_base</a>(<a href="#line441">__a</a>)
+<b><a name="line443">443  </a></b>		{ }
+<b><a name="line444">444  </a></b>	
+<b><a name="line445">445  </a></b>		<a href="#line432">_Deleter</a>&amp; _M_del() noexcept { return <a href="#line437">_Del_base</a>::<a href="#line424">_S_get</a>(*this); }
+<b><a name="line446">446  </a></b>		<a href="#line432">_Alloc</a>&amp; _M_alloc() noexcept { return <a href="#line438">_Alloc_base</a>::<a href="#line414">_S_get</a>(*this); }
+<b><a name="line447">447  </a></b>	
+<b><a name="line448">448  </a></b>		<a href="#line432">_Ptr</a> <b>_M_ptr</b>;
+<b><a name="line449">449  </a></b>	      };
+<b><a name="line450">450  </a></b>	
+<b><a name="line451">451  </a></b>	    public:
+<b><a name="line452">452  </a></b>	      using <b>__allocator_type</b> = <a href="../alloc_traits.h/code.html#line76">__alloc_rebind</a>&lt;<a href="#line432">_Alloc</a>, <a href="#line433">_Sp_counted_deleter</a>&gt;;
+<b><a name="line453">453  </a></b>	
+<b><a name="line454">454  </a></b>	      // __d(__p) must not throw.
+<b><a name="line455">455  </a></b>	      _Sp_counted_deleter(<a href="#line432">_Ptr</a> __p, <a href="#line432">_Deleter</a> __d) noexcept
+<b><a name="line456">456  </a></b>	      : _M_impl(__p, __d, _Alloc()) { }
+<b><a name="line457">457  </a></b>	
+<b><a name="line458">458  </a></b>	      // __d(__p) must not throw.
+<b><a name="line459">459  </a></b>	      _Sp_counted_deleter(<a href="#line432">_Ptr</a> <b>__p</b>, <a href="#line432">_Deleter</a> <b>__d</b>, const <a href="#line432">_Alloc</a>&amp; <b>__a</b>) noexcept
+<b><a name="line460">460  </a></b>	      : <a href="#line491">_M_impl</a>(<a href="#line459">__p</a>, <a href="#line459">__d</a>, <a href="#line459">__a</a>) { }
+<b><a name="line461">461  </a></b>	
+<b><a name="line462">462  </a></b>	      ~_Sp_counted_deleter() noexcept { }
+<b><a name="line463">463  </a></b>	
+<b><a name="line464">464  </a></b>	      virtual void
+<b><a name="line465">465  </a></b>	      _M_dispose() noexcept
+<b><a name="line466">466  </a></b>	      { <a href="#line491">_M_impl</a>.<a href="#line445">_M_del</a>()(<a href="#line491">_M_impl</a>.<a href="#line448">_M_ptr</a>); }
+<b><a name="line467">467  </a></b>	
+<b><a name="line468">468  </a></b>	      virtual void
+<b><a name="line469">469  </a></b>	      _M_destroy() noexcept
+<b><a name="line470">470  </a></b>	      {
+<b><a name="line471">471  </a></b>		<a href="#line452">__allocator_type</a> <b>__a</b>(<a href="#line491">_M_impl</a>.<a href="#line446">_M_alloc</a>());
+<b><a name="line472">472  </a></b>		<a href="../allocated_ptr.h/code.html#line46">__allocated_ptr</a>&lt;<a href="#line452">__allocator_type</a>&gt; <b>__guard_ptr</b>{ <a href="#line471">__a</a>, this };
+<b><a name="line473">473  </a></b>		this-&gt;<a href="#line462">~_Sp_counted_deleter</a>();
+<b><a name="line474">474  </a></b>	      }
+<b><a name="line475">475  </a></b>	
+<b><a name="line476">476  </a></b>	      virtual void*
+<b><a name="line477">477  </a></b>	      _M_get_deleter(const <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../exception_ptr.h/code.html#line47">type_info</a>&amp; <b>__ti</b>) noexcept
+<b><a name="line478">478  </a></b>	      {
+<b><a name="line479">479  </a></b>	#if <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line444">__cpp_rtti</a>
+<b><a name="line480">480  </a></b>		// _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line481">481  </a></b>		// 2400. shared_ptr's get_deleter() should use addressof()
+<b><a name="line482">482  </a></b>	        return <a href="#line477">__ti</a> <a href="../../typeinfo/code.html#line120">==</a> typeid(<a href="#line432">_Deleter</a>)
+<b><a name="line483">483  </a></b>		  ? <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../move.h/code.html#line47">__addressof</a>(<a href="#line491">_M_impl</a>.<a href="#line445">_M_del</a>())
+<b><a name="line484">484  </a></b>		  : nullptr;
+<b><a name="line485">485  </a></b>	#else
+<b><a name="line486">486  </a></b>	        return nullptr;
+<b><a name="line487">487  </a></b>	#endif
+<b><a name="line488">488  </a></b>	      }
+<b><a name="line489">489  </a></b>	
+<b><a name="line490">490  </a></b>	    private:
+<b><a name="line491">491  </a></b>	      <a href="#line435">_Impl</a> <b>_M_impl</b>;
+<b><a name="line492">492  </a></b>	    };
+<b><a name="line493">493  </a></b>	
+<b><a name="line494">494  </a></b>	  // helpers for make_shared / allocate_shared
+<b><a name="line495">495  </a></b>	
+<b><a name="line496">496  </a></b>	  struct <b>_Sp_make_shared_tag</b> { };
+<b><a name="line497">497  </a></b>	
+<b><a name="line498">498  </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Alloc</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line499">499  </a></b>	    class _Sp_counted_ptr_inplace final : public <a href="#line108">_Sp_counted_base</a>&lt;<a href="#line498">_Lp</a>&gt;
+<b><a name="line500">500  </a></b>	    {
+<b><a name="line501">501  </a></b>	      class _Impl : <a href="#line405">_Sp_ebo_helper</a>&lt;0, <a href="#line498">_Alloc</a>&gt;
+<b><a name="line502">502  </a></b>	      {
+<b><a name="line503">503  </a></b>		typedef <a href="#line405">_Sp_ebo_helper</a>&lt;0, <a href="#line498">_Alloc</a>&gt;	<b>_A_base</b>;
+<b><a name="line504">504  </a></b>	
+<b><a name="line505">505  </a></b>	      public:
+<b><a name="line506">506  </a></b>		explicit _Impl(<a href="#line498">_Alloc</a> <b>__a</b>) noexcept : <a href="#line503">_A_base</a>(__a) { }
+<b><a name="line507">507  </a></b>	
+<b><a name="line508">508  </a></b>		<a href="#line498">_Alloc</a>&amp; _M_alloc() noexcept { return <a href="#line503">_A_base</a>::<a href="#line414">_S_get</a>(*this); }
+<b><a name="line509">509  </a></b>	
+<b><a name="line510">510  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../ext/aligned_buffer.h/code.html#line84">__aligned_buffer</a>&lt;<a href="#line498">_Tp</a>&gt; <b>_M_storage</b>;
+<b><a name="line511">511  </a></b>	      };
+<b><a name="line512">512  </a></b>	
+<b><a name="line513">513  </a></b>	    public:
+<b><a name="line514">514  </a></b>	      using <b>__allocator_type</b> = <a href="../alloc_traits.h/code.html#line76">__alloc_rebind</a>&lt;<a href="#line498">_Alloc</a>, <a href="#line499">_Sp_counted_ptr_inplace</a>&gt;;
+<b><a name="line515">515  </a></b>	
+<b><a name="line516">516  </a></b>	      template&lt;typename... <b>_Args</b>&gt;
+<b><a name="line517">517  </a></b>		_Sp_counted_ptr_inplace(<a href="#line498">_Alloc</a> <b>__a</b>, <a href="#line516">_Args</a>&amp;&amp;... <b>__args</b>)
+<b><a name="line518">518  </a></b>		: <a href="#line557">_M_impl</a>(<a href="#line517">__a</a>)
+<b><a name="line519">519  </a></b>		{
+<b><a name="line520">520  </a></b>		  // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line521">521  </a></b>		  // 2070.  allocate_shared should use allocator_traits&lt;A&gt;::construct
+<b><a name="line522">522  </a></b>		  <a href="../alloc_traits.h/code.html#line83">allocator_traits</a>&lt;<a href="#line498">_Alloc</a>&gt;::<a href="../alloc_traits.h/code.html#line529">construct</a>(<a href="#line517">__a</a>, <a href="#line555">_M_ptr</a>(),
+<b><a name="line523">523  </a></b>		      <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../move.h/code.html#line76">forward</a>&lt;<a href="#line516">_Args</a>&gt;(<a href="#line517">__args</a>)...); // might throw
+<b><a name="line524">524  </a></b>		}
+<b><a name="line525">525  </a></b>	
+<b><a name="line526">526  </a></b>	      ~_Sp_counted_ptr_inplace() noexcept { }
+<b><a name="line527">527  </a></b>	
+<b><a name="line528">528  </a></b>	      virtual void
+<b><a name="line529">529  </a></b>	      _M_dispose() noexcept
+<b><a name="line530">530  </a></b>	      {
+<b><a name="line531">531  </a></b>		<a href="../alloc_traits.h/code.html#line83">allocator_traits</a>&lt;<a href="#line498">_Alloc</a>&gt;::<a href="../alloc_traits.h/code.html#line541">destroy</a>(<a href="#line557">_M_impl</a>.<a href="#line508">_M_alloc</a>(), <a href="#line555">_M_ptr</a>());
+<b><a name="line532">532  </a></b>	      }
+<b><a name="line533">533  </a></b>	
+<b><a name="line534">534  </a></b>	      // Override because the allocator needs to know the dynamic type
+<b><a name="line535">535  </a></b>	      virtual void
+<b><a name="line536">536  </a></b>	      _M_destroy() noexcept
+<b><a name="line537">537  </a></b>	      {
+<b><a name="line538">538  </a></b>		<a href="#line514">__allocator_type</a> <b>__a</b>(<a href="#line557">_M_impl</a>.<a href="#line508">_M_alloc</a>());
+<b><a name="line539">539  </a></b>		<a href="../allocated_ptr.h/code.html#line46">__allocated_ptr</a>&lt;<a href="#line514">__allocator_type</a>&gt; <b>__guard_ptr</b>{ <a href="#line538">__a</a>, this };
+<b><a name="line540">540  </a></b>		this-&gt;<a href="#line526">~_Sp_counted_ptr_inplace</a>();
+<b><a name="line541">541  </a></b>	      }
+<b><a name="line542">542  </a></b>	
+<b><a name="line543">543  </a></b>	      // Sneaky trick so __shared_ptr can get the managed pointer
+<b><a name="line544">544  </a></b>	      virtual void*
+<b><a name="line545">545  </a></b>	      _M_get_deleter(const <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../exception_ptr.h/code.html#line47">type_info</a>&amp; <b>__ti</b>) noexcept
+<b><a name="line546">546  </a></b>	      {
+<b><a name="line547">547  </a></b>	#if <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line444">__cpp_rtti</a>
+<b><a name="line548">548  </a></b>		if (<a href="#line545">__ti</a> <a href="../../typeinfo/code.html#line120">==</a> typeid(<a href="#line496">_Sp_make_shared_tag</a>))
+<b><a name="line549">549  </a></b>		  return const_cast&lt;typename <a href="../../type_traits/code.html#line1518">remove_cv</a>&lt;<a href="#line498">_Tp</a>&gt;::<a href="../../type_traits/code.html#line1521">type</a>*&gt;(<a href="#line555">_M_ptr</a>());
+<b><a name="line550">550  </a></b>	#endif
+<b><a name="line551">551  </a></b>		return nullptr;
+<b><a name="line552">552  </a></b>	      }
+<b><a name="line553">553  </a></b>	
+<b><a name="line554">554  </a></b>	    private:
+<b><a name="line555">555  </a></b>	      <a href="#line498">_Tp</a>* _M_ptr() noexcept { return <a href="#line557">_M_impl</a>.<a href="#line510">_M_storage</a>.<a href="../../ext/aligned_buffer.h/code.html#line109">_M_ptr</a>(); }
+<b><a name="line556">556  </a></b>	
+<b><a name="line557">557  </a></b>	      <a href="#line501">_Impl</a> <b>_M_impl</b>;
+<b><a name="line558">558  </a></b>	    };
+<b><a name="line559">559  </a></b>	
+<b><a name="line560">560  </a></b>	
+<b><a name="line561">561  </a></b>	  template&lt;<a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line562">562  </a></b>	    class __shared_count
+<b><a name="line563">563  </a></b>	    {
+<b><a name="line564">564  </a></b>	    public:
+<b><a name="line565">565  </a></b>	      constexpr __shared_count() noexcept : <a href="#line720">_M_pi</a>(0)
+<b><a name="line566">566  </a></b>	      { }
+<b><a name="line567">567  </a></b>	
+<b><a name="line568">568  </a></b>	      template&lt;typename <b>_Ptr</b>&gt;
+<b><a name="line569">569  </a></b>	        explicit
+<b><a name="line570">570  </a></b>		__shared_count(<a href="#line568">_Ptr</a> __p) : _M_pi(0)
+<b><a name="line571">571  </a></b>		{
+<b><a name="line572">572  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line573">573  </a></b>		    {
+<b><a name="line574">574  </a></b>		      _M_pi = new _Sp_counted_ptr&lt;_Ptr, _Lp&gt;(__p);
+<b><a name="line575">575  </a></b>		    }
+<b><a name="line576">576  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line577">577  </a></b>		    {
+<b><a name="line578">578  </a></b>		      delete __p;
+<b><a name="line579">579  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line580">580  </a></b>		    }
+<b><a name="line581">581  </a></b>		}
+<b><a name="line582">582  </a></b>	
+<b><a name="line583">583  </a></b>	      template&lt;typename <b>_Ptr</b>, typename <b>_Deleter</b>&gt;
+<b><a name="line584">584  </a></b>		__shared_count(<a href="#line583">_Ptr</a> <b>__p</b>, <a href="#line583">_Deleter</a> <b>__d</b>)
+<b><a name="line585">585  </a></b>		: <a href="#line562">__shared_count</a>(<a href="#line584">__p</a>, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../move.h/code.html#line101">move</a>(<a href="#line584">__d</a>), <a href="../memoryfwd.h/code.html#line64">allocator</a>&lt;void&gt;())
+<b><a name="line586">586  </a></b>		{ }
+<b><a name="line587">587  </a></b>	
+<b><a name="line588">588  </a></b>	      template&lt;typename <b>_Ptr</b>, typename <b>_Deleter</b>, typename <b>_Alloc</b>&gt;
+<b><a name="line589">589  </a></b>		__shared_count(<a href="#line588">_Ptr</a> <b>__p</b>, <a href="#line588">_Deleter</a> <b>__d</b>, <a href="#line588">_Alloc</a> <b>__a</b>) : <a href="#line720">_M_pi</a>(0)
+<b><a name="line590">590  </a></b>		{
+<b><a name="line591">591  </a></b>		  typedef <a href="#line433">_Sp_counted_deleter</a>&lt;<a href="#line588">_Ptr</a>, <a href="#line588">_Deleter</a>, <a href="#line588">_Alloc</a>, <a href="#line561">_Lp</a>&gt; <b>_Sp_cd_type</b>;
+<b><a name="line592">592  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line593">593  </a></b>		    {
+<b><a name="line594">594  </a></b>		      typename <a href="#line591">_Sp_cd_type</a>::<a href="#line452">__allocator_type</a> <b>__a2</b>(<a href="#line589">__a</a>);
+<b><a name="line595">595  </a></b>		      auto <b>__guard</b> = <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../allocated_ptr.h/code.html#line100">__allocate_guarded</a>(<a href="#line594">__a2</a>);
+<b><a name="line596">596  </a></b>		      <a href="#line591">_Sp_cd_type</a>* <b>__mem</b> = <a href="#line595">__guard</a>.<a href="../allocated_ptr.h/code.html#line84">get</a>();
+<b><a name="line597">597  </a></b>		      ::<a href="../../new/code.html#line129">new</a> (<a href="#line596">__mem</a>) <a href="#line591">_Sp_cd_type</a>(<a href="#line589">__p</a>, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../move.h/code.html#line101">move</a>(<a href="#line589">__d</a>), <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../move.h/code.html#line101">move</a>(<a href="#line589">__a</a>));
+<b><a name="line598">598  </a></b>		      <a href="#line720">_M_pi</a> = <a href="#line596">__mem</a>;
+<b><a name="line599">599  </a></b>		      <a href="#line595">__guard</a> <a href="../allocated_ptr.h/code.html#line77">=</a> nullptr;
+<b><a name="line600">600  </a></b>		    }
+<b><a name="line601">601  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line602">602  </a></b>		    {
+<b><a name="line603">603  </a></b>		      <a href="#line589">__d</a>(<a href="#line589">__p</a>); // Call _Deleter on __p.
+<b><a name="line604">604  </a></b>		      <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line605">605  </a></b>		    }
+<b><a name="line606">606  </a></b>		}
+<b><a name="line607">607  </a></b>	
+<b><a name="line608">608  </a></b>	      template&lt;typename <b>_Tp</b>, typename <b>_Alloc</b>, typename... <b>_Args</b>&gt;
+<b><a name="line609">609  </a></b>		__shared_count(<a href="#line496">_Sp_make_shared_tag</a>, <a href="#line608">_Tp</a>*, const <a href="#line608">_Alloc</a>&amp; <b>__a</b>,
+<b><a name="line610">610  </a></b>			       <a href="#line608">_Args</a>&amp;&amp;... <b>__args</b>)
+<b><a name="line611">611  </a></b>		: <a href="#line720">_M_pi</a>(0)
+<b><a name="line612">612  </a></b>		{
+<b><a name="line613">613  </a></b>		  typedef <a href="#line499">_Sp_counted_ptr_inplace</a>&lt;<a href="#line608">_Tp</a>, <a href="#line608">_Alloc</a>, <a href="#line561">_Lp</a>&gt; <b>_Sp_cp_type</b>;
+<b><a name="line614">614  </a></b>		  typename <a href="#line613">_Sp_cp_type</a>::<a href="#line514">__allocator_type</a> <b>__a2</b>(<a href="#line609">__a</a>);
+<b><a name="line615">615  </a></b>		  auto <b>__guard</b> = <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../allocated_ptr.h/code.html#line100">__allocate_guarded</a>(<a href="#line614">__a2</a>);
+<b><a name="line616">616  </a></b>		  <a href="#line613">_Sp_cp_type</a>* <b>__mem</b> = <a href="#line615">__guard</a>.<a href="../allocated_ptr.h/code.html#line84">get</a>();
+<b><a name="line617">617  </a></b>		  ::<a href="../../new/code.html#line129">new</a> (<a href="#line616">__mem</a>) <a href="#line613">_Sp_cp_type</a>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../move.h/code.html#line101">move</a>(<a href="#line609">__a</a>),
+<b><a name="line618">618  </a></b>					    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../move.h/code.html#line76">forward</a>&lt;<a href="#line608">_Args</a>&gt;(<a href="#line610">__args</a>)...);
+<b><a name="line619">619  </a></b>		  <a href="#line720">_M_pi</a> = <a href="#line616">__mem</a>;
+<b><a name="line620">620  </a></b>		  <a href="#line615">__guard</a> <a href="../allocated_ptr.h/code.html#line77">=</a> nullptr;
+<b><a name="line621">621  </a></b>		}
+<b><a name="line622">622  </a></b>	
+<b><a name="line623">623  </a></b>	#if <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line78">_GLIBCXX_USE_DEPRECATED</a>
+<b><a name="line624">624  </a></b>	      // Special case for auto_ptr&lt;_Tp&gt; to provide the strong guarantee.
+<b><a name="line625">625  </a></b>	      template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line626">626  </a></b>	        explicit
+<b><a name="line627">627  </a></b>		__shared_count(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../unique_ptr.h/code.html#line49">auto_ptr</a>&lt;<a href="#line625">_Tp</a>&gt;&amp;&amp; __r);
+<b><a name="line628">628  </a></b>	#endif
+<b><a name="line629">629  </a></b>	
+<b><a name="line630">630  </a></b>	      // Special case for unique_ptr&lt;_Tp,_Del&gt; to provide the strong guarantee.
+<b><a name="line631">631  </a></b>	      template&lt;typename <b>_Tp</b>, typename <b>_Del</b>&gt;
+<b><a name="line632">632  </a></b>	        explicit
+<b><a name="line633">633  </a></b>		__shared_count(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../unique_ptr.h/code.html#line129">unique_ptr</a>&lt;<a href="#line631">_Tp</a>, <a href="#line631">_Del</a>&gt;&amp;&amp; __r) : _M_pi(0)
+<b><a name="line634">634  </a></b>		{
+<b><a name="line635">635  </a></b>		  using _Ptr = typename unique_ptr&lt;_Tp, _Del&gt;::pointer;
+<b><a name="line636">636  </a></b>		  using _Del2 = typename conditional&lt;is_reference&lt;_Del&gt;::value,
+<b><a name="line637">637  </a></b>		      reference_wrapper&lt;typename remove_reference&lt;_Del&gt;::type&gt;,
+<b><a name="line638">638  </a></b>		      _Del&gt;::type;
+<b><a name="line639">639  </a></b>		  using _Sp_cd_type
+<b><a name="line640">640  </a></b>		    = _Sp_counted_deleter&lt;_Ptr, _Del2, allocator&lt;void&gt;, _Lp&gt;;
+<b><a name="line641">641  </a></b>		  using _Alloc = allocator&lt;_Sp_cd_type&gt;;
+<b><a name="line642">642  </a></b>		  using _Alloc_traits = allocator_traits&lt;_Alloc&gt;;
+<b><a name="line643">643  </a></b>		  _Alloc __a;
+<b><a name="line644">644  </a></b>		  _Sp_cd_type* __mem = _Alloc_traits::allocate(__a, 1);
+<b><a name="line645">645  </a></b>		  _Alloc_traits::construct(__a, __mem, __r.release(),
+<b><a name="line646">646  </a></b>					   __r.get_deleter());  // non-throwing
+<b><a name="line647">647  </a></b>		  _M_pi = __mem;
+<b><a name="line648">648  </a></b>		}
+<b><a name="line649">649  </a></b>	
+<b><a name="line650">650  </a></b>	      // Throw bad_weak_ptr when __r._M_get_use_count() == 0.
+<b><a name="line651">651  </a></b>	      explicit __shared_count(const <a href="#line725">__weak_count</a>&lt;<a href="#line561">_Lp</a>&gt;&amp; __r);
+<b><a name="line652">652  </a></b>	
+<b><a name="line653">653  </a></b>	      // Does not throw if __r._M_get_use_count() == 0, caller must check.
+<b><a name="line654">654  </a></b>	      explicit __shared_count(const <a href="#line725">__weak_count</a>&lt;<a href="#line561">_Lp</a>&gt;&amp; __r, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../new/code.html#line82">nothrow_t</a>);
+<b><a name="line655">655  </a></b>	
+<b><a name="line656">656  </a></b>	      ~__shared_count() noexcept
+<b><a name="line657">657  </a></b>	      {
+<b><a name="line658">658  </a></b>		if (<a href="#line720">_M_pi</a> != nullptr)
+<b><a name="line659">659  </a></b>		  <a href="#line720">_M_pi</a>-&gt;<a href="#line143">_M_release</a>();
+<b><a name="line660">660  </a></b>	      }
+<b><a name="line661">661  </a></b>	
+<b><a name="line662">662  </a></b>	      __shared_count(const <a href="#line562">__shared_count</a>&amp; __r) noexcept
+<b><a name="line663">663  </a></b>	      : _M_pi(__r._M_pi)
+<b><a name="line664">664  </a></b>	      {
+<b><a name="line665">665  </a></b>		if (_M_pi != 0)
+<b><a name="line666">666  </a></b>		  _M_pi-&gt;_M_add_ref_copy();
+<b><a name="line667">667  </a></b>	      }
+<b><a name="line668">668  </a></b>	
+<b><a name="line669">669  </a></b>	      <a href="#line562">__shared_count</a>&amp;
+<b><a name="line670">670  </a></b>	      operator=(const <a href="#line562">__shared_count</a>&amp; __r) noexcept
+<b><a name="line671">671  </a></b>	      {
+<b><a name="line672">672  </a></b>		_Sp_counted_base&lt;_Lp&gt;* __tmp = __r._M_pi;
+<b><a name="line673">673  </a></b>		if (__tmp != _M_pi)
+<b><a name="line674">674  </a></b>		  {
+<b><a name="line675">675  </a></b>		    if (__tmp != 0)
+<b><a name="line676">676  </a></b>		      __tmp-&gt;_M_add_ref_copy();
+<b><a name="line677">677  </a></b>		    if (_M_pi != 0)
+<b><a name="line678">678  </a></b>		      _M_pi-&gt;_M_release();
+<b><a name="line679">679  </a></b>		    _M_pi = __tmp;
+<b><a name="line680">680  </a></b>		  }
+<b><a name="line681">681  </a></b>		return *this;
+<b><a name="line682">682  </a></b>	      }
+<b><a name="line683">683  </a></b>	
+<b><a name="line684">684  </a></b>	      void
+<b><a name="line685">685  </a></b>	      _M_swap(<a href="#line562">__shared_count</a>&amp; <b>__r</b>) noexcept
+<b><a name="line686">686  </a></b>	      {
+<b><a name="line687">687  </a></b>		<a href="#line108">_Sp_counted_base</a>&lt;<a href="#line561">_Lp</a>&gt;* <b>__tmp</b> = <a href="#line685">__r</a>.<a href="#line720">_M_pi</a>;
+<b><a name="line688">688  </a></b>		<a href="#line685">__r</a>.<a href="#line720">_M_pi</a> = <a href="#line720">_M_pi</a>;
+<b><a name="line689">689  </a></b>		<a href="#line720">_M_pi</a> = <a href="#line687">__tmp</a>;
+<b><a name="line690">690  </a></b>	      }
+<b><a name="line691">691  </a></b>	
+<b><a name="line692">692  </a></b>	      long
+<b><a name="line693">693  </a></b>	      _M_get_use_count() const noexcept
+<b><a name="line694">694  </a></b>	      { return _M_pi != 0 ? _M_pi-&gt;_M_get_use_count() : 0; }
+<b><a name="line695">695  </a></b>	
+<b><a name="line696">696  </a></b>	      bool
+<b><a name="line697">697  </a></b>	      _M_unique() const noexcept
+<b><a name="line698">698  </a></b>	      { return this-&gt;_M_get_use_count() == 1; }
+<b><a name="line699">699  </a></b>	
+<b><a name="line700">700  </a></b>	      void*
+<b><a name="line701">701  </a></b>	      _M_get_deleter(const <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../exception_ptr.h/code.html#line47">type_info</a>&amp; <b>__ti</b>) const noexcept
+<b><a name="line702">702  </a></b>	      { return <a href="#line720">_M_pi</a> ? <a href="#line720">_M_pi</a>-&gt;<a href="#line130">_M_get_deleter</a>(<a href="#line701">__ti</a>) : nullptr; }
+<b><a name="line703">703  </a></b>	
+<b><a name="line704">704  </a></b>	      bool
+<b><a name="line705">705  </a></b>	      _M_less(const <a href="#line562">__shared_count</a>&amp; __rhs) const noexcept
+<b><a name="line706">706  </a></b>	      { return std::less&lt;_Sp_counted_base&lt;_Lp&gt;*&gt;()(this-&gt;_M_pi, __rhs._M_pi); }
+<b><a name="line707">707  </a></b>	
+<b><a name="line708">708  </a></b>	      bool
+<b><a name="line709">709  </a></b>	      _M_less(const <a href="#line725">__weak_count</a>&lt;<a href="#line561">_Lp</a>&gt;&amp; __rhs) const noexcept
+<b><a name="line710">710  </a></b>	      { return std::less&lt;_Sp_counted_base&lt;_Lp&gt;*&gt;()(this-&gt;_M_pi, __rhs._M_pi); }
+<b><a name="line711">711  </a></b>	
+<b><a name="line712">712  </a></b>	      // Friend function injected into enclosing namespace and found by ADL
+<b><a name="line713">713  </a></b>	      friend inline bool
+<b><a name="line714">714  </a></b>	      operator==(const <a href="#line562">__shared_count</a>&amp; <b>__a</b>, const <a href="#line562">__shared_count</a>&amp; <b>__b</b>) noexcept
+<b><a name="line715">715  </a></b>	      { return <a href="#line714">__a</a>.<a href="#line720">_M_pi</a> == <a href="#line714">__b</a>.<a href="#line720">_M_pi</a>; }
+<b><a name="line716">716  </a></b>	
+<b><a name="line717">717  </a></b>	    private:
+<b><a name="line718">718  </a></b>	      friend class <a href="#line725">__weak_count</a>&lt;<a href="#line561">_Lp</a>&gt;;
+<b><a name="line719">719  </a></b>	
+<b><a name="line720">720  </a></b>	      <a href="#line108">_Sp_counted_base</a>&lt;<a href="#line561">_Lp</a>&gt;*  <b>_M_pi</b>;
+<b><a name="line721">721  </a></b>	    };
+<b><a name="line722">722  </a></b>	
+<b><a name="line723">723  </a></b>	
+<b><a name="line724">724  </a></b>	  template&lt;<a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line725">725  </a></b>	    class __weak_count
+<b><a name="line726">726  </a></b>	    {
+<b><a name="line727">727  </a></b>	    public:
+<b><a name="line728">728  </a></b>	      constexpr __weak_count() noexcept : _M_pi(nullptr)
+<b><a name="line729">729  </a></b>	      { }
+<b><a name="line730">730  </a></b>	
+<b><a name="line731">731  </a></b>	      __weak_count(const <a href="#line562">__shared_count</a>&lt;<a href="#line724">_Lp</a>&gt;&amp; __r) noexcept
+<b><a name="line732">732  </a></b>	      : _M_pi(__r._M_pi)
+<b><a name="line733">733  </a></b>	      {
+<b><a name="line734">734  </a></b>		if (_M_pi != nullptr)
+<b><a name="line735">735  </a></b>		  _M_pi-&gt;_M_weak_add_ref();
+<b><a name="line736">736  </a></b>	      }
+<b><a name="line737">737  </a></b>	
+<b><a name="line738">738  </a></b>	      __weak_count(const <a href="#line725">__weak_count</a>&amp; __r) noexcept
+<b><a name="line739">739  </a></b>	      : _M_pi(__r._M_pi)
+<b><a name="line740">740  </a></b>	      {
+<b><a name="line741">741  </a></b>		if (_M_pi != nullptr)
+<b><a name="line742">742  </a></b>		  _M_pi-&gt;_M_weak_add_ref();
+<b><a name="line743">743  </a></b>	      }
+<b><a name="line744">744  </a></b>	
+<b><a name="line745">745  </a></b>	      __weak_count(<a href="#line725">__weak_count</a>&amp;&amp; __r) noexcept
+<b><a name="line746">746  </a></b>	      : _M_pi(__r._M_pi)
+<b><a name="line747">747  </a></b>	      { __r._M_pi = nullptr; }
+<b><a name="line748">748  </a></b>	
+<b><a name="line749">749  </a></b>	      ~__weak_count() noexcept
+<b><a name="line750">750  </a></b>	      {
+<b><a name="line751">751  </a></b>		if (_M_pi != nullptr)
+<b><a name="line752">752  </a></b>		  _M_pi-&gt;_M_weak_release();
+<b><a name="line753">753  </a></b>	      }
+<b><a name="line754">754  </a></b>	
+<b><a name="line755">755  </a></b>	      <a href="#line725">__weak_count</a>&amp;
+<b><a name="line756">756  </a></b>	      operator=(const <a href="#line562">__shared_count</a>&lt;<a href="#line724">_Lp</a>&gt;&amp; __r) noexcept
+<b><a name="line757">757  </a></b>	      {
+<b><a name="line758">758  </a></b>		_Sp_counted_base&lt;_Lp&gt;* __tmp = __r._M_pi;
+<b><a name="line759">759  </a></b>		if (__tmp != nullptr)
+<b><a name="line760">760  </a></b>		  __tmp-&gt;_M_weak_add_ref();
+<b><a name="line761">761  </a></b>		if (_M_pi != nullptr)
+<b><a name="line762">762  </a></b>		  _M_pi-&gt;_M_weak_release();
+<b><a name="line763">763  </a></b>		_M_pi = __tmp;
+<b><a name="line764">764  </a></b>		return *this;
+<b><a name="line765">765  </a></b>	      }
+<b><a name="line766">766  </a></b>	
+<b><a name="line767">767  </a></b>	      <a href="#line725">__weak_count</a>&amp;
+<b><a name="line768">768  </a></b>	      operator=(const <a href="#line725">__weak_count</a>&amp; __r) noexcept
+<b><a name="line769">769  </a></b>	      {
+<b><a name="line770">770  </a></b>		_Sp_counted_base&lt;_Lp&gt;* __tmp = __r._M_pi;
+<b><a name="line771">771  </a></b>		if (__tmp != nullptr)
+<b><a name="line772">772  </a></b>		  __tmp-&gt;_M_weak_add_ref();
+<b><a name="line773">773  </a></b>		if (_M_pi != nullptr)
+<b><a name="line774">774  </a></b>		  _M_pi-&gt;_M_weak_release();
+<b><a name="line775">775  </a></b>		_M_pi = __tmp;
+<b><a name="line776">776  </a></b>		return *this;
+<b><a name="line777">777  </a></b>	      }
+<b><a name="line778">778  </a></b>	
+<b><a name="line779">779  </a></b>	      <a href="#line725">__weak_count</a>&amp;
+<b><a name="line780">780  </a></b>	      operator=(<a href="#line725">__weak_count</a>&amp;&amp; __r) noexcept
+<b><a name="line781">781  </a></b>	      {
+<b><a name="line782">782  </a></b>		if (_M_pi != nullptr)
+<b><a name="line783">783  </a></b>		  _M_pi-&gt;_M_weak_release();
+<b><a name="line784">784  </a></b>		_M_pi = __r._M_pi;
+<b><a name="line785">785  </a></b>	        __r._M_pi = nullptr;
+<b><a name="line786">786  </a></b>		return *this;
+<b><a name="line787">787  </a></b>	      }
+<b><a name="line788">788  </a></b>	
+<b><a name="line789">789  </a></b>	      void
+<b><a name="line790">790  </a></b>	      _M_swap(<a href="#line725">__weak_count</a>&amp; __r) noexcept
+<b><a name="line791">791  </a></b>	      {
+<b><a name="line792">792  </a></b>		_Sp_counted_base&lt;_Lp&gt;* __tmp = __r._M_pi;
+<b><a name="line793">793  </a></b>		__r._M_pi = _M_pi;
+<b><a name="line794">794  </a></b>		_M_pi = __tmp;
+<b><a name="line795">795  </a></b>	      }
+<b><a name="line796">796  </a></b>	
+<b><a name="line797">797  </a></b>	      long
+<b><a name="line798">798  </a></b>	      _M_get_use_count() const noexcept
+<b><a name="line799">799  </a></b>	      { return _M_pi != nullptr ? _M_pi-&gt;_M_get_use_count() : 0; }
+<b><a name="line800">800  </a></b>	
+<b><a name="line801">801  </a></b>	      bool
+<b><a name="line802">802  </a></b>	      _M_less(const <a href="#line725">__weak_count</a>&amp; __rhs) const noexcept
+<b><a name="line803">803  </a></b>	      { return std::less&lt;_Sp_counted_base&lt;_Lp&gt;*&gt;()(this-&gt;_M_pi, __rhs._M_pi); }
+<b><a name="line804">804  </a></b>	
+<b><a name="line805">805  </a></b>	      bool
+<b><a name="line806">806  </a></b>	      _M_less(const <a href="#line562">__shared_count</a>&lt;<a href="#line724">_Lp</a>&gt;&amp; __rhs) const noexcept
+<b><a name="line807">807  </a></b>	      { return std::less&lt;_Sp_counted_base&lt;_Lp&gt;*&gt;()(this-&gt;_M_pi, __rhs._M_pi); }
+<b><a name="line808">808  </a></b>	
+<b><a name="line809">809  </a></b>	      // Friend function injected into enclosing namespace and found by ADL
+<b><a name="line810">810  </a></b>	      friend inline bool
+<b><a name="line811">811  </a></b>	      operator==(const <a href="#line725">__weak_count</a>&amp; <b>__a</b>, const <a href="#line725">__weak_count</a>&amp; <b>__b</b>) noexcept
+<b><a name="line812">812  </a></b>	      { return <a href="#line811">__a</a>.<a href="#line817">_M_pi</a> == <a href="#line811">__b</a>.<a href="#line817">_M_pi</a>; }
+<b><a name="line813">813  </a></b>	
+<b><a name="line814">814  </a></b>	    private:
+<b><a name="line815">815  </a></b>	      friend class <a href="#line562">__shared_count</a>&lt;<a href="#line724">_Lp</a>&gt;;
+<b><a name="line816">816  </a></b>	
+<b><a name="line817">817  </a></b>	      <a href="#line108">_Sp_counted_base</a>&lt;<a href="#line724">_Lp</a>&gt;*  <b>_M_pi</b>;
+<b><a name="line818">818  </a></b>	    };
+<b><a name="line819">819  </a></b>	
+<b><a name="line820">820  </a></b>	  // Now that __weak_count is defined we can define this constructor:
+<b><a name="line821">821  </a></b>	  template&lt;<a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line822">822  </a></b>	    inline
+<b><a name="line823">823  </a></b>	    <a href="#line360">__shared_count</a>&lt;<a href="#line821">_Lp</a>&gt;::<b>__shared_count</b>(const <a href="#line357">__weak_count</a>&lt;<a href="#line821">_Lp</a>&gt;&amp; __r)
+<b><a name="line824">824  </a></b>	    : _M_pi(__r._M_pi)
+<b><a name="line825">825  </a></b>	    {
+<b><a name="line826">826  </a></b>	      if (_M_pi != nullptr)
+<b><a name="line827">827  </a></b>		_M_pi-&gt;_M_add_ref_lock();
+<b><a name="line828">828  </a></b>	      else
+<b><a name="line829">829  </a></b>		__throw_bad_weak_ptr();
+<b><a name="line830">830  </a></b>	    }
+<b><a name="line831">831  </a></b>	
+<b><a name="line832">832  </a></b>	  // Now that __weak_count is defined we can define this constructor:
+<b><a name="line833">833  </a></b>	  template&lt;<a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line834">834  </a></b>	    inline
+<b><a name="line835">835  </a></b>	    <a href="#line360">__shared_count</a>&lt;<a href="#line833">_Lp</a>&gt;::
+<b><a name="line836">836  </a></b>	    <b>__shared_count</b>(const <a href="#line357">__weak_count</a>&lt;<a href="#line833">_Lp</a>&gt;&amp; __r, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../new/code.html#line82">nothrow_t</a>)
+<b><a name="line837">837  </a></b>	    : _M_pi(__r._M_pi)
+<b><a name="line838">838  </a></b>	    {
+<b><a name="line839">839  </a></b>	      if (_M_pi != nullptr)
+<b><a name="line840">840  </a></b>		if (!_M_pi-&gt;_M_add_ref_lock_nothrow())
+<b><a name="line841">841  </a></b>		  _M_pi = nullptr;
+<b><a name="line842">842  </a></b>	    }
+<b><a name="line843">843  </a></b>	
+<b><a name="line844">844  </a></b>	  // Support for enable_shared_from_this.
+<b><a name="line845">845  </a></b>	
+<b><a name="line846">846  </a></b>	  // Friend of __enable_shared_from_this.
+<b><a name="line847">847  </a></b>	  template&lt;<a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>, typename <b>_Tp1</b>, typename <b>_Tp2</b>&gt;
+<b><a name="line848">848  </a></b>	    void
+<b><a name="line849">849  </a></b>	    __enable_shared_from_this_helper(const <a href="#line360">__shared_count</a>&lt;<a href="#line847">_Lp</a>&gt;&amp;,
+<b><a name="line850">850  </a></b>					     const <a href="#line342">__enable_shared_from_this</a>&lt;<a href="#line847">_Tp1</a>,
+<b><a name="line851">851  </a></b>					     <a href="#line847">_Lp</a>&gt;*, const <a href="#line847">_Tp2</a>*) noexcept;
+<b><a name="line852">852  </a></b>	
+<b><a name="line853">853  </a></b>	  // Friend of enable_shared_from_this.
+<b><a name="line854">854  </a></b>	  template&lt;typename <b>_Tp1</b>, typename <b>_Tp2</b>&gt;
+<b><a name="line855">855  </a></b>	    void
+<b><a name="line856">856  </a></b>	    __enable_shared_from_this_helper(const <a href="#line562">__shared_count</a>&lt;&gt;&amp;,
+<b><a name="line857">857  </a></b>					     const <a href="#line354">enable_shared_from_this</a>&lt;<a href="#line854">_Tp1</a>&gt;*,
+<b><a name="line858">858  </a></b>					     const <a href="#line854">_Tp2</a>*) noexcept;
+<b><a name="line859">859  </a></b>	
+<b><a name="line860">860  </a></b>	  template&lt;<a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line861">861  </a></b>	    inline void
+<b><a name="line862">862  </a></b>	    <b>__enable_shared_from_this_helper</b>(const <a href="#line562">__shared_count</a>&lt;<a href="#line860">_Lp</a>&gt;&amp;, ...) noexcept
+<b><a name="line863">863  </a></b>	    { }
+<b><a name="line864">864  </a></b>	
+<b><a name="line865">865  </a></b>	
+<b><a name="line866">866  </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line867">867  </a></b>	    class __shared_ptr
+<b><a name="line868">868  </a></b>	    {
+<b><a name="line869">869  </a></b>	      template&lt;typename <b>_Ptr</b>&gt;
+<b><a name="line870">870  </a></b>		using <b>_Convertible</b>
+<b><a name="line871">871  </a></b>		  = typename <a href="../../type_traits/code.html#line2099">enable_if</a>&lt;<a href="../../type_traits/code.html#line1491">is_convertible</a>&lt;<a href="#line869">_Ptr</a>, <a href="#line866">_Tp</a>*&gt;::value&gt;::type;
+<b><a name="line872">872  </a></b>	
+<b><a name="line873">873  </a></b>	    public:
+<b><a name="line874">874  </a></b>	      typedef <a href="#line866">_Tp</a>   <b>element_type</b>;
+<b><a name="line875">875  </a></b>	
+<b><a name="line876">876  </a></b>	      constexpr __shared_ptr() noexcept
+<b><a name="line877">877  </a></b>	      : <a href="#line1175">_M_ptr</a>(0), <a href="#line1176">_M_refcount</a>()
+<b><a name="line878">878  </a></b>	      { }
+<b><a name="line879">879  </a></b>	
+<b><a name="line880">880  </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line881">881  </a></b>		explicit __shared_ptr(<a href="#line880">_Tp1</a>* __p)
+<b><a name="line882">882  </a></b>	        : _M_ptr(__p), _M_refcount(__p)
+<b><a name="line883">883  </a></b>		{
+<b><a name="line884">884  </a></b>		  <a href="../concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_ConvertibleConcept&lt;_Tp1*, _Tp*&gt;)
+<b><a name="line885">885  </a></b>		  static_assert( !is_void&lt;_Tp1&gt;::value, &quot;incomplete type&quot; );
+<b><a name="line886">886  </a></b>		  static_assert( sizeof(_Tp1) &gt; 0, &quot;incomplete type&quot; );
+<b><a name="line887">887  </a></b>		  __enable_shared_from_this_helper(_M_refcount, __p, __p);
+<b><a name="line888">888  </a></b>		}
+<b><a name="line889">889  </a></b>	
+<b><a name="line890">890  </a></b>	      template&lt;typename <b>_Tp1</b>, typename <b>_Deleter</b>&gt;
+<b><a name="line891">891  </a></b>		__shared_ptr(<a href="#line890">_Tp1</a>* <b>__p</b>, <a href="#line890">_Deleter</a> <b>__d</b>)
+<b><a name="line892">892  </a></b>		: <a href="#line1175">_M_ptr</a>(<a href="#line891">__p</a>), <a href="#line1176">_M_refcount</a>(<a href="#line891">__p</a>, <a href="#line891">__d</a>)
+<b><a name="line893">893  </a></b>		{
+<b><a name="line894">894  </a></b>		  <a href="../concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_ConvertibleConcept&lt;_Tp1*, _Tp*&gt;)
+<b><a name="line895">895  </a></b>		  // TODO requires _Deleter CopyConstructible and __d(__p) well-formed
+<b><a name="line896">896  </a></b>		  <a href="#line862">__enable_shared_from_this_helper</a>(<a href="#line1176">_M_refcount</a>, <a href="#line891">__p</a>, <a href="#line891">__p</a>);
+<b><a name="line897">897  </a></b>		}
+<b><a name="line898">898  </a></b>	
+<b><a name="line899">899  </a></b>	      template&lt;typename <b>_Tp1</b>, typename <b>_Deleter</b>, typename <b>_Alloc</b>&gt;
+<b><a name="line900">900  </a></b>		__shared_ptr(<a href="#line899">_Tp1</a>* __p, <a href="#line899">_Deleter</a> __d, <a href="#line899">_Alloc</a> __a)
+<b><a name="line901">901  </a></b>		: _M_ptr(__p), _M_refcount(__p, __d, std::move(__a))
+<b><a name="line902">902  </a></b>		{
+<b><a name="line903">903  </a></b>		  <a href="../concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_ConvertibleConcept&lt;_Tp1*, _Tp*&gt;)
+<b><a name="line904">904  </a></b>		  // TODO requires _Deleter CopyConstructible and __d(__p) well-formed
+<b><a name="line905">905  </a></b>		  __enable_shared_from_this_helper(_M_refcount, __p, __p);
+<b><a name="line906">906  </a></b>		}
+<b><a name="line907">907  </a></b>	
+<b><a name="line908">908  </a></b>	      template&lt;typename <b>_Deleter</b>&gt;
+<b><a name="line909">909  </a></b>		__shared_ptr(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a> __p, <a href="#line908">_Deleter</a> __d)
+<b><a name="line910">910  </a></b>		: _M_ptr(0), _M_refcount(__p, __d)
+<b><a name="line911">911  </a></b>		{ }
+<b><a name="line912">912  </a></b>	
+<b><a name="line913">913  </a></b>	      template&lt;typename <b>_Deleter</b>, typename <b>_Alloc</b>&gt;
+<b><a name="line914">914  </a></b>	        __shared_ptr(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a> __p, <a href="#line913">_Deleter</a> __d, <a href="#line913">_Alloc</a> __a)
+<b><a name="line915">915  </a></b>		: _M_ptr(0), _M_refcount(__p, __d, std::move(__a))
+<b><a name="line916">916  </a></b>		{ }
+<b><a name="line917">917  </a></b>	
+<b><a name="line918">918  </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line919">919  </a></b>		__shared_ptr(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line918">_Tp1</a>, <a href="#line866">_Lp</a>&gt;&amp; __r, <a href="#line866">_Tp</a>* __p) noexcept
+<b><a name="line920">920  </a></b>		: _M_ptr(__p), _M_refcount(__r._M_refcount) // never throws
+<b><a name="line921">921  </a></b>		{ }
+<b><a name="line922">922  </a></b>	
+<b><a name="line923">923  </a></b>	      <b>__shared_ptr</b>(const <a href="#line867">__shared_ptr</a>&amp;) noexcept = default;
+<b><a name="line924">924  </a></b>	      <a href="#line867">__shared_ptr</a>&amp; <b>operator=</b>(const <a href="#line867">__shared_ptr</a>&amp;) noexcept = default;
+<b><a name="line925">925  </a></b>	      <b>~__shared_ptr</b>() = default;
+<b><a name="line926">926  </a></b>	
+<b><a name="line927">927  </a></b>	      template&lt;typename <b>_Tp1</b>, typename = <a href="#line870">_Convertible</a>&lt;_Tp1*&gt;&gt;
+<b><a name="line928">928  </a></b>		__shared_ptr(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line927">_Tp1</a>, <a href="#line866">_Lp</a>&gt;&amp; __r) noexcept
+<b><a name="line929">929  </a></b>		: _M_ptr(__r._M_ptr), _M_refcount(__r._M_refcount)
+<b><a name="line930">930  </a></b>		{ }
+<b><a name="line931">931  </a></b>	
+<b><a name="line932">932  </a></b>	      __shared_ptr(<a href="#line867">__shared_ptr</a>&amp;&amp; <b>__r</b>) noexcept
+<b><a name="line933">933  </a></b>	      : <a href="#line1175">_M_ptr</a>(<a href="#line932">__r</a>.<a href="#line1175">_M_ptr</a>), <a href="#line1176">_M_refcount</a>()
+<b><a name="line934">934  </a></b>	      {
+<b><a name="line935">935  </a></b>		<a href="#line1176">_M_refcount</a>.<a href="#line685">_M_swap</a>(<a href="#line932">__r</a>.<a href="#line1176">_M_refcount</a>);
+<b><a name="line936">936  </a></b>		<a href="#line932">__r</a>.<a href="#line1175">_M_ptr</a> = 0;
+<b><a name="line937">937  </a></b>	      }
+<b><a name="line938">938  </a></b>	
+<b><a name="line939">939  </a></b>	      template&lt;typename <b>_Tp1</b>, typename = <a href="#line870">_Convertible</a>&lt;_Tp1*&gt;&gt;
+<b><a name="line940">940  </a></b>		__shared_ptr(<a href="#line867">__shared_ptr</a>&lt;<a href="#line939">_Tp1</a>, <a href="#line866">_Lp</a>&gt;&amp;&amp; <b>__r</b>) noexcept
+<b><a name="line941">941  </a></b>		: <a href="#line1175">_M_ptr</a>(<a href="#line940">__r</a>.<a href="#line1175">_M_ptr</a>), <a href="#line1176">_M_refcount</a>()
+<b><a name="line942">942  </a></b>		{
+<b><a name="line943">943  </a></b>		  <a href="#line1176">_M_refcount</a>.<a href="#line685">_M_swap</a>(<a href="#line940">__r</a>.<a href="#line1176">_M_refcount</a>);
+<b><a name="line944">944  </a></b>		  <a href="#line940">__r</a>.<a href="#line1175">_M_ptr</a> = 0;
+<b><a name="line945">945  </a></b>		}
+<b><a name="line946">946  </a></b>	
+<b><a name="line947">947  </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line948">948  </a></b>		explicit __shared_ptr(const <a href="#line339">__weak_ptr</a>&lt;<a href="#line947">_Tp1</a>, <a href="#line866">_Lp</a>&gt;&amp; __r)
+<b><a name="line949">949  </a></b>		: _M_refcount(__r._M_refcount) // may throw
+<b><a name="line950">950  </a></b>		{
+<b><a name="line951">951  </a></b>		  <a href="../concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_ConvertibleConcept&lt;_Tp1*, _Tp*&gt;)
+<b><a name="line952">952  </a></b>	
+<b><a name="line953">953  </a></b>		  // It is now safe to copy __r._M_ptr, as
+<b><a name="line954">954  </a></b>		  // _M_refcount(__r._M_refcount) did not throw.
+<b><a name="line955">955  </a></b>		  _M_ptr = __r._M_ptr;
+<b><a name="line956">956  </a></b>		}
+<b><a name="line957">957  </a></b>	
+<b><a name="line958">958  </a></b>	      // If an exception is thrown this constructor has no effect.
+<b><a name="line959">959  </a></b>	      template&lt;typename <b>_Tp1</b>, typename <b>_Del</b>, typename
+<b><a name="line960">960  </a></b>		       = <a href="#line870">_Convertible</a>&lt;typename <a href="../unique_ptr.h/code.html#line129">unique_ptr</a>&lt;<a href="#line959">_Tp1</a>, <a href="#line959">_Del</a>&gt;::pointer&gt;&gt;
+<b><a name="line961">961  </a></b>		__shared_ptr(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../unique_ptr.h/code.html#line129">unique_ptr</a>&lt;<a href="#line959">_Tp1</a>, <a href="#line959">_Del</a>&gt;&amp;&amp; __r)
+<b><a name="line962">962  </a></b>		: _M_ptr(__r.get()), _M_refcount()
+<b><a name="line963">963  </a></b>		{
+<b><a name="line964">964  </a></b>		  <a href="../concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_ConvertibleConcept&lt;_Tp1*, _Tp*&gt;)
+<b><a name="line965">965  </a></b>		  auto __raw = _S_raw_ptr(__r.get());
+<b><a name="line966">966  </a></b>		  _M_refcount = __shared_count&lt;_Lp&gt;(std::move(__r));
+<b><a name="line967">967  </a></b>		  __enable_shared_from_this_helper(_M_refcount, __raw, __raw);
+<b><a name="line968">968  </a></b>		}
+<b><a name="line969">969  </a></b>	
+<b><a name="line970">970  </a></b>	#if <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line78">_GLIBCXX_USE_DEPRECATED</a>
+<b><a name="line971">971  </a></b>	      // Postcondition: use_count() == 1 and __r.get() == 0
+<b><a name="line972">972  </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line973">973  </a></b>		__shared_ptr(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../unique_ptr.h/code.html#line49">auto_ptr</a>&lt;<a href="#line972">_Tp1</a>&gt;&amp;&amp; __r);
+<b><a name="line974">974  </a></b>	#endif
+<b><a name="line975">975  </a></b>	
+<b><a name="line976">976  </a></b>	      constexpr __shared_ptr(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>) noexcept : __shared_ptr() { }
+<b><a name="line977">977  </a></b>	
+<b><a name="line978">978  </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line979">979  </a></b>		<a href="#line867">__shared_ptr</a>&amp;
+<b><a name="line980">980  </a></b>		operator=(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line978">_Tp1</a>, <a href="#line866">_Lp</a>&gt;&amp; __r) noexcept
+<b><a name="line981">981  </a></b>		{
+<b><a name="line982">982  </a></b>		  _M_ptr = __r._M_ptr;
+<b><a name="line983">983  </a></b>		  _M_refcount = __r._M_refcount; // __shared_count::op= doesn't throw
+<b><a name="line984">984  </a></b>		  return *this;
+<b><a name="line985">985  </a></b>		}
+<b><a name="line986">986  </a></b>	
+<b><a name="line987">987  </a></b>	#if <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line78">_GLIBCXX_USE_DEPRECATED</a>
+<b><a name="line988">988  </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line989">989  </a></b>		<a href="#line867">__shared_ptr</a>&amp;
+<b><a name="line990">990  </a></b>		operator=(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../unique_ptr.h/code.html#line49">auto_ptr</a>&lt;<a href="#line988">_Tp1</a>&gt;&amp;&amp; __r)
+<b><a name="line991">991  </a></b>		{
+<b><a name="line992">992  </a></b>		  __shared_ptr(std::move(__r)).swap(*this);
+<b><a name="line993">993  </a></b>		  return *this;
+<b><a name="line994">994  </a></b>		}
+<b><a name="line995">995  </a></b>	#endif
+<b><a name="line996">996  </a></b>	
+<b><a name="line997">997  </a></b>	      <a href="#line867">__shared_ptr</a>&amp;
+<b><a name="line998">998  </a></b>	      operator=(<a href="#line867">__shared_ptr</a>&amp;&amp; __r) noexcept
+<b><a name="line999">999  </a></b>	      {
+<b><a name="line1000">1000 </a></b>		__shared_ptr(std::move(__r)).swap(*this);
+<b><a name="line1001">1001 </a></b>		return *this;
+<b><a name="line1002">1002 </a></b>	      }
+<b><a name="line1003">1003 </a></b>	
+<b><a name="line1004">1004 </a></b>	      template&lt;class <b>_Tp1</b>&gt;
+<b><a name="line1005">1005 </a></b>		<a href="#line867">__shared_ptr</a>&amp;
+<b><a name="line1006">1006 </a></b>		operator=(<a href="#line336">__shared_ptr</a>&lt;<a href="#line1004">_Tp1</a>, <a href="#line866">_Lp</a>&gt;&amp;&amp; __r) noexcept
+<b><a name="line1007">1007 </a></b>		{
+<b><a name="line1008">1008 </a></b>		  __shared_ptr(std::move(__r)).swap(*this);
+<b><a name="line1009">1009 </a></b>		  return *this;
+<b><a name="line1010">1010 </a></b>		}
+<b><a name="line1011">1011 </a></b>	
+<b><a name="line1012">1012 </a></b>	      template&lt;typename <b>_Tp1</b>, typename <b>_Del</b>&gt;
+<b><a name="line1013">1013 </a></b>		<a href="#line867">__shared_ptr</a>&amp;
+<b><a name="line1014">1014 </a></b>		operator=(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../unique_ptr.h/code.html#line129">unique_ptr</a>&lt;<a href="#line1012">_Tp1</a>, <a href="#line1012">_Del</a>&gt;&amp;&amp; __r)
+<b><a name="line1015">1015 </a></b>		{
+<b><a name="line1016">1016 </a></b>		  __shared_ptr(std::move(__r)).swap(*this);
+<b><a name="line1017">1017 </a></b>		  return *this;
+<b><a name="line1018">1018 </a></b>		}
+<b><a name="line1019">1019 </a></b>	
+<b><a name="line1020">1020 </a></b>	      void
+<b><a name="line1021">1021 </a></b>	      reset() noexcept
+<b><a name="line1022">1022 </a></b>	      { __shared_ptr().swap(*this); }
+<b><a name="line1023">1023 </a></b>	
+<b><a name="line1024">1024 </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line1025">1025 </a></b>		void
+<b><a name="line1026">1026 </a></b>		reset(<a href="#line1024">_Tp1</a>* __p) // _Tp1 must be complete.
+<b><a name="line1027">1027 </a></b>		{
+<b><a name="line1028">1028 </a></b>		  // Catch self-reset errors.
+<b><a name="line1029">1029 </a></b>		  <a href="../../debug/debug.h/code.html#line61">_GLIBCXX_DEBUG_ASSERT</a>(__p == 0 || __p != _M_ptr);
+<b><a name="line1030">1030 </a></b>		  __shared_ptr(__p).swap(*this);
+<b><a name="line1031">1031 </a></b>		}
+<b><a name="line1032">1032 </a></b>	
+<b><a name="line1033">1033 </a></b>	      template&lt;typename <b>_Tp1</b>, typename <b>_Deleter</b>&gt;
+<b><a name="line1034">1034 </a></b>		void
+<b><a name="line1035">1035 </a></b>		reset(<a href="#line1033">_Tp1</a>* __p, <a href="#line1033">_Deleter</a> __d)
+<b><a name="line1036">1036 </a></b>		{ __shared_ptr(__p, __d).swap(*this); }
+<b><a name="line1037">1037 </a></b>	
+<b><a name="line1038">1038 </a></b>	      template&lt;typename <b>_Tp1</b>, typename <b>_Deleter</b>, typename <b>_Alloc</b>&gt;
+<b><a name="line1039">1039 </a></b>		void
+<b><a name="line1040">1040 </a></b>	        reset(<a href="#line1038">_Tp1</a>* __p, <a href="#line1038">_Deleter</a> __d, <a href="#line1038">_Alloc</a> __a)
+<b><a name="line1041">1041 </a></b>	        { __shared_ptr(__p, __d, std::move(__a)).swap(*this); }
+<b><a name="line1042">1042 </a></b>	
+<b><a name="line1043">1043 </a></b>	      // Allow class instantiation when _Tp is [cv-qual] void.
+<b><a name="line1044">1044 </a></b>	      typename <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../type_traits/code.html#line1596">add_lvalue_reference</a>&lt;<a href="#line866">_Tp</a>&gt;::<a href="../../type_traits/code.html#line1592">type</a>
+<b><a name="line1045">1045 </a></b>	      operator*() const noexcept
+<b><a name="line1046">1046 </a></b>	      {
+<b><a name="line1047">1047 </a></b>		<a href="../../debug/debug.h/code.html#line61">_GLIBCXX_DEBUG_ASSERT</a>(_M_ptr != 0);
+<b><a name="line1048">1048 </a></b>		return *_M_ptr;
+<b><a name="line1049">1049 </a></b>	      }
+<b><a name="line1050">1050 </a></b>	
+<b><a name="line1051">1051 </a></b>	      <a href="#line866">_Tp</a>*
+<b><a name="line1052">1052 </a></b>	      operator-&gt;() const noexcept
+<b><a name="line1053">1053 </a></b>	      {
+<b><a name="line1054">1054 </a></b>		<a href="../../debug/debug.h/code.html#line61">_GLIBCXX_DEBUG_ASSERT</a>(_M_ptr != 0);
+<b><a name="line1055">1055 </a></b>		return _M_ptr;
+<b><a name="line1056">1056 </a></b>	      }
+<b><a name="line1057">1057 </a></b>	
+<b><a name="line1058">1058 </a></b>	      <a href="#line866">_Tp</a>*
+<b><a name="line1059">1059 </a></b>	      get() const noexcept
+<b><a name="line1060">1060 </a></b>	      { return <a href="#line1175">_M_ptr</a>; }
+<b><a name="line1061">1061 </a></b>	
+<b><a name="line1062">1062 </a></b>	      explicit operator bool() const // never throws
+<b><a name="line1063">1063 </a></b>	      { return <a href="#line1175">_M_ptr</a> == 0 ? false : true; }
+<b><a name="line1064">1064 </a></b>	
+<b><a name="line1065">1065 </a></b>	      bool
+<b><a name="line1066">1066 </a></b>	      unique() const noexcept
+<b><a name="line1067">1067 </a></b>	      { return _M_refcount._M_unique(); }
+<b><a name="line1068">1068 </a></b>	
+<b><a name="line1069">1069 </a></b>	      long
+<b><a name="line1070">1070 </a></b>	      use_count() const noexcept
+<b><a name="line1071">1071 </a></b>	      { return _M_refcount._M_get_use_count(); }
+<b><a name="line1072">1072 </a></b>	
+<b><a name="line1073">1073 </a></b>	      void
+<b><a name="line1074">1074 </a></b>	      swap(<a href="#line867">__shared_ptr</a>&lt;<a href="#line866">_Tp</a>, <a href="#line866">_Lp</a>&gt;&amp; __other) noexcept
+<b><a name="line1075">1075 </a></b>	      {
+<b><a name="line1076">1076 </a></b>		std::swap(_M_ptr, __other._M_ptr);
+<b><a name="line1077">1077 </a></b>		_M_refcount._M_swap(__other._M_refcount);
+<b><a name="line1078">1078 </a></b>	      }
+<b><a name="line1079">1079 </a></b>	
+<b><a name="line1080">1080 </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line1081">1081 </a></b>		bool
+<b><a name="line1082">1082 </a></b>		owner_before(<a href="#line336">__shared_ptr</a>&lt;<a href="#line1080">_Tp1</a>, <a href="#line866">_Lp</a>&gt; const&amp; __rhs) const
+<b><a name="line1083">1083 </a></b>		{ return _M_refcount._M_less(__rhs._M_refcount); }
+<b><a name="line1084">1084 </a></b>	
+<b><a name="line1085">1085 </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line1086">1086 </a></b>		bool
+<b><a name="line1087">1087 </a></b>		owner_before(<a href="#line339">__weak_ptr</a>&lt;<a href="#line1085">_Tp1</a>, <a href="#line866">_Lp</a>&gt; const&amp; __rhs) const
+<b><a name="line1088">1088 </a></b>		{ return _M_refcount._M_less(__rhs._M_refcount); }
+<b><a name="line1089">1089 </a></b>	
+<b><a name="line1090">1090 </a></b>	#if <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line444">__cpp_rtti</a>
+<b><a name="line1091">1091 </a></b>	    protected:
+<b><a name="line1092">1092 </a></b>	      // This constructor is non-standard, it is used by allocate_shared.
+<b><a name="line1093">1093 </a></b>	      template&lt;typename <b>_Alloc</b>, typename... <b>_Args</b>&gt;
+<b><a name="line1094">1094 </a></b>		__shared_ptr(<a href="#line496">_Sp_make_shared_tag</a> <b>__tag</b>, const <a href="#line1093">_Alloc</a>&amp; <b>__a</b>,
+<b><a name="line1095">1095 </a></b>			     <a href="#line1093">_Args</a>&amp;&amp;... <b>__args</b>)
+<b><a name="line1096">1096 </a></b>		: <a href="#line1175">_M_ptr</a>(), <a href="#line1176">_M_refcount</a>(<a href="#line1094">__tag</a>, (<a href="#line866">_Tp</a>*)0, <a href="#line1094">__a</a>,
+<b><a name="line1097">1097 </a></b>					<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../move.h/code.html#line76">forward</a>&lt;<a href="#line1093">_Args</a>&gt;(<a href="#line1095">__args</a>)...)
+<b><a name="line1098">1098 </a></b>		{
+<b><a name="line1099">1099 </a></b>		  // _M_ptr needs to point to the newly constructed object.
+<b><a name="line1100">1100 </a></b>		  // This relies on _Sp_counted_ptr_inplace::_M_get_deleter.
+<b><a name="line1101">1101 </a></b>		  void* <b>__p</b> = <a href="#line1176">_M_refcount</a>.<a href="#line701">_M_get_deleter</a>(typeid(<a href="#line1094">__tag</a>));
+<b><a name="line1102">1102 </a></b>		  <a href="#line1175">_M_ptr</a> = static_cast&lt;<a href="#line866">_Tp</a>*&gt;(<a href="#line1101">__p</a>);
+<b><a name="line1103">1103 </a></b>		  <a href="#line862">__enable_shared_from_this_helper</a>(<a href="#line1176">_M_refcount</a>, <a href="#line1175">_M_ptr</a>, <a href="#line1175">_M_ptr</a>);
+<b><a name="line1104">1104 </a></b>		}
+<b><a name="line1105">1105 </a></b>	#else
+<b><a name="line1106">1106 </a></b>	      template&lt;typename _Alloc&gt;
+<b><a name="line1107">1107 </a></b>	        struct _Deleter
+<b><a name="line1108">1108 </a></b>	        {
+<b><a name="line1109">1109 </a></b>	          void operator()(typename _Alloc::value_type* __ptr)
+<b><a name="line1110">1110 </a></b>	          {
+<b><a name="line1111">1111 </a></b>		    __allocated_ptr&lt;_Alloc&gt; __guard{ _M_alloc, __ptr };
+<b><a name="line1112">1112 </a></b>		    allocator_traits&lt;_Alloc&gt;::destroy(_M_alloc, __guard.get());
+<b><a name="line1113">1113 </a></b>	          }
+<b><a name="line1114">1114 </a></b>	          _Alloc _M_alloc;
+<b><a name="line1115">1115 </a></b>	        };
+<b><a name="line1116">1116 </a></b>	
+<b><a name="line1117">1117 </a></b>	      template&lt;typename _Alloc, typename... _Args&gt;
+<b><a name="line1118">1118 </a></b>		__shared_ptr(_Sp_make_shared_tag __tag, const _Alloc&amp; __a,
+<b><a name="line1119">1119 </a></b>			     _Args&amp;&amp;... __args)
+<b><a name="line1120">1120 </a></b>		: _M_ptr(), _M_refcount()
+<b><a name="line1121">1121 </a></b>		{
+<b><a name="line1122">1122 </a></b>		  typedef typename allocator_traits&lt;_Alloc&gt;::template
+<b><a name="line1123">1123 </a></b>		    rebind_traits&lt;typename std::remove_cv&lt;_Tp&gt;::type&gt; __traits;
+<b><a name="line1124">1124 </a></b>		  _Deleter&lt;typename __traits::allocator_type&gt; __del = { __a };
+<b><a name="line1125">1125 </a></b>		  auto __guard = std::__allocate_guarded(__del._M_alloc);
+<b><a name="line1126">1126 </a></b>		  auto __ptr = __guard.get();
+<b><a name="line1127">1127 </a></b>		  // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line1128">1128 </a></b>		  // 2070. allocate_shared should use allocator_traits&lt;A&gt;::construct
+<b><a name="line1129">1129 </a></b>		  __traits::construct(__del._M_alloc, __ptr,
+<b><a name="line1130">1130 </a></b>				      std::forward&lt;_Args&gt;(__args)...);
+<b><a name="line1131">1131 </a></b>		  __guard = nullptr;
+<b><a name="line1132">1132 </a></b>		  __shared_count&lt;_Lp&gt; __count(__ptr, __del, __del._M_alloc);
+<b><a name="line1133">1133 </a></b>		  _M_refcount._M_swap(__count);
+<b><a name="line1134">1134 </a></b>		  _M_ptr = __ptr;
+<b><a name="line1135">1135 </a></b>		  __enable_shared_from_this_helper(_M_refcount, _M_ptr, _M_ptr);
+<b><a name="line1136">1136 </a></b>		}
+<b><a name="line1137">1137 </a></b>	#endif
+<b><a name="line1138">1138 </a></b>	
+<b><a name="line1139">1139 </a></b>	      template&lt;typename <b>_Tp1</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp1</b>, typename <b>_Alloc</b>,
+<b><a name="line1140">1140 </a></b>		       typename... <b>_Args</b>&gt;
+<b><a name="line1141">1141 </a></b>		friend <a href="#line336">__shared_ptr</a>&lt;<a href="#line1139">_Tp1</a>, <a href="#line1139">_Lp1</a>&gt;
+<b><a name="line1142">1142 </a></b>		__allocate_shared(const <a href="#line1139">_Alloc</a>&amp; __a, <a href="#line1140">_Args</a>&amp;&amp;... __args);
+<b><a name="line1143">1143 </a></b>	
+<b><a name="line1144">1144 </a></b>	      // This constructor is used by __weak_ptr::lock() and
+<b><a name="line1145">1145 </a></b>	      // shared_ptr::shared_ptr(const weak_ptr&amp;, std::nothrow_t).
+<b><a name="line1146">1146 </a></b>	      __shared_ptr(const <a href="#line1340">__weak_ptr</a>&lt;<a href="#line866">_Tp</a>, <a href="#line866">_Lp</a>&gt;&amp; __r, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../new/code.html#line82">nothrow_t</a>)
+<b><a name="line1147">1147 </a></b>	      : _M_refcount(__r._M_refcount, std::nothrow)
+<b><a name="line1148">1148 </a></b>	      {
+<b><a name="line1149">1149 </a></b>		_M_ptr = _M_refcount._M_get_use_count() ? __r._M_ptr : nullptr;
+<b><a name="line1150">1150 </a></b>	      }
+<b><a name="line1151">1151 </a></b>	
+<b><a name="line1152">1152 </a></b>	      friend class <a href="#line1340">__weak_ptr</a>&lt;<a href="#line866">_Tp</a>, <a href="#line866">_Lp</a>&gt;;
+<b><a name="line1153">1153 </a></b>	
+<b><a name="line1154">1154 </a></b>	    private:
+<b><a name="line1155">1155 </a></b>	      void*
+<b><a name="line1156">1156 </a></b>	      _M_get_deleter(const <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../exception_ptr.h/code.html#line47">type_info</a>&amp; __ti) const noexcept
+<b><a name="line1157">1157 </a></b>	      { return _M_refcount._M_get_deleter(__ti); }
+<b><a name="line1158">1158 </a></b>	
+<b><a name="line1159">1159 </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line1160">1160 </a></b>		static <a href="#line1159">_Tp1</a>*
+<b><a name="line1161">1161 </a></b>		_S_raw_ptr(<a href="#line1159">_Tp1</a>* __ptr)
+<b><a name="line1162">1162 </a></b>		{ return __ptr; }
+<b><a name="line1163">1163 </a></b>	
+<b><a name="line1164">1164 </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line1165">1165 </a></b>		static auto
+<b><a name="line1166">1166 </a></b>		_S_raw_ptr(<a href="#line1164">_Tp1</a> __ptr) -&gt; decltype(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::__addressof(*__ptr))
+<b><a name="line1167">1167 </a></b>		{ return std::__addressof(*__ptr); }
+<b><a name="line1168">1168 </a></b>	
+<b><a name="line1169">1169 </a></b>	      template&lt;typename <b>_Tp1</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp1</b>&gt; friend class <a href="#line336">__shared_ptr</a>;
+<b><a name="line1170">1170 </a></b>	      template&lt;typename <b>_Tp1</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp1</b>&gt; friend class <a href="#line339">__weak_ptr</a>;
+<b><a name="line1171">1171 </a></b>	
+<b><a name="line1172">1172 </a></b>	      template&lt;typename <b>_Del</b>, typename <b>_Tp1</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp1</b>&gt;
+<b><a name="line1173">1173 </a></b>		friend <a href="#line1172">_Del</a>* get_deleter(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1172">_Tp1</a>, <a href="#line1172">_Lp1</a>&gt;&amp;) noexcept;
+<b><a name="line1174">1174 </a></b>	
+<b><a name="line1175">1175 </a></b>	      <a href="#line866">_Tp</a>*	   	   <b>_M_ptr</b>;         // Contained pointer.
+<b><a name="line1176">1176 </a></b>	      <a href="#line562">__shared_count</a>&lt;<a href="#line866">_Lp</a>&gt;  <b>_M_refcount</b>;    // Reference counter.
+<b><a name="line1177">1177 </a></b>	    };
+<b><a name="line1178">1178 </a></b>	
+<b><a name="line1179">1179 </a></b>	
+<b><a name="line1180">1180 </a></b>	  // 20.7.2.2.7 shared_ptr comparisons
+<b><a name="line1181">1181 </a></b>	  template&lt;typename <b>_Tp1</b>, typename <b>_Tp2</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1182">1182 </a></b>	    inline bool
+<b><a name="line1183">1183 </a></b>	    <b>operator==</b>(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1181">_Tp1</a>, <a href="#line1181">_Lp</a>&gt;&amp; __a,
+<b><a name="line1184">1184 </a></b>		       const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1181">_Tp2</a>, <a href="#line1181">_Lp</a>&gt;&amp; __b) noexcept
+<b><a name="line1185">1185 </a></b>	    { return __a.get() == __b.get(); }
+<b><a name="line1186">1186 </a></b>	
+<b><a name="line1187">1187 </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1188">1188 </a></b>	    inline bool
+<b><a name="line1189">1189 </a></b>	    <b>operator==</b>(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1187">_Tp</a>, <a href="#line1187">_Lp</a>&gt;&amp; __a, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>) noexcept
+<b><a name="line1190">1190 </a></b>	    { return !__a; }
+<b><a name="line1191">1191 </a></b>	
+<b><a name="line1192">1192 </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1193">1193 </a></b>	    inline bool
+<b><a name="line1194">1194 </a></b>	    <b>operator==</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>, const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1192">_Tp</a>, <a href="#line1192">_Lp</a>&gt;&amp; __a) noexcept
+<b><a name="line1195">1195 </a></b>	    { return !__a; }
+<b><a name="line1196">1196 </a></b>	
+<b><a name="line1197">1197 </a></b>	  template&lt;typename <b>_Tp1</b>, typename <b>_Tp2</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1198">1198 </a></b>	    inline bool
+<b><a name="line1199">1199 </a></b>	    <b>operator!=</b>(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1197">_Tp1</a>, <a href="#line1197">_Lp</a>&gt;&amp; __a,
+<b><a name="line1200">1200 </a></b>		       const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1197">_Tp2</a>, <a href="#line1197">_Lp</a>&gt;&amp; __b) noexcept
+<b><a name="line1201">1201 </a></b>	    { return __a.get() != __b.get(); }
+<b><a name="line1202">1202 </a></b>	
+<b><a name="line1203">1203 </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1204">1204 </a></b>	    inline bool
+<b><a name="line1205">1205 </a></b>	    <b>operator!=</b>(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1203">_Tp</a>, <a href="#line1203">_Lp</a>&gt;&amp; __a, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>) noexcept
+<b><a name="line1206">1206 </a></b>	    { return (bool)__a; }
+<b><a name="line1207">1207 </a></b>	
+<b><a name="line1208">1208 </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1209">1209 </a></b>	    inline bool
+<b><a name="line1210">1210 </a></b>	    <b>operator!=</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>, const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1208">_Tp</a>, <a href="#line1208">_Lp</a>&gt;&amp; __a) noexcept
+<b><a name="line1211">1211 </a></b>	    { return (bool)__a; }
+<b><a name="line1212">1212 </a></b>	
+<b><a name="line1213">1213 </a></b>	  template&lt;typename <b>_Tp1</b>, typename <b>_Tp2</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1214">1214 </a></b>	    inline bool
+<b><a name="line1215">1215 </a></b>	    <b>operator&lt;</b>(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1213">_Tp1</a>, <a href="#line1213">_Lp</a>&gt;&amp; __a,
+<b><a name="line1216">1216 </a></b>		      const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1213">_Tp2</a>, <a href="#line1213">_Lp</a>&gt;&amp; __b) noexcept
+<b><a name="line1217">1217 </a></b>	    {
+<b><a name="line1218">1218 </a></b>	      typedef typename std::common_type&lt;_Tp1*, _Tp2*&gt;::type _CT;
+<b><a name="line1219">1219 </a></b>	      return std::less&lt;_CT&gt;()(__a.get(), __b.get());
+<b><a name="line1220">1220 </a></b>	    }
+<b><a name="line1221">1221 </a></b>	
+<b><a name="line1222">1222 </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1223">1223 </a></b>	    inline bool
+<b><a name="line1224">1224 </a></b>	    <b>operator&lt;</b>(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1222">_Tp</a>, <a href="#line1222">_Lp</a>&gt;&amp; __a, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>) noexcept
+<b><a name="line1225">1225 </a></b>	    { return std::less&lt;_Tp*&gt;()(__a.get(), nullptr); }
+<b><a name="line1226">1226 </a></b>	
+<b><a name="line1227">1227 </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1228">1228 </a></b>	    inline bool
+<b><a name="line1229">1229 </a></b>	    <b>operator&lt;</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>, const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1227">_Tp</a>, <a href="#line1227">_Lp</a>&gt;&amp; __a) noexcept
+<b><a name="line1230">1230 </a></b>	    { return std::less&lt;_Tp*&gt;()(nullptr, __a.get()); }
+<b><a name="line1231">1231 </a></b>	
+<b><a name="line1232">1232 </a></b>	  template&lt;typename <b>_Tp1</b>, typename <b>_Tp2</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1233">1233 </a></b>	    inline bool
+<b><a name="line1234">1234 </a></b>	    <b>operator&lt;=</b>(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1232">_Tp1</a>, <a href="#line1232">_Lp</a>&gt;&amp; __a,
+<b><a name="line1235">1235 </a></b>		       const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1232">_Tp2</a>, <a href="#line1232">_Lp</a>&gt;&amp; __b) noexcept
+<b><a name="line1236">1236 </a></b>	    { return !(__b &lt; __a); }
+<b><a name="line1237">1237 </a></b>	
+<b><a name="line1238">1238 </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1239">1239 </a></b>	    inline bool
+<b><a name="line1240">1240 </a></b>	    <b>operator&lt;=</b>(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1238">_Tp</a>, <a href="#line1238">_Lp</a>&gt;&amp; __a, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>) noexcept
+<b><a name="line1241">1241 </a></b>	    { return !(nullptr &lt; __a); }
+<b><a name="line1242">1242 </a></b>	
+<b><a name="line1243">1243 </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1244">1244 </a></b>	    inline bool
+<b><a name="line1245">1245 </a></b>	    <b>operator&lt;=</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>, const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1243">_Tp</a>, <a href="#line1243">_Lp</a>&gt;&amp; __a) noexcept
+<b><a name="line1246">1246 </a></b>	    { return !(__a &lt; nullptr); }
+<b><a name="line1247">1247 </a></b>	
+<b><a name="line1248">1248 </a></b>	  template&lt;typename <b>_Tp1</b>, typename <b>_Tp2</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1249">1249 </a></b>	    inline bool
+<b><a name="line1250">1250 </a></b>	    <b>operator&gt;</b>(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1248">_Tp1</a>, <a href="#line1248">_Lp</a>&gt;&amp; __a,
+<b><a name="line1251">1251 </a></b>		      const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1248">_Tp2</a>, <a href="#line1248">_Lp</a>&gt;&amp; __b) noexcept
+<b><a name="line1252">1252 </a></b>	    { return (__b &lt; __a); }
+<b><a name="line1253">1253 </a></b>	
+<b><a name="line1254">1254 </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1255">1255 </a></b>	    inline bool
+<b><a name="line1256">1256 </a></b>	    <b>operator&gt;</b>(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1254">_Tp</a>, <a href="#line1254">_Lp</a>&gt;&amp; __a, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>) noexcept
+<b><a name="line1257">1257 </a></b>	    { return std::less&lt;_Tp*&gt;()(nullptr, __a.get()); }
+<b><a name="line1258">1258 </a></b>	
+<b><a name="line1259">1259 </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1260">1260 </a></b>	    inline bool
+<b><a name="line1261">1261 </a></b>	    <b>operator&gt;</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>, const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1259">_Tp</a>, <a href="#line1259">_Lp</a>&gt;&amp; __a) noexcept
+<b><a name="line1262">1262 </a></b>	    { return std::less&lt;_Tp*&gt;()(__a.get(), nullptr); }
+<b><a name="line1263">1263 </a></b>	
+<b><a name="line1264">1264 </a></b>	  template&lt;typename <b>_Tp1</b>, typename <b>_Tp2</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1265">1265 </a></b>	    inline bool
+<b><a name="line1266">1266 </a></b>	    <b>operator&gt;=</b>(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1264">_Tp1</a>, <a href="#line1264">_Lp</a>&gt;&amp; __a,
+<b><a name="line1267">1267 </a></b>		       const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1264">_Tp2</a>, <a href="#line1264">_Lp</a>&gt;&amp; __b) noexcept
+<b><a name="line1268">1268 </a></b>	    { return !(__a &lt; __b); }
+<b><a name="line1269">1269 </a></b>	
+<b><a name="line1270">1270 </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1271">1271 </a></b>	    inline bool
+<b><a name="line1272">1272 </a></b>	    <b>operator&gt;=</b>(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1270">_Tp</a>, <a href="#line1270">_Lp</a>&gt;&amp; __a, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>) noexcept
+<b><a name="line1273">1273 </a></b>	    { return !(__a &lt; nullptr); }
+<b><a name="line1274">1274 </a></b>	
+<b><a name="line1275">1275 </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1276">1276 </a></b>	    inline bool
+<b><a name="line1277">1277 </a></b>	    <b>operator&gt;=</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>, const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1275">_Tp</a>, <a href="#line1275">_Lp</a>&gt;&amp; __a) noexcept
+<b><a name="line1278">1278 </a></b>	    { return !(nullptr &lt; __a); }
+<b><a name="line1279">1279 </a></b>	
+<b><a name="line1280">1280 </a></b>	  template&lt;typename <b>_Sp</b>&gt;
+<b><a name="line1281">1281 </a></b>	    struct <b>_Sp_less</b> : public <a href="../stl_function.h/code.html#line118">binary_function</a>&lt;<a href="#line1280">_Sp</a>, <a href="#line1280">_Sp</a>, bool&gt;
+<b><a name="line1282">1282 </a></b>	    {
+<b><a name="line1283">1283 </a></b>	      bool
+<b><a name="line1284">1284 </a></b>	      <b>operator()</b>(const <a href="#line1280">_Sp</a>&amp; __lhs, const <a href="#line1280">_Sp</a>&amp; __rhs) const noexcept
+<b><a name="line1285">1285 </a></b>	      {
+<b><a name="line1286">1286 </a></b>		typedef typename _Sp::element_type element_type;
+<b><a name="line1287">1287 </a></b>		return std::less&lt;element_type*&gt;()(__lhs.get(), __rhs.get());
+<b><a name="line1288">1288 </a></b>	      }
+<b><a name="line1289">1289 </a></b>	    };
+<b><a name="line1290">1290 </a></b>	
+<b><a name="line1291">1291 </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1292">1292 </a></b>	    struct <b>less</b>&lt;<a href="#line336">__shared_ptr</a>&lt;<a href="#line1291">_Tp</a>, <a href="#line1291">_Lp</a>&gt;&gt;
+<b><a name="line1293">1293 </a></b>	    : public <a href="#line1281">_Sp_less</a>&lt;<a href="#line336">__shared_ptr</a>&lt;<a href="#line1291">_Tp</a>, <a href="#line1291">_Lp</a>&gt;&gt;
+<b><a name="line1294">1294 </a></b>	    { };
+<b><a name="line1295">1295 </a></b>	
+<b><a name="line1296">1296 </a></b>	  // 20.7.2.2.8 shared_ptr specialized algorithms.
+<b><a name="line1297">1297 </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1298">1298 </a></b>	    inline void
+<b><a name="line1299">1299 </a></b>	    <b>swap</b>(<a href="#line336">__shared_ptr</a>&lt;<a href="#line1297">_Tp</a>, <a href="#line1297">_Lp</a>&gt;&amp; __a, <a href="#line336">__shared_ptr</a>&lt;<a href="#line1297">_Tp</a>, <a href="#line1297">_Lp</a>&gt;&amp; __b) noexcept
+<b><a name="line1300">1300 </a></b>	    { __a.swap(__b); }
+<b><a name="line1301">1301 </a></b>	
+<b><a name="line1302">1302 </a></b>	  // 20.7.2.2.9 shared_ptr casts
+<b><a name="line1303">1303 </a></b>	
+<b><a name="line1304">1304 </a></b>	  // The seemingly equivalent code:
+<b><a name="line1305">1305 </a></b>	  // shared_ptr&lt;_Tp, _Lp&gt;(static_cast&lt;_Tp*&gt;(__r.get()))
+<b><a name="line1306">1306 </a></b>	  // will eventually result in undefined behaviour, attempting to
+<b><a name="line1307">1307 </a></b>	  // delete the same object twice.
+<b><a name="line1308">1308 </a></b>	  /// static_pointer_cast
+<b><a name="line1309">1309 </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Tp1</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1310">1310 </a></b>	    inline <a href="#line336">__shared_ptr</a>&lt;<a href="#line1309">_Tp</a>, <a href="#line1309">_Lp</a>&gt;
+<b><a name="line1311">1311 </a></b>	    <b>static_pointer_cast</b>(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1309">_Tp1</a>, <a href="#line1309">_Lp</a>&gt;&amp; __r) noexcept
+<b><a name="line1312">1312 </a></b>	    { return __shared_ptr&lt;_Tp, _Lp&gt;(__r, static_cast&lt;_Tp*&gt;(__r.get())); }
+<b><a name="line1313">1313 </a></b>	
+<b><a name="line1314">1314 </a></b>	  // The seemingly equivalent code:
+<b><a name="line1315">1315 </a></b>	  // shared_ptr&lt;_Tp, _Lp&gt;(const_cast&lt;_Tp*&gt;(__r.get()))
+<b><a name="line1316">1316 </a></b>	  // will eventually result in undefined behaviour, attempting to
+<b><a name="line1317">1317 </a></b>	  // delete the same object twice.
+<b><a name="line1318">1318 </a></b>	  /// const_pointer_cast
+<b><a name="line1319">1319 </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Tp1</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1320">1320 </a></b>	    inline <a href="#line336">__shared_ptr</a>&lt;<a href="#line1319">_Tp</a>, <a href="#line1319">_Lp</a>&gt;
+<b><a name="line1321">1321 </a></b>	    <b>const_pointer_cast</b>(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1319">_Tp1</a>, <a href="#line1319">_Lp</a>&gt;&amp; __r) noexcept
+<b><a name="line1322">1322 </a></b>	    { return __shared_ptr&lt;_Tp, _Lp&gt;(__r, const_cast&lt;_Tp*&gt;(__r.get())); }
+<b><a name="line1323">1323 </a></b>	
+<b><a name="line1324">1324 </a></b>	  // The seemingly equivalent code:
+<b><a name="line1325">1325 </a></b>	  // shared_ptr&lt;_Tp, _Lp&gt;(dynamic_cast&lt;_Tp*&gt;(__r.get()))
+<b><a name="line1326">1326 </a></b>	  // will eventually result in undefined behaviour, attempting to
+<b><a name="line1327">1327 </a></b>	  // delete the same object twice.
+<b><a name="line1328">1328 </a></b>	  /// dynamic_pointer_cast
+<b><a name="line1329">1329 </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Tp1</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1330">1330 </a></b>	    inline <a href="#line336">__shared_ptr</a>&lt;<a href="#line1329">_Tp</a>, <a href="#line1329">_Lp</a>&gt;
+<b><a name="line1331">1331 </a></b>	    <b>dynamic_pointer_cast</b>(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1329">_Tp1</a>, <a href="#line1329">_Lp</a>&gt;&amp; __r) noexcept
+<b><a name="line1332">1332 </a></b>	    {
+<b><a name="line1333">1333 </a></b>	      if (_Tp* __p = dynamic_cast&lt;_Tp*&gt;(__r.get()))
+<b><a name="line1334">1334 </a></b>		return __shared_ptr&lt;_Tp, _Lp&gt;(__r, __p);
+<b><a name="line1335">1335 </a></b>	      return __shared_ptr&lt;_Tp, _Lp&gt;();
+<b><a name="line1336">1336 </a></b>	    }
+<b><a name="line1337">1337 </a></b>	
+<b><a name="line1338">1338 </a></b>	
+<b><a name="line1339">1339 </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1340">1340 </a></b>	    class __weak_ptr
+<b><a name="line1341">1341 </a></b>	    {
+<b><a name="line1342">1342 </a></b>	      template&lt;typename <b>_Ptr</b>&gt;
+<b><a name="line1343">1343 </a></b>		using <b>_Convertible</b>
+<b><a name="line1344">1344 </a></b>		  = typename <a href="../../type_traits/code.html#line2099">enable_if</a>&lt;<a href="../../type_traits/code.html#line1491">is_convertible</a>&lt;<a href="#line1342">_Ptr</a>, <a href="#line1339">_Tp</a>*&gt;::value&gt;::type;
+<b><a name="line1345">1345 </a></b>	
+<b><a name="line1346">1346 </a></b>	    public:
+<b><a name="line1347">1347 </a></b>	      typedef <a href="#line1339">_Tp</a> <b>element_type</b>;
+<b><a name="line1348">1348 </a></b>	
+<b><a name="line1349">1349 </a></b>	      constexpr __weak_ptr() noexcept
+<b><a name="line1350">1350 </a></b>	      : _M_ptr(nullptr), _M_refcount()
+<b><a name="line1351">1351 </a></b>	      { }
+<b><a name="line1352">1352 </a></b>	
+<b><a name="line1353">1353 </a></b>	      <b>__weak_ptr</b>(const <a href="#line1340">__weak_ptr</a>&amp;) noexcept = default;
+<b><a name="line1354">1354 </a></b>	
+<b><a name="line1355">1355 </a></b>	      <b>~__weak_ptr</b>() = default;
+<b><a name="line1356">1356 </a></b>	
+<b><a name="line1357">1357 </a></b>	      // The &quot;obvious&quot; converting constructor implementation:
+<b><a name="line1358">1358 </a></b>	      //
+<b><a name="line1359">1359 </a></b>	      //  template&lt;typename _Tp1&gt;
+<b><a name="line1360">1360 </a></b>	      //    __weak_ptr(const __weak_ptr&lt;_Tp1, _Lp&gt;&amp; __r)
+<b><a name="line1361">1361 </a></b>	      //    : _M_ptr(__r._M_ptr), _M_refcount(__r._M_refcount) // never throws
+<b><a name="line1362">1362 </a></b>	      //    { }
+<b><a name="line1363">1363 </a></b>	      //
+<b><a name="line1364">1364 </a></b>	      // has a serious problem.
+<b><a name="line1365">1365 </a></b>	      //
+<b><a name="line1366">1366 </a></b>	      //  __r._M_ptr may already have been invalidated. The _M_ptr(__r._M_ptr)
+<b><a name="line1367">1367 </a></b>	      //  conversion may require access to *__r._M_ptr (virtual inheritance).
+<b><a name="line1368">1368 </a></b>	      //
+<b><a name="line1369">1369 </a></b>	      // It is not possible to avoid spurious access violations since
+<b><a name="line1370">1370 </a></b>	      // in multithreaded programs __r._M_ptr may be invalidated at any point.
+<b><a name="line1371">1371 </a></b>	      template&lt;typename <b>_Tp1</b>, typename = <a href="#line1343">_Convertible</a>&lt;_Tp1*&gt;&gt;
+<b><a name="line1372">1372 </a></b>		__weak_ptr(const <a href="#line339">__weak_ptr</a>&lt;<a href="#line1371">_Tp1</a>, <a href="#line1339">_Lp</a>&gt;&amp; __r) noexcept
+<b><a name="line1373">1373 </a></b>		: _M_refcount(__r._M_refcount)
+<b><a name="line1374">1374 </a></b>	        { _M_ptr = __r.lock().get(); }
+<b><a name="line1375">1375 </a></b>	
+<b><a name="line1376">1376 </a></b>	      template&lt;typename <b>_Tp1</b>, typename = <a href="#line1343">_Convertible</a>&lt;_Tp1*&gt;&gt;
+<b><a name="line1377">1377 </a></b>		__weak_ptr(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1376">_Tp1</a>, <a href="#line1339">_Lp</a>&gt;&amp; __r) noexcept
+<b><a name="line1378">1378 </a></b>		: _M_ptr(__r._M_ptr), _M_refcount(__r._M_refcount)
+<b><a name="line1379">1379 </a></b>		{ }
+<b><a name="line1380">1380 </a></b>	
+<b><a name="line1381">1381 </a></b>	      __weak_ptr(<a href="#line1340">__weak_ptr</a>&amp;&amp; __r) noexcept
+<b><a name="line1382">1382 </a></b>	      : _M_ptr(__r._M_ptr), _M_refcount(std::move(__r._M_refcount))
+<b><a name="line1383">1383 </a></b>	      { __r._M_ptr = nullptr; }
+<b><a name="line1384">1384 </a></b>	
+<b><a name="line1385">1385 </a></b>	      template&lt;typename <b>_Tp1</b>, typename = <a href="#line1343">_Convertible</a>&lt;_Tp1*&gt;&gt;
+<b><a name="line1386">1386 </a></b>		__weak_ptr(<a href="#line339">__weak_ptr</a>&lt;<a href="#line1385">_Tp1</a>, <a href="#line1339">_Lp</a>&gt;&amp;&amp; __r) noexcept
+<b><a name="line1387">1387 </a></b>		: _M_ptr(__r.lock().get()), _M_refcount(std::move(__r._M_refcount))
+<b><a name="line1388">1388 </a></b>	        { __r._M_ptr = nullptr; }
+<b><a name="line1389">1389 </a></b>	
+<b><a name="line1390">1390 </a></b>	      <a href="#line1340">__weak_ptr</a>&amp;
+<b><a name="line1391">1391 </a></b>	      <b>operator=</b>(const <a href="#line1340">__weak_ptr</a>&amp; __r) noexcept = default;
+<b><a name="line1392">1392 </a></b>	
+<b><a name="line1393">1393 </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line1394">1394 </a></b>		<a href="#line1340">__weak_ptr</a>&amp;
+<b><a name="line1395">1395 </a></b>		operator=(const <a href="#line339">__weak_ptr</a>&lt;<a href="#line1393">_Tp1</a>, <a href="#line1339">_Lp</a>&gt;&amp; __r) noexcept
+<b><a name="line1396">1396 </a></b>		{
+<b><a name="line1397">1397 </a></b>		  _M_ptr = __r.lock().get();
+<b><a name="line1398">1398 </a></b>		  _M_refcount = __r._M_refcount;
+<b><a name="line1399">1399 </a></b>		  return *this;
+<b><a name="line1400">1400 </a></b>		}
+<b><a name="line1401">1401 </a></b>	
+<b><a name="line1402">1402 </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line1403">1403 </a></b>		<a href="#line1340">__weak_ptr</a>&amp;
+<b><a name="line1404">1404 </a></b>		operator=(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1402">_Tp1</a>, <a href="#line1339">_Lp</a>&gt;&amp; __r) noexcept
+<b><a name="line1405">1405 </a></b>		{
+<b><a name="line1406">1406 </a></b>		  _M_ptr = __r._M_ptr;
+<b><a name="line1407">1407 </a></b>		  _M_refcount = __r._M_refcount;
+<b><a name="line1408">1408 </a></b>		  return *this;
+<b><a name="line1409">1409 </a></b>		}
+<b><a name="line1410">1410 </a></b>	
+<b><a name="line1411">1411 </a></b>	      <a href="#line1340">__weak_ptr</a>&amp;
+<b><a name="line1412">1412 </a></b>	      operator=(<a href="#line1340">__weak_ptr</a>&amp;&amp; __r) noexcept
+<b><a name="line1413">1413 </a></b>	      {
+<b><a name="line1414">1414 </a></b>		_M_ptr = __r._M_ptr;
+<b><a name="line1415">1415 </a></b>		_M_refcount = std::move(__r._M_refcount);
+<b><a name="line1416">1416 </a></b>		__r._M_ptr = nullptr;
+<b><a name="line1417">1417 </a></b>		return *this;
+<b><a name="line1418">1418 </a></b>	      }
+<b><a name="line1419">1419 </a></b>	
+<b><a name="line1420">1420 </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line1421">1421 </a></b>		<a href="#line1340">__weak_ptr</a>&amp;
+<b><a name="line1422">1422 </a></b>		operator=(<a href="#line339">__weak_ptr</a>&lt;<a href="#line1420">_Tp1</a>, <a href="#line1339">_Lp</a>&gt;&amp;&amp; __r) noexcept
+<b><a name="line1423">1423 </a></b>		{
+<b><a name="line1424">1424 </a></b>		  _M_ptr = __r.lock().get();
+<b><a name="line1425">1425 </a></b>		  _M_refcount = std::move(__r._M_refcount);
+<b><a name="line1426">1426 </a></b>		  __r._M_ptr = nullptr;
+<b><a name="line1427">1427 </a></b>		  return *this;
+<b><a name="line1428">1428 </a></b>		}
+<b><a name="line1429">1429 </a></b>	
+<b><a name="line1430">1430 </a></b>	      <a href="#line867">__shared_ptr</a>&lt;<a href="#line1339">_Tp</a>, <a href="#line1339">_Lp</a>&gt;
+<b><a name="line1431">1431 </a></b>	      lock() const noexcept
+<b><a name="line1432">1432 </a></b>	      { return __shared_ptr&lt;element_type, _Lp&gt;(*this, std::nothrow); }
+<b><a name="line1433">1433 </a></b>	
+<b><a name="line1434">1434 </a></b>	      long
+<b><a name="line1435">1435 </a></b>	      use_count() const noexcept
+<b><a name="line1436">1436 </a></b>	      { return _M_refcount._M_get_use_count(); }
+<b><a name="line1437">1437 </a></b>	
+<b><a name="line1438">1438 </a></b>	      bool
+<b><a name="line1439">1439 </a></b>	      expired() const noexcept
+<b><a name="line1440">1440 </a></b>	      { return _M_refcount._M_get_use_count() == 0; }
+<b><a name="line1441">1441 </a></b>	
+<b><a name="line1442">1442 </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line1443">1443 </a></b>		bool
+<b><a name="line1444">1444 </a></b>		owner_before(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1442">_Tp1</a>, <a href="#line1339">_Lp</a>&gt;&amp; __rhs) const
+<b><a name="line1445">1445 </a></b>		{ return _M_refcount._M_less(__rhs._M_refcount); }
+<b><a name="line1446">1446 </a></b>	
+<b><a name="line1447">1447 </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line1448">1448 </a></b>		bool
+<b><a name="line1449">1449 </a></b>		owner_before(const <a href="#line339">__weak_ptr</a>&lt;<a href="#line1447">_Tp1</a>, <a href="#line1339">_Lp</a>&gt;&amp; __rhs) const
+<b><a name="line1450">1450 </a></b>		{ return _M_refcount._M_less(__rhs._M_refcount); }
+<b><a name="line1451">1451 </a></b>	
+<b><a name="line1452">1452 </a></b>	      void
+<b><a name="line1453">1453 </a></b>	      reset() noexcept
+<b><a name="line1454">1454 </a></b>	      { __weak_ptr().swap(*this); }
+<b><a name="line1455">1455 </a></b>	
+<b><a name="line1456">1456 </a></b>	      void
+<b><a name="line1457">1457 </a></b>	      swap(<a href="#line1340">__weak_ptr</a>&amp; __s) noexcept
+<b><a name="line1458">1458 </a></b>	      {
+<b><a name="line1459">1459 </a></b>		std::swap(_M_ptr, __s._M_ptr);
+<b><a name="line1460">1460 </a></b>		_M_refcount._M_swap(__s._M_refcount);
+<b><a name="line1461">1461 </a></b>	      }
+<b><a name="line1462">1462 </a></b>	
+<b><a name="line1463">1463 </a></b>	    private:
+<b><a name="line1464">1464 </a></b>	      // Used by __enable_shared_from_this.
+<b><a name="line1465">1465 </a></b>	      void
+<b><a name="line1466">1466 </a></b>	      _M_assign(<a href="#line1339">_Tp</a>* __ptr, const <a href="#line562">__shared_count</a>&lt;<a href="#line1339">_Lp</a>&gt;&amp; __refcount) noexcept
+<b><a name="line1467">1467 </a></b>	      {
+<b><a name="line1468">1468 </a></b>		_M_ptr = __ptr;
+<b><a name="line1469">1469 </a></b>		_M_refcount = __refcount;
+<b><a name="line1470">1470 </a></b>	      }
+<b><a name="line1471">1471 </a></b>	
+<b><a name="line1472">1472 </a></b>	      template&lt;typename <b>_Tp1</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp1</b>&gt; friend class <a href="#line336">__shared_ptr</a>;
+<b><a name="line1473">1473 </a></b>	      template&lt;typename <b>_Tp1</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp1</b>&gt; friend class <a href="#line339">__weak_ptr</a>;
+<b><a name="line1474">1474 </a></b>	      friend class <a href="#line1515">__enable_shared_from_this</a>&lt;<a href="#line1339">_Tp</a>, <a href="#line1339">_Lp</a>&gt;;
+<b><a name="line1475">1475 </a></b>	      friend class <a href="../shared_ptr.h/code.html#line557">enable_shared_from_this</a>&lt;<a href="#line1339">_Tp</a>&gt;;
+<b><a name="line1476">1476 </a></b>	
+<b><a name="line1477">1477 </a></b>	      <a href="#line1339">_Tp</a>*	 	 <b>_M_ptr</b>;         // Contained pointer.
+<b><a name="line1478">1478 </a></b>	      <a href="#line725">__weak_count</a>&lt;<a href="#line1339">_Lp</a>&gt;  <b>_M_refcount</b>;    // Reference counter.
+<b><a name="line1479">1479 </a></b>	    };
+<b><a name="line1480">1480 </a></b>	
+<b><a name="line1481">1481 </a></b>	  // 20.7.2.3.6 weak_ptr specialized algorithms.
+<b><a name="line1482">1482 </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1483">1483 </a></b>	    inline void
+<b><a name="line1484">1484 </a></b>	    <b>swap</b>(<a href="#line339">__weak_ptr</a>&lt;<a href="#line1482">_Tp</a>, <a href="#line1482">_Lp</a>&gt;&amp; __a, <a href="#line339">__weak_ptr</a>&lt;<a href="#line1482">_Tp</a>, <a href="#line1482">_Lp</a>&gt;&amp; __b) noexcept
+<b><a name="line1485">1485 </a></b>	    { __a.swap(__b); }
+<b><a name="line1486">1486 </a></b>	
+<b><a name="line1487">1487 </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Tp1</b>&gt;
+<b><a name="line1488">1488 </a></b>	    struct <b>_Sp_owner_less</b> : public <a href="../stl_function.h/code.html#line118">binary_function</a>&lt;<a href="#line1487">_Tp</a>, <a href="#line1487">_Tp</a>, bool&gt;
+<b><a name="line1489">1489 </a></b>	    {
+<b><a name="line1490">1490 </a></b>	      bool
+<b><a name="line1491">1491 </a></b>	      <b>operator()</b>(const <a href="#line1487">_Tp</a>&amp; __lhs, const <a href="#line1487">_Tp</a>&amp; __rhs) const
+<b><a name="line1492">1492 </a></b>	      { return __lhs.owner_before(__rhs); }
+<b><a name="line1493">1493 </a></b>	
+<b><a name="line1494">1494 </a></b>	      bool
+<b><a name="line1495">1495 </a></b>	      <b>operator()</b>(const <a href="#line1487">_Tp</a>&amp; __lhs, const <a href="#line1487">_Tp1</a>&amp; __rhs) const
+<b><a name="line1496">1496 </a></b>	      { return __lhs.owner_before(__rhs); }
+<b><a name="line1497">1497 </a></b>	
+<b><a name="line1498">1498 </a></b>	      bool
+<b><a name="line1499">1499 </a></b>	      <b>operator()</b>(const <a href="#line1487">_Tp1</a>&amp; __lhs, const <a href="#line1487">_Tp</a>&amp; __rhs) const
+<b><a name="line1500">1500 </a></b>	      { return __lhs.owner_before(__rhs); }
+<b><a name="line1501">1501 </a></b>	    };
+<b><a name="line1502">1502 </a></b>	
+<b><a name="line1503">1503 </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1504">1504 </a></b>	    struct <b>owner_less</b>&lt;<a href="#line336">__shared_ptr</a>&lt;<a href="#line1503">_Tp</a>, <a href="#line1503">_Lp</a>&gt;&gt;
+<b><a name="line1505">1505 </a></b>	    : public <a href="#line1488">_Sp_owner_less</a>&lt;<a href="#line336">__shared_ptr</a>&lt;<a href="#line1503">_Tp</a>, <a href="#line1503">_Lp</a>&gt;, <a href="#line339">__weak_ptr</a>&lt;<a href="#line1503">_Tp</a>, <a href="#line1503">_Lp</a>&gt;&gt;
+<b><a name="line1506">1506 </a></b>	    { };
+<b><a name="line1507">1507 </a></b>	
+<b><a name="line1508">1508 </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1509">1509 </a></b>	    struct <b>owner_less</b>&lt;<a href="#line339">__weak_ptr</a>&lt;<a href="#line1508">_Tp</a>, <a href="#line1508">_Lp</a>&gt;&gt;
+<b><a name="line1510">1510 </a></b>	    : public <a href="#line1488">_Sp_owner_less</a>&lt;<a href="#line339">__weak_ptr</a>&lt;<a href="#line1508">_Tp</a>, <a href="#line1508">_Lp</a>&gt;, <a href="#line336">__shared_ptr</a>&lt;<a href="#line1508">_Tp</a>, <a href="#line1508">_Lp</a>&gt;&gt;
+<b><a name="line1511">1511 </a></b>	    { };
+<b><a name="line1512">1512 </a></b>	
+<b><a name="line1513">1513 </a></b>	
+<b><a name="line1514">1514 </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1515">1515 </a></b>	    class __enable_shared_from_this
+<b><a name="line1516">1516 </a></b>	    {
+<b><a name="line1517">1517 </a></b>	    protected:
+<b><a name="line1518">1518 </a></b>	      constexpr <b>__enable_shared_from_this</b>() noexcept { }
+<b><a name="line1519">1519 </a></b>	
+<b><a name="line1520">1520 </a></b>	      <b>__enable_shared_from_this</b>(const <a href="#line342">__enable_shared_from_this</a>&amp;) noexcept { }
+<b><a name="line1521">1521 </a></b>	
+<b><a name="line1522">1522 </a></b>	      <a href="#line342">__enable_shared_from_this</a>&amp;
+<b><a name="line1523">1523 </a></b>	      <b>operator=</b>(const <a href="#line342">__enable_shared_from_this</a>&amp;) noexcept
+<b><a name="line1524">1524 </a></b>	      { return *this; }
+<b><a name="line1525">1525 </a></b>	
+<b><a name="line1526">1526 </a></b>	      <b>~__enable_shared_from_this</b>() { }
+<b><a name="line1527">1527 </a></b>	
+<b><a name="line1528">1528 </a></b>	    public:
+<b><a name="line1529">1529 </a></b>	      <a href="#line336">__shared_ptr</a>&lt;<a href="#line1514">_Tp</a>, <a href="#line1514">_Lp</a>&gt;
+<b><a name="line1530">1530 </a></b>	      <b>shared_from_this</b>()
+<b><a name="line1531">1531 </a></b>	      { return __shared_ptr&lt;_Tp, _Lp&gt;(this-&gt;_M_weak_this); }
+<b><a name="line1532">1532 </a></b>	
+<b><a name="line1533">1533 </a></b>	      <a href="#line336">__shared_ptr</a>&lt;const <a href="#line1514">_Tp</a>, <a href="#line1514">_Lp</a>&gt;
+<b><a name="line1534">1534 </a></b>	      <b>shared_from_this</b>() const
+<b><a name="line1535">1535 </a></b>	      { return __shared_ptr&lt;const _Tp, _Lp&gt;(this-&gt;_M_weak_this); }
+<b><a name="line1536">1536 </a></b>	
+<b><a name="line1537">1537 </a></b>	    private:
+<b><a name="line1538">1538 </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line1539">1539 </a></b>		void
+<b><a name="line1540">1540 </a></b>		<b>_M_weak_assign</b>(<a href="#line1538">_Tp1</a>* __p, const <a href="#line360">__shared_count</a>&lt;<a href="#line1514">_Lp</a>&gt;&amp; __n) const noexcept
+<b><a name="line1541">1541 </a></b>		{ _M_weak_this._M_assign(__p, __n); }
+<b><a name="line1542">1542 </a></b>	
+<b><a name="line1543">1543 </a></b>	      template&lt;<a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp1</b>, typename <b>_Tp1</b>, typename <b>_Tp2</b>&gt;
+<b><a name="line1544">1544 </a></b>		friend void
+<b><a name="line1545">1545 </a></b>		__enable_shared_from_this_helper(const <a href="#line360">__shared_count</a>&lt;<a href="#line1543">_Lp1</a>&gt;&amp;,
+<b><a name="line1546">1546 </a></b>						 const <a href="#line342">__enable_shared_from_this</a>&lt;<a href="#line1543">_Tp1</a>,
+<b><a name="line1547">1547 </a></b>						 <a href="#line1543">_Lp1</a>&gt;*, const <a href="#line1543">_Tp2</a>*) noexcept;
+<b><a name="line1548">1548 </a></b>	
+<b><a name="line1549">1549 </a></b>	      mutable <a href="#line339">__weak_ptr</a>&lt;<a href="#line1514">_Tp</a>, <a href="#line1514">_Lp</a>&gt;  <b>_M_weak_this</b>;
+<b><a name="line1550">1550 </a></b>	    };
+<b><a name="line1551">1551 </a></b>	
+<b><a name="line1552">1552 </a></b>	  template&lt;<a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp1</b>, typename <b>_Tp1</b>, typename <b>_Tp2</b>&gt;
+<b><a name="line1553">1553 </a></b>	    inline void
+<b><a name="line1554">1554 </a></b>	    <b>__enable_shared_from_this_helper</b>(const <a href="#line360">__shared_count</a>&lt;<a href="#line1552">_Lp1</a>&gt;&amp; __pn,
+<b><a name="line1555">1555 </a></b>					     const <a href="#line342">__enable_shared_from_this</a>&lt;<a href="#line1552">_Tp1</a>,
+<b><a name="line1556">1556 </a></b>					     <a href="#line1552">_Lp1</a>&gt;* __pe,
+<b><a name="line1557">1557 </a></b>					     const <a href="#line1552">_Tp2</a>* __px) noexcept
+<b><a name="line1558">1558 </a></b>	    {
+<b><a name="line1559">1559 </a></b>	      if (__pe != nullptr)
+<b><a name="line1560">1560 </a></b>		__pe-&gt;_M_weak_assign(const_cast&lt;_Tp2*&gt;(__px), __pn);
+<b><a name="line1561">1561 </a></b>	    }
+<b><a name="line1562">1562 </a></b>	
+<b><a name="line1563">1563 </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>, typename <b>_Alloc</b>, typename... <b>_Args</b>&gt;
+<b><a name="line1564">1564 </a></b>	    inline <a href="#line336">__shared_ptr</a>&lt;<a href="#line1563">_Tp</a>, <a href="#line1563">_Lp</a>&gt;
+<b><a name="line1565">1565 </a></b>	    <b>__allocate_shared</b>(const <a href="#line1563">_Alloc</a>&amp; __a, <a href="#line1563">_Args</a>&amp;&amp;... __args)
+<b><a name="line1566">1566 </a></b>	    {
+<b><a name="line1567">1567 </a></b>	      return __shared_ptr&lt;_Tp, _Lp&gt;(_Sp_make_shared_tag(), __a,
+<b><a name="line1568">1568 </a></b>					    std::forward&lt;_Args&gt;(__args)...);
+<b><a name="line1569">1569 </a></b>	    }
+<b><a name="line1570">1570 </a></b>	
+<b><a name="line1571">1571 </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>, typename... <b>_Args</b>&gt;
+<b><a name="line1572">1572 </a></b>	    inline <a href="#line336">__shared_ptr</a>&lt;<a href="#line1571">_Tp</a>, <a href="#line1571">_Lp</a>&gt;
+<b><a name="line1573">1573 </a></b>	    <b>__make_shared</b>(<a href="#line1571">_Args</a>&amp;&amp;... __args)
+<b><a name="line1574">1574 </a></b>	    {
+<b><a name="line1575">1575 </a></b>	      typedef typename std::remove_const&lt;_Tp&gt;::type _Tp_nc;
+<b><a name="line1576">1576 </a></b>	      return std::__allocate_shared&lt;_Tp, _Lp&gt;(std::allocator&lt;_Tp_nc&gt;(),
+<b><a name="line1577">1577 </a></b>						      std::forward&lt;_Args&gt;(__args)...);
+<b><a name="line1578">1578 </a></b>	    }
+<b><a name="line1579">1579 </a></b>	
+<b><a name="line1580">1580 </a></b>	  /// std::hash specialization for __shared_ptr.
+<b><a name="line1581">1581 </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line1582">1582 </a></b>	    struct <b>hash</b>&lt;<a href="#line336">__shared_ptr</a>&lt;<a href="#line1581">_Tp</a>, <a href="#line1581">_Lp</a>&gt;&gt;
+<b><a name="line1583">1583 </a></b>	    : public <a href="../functional_hash.h/code.html#line50">__hash_base</a>&lt;<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>, <a href="#line336">__shared_ptr</a>&lt;<a href="#line1581">_Tp</a>, <a href="#line1581">_Lp</a>&gt;&gt;
+<b><a name="line1584">1584 </a></b>	    {
+<b><a name="line1585">1585 </a></b>	      <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>
+<b><a name="line1586">1586 </a></b>	      <b>operator()</b>(const <a href="#line336">__shared_ptr</a>&lt;<a href="#line1581">_Tp</a>, <a href="#line1581">_Lp</a>&gt;&amp; __s) const noexcept
+<b><a name="line1587">1587 </a></b>	      { return std::hash&lt;_Tp*&gt;()(__s.get()); }
+<b><a name="line1588">1588 </a></b>	    };
+<b><a name="line1589">1589 </a></b>	
+<b><a name="line1590">1590 </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line1591">1591 </a></b>	} // namespace
+<b><a name="line1592">1592 </a></b>	
+<b><a name="line1593">1593 </a></b>	#endif // _SHARED_PTR_BASE_H
+<b><a name="line1594">1594 </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

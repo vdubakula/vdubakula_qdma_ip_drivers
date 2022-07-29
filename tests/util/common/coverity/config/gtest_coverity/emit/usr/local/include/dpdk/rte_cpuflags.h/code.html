@@ -1,0 +1,182 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_cpuflags.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2010-2014 Intel Corporation
+<b><a name="line3">3    </a></b>	 */
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	#ifndef _RTE_CPUFLAGS_X86_64_H_
+<b><a name="line6">6    </a></b>	#define <b>_RTE_CPUFLAGS_X86_64_H_</b>
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	#ifdef __cplusplus
+<b><a name="line9">9    </a></b>	extern &quot;C&quot; {
+<b><a name="line10">10   </a></b>	#endif
+<b><a name="line11">11   </a></b>	
+<b><a name="line12">12   </a></b>	enum <b>rte_cpu_flag_t</b> {
+<b><a name="line13">13   </a></b>		/* (EAX 01h) ECX features*/
+<b><a name="line14">14   </a></b>		<b>RTE_CPUFLAG_SSE3</b> = 0,               /**&lt; SSE3 */
+<b><a name="line15">15   </a></b>		<b>RTE_CPUFLAG_PCLMULQDQ</b>,              /**&lt; PCLMULQDQ */
+<b><a name="line16">16   </a></b>		<b>RTE_CPUFLAG_DTES64</b>,                 /**&lt; DTES64 */
+<b><a name="line17">17   </a></b>		<b>RTE_CPUFLAG_MONITOR</b>,                /**&lt; MONITOR */
+<b><a name="line18">18   </a></b>		<b>RTE_CPUFLAG_DS_CPL</b>,                 /**&lt; DS_CPL */
+<b><a name="line19">19   </a></b>		<b>RTE_CPUFLAG_VMX</b>,                    /**&lt; VMX */
+<b><a name="line20">20   </a></b>		<b>RTE_CPUFLAG_SMX</b>,                    /**&lt; SMX */
+<b><a name="line21">21   </a></b>		<b>RTE_CPUFLAG_EIST</b>,                   /**&lt; EIST */
+<b><a name="line22">22   </a></b>		<b>RTE_CPUFLAG_TM2</b>,                    /**&lt; TM2 */
+<b><a name="line23">23   </a></b>		<b>RTE_CPUFLAG_SSSE3</b>,                  /**&lt; SSSE3 */
+<b><a name="line24">24   </a></b>		<b>RTE_CPUFLAG_CNXT_ID</b>,                /**&lt; CNXT_ID */
+<b><a name="line25">25   </a></b>		<b>RTE_CPUFLAG_FMA</b>,                    /**&lt; FMA */
+<b><a name="line26">26   </a></b>		<b>RTE_CPUFLAG_CMPXCHG16B</b>,             /**&lt; CMPXCHG16B */
+<b><a name="line27">27   </a></b>		<b>RTE_CPUFLAG_XTPR</b>,                   /**&lt; XTPR */
+<b><a name="line28">28   </a></b>		<b>RTE_CPUFLAG_PDCM</b>,                   /**&lt; PDCM */
+<b><a name="line29">29   </a></b>		<b>RTE_CPUFLAG_PCID</b>,                   /**&lt; PCID */
+<b><a name="line30">30   </a></b>		<b>RTE_CPUFLAG_DCA</b>,                    /**&lt; DCA */
+<b><a name="line31">31   </a></b>		<b>RTE_CPUFLAG_SSE4_1</b>,                 /**&lt; SSE4_1 */
+<b><a name="line32">32   </a></b>		<b>RTE_CPUFLAG_SSE4_2</b>,                 /**&lt; SSE4_2 */
+<b><a name="line33">33   </a></b>		<b>RTE_CPUFLAG_X2APIC</b>,                 /**&lt; X2APIC */
+<b><a name="line34">34   </a></b>		<b>RTE_CPUFLAG_MOVBE</b>,                  /**&lt; MOVBE */
+<b><a name="line35">35   </a></b>		<b>RTE_CPUFLAG_POPCNT</b>,                 /**&lt; POPCNT */
+<b><a name="line36">36   </a></b>		<b>RTE_CPUFLAG_TSC_DEADLINE</b>,           /**&lt; TSC_DEADLINE */
+<b><a name="line37">37   </a></b>		<b>RTE_CPUFLAG_AES</b>,                    /**&lt; AES */
+<b><a name="line38">38   </a></b>		<b>RTE_CPUFLAG_XSAVE</b>,                  /**&lt; XSAVE */
+<b><a name="line39">39   </a></b>		<b>RTE_CPUFLAG_OSXSAVE</b>,                /**&lt; OSXSAVE */
+<b><a name="line40">40   </a></b>		<b>RTE_CPUFLAG_AVX</b>,                    /**&lt; AVX */
+<b><a name="line41">41   </a></b>		<b>RTE_CPUFLAG_F16C</b>,                   /**&lt; F16C */
+<b><a name="line42">42   </a></b>		<b>RTE_CPUFLAG_RDRAND</b>,                 /**&lt; RDRAND */
+<b><a name="line43">43   </a></b>		<b>RTE_CPUFLAG_HYPERVISOR</b>,             /**&lt; Running in a VM */
+<b><a name="line44">44   </a></b>	
+<b><a name="line45">45   </a></b>		/* (EAX 01h) EDX features */
+<b><a name="line46">46   </a></b>		<b>RTE_CPUFLAG_FPU</b>,                    /**&lt; FPU */
+<b><a name="line47">47   </a></b>		<b>RTE_CPUFLAG_VME</b>,                    /**&lt; VME */
+<b><a name="line48">48   </a></b>		<b>RTE_CPUFLAG_DE</b>,                     /**&lt; DE */
+<b><a name="line49">49   </a></b>		<b>RTE_CPUFLAG_PSE</b>,                    /**&lt; PSE */
+<b><a name="line50">50   </a></b>		<b>RTE_CPUFLAG_TSC</b>,                    /**&lt; TSC */
+<b><a name="line51">51   </a></b>		<b>RTE_CPUFLAG_MSR</b>,                    /**&lt; MSR */
+<b><a name="line52">52   </a></b>		<b>RTE_CPUFLAG_PAE</b>,                    /**&lt; PAE */
+<b><a name="line53">53   </a></b>		<b>RTE_CPUFLAG_MCE</b>,                    /**&lt; MCE */
+<b><a name="line54">54   </a></b>		<b>RTE_CPUFLAG_CX8</b>,                    /**&lt; CX8 */
+<b><a name="line55">55   </a></b>		<b>RTE_CPUFLAG_APIC</b>,                   /**&lt; APIC */
+<b><a name="line56">56   </a></b>		<b>RTE_CPUFLAG_SEP</b>,                    /**&lt; SEP */
+<b><a name="line57">57   </a></b>		<b>RTE_CPUFLAG_MTRR</b>,                   /**&lt; MTRR */
+<b><a name="line58">58   </a></b>		<b>RTE_CPUFLAG_PGE</b>,                    /**&lt; PGE */
+<b><a name="line59">59   </a></b>		<b>RTE_CPUFLAG_MCA</b>,                    /**&lt; MCA */
+<b><a name="line60">60   </a></b>		<b>RTE_CPUFLAG_CMOV</b>,                   /**&lt; CMOV */
+<b><a name="line61">61   </a></b>		<b>RTE_CPUFLAG_PAT</b>,                    /**&lt; PAT */
+<b><a name="line62">62   </a></b>		<b>RTE_CPUFLAG_PSE36</b>,                  /**&lt; PSE36 */
+<b><a name="line63">63   </a></b>		<b>RTE_CPUFLAG_PSN</b>,                    /**&lt; PSN */
+<b><a name="line64">64   </a></b>		<b>RTE_CPUFLAG_CLFSH</b>,                  /**&lt; CLFSH */
+<b><a name="line65">65   </a></b>		<b>RTE_CPUFLAG_DS</b>,                     /**&lt; DS */
+<b><a name="line66">66   </a></b>		<b>RTE_CPUFLAG_ACPI</b>,                   /**&lt; ACPI */
+<b><a name="line67">67   </a></b>		<b>RTE_CPUFLAG_MMX</b>,                    /**&lt; MMX */
+<b><a name="line68">68   </a></b>		<b>RTE_CPUFLAG_FXSR</b>,                   /**&lt; FXSR */
+<b><a name="line69">69   </a></b>		<b>RTE_CPUFLAG_SSE</b>,                    /**&lt; SSE */
+<b><a name="line70">70   </a></b>		<b>RTE_CPUFLAG_SSE2</b>,                   /**&lt; SSE2 */
+<b><a name="line71">71   </a></b>		<b>RTE_CPUFLAG_SS</b>,                     /**&lt; SS */
+<b><a name="line72">72   </a></b>		<b>RTE_CPUFLAG_HTT</b>,                    /**&lt; HTT */
+<b><a name="line73">73   </a></b>		<b>RTE_CPUFLAG_TM</b>,                     /**&lt; TM */
+<b><a name="line74">74   </a></b>		<b>RTE_CPUFLAG_PBE</b>,                    /**&lt; PBE */
+<b><a name="line75">75   </a></b>	
+<b><a name="line76">76   </a></b>		/* (EAX 06h) EAX features */
+<b><a name="line77">77   </a></b>		<b>RTE_CPUFLAG_DIGTEMP</b>,                /**&lt; DIGTEMP */
+<b><a name="line78">78   </a></b>		<b>RTE_CPUFLAG_TRBOBST</b>,                /**&lt; TRBOBST */
+<b><a name="line79">79   </a></b>		<b>RTE_CPUFLAG_ARAT</b>,                   /**&lt; ARAT */
+<b><a name="line80">80   </a></b>		<b>RTE_CPUFLAG_PLN</b>,                    /**&lt; PLN */
+<b><a name="line81">81   </a></b>		<b>RTE_CPUFLAG_ECMD</b>,                   /**&lt; ECMD */
+<b><a name="line82">82   </a></b>		<b>RTE_CPUFLAG_PTM</b>,                    /**&lt; PTM */
+<b><a name="line83">83   </a></b>	
+<b><a name="line84">84   </a></b>		/* (EAX 06h) ECX features */
+<b><a name="line85">85   </a></b>		<b>RTE_CPUFLAG_MPERF_APERF_MSR</b>,        /**&lt; MPERF_APERF_MSR */
+<b><a name="line86">86   </a></b>		<b>RTE_CPUFLAG_ACNT2</b>,                  /**&lt; ACNT2 */
+<b><a name="line87">87   </a></b>		<b>RTE_CPUFLAG_ENERGY_EFF</b>,             /**&lt; ENERGY_EFF */
+<b><a name="line88">88   </a></b>	
+<b><a name="line89">89   </a></b>		/* (EAX 07h, ECX 0h) EBX features */
+<b><a name="line90">90   </a></b>		<b>RTE_CPUFLAG_FSGSBASE</b>,               /**&lt; FSGSBASE */
+<b><a name="line91">91   </a></b>		<b>RTE_CPUFLAG_BMI1</b>,                   /**&lt; BMI1 */
+<b><a name="line92">92   </a></b>		<b>RTE_CPUFLAG_HLE</b>,                    /**&lt; Hardware Lock elision */
+<b><a name="line93">93   </a></b>		<b>RTE_CPUFLAG_AVX2</b>,                   /**&lt; AVX2 */
+<b><a name="line94">94   </a></b>		<b>RTE_CPUFLAG_SMEP</b>,                   /**&lt; SMEP */
+<b><a name="line95">95   </a></b>		<b>RTE_CPUFLAG_BMI2</b>,                   /**&lt; BMI2 */
+<b><a name="line96">96   </a></b>		<b>RTE_CPUFLAG_ERMS</b>,                   /**&lt; ERMS */
+<b><a name="line97">97   </a></b>		<b>RTE_CPUFLAG_INVPCID</b>,                /**&lt; INVPCID */
+<b><a name="line98">98   </a></b>		<b>RTE_CPUFLAG_RTM</b>,                    /**&lt; Transactional memory */
+<b><a name="line99">99   </a></b>		<b>RTE_CPUFLAG_AVX512F</b>,                /**&lt; AVX512F */
+<b><a name="line100">100  </a></b>	
+<b><a name="line101">101  </a></b>		/* (EAX 80000001h) ECX features */
+<b><a name="line102">102  </a></b>		<b>RTE_CPUFLAG_LAHF_SAHF</b>,              /**&lt; LAHF_SAHF */
+<b><a name="line103">103  </a></b>		<b>RTE_CPUFLAG_LZCNT</b>,                  /**&lt; LZCNT */
+<b><a name="line104">104  </a></b>	
+<b><a name="line105">105  </a></b>		/* (EAX 80000001h) EDX features */
+<b><a name="line106">106  </a></b>		<b>RTE_CPUFLAG_SYSCALL</b>,                /**&lt; SYSCALL */
+<b><a name="line107">107  </a></b>		<b>RTE_CPUFLAG_XD</b>,                     /**&lt; XD */
+<b><a name="line108">108  </a></b>		<b>RTE_CPUFLAG_1GB_PG</b>,                 /**&lt; 1GB_PG */
+<b><a name="line109">109  </a></b>		<b>RTE_CPUFLAG_RDTSCP</b>,                 /**&lt; RDTSCP */
+<b><a name="line110">110  </a></b>		<b>RTE_CPUFLAG_EM64T</b>,                  /**&lt; EM64T */
+<b><a name="line111">111  </a></b>	
+<b><a name="line112">112  </a></b>		/* (EAX 80000007h) EDX features */
+<b><a name="line113">113  </a></b>		<b>RTE_CPUFLAG_INVTSC</b>,                 /**&lt; INVTSC */
+<b><a name="line114">114  </a></b>	
+<b><a name="line115">115  </a></b>		/* The last item */
+<b><a name="line116">116  </a></b>		<b>RTE_CPUFLAG_NUMFLAGS</b>,               /**&lt; This should always be the last! */
+<b><a name="line117">117  </a></b>	};
+<b><a name="line118">118  </a></b>	
+<b><a name="line119">119  </a></b>	#include &quot;generic/rte_cpuflags.h&quot;
+<b><a name="line120">120  </a></b>	
+<b><a name="line121">121  </a></b>	#ifdef __cplusplus
+<b><a name="line122">122  </a></b>	}
+<b><a name="line123">123  </a></b>	#endif
+<b><a name="line124">124  </a></b>	
+<b><a name="line125">125  </a></b>	#endif /* _RTE_CPUFLAGS_X86_64_H_ */
+<b><a name="line126">126  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

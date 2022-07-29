@@ -1,0 +1,575 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_dev.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2014 6WIND S.A.
+<b><a name="line3">3    </a></b>	 */
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	#ifndef _RTE_DEV_H_
+<b><a name="line6">6    </a></b>	#define <b>_RTE_DEV_H_</b>
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	/**
+<b><a name="line9">9    </a></b>	 * @file
+<b><a name="line10">10   </a></b>	 *
+<b><a name="line11">11   </a></b>	 * RTE PMD Driver Registration Interface
+<b><a name="line12">12   </a></b>	 *
+<b><a name="line13">13   </a></b>	 * This file manages the list of device drivers.
+<b><a name="line14">14   </a></b>	 */
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	#ifdef __cplusplus
+<b><a name="line17">17   </a></b>	extern &quot;C&quot; {
+<b><a name="line18">18   </a></b>	#endif
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	#include &lt;stdio.h&gt;
+<b><a name="line21">21   </a></b>	#include &lt;sys/queue.h&gt;
+<b><a name="line22">22   </a></b>	
+<b><a name="line23">23   </a></b>	#include &lt;rte_config.h&gt;
+<b><a name="line24">24   </a></b>	#include &lt;rte_compat.h&gt;
+<b><a name="line25">25   </a></b>	#include &lt;rte_log.h&gt;
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>	/**
+<b><a name="line28">28   </a></b>	 * The device event type.
+<b><a name="line29">29   </a></b>	 */
+<b><a name="line30">30   </a></b>	enum <b>rte_dev_event_type</b> {
+<b><a name="line31">31   </a></b>		<b>RTE_DEV_EVENT_ADD</b>,	/**&lt; device being added */
+<b><a name="line32">32   </a></b>		<b>RTE_DEV_EVENT_REMOVE</b>,	/**&lt; device being removed */
+<b><a name="line33">33   </a></b>		<b>RTE_DEV_EVENT_MAX</b>	/**&lt; max value of this enum */
+<b><a name="line34">34   </a></b>	};
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	struct <b>rte_dev_event</b> {
+<b><a name="line37">37   </a></b>		enum <a href="#line30">rte_dev_event_type</a> <b>type</b>;	/**&lt; device event type */
+<b><a name="line38">38   </a></b>		int <b>subsystem</b>;			/**&lt; subsystem id */
+<b><a name="line39">39   </a></b>		char *<b>devname</b>;			/**&lt; device name */
+<b><a name="line40">40   </a></b>	};
+<b><a name="line41">41   </a></b>	
+<b><a name="line42">42   </a></b>	typedef void (*<b>rte_dev_event_cb_fn</b>)(const char *device_name,
+<b><a name="line43">43   </a></b>						enum <a href="#line30">rte_dev_event_type</a> event,
+<b><a name="line44">44   </a></b>						void *cb_arg);
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	__attribute__((format(printf, 2, 0)))
+<b><a name="line47">47   </a></b>	static inline void
+<b><a name="line48">48   </a></b>	<b>rte_pmd_debug_trace</b>(const char *<b>func_name</b>, const char *<b>fmt</b>, ...)
+<b><a name="line49">49   </a></b>	{
+<b><a name="line50">50   </a></b>		<a href="../../../../include/stdio.h/code.html#line79">va_list</a> <b>ap</b>;
+<b><a name="line51">51   </a></b>	
+<b><a name="line52">52   </a></b>		<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stdarg.h/code.html#line47">va_start</a>(ap, fmt);
+<b><a name="line53">53   </a></b>	
+<b><a name="line54">54   </a></b>		{
+<b><a name="line55">55   </a></b>			char <b>buffer</b>[<a href="../../../../include/stdio.h/code.html#line390">vsnprintf</a>(<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>, 0, <a href="#line48">fmt</a>, <a href="#line50">ap</a>) + 1];
+<b><a name="line56">56   </a></b>	
+<b><a name="line57">57   </a></b>			<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stdarg.h/code.html#line48">va_end</a>(ap);
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>			<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stdarg.h/code.html#line47">va_start</a>(ap, fmt);
+<b><a name="line60">60   </a></b>			<a href="../../../../include/stdio.h/code.html#line390">vsnprintf</a>(<a href="#line55">buffer</a>, sizeof(<a href="#line55">buffer</a>), <a href="#line48">fmt</a>, <a href="#line50">ap</a>);
+<b><a name="line61">61   </a></b>			<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stdarg.h/code.html#line48">va_end</a>(ap);
+<b><a name="line62">62   </a></b>	
+<b><a name="line63">63   </a></b>			<a href="../rte_log.h/code.html#line264">rte_log</a>(<a href="../rte_log.h/code.html#line82">RTE_LOG_ERR</a>, <a href="../rte_log.h/code.html#line48">RTE_LOGTYPE_PMD</a>, &quot;%s: %s&quot;,
+<b><a name="line64">64   </a></b>				<a href="#line48">func_name</a>, <a href="#line55">buffer</a>);
+<b><a name="line65">65   </a></b>		}
+<b><a name="line66">66   </a></b>	}
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	/*
+<b><a name="line69">69   </a></b>	 * Enable RTE_PMD_DEBUG_TRACE() when at least one component relying on the
+<b><a name="line70">70   </a></b>	 * RTE_*_RET() macros defined below is compiled in debug mode.
+<b><a name="line71">71   </a></b>	 */
+<b><a name="line72">72   </a></b>	#if defined(RTE_LIBRTE_EVENTDEV_DEBUG)
+<b><a name="line73">73   </a></b>	#define RTE_PMD_DEBUG_TRACE(...) \
+<b><a name="line74">74   </a></b>		rte_pmd_debug_trace(__func__, __VA_ARGS__)
+<b><a name="line75">75   </a></b>	#else
+<b><a name="line76">76   </a></b>	#define <b>RTE_PMD_DEBUG_TRACE</b>(...) (void)0
+<b><a name="line77">77   </a></b>	#endif
+<b><a name="line78">78   </a></b>	
+<b><a name="line79">79   </a></b>	/* Macros for checking for restricting functions to primary instance only */
+<b><a name="line80">80   </a></b>	#define <b>RTE_PROC_PRIMARY_OR_ERR_RET</b>(retval) do { \
+<b><a name="line81">81   </a></b>		if (rte_eal_process_type() != RTE_PROC_PRIMARY) { \
+<b><a name="line82">82   </a></b>			RTE_PMD_DEBUG_TRACE(&quot;Cannot run in secondary processes\n&quot;); \
+<b><a name="line83">83   </a></b>			return retval; \
+<b><a name="line84">84   </a></b>		} \
+<b><a name="line85">85   </a></b>	} while (0)
+<b><a name="line86">86   </a></b>	
+<b><a name="line87">87   </a></b>	#define <b>RTE_PROC_PRIMARY_OR_RET</b>() do { \
+<b><a name="line88">88   </a></b>		if (rte_eal_process_type() != RTE_PROC_PRIMARY) { \
+<b><a name="line89">89   </a></b>			RTE_PMD_DEBUG_TRACE(&quot;Cannot run in secondary processes\n&quot;); \
+<b><a name="line90">90   </a></b>			return; \
+<b><a name="line91">91   </a></b>		} \
+<b><a name="line92">92   </a></b>	} while (0)
+<b><a name="line93">93   </a></b>	
+<b><a name="line94">94   </a></b>	/* Macros to check for invalid function pointers */
+<b><a name="line95">95   </a></b>	#define <b>RTE_FUNC_PTR_OR_ERR_RET</b>(func, retval) do { \
+<b><a name="line96">96   </a></b>		if ((func) == NULL) { \
+<b><a name="line97">97   </a></b>			RTE_PMD_DEBUG_TRACE(&quot;Function not supported\n&quot;); \
+<b><a name="line98">98   </a></b>			return retval; \
+<b><a name="line99">99   </a></b>		} \
+<b><a name="line100">100  </a></b>	} while (0)
+<b><a name="line101">101  </a></b>	
+<b><a name="line102">102  </a></b>	#define <b>RTE_FUNC_PTR_OR_RET</b>(func) do { \
+<b><a name="line103">103  </a></b>		if ((func) == NULL) { \
+<b><a name="line104">104  </a></b>			RTE_PMD_DEBUG_TRACE(&quot;Function not supported\n&quot;); \
+<b><a name="line105">105  </a></b>			return; \
+<b><a name="line106">106  </a></b>		} \
+<b><a name="line107">107  </a></b>	} while (0)
+<b><a name="line108">108  </a></b>	
+<b><a name="line109">109  </a></b>	/**
+<b><a name="line110">110  </a></b>	 * Device driver.
+<b><a name="line111">111  </a></b>	 */
+<b><a name="line112">112  </a></b>	enum <b>rte_kernel_driver</b> {
+<b><a name="line113">113  </a></b>		<b>RTE_KDRV_UNKNOWN</b> = 0,
+<b><a name="line114">114  </a></b>		<b>RTE_KDRV_IGB_UIO</b>,
+<b><a name="line115">115  </a></b>		<b>RTE_KDRV_VFIO</b>,
+<b><a name="line116">116  </a></b>		<b>RTE_KDRV_UIO_GENERIC</b>,
+<b><a name="line117">117  </a></b>		<b>RTE_KDRV_NIC_UIO</b>,
+<b><a name="line118">118  </a></b>		<b>RTE_KDRV_NONE</b>,
+<b><a name="line119">119  </a></b>	};
+<b><a name="line120">120  </a></b>	
+<b><a name="line121">121  </a></b>	/**
+<b><a name="line122">122  </a></b>	 * Device policies.
+<b><a name="line123">123  </a></b>	 */
+<b><a name="line124">124  </a></b>	enum <b>rte_dev_policy</b> {
+<b><a name="line125">125  </a></b>		<b>RTE_DEV_WHITELISTED</b>,
+<b><a name="line126">126  </a></b>		<b>RTE_DEV_BLACKLISTED</b>,
+<b><a name="line127">127  </a></b>	};
+<b><a name="line128">128  </a></b>	
+<b><a name="line129">129  </a></b>	/**
+<b><a name="line130">130  </a></b>	 * A generic memory resource representation.
+<b><a name="line131">131  </a></b>	 */
+<b><a name="line132">132  </a></b>	struct <b>rte_mem_resource</b> {
+<b><a name="line133">133  </a></b>		<a href="../../../../include/stdint.h/code.html#line55">uint64_t</a> <b>phys_addr</b>; /**&lt; Physical address, 0 if not resource. */
+<b><a name="line134">134  </a></b>		<a href="../../../../include/stdint.h/code.html#line55">uint64_t</a> <b>len</b>;       /**&lt; Length of the resource. */
+<b><a name="line135">135  </a></b>		void *<b>addr</b>;         /**&lt; Virtual address, NULL when not mapped. */
+<b><a name="line136">136  </a></b>	};
+<b><a name="line137">137  </a></b>	
+<b><a name="line138">138  </a></b>	/**
+<b><a name="line139">139  </a></b>	 * A structure describing a device driver.
+<b><a name="line140">140  </a></b>	 */
+<b><a name="line141">141  </a></b>	struct <b>rte_driver</b> {
+<b><a name="line142">142  </a></b>		<a href="../../../../include/x86_64-linux-gnu/sys/queue.h/code.html#line382">TAILQ_ENTRY</a>(rte_driver) <b>next</b>;  /**&lt; Next in list. */
+<b><a name="line143">143  </a></b>		const char *<b>name</b>;                   /**&lt; Driver name. */
+<b><a name="line144">144  </a></b>		const char *<b>alias</b>;              /**&lt; Driver alias. */
+<b><a name="line145">145  </a></b>	};
+<b><a name="line146">146  </a></b>	
+<b><a name="line147">147  </a></b>	/*
+<b><a name="line148">148  </a></b>	 * Internal identifier length
+<b><a name="line149">149  </a></b>	 * Sufficiently large to allow for UUID or PCI address
+<b><a name="line150">150  </a></b>	 */
+<b><a name="line151">151  </a></b>	#define <b>RTE_DEV_NAME_MAX_LEN</b> 64
+<b><a name="line152">152  </a></b>	
+<b><a name="line153">153  </a></b>	/**
+<b><a name="line154">154  </a></b>	 * A structure describing a generic device.
+<b><a name="line155">155  </a></b>	 */
+<b><a name="line156">156  </a></b>	struct <b>rte_device</b> {
+<b><a name="line157">157  </a></b>		<a href="../../../../include/x86_64-linux-gnu/sys/queue.h/code.html#line382">TAILQ_ENTRY</a>(rte_device) <b>next</b>; /**&lt; Next device */
+<b><a name="line158">158  </a></b>		const char *<b>name</b>;             /**&lt; Device name */
+<b><a name="line159">159  </a></b>		const struct <a href="#line141">rte_driver</a> *<b>driver</b>; /**&lt; Driver assigned after probing */
+<b><a name="line160">160  </a></b>		const struct rte_bus *<b>bus</b>;    /**&lt; Bus handle assigned on scan */
+<b><a name="line161">161  </a></b>		int <b>numa_node</b>;                /**&lt; NUMA node connection */
+<b><a name="line162">162  </a></b>		struct rte_devargs *<b>devargs</b>;  /**&lt; Arguments for latest probing */
+<b><a name="line163">163  </a></b>	};
+<b><a name="line164">164  </a></b>	
+<b><a name="line165">165  </a></b>	/**
+<b><a name="line166">166  </a></b>	 * @warning
+<b><a name="line167">167  </a></b>	 * @b EXPERIMENTAL: this API may change without prior notice
+<b><a name="line168">168  </a></b>	 *
+<b><a name="line169">169  </a></b>	 * Query status of a device.
+<b><a name="line170">170  </a></b>	 *
+<b><a name="line171">171  </a></b>	 * @param dev
+<b><a name="line172">172  </a></b>	 *   Generic device pointer.
+<b><a name="line173">173  </a></b>	 * @return
+<b><a name="line174">174  </a></b>	 *   (int)true if already probed successfully, 0 otherwise.
+<b><a name="line175">175  </a></b>	 */
+<b><a name="line176">176  </a></b>	<a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line177">177  </a></b>	int rte_dev_is_probed(const struct <a href="#line156">rte_device</a> *dev);
+<b><a name="line178">178  </a></b>	
+<b><a name="line179">179  </a></b>	/**
+<b><a name="line180">180  </a></b>	 * Hotplug add a given device to a specific bus.
+<b><a name="line181">181  </a></b>	 *
+<b><a name="line182">182  </a></b>	 * In multi-process, it will request other processes to add the same device.
+<b><a name="line183">183  </a></b>	 * A failure, in any process, will rollback the action
+<b><a name="line184">184  </a></b>	 *
+<b><a name="line185">185  </a></b>	 * @param busname
+<b><a name="line186">186  </a></b>	 *   The bus name the device is added to.
+<b><a name="line187">187  </a></b>	 * @param devname
+<b><a name="line188">188  </a></b>	 *   The device name. Based on this device name, eal will identify a driver
+<b><a name="line189">189  </a></b>	 *   capable of handling it and pass it to the driver probing function.
+<b><a name="line190">190  </a></b>	 * @param drvargs
+<b><a name="line191">191  </a></b>	 *   Device arguments to be passed to the driver.
+<b><a name="line192">192  </a></b>	 * @return
+<b><a name="line193">193  </a></b>	 *   0 on success, negative on error.
+<b><a name="line194">194  </a></b>	 */
+<b><a name="line195">195  </a></b>	int rte_eal_hotplug_add(const char *busname, const char *devname,
+<b><a name="line196">196  </a></b>				const char *drvargs);
+<b><a name="line197">197  </a></b>	
+<b><a name="line198">198  </a></b>	/**
+<b><a name="line199">199  </a></b>	 * Add matching devices.
+<b><a name="line200">200  </a></b>	 *
+<b><a name="line201">201  </a></b>	 * In multi-process, it will request other processes to add the same device.
+<b><a name="line202">202  </a></b>	 * A failure, in any process, will rollback the action
+<b><a name="line203">203  </a></b>	 *
+<b><a name="line204">204  </a></b>	 * @param devargs
+<b><a name="line205">205  </a></b>	 *   Device arguments including bus, class and driver properties.
+<b><a name="line206">206  </a></b>	 * @return
+<b><a name="line207">207  </a></b>	 *   0 on success, negative on error.
+<b><a name="line208">208  </a></b>	 */
+<b><a name="line209">209  </a></b>	int rte_dev_probe(const char *devargs);
+<b><a name="line210">210  </a></b>	
+<b><a name="line211">211  </a></b>	/**
+<b><a name="line212">212  </a></b>	 * Hotplug remove a given device from a specific bus.
+<b><a name="line213">213  </a></b>	 *
+<b><a name="line214">214  </a></b>	 * In multi-process, it will request other processes to remove the same device.
+<b><a name="line215">215  </a></b>	 * A failure, in any process, will rollback the action
+<b><a name="line216">216  </a></b>	 *
+<b><a name="line217">217  </a></b>	 * @param busname
+<b><a name="line218">218  </a></b>	 *   The bus name the device is removed from.
+<b><a name="line219">219  </a></b>	 * @param devname
+<b><a name="line220">220  </a></b>	 *   The device name being removed.
+<b><a name="line221">221  </a></b>	 * @return
+<b><a name="line222">222  </a></b>	 *   0 on success, negative on error.
+<b><a name="line223">223  </a></b>	 */
+<b><a name="line224">224  </a></b>	int rte_eal_hotplug_remove(const char *busname, const char *devname);
+<b><a name="line225">225  </a></b>	
+<b><a name="line226">226  </a></b>	/**
+<b><a name="line227">227  </a></b>	 * Remove one device.
+<b><a name="line228">228  </a></b>	 *
+<b><a name="line229">229  </a></b>	 * In multi-process, it will request other processes to remove the same device.
+<b><a name="line230">230  </a></b>	 * A failure, in any process, will rollback the action
+<b><a name="line231">231  </a></b>	 *
+<b><a name="line232">232  </a></b>	 * @param dev
+<b><a name="line233">233  </a></b>	 *   Data structure of the device to remove.
+<b><a name="line234">234  </a></b>	 * @return
+<b><a name="line235">235  </a></b>	 *   0 on success, negative on error.
+<b><a name="line236">236  </a></b>	 */
+<b><a name="line237">237  </a></b>	int rte_dev_remove(struct <a href="#line156">rte_device</a> *dev);
+<b><a name="line238">238  </a></b>	
+<b><a name="line239">239  </a></b>	/**
+<b><a name="line240">240  </a></b>	 * Device comparison function.
+<b><a name="line241">241  </a></b>	 *
+<b><a name="line242">242  </a></b>	 * This type of function is used to compare an rte_device with arbitrary
+<b><a name="line243">243  </a></b>	 * data.
+<b><a name="line244">244  </a></b>	 *
+<b><a name="line245">245  </a></b>	 * @param dev
+<b><a name="line246">246  </a></b>	 *   Device handle.
+<b><a name="line247">247  </a></b>	 *
+<b><a name="line248">248  </a></b>	 * @param data
+<b><a name="line249">249  </a></b>	 *   Data to compare against. The type of this parameter is determined by
+<b><a name="line250">250  </a></b>	 *   the kind of comparison performed by the function.
+<b><a name="line251">251  </a></b>	 *
+<b><a name="line252">252  </a></b>	 * @return
+<b><a name="line253">253  </a></b>	 *   0 if the device matches the data.
+<b><a name="line254">254  </a></b>	 *   !0 if the device does not match.
+<b><a name="line255">255  </a></b>	 *   &lt;0 if ordering is possible and the device is lower than the data.
+<b><a name="line256">256  </a></b>	 *   &gt;0 if ordering is possible and the device is greater than the data.
+<b><a name="line257">257  </a></b>	 */
+<b><a name="line258">258  </a></b>	typedef int (*<b>rte_dev_cmp_t</b>)(const struct <a href="#line156">rte_device</a> *dev, const void *data);
+<b><a name="line259">259  </a></b>	
+<b><a name="line260">260  </a></b>	#define <b>RTE_PMD_EXPORT_NAME_ARRAY</b>(n, idx) n##idx[]
+<b><a name="line261">261  </a></b>	
+<b><a name="line262">262  </a></b>	#define <b>RTE_PMD_EXPORT_NAME</b>(name, idx) \
+<b><a name="line263">263  </a></b>	static const char RTE_PMD_EXPORT_NAME_ARRAY(this_pmd_name, idx) \
+<b><a name="line264">264  </a></b>	__attribute__((used)) = RTE_STR(name)
+<b><a name="line265">265  </a></b>	
+<b><a name="line266">266  </a></b>	#define <b>DRV_EXP_TAG</b>(name, tag) __##name##_##tag
+<b><a name="line267">267  </a></b>	
+<b><a name="line268">268  </a></b>	#define <b>RTE_PMD_REGISTER_PCI_TABLE</b>(name, table) \
+<b><a name="line269">269  </a></b>	static const char DRV_EXP_TAG(name, pci_tbl_export)[] __attribute__((used)) = \
+<b><a name="line270">270  </a></b>	RTE_STR(table)
+<b><a name="line271">271  </a></b>	
+<b><a name="line272">272  </a></b>	#define <b>RTE_PMD_REGISTER_PARAM_STRING</b>(name, str) \
+<b><a name="line273">273  </a></b>	static const char DRV_EXP_TAG(name, param_string_export)[] \
+<b><a name="line274">274  </a></b>	__attribute__((used)) = str
+<b><a name="line275">275  </a></b>	
+<b><a name="line276">276  </a></b>	/**
+<b><a name="line277">277  </a></b>	 * Advertise the list of kernel modules required to run this driver
+<b><a name="line278">278  </a></b>	 *
+<b><a name="line279">279  </a></b>	 * This string lists the kernel modules required for the devices
+<b><a name="line280">280  </a></b>	 * associated to a PMD. The format of each line of the string is:
+<b><a name="line281">281  </a></b>	 * &quot;&lt;device-pattern&gt; &lt;kmod-expression&gt;&quot;.
+<b><a name="line282">282  </a></b>	 *
+<b><a name="line283">283  </a></b>	 * The possible formats for the device pattern are:
+<b><a name="line284">284  </a></b>	 *   &quot;*&quot;                     all devices supported by this driver
+<b><a name="line285">285  </a></b>	 *   &quot;pci:*&quot;                 all PCI devices supported by this driver
+<b><a name="line286">286  </a></b>	 *   &quot;pci:v8086:d*:sv*:sd*&quot;  all PCI devices supported by this driver
+<b><a name="line287">287  </a></b>	 *                           whose vendor id is 0x8086.
+<b><a name="line288">288  </a></b>	 *
+<b><a name="line289">289  </a></b>	 * The format of the kernel modules list is a parenthesed expression
+<b><a name="line290">290  </a></b>	 * containing logical-and (&amp;) and logical-or (|).
+<b><a name="line291">291  </a></b>	 *
+<b><a name="line292">292  </a></b>	 * The device pattern and the kmod expression are separated by a space.
+<b><a name="line293">293  </a></b>	 *
+<b><a name="line294">294  </a></b>	 * Example:
+<b><a name="line295">295  </a></b>	 * - &quot;* igb_uio | uio_pci_generic | vfio&quot;
+<b><a name="line296">296  </a></b>	 */
+<b><a name="line297">297  </a></b>	#define <b>RTE_PMD_REGISTER_KMOD_DEP</b>(name, str) \
+<b><a name="line298">298  </a></b>	static const char DRV_EXP_TAG(name, kmod_dep_export)[] \
+<b><a name="line299">299  </a></b>	__attribute__((used)) = str
+<b><a name="line300">300  </a></b>	
+<b><a name="line301">301  </a></b>	/**
+<b><a name="line302">302  </a></b>	 * Iteration context.
+<b><a name="line303">303  </a></b>	 *
+<b><a name="line304">304  </a></b>	 * This context carries over the current iteration state.
+<b><a name="line305">305  </a></b>	 */
+<b><a name="line306">306  </a></b>	struct <b>rte_dev_iterator</b> {
+<b><a name="line307">307  </a></b>		const char *<b>dev_str</b>; /**&lt; device string. */
+<b><a name="line308">308  </a></b>		const char *<b>bus_str</b>; /**&lt; bus-related part of device string. */
+<b><a name="line309">309  </a></b>		const char *<b>cls_str</b>; /**&lt; class-related part of device string. */
+<b><a name="line310">310  </a></b>		struct <a href="#line160">rte_bus</a> *<b>bus</b>; /**&lt; bus handle. */
+<b><a name="line311">311  </a></b>		struct rte_class *<b>cls</b>; /**&lt; class handle. */
+<b><a name="line312">312  </a></b>		struct <a href="#line156">rte_device</a> *<b>device</b>; /**&lt; current position. */
+<b><a name="line313">313  </a></b>		void *<b>class_device</b>; /**&lt; additional specialized context. */
+<b><a name="line314">314  </a></b>	};
+<b><a name="line315">315  </a></b>	
+<b><a name="line316">316  </a></b>	/**
+<b><a name="line317">317  </a></b>	 * Device iteration function.
+<b><a name="line318">318  </a></b>	 *
+<b><a name="line319">319  </a></b>	 * Find the next device matching properties passed in parameters.
+<b><a name="line320">320  </a></b>	 * The function takes an additional ``start`` parameter, that is
+<b><a name="line321">321  </a></b>	 * used as starting context when relevant.
+<b><a name="line322">322  </a></b>	 *
+<b><a name="line323">323  </a></b>	 * The function returns the current element in the iteration.
+<b><a name="line324">324  </a></b>	 * This return value will potentially be used as a start parameter
+<b><a name="line325">325  </a></b>	 * in subsequent calls to the function.
+<b><a name="line326">326  </a></b>	 *
+<b><a name="line327">327  </a></b>	 * The additional iterator parameter is only there if a specific
+<b><a name="line328">328  </a></b>	 * implementation needs additional context. It must not be modified by
+<b><a name="line329">329  </a></b>	 * the iteration function itself.
+<b><a name="line330">330  </a></b>	 *
+<b><a name="line331">331  </a></b>	 * @param start
+<b><a name="line332">332  </a></b>	 *   Starting iteration context.
+<b><a name="line333">333  </a></b>	 *
+<b><a name="line334">334  </a></b>	 * @param devstr
+<b><a name="line335">335  </a></b>	 *   Device description string.
+<b><a name="line336">336  </a></b>	 *
+<b><a name="line337">337  </a></b>	 * @param it
+<b><a name="line338">338  </a></b>	 *   Device iterator.
+<b><a name="line339">339  </a></b>	 *
+<b><a name="line340">340  </a></b>	 * @return
+<b><a name="line341">341  </a></b>	 *   The address of the current element matching the device description
+<b><a name="line342">342  </a></b>	 *   string.
+<b><a name="line343">343  </a></b>	 */
+<b><a name="line344">344  </a></b>	typedef void *(*<b>rte_dev_iterate_t</b>)(const void *start,
+<b><a name="line345">345  </a></b>					   const char *devstr,
+<b><a name="line346">346  </a></b>					   const struct <a href="#line306">rte_dev_iterator</a> *it);
+<b><a name="line347">347  </a></b>	
+<b><a name="line348">348  </a></b>	/**
+<b><a name="line349">349  </a></b>	 * Initializes a device iterator.
+<b><a name="line350">350  </a></b>	 *
+<b><a name="line351">351  </a></b>	 * This iterator allows accessing a list of devices matching a criteria.
+<b><a name="line352">352  </a></b>	 * The device matching is made among all buses and classes currently registered,
+<b><a name="line353">353  </a></b>	 * filtered by the device description given as parameter.
+<b><a name="line354">354  </a></b>	 *
+<b><a name="line355">355  </a></b>	 * This function will not allocate any memory. It is safe to stop the
+<b><a name="line356">356  </a></b>	 * iteration at any moment and let the iterator go out of context.
+<b><a name="line357">357  </a></b>	 *
+<b><a name="line358">358  </a></b>	 * @param it
+<b><a name="line359">359  </a></b>	 *   Device iterator handle.
+<b><a name="line360">360  </a></b>	 *
+<b><a name="line361">361  </a></b>	 * @param str
+<b><a name="line362">362  </a></b>	 *   Device description string.
+<b><a name="line363">363  </a></b>	 *
+<b><a name="line364">364  </a></b>	 * @return
+<b><a name="line365">365  </a></b>	 *   0 on successful initialization.
+<b><a name="line366">366  </a></b>	 *   &lt;0 on error.
+<b><a name="line367">367  </a></b>	 */
+<b><a name="line368">368  </a></b>	<a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line369">369  </a></b>	int
+<b><a name="line370">370  </a></b>	rte_dev_iterator_init(struct <a href="#line306">rte_dev_iterator</a> *it, const char *str);
+<b><a name="line371">371  </a></b>	
+<b><a name="line372">372  </a></b>	/**
+<b><a name="line373">373  </a></b>	 * Iterates on a device iterator.
+<b><a name="line374">374  </a></b>	 *
+<b><a name="line375">375  </a></b>	 * Generates a new rte_device handle corresponding to the next element
+<b><a name="line376">376  </a></b>	 * in the list described in comprehension by the iterator.
+<b><a name="line377">377  </a></b>	 *
+<b><a name="line378">378  </a></b>	 * The next object is returned, and the iterator is updated.
+<b><a name="line379">379  </a></b>	 *
+<b><a name="line380">380  </a></b>	 * @param it
+<b><a name="line381">381  </a></b>	 *   Device iterator handle.
+<b><a name="line382">382  </a></b>	 *
+<b><a name="line383">383  </a></b>	 * @return
+<b><a name="line384">384  </a></b>	 *   An rte_device handle if found.
+<b><a name="line385">385  </a></b>	 *   NULL if an error occurred (rte_errno is set).
+<b><a name="line386">386  </a></b>	 *   NULL if no device could be found (rte_errno is not set).
+<b><a name="line387">387  </a></b>	 */
+<b><a name="line388">388  </a></b>	<a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line389">389  </a></b>	struct <a href="#line156">rte_device</a> *
+<b><a name="line390">390  </a></b>	rte_dev_iterator_next(struct <a href="#line306">rte_dev_iterator</a> *it);
+<b><a name="line391">391  </a></b>	
+<b><a name="line392">392  </a></b>	#define <b>RTE_DEV_FOREACH</b>(dev, devstr, it) \
+<b><a name="line393">393  </a></b>		for (rte_dev_iterator_init(it, devstr), \
+<b><a name="line394">394  </a></b>		     dev = rte_dev_iterator_next(it); \
+<b><a name="line395">395  </a></b>		     dev != NULL; \
+<b><a name="line396">396  </a></b>		     dev = rte_dev_iterator_next(it))
+<b><a name="line397">397  </a></b>	
+<b><a name="line398">398  </a></b>	#ifdef __cplusplus
+<b><a name="line399">399  </a></b>	}
+<b><a name="line400">400  </a></b>	#endif
+<b><a name="line401">401  </a></b>	
+<b><a name="line402">402  </a></b>	/**
+<b><a name="line403">403  </a></b>	 * @warning
+<b><a name="line404">404  </a></b>	 * @b EXPERIMENTAL: this API may change without prior notice
+<b><a name="line405">405  </a></b>	 *
+<b><a name="line406">406  </a></b>	 * It registers the callback for the specific device.
+<b><a name="line407">407  </a></b>	 * Multiple callbacks cal be registered at the same time.
+<b><a name="line408">408  </a></b>	 *
+<b><a name="line409">409  </a></b>	 * @param device_name
+<b><a name="line410">410  </a></b>	 *  The device name, that is the param name of the struct rte_device,
+<b><a name="line411">411  </a></b>	 *  null value means for all devices.
+<b><a name="line412">412  </a></b>	 * @param cb_fn
+<b><a name="line413">413  </a></b>	 *  callback address.
+<b><a name="line414">414  </a></b>	 * @param cb_arg
+<b><a name="line415">415  </a></b>	 *  address of parameter for callback.
+<b><a name="line416">416  </a></b>	 *
+<b><a name="line417">417  </a></b>	 * @return
+<b><a name="line418">418  </a></b>	 *  - On success, zero.
+<b><a name="line419">419  </a></b>	 *  - On failure, a negative value.
+<b><a name="line420">420  </a></b>	 */
+<b><a name="line421">421  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line422">422  </a></b>	rte_dev_event_callback_register(const char *device_name,
+<b><a name="line423">423  </a></b>					<a href="#line42">rte_dev_event_cb_fn</a> cb_fn,
+<b><a name="line424">424  </a></b>					void *cb_arg);
+<b><a name="line425">425  </a></b>	
+<b><a name="line426">426  </a></b>	/**
+<b><a name="line427">427  </a></b>	 * @warning
+<b><a name="line428">428  </a></b>	 * @b EXPERIMENTAL: this API may change without prior notice
+<b><a name="line429">429  </a></b>	 *
+<b><a name="line430">430  </a></b>	 * It unregisters the callback according to the specified device.
+<b><a name="line431">431  </a></b>	 *
+<b><a name="line432">432  </a></b>	 * @param device_name
+<b><a name="line433">433  </a></b>	 *  The device name, that is the param name of the struct rte_device,
+<b><a name="line434">434  </a></b>	 *  null value means for all devices and their callbacks.
+<b><a name="line435">435  </a></b>	 * @param cb_fn
+<b><a name="line436">436  </a></b>	 *  callback address.
+<b><a name="line437">437  </a></b>	 * @param cb_arg
+<b><a name="line438">438  </a></b>	 *  address of parameter for callback, (void *)-1 means to remove all
+<b><a name="line439">439  </a></b>	 *  registered which has the same callback address.
+<b><a name="line440">440  </a></b>	 *
+<b><a name="line441">441  </a></b>	 * @return
+<b><a name="line442">442  </a></b>	 *  - On success, return the number of callback entities removed.
+<b><a name="line443">443  </a></b>	 *  - On failure, a negative value.
+<b><a name="line444">444  </a></b>	 */
+<b><a name="line445">445  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line446">446  </a></b>	rte_dev_event_callback_unregister(const char *device_name,
+<b><a name="line447">447  </a></b>					  <a href="#line42">rte_dev_event_cb_fn</a> cb_fn,
+<b><a name="line448">448  </a></b>					  void *cb_arg);
+<b><a name="line449">449  </a></b>	
+<b><a name="line450">450  </a></b>	/**
+<b><a name="line451">451  </a></b>	 * @warning
+<b><a name="line452">452  </a></b>	 * @b EXPERIMENTAL: this API may change without prior notice
+<b><a name="line453">453  </a></b>	 *
+<b><a name="line454">454  </a></b>	 * Executes all the user application registered callbacks for
+<b><a name="line455">455  </a></b>	 * the specific device.
+<b><a name="line456">456  </a></b>	 *
+<b><a name="line457">457  </a></b>	 * @param device_name
+<b><a name="line458">458  </a></b>	 *  The device name.
+<b><a name="line459">459  </a></b>	 * @param event
+<b><a name="line460">460  </a></b>	 *  the device event type.
+<b><a name="line461">461  </a></b>	 */
+<b><a name="line462">462  </a></b>	void  <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line463">463  </a></b>	rte_dev_event_callback_process(const char *device_name,
+<b><a name="line464">464  </a></b>				       enum <a href="#line30">rte_dev_event_type</a> event);
+<b><a name="line465">465  </a></b>	
+<b><a name="line466">466  </a></b>	/**
+<b><a name="line467">467  </a></b>	 * @warning
+<b><a name="line468">468  </a></b>	 * @b EXPERIMENTAL: this API may change without prior notice
+<b><a name="line469">469  </a></b>	 *
+<b><a name="line470">470  </a></b>	 * Start the device event monitoring.
+<b><a name="line471">471  </a></b>	 *
+<b><a name="line472">472  </a></b>	 * @return
+<b><a name="line473">473  </a></b>	 *   - On success, zero.
+<b><a name="line474">474  </a></b>	 *   - On failure, a negative value.
+<b><a name="line475">475  </a></b>	 */
+<b><a name="line476">476  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line477">477  </a></b>	rte_dev_event_monitor_start(void);
+<b><a name="line478">478  </a></b>	
+<b><a name="line479">479  </a></b>	/**
+<b><a name="line480">480  </a></b>	 * @warning
+<b><a name="line481">481  </a></b>	 * @b EXPERIMENTAL: this API may change without prior notice
+<b><a name="line482">482  </a></b>	 *
+<b><a name="line483">483  </a></b>	 * Stop the device event monitoring.
+<b><a name="line484">484  </a></b>	 *
+<b><a name="line485">485  </a></b>	 * @return
+<b><a name="line486">486  </a></b>	 *   - On success, zero.
+<b><a name="line487">487  </a></b>	 *   - On failure, a negative value.
+<b><a name="line488">488  </a></b>	 */
+<b><a name="line489">489  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line490">490  </a></b>	rte_dev_event_monitor_stop(void);
+<b><a name="line491">491  </a></b>	
+<b><a name="line492">492  </a></b>	/**
+<b><a name="line493">493  </a></b>	 * @warning
+<b><a name="line494">494  </a></b>	 * @b EXPERIMENTAL: this API may change without prior notice
+<b><a name="line495">495  </a></b>	 *
+<b><a name="line496">496  </a></b>	 * Enable hotplug handling for devices.
+<b><a name="line497">497  </a></b>	 *
+<b><a name="line498">498  </a></b>	 * @return
+<b><a name="line499">499  </a></b>	 *   - On success, zero.
+<b><a name="line500">500  </a></b>	 *   - On failure, a negative value.
+<b><a name="line501">501  </a></b>	 */
+<b><a name="line502">502  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line503">503  </a></b>	rte_dev_hotplug_handle_enable(void);
+<b><a name="line504">504  </a></b>	
+<b><a name="line505">505  </a></b>	/**
+<b><a name="line506">506  </a></b>	 * @warning
+<b><a name="line507">507  </a></b>	 * @b EXPERIMENTAL: this API may change without prior notice
+<b><a name="line508">508  </a></b>	 *
+<b><a name="line509">509  </a></b>	 * Disable hotplug handling for devices.
+<b><a name="line510">510  </a></b>	 *
+<b><a name="line511">511  </a></b>	 * @return
+<b><a name="line512">512  </a></b>	 *   - On success, zero.
+<b><a name="line513">513  </a></b>	 *   - On failure, a negative value.
+<b><a name="line514">514  </a></b>	 */
+<b><a name="line515">515  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line516">516  </a></b>	rte_dev_hotplug_handle_disable(void);
+<b><a name="line517">517  </a></b>	
+<b><a name="line518">518  </a></b>	#endif /* _RTE_DEV_H_ */
+<b><a name="line519">519  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

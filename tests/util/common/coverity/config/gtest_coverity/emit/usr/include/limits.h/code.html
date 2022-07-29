@@ -1,0 +1,209 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/limits.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 1991-2016 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line5">5    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line6">6    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line7">7    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line10">10   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line11">11   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line12">12   </a></b>	   Lesser General Public License for more details.
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line15">15   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line16">16   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	/*
+<b><a name="line19">19   </a></b>	 *	ISO C99 Standard: 7.10/5.2.4.2.1 Sizes of integer types	&lt;limits.h&gt;
+<b><a name="line20">20   </a></b>	 */
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	#ifndef _LIBC_LIMITS_H_
+<b><a name="line23">23   </a></b>	#define <b>_LIBC_LIMITS_H_</b>	1
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	#include &lt;features.h&gt;
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>	
+<b><a name="line28">28   </a></b>	/* Maximum length of any multibyte character in any locale.
+<b><a name="line29">29   </a></b>	   We define this value here since the gcc header does not define
+<b><a name="line30">30   </a></b>	   the correct value.  */
+<b><a name="line31">31   </a></b>	#define <b>MB_LEN_MAX</b>	16
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	/* If we are not using GNU CC we have to define all the symbols ourself.
+<b><a name="line35">35   </a></b>	   Otherwise use gcc's definitions (see below).  */
+<b><a name="line36">36   </a></b>	#if !defined <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line240">__GNUC__</a> || <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line240">__GNUC__</a> &lt; 2
+<b><a name="line37">37   </a></b>	
+<b><a name="line38">38   </a></b>	/* We only protect from multiple inclusion here, because all the other
+<b><a name="line39">39   </a></b>	   #include's protect themselves, and in GCC 2 we may #include_next through
+<b><a name="line40">40   </a></b>	   multiple copies of this file before we get to GCC's.  */
+<b><a name="line41">41   </a></b>	# ifndef _LIMITS_H
+<b><a name="line42">42   </a></b>	#  define _LIMITS_H	1
+<b><a name="line43">43   </a></b>	
+<b><a name="line44">44   </a></b>	#include &lt;bits/wordsize.h&gt;
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	/* We don't have #include_next.
+<b><a name="line47">47   </a></b>	   Define ANSI &lt;limits.h&gt; for standard 32-bit words.  */
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	/* These assume 8-bit `char's, 16-bit `short int's,
+<b><a name="line50">50   </a></b>	   and 32-bit `int's and `long int's.  */
+<b><a name="line51">51   </a></b>	
+<b><a name="line52">52   </a></b>	/* Number of bits in a `char'.	*/
+<b><a name="line53">53   </a></b>	#  define CHAR_BIT	8
+<b><a name="line54">54   </a></b>	
+<b><a name="line55">55   </a></b>	/* Minimum and maximum values a `signed char' can hold.  */
+<b><a name="line56">56   </a></b>	#  define SCHAR_MIN	(-128)
+<b><a name="line57">57   </a></b>	#  define SCHAR_MAX	127
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	/* Maximum value an `unsigned char' can hold.  (Minimum is 0.)  */
+<b><a name="line60">60   </a></b>	#  define UCHAR_MAX	255
+<b><a name="line61">61   </a></b>	
+<b><a name="line62">62   </a></b>	/* Minimum and maximum values a `char' can hold.  */
+<b><a name="line63">63   </a></b>	#  ifdef __CHAR_UNSIGNED__
+<b><a name="line64">64   </a></b>	#   define CHAR_MIN	0
+<b><a name="line65">65   </a></b>	#   define CHAR_MAX	UCHAR_MAX
+<b><a name="line66">66   </a></b>	#  else
+<b><a name="line67">67   </a></b>	#   define CHAR_MIN	SCHAR_MIN
+<b><a name="line68">68   </a></b>	#   define CHAR_MAX	SCHAR_MAX
+<b><a name="line69">69   </a></b>	#  endif
+<b><a name="line70">70   </a></b>	
+<b><a name="line71">71   </a></b>	/* Minimum and maximum values a `signed short int' can hold.  */
+<b><a name="line72">72   </a></b>	#  define SHRT_MIN	(-32768)
+<b><a name="line73">73   </a></b>	#  define SHRT_MAX	32767
+<b><a name="line74">74   </a></b>	
+<b><a name="line75">75   </a></b>	/* Maximum value an `unsigned short int' can hold.  (Minimum is 0.)  */
+<b><a name="line76">76   </a></b>	#  define USHRT_MAX	65535
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	/* Minimum and maximum values a `signed int' can hold.  */
+<b><a name="line79">79   </a></b>	#  define INT_MIN	(-INT_MAX - 1)
+<b><a name="line80">80   </a></b>	#  define INT_MAX	2147483647
+<b><a name="line81">81   </a></b>	
+<b><a name="line82">82   </a></b>	/* Maximum value an `unsigned int' can hold.  (Minimum is 0.)  */
+<b><a name="line83">83   </a></b>	#  define UINT_MAX	4294967295U
+<b><a name="line84">84   </a></b>	
+<b><a name="line85">85   </a></b>	/* Minimum and maximum values a `signed long int' can hold.  */
+<b><a name="line86">86   </a></b>	#  if __WORDSIZE == 64
+<b><a name="line87">87   </a></b>	#   define LONG_MAX	9223372036854775807L
+<b><a name="line88">88   </a></b>	#  else
+<b><a name="line89">89   </a></b>	#   define LONG_MAX	2147483647L
+<b><a name="line90">90   </a></b>	#  endif
+<b><a name="line91">91   </a></b>	#  define LONG_MIN	(-LONG_MAX - 1L)
+<b><a name="line92">92   </a></b>	
+<b><a name="line93">93   </a></b>	/* Maximum value an `unsigned long int' can hold.  (Minimum is 0.)  */
+<b><a name="line94">94   </a></b>	#  if __WORDSIZE == 64
+<b><a name="line95">95   </a></b>	#   define ULONG_MAX	18446744073709551615UL
+<b><a name="line96">96   </a></b>	#  else
+<b><a name="line97">97   </a></b>	#   define ULONG_MAX	4294967295UL
+<b><a name="line98">98   </a></b>	#  endif
+<b><a name="line99">99   </a></b>	
+<b><a name="line100">100  </a></b>	#  ifdef __USE_ISOC99
+<b><a name="line101">101  </a></b>	
+<b><a name="line102">102  </a></b>	/* Minimum and maximum values a `signed long long int' can hold.  */
+<b><a name="line103">103  </a></b>	#   define LLONG_MAX	9223372036854775807LL
+<b><a name="line104">104  </a></b>	#   define LLONG_MIN	(-LLONG_MAX - 1LL)
+<b><a name="line105">105  </a></b>	
+<b><a name="line106">106  </a></b>	/* Maximum value an `unsigned long long int' can hold.  (Minimum is 0.)  */
+<b><a name="line107">107  </a></b>	#   define ULLONG_MAX	18446744073709551615ULL
+<b><a name="line108">108  </a></b>	
+<b><a name="line109">109  </a></b>	#  endif /* ISO C99 */
+<b><a name="line110">110  </a></b>	
+<b><a name="line111">111  </a></b>	# endif	/* limits.h  */
+<b><a name="line112">112  </a></b>	#endif	/* GCC 2.  */
+<b><a name="line113">113  </a></b>	
+<b><a name="line114">114  </a></b>	#endif	/* !_LIBC_LIMITS_H_ */
+<b><a name="line115">115  </a></b>	
+<b><a name="line116">116  </a></b>	 /* Get the compiler's limits.h, which defines almost all the ISO constants.
+<b><a name="line117">117  </a></b>	
+<b><a name="line118">118  </a></b>	    We put this #include_next outside the double inclusion check because
+<b><a name="line119">119  </a></b>	    it should be possible to include this file more than once and still get
+<b><a name="line120">120  </a></b>	    the definitions from gcc's header.  */
+<b><a name="line121">121  </a></b>	#if defined <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line240">__GNUC__</a> &amp;&amp; !defined <a href="../../lib/gcc/x86_64-linux-gnu/5/include-fixed/limits.h/code.html#line30">_GCC_LIMITS_H_</a>
+<b><a name="line122">122  </a></b>	/* `_GCC_LIMITS_H_' is what GCC's file defines.  */
+<b><a name="line123">123  </a></b>	# include_next &lt;limits.h&gt;
+<b><a name="line124">124  </a></b>	#endif
+<b><a name="line125">125  </a></b>	
+<b><a name="line126">126  </a></b>	/* The &lt;limits.h&gt; files in some gcc versions don't define LLONG_MIN,
+<b><a name="line127">127  </a></b>	   LLONG_MAX, and ULLONG_MAX.  Instead only the values gcc defined for
+<b><a name="line128">128  </a></b>	   ages are available.  */
+<b><a name="line129">129  </a></b>	#if defined <a href="../features.h/code.html#line295">__USE_ISOC99</a> &amp;&amp; defined <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line240">__GNUC__</a>
+<b><a name="line130">130  </a></b>	# ifndef LLONG_MIN
+<b><a name="line131">131  </a></b>	#  define <b>LLONG_MIN</b>	(-LLONG_MAX-1)
+<b><a name="line132">132  </a></b>	# endif
+<b><a name="line133">133  </a></b>	# ifndef LLONG_MAX
+<b><a name="line134">134  </a></b>	#  define <b>LLONG_MAX</b>	__LONG_LONG_MAX__
+<b><a name="line135">135  </a></b>	# endif
+<b><a name="line136">136  </a></b>	# ifndef ULLONG_MAX
+<b><a name="line137">137  </a></b>	#  define <b>ULLONG_MAX</b>	(LLONG_MAX * 2ULL + 1)
+<b><a name="line138">138  </a></b>	# endif
+<b><a name="line139">139  </a></b>	#endif
+<b><a name="line140">140  </a></b>	
+<b><a name="line141">141  </a></b>	#ifdef	<a href="../features.h/code.html#line249">__USE_POSIX</a>
+<b><a name="line142">142  </a></b>	/* POSIX adds things to &lt;limits.h&gt;.  */
+<b><a name="line143">143  </a></b>	# include &lt;bits/posix1_lim.h&gt;
+<b><a name="line144">144  </a></b>	#endif
+<b><a name="line145">145  </a></b>	
+<b><a name="line146">146  </a></b>	#ifdef	<a href="../features.h/code.html#line253">__USE_POSIX2</a>
+<b><a name="line147">147  </a></b>	# include &lt;bits/posix2_lim.h&gt;
+<b><a name="line148">148  </a></b>	#endif
+<b><a name="line149">149  </a></b>	
+<b><a name="line150">150  </a></b>	#ifdef	<a href="../features.h/code.html#line279">__USE_XOPEN</a>
+<b><a name="line151">151  </a></b>	# include &lt;bits/xopen_lim.h&gt;
+<b><a name="line152">152  </a></b>	#endif
+<b><a name="line153">153  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

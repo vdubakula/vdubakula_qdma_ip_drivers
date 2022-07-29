@@ -1,0 +1,265 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/bits/move.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Move, forward and identity for C++0x + swap -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2007-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file bits/move.h
+<b><a name="line26">26   </a></b>	 *  This is an internal header file, included by other library headers.
+<b><a name="line27">27   </a></b>	 *  Do not attempt to use it directly. @headername{utility}
+<b><a name="line28">28   </a></b>	 */
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	#ifndef _MOVE_H
+<b><a name="line31">31   </a></b>	#define <b>_MOVE_H</b> 1
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	#include &lt;bits/c++config.h&gt;
+<b><a name="line34">34   </a></b>	#include &lt;bits/concept_check.h&gt;
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line37">37   </a></b>	{
+<b><a name="line38">38   </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	  // Used, in C++03 mode too, by allocators, etc.
+<b><a name="line41">41   </a></b>	  /**
+<b><a name="line42">42   </a></b>	   *  @brief Same as C++11 std::addressof
+<b><a name="line43">43   </a></b>	   *  @ingroup utilities
+<b><a name="line44">44   </a></b>	   */
+<b><a name="line45">45   </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line46">46   </a></b>	    inline <a href="#line45">_Tp</a>*
+<b><a name="line47">47   </a></b>	    __addressof(<a href="#line45">_Tp</a>&amp; <b>__r</b>) <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line48">48   </a></b>	    {
+<b><a name="line49">49   </a></b>	      return reinterpret_cast&lt;<a href="#line45">_Tp</a>*&gt;
+<b><a name="line50">50   </a></b>		(&amp;const_cast&lt;char&amp;&gt;(reinterpret_cast&lt;const volatile char&amp;&gt;(<a href="#line47">__r</a>)));
+<b><a name="line51">51   </a></b>	    }
+<b><a name="line52">52   </a></b>	
+<b><a name="line53">53   </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line54">54   </a></b>	} // namespace
+<b><a name="line55">55   </a></b>	
+<b><a name="line56">56   </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line57">57   </a></b>	#include &lt;type_traits&gt; // Brings in std::declval too.
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line60">60   </a></b>	{
+<b><a name="line61">61   </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line62">62   </a></b>	
+<b><a name="line63">63   </a></b>	  /**
+<b><a name="line64">64   </a></b>	   *  @addtogroup utilities
+<b><a name="line65">65   </a></b>	   *  @{
+<b><a name="line66">66   </a></b>	   */
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	  /**
+<b><a name="line69">69   </a></b>	   *  @brief  Forward an lvalue.
+<b><a name="line70">70   </a></b>	   *  @return The parameter cast to the specified type.
+<b><a name="line71">71   </a></b>	   *
+<b><a name="line72">72   </a></b>	   *  This function is used to implement &quot;perfect forwarding&quot;.
+<b><a name="line73">73   </a></b>	   */
+<b><a name="line74">74   </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line75">75   </a></b>	    constexpr <a href="#line74">_Tp</a>&amp;&amp;
+<b><a name="line76">76   </a></b>	    forward(typename <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../type_traits/code.html#line1575">remove_reference</a>&lt;<a href="#line74">_Tp</a>&gt;::<a href="../../type_traits/code.html#line1576">type</a>&amp; <b>__t</b>) noexcept
+<b><a name="line77">77   </a></b>	    { return static_cast&lt;<a href="#line74">_Tp</a>&amp;&amp;&gt;(<a href="#line76">__t</a>); }
+<b><a name="line78">78   </a></b>	
+<b><a name="line79">79   </a></b>	  /**
+<b><a name="line80">80   </a></b>	   *  @brief  Forward an rvalue.
+<b><a name="line81">81   </a></b>	   *  @return The parameter cast to the specified type.
+<b><a name="line82">82   </a></b>	   *
+<b><a name="line83">83   </a></b>	   *  This function is used to implement &quot;perfect forwarding&quot;.
+<b><a name="line84">84   </a></b>	   */
+<b><a name="line85">85   </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line86">86   </a></b>	    constexpr <a href="#line85">_Tp</a>&amp;&amp;
+<b><a name="line87">87   </a></b>	    <b>forward</b>(typename <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../type_traits/code.html#line964">remove_reference</a>&lt;<a href="#line85">_Tp</a>&gt;::type&amp;&amp; __t) noexcept
+<b><a name="line88">88   </a></b>	    {
+<b><a name="line89">89   </a></b>	      static_assert(!std::is_lvalue_reference&lt;_Tp&gt;::value, &quot;template argument&quot;
+<b><a name="line90">90   </a></b>			    &quot; substituting _Tp is an lvalue reference type&quot;);
+<b><a name="line91">91   </a></b>	      return static_cast&lt;_Tp&amp;&amp;&gt;(__t);
+<b><a name="line92">92   </a></b>	    }
+<b><a name="line93">93   </a></b>	
+<b><a name="line94">94   </a></b>	  /**
+<b><a name="line95">95   </a></b>	   *  @brief  Convert a value to an rvalue.
+<b><a name="line96">96   </a></b>	   *  @param  __t  A thing of arbitrary type.
+<b><a name="line97">97   </a></b>	   *  @return The parameter cast to an rvalue-reference to allow moving it.
+<b><a name="line98">98   </a></b>	  */
+<b><a name="line99">99   </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line100">100  </a></b>	    constexpr typename <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../type_traits/code.html#line1575">remove_reference</a>&lt;<a href="#line99">_Tp</a>&gt;::<a href="../../type_traits/code.html#line1580">type</a>&amp;&amp;
+<b><a name="line101">101  </a></b>	    move(<a href="#line99">_Tp</a>&amp;&amp; <b>__t</b>) noexcept
+<b><a name="line102">102  </a></b>	    { return static_cast&lt;typename <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../type_traits/code.html#line1575">remove_reference</a>&lt;<a href="#line99">_Tp</a>&gt;::<a href="../../type_traits/code.html#line1580">type</a>&amp;&amp;&gt;(<a href="#line101">__t</a>); }
+<b><a name="line103">103  </a></b>	
+<b><a name="line104">104  </a></b>	
+<b><a name="line105">105  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line106">106  </a></b>	    struct __move_if_noexcept_cond
+<b><a name="line107">107  </a></b>	    : public <a href="../../type_traits/code.html#line124">__and_</a>&lt;<a href="../../type_traits/code.html#line147">__not_</a>&lt;<a href="../../type_traits/code.html#line1211">is_nothrow_move_constructible</a>&lt;<a href="#line105">_Tp</a>&gt;&gt;,
+<b><a name="line108">108  </a></b>	                    <a href="../../type_traits/code.html#line1107">is_copy_constructible</a>&lt;<a href="#line105">_Tp</a>&gt;&gt;::<a href="../../type_traits/code.html#line73">type</a> { };
+<b><a name="line109">109  </a></b>	
+<b><a name="line110">110  </a></b>	  /**
+<b><a name="line111">111  </a></b>	   *  @brief  Conditionally convert a value to an rvalue.
+<b><a name="line112">112  </a></b>	   *  @param  __x  A thing of arbitrary type.
+<b><a name="line113">113  </a></b>	   *  @return The parameter, possibly cast to an rvalue-reference.
+<b><a name="line114">114  </a></b>	   *
+<b><a name="line115">115  </a></b>	   *  Same as std::move unless the type's move constructor could throw and the
+<b><a name="line116">116  </a></b>	   *  type is copyable, in which case an lvalue-reference is returned instead.
+<b><a name="line117">117  </a></b>	   */
+<b><a name="line118">118  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line119">119  </a></b>	    constexpr typename
+<b><a name="line120">120  </a></b>	    <a href="../../type_traits/code.html#line98">conditional</a>&lt;<a href="#line106">__move_if_noexcept_cond</a>&lt;<a href="#line118">_Tp</a>&gt;::value, const <a href="#line118">_Tp</a>&amp;, <a href="#line118">_Tp</a>&amp;&amp;&gt;::type
+<b><a name="line121">121  </a></b>	    <b>move_if_noexcept</b>(<a href="#line118">_Tp</a>&amp; __x) noexcept
+<b><a name="line122">122  </a></b>	    { return std::move(__x); }
+<b><a name="line123">123  </a></b>	
+<b><a name="line124">124  </a></b>	  // declval, from type_traits.
+<b><a name="line125">125  </a></b>	
+<b><a name="line126">126  </a></b>	  /**
+<b><a name="line127">127  </a></b>	   *  @brief Returns the actual address of the object or function
+<b><a name="line128">128  </a></b>	   *         referenced by r, even in the presence of an overloaded
+<b><a name="line129">129  </a></b>	   *         operator&amp;.
+<b><a name="line130">130  </a></b>	   *  @param  __r  Reference to an object or function.
+<b><a name="line131">131  </a></b>	   *  @return   The actual address.
+<b><a name="line132">132  </a></b>	  */
+<b><a name="line133">133  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line134">134  </a></b>	    inline <a href="#line133">_Tp</a>*
+<b><a name="line135">135  </a></b>	    <b>addressof</b>(<a href="#line133">_Tp</a>&amp; <b>__r</b>) noexcept
+<b><a name="line136">136  </a></b>	    { return <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="#line47">__addressof</a>(<a href="#line135">__r</a>); }
+<b><a name="line137">137  </a></b>	
+<b><a name="line138">138  </a></b>	  // C++11 version of std::exchange for internal use.
+<b><a name="line139">139  </a></b>	  template &lt;typename <b>_Tp</b>, typename <b>_Up</b> = _Tp&gt;
+<b><a name="line140">140  </a></b>	    inline <a href="#line139">_Tp</a>
+<b><a name="line141">141  </a></b>	    <b>__exchange</b>(<a href="#line139">_Tp</a>&amp; __obj, <a href="#line139">_Up</a>&amp;&amp; __new_val)
+<b><a name="line142">142  </a></b>	    {
+<b><a name="line143">143  </a></b>	      _Tp __old_val = std::move(__obj);
+<b><a name="line144">144  </a></b>	      __obj = std::forward&lt;_Up&gt;(__new_val);
+<b><a name="line145">145  </a></b>	      return __old_val;
+<b><a name="line146">146  </a></b>	    }
+<b><a name="line147">147  </a></b>	
+<b><a name="line148">148  </a></b>	  /// @} group utilities
+<b><a name="line149">149  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line150">150  </a></b>	} // namespace
+<b><a name="line151">151  </a></b>	
+<b><a name="line152">152  </a></b>	#define <b>_GLIBCXX_MOVE</b>(__val) std::move(__val)
+<b><a name="line153">153  </a></b>	#define <b>_GLIBCXX_FORWARD</b>(_Tp, __val) std::forward&lt;_Tp&gt;(__val)
+<b><a name="line154">154  </a></b>	#else
+<b><a name="line155">155  </a></b>	#define _GLIBCXX_MOVE(__val) (__val)
+<b><a name="line156">156  </a></b>	#define _GLIBCXX_FORWARD(_Tp, __val) (__val)
+<b><a name="line157">157  </a></b>	#endif
+<b><a name="line158">158  </a></b>	
+<b><a name="line159">159  </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line160">160  </a></b>	{
+<b><a name="line161">161  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line162">162  </a></b>	
+<b><a name="line163">163  </a></b>	  /**
+<b><a name="line164">164  </a></b>	   *  @addtogroup utilities
+<b><a name="line165">165  </a></b>	   *  @{
+<b><a name="line166">166  </a></b>	   */
+<b><a name="line167">167  </a></b>	
+<b><a name="line168">168  </a></b>	  /**
+<b><a name="line169">169  </a></b>	   *  @brief Swaps two values.
+<b><a name="line170">170  </a></b>	   *  @param  __a  A thing of arbitrary type.
+<b><a name="line171">171  </a></b>	   *  @param  __b  Another thing of arbitrary type.
+<b><a name="line172">172  </a></b>	   *  @return   Nothing.
+<b><a name="line173">173  </a></b>	  */
+<b><a name="line174">174  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line175">175  </a></b>	    inline void
+<b><a name="line176">176  </a></b>	    swap(<a href="#line174">_Tp</a>&amp; <b>__a</b>, <a href="#line174">_Tp</a>&amp; <b>__b</b>)
+<b><a name="line177">177  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line178">178  </a></b>	    noexcept(<a href="../../type_traits/code.html#line124">__and_</a>&lt;<a href="../../type_traits/code.html#line1211">is_nothrow_move_constructible</a>&lt;<a href="#line174">_Tp</a>&gt;,
+<b><a name="line179">179  </a></b>		            <a href="../../type_traits/code.html#line1317">is_nothrow_move_assignable</a>&lt;<a href="#line174">_Tp</a>&gt;&gt;::<a href="../../type_traits/code.html#line71">value</a>)
+<b><a name="line180">180  </a></b>	#endif
+<b><a name="line181">181  </a></b>	    {
+<b><a name="line182">182  </a></b>	      // concept requirements
+<b><a name="line183">183  </a></b>	      <a href="../concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_SGIAssignableConcept&lt;_Tp&gt;)
+<b><a name="line184">184  </a></b>	
+<b><a name="line185">185  </a></b>	      <a href="#line174">_Tp</a> <b>__tmp</b> = <a href="#line152">_GLIBCXX_MOVE</a>(__a);
+<b><a name="line186">186  </a></b>	      <a href="#line176">__a</a> <a href="../../thread/code.html#line68">=</a> <a href="#line152">_GLIBCXX_MOVE</a>(__b);
+<b><a name="line187">187  </a></b>	      <a href="#line176">__b</a> <a href="../../thread/code.html#line68">=</a> <a href="#line152">_GLIBCXX_MOVE</a>(__tmp);
+<b><a name="line188">188  </a></b>	    }
+<b><a name="line189">189  </a></b>	
+<b><a name="line190">190  </a></b>	  // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line191">191  </a></b>	  // DR 809. std::swap should be overloaded for array types.
+<b><a name="line192">192  </a></b>	  /// Swap the contents of two arrays.
+<b><a name="line193">193  </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>_Nm</b>&gt;
+<b><a name="line194">194  </a></b>	    inline void
+<b><a name="line195">195  </a></b>	    <b>swap</b>(<a href="#line193">_Tp</a> (&amp;__a)[<a href="#line193">_Nm</a>], <a href="#line193">_Tp</a> (&amp;__b)[<a href="#line193">_Nm</a>])
+<b><a name="line196">196  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line197">197  </a></b>	    noexcept(noexcept(swap(*__a, *__b)))
+<b><a name="line198">198  </a></b>	#endif
+<b><a name="line199">199  </a></b>	    {
+<b><a name="line200">200  </a></b>	      for (size_t __n = 0; __n &lt; _Nm; ++__n)
+<b><a name="line201">201  </a></b>		swap(__a[__n], __b[__n]);
+<b><a name="line202">202  </a></b>	    }
+<b><a name="line203">203  </a></b>	
+<b><a name="line204">204  </a></b>	  /// @} group utilities
+<b><a name="line205">205  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line206">206  </a></b>	} // namespace
+<b><a name="line207">207  </a></b>	
+<b><a name="line208">208  </a></b>	#endif /* _MOVE_H */
+<b><a name="line209">209  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

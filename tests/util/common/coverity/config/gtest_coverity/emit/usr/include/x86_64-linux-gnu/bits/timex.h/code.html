@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/timex.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 1995-2016 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line5">5    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line6">6    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line7">7    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line10">10   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line11">11   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line12">12   </a></b>	   Lesser General Public License for more details.
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line15">15   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line16">16   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	#ifndef	_BITS_TIMEX_H
+<b><a name="line19">19   </a></b>	#define	<b>_BITS_TIMEX_H</b>	1
+<b><a name="line20">20   </a></b>	
+<b><a name="line21">21   </a></b>	#include &lt;bits/types.h&gt;
+<b><a name="line22">22   </a></b>	
+<b><a name="line23">23   </a></b>	/* These definitions from linux/timex.h as of 3.18.  */
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	struct <b>timex</b>
+<b><a name="line26">26   </a></b>	{
+<b><a name="line27">27   </a></b>	  unsigned int <b>modes</b>;		/* mode selector */
+<b><a name="line28">28   </a></b>	  <a href="../types.h/code.html#line175">__syscall_slong_t</a> <b>offset</b>;	/* time offset (usec) */
+<b><a name="line29">29   </a></b>	  <a href="../types.h/code.html#line175">__syscall_slong_t</a> <b>freq</b>;	/* frequency offset (scaled ppm) */
+<b><a name="line30">30   </a></b>	  <a href="../types.h/code.html#line175">__syscall_slong_t</a> <b>maxerror</b>;	/* maximum error (usec) */
+<b><a name="line31">31   </a></b>	  <a href="../types.h/code.html#line175">__syscall_slong_t</a> <b>esterror</b>;	/* estimated error (usec) */
+<b><a name="line32">32   </a></b>	  int <b>status</b>;			/* clock command/status */
+<b><a name="line33">33   </a></b>	  <a href="../types.h/code.html#line175">__syscall_slong_t</a> <b>constant</b>;	/* pll time constant */
+<b><a name="line34">34   </a></b>	  <a href="../types.h/code.html#line175">__syscall_slong_t</a> <b>precision</b>;	/* clock precision (usec) (ro) */
+<b><a name="line35">35   </a></b>	  <a href="../types.h/code.html#line175">__syscall_slong_t</a> <b>tolerance</b>;	/* clock frequency tolerance (ppm) (ro) */
+<b><a name="line36">36   </a></b>	  struct <a href="../time.h/code.html#line30">timeval</a> <b>time</b>;		/* (read only, except for ADJ_SETOFFSET) */
+<b><a name="line37">37   </a></b>	  <a href="../types.h/code.html#line175">__syscall_slong_t</a> <b>tick</b>;	/* (modified) usecs between clock ticks */
+<b><a name="line38">38   </a></b>	  <a href="../types.h/code.html#line175">__syscall_slong_t</a> <b>ppsfreq</b>;	/* pps frequency (scaled ppm) (ro) */
+<b><a name="line39">39   </a></b>	  <a href="../types.h/code.html#line175">__syscall_slong_t</a> <b>jitter</b>;	/* pps jitter (us) (ro) */
+<b><a name="line40">40   </a></b>	  int <b>shift</b>;			/* interval duration (s) (shift) (ro) */
+<b><a name="line41">41   </a></b>	  <a href="../types.h/code.html#line175">__syscall_slong_t</a> <b>stabil</b>;	/* pps stability (scaled ppm) (ro) */
+<b><a name="line42">42   </a></b>	  <a href="../types.h/code.html#line175">__syscall_slong_t</a> <b>jitcnt</b>;	/* jitter limit exceeded (ro) */
+<b><a name="line43">43   </a></b>	  <a href="../types.h/code.html#line175">__syscall_slong_t</a> <b>calcnt</b>;	/* calibration intervals (ro) */
+<b><a name="line44">44   </a></b>	  <a href="../types.h/code.html#line175">__syscall_slong_t</a> <b>errcnt</b>;	/* calibration errors (ro) */
+<b><a name="line45">45   </a></b>	  <a href="../types.h/code.html#line175">__syscall_slong_t</a> <b>stbcnt</b>;	/* stability limit exceeded (ro) */
+<b><a name="line46">46   </a></b>	
+<b><a name="line47">47   </a></b>	  int <b>tai</b>;			/* TAI offset (ro) */
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	  /* ??? */
+<b><a name="line50">50   </a></b>	  int  :32; int  :32; int  :32; int  :32;
+<b><a name="line51">51   </a></b>	  int  :32; int  :32; int  :32; int  :32;
+<b><a name="line52">52   </a></b>	  int  :32; int  :32; int  :32;
+<b><a name="line53">53   </a></b>	};
+<b><a name="line54">54   </a></b>	
+<b><a name="line55">55   </a></b>	/* Mode codes (timex.mode) */
+<b><a name="line56">56   </a></b>	#define <b>ADJ_OFFSET</b>		0x0001	/* time offset */
+<b><a name="line57">57   </a></b>	#define <b>ADJ_FREQUENCY</b>		0x0002	/* frequency offset */
+<b><a name="line58">58   </a></b>	#define <b>ADJ_MAXERROR</b>		0x0004	/* maximum time error */
+<b><a name="line59">59   </a></b>	#define <b>ADJ_ESTERROR</b>		0x0008	/* estimated time error */
+<b><a name="line60">60   </a></b>	#define <b>ADJ_STATUS</b>		0x0010	/* clock status */
+<b><a name="line61">61   </a></b>	#define <b>ADJ_TIMECONST</b>		0x0020	/* pll time constant */
+<b><a name="line62">62   </a></b>	#define <b>ADJ_TAI</b>			0x0080	/* set TAI offset */
+<b><a name="line63">63   </a></b>	#define <b>ADJ_SETOFFSET</b>		0x0100	/* add 'time' to current time */
+<b><a name="line64">64   </a></b>	#define <b>ADJ_MICRO</b>		0x1000	/* select microsecond resolution */
+<b><a name="line65">65   </a></b>	#define <b>ADJ_NANO</b>		0x2000	/* select nanosecond resolution */
+<b><a name="line66">66   </a></b>	#define <b>ADJ_TICK</b>		0x4000	/* tick value */
+<b><a name="line67">67   </a></b>	#define <b>ADJ_OFFSET_SINGLESHOT</b>	0x8001	/* old-fashioned adjtime */
+<b><a name="line68">68   </a></b>	#define <b>ADJ_OFFSET_SS_READ</b>	0xa001	/* read-only adjtime */
+<b><a name="line69">69   </a></b>	
+<b><a name="line70">70   </a></b>	/* xntp 3.4 compatibility names */
+<b><a name="line71">71   </a></b>	#define <b>MOD_OFFSET</b>	ADJ_OFFSET
+<b><a name="line72">72   </a></b>	#define <b>MOD_FREQUENCY</b>	ADJ_FREQUENCY
+<b><a name="line73">73   </a></b>	#define <b>MOD_MAXERROR</b>	ADJ_MAXERROR
+<b><a name="line74">74   </a></b>	#define <b>MOD_ESTERROR</b>	ADJ_ESTERROR
+<b><a name="line75">75   </a></b>	#define <b>MOD_STATUS</b>	ADJ_STATUS
+<b><a name="line76">76   </a></b>	#define <b>MOD_TIMECONST</b>	ADJ_TIMECONST
+<b><a name="line77">77   </a></b>	#define <b>MOD_CLKB</b>	ADJ_TICK
+<b><a name="line78">78   </a></b>	#define <b>MOD_CLKA</b>	ADJ_OFFSET_SINGLESHOT /* 0x8000 in original */
+<b><a name="line79">79   </a></b>	#define <b>MOD_TAI</b>		ADJ_TAI
+<b><a name="line80">80   </a></b>	#define <b>MOD_MICRO</b>	ADJ_MICRO
+<b><a name="line81">81   </a></b>	#define <b>MOD_NANO</b>	ADJ_NANO
+<b><a name="line82">82   </a></b>	
+<b><a name="line83">83   </a></b>	
+<b><a name="line84">84   </a></b>	/* Status codes (timex.status) */
+<b><a name="line85">85   </a></b>	#define <b>STA_PLL</b>		0x0001	/* enable PLL updates (rw) */
+<b><a name="line86">86   </a></b>	#define <b>STA_PPSFREQ</b>	0x0002	/* enable PPS freq discipline (rw) */
+<b><a name="line87">87   </a></b>	#define <b>STA_PPSTIME</b>	0x0004	/* enable PPS time discipline (rw) */
+<b><a name="line88">88   </a></b>	#define <b>STA_FLL</b>		0x0008	/* select frequency-lock mode (rw) */
+<b><a name="line89">89   </a></b>	
+<b><a name="line90">90   </a></b>	#define <b>STA_INS</b>		0x0010	/* insert leap (rw) */
+<b><a name="line91">91   </a></b>	#define <b>STA_DEL</b>		0x0020	/* delete leap (rw) */
+<b><a name="line92">92   </a></b>	#define <b>STA_UNSYNC</b>	0x0040	/* clock unsynchronized (rw) */
+<b><a name="line93">93   </a></b>	#define <b>STA_FREQHOLD</b>	0x0080	/* hold frequency (rw) */
+<b><a name="line94">94   </a></b>	
+<b><a name="line95">95   </a></b>	#define <b>STA_PPSSIGNAL</b>	0x0100	/* PPS signal present (ro) */
+<b><a name="line96">96   </a></b>	#define <b>STA_PPSJITTER</b>	0x0200	/* PPS signal jitter exceeded (ro) */
+<b><a name="line97">97   </a></b>	#define <b>STA_PPSWANDER</b>	0x0400	/* PPS signal wander exceeded (ro) */
+<b><a name="line98">98   </a></b>	#define <b>STA_PPSERROR</b>	0x0800	/* PPS signal calibration error (ro) */
+<b><a name="line99">99   </a></b>	
+<b><a name="line100">100  </a></b>	#define <b>STA_CLOCKERR</b>	0x1000	/* clock hardware fault (ro) */
+<b><a name="line101">101  </a></b>	#define <b>STA_NANO</b>	0x2000	/* resolution (0 = us, 1 = ns) (ro) */
+<b><a name="line102">102  </a></b>	#define <b>STA_MODE</b>	0x4000	/* mode (0 = PLL, 1 = FLL) (ro) */
+<b><a name="line103">103  </a></b>	#define <b>STA_CLK</b>		0x8000	/* clock source (0 = A, 1 = B) (ro) */
+<b><a name="line104">104  </a></b>	
+<b><a name="line105">105  </a></b>	/* Read-only bits */
+<b><a name="line106">106  </a></b>	#define <b>STA_RONLY</b> (STA_PPSSIGNAL | STA_PPSJITTER | STA_PPSWANDER | \
+<b><a name="line107">107  </a></b>	    STA_PPSERROR | STA_CLOCKERR | STA_NANO | STA_MODE | STA_CLK)
+<b><a name="line108">108  </a></b>	
+<b><a name="line109">109  </a></b>	#endif /* bits/timex.h */
+<b><a name="line110">110  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

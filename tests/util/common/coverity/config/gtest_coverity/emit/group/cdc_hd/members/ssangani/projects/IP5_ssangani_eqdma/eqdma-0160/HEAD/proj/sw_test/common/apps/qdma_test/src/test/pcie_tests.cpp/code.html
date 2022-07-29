@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test/pcie_tests.cpp</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	
+<b><a name="line2">2    </a></b>	#include &lt;array&gt;
+<b><a name="line3">3    </a></b>	#include &lt;cstddef&gt;
+<b><a name="line4">4    </a></b>	#include &lt;cstdint&gt;
+<b><a name="line5">5    </a></b>	#include &lt;iterator&gt;
+<b><a name="line6">6    </a></b>	#include &lt;numeric&gt;
+<b><a name="line7">7    </a></b>	#include &lt;stdexcept&gt;
+<b><a name="line8">8    </a></b>	#include &lt;vector&gt;
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	#include &lt;gtest/gtest.h&gt;
+<b><a name="line11">11   </a></b>	#include &lt;xlnx_gtest_ext.h&gt;
+<b><a name="line12">12   </a></b>	
+<b><a name="line13">13   </a></b>	#include &quot;qdma_device.h&quot;
+<b><a name="line14">14   </a></b>	#include &quot;test_env.h&quot;
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// ===============================Test framework helpers ==========================================
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	extern <a href="../../test_env.h/code.html#line58">test_env</a> env; // in main.cpp
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	class <b>qdma_pcie_test</b>: public <a href="/usr/local/include/gtest/internal/gtest-port.h/code.html#line988">testing</a>::<a href="/usr/local/include/gtest/gtest.h/code.html#line1783">TestWithParam</a>&lt;<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_instance.h/code.html#line32">instance_ext</a>::<a href="../../qdma/qdma_common/qdma_instance_abs.h/code.html#line20">type</a>&gt; {};
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	bool <b>config_bar_access</b>(<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_instance.h/code.html#line32">instance_ext</a>::<a href="../../qdma/qdma_common/qdma_instance_abs.h/code.html#line20">type</a> <b>dev_type</b>=<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_instance.h/code.html#line32">instance_ext</a>::<a href="../../qdma/qdma_common/qdma_instance_abs.h/code.html#line20">type</a>::<a href="../../qdma/qdma_common/qdma_instance_abs.h/code.html#line21">pf</a>)
+<b><a name="line23">23   </a></b>	{
+<b><a name="line24">24   </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line31">device</a>&gt; &amp;<b>devlist</b> = <a href="#line18">env</a>.<a href="../../test_env.h/code.html#line375">get_dev_list</a>(<a href="#line22">dev_type</a>);
+<b><a name="line25">25   </a></b>	
+<b><a name="line26">26   </a></b>	    for(<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>func</b> = 0; func &lt; <a href="#line24">devlist</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>(); func++) {
+<b><a name="line27">27   </a></b>	        auto&amp; <b>qdev</b> = <a href="#line24">devlist</a>[<a href="#line26">func</a>];
+<b><a name="line28">28   </a></b>	        if (!<a href="#line27">qdev</a>.<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a>)
+<b><a name="line29">29   </a></b>	            continue;
+<b><a name="line30">30   </a></b>	
+<b><a name="line31">31   </a></b>	        if (<a href="#line27">qdev</a>.<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line45">dma_bar</a> == nullptr)
+<b><a name="line32">32   </a></b>	            return false;
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	        auto&amp; <b>control_bar</b> = *<a href="#line27">qdev</a>.<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line45">dma_bar</a>;
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	        static const <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>addr</b> = 0x244; // scratch register PF0
+<b><a name="line37">37   </a></b>	
+<b><a name="line38">38   </a></b>	        // precondition
+<b><a name="line39">39   </a></b>	        if (<a href="#line34">control_bar</a>.<a href="../../xlnx/xlnx_dpdk/xlnx_pci.h/code.html#line128">read</a>&lt;<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a>&gt;(<a href="#line36">addr</a>) != 0x0)
+<b><a name="line40">40   </a></b>	            return false;
+<b><a name="line41">41   </a></b>	
+<b><a name="line42">42   </a></b>	        // set all bits
+<b><a name="line43">43   </a></b>	        <a href="#line34">control_bar</a>.<a href="../../xlnx/xlnx_dpdk/xlnx_pci.h/code.html#line123">write</a>(<a href="#line36">addr</a>, 0xffffffff);
+<b><a name="line44">44   </a></b>	        if (<a href="#line34">control_bar</a>.<a href="../../xlnx/xlnx_dpdk/xlnx_pci.h/code.html#line128">read</a>&lt;<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a>&gt;(<a href="#line36">addr</a>) != 0xffffffff)
+<b><a name="line45">45   </a></b>	            return false;
+<b><a name="line46">46   </a></b>	
+<b><a name="line47">47   </a></b>	        // arbitrary pattern
+<b><a name="line48">48   </a></b>	        <a href="#line34">control_bar</a>.<a href="../../xlnx/xlnx_dpdk/xlnx_pci.h/code.html#line123">write</a>(<a href="#line36">addr</a>, 0xdeadbeef);
+<b><a name="line49">49   </a></b>	        if (<a href="#line34">control_bar</a>.<a href="../../xlnx/xlnx_dpdk/xlnx_pci.h/code.html#line128">read</a>&lt;<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a>&gt;(<a href="#line36">addr</a>) != 0xdeadbeef)
+<b><a name="line50">50   </a></b>	            return false;
+<b><a name="line51">51   </a></b>	
+<b><a name="line52">52   </a></b>	        // restore to old value
+<b><a name="line53">53   </a></b>	        <a href="#line34">control_bar</a>.<a href="../../xlnx/xlnx_dpdk/xlnx_pci.h/code.html#line123">write</a>(<a href="#line36">addr</a>, 0x0);
+<b><a name="line54">54   </a></b>	        if (<a href="#line34">control_bar</a>.<a href="../../xlnx/xlnx_dpdk/xlnx_pci.h/code.html#line128">read</a>&lt;<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a>&gt;(<a href="#line36">addr</a>) != 0x0)
+<b><a name="line55">55   </a></b>	            return false;
+<b><a name="line56">56   </a></b>	    }
+<b><a name="line57">57   </a></b>	    return true;
+<b><a name="line58">58   </a></b>	}
+<b><a name="line59">59   </a></b>	
+<b><a name="line60">60   </a></b>	bool <b>user_bar_access</b>(<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_instance.h/code.html#line32">instance_ext</a>::<a href="../../qdma/qdma_common/qdma_instance_abs.h/code.html#line20">type</a> <b>dev_type</b>=<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_instance.h/code.html#line32">instance_ext</a>::<a href="../../qdma/qdma_common/qdma_instance_abs.h/code.html#line20">type</a>::<a href="../../qdma/qdma_common/qdma_instance_abs.h/code.html#line21">pf</a>)
+<b><a name="line61">61   </a></b>	{
+<b><a name="line62">62   </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line31">device</a>&gt; &amp;<b>devlist</b> = <a href="#line18">env</a>.<a href="../../test_env.h/code.html#line375">get_dev_list</a>(<a href="#line60">dev_type</a>);
+<b><a name="line63">63   </a></b>	
+<b><a name="line64">64   </a></b>	    for(<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>func</b> = 0; func &lt; <a href="#line62">devlist</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>(); func++) {
+<b><a name="line65">65   </a></b>	        auto&amp; <b>qdev</b> = <a href="#line62">devlist</a>[<a href="#line64">func</a>];
+<b><a name="line66">66   </a></b>	        if (!<a href="#line65">qdev</a>.<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a>)
+<b><a name="line67">67   </a></b>	            continue;
+<b><a name="line68">68   </a></b>	
+<b><a name="line69">69   </a></b>	        if (<a href="#line65">qdev</a>.<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line46">user_bar</a> == nullptr)
+<b><a name="line70">70   </a></b>	            return false;
+<b><a name="line71">71   </a></b>	
+<b><a name="line72">72   </a></b>	        auto&amp; <b>user_bar</b> = *<a href="#line65">qdev</a>.<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line46">user_bar</a>;
+<b><a name="line73">73   </a></b>	
+<b><a name="line74">74   </a></b>	        <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/array/code.html#line89">array</a>&lt;<a href="/usr/include/stdint.h/code.html#line48">uint8_t</a>, 0x100&gt; <b>buffer</b> = { { 0 } };
+<b><a name="line75">75   </a></b>	        <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_numeric.h/code.html#line82">iota</a>(<a href="/usr/include/c++/5/bits/range_access.h/code.html#line48">begin</a>(<a href="#line74">buffer</a>), <a href="/usr/include/c++/5/bits/range_access.h/code.html#line68">end</a>(<a href="#line74">buffer</a>), <a href="/usr/include/stdint.h/code.html#line48">uint8_t</a>(0));
+<b><a name="line76">76   </a></b>	
+<b><a name="line77">77   </a></b>	        <a href="#line72">user_bar</a>.<a href="../../xlnx/xlnx_dpdk/xlnx_pci.h/code.html#line134">write</a>(0x100, <a href="#line74">buffer</a>.<a href="/usr/include/c++/5/array/code.html#line229">data</a>(), <a href="#line74">buffer</a>.<a href="/usr/include/c++/5/array/code.html#line170">size</a>());
+<b><a name="line78">78   </a></b>	        <a href="#line74">buffer</a>.<a href="/usr/include/c++/5/array/code.html#line111">fill</a>(0xff);
+<b><a name="line79">79   </a></b>	        <a href="#line72">user_bar</a>.<a href="../../xlnx/xlnx_dpdk/xlnx_pci.h/code.html#line139">read</a>(0x100, <a href="#line74">buffer</a>.<a href="/usr/include/c++/5/array/code.html#line229">data</a>(), <a href="#line74">buffer</a>.<a href="/usr/include/c++/5/array/code.html#line170">size</a>());
+<b><a name="line80">80   </a></b>	
+<b><a name="line81">81   </a></b>	        for (unsigned <b>i</b> = 0; i &lt; <a href="#line74">buffer</a>.<a href="/usr/include/c++/5/array/code.html#line170">size</a>(); ++i) {
+<b><a name="line82">82   </a></b>	            if (<a href="#line74">buffer</a>[<a href="#line81">i</a>] != <a href="#line81">i</a>)
+<b><a name="line83">83   </a></b>	                return false;
+<b><a name="line84">84   </a></b>	        }
+<b><a name="line85">85   </a></b>	    }
+<b><a name="line86">86   </a></b>	    return true;
+<b><a name="line87">87   </a></b>	}
+<b><a name="line88">88   </a></b>	
+<b><a name="line89">89   </a></b>	bool <b>bypass_bar_access</b>(<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_instance.h/code.html#line32">instance_ext</a>::<a href="../../qdma/qdma_common/qdma_instance_abs.h/code.html#line20">type</a> <b>dev_type</b>=<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_instance.h/code.html#line32">instance_ext</a>::<a href="../../qdma/qdma_common/qdma_instance_abs.h/code.html#line20">type</a>::<a href="../../qdma/qdma_common/qdma_instance_abs.h/code.html#line21">pf</a>)
+<b><a name="line90">90   </a></b>	{
+<b><a name="line91">91   </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line31">device</a>&gt; &amp;<b>devlist</b> = <a href="#line18">env</a>.<a href="../../test_env.h/code.html#line375">get_dev_list</a>(<a href="#line89">dev_type</a>);
+<b><a name="line92">92   </a></b>	
+<b><a name="line93">93   </a></b>	    for(<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>func</b> = 0; func &lt; <a href="#line91">devlist</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>(); func++) {
+<b><a name="line94">94   </a></b>	        auto&amp; <b>qdev</b> = <a href="#line91">devlist</a>[<a href="#line93">func</a>];
+<b><a name="line95">95   </a></b>	        if (!<a href="#line94">qdev</a>.<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a>)
+<b><a name="line96">96   </a></b>	            continue;
+<b><a name="line97">97   </a></b>	
+<b><a name="line98">98   </a></b>	        if (<a href="#line94">qdev</a>.<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line47">bypass_bar</a> == nullptr)
+<b><a name="line99">99   </a></b>	            return false;
+<b><a name="line100">100  </a></b>	
+<b><a name="line101">101  </a></b>	        auto&amp; <b>bypass_bar</b> = *<a href="#line94">qdev</a>.<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line47">bypass_bar</a>;
+<b><a name="line102">102  </a></b>	
+<b><a name="line103">103  </a></b>	        <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/array/code.html#line89">array</a>&lt;<a href="/usr/include/stdint.h/code.html#line48">uint8_t</a>, 0x100&gt; <b>buffer</b> = { { 0 } };
+<b><a name="line104">104  </a></b>	        <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_numeric.h/code.html#line82">iota</a>(<a href="/usr/include/c++/5/bits/range_access.h/code.html#line48">begin</a>(<a href="#line103">buffer</a>), <a href="/usr/include/c++/5/bits/range_access.h/code.html#line68">end</a>(<a href="#line103">buffer</a>), <a href="/usr/include/stdint.h/code.html#line48">uint8_t</a>(0));
+<b><a name="line105">105  </a></b>	
+<b><a name="line106">106  </a></b>	        <a href="#line101">bypass_bar</a>.<a href="../../xlnx/xlnx_dpdk/xlnx_pci.h/code.html#line134">write</a>(0x100, <a href="#line103">buffer</a>.<a href="/usr/include/c++/5/array/code.html#line229">data</a>(), <a href="#line103">buffer</a>.<a href="/usr/include/c++/5/array/code.html#line170">size</a>());
+<b><a name="line107">107  </a></b>	        <a href="#line103">buffer</a>.<a href="/usr/include/c++/5/array/code.html#line111">fill</a>(0xff);
+<b><a name="line108">108  </a></b>	        <a href="#line101">bypass_bar</a>.<a href="../../xlnx/xlnx_dpdk/xlnx_pci.h/code.html#line139">read</a>(0x100, <a href="#line103">buffer</a>.<a href="/usr/include/c++/5/array/code.html#line229">data</a>(), <a href="#line103">buffer</a>.<a href="/usr/include/c++/5/array/code.html#line170">size</a>());
+<b><a name="line109">109  </a></b>	
+<b><a name="line110">110  </a></b>	        for (unsigned <b>i</b> = 0; i &lt; <a href="#line103">buffer</a>.<a href="/usr/include/c++/5/array/code.html#line170">size</a>(); ++i) {
+<b><a name="line111">111  </a></b>	            if (<a href="#line103">buffer</a>[<a href="#line110">i</a>] != <a href="#line110">i</a>)
+<b><a name="line112">112  </a></b>	                return false;
+<b><a name="line113">113  </a></b>	        }
+<b><a name="line114">114  </a></b>	    }
+<b><a name="line115">115  </a></b>	    return true;
+<b><a name="line116">116  </a></b>	}
+<b><a name="line117">117  </a></b>	
+<b><a name="line118">118  </a></b>	<a href="/usr/local/include/gtest/gtest-param-test.h/code.html#line1380">TEST_P</a>(qdma_pcie_test, PCIE001_config_bar_access)
+<b><a name="line119">119  </a></b>	{
+<b><a name="line120">120  </a></b>	    <a href="/usr/local/include/gtest/gtest.h/code.html#line1865">ASSERT_TRUE</a>(config_bar_access(GetParam()));
+<b><a name="line121">121  </a></b>	}
+<b><a name="line122">122  </a></b>	
+<b><a name="line123">123  </a></b>	<a href="/usr/local/include/gtest/gtest-param-test.h/code.html#line1380">TEST_P</a>(qdma_pcie_test, PCIE002_user_bar_access)
+<b><a name="line124">124  </a></b>	{
+<b><a name="line125">125  </a></b>	    <a href="/usr/local/include/gtest/gtest.h/code.html#line1865">ASSERT_TRUE</a>(user_bar_access(GetParam()));
+<b><a name="line126">126  </a></b>	}
+<b><a name="line127">127  </a></b>	
+<b><a name="line128">128  </a></b>	<a href="/usr/local/include/gtest/gtest-param-test.h/code.html#line1380">TEST_P</a>(qdma_pcie_test, PCIE003_bypass_bar_access)
+<b><a name="line129">129  </a></b>	{
+<b><a name="line130">130  </a></b>	    <a href="/usr/local/include/gtest/gtest.h/code.html#line1865">ASSERT_TRUE</a>(bypass_bar_access(GetParam()));
+<b><a name="line131">131  </a></b>	}
+<b><a name="line132">132  </a></b>	
+<b><a name="line133">133  </a></b>	<a href="/usr/local/include/gtest/gtest-param-test.h/code.html#line1421">INSTANTIATE_TEST_CASE_P</a>(PCIE_tests, qdma_pcie_test,
+<b><a name="line134">134  </a></b>	            ::testing::Values(qdma::instance_ext::type::pf));
+<b><a name="line135">135  </a></b>	//TO Do
+<b><a name="line136">136  </a></b>	/** Disabling the VF PCI test cases, as the DMA Bar scratch register
+<b><a name="line137">137  </a></b>	     is a global register which is not accessible for VFs
+<b><a name="line138">138  </a></b>	     bypass bar and user bar access checks are also not done for VFs
+<b><a name="line139">139  </a></b>	     This test case will be enabled, when HW team provides the scratch register
+<b><a name="line140">140  </a></b>	     for VFs
+<b><a name="line141">141  </a></b>	*/
+<b><a name="line142">142  </a></b>	<a href="/usr/local/include/gtest/gtest-param-test.h/code.html#line1421">INSTANTIATE_TEST_CASE_P</a>(DISABLED_VF_PCIE_tests, qdma_pcie_test,
+<b><a name="line143">143  </a></b>	            ::testing::Values(qdma::instance_ext::type::vf));
+<b><a name="line144">144  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

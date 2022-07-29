@@ -1,0 +1,100 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/sigthread.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Signal handling function for threaded programs.
+<b><a name="line2">2    </a></b>	   Copyright (C) 1998-2016 Free Software Foundation, Inc.
+<b><a name="line3">3    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line6">6    </a></b>	   modify it under the terms of the GNU Lesser General Public License as
+<b><a name="line7">7    </a></b>	   published by the Free Software Foundation; either version 2.1 of the
+<b><a name="line8">8    </a></b>	   License, or (at your option) any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line13">13   </a></b>	   Lesser General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line16">16   </a></b>	   License along with the GNU C Library; see the file COPYING.LIB.  If
+<b><a name="line17">17   </a></b>	   not, see &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	#ifndef _BITS_SIGTHREAD_H
+<b><a name="line20">20   </a></b>	#define <b>_BITS_SIGTHREAD_H</b>	1
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	#if !defined <a href="../../../signal.h/code.html#line25">_SIGNAL_H</a> &amp;&amp; !defined <a href="../../../pthread.h/code.html#line19">_PTHREAD_H</a>
+<b><a name="line23">23   </a></b>	# error &quot;Never include this file directly.  Use &lt;pthread.h&gt; instead&quot;
+<b><a name="line24">24   </a></b>	#endif
+<b><a name="line25">25   </a></b>	
+<b><a name="line26">26   </a></b>	/* Functions for handling signals. */
+<b><a name="line27">27   </a></b>	
+<b><a name="line28">28   </a></b>	/* Modify the signal mask for the calling thread.  The arguments have
+<b><a name="line29">29   </a></b>	   the same meaning as for sigprocmask(2). */
+<b><a name="line30">30   </a></b>	extern int pthread_sigmask (int __how,
+<b><a name="line31">31   </a></b>				    const <a href="../sigset.h/code.html#line30">__sigset_t</a> *__restrict __newmask,
+<b><a name="line32">32   </a></b>				    <a href="../sigset.h/code.html#line30">__sigset_t</a> *__restrict __oldmask)<a href="../../sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	/* Send signal SIGNO to the given thread. */
+<b><a name="line35">35   </a></b>	extern int pthread_kill (<a href="../pthreadtypes.h/code.html#line60">pthread_t</a> __threadid, int __signo) <a href="../../sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	#ifdef <a href="../../../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line38">38   </a></b>	/* Queue signal and data to a thread.  */
+<b><a name="line39">39   </a></b>	extern int pthread_sigqueue (<a href="../pthreadtypes.h/code.html#line60">pthread_t</a> __threadid, int __signo,
+<b><a name="line40">40   </a></b>				     const union <a href="../siginfo.h/code.html#line32">sigval</a> __value) <a href="../../sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line41">41   </a></b>	#endif
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	#endif	/* bits/sigthread.h */
+<b><a name="line44">44   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

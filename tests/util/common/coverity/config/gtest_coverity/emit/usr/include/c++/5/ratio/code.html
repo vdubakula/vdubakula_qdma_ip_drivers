@@ -1,0 +1,595 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/ratio</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// ratio -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2008-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the 
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the 
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the 
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file include/ratio
+<b><a name="line26">26   </a></b>	 *  This is a Standard C++ Library header.
+<b><a name="line27">27   </a></b>	 */
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	#ifndef _GLIBCXX_RATIO
+<b><a name="line30">30   </a></b>	#define <b>_GLIBCXX_RATIO</b> 1
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	#pragma GCC system_header
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	#if __cplusplus &lt; 201103L
+<b><a name="line35">35   </a></b>	# include &lt;bits/c++0x_warning.h&gt;
+<b><a name="line36">36   </a></b>	#else
+<b><a name="line37">37   </a></b>	
+<b><a name="line38">38   </a></b>	#include &lt;type_traits&gt;
+<b><a name="line39">39   </a></b>	#include &lt;cstdint&gt;
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	#ifdef <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1347">_GLIBCXX_USE_C99_STDINT_TR1</a>
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	namespace <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line44">44   </a></b>	{
+<b><a name="line45">45   </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line46">46   </a></b>	
+<b><a name="line47">47   </a></b>	  /**
+<b><a name="line48">48   </a></b>	   * @defgroup ratio Rational Arithmetic
+<b><a name="line49">49   </a></b>	   * @ingroup utilities
+<b><a name="line50">50   </a></b>	   *
+<b><a name="line51">51   </a></b>	   * Compile time representation of finite rational numbers.
+<b><a name="line52">52   </a></b>	   * @{
+<b><a name="line53">53   </a></b>	   */
+<b><a name="line54">54   </a></b>	
+<b><a name="line55">55   </a></b>	  template&lt;<a href="../../../stdint.h/code.html#line134">intmax_t</a> <b>_Pn</b>&gt;
+<b><a name="line56">56   </a></b>	    struct __static_sign
+<b><a name="line57">57   </a></b>	    : <a href="../type_traits/code.html#line69">integral_constant</a>&lt;<a href="../../../stdint.h/code.html#line134">intmax_t</a>, (<a href="#line55">_Pn</a> &lt; 0) ? -1 : 1&gt;
+<b><a name="line58">58   </a></b>	    { };
+<b><a name="line59">59   </a></b>	
+<b><a name="line60">60   </a></b>	  template&lt;<a href="../../../stdint.h/code.html#line134">intmax_t</a> <b>_Pn</b>&gt;
+<b><a name="line61">61   </a></b>	    struct __static_abs
+<b><a name="line62">62   </a></b>	    : <a href="../type_traits/code.html#line69">integral_constant</a>&lt;<a href="../../../stdint.h/code.html#line134">intmax_t</a>, <a href="#line60">_Pn</a> * <a href="#line56">__static_sign</a>&lt;<a href="#line60">_Pn</a>&gt;::<a href="../type_traits/code.html#line71">value</a>&gt;
+<b><a name="line63">63   </a></b>	    { };
+<b><a name="line64">64   </a></b>	
+<b><a name="line65">65   </a></b>	  template&lt;<a href="../../../stdint.h/code.html#line134">intmax_t</a> <b>_Pn</b>, <a href="../../../stdint.h/code.html#line134">intmax_t</a> <b>_Qn</b>&gt;
+<b><a name="line66">66   </a></b>	    struct __static_gcd
+<b><a name="line67">67   </a></b>	    : <a href="#line66">__static_gcd</a>&lt;<a href="#line65">_Qn</a>, (<a href="#line65">_Pn</a> % <a href="#line65">_Qn</a>)&gt;
+<b><a name="line68">68   </a></b>	    { };
+<b><a name="line69">69   </a></b>	
+<b><a name="line70">70   </a></b>	  template&lt;<a href="../../../stdint.h/code.html#line134">intmax_t</a> <b>_Pn</b>&gt;
+<b><a name="line71">71   </a></b>	    struct <b>__static_gcd</b>&lt;<a href="#line70">_Pn</a>, 0&gt;
+<b><a name="line72">72   </a></b>	    : <a href="../type_traits/code.html#line69">integral_constant</a>&lt;<a href="../../../stdint.h/code.html#line134">intmax_t</a>, <a href="#line61">__static_abs</a>&lt;<a href="#line70">_Pn</a>&gt;::<a href="../type_traits/code.html#line71">value</a>&gt;
+<b><a name="line73">73   </a></b>	    { };
+<b><a name="line74">74   </a></b>	
+<b><a name="line75">75   </a></b>	  template&lt;<a href="../../../stdint.h/code.html#line134">intmax_t</a> <b>_Qn</b>&gt;
+<b><a name="line76">76   </a></b>	    struct <b>__static_gcd</b>&lt;0, <a href="#line75">_Qn</a>&gt;
+<b><a name="line77">77   </a></b>	    : <a href="../type_traits/code.html#line69">integral_constant</a>&lt;<a href="../../../stdint.h/code.html#line134">intmax_t</a>, <a href="#line61">__static_abs</a>&lt;<a href="#line75">_Qn</a>&gt;::value&gt;
+<b><a name="line78">78   </a></b>	    { };
+<b><a name="line79">79   </a></b>	
+<b><a name="line80">80   </a></b>	  // Let c = 2^(half # of bits in an intmax_t)
+<b><a name="line81">81   </a></b>	  // then we find a1, a0, b1, b0 s.t. N = a1*c + a0, M = b1*c + b0
+<b><a name="line82">82   </a></b>	  // The multiplication of N and M becomes,
+<b><a name="line83">83   </a></b>	  // N * M = (a1 * b1)c^2 + (a0 * b1 + b0 * a1)c + a0 * b0
+<b><a name="line84">84   </a></b>	  // Multiplication is safe if each term and the sum of the terms
+<b><a name="line85">85   </a></b>	  // is representable by intmax_t.
+<b><a name="line86">86   </a></b>	  template&lt;<a href="../../../stdint.h/code.html#line134">intmax_t</a> <b>_Pn</b>, <a href="../../../stdint.h/code.html#line134">intmax_t</a> <b>_Qn</b>&gt;
+<b><a name="line87">87   </a></b>	    struct __safe_multiply
+<b><a name="line88">88   </a></b>	    {
+<b><a name="line89">89   </a></b>	    private:
+<b><a name="line90">90   </a></b>	      static const <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __c = <a href="../../../stdint.h/code.html#line135">uintmax_t</a>(1) &lt;&lt; (sizeof(<a href="../../../stdint.h/code.html#line134">intmax_t</a>) * 4);
+<b><a name="line91">91   </a></b>	
+<b><a name="line92">92   </a></b>	      static const <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __a0 = <a href="#line61">__static_abs</a>&lt;<a href="#line86">_Pn</a>&gt;::<a href="../type_traits/code.html#line71">value</a> % <a href="#line90">__c</a>;
+<b><a name="line93">93   </a></b>	      static const <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __a1 = <a href="#line61">__static_abs</a>&lt;<a href="#line86">_Pn</a>&gt;::<a href="../type_traits/code.html#line71">value</a> / <a href="#line90">__c</a>;
+<b><a name="line94">94   </a></b>	      static const <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __b0 = <a href="#line61">__static_abs</a>&lt;<a href="#line86">_Qn</a>&gt;::<a href="../type_traits/code.html#line71">value</a> % <a href="#line90">__c</a>;
+<b><a name="line95">95   </a></b>	      static const <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __b1 = <a href="#line61">__static_abs</a>&lt;<a href="#line86">_Qn</a>&gt;::<a href="../type_traits/code.html#line71">value</a> / <a href="#line90">__c</a>;
+<b><a name="line96">96   </a></b>	
+<b><a name="line97">97   </a></b>	      static_assert(<a href="#line93">__a1</a> == 0 || <a href="#line95">__b1</a> == 0, 
+<b><a name="line98">98   </a></b>			    &quot;overflow in multiplication&quot;);
+<b><a name="line99">99   </a></b>	      static_assert(<a href="#line92">__a0</a> * <a href="#line95">__b1</a> + <a href="#line94">__b0</a> * <a href="#line93">__a1</a> &lt; (<a href="#line90">__c</a> &gt;&gt; 1), 
+<b><a name="line100">100  </a></b>			    &quot;overflow in multiplication&quot;);
+<b><a name="line101">101  </a></b>	      static_assert(<a href="#line94">__b0</a> * <a href="#line92">__a0</a> &lt;= <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line711">__INTMAX_MAX__</a>, 
+<b><a name="line102">102  </a></b>			    &quot;overflow in multiplication&quot;);
+<b><a name="line103">103  </a></b>	      static_assert((<a href="#line92">__a0</a> * <a href="#line95">__b1</a> + <a href="#line94">__b0</a> * <a href="#line93">__a1</a>) * <a href="#line90">__c</a>
+<b><a name="line104">104  </a></b>			    &lt;= <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line711">__INTMAX_MAX__</a> -  <a href="#line94">__b0</a> * <a href="#line92">__a0</a>,
+<b><a name="line105">105  </a></b>			    &quot;overflow in multiplication&quot;);
+<b><a name="line106">106  </a></b>	
+<b><a name="line107">107  </a></b>	    public:
+<b><a name="line108">108  </a></b>	      static const <a href="../../../stdint.h/code.html#line134">intmax_t</a> value = <a href="#line86">_Pn</a> * <a href="#line86">_Qn</a>;
+<b><a name="line109">109  </a></b>	    };
+<b><a name="line110">110  </a></b>	
+<b><a name="line111">111  </a></b>	  // Some double-precision utilities, where numbers are represented as
+<b><a name="line112">112  </a></b>	  // __hi*2^(8*sizeof(uintmax_t)) + __lo.
+<b><a name="line113">113  </a></b>	  template&lt;<a href="../../../stdint.h/code.html#line135">uintmax_t</a> <b>__hi1</b>, <a href="../../../stdint.h/code.html#line135">uintmax_t</a> <b>__lo1</b>, <a href="../../../stdint.h/code.html#line135">uintmax_t</a> <b>__hi2</b>, <a href="../../../stdint.h/code.html#line135">uintmax_t</a> <b>__lo2</b>&gt;
+<b><a name="line114">114  </a></b>	    struct <b>__big_less</b>
+<b><a name="line115">115  </a></b>	    : <a href="../type_traits/code.html#line69">integral_constant</a>&lt;bool, (<a href="#line113">__hi1</a> &lt; <a href="#line113">__hi2</a>
+<b><a name="line116">116  </a></b>				       || (<a href="#line113">__hi1</a> == <a href="#line113">__hi2</a> &amp;&amp; <a href="#line113">__lo1</a> &lt; <a href="#line113">__lo2</a>))&gt;
+<b><a name="line117">117  </a></b>	    { };
+<b><a name="line118">118  </a></b>	
+<b><a name="line119">119  </a></b>	  template&lt;<a href="../../../stdint.h/code.html#line135">uintmax_t</a> <b>__hi1</b>, <a href="../../../stdint.h/code.html#line135">uintmax_t</a> <b>__lo1</b>, <a href="../../../stdint.h/code.html#line135">uintmax_t</a> <b>__hi2</b>, <a href="../../../stdint.h/code.html#line135">uintmax_t</a> <b>__lo2</b>&gt;
+<b><a name="line120">120  </a></b>	    struct <b>__big_add</b>
+<b><a name="line121">121  </a></b>	    {
+<b><a name="line122">122  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __lo = <a href="#line119">__lo1</a> + <a href="#line119">__lo2</a>;
+<b><a name="line123">123  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __hi = (<a href="#line119">__hi1</a> + <a href="#line119">__hi2</a> +
+<b><a name="line124">124  </a></b>						 (<a href="#line119">__lo1</a> + <a href="#line119">__lo2</a> &lt; <a href="#line119">__lo1</a>)); // carry
+<b><a name="line125">125  </a></b>	    };
+<b><a name="line126">126  </a></b>	
+<b><a name="line127">127  </a></b>	  // Subtract a number from a bigger one.
+<b><a name="line128">128  </a></b>	  template&lt;<a href="../../../stdint.h/code.html#line135">uintmax_t</a> <b>__hi1</b>, <a href="../../../stdint.h/code.html#line135">uintmax_t</a> <b>__lo1</b>, <a href="../../../stdint.h/code.html#line135">uintmax_t</a> <b>__hi2</b>, <a href="../../../stdint.h/code.html#line135">uintmax_t</a> <b>__lo2</b>&gt;
+<b><a name="line129">129  </a></b>	    struct <b>__big_sub</b>
+<b><a name="line130">130  </a></b>	    {
+<b><a name="line131">131  </a></b>	      static_assert(!<a href="#line114">__big_less</a>&lt;<a href="#line128">__hi1</a>, <a href="#line128">__lo1</a>, <a href="#line128">__hi2</a>, <a href="#line128">__lo2</a>&gt;::value,
+<b><a name="line132">132  </a></b>			    &quot;Internal library error&quot;);
+<b><a name="line133">133  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __lo = <a href="#line128">__lo1</a> - <a href="#line128">__lo2</a>;
+<b><a name="line134">134  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __hi = (<a href="#line128">__hi1</a> - <a href="#line128">__hi2</a> -
+<b><a name="line135">135  </a></b>						 (<a href="#line128">__lo1</a> &lt; <a href="#line128">__lo2</a>)); // carry
+<b><a name="line136">136  </a></b>	    };
+<b><a name="line137">137  </a></b>	
+<b><a name="line138">138  </a></b>	  // Same principle as __safe_multiply.
+<b><a name="line139">139  </a></b>	  template&lt;<a href="../../../stdint.h/code.html#line135">uintmax_t</a> <b>__x</b>, <a href="../../../stdint.h/code.html#line135">uintmax_t</a> <b>__y</b>&gt;
+<b><a name="line140">140  </a></b>	    struct <b>__big_mul</b>
+<b><a name="line141">141  </a></b>	    {
+<b><a name="line142">142  </a></b>	    private:
+<b><a name="line143">143  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __c = <a href="../../../stdint.h/code.html#line135">uintmax_t</a>(1) &lt;&lt; (sizeof(<a href="../../../stdint.h/code.html#line134">intmax_t</a>) * 4);
+<b><a name="line144">144  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __x0 = <a href="#line139">__x</a> % <a href="#line143">__c</a>;
+<b><a name="line145">145  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __x1 = <a href="#line139">__x</a> / <a href="#line143">__c</a>;
+<b><a name="line146">146  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __y0 = <a href="#line139">__y</a> % <a href="#line143">__c</a>;
+<b><a name="line147">147  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __y1 = <a href="#line139">__y</a> / <a href="#line143">__c</a>;
+<b><a name="line148">148  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __x0y0 = <a href="#line144">__x0</a> * <a href="#line146">__y0</a>;
+<b><a name="line149">149  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __x0y1 = <a href="#line144">__x0</a> * <a href="#line147">__y1</a>;
+<b><a name="line150">150  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __x1y0 = <a href="#line145">__x1</a> * <a href="#line146">__y0</a>;
+<b><a name="line151">151  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __x1y1 = <a href="#line145">__x1</a> * <a href="#line147">__y1</a>;
+<b><a name="line152">152  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __mix = <a href="#line149">__x0y1</a> + <a href="#line150">__x1y0</a>; // possible carry...
+<b><a name="line153">153  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __mix_lo = <a href="#line152">__mix</a> * <a href="#line143">__c</a>;
+<b><a name="line154">154  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __mix_hi
+<b><a name="line155">155  </a></b>	      = <a href="#line152">__mix</a> / <a href="#line143">__c</a> + ((<a href="#line152">__mix</a> &lt; <a href="#line149">__x0y1</a>) ? <a href="#line143">__c</a> : 0); // ... added here
+<b><a name="line156">156  </a></b>	      typedef <a href="#line120">__big_add</a>&lt;<a href="#line154">__mix_hi</a>, <a href="#line153">__mix_lo</a>, <a href="#line151">__x1y1</a>, <a href="#line148">__x0y0</a>&gt; <b>_Res</b>;
+<b><a name="line157">157  </a></b>	    public:
+<b><a name="line158">158  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __hi = <a href="#line156">_Res</a>::__hi;
+<b><a name="line159">159  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __lo = <a href="#line156">_Res</a>::__lo;
+<b><a name="line160">160  </a></b>	    };
+<b><a name="line161">161  </a></b>	
+<b><a name="line162">162  </a></b>	  // Adapted from __udiv_qrnnd_c in longlong.h
+<b><a name="line163">163  </a></b>	  // This version assumes that the high bit of __d is 1.
+<b><a name="line164">164  </a></b>	  template&lt;<a href="../../../stdint.h/code.html#line135">uintmax_t</a> <b>__n1</b>, <a href="../../../stdint.h/code.html#line135">uintmax_t</a> <b>__n0</b>, <a href="../../../stdint.h/code.html#line135">uintmax_t</a> <b>__d</b>&gt;
+<b><a name="line165">165  </a></b>	    struct <b>__big_div_impl</b>
+<b><a name="line166">166  </a></b>	    {
+<b><a name="line167">167  </a></b>	    private:
+<b><a name="line168">168  </a></b>	      static_assert(<a href="#line164">__d</a> &gt;= (<a href="../../../stdint.h/code.html#line135">uintmax_t</a>(1) &lt;&lt; (sizeof(<a href="../../../stdint.h/code.html#line134">intmax_t</a>) * 8 - 1)),
+<b><a name="line169">169  </a></b>			    &quot;Internal library error&quot;);
+<b><a name="line170">170  </a></b>	      static_assert(<a href="#line164">__n1</a> &lt; <a href="#line164">__d</a>, &quot;Internal library error&quot;);
+<b><a name="line171">171  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __c = <a href="../../../stdint.h/code.html#line135">uintmax_t</a>(1) &lt;&lt; (sizeof(<a href="../../../stdint.h/code.html#line134">intmax_t</a>) * 4);
+<b><a name="line172">172  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __d1 = <a href="#line164">__d</a> / <a href="#line171">__c</a>;
+<b><a name="line173">173  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __d0 = <a href="#line164">__d</a> % <a href="#line171">__c</a>;
+<b><a name="line174">174  </a></b>	
+<b><a name="line175">175  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __q1x = <a href="#line164">__n1</a> / <a href="#line172">__d1</a>;
+<b><a name="line176">176  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __r1x = <a href="#line164">__n1</a> % <a href="#line172">__d1</a>;
+<b><a name="line177">177  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __m = <a href="#line175">__q1x</a> * <a href="#line173">__d0</a>;
+<b><a name="line178">178  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __r1y = <a href="#line176">__r1x</a> * <a href="#line171">__c</a> + <a href="#line164">__n0</a> / <a href="#line171">__c</a>;
+<b><a name="line179">179  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __r1z = <a href="#line178">__r1y</a> + <a href="#line164">__d</a>;
+<b><a name="line180">180  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __r1
+<b><a name="line181">181  </a></b>	      = ((<a href="#line178">__r1y</a> &lt; <a href="#line177">__m</a>) ? ((<a href="#line179">__r1z</a> &gt;= <a href="#line164">__d</a>) &amp;&amp; (<a href="#line179">__r1z</a> &lt; <a href="#line177">__m</a>))
+<b><a name="line182">182  </a></b>		 ? (<a href="#line179">__r1z</a> + <a href="#line164">__d</a>) : <a href="#line179">__r1z</a> : <a href="#line178">__r1y</a>) - <a href="#line177">__m</a>;
+<b><a name="line183">183  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __q1
+<b><a name="line184">184  </a></b>	      = <a href="#line175">__q1x</a> - ((<a href="#line178">__r1y</a> &lt; <a href="#line177">__m</a>)
+<b><a name="line185">185  </a></b>			 ? ((<a href="#line179">__r1z</a> &gt;= <a href="#line164">__d</a>) &amp;&amp; (<a href="#line179">__r1z</a> &lt; <a href="#line177">__m</a>)) ? 2 : 1 : 0);
+<b><a name="line186">186  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __q0x = <a href="#line180">__r1</a> / <a href="#line172">__d1</a>;
+<b><a name="line187">187  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __r0x = <a href="#line180">__r1</a> % <a href="#line172">__d1</a>;
+<b><a name="line188">188  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __n = <a href="#line186">__q0x</a> * <a href="#line173">__d0</a>;
+<b><a name="line189">189  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __r0y = <a href="#line187">__r0x</a> * <a href="#line171">__c</a> + <a href="#line164">__n0</a> % <a href="#line171">__c</a>;
+<b><a name="line190">190  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __r0z = <a href="#line189">__r0y</a> + <a href="#line164">__d</a>;
+<b><a name="line191">191  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __r0
+<b><a name="line192">192  </a></b>	      = ((<a href="#line189">__r0y</a> &lt; <a href="#line188">__n</a>) ? ((<a href="#line190">__r0z</a> &gt;= <a href="#line164">__d</a>) &amp;&amp; (<a href="#line190">__r0z</a> &lt; <a href="#line188">__n</a>))
+<b><a name="line193">193  </a></b>		 ? (<a href="#line190">__r0z</a> + <a href="#line164">__d</a>) : <a href="#line190">__r0z</a> : <a href="#line189">__r0y</a>) - <a href="#line188">__n</a>;
+<b><a name="line194">194  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __q0
+<b><a name="line195">195  </a></b>	      = <a href="#line186">__q0x</a> - ((<a href="#line189">__r0y</a> &lt; <a href="#line188">__n</a>) ? ((<a href="#line190">__r0z</a> &gt;= <a href="#line164">__d</a>)
+<b><a name="line196">196  </a></b>					  &amp;&amp; (<a href="#line190">__r0z</a> &lt; <a href="#line188">__n</a>)) ? 2 : 1 : 0);
+<b><a name="line197">197  </a></b>	
+<b><a name="line198">198  </a></b>	    public:
+<b><a name="line199">199  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __quot = <a href="#line183">__q1</a> * <a href="#line171">__c</a> + <a href="#line194">__q0</a>;
+<b><a name="line200">200  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __rem = <a href="#line191">__r0</a>;
+<b><a name="line201">201  </a></b>	
+<b><a name="line202">202  </a></b>	    private:
+<b><a name="line203">203  </a></b>	      typedef <a href="#line140">__big_mul</a>&lt;<a href="#line199">__quot</a>, <a href="#line164">__d</a>&gt; <b>_Prod</b>;
+<b><a name="line204">204  </a></b>	      typedef <a href="#line120">__big_add</a>&lt;<a href="#line203">_Prod</a>::__hi, <a href="#line203">_Prod</a>::__lo, 0, <a href="#line200">__rem</a>&gt; <b>_Sum</b>;
+<b><a name="line205">205  </a></b>	      static_assert(<a href="#line204">_Sum</a>::__hi == <a href="#line164">__n1</a> &amp;&amp; <a href="#line204">_Sum</a>::__lo == <a href="#line164">__n0</a>,
+<b><a name="line206">206  </a></b>			    &quot;Internal library error&quot;);
+<b><a name="line207">207  </a></b>	  };
+<b><a name="line208">208  </a></b>	
+<b><a name="line209">209  </a></b>	  template&lt;<a href="../../../stdint.h/code.html#line135">uintmax_t</a> <b>__n1</b>, <a href="../../../stdint.h/code.html#line135">uintmax_t</a> <b>__n0</b>, <a href="../../../stdint.h/code.html#line135">uintmax_t</a> <b>__d</b>&gt;
+<b><a name="line210">210  </a></b>	    struct <b>__big_div</b>
+<b><a name="line211">211  </a></b>	    {
+<b><a name="line212">212  </a></b>	    private:
+<b><a name="line213">213  </a></b>	      static_assert(<a href="#line209">__d</a> != 0, &quot;Internal library error&quot;);
+<b><a name="line214">214  </a></b>	      static_assert(sizeof (<a href="../../../stdint.h/code.html#line135">uintmax_t</a>) == sizeof (unsigned long long),
+<b><a name="line215">215  </a></b>			    &quot;This library calls __builtin_clzll on uintmax_t, which &quot;
+<b><a name="line216">216  </a></b>			    &quot;is unsafe on your platform. Please complain to &quot;
+<b><a name="line217">217  </a></b>			    &quot;http://gcc.gnu.org/bugzilla/&quot;);
+<b><a name="line218">218  </a></b>	      static constexpr int __shift = __builtin_clzll(<a href="#line209">__d</a>);
+<b><a name="line219">219  </a></b>	      static constexpr int __coshift_ = sizeof(<a href="../../../stdint.h/code.html#line135">uintmax_t</a>) * 8 - <a href="#line218">__shift</a>;
+<b><a name="line220">220  </a></b>	      static constexpr int __coshift = (<a href="#line218">__shift</a> != 0) ? <a href="#line219">__coshift_</a> : 0;
+<b><a name="line221">221  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __c1 = <a href="../../../stdint.h/code.html#line135">uintmax_t</a>(1) &lt;&lt; <a href="#line218">__shift</a>;
+<b><a name="line222">222  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __c2 = <a href="../../../stdint.h/code.html#line135">uintmax_t</a>(1) &lt;&lt; <a href="#line220">__coshift</a>;
+<b><a name="line223">223  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __new_d = <a href="#line209">__d</a> * <a href="#line221">__c1</a>;
+<b><a name="line224">224  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __new_n0 = <a href="#line209">__n0</a> * <a href="#line221">__c1</a>;
+<b><a name="line225">225  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __n1_shifted = (<a href="#line209">__n1</a> % <a href="#line209">__d</a>) * <a href="#line221">__c1</a>;
+<b><a name="line226">226  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __n0_top = (<a href="#line218">__shift</a> != 0) ? (<a href="#line209">__n0</a> / <a href="#line222">__c2</a>) : 0;
+<b><a name="line227">227  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __new_n1 = <a href="#line225">__n1_shifted</a> + <a href="#line226">__n0_top</a>;
+<b><a name="line228">228  </a></b>	      typedef <a href="#line165">__big_div_impl</a>&lt;<a href="#line227">__new_n1</a>, <a href="#line224">__new_n0</a>, <a href="#line223">__new_d</a>&gt; <b>_Res</b>;
+<b><a name="line229">229  </a></b>	
+<b><a name="line230">230  </a></b>	    public:
+<b><a name="line231">231  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __quot_hi = <a href="#line209">__n1</a> / <a href="#line209">__d</a>;
+<b><a name="line232">232  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __quot_lo = <a href="#line228">_Res</a>::__quot;
+<b><a name="line233">233  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __rem = <a href="#line228">_Res</a>::__rem / <a href="#line221">__c1</a>;
+<b><a name="line234">234  </a></b>	
+<b><a name="line235">235  </a></b>	    private:
+<b><a name="line236">236  </a></b>	      typedef <a href="#line140">__big_mul</a>&lt;<a href="#line232">__quot_lo</a>, <a href="#line209">__d</a>&gt; <b>_P0</b>;
+<b><a name="line237">237  </a></b>	      typedef <a href="#line140">__big_mul</a>&lt;<a href="#line231">__quot_hi</a>, <a href="#line209">__d</a>&gt; <b>_P1</b>;
+<b><a name="line238">238  </a></b>	      typedef <a href="#line120">__big_add</a>&lt;<a href="#line236">_P0</a>::__hi, <a href="#line236">_P0</a>::__lo, <a href="#line237">_P1</a>::__lo, <a href="#line233">__rem</a>&gt; <b>_Sum</b>;
+<b><a name="line239">239  </a></b>	      // No overflow.
+<b><a name="line240">240  </a></b>	      static_assert(<a href="#line237">_P1</a>::__hi == 0, &quot;Internal library error&quot;);
+<b><a name="line241">241  </a></b>	      static_assert(<a href="#line238">_Sum</a>::__hi &gt;= <a href="#line236">_P0</a>::__hi, &quot;Internal library error&quot;);
+<b><a name="line242">242  </a></b>	      // Matches the input data.
+<b><a name="line243">243  </a></b>	      static_assert(<a href="#line238">_Sum</a>::__hi == <a href="#line209">__n1</a> &amp;&amp; <a href="#line238">_Sum</a>::__lo == <a href="#line209">__n0</a>,
+<b><a name="line244">244  </a></b>			    &quot;Internal library error&quot;);
+<b><a name="line245">245  </a></b>	      static_assert(<a href="#line233">__rem</a> &lt; <a href="#line209">__d</a>, &quot;Internal library error&quot;);
+<b><a name="line246">246  </a></b>	    };
+<b><a name="line247">247  </a></b>	
+<b><a name="line248">248  </a></b>	  /**
+<b><a name="line249">249  </a></b>	   *  @brief Provides compile-time rational arithmetic.
+<b><a name="line250">250  </a></b>	   *
+<b><a name="line251">251  </a></b>	   *  This class template represents any finite rational number with a
+<b><a name="line252">252  </a></b>	   *  numerator and denominator representable by compile-time constants of
+<b><a name="line253">253  </a></b>	   *  type intmax_t. The ratio is simplified when instantiated.
+<b><a name="line254">254  </a></b>	   *
+<b><a name="line255">255  </a></b>	   *  For example:
+<b><a name="line256">256  </a></b>	   *  @code
+<b><a name="line257">257  </a></b>	   *    std::ratio&lt;7,-21&gt;::num == -1;
+<b><a name="line258">258  </a></b>	   *    std::ratio&lt;7,-21&gt;::den == 3;
+<b><a name="line259">259  </a></b>	   *  @endcode
+<b><a name="line260">260  </a></b>	   *  
+<b><a name="line261">261  </a></b>	  */
+<b><a name="line262">262  </a></b>	  template&lt;<a href="../../../stdint.h/code.html#line134">intmax_t</a> <b>_Num</b>, <a href="../../../stdint.h/code.html#line134">intmax_t</a> <b>_Den</b> = 1&gt;
+<b><a name="line263">263  </a></b>	    struct ratio
+<b><a name="line264">264  </a></b>	    {
+<b><a name="line265">265  </a></b>	      static_assert(<a href="#line262">_Den</a> != 0, &quot;denominator cannot be zero&quot;);
+<b><a name="line266">266  </a></b>	      static_assert(<a href="#line262">_Num</a> &gt;= -<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line711">__INTMAX_MAX__</a> &amp;&amp; <a href="#line262">_Den</a> &gt;= -<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line711">__INTMAX_MAX__</a>,
+<b><a name="line267">267  </a></b>			    &quot;out of range&quot;);
+<b><a name="line268">268  </a></b>	
+<b><a name="line269">269  </a></b>	      // Note: sign(N) * abs(N) == N
+<b><a name="line270">270  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line134">intmax_t</a> num =
+<b><a name="line271">271  </a></b>	        <a href="#line262">_Num</a> * <a href="#line56">__static_sign</a>&lt;<a href="#line262">_Den</a>&gt;::<a href="../type_traits/code.html#line71">value</a> / <a href="#line66">__static_gcd</a>&lt;<a href="#line262">_Num</a>, <a href="#line262">_Den</a>&gt;::<a href="../type_traits/code.html#line71">value</a>;
+<b><a name="line272">272  </a></b>	
+<b><a name="line273">273  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line134">intmax_t</a> den =
+<b><a name="line274">274  </a></b>	        <a href="#line61">__static_abs</a>&lt;<a href="#line262">_Den</a>&gt;::<a href="../type_traits/code.html#line71">value</a> / <a href="#line66">__static_gcd</a>&lt;<a href="#line262">_Num</a>, <a href="#line262">_Den</a>&gt;::<a href="../type_traits/code.html#line71">value</a>;
+<b><a name="line275">275  </a></b>	
+<b><a name="line276">276  </a></b>	      typedef <a href="#line263">ratio</a>&lt;<a href="#line270">num</a>, <a href="#line273">den</a>&gt; <b>type</b>;
+<b><a name="line277">277  </a></b>	    };
+<b><a name="line278">278  </a></b>	
+<b><a name="line279">279  </a></b>	  template&lt;<a href="../../../stdint.h/code.html#line134">intmax_t</a> <b>_Num</b>, <a href="../../../stdint.h/code.html#line134">intmax_t</a> <b>_Den</b>&gt;
+<b><a name="line280">280  </a></b>	    constexpr <a href="../../../stdint.h/code.html#line134">intmax_t</a> <a href="#line263">ratio</a>&lt;<a href="#line279">_Num</a>, <a href="#line279">_Den</a>&gt;::<b>num</b>;
+<b><a name="line281">281  </a></b>	
+<b><a name="line282">282  </a></b>	  template&lt;<a href="../../../stdint.h/code.html#line134">intmax_t</a> <b>_Num</b>, <a href="../../../stdint.h/code.html#line134">intmax_t</a> <b>_Den</b>&gt;
+<b><a name="line283">283  </a></b>	    constexpr <a href="../../../stdint.h/code.html#line134">intmax_t</a> <a href="#line263">ratio</a>&lt;<a href="#line282">_Num</a>, <a href="#line282">_Den</a>&gt;::<b>den</b>;
+<b><a name="line284">284  </a></b>	
+<b><a name="line285">285  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line286">286  </a></b>	    struct __ratio_multiply
+<b><a name="line287">287  </a></b>	    {
+<b><a name="line288">288  </a></b>	    private:
+<b><a name="line289">289  </a></b>	      static const <a href="../../../stdint.h/code.html#line134">intmax_t</a> __gcd1 =
+<b><a name="line290">290  </a></b>	        <a href="#line66">__static_gcd</a>&lt;<a href="#line285">_R1</a>::<a href="#line270">num</a>, <a href="#line285">_R2</a>::<a href="#line273">den</a>&gt;::<a href="../type_traits/code.html#line71">value</a>;
+<b><a name="line291">291  </a></b>	      static const <a href="../../../stdint.h/code.html#line134">intmax_t</a> __gcd2 =
+<b><a name="line292">292  </a></b>	        <a href="#line66">__static_gcd</a>&lt;<a href="#line285">_R2</a>::<a href="#line270">num</a>, <a href="#line285">_R1</a>::<a href="#line273">den</a>&gt;::<a href="../type_traits/code.html#line71">value</a>;
+<b><a name="line293">293  </a></b>	
+<b><a name="line294">294  </a></b>	    public:
+<b><a name="line295">295  </a></b>	      typedef <a href="#line263">ratio</a>&lt;
+<b><a name="line296">296  </a></b>	        <a href="#line87">__safe_multiply</a>&lt;(<a href="#line285">_R1</a>::<a href="#line270">num</a> / <a href="#line289">__gcd1</a>),
+<b><a name="line297">297  </a></b>	                        (<a href="#line285">_R2</a>::<a href="#line270">num</a> / <a href="#line291">__gcd2</a>)&gt;::<a href="#line108">value</a>,
+<b><a name="line298">298  </a></b>	        <a href="#line87">__safe_multiply</a>&lt;(<a href="#line285">_R1</a>::<a href="#line273">den</a> / <a href="#line291">__gcd2</a>),
+<b><a name="line299">299  </a></b>	                        (<a href="#line285">_R2</a>::<a href="#line273">den</a> / <a href="#line289">__gcd1</a>)&gt;::<a href="#line108">value</a>&gt; <b>type</b>;
+<b><a name="line300">300  </a></b>	
+<b><a name="line301">301  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line134">intmax_t</a> num = <a href="#line299">type</a>::<a href="#line270">num</a>;
+<b><a name="line302">302  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line134">intmax_t</a> den = <a href="#line299">type</a>::<a href="#line273">den</a>;
+<b><a name="line303">303  </a></b>	    };
+<b><a name="line304">304  </a></b>	
+<b><a name="line305">305  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line306">306  </a></b>	    constexpr <a href="../../../stdint.h/code.html#line134">intmax_t</a> <a href="#line286">__ratio_multiply</a>&lt;<a href="#line305">_R1</a>, <a href="#line305">_R2</a>&gt;::<b>num</b>;
+<b><a name="line307">307  </a></b>	
+<b><a name="line308">308  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line309">309  </a></b>	    constexpr <a href="../../../stdint.h/code.html#line134">intmax_t</a> <a href="#line286">__ratio_multiply</a>&lt;<a href="#line308">_R1</a>, <a href="#line308">_R2</a>&gt;::<b>den</b>;
+<b><a name="line310">310  </a></b>	
+<b><a name="line311">311  </a></b>	  /// ratio_multiply
+<b><a name="line312">312  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line313">313  </a></b>	    using <b>ratio_multiply</b> = typename <a href="#line286">__ratio_multiply</a>&lt;<a href="#line312">_R1</a>, <a href="#line312">_R2</a>&gt;::type;
+<b><a name="line314">314  </a></b>	
+<b><a name="line315">315  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line316">316  </a></b>	    struct __ratio_divide
+<b><a name="line317">317  </a></b>	    {
+<b><a name="line318">318  </a></b>	      static_assert(<a href="#line315">_R2</a>::<a href="#line270">num</a> != 0, &quot;division by 0&quot;);
+<b><a name="line319">319  </a></b>	
+<b><a name="line320">320  </a></b>	      typedef typename <a href="#line286">__ratio_multiply</a>&lt;
+<b><a name="line321">321  </a></b>	        <a href="#line315">_R1</a>,
+<b><a name="line322">322  </a></b>	        <a href="#line263">ratio</a>&lt;<a href="#line315">_R2</a>::<a href="#line273">den</a>, <a href="#line315">_R2</a>::<a href="#line270">num</a>&gt;&gt;::<a href="#line299">type</a> <b>type</b>;
+<b><a name="line323">323  </a></b>	
+<b><a name="line324">324  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line134">intmax_t</a> num = <a href="#line322">type</a>::<a href="#line270">num</a>;
+<b><a name="line325">325  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line134">intmax_t</a> den = <a href="#line322">type</a>::<a href="#line273">den</a>;
+<b><a name="line326">326  </a></b>	    };
+<b><a name="line327">327  </a></b>	
+<b><a name="line328">328  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line329">329  </a></b>	    constexpr <a href="../../../stdint.h/code.html#line134">intmax_t</a> <a href="#line316">__ratio_divide</a>&lt;<a href="#line328">_R1</a>, <a href="#line328">_R2</a>&gt;::<b>num</b>;
+<b><a name="line330">330  </a></b>	
+<b><a name="line331">331  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line332">332  </a></b>	    constexpr <a href="../../../stdint.h/code.html#line134">intmax_t</a> <a href="#line316">__ratio_divide</a>&lt;<a href="#line331">_R1</a>, <a href="#line331">_R2</a>&gt;::<b>den</b>;
+<b><a name="line333">333  </a></b>	
+<b><a name="line334">334  </a></b>	  /// ratio_divide
+<b><a name="line335">335  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line336">336  </a></b>	    using ratio_divide = typename <a href="#line316">__ratio_divide</a>&lt;<a href="#line335">_R1</a>, <a href="#line335">_R2</a>&gt;::<a href="#line322">type</a>;
+<b><a name="line337">337  </a></b>	
+<b><a name="line338">338  </a></b>	  /// ratio_equal
+<b><a name="line339">339  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line340">340  </a></b>	    struct <b>ratio_equal</b>
+<b><a name="line341">341  </a></b>	    : <a href="../type_traits/code.html#line69">integral_constant</a>&lt;bool, <a href="#line339">_R1</a>::num == <a href="#line339">_R2</a>::num &amp;&amp; <a href="#line339">_R1</a>::den == <a href="#line339">_R2</a>::den&gt;
+<b><a name="line342">342  </a></b>	    { };
+<b><a name="line343">343  </a></b>	  
+<b><a name="line344">344  </a></b>	  /// ratio_not_equal
+<b><a name="line345">345  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line346">346  </a></b>	    struct <b>ratio_not_equal</b>
+<b><a name="line347">347  </a></b>	    : <a href="../type_traits/code.html#line69">integral_constant</a>&lt;bool, !<a href="#line340">ratio_equal</a>&lt;<a href="#line345">_R1</a>, <a href="#line345">_R2</a>&gt;::value&gt;
+<b><a name="line348">348  </a></b>	    { };
+<b><a name="line349">349  </a></b>	
+<b><a name="line350">350  </a></b>	  // Both numbers are positive.
+<b><a name="line351">351  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>,
+<b><a name="line352">352  </a></b>	           typename <b>_Left</b> = <a href="#line140">__big_mul</a>&lt;<a href="#line351">_R1</a>::num,<a href="#line351">_R2</a>::den&gt;,
+<b><a name="line353">353  </a></b>	           typename <b>_Right</b> = <a href="#line140">__big_mul</a>&lt;<a href="#line351">_R2</a>::num,<a href="#line351">_R1</a>::den&gt; &gt;
+<b><a name="line354">354  </a></b>	    struct <b>__ratio_less_impl_1</b>
+<b><a name="line355">355  </a></b>	    : <a href="../type_traits/code.html#line69">integral_constant</a>&lt;bool, <a href="#line114">__big_less</a>&lt;<a href="#line352">_Left</a>::__hi, <a href="#line352">_Left</a>::__lo,
+<b><a name="line356">356  </a></b>	           <a href="#line353">_Right</a>::__hi, <a href="#line353">_Right</a>::__lo&gt;::value&gt;
+<b><a name="line357">357  </a></b>	    { }; 
+<b><a name="line358">358  </a></b>	
+<b><a name="line359">359  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>,
+<b><a name="line360">360  </a></b>		   bool = (<a href="#line359">_R1</a>::num == 0 || <a href="#line359">_R2</a>::num == 0
+<b><a name="line361">361  </a></b>			   || (<a href="#line56">__static_sign</a>&lt;<a href="#line359">_R1</a>::num&gt;::value
+<b><a name="line362">362  </a></b>			       != <a href="#line56">__static_sign</a>&lt;<a href="#line359">_R2</a>::num&gt;::value)),
+<b><a name="line363">363  </a></b>		   bool = (<a href="#line56">__static_sign</a>&lt;<a href="#line359">_R1</a>::num&gt;::value == -1
+<b><a name="line364">364  </a></b>			   &amp;&amp; <a href="#line56">__static_sign</a>&lt;<a href="#line359">_R2</a>::num&gt;::value == -1)&gt;
+<b><a name="line365">365  </a></b>	    struct <b>__ratio_less_impl</b>
+<b><a name="line366">366  </a></b>	    : <a href="#line354">__ratio_less_impl_1</a>&lt;<a href="#line359">_R1</a>, <a href="#line359">_R2</a>&gt;::type
+<b><a name="line367">367  </a></b>	    { };
+<b><a name="line368">368  </a></b>	
+<b><a name="line369">369  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line370">370  </a></b>	    struct <b>__ratio_less_impl</b>&lt;<a href="#line369">_R1</a>, <a href="#line369">_R2</a>, true, false&gt;
+<b><a name="line371">371  </a></b>	    : <a href="../type_traits/code.html#line69">integral_constant</a>&lt;bool, <a href="#line369">_R1</a>::num &lt; <a href="#line369">_R2</a>::num&gt;
+<b><a name="line372">372  </a></b>	    { };
+<b><a name="line373">373  </a></b>	
+<b><a name="line374">374  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line375">375  </a></b>	    struct <b>__ratio_less_impl</b>&lt;<a href="#line374">_R1</a>, <a href="#line374">_R2</a>, false, true&gt;
+<b><a name="line376">376  </a></b>	    : <a href="#line354">__ratio_less_impl_1</a>&lt;<a href="#line263">ratio</a>&lt;-<a href="#line374">_R2</a>::num, <a href="#line374">_R2</a>::den&gt;,
+<b><a name="line377">377  </a></b>	           <a href="#line263">ratio</a>&lt;-<a href="#line374">_R1</a>::num, <a href="#line374">_R1</a>::den&gt; &gt;::type
+<b><a name="line378">378  </a></b>	    { };
+<b><a name="line379">379  </a></b>	
+<b><a name="line380">380  </a></b>	  /// ratio_less
+<b><a name="line381">381  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line382">382  </a></b>	    struct <b>ratio_less</b>
+<b><a name="line383">383  </a></b>	    : <a href="#line365">__ratio_less_impl</a>&lt;<a href="#line381">_R1</a>, <a href="#line381">_R2</a>&gt;::type
+<b><a name="line384">384  </a></b>	    { };
+<b><a name="line385">385  </a></b>	    
+<b><a name="line386">386  </a></b>	  /// ratio_less_equal
+<b><a name="line387">387  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line388">388  </a></b>	    struct <b>ratio_less_equal</b>
+<b><a name="line389">389  </a></b>	    : <a href="../type_traits/code.html#line69">integral_constant</a>&lt;bool, !<a href="#line382">ratio_less</a>&lt;<a href="#line387">_R2</a>, <a href="#line387">_R1</a>&gt;::value&gt;
+<b><a name="line390">390  </a></b>	    { };
+<b><a name="line391">391  </a></b>	  
+<b><a name="line392">392  </a></b>	  /// ratio_greater
+<b><a name="line393">393  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line394">394  </a></b>	    struct <b>ratio_greater</b>
+<b><a name="line395">395  </a></b>	    : <a href="../type_traits/code.html#line69">integral_constant</a>&lt;bool, <a href="#line382">ratio_less</a>&lt;<a href="#line393">_R2</a>, <a href="#line393">_R1</a>&gt;::value&gt;
+<b><a name="line396">396  </a></b>	    { };
+<b><a name="line397">397  </a></b>	
+<b><a name="line398">398  </a></b>	  /// ratio_greater_equal
+<b><a name="line399">399  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line400">400  </a></b>	    struct <b>ratio_greater_equal</b>
+<b><a name="line401">401  </a></b>	    : <a href="../type_traits/code.html#line69">integral_constant</a>&lt;bool, !<a href="#line382">ratio_less</a>&lt;<a href="#line399">_R1</a>, <a href="#line399">_R2</a>&gt;::value&gt;
+<b><a name="line402">402  </a></b>	    { };
+<b><a name="line403">403  </a></b>	
+<b><a name="line404">404  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>,
+<b><a name="line405">405  </a></b>	      bool = (<a href="#line404">_R1</a>::num &gt;= 0),
+<b><a name="line406">406  </a></b>	      bool = (<a href="#line404">_R2</a>::num &gt;= 0),
+<b><a name="line407">407  </a></b>	      bool = <a href="#line382">ratio_less</a>&lt;<a href="#line263">ratio</a>&lt;<a href="#line61">__static_abs</a>&lt;<a href="#line404">_R1</a>::num&gt;::value, <a href="#line404">_R1</a>::den&gt;,
+<b><a name="line408">408  </a></b>	        <a href="#line263">ratio</a>&lt;<a href="#line61">__static_abs</a>&lt;<a href="#line404">_R2</a>::num&gt;::value, <a href="#line404">_R2</a>::den&gt; &gt;::value&gt;
+<b><a name="line409">409  </a></b>	    struct <b>__ratio_add_impl</b>
+<b><a name="line410">410  </a></b>	    {
+<b><a name="line411">411  </a></b>	    private:
+<b><a name="line412">412  </a></b>	      typedef typename <a href="#line409">__ratio_add_impl</a>&lt;
+<b><a name="line413">413  </a></b>	        <a href="#line263">ratio</a>&lt;-<a href="#line404">_R1</a>::num, <a href="#line404">_R1</a>::den&gt;,
+<b><a name="line414">414  </a></b>	        <a href="#line263">ratio</a>&lt;-<a href="#line404">_R2</a>::num, <a href="#line404">_R2</a>::den&gt; &gt;::type <b>__t</b>;
+<b><a name="line415">415  </a></b>	    public:
+<b><a name="line416">416  </a></b>	      typedef <a href="#line263">ratio</a>&lt;-<a href="#line414">__t</a>::num, <a href="#line414">__t</a>::den&gt; <b>type</b>;
+<b><a name="line417">417  </a></b>	    };
+<b><a name="line418">418  </a></b>	
+<b><a name="line419">419  </a></b>	  // True addition of nonnegative numbers.
+<b><a name="line420">420  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>, bool <b>__b</b>&gt;
+<b><a name="line421">421  </a></b>	    struct <b>__ratio_add_impl</b>&lt;<a href="#line420">_R1</a>, <a href="#line420">_R2</a>, true, true, <a href="#line420">__b</a>&gt;
+<b><a name="line422">422  </a></b>	    {
+<b><a name="line423">423  </a></b>	    private:
+<b><a name="line424">424  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __g = <a href="#line66">__static_gcd</a>&lt;<a href="#line420">_R1</a>::den, <a href="#line420">_R2</a>::den&gt;::value;
+<b><a name="line425">425  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __d2 = <a href="#line420">_R2</a>::den / <a href="#line424">__g</a>;
+<b><a name="line426">426  </a></b>	      typedef <a href="#line140">__big_mul</a>&lt;<a href="#line420">_R1</a>::den, <a href="#line425">__d2</a>&gt; <b>__d</b>;
+<b><a name="line427">427  </a></b>	      typedef <a href="#line140">__big_mul</a>&lt;<a href="#line420">_R1</a>::num, <a href="#line420">_R2</a>::den / <a href="#line424">__g</a>&gt; <b>__x</b>;
+<b><a name="line428">428  </a></b>	      typedef <a href="#line140">__big_mul</a>&lt;<a href="#line420">_R2</a>::num, <a href="#line420">_R1</a>::den / <a href="#line424">__g</a>&gt; <b>__y</b>;
+<b><a name="line429">429  </a></b>	      typedef <a href="#line120">__big_add</a>&lt;<a href="#line427">__x</a>::__hi, <a href="#line427">__x</a>::__lo, <a href="#line428">__y</a>::__hi, <a href="#line428">__y</a>::__lo&gt; <b>__n</b>;
+<b><a name="line430">430  </a></b>	      static_assert(<a href="#line429">__n</a>::__hi &gt;= <a href="#line427">__x</a>::__hi, &quot;Internal library error&quot;);
+<b><a name="line431">431  </a></b>	      typedef <a href="#line210">__big_div</a>&lt;<a href="#line429">__n</a>::__hi, <a href="#line429">__n</a>::__lo, <a href="#line424">__g</a>&gt; <b>__ng</b>;
+<b><a name="line432">432  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __g2 = <a href="#line66">__static_gcd</a>&lt;<a href="#line431">__ng</a>::__rem, <a href="#line424">__g</a>&gt;::value;
+<b><a name="line433">433  </a></b>	      typedef <a href="#line210">__big_div</a>&lt;<a href="#line429">__n</a>::__hi, <a href="#line429">__n</a>::__lo, <a href="#line432">__g2</a>&gt; <b>__n_final</b>;
+<b><a name="line434">434  </a></b>	      static_assert(<a href="#line433">__n_final</a>::__rem == 0, &quot;Internal library error&quot;);
+<b><a name="line435">435  </a></b>	      static_assert(<a href="#line433">__n_final</a>::__quot_hi == 0 &amp;&amp;
+<b><a name="line436">436  </a></b>	        <a href="#line433">__n_final</a>::__quot_lo &lt;= <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line711">__INTMAX_MAX__</a>, &quot;overflow in addition&quot;);
+<b><a name="line437">437  </a></b>	      typedef <a href="#line140">__big_mul</a>&lt;<a href="#line420">_R1</a>::den / <a href="#line432">__g2</a>, <a href="#line425">__d2</a>&gt; <b>__d_final</b>;
+<b><a name="line438">438  </a></b>	      static_assert(<a href="#line437">__d_final</a>::__hi == 0 &amp;&amp;
+<b><a name="line439">439  </a></b>	        <a href="#line437">__d_final</a>::__lo &lt;= <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line711">__INTMAX_MAX__</a>, &quot;overflow in addition&quot;);
+<b><a name="line440">440  </a></b>	    public:
+<b><a name="line441">441  </a></b>	      typedef <a href="#line263">ratio</a>&lt;<a href="#line433">__n_final</a>::__quot_lo, <a href="#line437">__d_final</a>::__lo&gt; <b>type</b>;
+<b><a name="line442">442  </a></b>	    };
+<b><a name="line443">443  </a></b>	
+<b><a name="line444">444  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line445">445  </a></b>	    struct <b>__ratio_add_impl</b>&lt;<a href="#line444">_R1</a>, <a href="#line444">_R2</a>, false, true, true&gt;
+<b><a name="line446">446  </a></b>	    : <a href="#line409">__ratio_add_impl</a>&lt;<a href="#line444">_R2</a>, <a href="#line444">_R1</a>&gt;
+<b><a name="line447">447  </a></b>	    { };
+<b><a name="line448">448  </a></b>	
+<b><a name="line449">449  </a></b>	  // True subtraction of nonnegative numbers yielding a nonnegative result.
+<b><a name="line450">450  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line451">451  </a></b>	    struct <b>__ratio_add_impl</b>&lt;<a href="#line450">_R1</a>, <a href="#line450">_R2</a>, true, false, false&gt;
+<b><a name="line452">452  </a></b>	    {
+<b><a name="line453">453  </a></b>	    private:
+<b><a name="line454">454  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __g = <a href="#line66">__static_gcd</a>&lt;<a href="#line450">_R1</a>::den, <a href="#line450">_R2</a>::den&gt;::value;
+<b><a name="line455">455  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __d2 = <a href="#line450">_R2</a>::den / <a href="#line454">__g</a>;
+<b><a name="line456">456  </a></b>	      typedef <a href="#line140">__big_mul</a>&lt;<a href="#line450">_R1</a>::den, <a href="#line455">__d2</a>&gt; <b>__d</b>;
+<b><a name="line457">457  </a></b>	      typedef <a href="#line140">__big_mul</a>&lt;<a href="#line450">_R1</a>::num, <a href="#line450">_R2</a>::den / <a href="#line454">__g</a>&gt; <b>__x</b>;
+<b><a name="line458">458  </a></b>	      typedef <a href="#line140">__big_mul</a>&lt;-<a href="#line450">_R2</a>::num, <a href="#line450">_R1</a>::den / <a href="#line454">__g</a>&gt; <b>__y</b>;
+<b><a name="line459">459  </a></b>	      typedef <a href="#line129">__big_sub</a>&lt;<a href="#line457">__x</a>::__hi, <a href="#line457">__x</a>::__lo, <a href="#line458">__y</a>::__hi, <a href="#line458">__y</a>::__lo&gt; <b>__n</b>;
+<b><a name="line460">460  </a></b>	      typedef <a href="#line210">__big_div</a>&lt;<a href="#line459">__n</a>::__hi, <a href="#line459">__n</a>::__lo, <a href="#line454">__g</a>&gt; <b>__ng</b>;
+<b><a name="line461">461  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line135">uintmax_t</a> __g2 = <a href="#line66">__static_gcd</a>&lt;<a href="#line460">__ng</a>::__rem, <a href="#line454">__g</a>&gt;::value;
+<b><a name="line462">462  </a></b>	      typedef <a href="#line210">__big_div</a>&lt;<a href="#line459">__n</a>::__hi, <a href="#line459">__n</a>::__lo, <a href="#line461">__g2</a>&gt; <b>__n_final</b>;
+<b><a name="line463">463  </a></b>	      static_assert(<a href="#line462">__n_final</a>::__rem == 0, &quot;Internal library error&quot;);
+<b><a name="line464">464  </a></b>	      static_assert(<a href="#line462">__n_final</a>::__quot_hi == 0 &amp;&amp;
+<b><a name="line465">465  </a></b>	        <a href="#line462">__n_final</a>::__quot_lo &lt;= <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line711">__INTMAX_MAX__</a>, &quot;overflow in addition&quot;);
+<b><a name="line466">466  </a></b>	      typedef <a href="#line140">__big_mul</a>&lt;<a href="#line450">_R1</a>::den / <a href="#line461">__g2</a>, <a href="#line455">__d2</a>&gt; <b>__d_final</b>;
+<b><a name="line467">467  </a></b>	      static_assert(<a href="#line466">__d_final</a>::__hi == 0 &amp;&amp;
+<b><a name="line468">468  </a></b>	        <a href="#line466">__d_final</a>::__lo &lt;= <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line711">__INTMAX_MAX__</a>, &quot;overflow in addition&quot;);
+<b><a name="line469">469  </a></b>	    public:
+<b><a name="line470">470  </a></b>	      typedef <a href="#line263">ratio</a>&lt;<a href="#line462">__n_final</a>::__quot_lo, <a href="#line466">__d_final</a>::__lo&gt; <b>type</b>;
+<b><a name="line471">471  </a></b>	    };
+<b><a name="line472">472  </a></b>	
+<b><a name="line473">473  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line474">474  </a></b>	    struct <b>__ratio_add</b>
+<b><a name="line475">475  </a></b>	    {
+<b><a name="line476">476  </a></b>	      typedef typename <a href="#line409">__ratio_add_impl</a>&lt;<a href="#line473">_R1</a>, <a href="#line473">_R2</a>&gt;::type <b>type</b>;
+<b><a name="line477">477  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line134">intmax_t</a> num = <a href="#line476">type</a>::num;
+<b><a name="line478">478  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line134">intmax_t</a> den = <a href="#line476">type</a>::den;
+<b><a name="line479">479  </a></b>	    };
+<b><a name="line480">480  </a></b>	
+<b><a name="line481">481  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line482">482  </a></b>	    constexpr <a href="../../../stdint.h/code.html#line134">intmax_t</a> <a href="#line474">__ratio_add</a>&lt;<a href="#line481">_R1</a>, <a href="#line481">_R2</a>&gt;::<b>num</b>;
+<b><a name="line483">483  </a></b>	
+<b><a name="line484">484  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line485">485  </a></b>	    constexpr <a href="../../../stdint.h/code.html#line134">intmax_t</a> <a href="#line474">__ratio_add</a>&lt;<a href="#line484">_R1</a>, <a href="#line484">_R2</a>&gt;::<b>den</b>;
+<b><a name="line486">486  </a></b>	
+<b><a name="line487">487  </a></b>	  /// ratio_add
+<b><a name="line488">488  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line489">489  </a></b>	    using <b>ratio_add</b> = typename <a href="#line474">__ratio_add</a>&lt;<a href="#line488">_R1</a>, <a href="#line488">_R2</a>&gt;::type;
+<b><a name="line490">490  </a></b>	
+<b><a name="line491">491  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line492">492  </a></b>	    struct <b>__ratio_subtract</b>
+<b><a name="line493">493  </a></b>	    {
+<b><a name="line494">494  </a></b>	      typedef typename <a href="#line474">__ratio_add</a>&lt;
+<b><a name="line495">495  </a></b>	        <a href="#line491">_R1</a>,
+<b><a name="line496">496  </a></b>	        <a href="#line263">ratio</a>&lt;-<a href="#line491">_R2</a>::num, <a href="#line491">_R2</a>::den&gt;&gt;::type <b>type</b>;
+<b><a name="line497">497  </a></b>	
+<b><a name="line498">498  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line134">intmax_t</a> num = <a href="#line496">type</a>::num;
+<b><a name="line499">499  </a></b>	      static constexpr <a href="../../../stdint.h/code.html#line134">intmax_t</a> den = <a href="#line496">type</a>::den;
+<b><a name="line500">500  </a></b>	    };
+<b><a name="line501">501  </a></b>	
+<b><a name="line502">502  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line503">503  </a></b>	    constexpr <a href="../../../stdint.h/code.html#line134">intmax_t</a> <a href="#line492">__ratio_subtract</a>&lt;<a href="#line502">_R1</a>, <a href="#line502">_R2</a>&gt;::<b>num</b>;
+<b><a name="line504">504  </a></b>	
+<b><a name="line505">505  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line506">506  </a></b>	    constexpr <a href="../../../stdint.h/code.html#line134">intmax_t</a> <a href="#line492">__ratio_subtract</a>&lt;<a href="#line505">_R1</a>, <a href="#line505">_R2</a>&gt;::<b>den</b>;
+<b><a name="line507">507  </a></b>	
+<b><a name="line508">508  </a></b>	  /// ratio_subtract
+<b><a name="line509">509  </a></b>	  template&lt;typename <b>_R1</b>, typename <b>_R2</b>&gt;
+<b><a name="line510">510  </a></b>	    using <b>ratio_subtract</b> = typename <a href="#line492">__ratio_subtract</a>&lt;<a href="#line509">_R1</a>, <a href="#line509">_R2</a>&gt;::type;
+<b><a name="line511">511  </a></b>	
+<b><a name="line512">512  </a></b>	
+<b><a name="line513">513  </a></b>	  typedef <a href="#line263">ratio</a>&lt;1,       1000000000000000000&gt; <b>atto</b>;
+<b><a name="line514">514  </a></b>	  typedef <a href="#line263">ratio</a>&lt;1,          1000000000000000&gt; <b>femto</b>;
+<b><a name="line515">515  </a></b>	  typedef <a href="#line263">ratio</a>&lt;1,             1000000000000&gt; <b>pico</b>;
+<b><a name="line516">516  </a></b>	  typedef <a href="#line263">ratio</a>&lt;1,                1000000000&gt; <b>nano</b>;
+<b><a name="line517">517  </a></b>	  typedef <a href="#line263">ratio</a>&lt;1,                   1000000&gt; <b>micro</b>;
+<b><a name="line518">518  </a></b>	  typedef <a href="#line263">ratio</a>&lt;1,                      1000&gt; <b>milli</b>;
+<b><a name="line519">519  </a></b>	  typedef <a href="#line263">ratio</a>&lt;1,                       100&gt; <b>centi</b>;
+<b><a name="line520">520  </a></b>	  typedef <a href="#line263">ratio</a>&lt;1,                        10&gt; <b>deci</b>;
+<b><a name="line521">521  </a></b>	  typedef <a href="#line263">ratio</a>&lt;                       10, 1&gt; <b>deca</b>;
+<b><a name="line522">522  </a></b>	  typedef <a href="#line263">ratio</a>&lt;                      100, 1&gt; <b>hecto</b>;
+<b><a name="line523">523  </a></b>	  typedef <a href="#line263">ratio</a>&lt;                     1000, 1&gt; <b>kilo</b>;
+<b><a name="line524">524  </a></b>	  typedef <a href="#line263">ratio</a>&lt;                  1000000, 1&gt; <b>mega</b>;
+<b><a name="line525">525  </a></b>	  typedef <a href="#line263">ratio</a>&lt;               1000000000, 1&gt; <b>giga</b>;
+<b><a name="line526">526  </a></b>	  typedef <a href="#line263">ratio</a>&lt;            1000000000000, 1&gt; <b>tera</b>;
+<b><a name="line527">527  </a></b>	  typedef <a href="#line263">ratio</a>&lt;         1000000000000000, 1&gt; <b>peta</b>;
+<b><a name="line528">528  </a></b>	  typedef <a href="#line263">ratio</a>&lt;      1000000000000000000, 1&gt; <b>exa</b>;
+<b><a name="line529">529  </a></b>	
+<b><a name="line530">530  </a></b>	  // @} group ratio
+<b><a name="line531">531  </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line532">532  </a></b>	} // namespace
+<b><a name="line533">533  </a></b>	
+<b><a name="line534">534  </a></b>	#endif //_GLIBCXX_USE_C99_STDINT_TR1
+<b><a name="line535">535  </a></b>	
+<b><a name="line536">536  </a></b>	#endif // C++11
+<b><a name="line537">537  </a></b>	
+<b><a name="line538">538  </a></b>	#endif //_GLIBCXX_RATIO
+<b><a name="line539">539  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

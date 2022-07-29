@@ -1,0 +1,236 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/gtest/gtest-test-part.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Copyright 2008, Google Inc.
+<b><a name="line2">2    </a></b>	// All rights reserved.
+<b><a name="line3">3    </a></b>	//
+<b><a name="line4">4    </a></b>	// Redistribution and use in source and binary forms, with or without
+<b><a name="line5">5    </a></b>	// modification, are permitted provided that the following conditions are
+<b><a name="line6">6    </a></b>	// met:
+<b><a name="line7">7    </a></b>	//
+<b><a name="line8">8    </a></b>	//     * Redistributions of source code must retain the above copyright
+<b><a name="line9">9    </a></b>	// notice, this list of conditions and the following disclaimer.
+<b><a name="line10">10   </a></b>	//     * Redistributions in binary form must reproduce the above
+<b><a name="line11">11   </a></b>	// copyright notice, this list of conditions and the following disclaimer
+<b><a name="line12">12   </a></b>	// in the documentation and/or other materials provided with the
+<b><a name="line13">13   </a></b>	// distribution.
+<b><a name="line14">14   </a></b>	//     * Neither the name of Google Inc. nor the names of its
+<b><a name="line15">15   </a></b>	// contributors may be used to endorse or promote products derived from
+<b><a name="line16">16   </a></b>	// this software without specific prior written permission.
+<b><a name="line17">17   </a></b>	//
+<b><a name="line18">18   </a></b>	// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+<b><a name="line19">19   </a></b>	// &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+<b><a name="line20">20   </a></b>	// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+<b><a name="line21">21   </a></b>	// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+<b><a name="line22">22   </a></b>	// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+<b><a name="line23">23   </a></b>	// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+<b><a name="line24">24   </a></b>	// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+<b><a name="line25">25   </a></b>	// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+<b><a name="line26">26   </a></b>	// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+<b><a name="line27">27   </a></b>	// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+<b><a name="line28">28   </a></b>	// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+<b><a name="line29">29   </a></b>	//
+<b><a name="line30">30   </a></b>	// Author: mheule@google.com (Markus Heule)
+<b><a name="line31">31   </a></b>	//
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	#ifndef GTEST_INCLUDE_GTEST_GTEST_TEST_PART_H_
+<b><a name="line34">34   </a></b>	#define <b>GTEST_INCLUDE_GTEST_GTEST_TEST_PART_H_</b>
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	#include &lt;iosfwd&gt;
+<b><a name="line37">37   </a></b>	#include &lt;vector&gt;
+<b><a name="line38">38   </a></b>	#include &quot;gtest/internal/gtest-internal.h&quot;
+<b><a name="line39">39   </a></b>	#include &quot;gtest/internal/gtest-string.h&quot;
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	namespace <a href="../internal/gtest-port.h/code.html#line988">testing</a> {
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	// A copyable object representing the result of a test part (i.e. an
+<b><a name="line44">44   </a></b>	// assertion or an explicit FAIL(), ADD_FAILURE(), or SUCCESS()).
+<b><a name="line45">45   </a></b>	//
+<b><a name="line46">46   </a></b>	// Don't inherit from TestPartResult as its destructor is not virtual.
+<b><a name="line47">47   </a></b>	class <a href="../internal/gtest-port.h/code.html#line930">GTEST_API_</a> <b>TestPartResult</b> {
+<b><a name="line48">48   </a></b>	 public:
+<b><a name="line49">49   </a></b>	  // The possible outcomes of a test part (i.e. an assertion or an
+<b><a name="line50">50   </a></b>	  // explicit SUCCEED(), FAIL(), or ADD_FAILURE()).
+<b><a name="line51">51   </a></b>	  enum <b>Type</b> {
+<b><a name="line52">52   </a></b>	    <b>kSuccess</b>,          // Succeeded.
+<b><a name="line53">53   </a></b>	    <b>kNonFatalFailure</b>,  // Failed but the test can continue.
+<b><a name="line54">54   </a></b>	    <b>kFatalFailure</b>      // Failed and the test should be terminated.
+<b><a name="line55">55   </a></b>	  };
+<b><a name="line56">56   </a></b>	
+<b><a name="line57">57   </a></b>	  // C'tor.  TestPartResult does NOT have a default constructor.
+<b><a name="line58">58   </a></b>	  // Always use this constructor (with parameters) to create a
+<b><a name="line59">59   </a></b>	  // TestPartResult object.
+<b><a name="line60">60   </a></b>	  <b>TestPartResult</b>(<a href="#line51">Type</a> <b>a_type</b>,
+<b><a name="line61">61   </a></b>	                 const char* <b>a_file_name</b>,
+<b><a name="line62">62   </a></b>	                 int <b>a_line_number</b>,
+<b><a name="line63">63   </a></b>	                 const char* <b>a_message</b>)
+<b><a name="line64">64   </a></b>	      : <a href="#line103">type_</a>(<a href="#line60">a_type</a>),
+<b><a name="line65">65   </a></b>	        <a href="#line111">file_name_</a>(<a href="#line61">a_file_name</a> == <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a> ? &quot;&quot; : <a href="#line61">a_file_name</a>),
+<b><a name="line66">66   </a></b>	        <a href="#line114">line_number_</a>(<a href="#line62">a_line_number</a>),
+<b><a name="line67">67   </a></b>	        <a href="#line115">summary_</a>(<a href="#line107">ExtractSummary</a>(<a href="#line63">a_message</a>)),
+<b><a name="line68">68   </a></b>	        <a href="#line116">message_</a>(<a href="#line63">a_message</a>) {
+<b><a name="line69">69   </a></b>	  }
+<b><a name="line70">70   </a></b>	
+<b><a name="line71">71   </a></b>	  // Gets the outcome of the test part.
+<b><a name="line72">72   </a></b>	  <a href="#line51">Type</a> <b>type</b>() const { return <a href="#line103">type_</a>; }
+<b><a name="line73">73   </a></b>	
+<b><a name="line74">74   </a></b>	  // Gets the name of the source file where the test part took place, or
+<b><a name="line75">75   </a></b>	  // NULL if it's unknown.
+<b><a name="line76">76   </a></b>	  const char* <b>file_name</b>() const {
+<b><a name="line77">77   </a></b>	    return <a href="#line111">file_name_</a>.<a href="../../../../include/c++/5/bits/basic_string.h/code.html#line816">empty</a>() ? <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a> : <a href="#line111">file_name_</a>.<a href="../../../../include/c++/5/bits/basic_string.h/code.html#line1887">c_str</a>();
+<b><a name="line78">78   </a></b>	  }
+<b><a name="line79">79   </a></b>	
+<b><a name="line80">80   </a></b>	  // Gets the line in the source file where the test part took place,
+<b><a name="line81">81   </a></b>	  // or -1 if it's unknown.
+<b><a name="line82">82   </a></b>	  int <b>line_number</b>() const { return <a href="#line114">line_number_</a>; }
+<b><a name="line83">83   </a></b>	
+<b><a name="line84">84   </a></b>	  // Gets the summary of the failure message.
+<b><a name="line85">85   </a></b>	  const char* <b>summary</b>() const { return <a href="#line115">summary_</a>.<a href="../../../../include/c++/5/bits/basic_string.h/code.html#line1887">c_str</a>(); }
+<b><a name="line86">86   </a></b>	
+<b><a name="line87">87   </a></b>	  // Gets the message associated with the test part.
+<b><a name="line88">88   </a></b>	  const char* <b>message</b>() const { return <a href="#line116">message_</a>.<a href="../../../../include/c++/5/bits/basic_string.h/code.html#line1887">c_str</a>(); }
+<b><a name="line89">89   </a></b>	
+<b><a name="line90">90   </a></b>	  // Returns true iff the test part passed.
+<b><a name="line91">91   </a></b>	  bool <b>passed</b>() const { return <a href="#line103">type_</a> == <a href="#line52">kSuccess</a>; }
+<b><a name="line92">92   </a></b>	
+<b><a name="line93">93   </a></b>	  // Returns true iff the test part failed.
+<b><a name="line94">94   </a></b>	  bool <b>failed</b>() const { return <a href="#line103">type_</a> != <a href="#line52">kSuccess</a>; }
+<b><a name="line95">95   </a></b>	
+<b><a name="line96">96   </a></b>	  // Returns true iff the test part non-fatally failed.
+<b><a name="line97">97   </a></b>	  bool <b>nonfatally_failed</b>() const { return <a href="#line103">type_</a> == <a href="#line53">kNonFatalFailure</a>; }
+<b><a name="line98">98   </a></b>	
+<b><a name="line99">99   </a></b>	  // Returns true iff the test part fatally failed.
+<b><a name="line100">100  </a></b>	  bool <b>fatally_failed</b>() const { return <a href="#line103">type_</a> == <a href="#line54">kFatalFailure</a>; }
+<b><a name="line101">101  </a></b>	
+<b><a name="line102">102  </a></b>	 private:
+<b><a name="line103">103  </a></b>	  <a href="#line51">Type</a> <b>type_</b>;
+<b><a name="line104">104  </a></b>	
+<b><a name="line105">105  </a></b>	  // Gets the summary of the failure message by omitting the stack
+<b><a name="line106">106  </a></b>	  // trace in it.
+<b><a name="line107">107  </a></b>	  static <a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/bits/stringfwd.h/code.html#line74">string</a> ExtractSummary(const char* message);
+<b><a name="line108">108  </a></b>	
+<b><a name="line109">109  </a></b>	  // The name of the source file where the test part took place, or
+<b><a name="line110">110  </a></b>	  // &quot;&quot; if the source file is unknown.
+<b><a name="line111">111  </a></b>	  <a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/bits/stringfwd.h/code.html#line74">string</a> <b>file_name_</b>;
+<b><a name="line112">112  </a></b>	  // The line in the source file where the test part took place, or -1
+<b><a name="line113">113  </a></b>	  // if the line number is unknown.
+<b><a name="line114">114  </a></b>	  int <b>line_number_</b>;
+<b><a name="line115">115  </a></b>	  <a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/bits/stringfwd.h/code.html#line74">string</a> <b>summary_</b>;  // The test failure summary.
+<b><a name="line116">116  </a></b>	  <a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/bits/stringfwd.h/code.html#line74">string</a> <b>message_</b>;  // The test failure message.
+<b><a name="line117">117  </a></b>	};
+<b><a name="line118">118  </a></b>	
+<b><a name="line119">119  </a></b>	// Prints a TestPartResult object.
+<b><a name="line120">120  </a></b>	<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>&amp; operator&lt;&lt;(<a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/iosfwd/code.html#line141">ostream</a>&amp; os, const <a href="../internal/gtest-internal.h/code.html#line90">TestPartResult</a>&amp; result);
+<b><a name="line121">121  </a></b>	
+<b><a name="line122">122  </a></b>	// An array of TestPartResult objects.
+<b><a name="line123">123  </a></b>	//
+<b><a name="line124">124  </a></b>	// Don't inherit from TestPartResultArray as its destructor is not
+<b><a name="line125">125  </a></b>	// virtual.
+<b><a name="line126">126  </a></b>	class <a href="../internal/gtest-port.h/code.html#line930">GTEST_API_</a> <b>TestPartResultArray</b> {
+<b><a name="line127">127  </a></b>	 public:
+<b><a name="line128">128  </a></b>	  <b>TestPartResultArray</b>() {}
+<b><a name="line129">129  </a></b>	
+<b><a name="line130">130  </a></b>	  // Appends the given TestPartResult to the array.
+<b><a name="line131">131  </a></b>	  void Append(const <a href="../internal/gtest-internal.h/code.html#line90">TestPartResult</a>&amp; result);
+<b><a name="line132">132  </a></b>	
+<b><a name="line133">133  </a></b>	  // Returns the TestPartResult at the given index (0-based).
+<b><a name="line134">134  </a></b>	  const <a href="../internal/gtest-internal.h/code.html#line90">TestPartResult</a>&amp; GetTestPartResult(int index) const;
+<b><a name="line135">135  </a></b>	
+<b><a name="line136">136  </a></b>	  // Returns the number of TestPartResult objects in the array.
+<b><a name="line137">137  </a></b>	  int size() const;
+<b><a name="line138">138  </a></b>	
+<b><a name="line139">139  </a></b>	 private:
+<b><a name="line140">140  </a></b>	  <a href="../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="../internal/gtest-internal.h/code.html#line90">TestPartResult</a>&gt; <b>array_</b>;
+<b><a name="line141">141  </a></b>	
+<b><a name="line142">142  </a></b>	  <a href="../internal/gtest-port.h/code.html#line874">GTEST_DISALLOW_COPY_AND_ASSIGN_</a>(TestPartResultArray);
+<b><a name="line143">143  </a></b>	};
+<b><a name="line144">144  </a></b>	
+<b><a name="line145">145  </a></b>	// This interface knows how to report a test part result.
+<b><a name="line146">146  </a></b>	class <b>TestPartResultReporterInterface</b> {
+<b><a name="line147">147  </a></b>	 public:
+<b><a name="line148">148  </a></b>	  virtual <b>~TestPartResultReporterInterface</b>() {}
+<b><a name="line149">149  </a></b>	
+<b><a name="line150">150  </a></b>	  virtual void ReportTestPartResult(const <a href="../internal/gtest-internal.h/code.html#line90">TestPartResult</a>&amp; result) = 0;
+<b><a name="line151">151  </a></b>	};
+<b><a name="line152">152  </a></b>	
+<b><a name="line153">153  </a></b>	namespace <a href="../internal/gtest-port.h/code.html#line1003">internal</a> {
+<b><a name="line154">154  </a></b>	
+<b><a name="line155">155  </a></b>	// This helper class is used by {ASSERT|EXPECT}_NO_FATAL_FAILURE to check if a
+<b><a name="line156">156  </a></b>	// statement generates new fatal failures. To do so it registers itself as the
+<b><a name="line157">157  </a></b>	// current test part result reporter. Besides checking if fatal failures were
+<b><a name="line158">158  </a></b>	// reported, it only delegates the reporting to the former result reporter.
+<b><a name="line159">159  </a></b>	// The original result reporter is restored in the destructor.
+<b><a name="line160">160  </a></b>	// INTERNAL IMPLEMENTATION - DO NOT USE IN A USER PROGRAM.
+<b><a name="line161">161  </a></b>	class <a href="../internal/gtest-port.h/code.html#line930">GTEST_API_</a> <b>HasNewFatalFailureHelper</b>
+<b><a name="line162">162  </a></b>	    : public <a href="#line146">TestPartResultReporterInterface</a> {
+<b><a name="line163">163  </a></b>	 public:
+<b><a name="line164">164  </a></b>	  HasNewFatalFailureHelper();
+<b><a name="line165">165  </a></b>	  virtual ~HasNewFatalFailureHelper();
+<b><a name="line166">166  </a></b>	  virtual void ReportTestPartResult(const <a href="../internal/gtest-internal.h/code.html#line90">TestPartResult</a>&amp; result);
+<b><a name="line167">167  </a></b>	  bool <b>has_new_fatal_failure</b>() const { return <a href="#line169">has_new_fatal_failure_</a>; }
+<b><a name="line168">168  </a></b>	 private:
+<b><a name="line169">169  </a></b>	  bool <b>has_new_fatal_failure_</b>;
+<b><a name="line170">170  </a></b>	  <a href="#line146">TestPartResultReporterInterface</a>* <b>original_reporter_</b>;
+<b><a name="line171">171  </a></b>	
+<b><a name="line172">172  </a></b>	  <a href="../internal/gtest-port.h/code.html#line874">GTEST_DISALLOW_COPY_AND_ASSIGN_</a>(HasNewFatalFailureHelper);
+<b><a name="line173">173  </a></b>	};
+<b><a name="line174">174  </a></b>	
+<b><a name="line175">175  </a></b>	}  // namespace internal
+<b><a name="line176">176  </a></b>	
+<b><a name="line177">177  </a></b>	}  // namespace testing
+<b><a name="line178">178  </a></b>	
+<b><a name="line179">179  </a></b>	#endif  // GTEST_INCLUDE_GTEST_GTEST_TEST_PART_H_
+<b><a name="line180">180  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

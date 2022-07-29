@@ -1,0 +1,97 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_dpdk/qdma_device.cpp</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/*
+<b><a name="line2">2    </a></b>	 * qdma_device.cpp
+<b><a name="line3">3    </a></b>	 *
+<b><a name="line4">4    </a></b>	 *  Created on: Feb 5, 2018
+<b><a name="line5">5    </a></b>	 *      Author: alexande
+<b><a name="line6">6    </a></b>	 */
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	#include &quot;qdma_device.h&quot;
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	#include &lt;iostream&gt;
+<b><a name="line11">11   </a></b>	#include &lt;sstream&gt;
+<b><a name="line12">12   </a></b>	#include &quot;xlnx_util.h&quot;
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	namespace <a href="../qdma_device.h/code.html#line17">qdma</a> {
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	<a href="../qdma_device.h/code.html#line31">device</a>::<b>device</b>(<a href="../qdma_device.h/code.html#line22">instance</a>&amp; <b>drv</b>, const <a href="../qdma_device.h/code.html#line34">info</a>&amp; <b>details</b>)
+<b><a name="line17">17   </a></b>	    : <a href="../qdma_device.h/code.html#line49">m_id</a>(<a href="#line16">details</a>.<a href="../qdma_device.h/code.html#line35">id</a>), <a href="../qdma_device.h/code.html#line50">max_num_queues</a>(<a href="#line16">details</a>.<a href="../qdma_device.h/code.html#line39">max_num_queues</a>), <a href="../qdma_device.h/code.html#line52">dev_cap</a>(<a href="#line16">details</a>.<a href="../qdma_device.h/code.html#line40">dev_cap</a>), <a href="../qdma_device.h/code.html#line56">m_drv</a>(<a href="#line16">drv</a>) {
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	    // save pointer to dma control bar
+<b><a name="line21">21   </a></b>	    <a href="../qdma_device.h/code.html#line57">m_pcie_bars</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line764">reserve</a>(3);
+<b><a name="line22">22   </a></b>	
+<b><a name="line23">23   </a></b>	    <a href="../qdma_device.h/code.html#line57">m_pcie_bars</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line936">emplace_back</a>(<a href="../qdma_device.h/code.html#line49">m_id</a>, <a href="#line16">details</a>.<a href="../qdma_device.h/code.html#line36">dma_bar_idx</a>);
+<b><a name="line24">24   </a></b>	    <a href="../qdma_device.h/code.html#line45">dma_bar</a> = <a href="../qdma_device.h/code.html#line57">m_pcie_bars</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line890">data</a>();
+<b><a name="line25">25   </a></b>	
+<b><a name="line26">26   </a></b>	    // save pointer to user_bar
+<b><a name="line27">27   </a></b>	    if (<a href="#line16">details</a>.<a href="../qdma_device.h/code.html#line37">user_bar_idx</a> != -1) {
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	        <a href="../qdma_device.h/code.html#line57">m_pcie_bars</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line936">emplace_back</a>(<a href="../qdma_device.h/code.html#line49">m_id</a>, <a href="#line16">details</a>.<a href="../qdma_device.h/code.html#line37">user_bar_idx</a>);
+<b><a name="line30">30   </a></b>	        <a href="../qdma_device.h/code.html#line46">user_bar</a> = <a href="../qdma_device.h/code.html#line57">m_pcie_bars</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line890">data</a>() + 1;
+<b><a name="line31">31   </a></b>	    }
+<b><a name="line32">32   </a></b>		 // save pointer to bypass_bar
+<b><a name="line33">33   </a></b>		if (<a href="#line16">details</a>.<a href="../qdma_device.h/code.html#line38">bypass_bar_idx</a> != -1) {
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>			<a href="../qdma_device.h/code.html#line57">m_pcie_bars</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line936">emplace_back</a>(<a href="../qdma_device.h/code.html#line49">m_id</a>, <a href="#line16">details</a>.<a href="../qdma_device.h/code.html#line38">bypass_bar_idx</a>);
+<b><a name="line36">36   </a></b>			<a href="../qdma_device.h/code.html#line47">bypass_bar</a> = <a href="../qdma_device.h/code.html#line57">m_pcie_bars</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line890">data</a>() + 2;
+<b><a name="line37">37   </a></b>	    }
+<b><a name="line38">38   </a></b>	}
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	} // namespace qdma
+<b><a name="line41">41   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

@@ -1,0 +1,946 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/c++/5/bits/gthr-default.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Threads compatibility routines for libgcc2 and libobjc.  */
+<b><a name="line2">2    </a></b>	/* Compile this one with gcc.  */
+<b><a name="line3">3    </a></b>	/* Copyright (C) 1997-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	This file is part of GCC.
+<b><a name="line6">6    </a></b>	
+<b><a name="line7">7    </a></b>	GCC is free software; you can redistribute it and/or modify it under
+<b><a name="line8">8    </a></b>	the terms of the GNU General Public License as published by the Free
+<b><a name="line9">9    </a></b>	Software Foundation; either version 3, or (at your option) any later
+<b><a name="line10">10   </a></b>	version.
+<b><a name="line11">11   </a></b>	
+<b><a name="line12">12   </a></b>	GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+<b><a name="line13">13   </a></b>	WARRANTY; without even the implied warranty of MERCHANTABILITY or
+<b><a name="line14">14   </a></b>	FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+<b><a name="line15">15   </a></b>	for more details.
+<b><a name="line16">16   </a></b>	
+<b><a name="line17">17   </a></b>	Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line18">18   </a></b>	permissions described in the GCC Runtime Library Exception, version
+<b><a name="line19">19   </a></b>	3.1, as published by the Free Software Foundation.
+<b><a name="line20">20   </a></b>	
+<b><a name="line21">21   </a></b>	You should have received a copy of the GNU General Public License and
+<b><a name="line22">22   </a></b>	a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line23">23   </a></b>	see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line24">24   </a></b>	&lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line25">25   </a></b>	
+<b><a name="line26">26   </a></b>	#ifndef _GLIBCXX_GCC_GTHR_POSIX_H
+<b><a name="line27">27   </a></b>	#define <b>_GLIBCXX_GCC_GTHR_POSIX_H</b>
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	/* POSIX threads specific definitions.
+<b><a name="line30">30   </a></b>	   Easy, since the interface is just one-to-one mapping.  */
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	#define <b>__GTHREADS</b> 1
+<b><a name="line33">33   </a></b>	#define <b>__GTHREADS_CXX0X</b> 1
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	#include &lt;pthread.h&gt;
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	#if ((defined(_LIBOBJC) || defined(_LIBOBJC_WEAK)) \
+<b><a name="line38">38   </a></b>	     || !defined(<a href="../c++config.h/code.html#line1441">_GTHREAD_USE_MUTEX_TIMEDLOCK</a>))
+<b><a name="line39">39   </a></b>	# include &lt;unistd.h&gt;
+<b><a name="line40">40   </a></b>	# if defined(_POSIX_TIMEOUTS) &amp;&amp; _POSIX_TIMEOUTS &gt;= 0
+<b><a name="line41">41   </a></b>	#  define _GTHREAD_USE_MUTEX_TIMEDLOCK 1
+<b><a name="line42">42   </a></b>	# else
+<b><a name="line43">43   </a></b>	#  define _GTHREAD_USE_MUTEX_TIMEDLOCK 0
+<b><a name="line44">44   </a></b>	# endif
+<b><a name="line45">45   </a></b>	#endif
+<b><a name="line46">46   </a></b>	
+<b><a name="line47">47   </a></b>	typedef <a href="../../../../bits/pthreadtypes.h/code.html#line60">pthread_t</a> <b>__gthread_t</b>;
+<b><a name="line48">48   </a></b>	typedef <a href="../../../../bits/pthreadtypes.h/code.html#line164">pthread_key_t</a> <b>__gthread_key_t</b>;
+<b><a name="line49">49   </a></b>	typedef <a href="../../../../bits/pthreadtypes.h/code.html#line168">pthread_once_t</a> <b>__gthread_once_t</b>;
+<b><a name="line50">50   </a></b>	typedef <a href="../../../../bits/pthreadtypes.h/code.html#line128">pthread_mutex_t</a> <b>__gthread_mutex_t</b>;
+<b><a name="line51">51   </a></b>	typedef <a href="../../../../bits/pthreadtypes.h/code.html#line128">pthread_mutex_t</a> <b>__gthread_recursive_mutex_t</b>;
+<b><a name="line52">52   </a></b>	typedef <a href="../../../../bits/pthreadtypes.h/code.html#line154">pthread_cond_t</a> <b>__gthread_cond_t</b>;
+<b><a name="line53">53   </a></b>	typedef struct <a href="../../../../../time.h/code.html#line120">timespec</a> <b>__gthread_time_t</b>;
+<b><a name="line54">54   </a></b>	
+<b><a name="line55">55   </a></b>	/* POSIX like conditional variables are supported.  Please look at comments
+<b><a name="line56">56   </a></b>	   in gthr.h for details. */
+<b><a name="line57">57   </a></b>	#define <b>__GTHREAD_HAS_COND</b>	1
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	#define <b>__GTHREAD_MUTEX_INIT</b> PTHREAD_MUTEX_INITIALIZER
+<b><a name="line60">60   </a></b>	#define <b>__GTHREAD_MUTEX_INIT_FUNCTION</b> __gthread_mutex_init_function
+<b><a name="line61">61   </a></b>	#define <b>__GTHREAD_ONCE_INIT</b> PTHREAD_ONCE_INIT
+<b><a name="line62">62   </a></b>	#if defined(PTHREAD_RECURSIVE_MUTEX_INITIALIZER)
+<b><a name="line63">63   </a></b>	#define __GTHREAD_RECURSIVE_MUTEX_INIT PTHREAD_RECURSIVE_MUTEX_INITIALIZER
+<b><a name="line64">64   </a></b>	#elif defined(<a href="../../../../../pthread.h/code.html#line89">PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP</a>)
+<b><a name="line65">65   </a></b>	#define <b>__GTHREAD_RECURSIVE_MUTEX_INIT</b> PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP
+<b><a name="line66">66   </a></b>	#else
+<b><a name="line67">67   </a></b>	#define __GTHREAD_RECURSIVE_MUTEX_INIT_FUNCTION __gthread_recursive_mutex_init_function
+<b><a name="line68">68   </a></b>	#endif
+<b><a name="line69">69   </a></b>	#define <b>__GTHREAD_COND_INIT</b> PTHREAD_COND_INITIALIZER
+<b><a name="line70">70   </a></b>	#define <b>__GTHREAD_TIME_INIT</b> {0,0}
+<b><a name="line71">71   </a></b>	
+<b><a name="line72">72   </a></b>	#ifdef _GTHREAD_USE_MUTEX_INIT_FUNC
+<b><a name="line73">73   </a></b>	# undef __GTHREAD_MUTEX_INIT
+<b><a name="line74">74   </a></b>	#endif
+<b><a name="line75">75   </a></b>	#ifdef _GTHREAD_USE_RECURSIVE_MUTEX_INIT_FUNC
+<b><a name="line76">76   </a></b>	# undef __GTHREAD_RECURSIVE_MUTEX_INIT
+<b><a name="line77">77   </a></b>	# undef __GTHREAD_RECURSIVE_MUTEX_INIT_FUNCTION
+<b><a name="line78">78   </a></b>	# define __GTHREAD_RECURSIVE_MUTEX_INIT_FUNCTION __gthread_recursive_mutex_init_function
+<b><a name="line79">79   </a></b>	#endif
+<b><a name="line80">80   </a></b>	#ifdef _GTHREAD_USE_COND_INIT_FUNC
+<b><a name="line81">81   </a></b>	# undef __GTHREAD_COND_INIT
+<b><a name="line82">82   </a></b>	# define __GTHREAD_COND_INIT_FUNCTION __gthread_cond_init_function
+<b><a name="line83">83   </a></b>	#endif
+<b><a name="line84">84   </a></b>	
+<b><a name="line85">85   </a></b>	#if <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line198">__GXX_WEAK__</a> &amp;&amp; <a href="../gthr.h/code.html#line145">_GLIBCXX_GTHREAD_USE_WEAK</a>
+<b><a name="line86">86   </a></b>	# ifndef __gthrw_pragma
+<b><a name="line87">87   </a></b>	#  define <b>__gthrw_pragma</b>(pragma)
+<b><a name="line88">88   </a></b>	# endif
+<b><a name="line89">89   </a></b>	# define <b>__gthrw2</b>(name,name2,type) \
+<b><a name="line90">90   </a></b>	  static __typeof(type) name __attribute__ ((__weakref__(#name2))); \
+<b><a name="line91">91   </a></b>	  __gthrw_pragma(weak type)
+<b><a name="line92">92   </a></b>	# define <b>__gthrw_</b>(name) __gthrw_ ## name
+<b><a name="line93">93   </a></b>	#else
+<b><a name="line94">94   </a></b>	# define __gthrw2(name,name2,type)
+<b><a name="line95">95   </a></b>	# define __gthrw_(name) name
+<b><a name="line96">96   </a></b>	#endif
+<b><a name="line97">97   </a></b>	
+<b><a name="line98">98   </a></b>	/* Typically, __gthrw_foo is a weak reference to symbol foo.  */
+<b><a name="line99">99   </a></b>	#define <b>__gthrw</b>(name) __gthrw2(__gthrw_ ## name,name,name)
+<b><a name="line100">100  </a></b>	
+<b><a name="line101">101  </a></b>	<a href="#line99">__gthrw</a>(pthread_once)
+<b><a name="line102">102  </a></b>	<a href="#line99">__gthrw</a>(pthread_getspecific)
+<b><a name="line103">103  </a></b>	<a href="#line99">__gthrw</a>(pthread_setspecific)
+<b><a name="line104">104  </a></b>	
+<b><a name="line105">105  </a></b>	<a href="#line99">__gthrw</a>(pthread_create)
+<b><a name="line106">106  </a></b>	<a href="#line99">__gthrw</a>(pthread_join)
+<b><a name="line107">107  </a></b>	<a href="#line99">__gthrw</a>(pthread_equal)
+<b><a name="line108">108  </a></b>	<a href="#line99">__gthrw</a>(pthread_self)
+<b><a name="line109">109  </a></b>	<a href="#line99">__gthrw</a>(pthread_detach)
+<b><a name="line110">110  </a></b>	#ifndef __BIONIC__
+<b><a name="line111">111  </a></b>	<a href="#line99">__gthrw</a>(pthread_cancel)
+<b><a name="line112">112  </a></b>	#endif
+<b><a name="line113">113  </a></b>	<a href="#line99">__gthrw</a>(sched_yield)
+<b><a name="line114">114  </a></b>	
+<b><a name="line115">115  </a></b>	<a href="#line99">__gthrw</a>(pthread_mutex_lock)
+<b><a name="line116">116  </a></b>	<a href="#line99">__gthrw</a>(pthread_mutex_trylock)
+<b><a name="line117">117  </a></b>	#if <a href="../c++config.h/code.html#line1441">_GTHREAD_USE_MUTEX_TIMEDLOCK</a>
+<b><a name="line118">118  </a></b>	<a href="#line99">__gthrw</a>(pthread_mutex_timedlock)
+<b><a name="line119">119  </a></b>	#endif
+<b><a name="line120">120  </a></b>	<a href="#line99">__gthrw</a>(pthread_mutex_unlock)
+<b><a name="line121">121  </a></b>	<a href="#line99">__gthrw</a>(pthread_mutex_init)
+<b><a name="line122">122  </a></b>	<a href="#line99">__gthrw</a>(pthread_mutex_destroy)
+<b><a name="line123">123  </a></b>	
+<b><a name="line124">124  </a></b>	<a href="#line99">__gthrw</a>(pthread_cond_init)
+<b><a name="line125">125  </a></b>	<a href="#line99">__gthrw</a>(pthread_cond_broadcast)
+<b><a name="line126">126  </a></b>	<a href="#line99">__gthrw</a>(pthread_cond_signal)
+<b><a name="line127">127  </a></b>	<a href="#line99">__gthrw</a>(pthread_cond_wait)
+<b><a name="line128">128  </a></b>	<a href="#line99">__gthrw</a>(pthread_cond_timedwait)
+<b><a name="line129">129  </a></b>	<a href="#line99">__gthrw</a>(pthread_cond_destroy)
+<b><a name="line130">130  </a></b>	
+<b><a name="line131">131  </a></b>	<a href="#line99">__gthrw</a>(pthread_key_create)
+<b><a name="line132">132  </a></b>	<a href="#line99">__gthrw</a>(pthread_key_delete)
+<b><a name="line133">133  </a></b>	<a href="#line99">__gthrw</a>(pthread_mutexattr_init)
+<b><a name="line134">134  </a></b>	<a href="#line99">__gthrw</a>(pthread_mutexattr_settype)
+<b><a name="line135">135  </a></b>	<a href="#line99">__gthrw</a>(pthread_mutexattr_destroy)
+<b><a name="line136">136  </a></b>	
+<b><a name="line137">137  </a></b>	
+<b><a name="line138">138  </a></b>	#if defined(_LIBOBJC) || defined(_LIBOBJC_WEAK)
+<b><a name="line139">139  </a></b>	/* Objective-C.  */
+<b><a name="line140">140  </a></b>	__gthrw(pthread_exit)
+<b><a name="line141">141  </a></b>	#ifdef _POSIX_PRIORITY_SCHEDULING
+<b><a name="line142">142  </a></b>	#ifdef _POSIX_THREAD_PRIORITY_SCHEDULING
+<b><a name="line143">143  </a></b>	__gthrw(sched_get_priority_max)
+<b><a name="line144">144  </a></b>	__gthrw(sched_get_priority_min)
+<b><a name="line145">145  </a></b>	#endif /* _POSIX_THREAD_PRIORITY_SCHEDULING */
+<b><a name="line146">146  </a></b>	#endif /* _POSIX_PRIORITY_SCHEDULING */
+<b><a name="line147">147  </a></b>	__gthrw(pthread_attr_destroy)
+<b><a name="line148">148  </a></b>	__gthrw(pthread_attr_init)
+<b><a name="line149">149  </a></b>	__gthrw(pthread_attr_setdetachstate)
+<b><a name="line150">150  </a></b>	#ifdef _POSIX_THREAD_PRIORITY_SCHEDULING
+<b><a name="line151">151  </a></b>	__gthrw(pthread_getschedparam)
+<b><a name="line152">152  </a></b>	__gthrw(pthread_setschedparam)
+<b><a name="line153">153  </a></b>	#endif /* _POSIX_THREAD_PRIORITY_SCHEDULING */
+<b><a name="line154">154  </a></b>	#endif /* _LIBOBJC || _LIBOBJC_WEAK */
+<b><a name="line155">155  </a></b>	
+<b><a name="line156">156  </a></b>	#if <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line198">__GXX_WEAK__</a> &amp;&amp; <a href="../gthr.h/code.html#line145">_GLIBCXX_GTHREAD_USE_WEAK</a>
+<b><a name="line157">157  </a></b>	
+<b><a name="line158">158  </a></b>	/* On Solaris 2.6 up to 9, the libc exposes a POSIX threads interface even if
+<b><a name="line159">159  </a></b>	   -pthreads is not specified.  The functions are dummies and most return an
+<b><a name="line160">160  </a></b>	   error value.  However pthread_once returns 0 without invoking the routine
+<b><a name="line161">161  </a></b>	   it is passed so we cannot pretend that the interface is active if -pthreads
+<b><a name="line162">162  </a></b>	   is not specified.  On Solaris 2.5.1, the interface is not exposed at all so
+<b><a name="line163">163  </a></b>	   we need to play the usual game with weak symbols.  On Solaris 10 and up, a
+<b><a name="line164">164  </a></b>	   working interface is always exposed.  On FreeBSD 6 and later, libc also
+<b><a name="line165">165  </a></b>	   exposes a dummy POSIX threads interface, similar to what Solaris 2.6 up
+<b><a name="line166">166  </a></b>	   to 9 does.  FreeBSD &gt;= 700014 even provides a pthread_cancel stub in libc,
+<b><a name="line167">167  </a></b>	   which means the alternate __gthread_active_p below cannot be used there.  */
+<b><a name="line168">168  </a></b>	
+<b><a name="line169">169  </a></b>	#if defined(__FreeBSD__) || (defined(__sun) &amp;&amp; defined(__svr4__))
+<b><a name="line170">170  </a></b>	
+<b><a name="line171">171  </a></b>	static volatile int __gthread_active = -1;
+<b><a name="line172">172  </a></b>	
+<b><a name="line173">173  </a></b>	static void
+<b><a name="line174">174  </a></b>	__gthread_trigger (void)
+<b><a name="line175">175  </a></b>	{
+<b><a name="line176">176  </a></b>	  __gthread_active = 1;
+<b><a name="line177">177  </a></b>	}
+<b><a name="line178">178  </a></b>	
+<b><a name="line179">179  </a></b>	static inline int
+<b><a name="line180">180  </a></b>	__gthread_active_p (void)
+<b><a name="line181">181  </a></b>	{
+<b><a name="line182">182  </a></b>	  static pthread_mutex_t __gthread_active_mutex = PTHREAD_MUTEX_INITIALIZER;
+<b><a name="line183">183  </a></b>	  static pthread_once_t __gthread_active_once = PTHREAD_ONCE_INIT;
+<b><a name="line184">184  </a></b>	
+<b><a name="line185">185  </a></b>	  /* Avoid reading __gthread_active twice on the main code path.  */
+<b><a name="line186">186  </a></b>	  int __gthread_active_latest_value = __gthread_active;
+<b><a name="line187">187  </a></b>	
+<b><a name="line188">188  </a></b>	  /* This test is not protected to avoid taking a lock on the main code
+<b><a name="line189">189  </a></b>	     path so every update of __gthread_active in a threaded program must
+<b><a name="line190">190  </a></b>	     be atomic with regard to the result of the test.  */
+<b><a name="line191">191  </a></b>	  if (__builtin_expect (__gthread_active_latest_value &lt; 0, 0))
+<b><a name="line192">192  </a></b>	    {
+<b><a name="line193">193  </a></b>	      if (__gthrw_(pthread_once))
+<b><a name="line194">194  </a></b>		{
+<b><a name="line195">195  </a></b>		  /* If this really is a threaded program, then we must ensure that
+<b><a name="line196">196  </a></b>		     __gthread_active has been set to 1 before exiting this block.  */
+<b><a name="line197">197  </a></b>		  __gthrw_(pthread_mutex_lock) (&amp;__gthread_active_mutex);
+<b><a name="line198">198  </a></b>		  __gthrw_(pthread_once) (&amp;__gthread_active_once, __gthread_trigger);
+<b><a name="line199">199  </a></b>		  __gthrw_(pthread_mutex_unlock) (&amp;__gthread_active_mutex);
+<b><a name="line200">200  </a></b>		}
+<b><a name="line201">201  </a></b>	
+<b><a name="line202">202  </a></b>	      /* Make sure we'll never enter this block again.  */
+<b><a name="line203">203  </a></b>	      if (__gthread_active &lt; 0)
+<b><a name="line204">204  </a></b>		__gthread_active = 0;
+<b><a name="line205">205  </a></b>	
+<b><a name="line206">206  </a></b>	      __gthread_active_latest_value = __gthread_active;
+<b><a name="line207">207  </a></b>	    }
+<b><a name="line208">208  </a></b>	
+<b><a name="line209">209  </a></b>	  return __gthread_active_latest_value != 0;
+<b><a name="line210">210  </a></b>	}
+<b><a name="line211">211  </a></b>	
+<b><a name="line212">212  </a></b>	#else /* neither FreeBSD nor Solaris */
+<b><a name="line213">213  </a></b>	
+<b><a name="line214">214  </a></b>	/* For a program to be multi-threaded the only thing that it certainly must
+<b><a name="line215">215  </a></b>	   be using is pthread_create.  However, there may be other libraries that
+<b><a name="line216">216  </a></b>	   intercept pthread_create with their own definitions to wrap pthreads
+<b><a name="line217">217  </a></b>	   functionality for some purpose.  In those cases, pthread_create being
+<b><a name="line218">218  </a></b>	   defined might not necessarily mean that libpthread is actually linked
+<b><a name="line219">219  </a></b>	   in.
+<b><a name="line220">220  </a></b>	
+<b><a name="line221">221  </a></b>	   For the GNU C library, we can use a known internal name.  This is always
+<b><a name="line222">222  </a></b>	   available in the ABI, but no other library would define it.  That is
+<b><a name="line223">223  </a></b>	   ideal, since any public pthread function might be intercepted just as
+<b><a name="line224">224  </a></b>	   pthread_create might be.  __pthread_key_create is an &quot;internal&quot;
+<b><a name="line225">225  </a></b>	   implementation symbol, but it is part of the public exported ABI.  Also,
+<b><a name="line226">226  </a></b>	   it's among the symbols that the static libpthread.a always links in
+<b><a name="line227">227  </a></b>	   whenever pthread_create is used, so there is no danger of a false
+<b><a name="line228">228  </a></b>	   negative result in any statically-linked, multi-threaded program.
+<b><a name="line229">229  </a></b>	
+<b><a name="line230">230  </a></b>	   For others, we choose pthread_cancel as a function that seems unlikely
+<b><a name="line231">231  </a></b>	   to be redefined by an interceptor library.  The bionic (Android) C
+<b><a name="line232">232  </a></b>	   library does not provide pthread_cancel, so we do use pthread_create
+<b><a name="line233">233  </a></b>	   there (and interceptor libraries lose).  */
+<b><a name="line234">234  </a></b>	
+<b><a name="line235">235  </a></b>	#ifdef <a href="../../../../../features.h/code.html#line358">__GLIBC__</a>
+<b><a name="line236">236  </a></b>	<a href="#line89">__gthrw2</a>(__gthrw_(__pthread_key_create),
+<b><a name="line237">237  </a></b>		 __pthread_key_create,
+<b><a name="line238">238  </a></b>		 pthread_key_create)
+<b><a name="line239">239  </a></b>	# define <b>GTHR_ACTIVE_PROXY</b>	__gthrw_(__pthread_key_create)
+<b><a name="line240">240  </a></b>	#elif defined (__BIONIC__)
+<b><a name="line241">241  </a></b>	# define GTHR_ACTIVE_PROXY	__gthrw_(pthread_create)
+<b><a name="line242">242  </a></b>	#else
+<b><a name="line243">243  </a></b>	# define GTHR_ACTIVE_PROXY	__gthrw_(pthread_cancel)
+<b><a name="line244">244  </a></b>	#endif
+<b><a name="line245">245  </a></b>	
+<b><a name="line246">246  </a></b>	static inline int
+<b><a name="line247">247  </a></b>	<b>__gthread_active_p</b> (void)
+<b><a name="line248">248  </a></b>	{
+<b><a name="line249">249  </a></b>	  static void *const <b>__gthread_active_ptr</b>
+<b><a name="line250">250  </a></b>	    = __extension__ (void *) &amp;<a href="#line239">GTHR_ACTIVE_PROXY</a>;
+<b><a name="line251">251  </a></b>	  return <a href="#line249">__gthread_active_ptr</a> != 0;
+<b><a name="line252">252  </a></b>	}
+<b><a name="line253">253  </a></b>	
+<b><a name="line254">254  </a></b>	#endif /* FreeBSD or Solaris */
+<b><a name="line255">255  </a></b>	
+<b><a name="line256">256  </a></b>	#else /* not __GXX_WEAK__ */
+<b><a name="line257">257  </a></b>	
+<b><a name="line258">258  </a></b>	/* Similar to Solaris, HP-UX 11 for PA-RISC provides stubs for pthread
+<b><a name="line259">259  </a></b>	   calls in shared flavors of the HP-UX C library.  Most of the stubs
+<b><a name="line260">260  </a></b>	   have no functionality.  The details are described in the &quot;libc cumulative
+<b><a name="line261">261  </a></b>	   patch&quot; for each subversion of HP-UX 11.  There are two special interfaces
+<b><a name="line262">262  </a></b>	   provided for checking whether an application is linked to a shared pthread
+<b><a name="line263">263  </a></b>	   library or not.  However, these interfaces aren't available in early
+<b><a name="line264">264  </a></b>	   libpthread libraries.  We also need a test that works for archive
+<b><a name="line265">265  </a></b>	   libraries.  We can't use pthread_once as some libc versions call the
+<b><a name="line266">266  </a></b>	   init function.  We also can't use pthread_create or pthread_attr_init
+<b><a name="line267">267  </a></b>	   as these create a thread and thereby prevent changing the default stack
+<b><a name="line268">268  </a></b>	   size.  The function pthread_default_stacksize_np is available in both
+<b><a name="line269">269  </a></b>	   the archive and shared versions of libpthread.   It can be used to
+<b><a name="line270">270  </a></b>	   determine the default pthread stack size.  There is a stub in some
+<b><a name="line271">271  </a></b>	   shared libc versions which returns a zero size if pthreads are not
+<b><a name="line272">272  </a></b>	   active.  We provide an equivalent stub to handle cases where libc
+<b><a name="line273">273  </a></b>	   doesn't provide one.  */
+<b><a name="line274">274  </a></b>	
+<b><a name="line275">275  </a></b>	#if defined(__hppa__) &amp;&amp; defined(__hpux__)
+<b><a name="line276">276  </a></b>	
+<b><a name="line277">277  </a></b>	static volatile int __gthread_active = -1;
+<b><a name="line278">278  </a></b>	
+<b><a name="line279">279  </a></b>	static inline int
+<b><a name="line280">280  </a></b>	__gthread_active_p (void)
+<b><a name="line281">281  </a></b>	{
+<b><a name="line282">282  </a></b>	  /* Avoid reading __gthread_active twice on the main code path.  */
+<b><a name="line283">283  </a></b>	  int __gthread_active_latest_value = __gthread_active;
+<b><a name="line284">284  </a></b>	  size_t __s;
+<b><a name="line285">285  </a></b>	
+<b><a name="line286">286  </a></b>	  if (__builtin_expect (__gthread_active_latest_value &lt; 0, 0))
+<b><a name="line287">287  </a></b>	    {
+<b><a name="line288">288  </a></b>	      pthread_default_stacksize_np (0, &amp;__s);
+<b><a name="line289">289  </a></b>	      __gthread_active = __s ? 1 : 0;
+<b><a name="line290">290  </a></b>	      __gthread_active_latest_value = __gthread_active;
+<b><a name="line291">291  </a></b>	    }
+<b><a name="line292">292  </a></b>	
+<b><a name="line293">293  </a></b>	  return __gthread_active_latest_value != 0;
+<b><a name="line294">294  </a></b>	}
+<b><a name="line295">295  </a></b>	
+<b><a name="line296">296  </a></b>	#else /* not hppa-hpux */
+<b><a name="line297">297  </a></b>	
+<b><a name="line298">298  </a></b>	static inline int
+<b><a name="line299">299  </a></b>	__gthread_active_p (void)
+<b><a name="line300">300  </a></b>	{
+<b><a name="line301">301  </a></b>	  return 1;
+<b><a name="line302">302  </a></b>	}
+<b><a name="line303">303  </a></b>	
+<b><a name="line304">304  </a></b>	#endif /* hppa-hpux */
+<b><a name="line305">305  </a></b>	
+<b><a name="line306">306  </a></b>	#endif /* __GXX_WEAK__ */
+<b><a name="line307">307  </a></b>	
+<b><a name="line308">308  </a></b>	#ifdef _LIBOBJC
+<b><a name="line309">309  </a></b>	
+<b><a name="line310">310  </a></b>	/* This is the config.h file in libobjc/ */
+<b><a name="line311">311  </a></b>	#include &lt;config.h&gt;
+<b><a name="line312">312  </a></b>	
+<b><a name="line313">313  </a></b>	#ifdef HAVE_SCHED_H
+<b><a name="line314">314  </a></b>	# include &lt;sched.h&gt;
+<b><a name="line315">315  </a></b>	#endif
+<b><a name="line316">316  </a></b>	
+<b><a name="line317">317  </a></b>	/* Key structure for maintaining thread specific storage */
+<b><a name="line318">318  </a></b>	static pthread_key_t _objc_thread_storage;
+<b><a name="line319">319  </a></b>	static pthread_attr_t _objc_thread_attribs;
+<b><a name="line320">320  </a></b>	
+<b><a name="line321">321  </a></b>	/* Thread local storage for a single thread */
+<b><a name="line322">322  </a></b>	static void *thread_local_storage = NULL;
+<b><a name="line323">323  </a></b>	
+<b><a name="line324">324  </a></b>	/* Backend initialization functions */
+<b><a name="line325">325  </a></b>	
+<b><a name="line326">326  </a></b>	/* Initialize the threads subsystem.  */
+<b><a name="line327">327  </a></b>	static inline int
+<b><a name="line328">328  </a></b>	__gthread_objc_init_thread_system (void)
+<b><a name="line329">329  </a></b>	{
+<b><a name="line330">330  </a></b>	  if (__gthread_active_p ())
+<b><a name="line331">331  </a></b>	    {
+<b><a name="line332">332  </a></b>	      /* Initialize the thread storage key.  */
+<b><a name="line333">333  </a></b>	      if (__gthrw_(pthread_key_create) (&amp;_objc_thread_storage, NULL) == 0)
+<b><a name="line334">334  </a></b>		{
+<b><a name="line335">335  </a></b>		  /* The normal default detach state for threads is
+<b><a name="line336">336  </a></b>		   * PTHREAD_CREATE_JOINABLE which causes threads to not die
+<b><a name="line337">337  </a></b>		   * when you think they should.  */
+<b><a name="line338">338  </a></b>		  if (__gthrw_(pthread_attr_init) (&amp;_objc_thread_attribs) == 0
+<b><a name="line339">339  </a></b>		      &amp;&amp; __gthrw_(pthread_attr_setdetachstate) (&amp;_objc_thread_attribs,
+<b><a name="line340">340  </a></b>						      PTHREAD_CREATE_DETACHED) == 0)
+<b><a name="line341">341  </a></b>		    return 0;
+<b><a name="line342">342  </a></b>		}
+<b><a name="line343">343  </a></b>	    }
+<b><a name="line344">344  </a></b>	
+<b><a name="line345">345  </a></b>	  return -1;
+<b><a name="line346">346  </a></b>	}
+<b><a name="line347">347  </a></b>	
+<b><a name="line348">348  </a></b>	/* Close the threads subsystem.  */
+<b><a name="line349">349  </a></b>	static inline int
+<b><a name="line350">350  </a></b>	__gthread_objc_close_thread_system (void)
+<b><a name="line351">351  </a></b>	{
+<b><a name="line352">352  </a></b>	  if (__gthread_active_p ()
+<b><a name="line353">353  </a></b>	      &amp;&amp; __gthrw_(pthread_key_delete) (_objc_thread_storage) == 0
+<b><a name="line354">354  </a></b>	      &amp;&amp; __gthrw_(pthread_attr_destroy) (&amp;_objc_thread_attribs) == 0)
+<b><a name="line355">355  </a></b>	    return 0;
+<b><a name="line356">356  </a></b>	
+<b><a name="line357">357  </a></b>	  return -1;
+<b><a name="line358">358  </a></b>	}
+<b><a name="line359">359  </a></b>	
+<b><a name="line360">360  </a></b>	/* Backend thread functions */
+<b><a name="line361">361  </a></b>	
+<b><a name="line362">362  </a></b>	/* Create a new thread of execution.  */
+<b><a name="line363">363  </a></b>	static inline objc_thread_t
+<b><a name="line364">364  </a></b>	__gthread_objc_thread_detach (void (*func)(void *), void *arg)
+<b><a name="line365">365  </a></b>	{
+<b><a name="line366">366  </a></b>	  objc_thread_t thread_id;
+<b><a name="line367">367  </a></b>	  pthread_t new_thread_handle;
+<b><a name="line368">368  </a></b>	
+<b><a name="line369">369  </a></b>	  if (!__gthread_active_p ())
+<b><a name="line370">370  </a></b>	    return NULL;
+<b><a name="line371">371  </a></b>	
+<b><a name="line372">372  </a></b>	  if (!(__gthrw_(pthread_create) (&amp;new_thread_handle, &amp;_objc_thread_attribs,
+<b><a name="line373">373  </a></b>					  (void *) func, arg)))
+<b><a name="line374">374  </a></b>	    thread_id = (objc_thread_t) new_thread_handle;
+<b><a name="line375">375  </a></b>	  else
+<b><a name="line376">376  </a></b>	    thread_id = NULL;
+<b><a name="line377">377  </a></b>	
+<b><a name="line378">378  </a></b>	  return thread_id;
+<b><a name="line379">379  </a></b>	}
+<b><a name="line380">380  </a></b>	
+<b><a name="line381">381  </a></b>	/* Set the current thread's priority.  */
+<b><a name="line382">382  </a></b>	static inline int
+<b><a name="line383">383  </a></b>	__gthread_objc_thread_set_priority (int priority)
+<b><a name="line384">384  </a></b>	{
+<b><a name="line385">385  </a></b>	  if (!__gthread_active_p ())
+<b><a name="line386">386  </a></b>	    return -1;
+<b><a name="line387">387  </a></b>	  else
+<b><a name="line388">388  </a></b>	    {
+<b><a name="line389">389  </a></b>	#ifdef _POSIX_PRIORITY_SCHEDULING
+<b><a name="line390">390  </a></b>	#ifdef _POSIX_THREAD_PRIORITY_SCHEDULING
+<b><a name="line391">391  </a></b>	      pthread_t thread_id = __gthrw_(pthread_self) ();
+<b><a name="line392">392  </a></b>	      int policy;
+<b><a name="line393">393  </a></b>	      struct sched_param params;
+<b><a name="line394">394  </a></b>	      int priority_min, priority_max;
+<b><a name="line395">395  </a></b>	
+<b><a name="line396">396  </a></b>	      if (__gthrw_(pthread_getschedparam) (thread_id, &amp;policy, &amp;params) == 0)
+<b><a name="line397">397  </a></b>		{
+<b><a name="line398">398  </a></b>		  if ((priority_max = __gthrw_(sched_get_priority_max) (policy)) == -1)
+<b><a name="line399">399  </a></b>		    return -1;
+<b><a name="line400">400  </a></b>	
+<b><a name="line401">401  </a></b>		  if ((priority_min = __gthrw_(sched_get_priority_min) (policy)) == -1)
+<b><a name="line402">402  </a></b>		    return -1;
+<b><a name="line403">403  </a></b>	
+<b><a name="line404">404  </a></b>		  if (priority &gt; priority_max)
+<b><a name="line405">405  </a></b>		    priority = priority_max;
+<b><a name="line406">406  </a></b>		  else if (priority &lt; priority_min)
+<b><a name="line407">407  </a></b>		    priority = priority_min;
+<b><a name="line408">408  </a></b>		  params.sched_priority = priority;
+<b><a name="line409">409  </a></b>	
+<b><a name="line410">410  </a></b>		  /*
+<b><a name="line411">411  </a></b>		   * The solaris 7 and several other man pages incorrectly state that
+<b><a name="line412">412  </a></b>		   * this should be a pointer to policy but pthread.h is universally
+<b><a name="line413">413  </a></b>		   * at odds with this.
+<b><a name="line414">414  </a></b>		   */
+<b><a name="line415">415  </a></b>		  if (__gthrw_(pthread_setschedparam) (thread_id, policy, &amp;params) == 0)
+<b><a name="line416">416  </a></b>		    return 0;
+<b><a name="line417">417  </a></b>		}
+<b><a name="line418">418  </a></b>	#endif /* _POSIX_THREAD_PRIORITY_SCHEDULING */
+<b><a name="line419">419  </a></b>	#endif /* _POSIX_PRIORITY_SCHEDULING */
+<b><a name="line420">420  </a></b>	      return -1;
+<b><a name="line421">421  </a></b>	    }
+<b><a name="line422">422  </a></b>	}
+<b><a name="line423">423  </a></b>	
+<b><a name="line424">424  </a></b>	/* Return the current thread's priority.  */
+<b><a name="line425">425  </a></b>	static inline int
+<b><a name="line426">426  </a></b>	__gthread_objc_thread_get_priority (void)
+<b><a name="line427">427  </a></b>	{
+<b><a name="line428">428  </a></b>	#ifdef _POSIX_PRIORITY_SCHEDULING
+<b><a name="line429">429  </a></b>	#ifdef _POSIX_THREAD_PRIORITY_SCHEDULING
+<b><a name="line430">430  </a></b>	  if (__gthread_active_p ())
+<b><a name="line431">431  </a></b>	    {
+<b><a name="line432">432  </a></b>	      int policy;
+<b><a name="line433">433  </a></b>	      struct sched_param params;
+<b><a name="line434">434  </a></b>	
+<b><a name="line435">435  </a></b>	      if (__gthrw_(pthread_getschedparam) (__gthrw_(pthread_self) (), &amp;policy, &amp;params) == 0)
+<b><a name="line436">436  </a></b>		return params.sched_priority;
+<b><a name="line437">437  </a></b>	      else
+<b><a name="line438">438  </a></b>		return -1;
+<b><a name="line439">439  </a></b>	    }
+<b><a name="line440">440  </a></b>	  else
+<b><a name="line441">441  </a></b>	#endif /* _POSIX_THREAD_PRIORITY_SCHEDULING */
+<b><a name="line442">442  </a></b>	#endif /* _POSIX_PRIORITY_SCHEDULING */
+<b><a name="line443">443  </a></b>	    return OBJC_THREAD_INTERACTIVE_PRIORITY;
+<b><a name="line444">444  </a></b>	}
+<b><a name="line445">445  </a></b>	
+<b><a name="line446">446  </a></b>	/* Yield our process time to another thread.  */
+<b><a name="line447">447  </a></b>	static inline void
+<b><a name="line448">448  </a></b>	__gthread_objc_thread_yield (void)
+<b><a name="line449">449  </a></b>	{
+<b><a name="line450">450  </a></b>	  if (__gthread_active_p ())
+<b><a name="line451">451  </a></b>	    __gthrw_(sched_yield) ();
+<b><a name="line452">452  </a></b>	}
+<b><a name="line453">453  </a></b>	
+<b><a name="line454">454  </a></b>	/* Terminate the current thread.  */
+<b><a name="line455">455  </a></b>	static inline int
+<b><a name="line456">456  </a></b>	__gthread_objc_thread_exit (void)
+<b><a name="line457">457  </a></b>	{
+<b><a name="line458">458  </a></b>	  if (__gthread_active_p ())
+<b><a name="line459">459  </a></b>	    /* exit the thread */
+<b><a name="line460">460  </a></b>	    __gthrw_(pthread_exit) (&amp;__objc_thread_exit_status);
+<b><a name="line461">461  </a></b>	
+<b><a name="line462">462  </a></b>	  /* Failed if we reached here */
+<b><a name="line463">463  </a></b>	  return -1;
+<b><a name="line464">464  </a></b>	}
+<b><a name="line465">465  </a></b>	
+<b><a name="line466">466  </a></b>	/* Returns an integer value which uniquely describes a thread.  */
+<b><a name="line467">467  </a></b>	static inline objc_thread_t
+<b><a name="line468">468  </a></b>	__gthread_objc_thread_id (void)
+<b><a name="line469">469  </a></b>	{
+<b><a name="line470">470  </a></b>	  if (__gthread_active_p ())
+<b><a name="line471">471  </a></b>	    return (objc_thread_t) __gthrw_(pthread_self) ();
+<b><a name="line472">472  </a></b>	  else
+<b><a name="line473">473  </a></b>	    return (objc_thread_t) 1;
+<b><a name="line474">474  </a></b>	}
+<b><a name="line475">475  </a></b>	
+<b><a name="line476">476  </a></b>	/* Sets the thread's local storage pointer.  */
+<b><a name="line477">477  </a></b>	static inline int
+<b><a name="line478">478  </a></b>	__gthread_objc_thread_set_data (void *value)
+<b><a name="line479">479  </a></b>	{
+<b><a name="line480">480  </a></b>	  if (__gthread_active_p ())
+<b><a name="line481">481  </a></b>	    return __gthrw_(pthread_setspecific) (_objc_thread_storage, value);
+<b><a name="line482">482  </a></b>	  else
+<b><a name="line483">483  </a></b>	    {
+<b><a name="line484">484  </a></b>	      thread_local_storage = value;
+<b><a name="line485">485  </a></b>	      return 0;
+<b><a name="line486">486  </a></b>	    }
+<b><a name="line487">487  </a></b>	}
+<b><a name="line488">488  </a></b>	
+<b><a name="line489">489  </a></b>	/* Returns the thread's local storage pointer.  */
+<b><a name="line490">490  </a></b>	static inline void *
+<b><a name="line491">491  </a></b>	__gthread_objc_thread_get_data (void)
+<b><a name="line492">492  </a></b>	{
+<b><a name="line493">493  </a></b>	  if (__gthread_active_p ())
+<b><a name="line494">494  </a></b>	    return __gthrw_(pthread_getspecific) (_objc_thread_storage);
+<b><a name="line495">495  </a></b>	  else
+<b><a name="line496">496  </a></b>	    return thread_local_storage;
+<b><a name="line497">497  </a></b>	}
+<b><a name="line498">498  </a></b>	
+<b><a name="line499">499  </a></b>	/* Backend mutex functions */
+<b><a name="line500">500  </a></b>	
+<b><a name="line501">501  </a></b>	/* Allocate a mutex.  */
+<b><a name="line502">502  </a></b>	static inline int
+<b><a name="line503">503  </a></b>	__gthread_objc_mutex_allocate (objc_mutex_t mutex)
+<b><a name="line504">504  </a></b>	{
+<b><a name="line505">505  </a></b>	  if (__gthread_active_p ())
+<b><a name="line506">506  </a></b>	    {
+<b><a name="line507">507  </a></b>	      mutex-&gt;backend = objc_malloc (sizeof (pthread_mutex_t));
+<b><a name="line508">508  </a></b>	
+<b><a name="line509">509  </a></b>	      if (__gthrw_(pthread_mutex_init) ((pthread_mutex_t *) mutex-&gt;backend, NULL))
+<b><a name="line510">510  </a></b>		{
+<b><a name="line511">511  </a></b>		  objc_free (mutex-&gt;backend);
+<b><a name="line512">512  </a></b>		  mutex-&gt;backend = NULL;
+<b><a name="line513">513  </a></b>		  return -1;
+<b><a name="line514">514  </a></b>		}
+<b><a name="line515">515  </a></b>	    }
+<b><a name="line516">516  </a></b>	
+<b><a name="line517">517  </a></b>	  return 0;
+<b><a name="line518">518  </a></b>	}
+<b><a name="line519">519  </a></b>	
+<b><a name="line520">520  </a></b>	/* Deallocate a mutex.  */
+<b><a name="line521">521  </a></b>	static inline int
+<b><a name="line522">522  </a></b>	__gthread_objc_mutex_deallocate (objc_mutex_t mutex)
+<b><a name="line523">523  </a></b>	{
+<b><a name="line524">524  </a></b>	  if (__gthread_active_p ())
+<b><a name="line525">525  </a></b>	    {
+<b><a name="line526">526  </a></b>	      int count;
+<b><a name="line527">527  </a></b>	
+<b><a name="line528">528  </a></b>	      /*
+<b><a name="line529">529  </a></b>	       * Posix Threads specifically require that the thread be unlocked
+<b><a name="line530">530  </a></b>	       * for __gthrw_(pthread_mutex_destroy) to work.
+<b><a name="line531">531  </a></b>	       */
+<b><a name="line532">532  </a></b>	
+<b><a name="line533">533  </a></b>	      do
+<b><a name="line534">534  </a></b>		{
+<b><a name="line535">535  </a></b>		  count = __gthrw_(pthread_mutex_unlock) ((pthread_mutex_t *) mutex-&gt;backend);
+<b><a name="line536">536  </a></b>		  if (count &lt; 0)
+<b><a name="line537">537  </a></b>		    return -1;
+<b><a name="line538">538  </a></b>		}
+<b><a name="line539">539  </a></b>	      while (count);
+<b><a name="line540">540  </a></b>	
+<b><a name="line541">541  </a></b>	      if (__gthrw_(pthread_mutex_destroy) ((pthread_mutex_t *) mutex-&gt;backend))
+<b><a name="line542">542  </a></b>		return -1;
+<b><a name="line543">543  </a></b>	
+<b><a name="line544">544  </a></b>	      objc_free (mutex-&gt;backend);
+<b><a name="line545">545  </a></b>	      mutex-&gt;backend = NULL;
+<b><a name="line546">546  </a></b>	    }
+<b><a name="line547">547  </a></b>	  return 0;
+<b><a name="line548">548  </a></b>	}
+<b><a name="line549">549  </a></b>	
+<b><a name="line550">550  </a></b>	/* Grab a lock on a mutex.  */
+<b><a name="line551">551  </a></b>	static inline int
+<b><a name="line552">552  </a></b>	__gthread_objc_mutex_lock (objc_mutex_t mutex)
+<b><a name="line553">553  </a></b>	{
+<b><a name="line554">554  </a></b>	  if (__gthread_active_p ()
+<b><a name="line555">555  </a></b>	      &amp;&amp; __gthrw_(pthread_mutex_lock) ((pthread_mutex_t *) mutex-&gt;backend) != 0)
+<b><a name="line556">556  </a></b>	    {
+<b><a name="line557">557  </a></b>	      return -1;
+<b><a name="line558">558  </a></b>	    }
+<b><a name="line559">559  </a></b>	
+<b><a name="line560">560  </a></b>	  return 0;
+<b><a name="line561">561  </a></b>	}
+<b><a name="line562">562  </a></b>	
+<b><a name="line563">563  </a></b>	/* Try to grab a lock on a mutex.  */
+<b><a name="line564">564  </a></b>	static inline int
+<b><a name="line565">565  </a></b>	__gthread_objc_mutex_trylock (objc_mutex_t mutex)
+<b><a name="line566">566  </a></b>	{
+<b><a name="line567">567  </a></b>	  if (__gthread_active_p ()
+<b><a name="line568">568  </a></b>	      &amp;&amp; __gthrw_(pthread_mutex_trylock) ((pthread_mutex_t *) mutex-&gt;backend) != 0)
+<b><a name="line569">569  </a></b>	    {
+<b><a name="line570">570  </a></b>	      return -1;
+<b><a name="line571">571  </a></b>	    }
+<b><a name="line572">572  </a></b>	
+<b><a name="line573">573  </a></b>	  return 0;
+<b><a name="line574">574  </a></b>	}
+<b><a name="line575">575  </a></b>	
+<b><a name="line576">576  </a></b>	/* Unlock the mutex */
+<b><a name="line577">577  </a></b>	static inline int
+<b><a name="line578">578  </a></b>	__gthread_objc_mutex_unlock (objc_mutex_t mutex)
+<b><a name="line579">579  </a></b>	{
+<b><a name="line580">580  </a></b>	  if (__gthread_active_p ()
+<b><a name="line581">581  </a></b>	      &amp;&amp; __gthrw_(pthread_mutex_unlock) ((pthread_mutex_t *) mutex-&gt;backend) != 0)
+<b><a name="line582">582  </a></b>	    {
+<b><a name="line583">583  </a></b>	      return -1;
+<b><a name="line584">584  </a></b>	    }
+<b><a name="line585">585  </a></b>	
+<b><a name="line586">586  </a></b>	  return 0;
+<b><a name="line587">587  </a></b>	}
+<b><a name="line588">588  </a></b>	
+<b><a name="line589">589  </a></b>	/* Backend condition mutex functions */
+<b><a name="line590">590  </a></b>	
+<b><a name="line591">591  </a></b>	/* Allocate a condition.  */
+<b><a name="line592">592  </a></b>	static inline int
+<b><a name="line593">593  </a></b>	__gthread_objc_condition_allocate (objc_condition_t condition)
+<b><a name="line594">594  </a></b>	{
+<b><a name="line595">595  </a></b>	  if (__gthread_active_p ())
+<b><a name="line596">596  </a></b>	    {
+<b><a name="line597">597  </a></b>	      condition-&gt;backend = objc_malloc (sizeof (pthread_cond_t));
+<b><a name="line598">598  </a></b>	
+<b><a name="line599">599  </a></b>	      if (__gthrw_(pthread_cond_init) ((pthread_cond_t *) condition-&gt;backend, NULL))
+<b><a name="line600">600  </a></b>		{
+<b><a name="line601">601  </a></b>		  objc_free (condition-&gt;backend);
+<b><a name="line602">602  </a></b>		  condition-&gt;backend = NULL;
+<b><a name="line603">603  </a></b>		  return -1;
+<b><a name="line604">604  </a></b>		}
+<b><a name="line605">605  </a></b>	    }
+<b><a name="line606">606  </a></b>	
+<b><a name="line607">607  </a></b>	  return 0;
+<b><a name="line608">608  </a></b>	}
+<b><a name="line609">609  </a></b>	
+<b><a name="line610">610  </a></b>	/* Deallocate a condition.  */
+<b><a name="line611">611  </a></b>	static inline int
+<b><a name="line612">612  </a></b>	__gthread_objc_condition_deallocate (objc_condition_t condition)
+<b><a name="line613">613  </a></b>	{
+<b><a name="line614">614  </a></b>	  if (__gthread_active_p ())
+<b><a name="line615">615  </a></b>	    {
+<b><a name="line616">616  </a></b>	      if (__gthrw_(pthread_cond_destroy) ((pthread_cond_t *) condition-&gt;backend))
+<b><a name="line617">617  </a></b>		return -1;
+<b><a name="line618">618  </a></b>	
+<b><a name="line619">619  </a></b>	      objc_free (condition-&gt;backend);
+<b><a name="line620">620  </a></b>	      condition-&gt;backend = NULL;
+<b><a name="line621">621  </a></b>	    }
+<b><a name="line622">622  </a></b>	  return 0;
+<b><a name="line623">623  </a></b>	}
+<b><a name="line624">624  </a></b>	
+<b><a name="line625">625  </a></b>	/* Wait on the condition */
+<b><a name="line626">626  </a></b>	static inline int
+<b><a name="line627">627  </a></b>	__gthread_objc_condition_wait (objc_condition_t condition, objc_mutex_t mutex)
+<b><a name="line628">628  </a></b>	{
+<b><a name="line629">629  </a></b>	  if (__gthread_active_p ())
+<b><a name="line630">630  </a></b>	    return __gthrw_(pthread_cond_wait) ((pthread_cond_t *) condition-&gt;backend,
+<b><a name="line631">631  </a></b>				      (pthread_mutex_t *) mutex-&gt;backend);
+<b><a name="line632">632  </a></b>	  else
+<b><a name="line633">633  </a></b>	    return 0;
+<b><a name="line634">634  </a></b>	}
+<b><a name="line635">635  </a></b>	
+<b><a name="line636">636  </a></b>	/* Wake up all threads waiting on this condition.  */
+<b><a name="line637">637  </a></b>	static inline int
+<b><a name="line638">638  </a></b>	__gthread_objc_condition_broadcast (objc_condition_t condition)
+<b><a name="line639">639  </a></b>	{
+<b><a name="line640">640  </a></b>	  if (__gthread_active_p ())
+<b><a name="line641">641  </a></b>	    return __gthrw_(pthread_cond_broadcast) ((pthread_cond_t *) condition-&gt;backend);
+<b><a name="line642">642  </a></b>	  else
+<b><a name="line643">643  </a></b>	    return 0;
+<b><a name="line644">644  </a></b>	}
+<b><a name="line645">645  </a></b>	
+<b><a name="line646">646  </a></b>	/* Wake up one thread waiting on this condition.  */
+<b><a name="line647">647  </a></b>	static inline int
+<b><a name="line648">648  </a></b>	__gthread_objc_condition_signal (objc_condition_t condition)
+<b><a name="line649">649  </a></b>	{
+<b><a name="line650">650  </a></b>	  if (__gthread_active_p ())
+<b><a name="line651">651  </a></b>	    return __gthrw_(pthread_cond_signal) ((pthread_cond_t *) condition-&gt;backend);
+<b><a name="line652">652  </a></b>	  else
+<b><a name="line653">653  </a></b>	    return 0;
+<b><a name="line654">654  </a></b>	}
+<b><a name="line655">655  </a></b>	
+<b><a name="line656">656  </a></b>	#else /* _LIBOBJC */
+<b><a name="line657">657  </a></b>	
+<b><a name="line658">658  </a></b>	static inline int
+<b><a name="line659">659  </a></b>	<b>__gthread_create</b> (<a href="#line47">__gthread_t</a> *<b>__threadid</b>, void *(*<b>__func</b>) (void*),
+<b><a name="line660">660  </a></b>			  void *<b>__args</b>)
+<b><a name="line661">661  </a></b>	{
+<b><a name="line662">662  </a></b>	  return <a href="#line92">__gthrw_</a>(pthread_create) (<a href="#line659">__threadid</a>, <a href="../../../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>, <a href="#line659">__func</a>, <a href="#line660">__args</a>);
+<b><a name="line663">663  </a></b>	}
+<b><a name="line664">664  </a></b>	
+<b><a name="line665">665  </a></b>	static inline int
+<b><a name="line666">666  </a></b>	<b>__gthread_join</b> (<a href="#line47">__gthread_t</a> <b>__threadid</b>, void **<b>__value_ptr</b>)
+<b><a name="line667">667  </a></b>	{
+<b><a name="line668">668  </a></b>	  return <a href="#line92">__gthrw_</a>(pthread_join) (<a href="#line666">__threadid</a>, <a href="#line666">__value_ptr</a>);
+<b><a name="line669">669  </a></b>	}
+<b><a name="line670">670  </a></b>	
+<b><a name="line671">671  </a></b>	static inline int
+<b><a name="line672">672  </a></b>	<b>__gthread_detach</b> (<a href="#line47">__gthread_t</a> <b>__threadid</b>)
+<b><a name="line673">673  </a></b>	{
+<b><a name="line674">674  </a></b>	  return <a href="#line92">__gthrw_</a>(pthread_detach) (<a href="#line672">__threadid</a>);
+<b><a name="line675">675  </a></b>	}
+<b><a name="line676">676  </a></b>	
+<b><a name="line677">677  </a></b>	static inline int
+<b><a name="line678">678  </a></b>	<b>__gthread_equal</b> (<a href="#line47">__gthread_t</a> <b>__t1</b>, <a href="#line47">__gthread_t</a> <b>__t2</b>)
+<b><a name="line679">679  </a></b>	{
+<b><a name="line680">680  </a></b>	  return <a href="#line92">__gthrw_</a>(pthread_equal) (<a href="#line678">__t1</a>, <a href="#line678">__t2</a>);
+<b><a name="line681">681  </a></b>	}
+<b><a name="line682">682  </a></b>	
+<b><a name="line683">683  </a></b>	static inline <a href="#line47">__gthread_t</a>
+<b><a name="line684">684  </a></b>	<b>__gthread_self</b> (void)
+<b><a name="line685">685  </a></b>	{
+<b><a name="line686">686  </a></b>	  return <a href="#line92">__gthrw_</a>(pthread_self) ();
+<b><a name="line687">687  </a></b>	}
+<b><a name="line688">688  </a></b>	
+<b><a name="line689">689  </a></b>	static inline int
+<b><a name="line690">690  </a></b>	<b>__gthread_yield</b> (void)
+<b><a name="line691">691  </a></b>	{
+<b><a name="line692">692  </a></b>	  return <a href="#line92">__gthrw_</a>(sched_yield) ();
+<b><a name="line693">693  </a></b>	}
+<b><a name="line694">694  </a></b>	
+<b><a name="line695">695  </a></b>	static inline int
+<b><a name="line696">696  </a></b>	<b>__gthread_once</b> (<a href="#line49">__gthread_once_t</a> *<b>__once</b>, void (*<b>__func</b>) (void))
+<b><a name="line697">697  </a></b>	{
+<b><a name="line698">698  </a></b>	  if (<a href="#line247">__gthread_active_p</a> ())
+<b><a name="line699">699  </a></b>	    return <a href="#line92">__gthrw_</a>(pthread_once) (<a href="#line696">__once</a>, <a href="#line696">__func</a>);
+<b><a name="line700">700  </a></b>	  else
+<b><a name="line701">701  </a></b>	    return -1;
+<b><a name="line702">702  </a></b>	}
+<b><a name="line703">703  </a></b>	
+<b><a name="line704">704  </a></b>	static inline int
+<b><a name="line705">705  </a></b>	<b>__gthread_key_create</b> (<a href="#line48">__gthread_key_t</a> *<b>__key</b>, void (*<b>__dtor</b>) (void *))
+<b><a name="line706">706  </a></b>	{
+<b><a name="line707">707  </a></b>	  return <a href="#line92">__gthrw_</a>(pthread_key_create) (<a href="#line705">__key</a>, <a href="#line705">__dtor</a>);
+<b><a name="line708">708  </a></b>	}
+<b><a name="line709">709  </a></b>	
+<b><a name="line710">710  </a></b>	static inline int
+<b><a name="line711">711  </a></b>	<b>__gthread_key_delete</b> (<a href="#line48">__gthread_key_t</a> <b>__key</b>)
+<b><a name="line712">712  </a></b>	{
+<b><a name="line713">713  </a></b>	  return <a href="#line92">__gthrw_</a>(pthread_key_delete) (<a href="#line711">__key</a>);
+<b><a name="line714">714  </a></b>	}
+<b><a name="line715">715  </a></b>	
+<b><a name="line716">716  </a></b>	static inline void *
+<b><a name="line717">717  </a></b>	<b>__gthread_getspecific</b> (<a href="#line48">__gthread_key_t</a> <b>__key</b>)
+<b><a name="line718">718  </a></b>	{
+<b><a name="line719">719  </a></b>	  return <a href="#line92">__gthrw_</a>(pthread_getspecific) (<a href="#line717">__key</a>);
+<b><a name="line720">720  </a></b>	}
+<b><a name="line721">721  </a></b>	
+<b><a name="line722">722  </a></b>	static inline int
+<b><a name="line723">723  </a></b>	<b>__gthread_setspecific</b> (<a href="#line48">__gthread_key_t</a> <b>__key</b>, const void *<b>__ptr</b>)
+<b><a name="line724">724  </a></b>	{
+<b><a name="line725">725  </a></b>	  return <a href="#line92">__gthrw_</a>(pthread_setspecific) (<a href="#line723">__key</a>, <a href="#line723">__ptr</a>);
+<b><a name="line726">726  </a></b>	}
+<b><a name="line727">727  </a></b>	
+<b><a name="line728">728  </a></b>	static inline void
+<b><a name="line729">729  </a></b>	<b>__gthread_mutex_init_function</b> (<a href="#line50">__gthread_mutex_t</a> *<b>__mutex</b>)
+<b><a name="line730">730  </a></b>	{
+<b><a name="line731">731  </a></b>	  if (<a href="#line247">__gthread_active_p</a> ())
+<b><a name="line732">732  </a></b>	    <a href="#line92">__gthrw_</a>(pthread_mutex_init) (<a href="#line729">__mutex</a>, <a href="../../../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>);
+<b><a name="line733">733  </a></b>	}
+<b><a name="line734">734  </a></b>	
+<b><a name="line735">735  </a></b>	static inline int
+<b><a name="line736">736  </a></b>	<b>__gthread_mutex_destroy</b> (<a href="#line50">__gthread_mutex_t</a> *<b>__mutex</b>)
+<b><a name="line737">737  </a></b>	{
+<b><a name="line738">738  </a></b>	  if (<a href="#line247">__gthread_active_p</a> ())
+<b><a name="line739">739  </a></b>	    return <a href="#line92">__gthrw_</a>(pthread_mutex_destroy) (<a href="#line736">__mutex</a>);
+<b><a name="line740">740  </a></b>	  else
+<b><a name="line741">741  </a></b>	    return 0;
+<b><a name="line742">742  </a></b>	}
+<b><a name="line743">743  </a></b>	
+<b><a name="line744">744  </a></b>	static inline int
+<b><a name="line745">745  </a></b>	<b>__gthread_mutex_lock</b> (<a href="#line50">__gthread_mutex_t</a> *<b>__mutex</b>)
+<b><a name="line746">746  </a></b>	{
+<b><a name="line747">747  </a></b>	  if (<a href="#line247">__gthread_active_p</a> ())
+<b><a name="line748">748  </a></b>	    return <a href="#line92">__gthrw_</a>(pthread_mutex_lock) (<a href="#line745">__mutex</a>);
+<b><a name="line749">749  </a></b>	  else
+<b><a name="line750">750  </a></b>	    return 0;
+<b><a name="line751">751  </a></b>	}
+<b><a name="line752">752  </a></b>	
+<b><a name="line753">753  </a></b>	static inline int
+<b><a name="line754">754  </a></b>	<b>__gthread_mutex_trylock</b> (<a href="#line50">__gthread_mutex_t</a> *<b>__mutex</b>)
+<b><a name="line755">755  </a></b>	{
+<b><a name="line756">756  </a></b>	  if (<a href="#line247">__gthread_active_p</a> ())
+<b><a name="line757">757  </a></b>	    return <a href="#line92">__gthrw_</a>(pthread_mutex_trylock) (<a href="#line754">__mutex</a>);
+<b><a name="line758">758  </a></b>	  else
+<b><a name="line759">759  </a></b>	    return 0;
+<b><a name="line760">760  </a></b>	}
+<b><a name="line761">761  </a></b>	
+<b><a name="line762">762  </a></b>	#if <a href="../c++config.h/code.html#line1441">_GTHREAD_USE_MUTEX_TIMEDLOCK</a>
+<b><a name="line763">763  </a></b>	static inline int
+<b><a name="line764">764  </a></b>	<b>__gthread_mutex_timedlock</b> (<a href="#line50">__gthread_mutex_t</a> *<b>__mutex</b>,
+<b><a name="line765">765  </a></b>				   const <a href="#line53">__gthread_time_t</a> *<b>__abs_timeout</b>)
+<b><a name="line766">766  </a></b>	{
+<b><a name="line767">767  </a></b>	  if (<a href="#line247">__gthread_active_p</a> ())
+<b><a name="line768">768  </a></b>	    return <a href="#line92">__gthrw_</a>(pthread_mutex_timedlock) (<a href="#line764">__mutex</a>, <a href="#line765">__abs_timeout</a>);
+<b><a name="line769">769  </a></b>	  else
+<b><a name="line770">770  </a></b>	    return 0;
+<b><a name="line771">771  </a></b>	}
+<b><a name="line772">772  </a></b>	#endif
+<b><a name="line773">773  </a></b>	
+<b><a name="line774">774  </a></b>	static inline int
+<b><a name="line775">775  </a></b>	<b>__gthread_mutex_unlock</b> (<a href="#line50">__gthread_mutex_t</a> *<b>__mutex</b>)
+<b><a name="line776">776  </a></b>	{
+<b><a name="line777">777  </a></b>	  if (<a href="#line247">__gthread_active_p</a> ())
+<b><a name="line778">778  </a></b>	    return <a href="#line92">__gthrw_</a>(pthread_mutex_unlock) (<a href="#line775">__mutex</a>);
+<b><a name="line779">779  </a></b>	  else
+<b><a name="line780">780  </a></b>	    return 0;
+<b><a name="line781">781  </a></b>	}
+<b><a name="line782">782  </a></b>	
+<b><a name="line783">783  </a></b>	#if !defined( <a href="../../../../../pthread.h/code.html#line89">PTHREAD_RECURSIVE_MUTEX_INITIALIZER_NP</a>) \
+<b><a name="line784">784  </a></b>	  || defined(_GTHREAD_USE_RECURSIVE_MUTEX_INIT_FUNC)
+<b><a name="line785">785  </a></b>	static inline int
+<b><a name="line786">786  </a></b>	__gthread_recursive_mutex_init_function (__gthread_recursive_mutex_t *__mutex)
+<b><a name="line787">787  </a></b>	{
+<b><a name="line788">788  </a></b>	  if (__gthread_active_p ())
+<b><a name="line789">789  </a></b>	    {
+<b><a name="line790">790  </a></b>	      pthread_mutexattr_t __attr;
+<b><a name="line791">791  </a></b>	      int __r;
+<b><a name="line792">792  </a></b>	
+<b><a name="line793">793  </a></b>	      __r = __gthrw_(pthread_mutexattr_init) (&amp;__attr);
+<b><a name="line794">794  </a></b>	      if (!__r)
+<b><a name="line795">795  </a></b>		__r = __gthrw_(pthread_mutexattr_settype) (&amp;__attr,
+<b><a name="line796">796  </a></b>							   PTHREAD_MUTEX_RECURSIVE);
+<b><a name="line797">797  </a></b>	      if (!__r)
+<b><a name="line798">798  </a></b>		__r = __gthrw_(pthread_mutex_init) (__mutex, &amp;__attr);
+<b><a name="line799">799  </a></b>	      if (!__r)
+<b><a name="line800">800  </a></b>		__r = __gthrw_(pthread_mutexattr_destroy) (&amp;__attr);
+<b><a name="line801">801  </a></b>	      return __r;
+<b><a name="line802">802  </a></b>	    }
+<b><a name="line803">803  </a></b>	  return 0;
+<b><a name="line804">804  </a></b>	}
+<b><a name="line805">805  </a></b>	#endif
+<b><a name="line806">806  </a></b>	
+<b><a name="line807">807  </a></b>	static inline int
+<b><a name="line808">808  </a></b>	<b>__gthread_recursive_mutex_lock</b> (<a href="#line51">__gthread_recursive_mutex_t</a> *<b>__mutex</b>)
+<b><a name="line809">809  </a></b>	{
+<b><a name="line810">810  </a></b>	  return <a href="#line745">__gthread_mutex_lock</a> (<a href="#line808">__mutex</a>);
+<b><a name="line811">811  </a></b>	}
+<b><a name="line812">812  </a></b>	
+<b><a name="line813">813  </a></b>	static inline int
+<b><a name="line814">814  </a></b>	<b>__gthread_recursive_mutex_trylock</b> (<a href="#line51">__gthread_recursive_mutex_t</a> *<b>__mutex</b>)
+<b><a name="line815">815  </a></b>	{
+<b><a name="line816">816  </a></b>	  return <a href="#line754">__gthread_mutex_trylock</a> (<a href="#line814">__mutex</a>);
+<b><a name="line817">817  </a></b>	}
+<b><a name="line818">818  </a></b>	
+<b><a name="line819">819  </a></b>	#if <a href="../c++config.h/code.html#line1441">_GTHREAD_USE_MUTEX_TIMEDLOCK</a>
+<b><a name="line820">820  </a></b>	static inline int
+<b><a name="line821">821  </a></b>	<b>__gthread_recursive_mutex_timedlock</b> (<a href="#line51">__gthread_recursive_mutex_t</a> *<b>__mutex</b>,
+<b><a name="line822">822  </a></b>					     const <a href="#line53">__gthread_time_t</a> *<b>__abs_timeout</b>)
+<b><a name="line823">823  </a></b>	{
+<b><a name="line824">824  </a></b>	  return <a href="#line764">__gthread_mutex_timedlock</a> (<a href="#line821">__mutex</a>, <a href="#line822">__abs_timeout</a>);
+<b><a name="line825">825  </a></b>	}
+<b><a name="line826">826  </a></b>	#endif
+<b><a name="line827">827  </a></b>	
+<b><a name="line828">828  </a></b>	static inline int
+<b><a name="line829">829  </a></b>	<b>__gthread_recursive_mutex_unlock</b> (<a href="#line51">__gthread_recursive_mutex_t</a> *<b>__mutex</b>)
+<b><a name="line830">830  </a></b>	{
+<b><a name="line831">831  </a></b>	  return <a href="#line775">__gthread_mutex_unlock</a> (<a href="#line829">__mutex</a>);
+<b><a name="line832">832  </a></b>	}
+<b><a name="line833">833  </a></b>	
+<b><a name="line834">834  </a></b>	static inline int
+<b><a name="line835">835  </a></b>	<b>__gthread_recursive_mutex_destroy</b> (<a href="#line51">__gthread_recursive_mutex_t</a> *<b>__mutex</b>)
+<b><a name="line836">836  </a></b>	{
+<b><a name="line837">837  </a></b>	  return <a href="#line736">__gthread_mutex_destroy</a> (<a href="#line835">__mutex</a>);
+<b><a name="line838">838  </a></b>	}
+<b><a name="line839">839  </a></b>	
+<b><a name="line840">840  </a></b>	#ifdef _GTHREAD_USE_COND_INIT_FUNC
+<b><a name="line841">841  </a></b>	static inline void
+<b><a name="line842">842  </a></b>	__gthread_cond_init_function (__gthread_cond_t *__cond)
+<b><a name="line843">843  </a></b>	{
+<b><a name="line844">844  </a></b>	  if (__gthread_active_p ())
+<b><a name="line845">845  </a></b>	    __gthrw_(pthread_cond_init) (__cond, NULL);
+<b><a name="line846">846  </a></b>	}
+<b><a name="line847">847  </a></b>	#endif
+<b><a name="line848">848  </a></b>	
+<b><a name="line849">849  </a></b>	static inline int
+<b><a name="line850">850  </a></b>	<b>__gthread_cond_broadcast</b> (<a href="#line52">__gthread_cond_t</a> *<b>__cond</b>)
+<b><a name="line851">851  </a></b>	{
+<b><a name="line852">852  </a></b>	  return <a href="#line92">__gthrw_</a>(pthread_cond_broadcast) (<a href="#line850">__cond</a>);
+<b><a name="line853">853  </a></b>	}
+<b><a name="line854">854  </a></b>	
+<b><a name="line855">855  </a></b>	static inline int
+<b><a name="line856">856  </a></b>	<b>__gthread_cond_signal</b> (<a href="#line52">__gthread_cond_t</a> *<b>__cond</b>)
+<b><a name="line857">857  </a></b>	{
+<b><a name="line858">858  </a></b>	  return <a href="#line92">__gthrw_</a>(pthread_cond_signal) (<a href="#line856">__cond</a>);
+<b><a name="line859">859  </a></b>	}
+<b><a name="line860">860  </a></b>	
+<b><a name="line861">861  </a></b>	static inline int
+<b><a name="line862">862  </a></b>	<b>__gthread_cond_wait</b> (<a href="#line52">__gthread_cond_t</a> *<b>__cond</b>, <a href="#line50">__gthread_mutex_t</a> *<b>__mutex</b>)
+<b><a name="line863">863  </a></b>	{
+<b><a name="line864">864  </a></b>	  return <a href="#line92">__gthrw_</a>(pthread_cond_wait) (<a href="#line862">__cond</a>, <a href="#line862">__mutex</a>);
+<b><a name="line865">865  </a></b>	}
+<b><a name="line866">866  </a></b>	
+<b><a name="line867">867  </a></b>	static inline int
+<b><a name="line868">868  </a></b>	<b>__gthread_cond_timedwait</b> (<a href="#line52">__gthread_cond_t</a> *<b>__cond</b>, <a href="#line50">__gthread_mutex_t</a> *<b>__mutex</b>,
+<b><a name="line869">869  </a></b>				  const <a href="#line53">__gthread_time_t</a> *<b>__abs_timeout</b>)
+<b><a name="line870">870  </a></b>	{
+<b><a name="line871">871  </a></b>	  return <a href="#line92">__gthrw_</a>(pthread_cond_timedwait) (<a href="#line868">__cond</a>, <a href="#line868">__mutex</a>, <a href="#line869">__abs_timeout</a>);
+<b><a name="line872">872  </a></b>	}
+<b><a name="line873">873  </a></b>	
+<b><a name="line874">874  </a></b>	static inline int
+<b><a name="line875">875  </a></b>	<b>__gthread_cond_wait_recursive</b> (<a href="#line52">__gthread_cond_t</a> *<b>__cond</b>,
+<b><a name="line876">876  </a></b>				       <a href="#line51">__gthread_recursive_mutex_t</a> *<b>__mutex</b>)
+<b><a name="line877">877  </a></b>	{
+<b><a name="line878">878  </a></b>	  return <a href="#line862">__gthread_cond_wait</a> (<a href="#line875">__cond</a>, <a href="#line876">__mutex</a>);
+<b><a name="line879">879  </a></b>	}
+<b><a name="line880">880  </a></b>	
+<b><a name="line881">881  </a></b>	static inline int
+<b><a name="line882">882  </a></b>	<b>__gthread_cond_destroy</b> (<a href="#line52">__gthread_cond_t</a>* <b>__cond</b>)
+<b><a name="line883">883  </a></b>	{
+<b><a name="line884">884  </a></b>	  return <a href="#line92">__gthrw_</a>(pthread_cond_destroy) (<a href="#line882">__cond</a>);
+<b><a name="line885">885  </a></b>	}
+<b><a name="line886">886  </a></b>	
+<b><a name="line887">887  </a></b>	#endif /* _LIBOBJC */
+<b><a name="line888">888  </a></b>	
+<b><a name="line889">889  </a></b>	#endif /* ! _GLIBCXX_GCC_GTHR_POSIX_H */
+<b><a name="line890">890  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

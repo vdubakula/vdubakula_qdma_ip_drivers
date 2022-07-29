@@ -1,0 +1,17 @@
+name=st_1_1_wb1
+mode=st #mode
+dir=bi #dir
+pf_range=0:0 #no spaces
+q_range=1:1 #no spaces
+flags= #no spaces
+wb_acc=1
+tmr_idx=5
+cntr_idx=6
+trig_mode=cntr_tmr
+rngidx=5
+ram_width=16 #31 bits - 2^31 = 2GB
+runtime=30
+ioengine=sync
+num_threads=1
+bidir_en=1
+#please leave this comment here

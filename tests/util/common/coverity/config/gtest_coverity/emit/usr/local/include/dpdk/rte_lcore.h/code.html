@@ -1,0 +1,381 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_lcore.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2010-2014 Intel Corporation
+<b><a name="line3">3    </a></b>	 */
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	#ifndef _RTE_LCORE_H_
+<b><a name="line6">6    </a></b>	#define <b>_RTE_LCORE_H_</b>
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	/**
+<b><a name="line9">9    </a></b>	 * @file
+<b><a name="line10">10   </a></b>	 *
+<b><a name="line11">11   </a></b>	 * API for lcore and socket manipulation
+<b><a name="line12">12   </a></b>	 *
+<b><a name="line13">13   </a></b>	 */
+<b><a name="line14">14   </a></b>	#include &lt;rte_config.h&gt;
+<b><a name="line15">15   </a></b>	#include &lt;rte_per_lcore.h&gt;
+<b><a name="line16">16   </a></b>	#include &lt;rte_eal.h&gt;
+<b><a name="line17">17   </a></b>	#include &lt;rte_launch.h&gt;
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	#ifdef __cplusplus
+<b><a name="line20">20   </a></b>	extern &quot;C&quot; {
+<b><a name="line21">21   </a></b>	#endif
+<b><a name="line22">22   </a></b>	
+<b><a name="line23">23   </a></b>	#define <b>LCORE_ID_ANY</b>     UINT32_MAX       /**&lt; Any lcore. */
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	#if defined(<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line159">__linux__</a>)
+<b><a name="line26">26   </a></b>		typedef	<a href="../../../../include/x86_64-linux-gnu/bits/sched.h/code.html#line128">cpu_set_t</a> <b>rte_cpuset_t</b>;
+<b><a name="line27">27   </a></b>	#elif defined(__FreeBSD__)
+<b><a name="line28">28   </a></b>	#include &lt;pthread_np.h&gt;
+<b><a name="line29">29   </a></b>		typedef cpuset_t rte_cpuset_t;
+<b><a name="line30">30   </a></b>	#endif
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	/**
+<b><a name="line33">33   </a></b>	 * Structure storing internal configuration (per-lcore)
+<b><a name="line34">34   </a></b>	 */
+<b><a name="line35">35   </a></b>	struct <b>lcore_config</b> {
+<b><a name="line36">36   </a></b>		unsigned <b>detected</b>;         /**&lt; true if lcore was detected */
+<b><a name="line37">37   </a></b>		<a href="../../../../include/x86_64-linux-gnu/bits/pthreadtypes.h/code.html#line60">pthread_t</a> <b>thread_id</b>;       /**&lt; pthread identifier */
+<b><a name="line38">38   </a></b>		int <b>pipe_master2slave</b>[2];  /**&lt; communication pipe with master */
+<b><a name="line39">39   </a></b>		int <b>pipe_slave2master</b>[2];  /**&lt; communication pipe with master */
+<b><a name="line40">40   </a></b>		<a href="../rte_launch.h/code.html#line30">lcore_function_t</a> * volatile <b>f</b>;         /**&lt; function to call */
+<b><a name="line41">41   </a></b>		void * volatile <b>arg</b>;       /**&lt; argument of function */
+<b><a name="line42">42   </a></b>		volatile int <b>ret</b>;          /**&lt; return value of function */
+<b><a name="line43">43   </a></b>		volatile enum <a href="../rte_launch.h/code.html#line21">rte_lcore_state_t</a> <b>state</b>; /**&lt; lcore state */
+<b><a name="line44">44   </a></b>		unsigned <b>socket_id</b>;        /**&lt; physical socket id for this lcore */
+<b><a name="line45">45   </a></b>		unsigned <b>core_id</b>;          /**&lt; core number on socket for this lcore */
+<b><a name="line46">46   </a></b>		int <b>core_index</b>;            /**&lt; relative index, starting from 0 */
+<b><a name="line47">47   </a></b>		<a href="#line26">rte_cpuset_t</a> <b>cpuset</b>;       /**&lt; cpu set which the lcore affinity to */
+<b><a name="line48">48   </a></b>		<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> <b>core_role</b>;         /**&lt; role of core eg: OFF, RTE, SERVICE */
+<b><a name="line49">49   </a></b>	};
+<b><a name="line50">50   </a></b>	
+<b><a name="line51">51   </a></b>	/**
+<b><a name="line52">52   </a></b>	 * Internal configuration (per-lcore)
+<b><a name="line53">53   </a></b>	 */
+<b><a name="line54">54   </a></b>	extern struct <a href="#line35">lcore_config</a> lcore_config[<a href="../rte_config.h/code.html#line24">RTE_MAX_LCORE</a>];
+<b><a name="line55">55   </a></b>	
+<b><a name="line56">56   </a></b>	<a href="../rte_per_lcore.h/code.html#line38">RTE_DECLARE_PER_LCORE</a>(unsigned, _lcore_id);  /**&lt; Per thread &quot;lcore id&quot;. */
+<b><a name="line57">57   </a></b>	<a href="../rte_per_lcore.h/code.html#line38">RTE_DECLARE_PER_LCORE</a>(rte_cpuset_t, _cpuset); /**&lt; Per thread &quot;cpuset&quot;. */
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	/**
+<b><a name="line60">60   </a></b>	 * Return the Application thread ID of the execution unit.
+<b><a name="line61">61   </a></b>	 *
+<b><a name="line62">62   </a></b>	 * Note: in most cases the lcore id returned here will also correspond
+<b><a name="line63">63   </a></b>	 *   to the processor id of the CPU on which the thread is pinned, this
+<b><a name="line64">64   </a></b>	 *   will not be the case if the user has explicitly changed the thread to
+<b><a name="line65">65   </a></b>	 *   core affinities using --lcores EAL argument e.g. --lcores '(0-3)@10'
+<b><a name="line66">66   </a></b>	 *   to run threads with lcore IDs 0, 1, 2 and 3 on physical core 10..
+<b><a name="line67">67   </a></b>	 *
+<b><a name="line68">68   </a></b>	 * @return
+<b><a name="line69">69   </a></b>	 *  Logical core ID (in EAL thread) or LCORE_ID_ANY (in non-EAL thread)
+<b><a name="line70">70   </a></b>	 */
+<b><a name="line71">71   </a></b>	static inline unsigned
+<b><a name="line72">72   </a></b>	<b>rte_lcore_id</b>(void)
+<b><a name="line73">73   </a></b>	{
+<b><a name="line74">74   </a></b>		return <a href="../rte_per_lcore.h/code.html#line44">RTE_PER_LCORE</a>(_lcore_id);
+<b><a name="line75">75   </a></b>	}
+<b><a name="line76">76   </a></b>	
+<b><a name="line77">77   </a></b>	/**
+<b><a name="line78">78   </a></b>	 * Get the id of the master lcore
+<b><a name="line79">79   </a></b>	 *
+<b><a name="line80">80   </a></b>	 * @return
+<b><a name="line81">81   </a></b>	 *   the id of the master lcore
+<b><a name="line82">82   </a></b>	 */
+<b><a name="line83">83   </a></b>	static inline unsigned
+<b><a name="line84">84   </a></b>	<b>rte_get_master_lcore</b>(void)
+<b><a name="line85">85   </a></b>	{
+<b><a name="line86">86   </a></b>		return <a href="../rte_eal.h/code.html#line84">rte_eal_get_configuration</a>()-&gt;<a href="../rte_eal.h/code.html#line58">master_lcore</a>;
+<b><a name="line87">87   </a></b>	}
+<b><a name="line88">88   </a></b>	
+<b><a name="line89">89   </a></b>	/**
+<b><a name="line90">90   </a></b>	 * Return the number of execution units (lcores) on the system.
+<b><a name="line91">91   </a></b>	 *
+<b><a name="line92">92   </a></b>	 * @return
+<b><a name="line93">93   </a></b>	 *   the number of execution units (lcores) on the system.
+<b><a name="line94">94   </a></b>	 */
+<b><a name="line95">95   </a></b>	static inline unsigned
+<b><a name="line96">96   </a></b>	<b>rte_lcore_count</b>(void)
+<b><a name="line97">97   </a></b>	{
+<b><a name="line98">98   </a></b>		const struct <a href="../rte_eal.h/code.html#line57">rte_config</a> *<b>cfg</b> = <a href="../rte_eal.h/code.html#line84">rte_eal_get_configuration</a>();
+<b><a name="line99">99   </a></b>		return <a href="#line98">cfg</a>-&gt;<a href="../rte_eal.h/code.html#line59">lcore_count</a>;
+<b><a name="line100">100  </a></b>	}
+<b><a name="line101">101  </a></b>	
+<b><a name="line102">102  </a></b>	/**
+<b><a name="line103">103  </a></b>	 * Return the index of the lcore starting from zero.
+<b><a name="line104">104  </a></b>	 *
+<b><a name="line105">105  </a></b>	 * When option -c or -l is given, the index corresponds
+<b><a name="line106">106  </a></b>	 * to the order in the list.
+<b><a name="line107">107  </a></b>	 * For example:
+<b><a name="line108">108  </a></b>	 * -c 0x30, lcore 4 has index 0, and 5 has index 1.
+<b><a name="line109">109  </a></b>	 * -l 22,18 lcore 22 has index 0, and 18 has index 1.
+<b><a name="line110">110  </a></b>	 *
+<b><a name="line111">111  </a></b>	 * @param lcore_id
+<b><a name="line112">112  </a></b>	 *   The targeted lcore, or -1 for the current one.
+<b><a name="line113">113  </a></b>	 * @return
+<b><a name="line114">114  </a></b>	 *   The relative index, or -1 if not enabled.
+<b><a name="line115">115  </a></b>	 */
+<b><a name="line116">116  </a></b>	static inline int
+<b><a name="line117">117  </a></b>	<b>rte_lcore_index</b>(int <b>lcore_id</b>)
+<b><a name="line118">118  </a></b>	{
+<b><a name="line119">119  </a></b>		if (<a href="#line117">lcore_id</a> &gt;= <a href="../rte_config.h/code.html#line24">RTE_MAX_LCORE</a>)
+<b><a name="line120">120  </a></b>			return -1;
+<b><a name="line121">121  </a></b>		if (<a href="#line117">lcore_id</a> &lt; 0)
+<b><a name="line122">122  </a></b>			<a href="#line117">lcore_id</a> = (int)<a href="#line72">rte_lcore_id</a>();
+<b><a name="line123">123  </a></b>		return <a href="#line54">lcore_config</a>[<a href="#line117">lcore_id</a>].<a href="#line46">core_index</a>;
+<b><a name="line124">124  </a></b>	}
+<b><a name="line125">125  </a></b>	
+<b><a name="line126">126  </a></b>	/**
+<b><a name="line127">127  </a></b>	 * Return the ID of the physical socket of the logical core we are
+<b><a name="line128">128  </a></b>	 * running on.
+<b><a name="line129">129  </a></b>	 * @return
+<b><a name="line130">130  </a></b>	 *   the ID of current lcoreid's physical socket
+<b><a name="line131">131  </a></b>	 */
+<b><a name="line132">132  </a></b>	unsigned rte_socket_id(void);
+<b><a name="line133">133  </a></b>	
+<b><a name="line134">134  </a></b>	/**
+<b><a name="line135">135  </a></b>	 * Return number of physical sockets detected on the system.
+<b><a name="line136">136  </a></b>	 *
+<b><a name="line137">137  </a></b>	 * Note that number of nodes may not be correspondent to their physical id's:
+<b><a name="line138">138  </a></b>	 * for example, a system may report two socket id's, but the actual socket id's
+<b><a name="line139">139  </a></b>	 * may be 0 and 8.
+<b><a name="line140">140  </a></b>	 *
+<b><a name="line141">141  </a></b>	 * @return
+<b><a name="line142">142  </a></b>	 *   the number of physical sockets as recognized by EAL
+<b><a name="line143">143  </a></b>	 */
+<b><a name="line144">144  </a></b>	unsigned int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line145">145  </a></b>	rte_socket_count(void);
+<b><a name="line146">146  </a></b>	
+<b><a name="line147">147  </a></b>	/**
+<b><a name="line148">148  </a></b>	 * Return socket id with a particular index.
+<b><a name="line149">149  </a></b>	 *
+<b><a name="line150">150  </a></b>	 * This will return socket id at a particular position in list of all detected
+<b><a name="line151">151  </a></b>	 * physical socket id's. For example, on a machine with sockets [0, 8], passing
+<b><a name="line152">152  </a></b>	 * 1 as a parameter will return 8.
+<b><a name="line153">153  </a></b>	 *
+<b><a name="line154">154  </a></b>	 * @param idx
+<b><a name="line155">155  </a></b>	 *   index of physical socket id to return
+<b><a name="line156">156  </a></b>	 *
+<b><a name="line157">157  </a></b>	 * @return
+<b><a name="line158">158  </a></b>	 *   - physical socket id as recognized by EAL
+<b><a name="line159">159  </a></b>	 *   - -1 on error, with errno set to EINVAL
+<b><a name="line160">160  </a></b>	 */
+<b><a name="line161">161  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line162">162  </a></b>	rte_socket_id_by_idx(unsigned int idx);
+<b><a name="line163">163  </a></b>	
+<b><a name="line164">164  </a></b>	/**
+<b><a name="line165">165  </a></b>	 * Get the ID of the physical socket of the specified lcore
+<b><a name="line166">166  </a></b>	 *
+<b><a name="line167">167  </a></b>	 * @param lcore_id
+<b><a name="line168">168  </a></b>	 *   the targeted lcore, which MUST be between 0 and RTE_MAX_LCORE-1.
+<b><a name="line169">169  </a></b>	 * @return
+<b><a name="line170">170  </a></b>	 *   the ID of lcoreid's physical socket
+<b><a name="line171">171  </a></b>	 */
+<b><a name="line172">172  </a></b>	static inline unsigned
+<b><a name="line173">173  </a></b>	<b>rte_lcore_to_socket_id</b>(unsigned <b>lcore_id</b>)
+<b><a name="line174">174  </a></b>	{
+<b><a name="line175">175  </a></b>		return <a href="#line54">lcore_config</a>[<a href="#line173">lcore_id</a>].<a href="#line44">socket_id</a>;
+<b><a name="line176">176  </a></b>	}
+<b><a name="line177">177  </a></b>	
+<b><a name="line178">178  </a></b>	/**
+<b><a name="line179">179  </a></b>	 * Test if an lcore is enabled.
+<b><a name="line180">180  </a></b>	 *
+<b><a name="line181">181  </a></b>	 * @param lcore_id
+<b><a name="line182">182  </a></b>	 *   The identifier of the lcore, which MUST be between 0 and
+<b><a name="line183">183  </a></b>	 *   RTE_MAX_LCORE-1.
+<b><a name="line184">184  </a></b>	 * @return
+<b><a name="line185">185  </a></b>	 *   True if the given lcore is enabled; false otherwise.
+<b><a name="line186">186  </a></b>	 */
+<b><a name="line187">187  </a></b>	static inline int
+<b><a name="line188">188  </a></b>	<b>rte_lcore_is_enabled</b>(unsigned <b>lcore_id</b>)
+<b><a name="line189">189  </a></b>	{
+<b><a name="line190">190  </a></b>		struct <a href="../rte_eal.h/code.html#line57">rte_config</a> *<b>cfg</b> = <a href="../rte_eal.h/code.html#line84">rte_eal_get_configuration</a>();
+<b><a name="line191">191  </a></b>		if (<a href="#line188">lcore_id</a> &gt;= <a href="../rte_config.h/code.html#line24">RTE_MAX_LCORE</a>)
+<b><a name="line192">192  </a></b>			return 0;
+<b><a name="line193">193  </a></b>		return <a href="#line190">cfg</a>-&gt;<a href="../rte_eal.h/code.html#line63">lcore_role</a>[<a href="#line188">lcore_id</a>] == <a href="../rte_eal.h/code.html#line38">ROLE_RTE</a>;
+<b><a name="line194">194  </a></b>	}
+<b><a name="line195">195  </a></b>	
+<b><a name="line196">196  </a></b>	/**
+<b><a name="line197">197  </a></b>	 * Get the next enabled lcore ID.
+<b><a name="line198">198  </a></b>	 *
+<b><a name="line199">199  </a></b>	 * @param i
+<b><a name="line200">200  </a></b>	 *   The current lcore (reference).
+<b><a name="line201">201  </a></b>	 * @param skip_master
+<b><a name="line202">202  </a></b>	 *   If true, do not return the ID of the master lcore.
+<b><a name="line203">203  </a></b>	 * @param wrap
+<b><a name="line204">204  </a></b>	 *   If true, go back to 0 when RTE_MAX_LCORE is reached; otherwise,
+<b><a name="line205">205  </a></b>	 *   return RTE_MAX_LCORE.
+<b><a name="line206">206  </a></b>	 * @return
+<b><a name="line207">207  </a></b>	 *   The next lcore_id or RTE_MAX_LCORE if not found.
+<b><a name="line208">208  </a></b>	 */
+<b><a name="line209">209  </a></b>	static inline unsigned
+<b><a name="line210">210  </a></b>	<b>rte_get_next_lcore</b>(unsigned <b>i</b>, int <b>skip_master</b>, int <b>wrap</b>)
+<b><a name="line211">211  </a></b>	{
+<b><a name="line212">212  </a></b>		<a href="#line210">i</a>++;
+<b><a name="line213">213  </a></b>		if (<a href="#line210">wrap</a>)
+<b><a name="line214">214  </a></b>			<a href="#line210">i</a> %= <a href="../rte_config.h/code.html#line24">RTE_MAX_LCORE</a>;
+<b><a name="line215">215  </a></b>	
+<b><a name="line216">216  </a></b>		while (<a href="#line210">i</a> &lt; <a href="../rte_config.h/code.html#line24">RTE_MAX_LCORE</a>) {
+<b><a name="line217">217  </a></b>			if (!<a href="#line188">rte_lcore_is_enabled</a>(<a href="#line210">i</a>) ||
+<b><a name="line218">218  </a></b>			    (<a href="#line210">skip_master</a> &amp;&amp; (<a href="#line210">i</a> == <a href="#line84">rte_get_master_lcore</a>()))) {
+<b><a name="line219">219  </a></b>				<a href="#line210">i</a>++;
+<b><a name="line220">220  </a></b>				if (<a href="#line210">wrap</a>)
+<b><a name="line221">221  </a></b>					<a href="#line210">i</a> %= <a href="../rte_config.h/code.html#line24">RTE_MAX_LCORE</a>;
+<b><a name="line222">222  </a></b>				continue;
+<b><a name="line223">223  </a></b>			}
+<b><a name="line224">224  </a></b>			break;
+<b><a name="line225">225  </a></b>		}
+<b><a name="line226">226  </a></b>		return <a href="#line210">i</a>;
+<b><a name="line227">227  </a></b>	}
+<b><a name="line228">228  </a></b>	/**
+<b><a name="line229">229  </a></b>	 * Macro to browse all running lcores.
+<b><a name="line230">230  </a></b>	 */
+<b><a name="line231">231  </a></b>	#define <b>RTE_LCORE_FOREACH</b>(i)						\
+<b><a name="line232">232  </a></b>		for (i = rte_get_next_lcore(-1, 0, 0);				\
+<b><a name="line233">233  </a></b>		     i&lt;RTE_MAX_LCORE;						\
+<b><a name="line234">234  </a></b>		     i = rte_get_next_lcore(i, 0, 0))
+<b><a name="line235">235  </a></b>	
+<b><a name="line236">236  </a></b>	/**
+<b><a name="line237">237  </a></b>	 * Macro to browse all running lcores except the master lcore.
+<b><a name="line238">238  </a></b>	 */
+<b><a name="line239">239  </a></b>	#define <b>RTE_LCORE_FOREACH_SLAVE</b>(i)					\
+<b><a name="line240">240  </a></b>		for (i = rte_get_next_lcore(-1, 1, 0);				\
+<b><a name="line241">241  </a></b>		     i&lt;RTE_MAX_LCORE;						\
+<b><a name="line242">242  </a></b>		     i = rte_get_next_lcore(i, 1, 0))
+<b><a name="line243">243  </a></b>	
+<b><a name="line244">244  </a></b>	/**
+<b><a name="line245">245  </a></b>	 * Set core affinity of the current thread.
+<b><a name="line246">246  </a></b>	 * Support both EAL and non-EAL thread and update TLS.
+<b><a name="line247">247  </a></b>	 *
+<b><a name="line248">248  </a></b>	 * @param cpusetp
+<b><a name="line249">249  </a></b>	 *   Point to cpu_set_t for setting current thread affinity.
+<b><a name="line250">250  </a></b>	 * @return
+<b><a name="line251">251  </a></b>	 *   On success, return 0; otherwise return -1;
+<b><a name="line252">252  </a></b>	 */
+<b><a name="line253">253  </a></b>	int rte_thread_set_affinity(<a href="#line26">rte_cpuset_t</a> *cpusetp);
+<b><a name="line254">254  </a></b>	
+<b><a name="line255">255  </a></b>	/**
+<b><a name="line256">256  </a></b>	 * Get core affinity of the current thread.
+<b><a name="line257">257  </a></b>	 *
+<b><a name="line258">258  </a></b>	 * @param cpusetp
+<b><a name="line259">259  </a></b>	 *   Point to cpu_set_t for getting current thread cpu affinity.
+<b><a name="line260">260  </a></b>	 *   It presumes input is not NULL, otherwise it causes panic.
+<b><a name="line261">261  </a></b>	 *
+<b><a name="line262">262  </a></b>	 */
+<b><a name="line263">263  </a></b>	void rte_thread_get_affinity(<a href="#line26">rte_cpuset_t</a> *cpusetp);
+<b><a name="line264">264  </a></b>	
+<b><a name="line265">265  </a></b>	/**
+<b><a name="line266">266  </a></b>	 * Set thread names.
+<b><a name="line267">267  </a></b>	 *
+<b><a name="line268">268  </a></b>	 * @note It fails with glibc &lt; 2.12.
+<b><a name="line269">269  </a></b>	 *
+<b><a name="line270">270  </a></b>	 * @param id
+<b><a name="line271">271  </a></b>	 *   Thread id.
+<b><a name="line272">272  </a></b>	 * @param name
+<b><a name="line273">273  </a></b>	 *   Thread name to set.
+<b><a name="line274">274  </a></b>	 * @return
+<b><a name="line275">275  </a></b>	 *   On success, return 0; otherwise return a negative value.
+<b><a name="line276">276  </a></b>	 */
+<b><a name="line277">277  </a></b>	int rte_thread_setname(<a href="../../../../include/x86_64-linux-gnu/bits/pthreadtypes.h/code.html#line60">pthread_t</a> id, const char *name);
+<b><a name="line278">278  </a></b>	
+<b><a name="line279">279  </a></b>	/**
+<b><a name="line280">280  </a></b>	 * Create a control thread.
+<b><a name="line281">281  </a></b>	 *
+<b><a name="line282">282  </a></b>	 * Wrapper to pthread_create(), pthread_setname_np() and
+<b><a name="line283">283  </a></b>	 * pthread_setaffinity_np(). The dataplane and service lcores are
+<b><a name="line284">284  </a></b>	 * excluded from the affinity of the new thread.
+<b><a name="line285">285  </a></b>	 *
+<b><a name="line286">286  </a></b>	 * @param thread
+<b><a name="line287">287  </a></b>	 *   Filled with the thread id of the new created thread.
+<b><a name="line288">288  </a></b>	 * @param name
+<b><a name="line289">289  </a></b>	 *   The name of the control thread (max 16 characters including '\0').
+<b><a name="line290">290  </a></b>	 * @param attr
+<b><a name="line291">291  </a></b>	 *   Attributes for the new thread.
+<b><a name="line292">292  </a></b>	 * @param start_routine
+<b><a name="line293">293  </a></b>	 *   Function to be executed by the new thread.
+<b><a name="line294">294  </a></b>	 * @param arg
+<b><a name="line295">295  </a></b>	 *   Argument passed to start_routine.
+<b><a name="line296">296  </a></b>	 * @return
+<b><a name="line297">297  </a></b>	 *   On success, returns 0; on error, it returns a negative value
+<b><a name="line298">298  </a></b>	 *   corresponding to the error number.
+<b><a name="line299">299  </a></b>	 */
+<b><a name="line300">300  </a></b>	<a href="../rte_compat.h/code.html#line81">__rte_experimental</a> int
+<b><a name="line301">301  </a></b>	rte_ctrl_thread_create(<a href="../../../../include/x86_64-linux-gnu/bits/pthreadtypes.h/code.html#line60">pthread_t</a> *thread, const char *name,
+<b><a name="line302">302  </a></b>			const <a href="../../../../include/x86_64-linux-gnu/bits/pthreadtypes.h/code.html#line69">pthread_attr_t</a> *attr,
+<b><a name="line303">303  </a></b>			void *(*start_routine)(void *), void *arg);
+<b><a name="line304">304  </a></b>	
+<b><a name="line305">305  </a></b>	/**
+<b><a name="line306">306  </a></b>	 * Test if the core supplied has a specific role
+<b><a name="line307">307  </a></b>	 *
+<b><a name="line308">308  </a></b>	 * @param lcore_id
+<b><a name="line309">309  </a></b>	 *   The identifier of the lcore, which MUST be between 0 and
+<b><a name="line310">310  </a></b>	 *   RTE_MAX_LCORE-1.
+<b><a name="line311">311  </a></b>	 * @param role
+<b><a name="line312">312  </a></b>	 *   The role to be checked against.
+<b><a name="line313">313  </a></b>	 * @return
+<b><a name="line314">314  </a></b>	 *   Boolean value: positive if test is true; otherwise returns 0.
+<b><a name="line315">315  </a></b>	 */
+<b><a name="line316">316  </a></b>	int
+<b><a name="line317">317  </a></b>	rte_lcore_has_role(unsigned int lcore_id, enum <a href="../rte_eal.h/code.html#line37">rte_lcore_role_t</a> role);
+<b><a name="line318">318  </a></b>	
+<b><a name="line319">319  </a></b>	#ifdef __cplusplus
+<b><a name="line320">320  </a></b>	}
+<b><a name="line321">321  </a></b>	#endif
+<b><a name="line322">322  </a></b>	
+<b><a name="line323">323  </a></b>	
+<b><a name="line324">324  </a></b>	#endif /* _RTE_LCORE_H_ */
+<b><a name="line325">325  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

@@ -1,0 +1,327 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_atomic.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2010-2014 Intel Corporation
+<b><a name="line3">3    </a></b>	 */
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	#ifndef <a href="#line6">_RTE_ATOMIC_X86_H_</a>
+<b><a name="line6">6    </a></b>	#define <b>_RTE_ATOMIC_X86_H_</b>
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	#ifdef __cplusplus
+<b><a name="line9">9    </a></b>	extern &quot;C&quot; {
+<b><a name="line10">10   </a></b>	#endif
+<b><a name="line11">11   </a></b>	
+<b><a name="line12">12   </a></b>	#include &lt;stdint.h&gt;
+<b><a name="line13">13   </a></b>	#include &lt;rte_common.h&gt;
+<b><a name="line14">14   </a></b>	#include &lt;rte_config.h&gt;
+<b><a name="line15">15   </a></b>	#include &lt;emmintrin.h&gt;
+<b><a name="line16">16   </a></b>	#include &quot;generic/rte_atomic.h&quot;
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	#if <a href="../rte_config.h/code.html#line24">RTE_MAX_LCORE</a> == 1
+<b><a name="line19">19   </a></b>	#define MPLOCKED                        /**&lt; No need to insert MP lock prefix. */
+<b><a name="line20">20   </a></b>	#else
+<b><a name="line21">21   </a></b>	#define <b>MPLOCKED</b>        &quot;lock ; &quot;       /**&lt; Insert MP lock prefix. */
+<b><a name="line22">22   </a></b>	#endif
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>	#define	<b>rte_mb</b>() _mm_mfence()
+<b><a name="line25">25   </a></b>	
+<b><a name="line26">26   </a></b>	#define	<b>rte_wmb</b>() _mm_sfence()
+<b><a name="line27">27   </a></b>	
+<b><a name="line28">28   </a></b>	#define	<b>rte_rmb</b>() _mm_lfence()
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	#define <b>rte_smp_wmb</b>() rte_compiler_barrier()
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	#define <b>rte_smp_rmb</b>() rte_compiler_barrier()
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	/*
+<b><a name="line35">35   </a></b>	 * From Intel Software Development Manual; Vol 3;
+<b><a name="line36">36   </a></b>	 * 8.2.2 Memory Ordering in P6 and More Recent Processor Families:
+<b><a name="line37">37   </a></b>	 * ...
+<b><a name="line38">38   </a></b>	 * . Reads are not reordered with other reads.
+<b><a name="line39">39   </a></b>	 * . Writes are not reordered with older reads.
+<b><a name="line40">40   </a></b>	 * . Writes to memory are not reordered with other writes,
+<b><a name="line41">41   </a></b>	 *   with the following exceptions:
+<b><a name="line42">42   </a></b>	 *   . streaming stores (writes) executed with the non-temporal move
+<b><a name="line43">43   </a></b>	 *     instructions (MOVNTI, MOVNTQ, MOVNTDQ, MOVNTPS, and MOVNTPD); and
+<b><a name="line44">44   </a></b>	 *   . string operations (see Section 8.2.4.1).
+<b><a name="line45">45   </a></b>	 *  ...
+<b><a name="line46">46   </a></b>	 * . Reads may be reordered with older writes to different locations but not
+<b><a name="line47">47   </a></b>	 * with older writes to the same location.
+<b><a name="line48">48   </a></b>	 * . Reads or writes cannot be reordered with I/O instructions,
+<b><a name="line49">49   </a></b>	 * locked instructions, or serializing instructions.
+<b><a name="line50">50   </a></b>	 * . Reads cannot pass earlier LFENCE and MFENCE instructions.
+<b><a name="line51">51   </a></b>	 * . Writes ... cannot pass earlier LFENCE, SFENCE, and MFENCE instructions.
+<b><a name="line52">52   </a></b>	 * . LFENCE instructions cannot pass earlier reads.
+<b><a name="line53">53   </a></b>	 * . SFENCE instructions cannot pass earlier writes ...
+<b><a name="line54">54   </a></b>	 * . MFENCE instructions cannot pass earlier reads, writes ...
+<b><a name="line55">55   </a></b>	 *
+<b><a name="line56">56   </a></b>	 * As pointed by Java guys, that makes possible to use lock-prefixed
+<b><a name="line57">57   </a></b>	 * instructions to get the same effect as mfence and on most modern HW
+<b><a name="line58">58   </a></b>	 * that gives a better perfomance then using mfence:
+<b><a name="line59">59   </a></b>	 * https://shipilev.net/blog/2014/on-the-fence-with-dependencies/
+<b><a name="line60">60   </a></b>	 * Basic idea is to use lock prefixed add with some dummy memory location
+<b><a name="line61">61   </a></b>	 * as the destination. From their experiments 128B(2 cache lines) below
+<b><a name="line62">62   </a></b>	 * current stack pointer looks like a good candidate.
+<b><a name="line63">63   </a></b>	 * So below we use that techinque for rte_smp_mb() implementation.
+<b><a name="line64">64   </a></b>	 */
+<b><a name="line65">65   </a></b>	
+<b><a name="line66">66   </a></b>	static <a href="../rte_common.h/code.html#line146">__rte_always_inline</a> void
+<b><a name="line67">67   </a></b>	<b>rte_smp_mb</b>(void)
+<b><a name="line68">68   </a></b>	{
+<b><a name="line69">69   </a></b>	#ifdef RTE_ARCH_I686
+<b><a name="line70">70   </a></b>		asm volatile(&quot;lock addl $0, -128(%%esp); &quot; ::: &quot;memory&quot;);
+<b><a name="line71">71   </a></b>	#else
+<b><a name="line72">72   </a></b>		<a href="../rte_common.h/code.html#line32">asm</a> volatile(&quot;lock addl $0, -128(%%rsp); &quot; ::: &quot;memory&quot;);
+<b><a name="line73">73   </a></b>	#endif
+<b><a name="line74">74   </a></b>	}
+<b><a name="line75">75   </a></b>	
+<b><a name="line76">76   </a></b>	#define <b>rte_io_mb</b>() rte_mb()
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	#define <b>rte_io_wmb</b>() rte_compiler_barrier()
+<b><a name="line79">79   </a></b>	
+<b><a name="line80">80   </a></b>	#define <b>rte_io_rmb</b>() rte_compiler_barrier()
+<b><a name="line81">81   </a></b>	
+<b><a name="line82">82   </a></b>	#define <b>rte_cio_wmb</b>() rte_compiler_barrier()
+<b><a name="line83">83   </a></b>	
+<b><a name="line84">84   </a></b>	#define <b>rte_cio_rmb</b>() rte_compiler_barrier()
+<b><a name="line85">85   </a></b>	
+<b><a name="line86">86   </a></b>	/*------------------------- 16 bit atomic operations -------------------------*/
+<b><a name="line87">87   </a></b>	
+<b><a name="line88">88   </a></b>	#ifndef RTE_FORCE_INTRINSICS
+<b><a name="line89">89   </a></b>	static inline int
+<b><a name="line90">90   </a></b>	<b>rte_atomic16_cmpset</b>(volatile <a href="../../../../include/stdint.h/code.html#line49">uint16_t</a> *<b>dst</b>, <a href="../../../../include/stdint.h/code.html#line49">uint16_t</a> <b>exp</b>, <a href="../../../../include/stdint.h/code.html#line49">uint16_t</a> <b>src</b>)
+<b><a name="line91">91   </a></b>	{
+<b><a name="line92">92   </a></b>		<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> <b>res</b>;
+<b><a name="line93">93   </a></b>	
+<b><a name="line94">94   </a></b>		<a href="../rte_common.h/code.html#line32">asm</a> volatile(
+<b><a name="line95">95   </a></b>				<a href="#line21">MPLOCKED</a>
+<b><a name="line96">96   </a></b>				&quot;cmpxchgw %[src], %[dst];&quot;
+<b><a name="line97">97   </a></b>				&quot;sete %[res];&quot;
+<b><a name="line98">98   </a></b>				: [res] &quot;=a&quot; (<a href="#line92">res</a>),     /* output */
+<b><a name="line99">99   </a></b>				  [dst] &quot;=m&quot; (*<a href="#line90">dst</a>)
+<b><a name="line100">100  </a></b>				: [src] &quot;r&quot; (<a href="#line90">src</a>),      /* input */
+<b><a name="line101">101  </a></b>				  &quot;a&quot; (<a href="#line90">exp</a>),
+<b><a name="line102">102  </a></b>				  &quot;m&quot; (*<a href="#line90">dst</a>)
+<b><a name="line103">103  </a></b>				: &quot;memory&quot;);            /* no-clobber list */
+<b><a name="line104">104  </a></b>		return <a href="#line92">res</a>;
+<b><a name="line105">105  </a></b>	}
+<b><a name="line106">106  </a></b>	
+<b><a name="line107">107  </a></b>	static inline <a href="../../../../include/stdint.h/code.html#line49">uint16_t</a>
+<b><a name="line108">108  </a></b>	<b>rte_atomic16_exchange</b>(volatile <a href="../../../../include/stdint.h/code.html#line49">uint16_t</a> *<b>dst</b>, <a href="../../../../include/stdint.h/code.html#line49">uint16_t</a> <b>val</b>)
+<b><a name="line109">109  </a></b>	{
+<b><a name="line110">110  </a></b>		<a href="../rte_common.h/code.html#line32">asm</a> volatile(
+<b><a name="line111">111  </a></b>				<a href="#line21">MPLOCKED</a>
+<b><a name="line112">112  </a></b>				&quot;xchgw %0, %1;&quot;
+<b><a name="line113">113  </a></b>				: &quot;=r&quot; (<a href="#line108">val</a>), &quot;=m&quot; (*<a href="#line108">dst</a>)
+<b><a name="line114">114  </a></b>				: &quot;0&quot; (<a href="#line108">val</a>),  &quot;m&quot; (*<a href="#line108">dst</a>)
+<b><a name="line115">115  </a></b>				: &quot;memory&quot;);         /* no-clobber list */
+<b><a name="line116">116  </a></b>		return <a href="#line108">val</a>;
+<b><a name="line117">117  </a></b>	}
+<b><a name="line118">118  </a></b>	
+<b><a name="line119">119  </a></b>	static inline int <b>rte_atomic16_test_and_set</b>(<a href="../generic/rte_atomic.h/code.html#line228">rte_atomic16_t</a> *<b>v</b>)
+<b><a name="line120">120  </a></b>	{
+<b><a name="line121">121  </a></b>		return <a href="../generic/rte_atomic.h/code.html#line183">rte_atomic16_cmpset</a>((volatile <a href="../../../../include/stdint.h/code.html#line49">uint16_t</a> *)&amp;<a href="#line119">v</a>-&gt;<a href="../generic/rte_atomic.h/code.html#line227">cnt</a>, 0, 1);
+<b><a name="line122">122  </a></b>	}
+<b><a name="line123">123  </a></b>	
+<b><a name="line124">124  </a></b>	static inline void
+<b><a name="line125">125  </a></b>	<b>rte_atomic16_inc</b>(<a href="../generic/rte_atomic.h/code.html#line228">rte_atomic16_t</a> *<b>v</b>)
+<b><a name="line126">126  </a></b>	{
+<b><a name="line127">127  </a></b>		<a href="../rte_common.h/code.html#line32">asm</a> volatile(
+<b><a name="line128">128  </a></b>				<a href="#line21">MPLOCKED</a>
+<b><a name="line129">129  </a></b>				&quot;incw %[cnt]&quot;
+<b><a name="line130">130  </a></b>				: [cnt] &quot;=m&quot; (<a href="#line125">v</a>-&gt;<a href="../generic/rte_atomic.h/code.html#line227">cnt</a>)   /* output */
+<b><a name="line131">131  </a></b>				: &quot;m&quot; (<a href="#line125">v</a>-&gt;<a href="../generic/rte_atomic.h/code.html#line227">cnt</a>)          /* input */
+<b><a name="line132">132  </a></b>				);
+<b><a name="line133">133  </a></b>	}
+<b><a name="line134">134  </a></b>	
+<b><a name="line135">135  </a></b>	static inline void
+<b><a name="line136">136  </a></b>	<b>rte_atomic16_dec</b>(<a href="../generic/rte_atomic.h/code.html#line228">rte_atomic16_t</a> *<b>v</b>)
+<b><a name="line137">137  </a></b>	{
+<b><a name="line138">138  </a></b>		<a href="../rte_common.h/code.html#line32">asm</a> volatile(
+<b><a name="line139">139  </a></b>				<a href="#line21">MPLOCKED</a>
+<b><a name="line140">140  </a></b>				&quot;decw %[cnt]&quot;
+<b><a name="line141">141  </a></b>				: [cnt] &quot;=m&quot; (<a href="#line136">v</a>-&gt;<a href="../generic/rte_atomic.h/code.html#line227">cnt</a>)   /* output */
+<b><a name="line142">142  </a></b>				: &quot;m&quot; (<a href="#line136">v</a>-&gt;<a href="../generic/rte_atomic.h/code.html#line227">cnt</a>)          /* input */
+<b><a name="line143">143  </a></b>				);
+<b><a name="line144">144  </a></b>	}
+<b><a name="line145">145  </a></b>	
+<b><a name="line146">146  </a></b>	static inline int <b>rte_atomic16_inc_and_test</b>(<a href="../generic/rte_atomic.h/code.html#line228">rte_atomic16_t</a> *<b>v</b>)
+<b><a name="line147">147  </a></b>	{
+<b><a name="line148">148  </a></b>		<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> <b>ret</b>;
+<b><a name="line149">149  </a></b>	
+<b><a name="line150">150  </a></b>		<a href="../rte_common.h/code.html#line32">asm</a> volatile(
+<b><a name="line151">151  </a></b>				<a href="#line21">MPLOCKED</a>
+<b><a name="line152">152  </a></b>				&quot;incw %[cnt] ; &quot;
+<b><a name="line153">153  </a></b>				&quot;sete %[ret]&quot;
+<b><a name="line154">154  </a></b>				: [cnt] &quot;+m&quot; (<a href="#line146">v</a>-&gt;<a href="../generic/rte_atomic.h/code.html#line227">cnt</a>),  /* output */
+<b><a name="line155">155  </a></b>				  [ret] &quot;=qm&quot; (<a href="#line148">ret</a>)
+<b><a name="line156">156  </a></b>				);
+<b><a name="line157">157  </a></b>		return <a href="#line148">ret</a> != 0;
+<b><a name="line158">158  </a></b>	}
+<b><a name="line159">159  </a></b>	
+<b><a name="line160">160  </a></b>	static inline int <b>rte_atomic16_dec_and_test</b>(<a href="../generic/rte_atomic.h/code.html#line228">rte_atomic16_t</a> *<b>v</b>)
+<b><a name="line161">161  </a></b>	{
+<b><a name="line162">162  </a></b>		<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> <b>ret</b>;
+<b><a name="line163">163  </a></b>	
+<b><a name="line164">164  </a></b>		<a href="../rte_common.h/code.html#line32">asm</a> volatile(<a href="#line21">MPLOCKED</a>
+<b><a name="line165">165  </a></b>				&quot;decw %[cnt] ; &quot;
+<b><a name="line166">166  </a></b>				&quot;sete %[ret]&quot;
+<b><a name="line167">167  </a></b>				: [cnt] &quot;+m&quot; (<a href="#line160">v</a>-&gt;<a href="../generic/rte_atomic.h/code.html#line227">cnt</a>),  /* output */
+<b><a name="line168">168  </a></b>				  [ret] &quot;=qm&quot; (<a href="#line162">ret</a>)
+<b><a name="line169">169  </a></b>				);
+<b><a name="line170">170  </a></b>		return <a href="#line162">ret</a> != 0;
+<b><a name="line171">171  </a></b>	}
+<b><a name="line172">172  </a></b>	
+<b><a name="line173">173  </a></b>	/*------------------------- 32 bit atomic operations -------------------------*/
+<b><a name="line174">174  </a></b>	
+<b><a name="line175">175  </a></b>	static inline int
+<b><a name="line176">176  </a></b>	<b>rte_atomic32_cmpset</b>(volatile <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> *<b>dst</b>, <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>exp</b>, <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>src</b>)
+<b><a name="line177">177  </a></b>	{
+<b><a name="line178">178  </a></b>		<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> <b>res</b>;
+<b><a name="line179">179  </a></b>	
+<b><a name="line180">180  </a></b>		<a href="../rte_common.h/code.html#line32">asm</a> volatile(
+<b><a name="line181">181  </a></b>				<a href="#line21">MPLOCKED</a>
+<b><a name="line182">182  </a></b>				&quot;cmpxchgl %[src], %[dst];&quot;
+<b><a name="line183">183  </a></b>				&quot;sete %[res];&quot;
+<b><a name="line184">184  </a></b>				: [res] &quot;=a&quot; (<a href="#line178">res</a>),     /* output */
+<b><a name="line185">185  </a></b>				  [dst] &quot;=m&quot; (*<a href="#line176">dst</a>)
+<b><a name="line186">186  </a></b>				: [src] &quot;r&quot; (<a href="#line176">src</a>),      /* input */
+<b><a name="line187">187  </a></b>				  &quot;a&quot; (<a href="#line176">exp</a>),
+<b><a name="line188">188  </a></b>				  &quot;m&quot; (*<a href="#line176">dst</a>)
+<b><a name="line189">189  </a></b>				: &quot;memory&quot;);            /* no-clobber list */
+<b><a name="line190">190  </a></b>		return <a href="#line178">res</a>;
+<b><a name="line191">191  </a></b>	}
+<b><a name="line192">192  </a></b>	
+<b><a name="line193">193  </a></b>	static inline <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a>
+<b><a name="line194">194  </a></b>	<b>rte_atomic32_exchange</b>(volatile <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> *<b>dst</b>, <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>val</b>)
+<b><a name="line195">195  </a></b>	{
+<b><a name="line196">196  </a></b>		<a href="../rte_common.h/code.html#line32">asm</a> volatile(
+<b><a name="line197">197  </a></b>				<a href="#line21">MPLOCKED</a>
+<b><a name="line198">198  </a></b>				&quot;xchgl %0, %1;&quot;
+<b><a name="line199">199  </a></b>				: &quot;=r&quot; (<a href="#line194">val</a>), &quot;=m&quot; (*<a href="#line194">dst</a>)
+<b><a name="line200">200  </a></b>				: &quot;0&quot; (<a href="#line194">val</a>),  &quot;m&quot; (*<a href="#line194">dst</a>)
+<b><a name="line201">201  </a></b>				: &quot;memory&quot;);         /* no-clobber list */
+<b><a name="line202">202  </a></b>		return <a href="#line194">val</a>;
+<b><a name="line203">203  </a></b>	}
+<b><a name="line204">204  </a></b>	
+<b><a name="line205">205  </a></b>	static inline int <b>rte_atomic32_test_and_set</b>(<a href="../generic/rte_atomic.h/code.html#line511">rte_atomic32_t</a> *<b>v</b>)
+<b><a name="line206">206  </a></b>	{
+<b><a name="line207">207  </a></b>		return <a href="../generic/rte_atomic.h/code.html#line466">rte_atomic32_cmpset</a>((volatile <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> *)&amp;<a href="#line205">v</a>-&gt;<a href="../generic/rte_atomic.h/code.html#line510">cnt</a>, 0, 1);
+<b><a name="line208">208  </a></b>	}
+<b><a name="line209">209  </a></b>	
+<b><a name="line210">210  </a></b>	static inline void
+<b><a name="line211">211  </a></b>	<b>rte_atomic32_inc</b>(<a href="../generic/rte_atomic.h/code.html#line511">rte_atomic32_t</a> *<b>v</b>)
+<b><a name="line212">212  </a></b>	{
+<b><a name="line213">213  </a></b>		<a href="../rte_common.h/code.html#line32">asm</a> volatile(
+<b><a name="line214">214  </a></b>				<a href="#line21">MPLOCKED</a>
+<b><a name="line215">215  </a></b>				&quot;incl %[cnt]&quot;
+<b><a name="line216">216  </a></b>				: [cnt] &quot;=m&quot; (<a href="#line211">v</a>-&gt;<a href="../generic/rte_atomic.h/code.html#line510">cnt</a>)   /* output */
+<b><a name="line217">217  </a></b>				: &quot;m&quot; (<a href="#line211">v</a>-&gt;<a href="../generic/rte_atomic.h/code.html#line510">cnt</a>)          /* input */
+<b><a name="line218">218  </a></b>				);
+<b><a name="line219">219  </a></b>	}
+<b><a name="line220">220  </a></b>	
+<b><a name="line221">221  </a></b>	static inline void
+<b><a name="line222">222  </a></b>	<b>rte_atomic32_dec</b>(<a href="../generic/rte_atomic.h/code.html#line511">rte_atomic32_t</a> *<b>v</b>)
+<b><a name="line223">223  </a></b>	{
+<b><a name="line224">224  </a></b>		<a href="../rte_common.h/code.html#line32">asm</a> volatile(
+<b><a name="line225">225  </a></b>				<a href="#line21">MPLOCKED</a>
+<b><a name="line226">226  </a></b>				&quot;decl %[cnt]&quot;
+<b><a name="line227">227  </a></b>				: [cnt] &quot;=m&quot; (<a href="#line222">v</a>-&gt;<a href="../generic/rte_atomic.h/code.html#line510">cnt</a>)   /* output */
+<b><a name="line228">228  </a></b>				: &quot;m&quot; (<a href="#line222">v</a>-&gt;<a href="../generic/rte_atomic.h/code.html#line510">cnt</a>)          /* input */
+<b><a name="line229">229  </a></b>				);
+<b><a name="line230">230  </a></b>	}
+<b><a name="line231">231  </a></b>	
+<b><a name="line232">232  </a></b>	static inline int <b>rte_atomic32_inc_and_test</b>(<a href="../generic/rte_atomic.h/code.html#line511">rte_atomic32_t</a> *<b>v</b>)
+<b><a name="line233">233  </a></b>	{
+<b><a name="line234">234  </a></b>		<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> <b>ret</b>;
+<b><a name="line235">235  </a></b>	
+<b><a name="line236">236  </a></b>		<a href="../rte_common.h/code.html#line32">asm</a> volatile(
+<b><a name="line237">237  </a></b>				<a href="#line21">MPLOCKED</a>
+<b><a name="line238">238  </a></b>				&quot;incl %[cnt] ; &quot;
+<b><a name="line239">239  </a></b>				&quot;sete %[ret]&quot;
+<b><a name="line240">240  </a></b>				: [cnt] &quot;+m&quot; (<a href="#line232">v</a>-&gt;<a href="../generic/rte_atomic.h/code.html#line510">cnt</a>),  /* output */
+<b><a name="line241">241  </a></b>				  [ret] &quot;=qm&quot; (<a href="#line234">ret</a>)
+<b><a name="line242">242  </a></b>				);
+<b><a name="line243">243  </a></b>		return <a href="#line234">ret</a> != 0;
+<b><a name="line244">244  </a></b>	}
+<b><a name="line245">245  </a></b>	
+<b><a name="line246">246  </a></b>	static inline int <b>rte_atomic32_dec_and_test</b>(<a href="../generic/rte_atomic.h/code.html#line511">rte_atomic32_t</a> *<b>v</b>)
+<b><a name="line247">247  </a></b>	{
+<b><a name="line248">248  </a></b>		<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> <b>ret</b>;
+<b><a name="line249">249  </a></b>	
+<b><a name="line250">250  </a></b>		<a href="../rte_common.h/code.html#line32">asm</a> volatile(<a href="#line21">MPLOCKED</a>
+<b><a name="line251">251  </a></b>				&quot;decl %[cnt] ; &quot;
+<b><a name="line252">252  </a></b>				&quot;sete %[ret]&quot;
+<b><a name="line253">253  </a></b>				: [cnt] &quot;+m&quot; (<a href="#line246">v</a>-&gt;<a href="../generic/rte_atomic.h/code.html#line510">cnt</a>),  /* output */
+<b><a name="line254">254  </a></b>				  [ret] &quot;=qm&quot; (<a href="#line248">ret</a>)
+<b><a name="line255">255  </a></b>				);
+<b><a name="line256">256  </a></b>		return <a href="#line248">ret</a> != 0;
+<b><a name="line257">257  </a></b>	}
+<b><a name="line258">258  </a></b>	#endif
+<b><a name="line259">259  </a></b>	
+<b><a name="line260">260  </a></b>	#ifdef RTE_ARCH_I686
+<b><a name="line261">261  </a></b>	#include &quot;rte_atomic_32.h&quot;
+<b><a name="line262">262  </a></b>	#else
+<b><a name="line263">263  </a></b>	#include &quot;rte_atomic_64.h&quot;
+<b><a name="line264">264  </a></b>	#endif
+<b><a name="line265">265  </a></b>	
+<b><a name="line266">266  </a></b>	#ifdef __cplusplus
+<b><a name="line267">267  </a></b>	}
+<b><a name="line268">268  </a></b>	#endif
+<b><a name="line269">269  </a></b>	
+<b><a name="line270">270  </a></b>	#endif /* _RTE_ATOMIC_X86_H_ */
+<b><a name="line271">271  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

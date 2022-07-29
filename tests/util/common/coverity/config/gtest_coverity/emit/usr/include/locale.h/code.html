@@ -1,0 +1,264 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/locale.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 1991-2016 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line5">5    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line6">6    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line7">7    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line10">10   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line11">11   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line12">12   </a></b>	   Lesser General Public License for more details.
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line15">15   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line16">16   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	/*
+<b><a name="line19">19   </a></b>	 *	ISO C99 Standard: 7.11 Localization	&lt;locale.h&gt;
+<b><a name="line20">20   </a></b>	 */
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	#ifndef	_LOCALE_H
+<b><a name="line23">23   </a></b>	#define	<b>_LOCALE_H</b>	1
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	#include &lt;features.h&gt;
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>	#define <b>__need_NULL</b>
+<b><a name="line28">28   </a></b>	#include &lt;stddef.h&gt;
+<b><a name="line29">29   </a></b>	#include &lt;bits/locale.h&gt;
+<b><a name="line30">30   </a></b>	
+<b><a name="line31">31   </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line98">__BEGIN_DECLS</a>
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	/* These are the possibilities for the first argument to setlocale.
+<b><a name="line34">34   </a></b>	   The code assumes that the lowest LC_* symbol has the value zero.  */
+<b><a name="line35">35   </a></b>	#define <b>LC_CTYPE</b>          __LC_CTYPE
+<b><a name="line36">36   </a></b>	#define <b>LC_NUMERIC</b>        __LC_NUMERIC
+<b><a name="line37">37   </a></b>	#define <b>LC_TIME</b>           __LC_TIME
+<b><a name="line38">38   </a></b>	#define <b>LC_COLLATE</b>        __LC_COLLATE
+<b><a name="line39">39   </a></b>	#define <b>LC_MONETARY</b>       __LC_MONETARY
+<b><a name="line40">40   </a></b>	#define <b>LC_MESSAGES</b>       __LC_MESSAGES
+<b><a name="line41">41   </a></b>	#define	<b>LC_ALL</b>		  __LC_ALL
+<b><a name="line42">42   </a></b>	#define <b>LC_PAPER</b>	  __LC_PAPER
+<b><a name="line43">43   </a></b>	#define <b>LC_NAME</b>		  __LC_NAME
+<b><a name="line44">44   </a></b>	#define <b>LC_ADDRESS</b>	  __LC_ADDRESS
+<b><a name="line45">45   </a></b>	#define <b>LC_TELEPHONE</b>	  __LC_TELEPHONE
+<b><a name="line46">46   </a></b>	#define <b>LC_MEASUREMENT</b>	  __LC_MEASUREMENT
+<b><a name="line47">47   </a></b>	#define <b>LC_IDENTIFICATION</b> __LC_IDENTIFICATION
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	
+<b><a name="line50">50   </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line51">51   </a></b>	
+<b><a name="line52">52   </a></b>	/* Structure giving information about numeric and monetary notation.  */
+<b><a name="line53">53   </a></b>	struct <b>lconv</b>
+<b><a name="line54">54   </a></b>	{
+<b><a name="line55">55   </a></b>	  /* Numeric (non-monetary) information.  */
+<b><a name="line56">56   </a></b>	
+<b><a name="line57">57   </a></b>	  char *<b>decimal_point</b>;		/* Decimal point character.  */
+<b><a name="line58">58   </a></b>	  char *<b>thousands_sep</b>;		/* Thousands separator.  */
+<b><a name="line59">59   </a></b>	  /* Each element is the number of digits in each group;
+<b><a name="line60">60   </a></b>	     elements with higher indices are farther left.
+<b><a name="line61">61   </a></b>	     An element with value CHAR_MAX means that no further grouping is done.
+<b><a name="line62">62   </a></b>	     An element with value 0 means that the previous element is used
+<b><a name="line63">63   </a></b>	     for all groups farther left.  */
+<b><a name="line64">64   </a></b>	  char *<b>grouping</b>;
+<b><a name="line65">65   </a></b>	
+<b><a name="line66">66   </a></b>	  /* Monetary information.  */
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	  /* First three chars are a currency symbol from ISO 4217.
+<b><a name="line69">69   </a></b>	     Fourth char is the separator.  Fifth char is '\0'.  */
+<b><a name="line70">70   </a></b>	  char *<b>int_curr_symbol</b>;
+<b><a name="line71">71   </a></b>	  char *<b>currency_symbol</b>;	/* Local currency symbol.  */
+<b><a name="line72">72   </a></b>	  char *<b>mon_decimal_point</b>;	/* Decimal point character.  */
+<b><a name="line73">73   </a></b>	  char *<b>mon_thousands_sep</b>;	/* Thousands separator.  */
+<b><a name="line74">74   </a></b>	  char *<b>mon_grouping</b>;		/* Like `grouping' element (above).  */
+<b><a name="line75">75   </a></b>	  char *<b>positive_sign</b>;		/* Sign for positive values.  */
+<b><a name="line76">76   </a></b>	  char *<b>negative_sign</b>;		/* Sign for negative values.  */
+<b><a name="line77">77   </a></b>	  char <b>int_frac_digits</b>;		/* Int'l fractional digits.  */
+<b><a name="line78">78   </a></b>	  char <b>frac_digits</b>;		/* Local fractional digits.  */
+<b><a name="line79">79   </a></b>	  /* 1 if currency_symbol precedes a positive value, 0 if succeeds.  */
+<b><a name="line80">80   </a></b>	  char <b>p_cs_precedes</b>;
+<b><a name="line81">81   </a></b>	  /* 1 iff a space separates currency_symbol from a positive value.  */
+<b><a name="line82">82   </a></b>	  char <b>p_sep_by_space</b>;
+<b><a name="line83">83   </a></b>	  /* 1 if currency_symbol precedes a negative value, 0 if succeeds.  */
+<b><a name="line84">84   </a></b>	  char <b>n_cs_precedes</b>;
+<b><a name="line85">85   </a></b>	  /* 1 iff a space separates currency_symbol from a negative value.  */
+<b><a name="line86">86   </a></b>	  char <b>n_sep_by_space</b>;
+<b><a name="line87">87   </a></b>	  /* Positive and negative sign positions:
+<b><a name="line88">88   </a></b>	     0 Parentheses surround the quantity and currency_symbol.
+<b><a name="line89">89   </a></b>	     1 The sign string precedes the quantity and currency_symbol.
+<b><a name="line90">90   </a></b>	     2 The sign string follows the quantity and currency_symbol.
+<b><a name="line91">91   </a></b>	     3 The sign string immediately precedes the currency_symbol.
+<b><a name="line92">92   </a></b>	     4 The sign string immediately follows the currency_symbol.  */
+<b><a name="line93">93   </a></b>	  char <b>p_sign_posn</b>;
+<b><a name="line94">94   </a></b>	  char <b>n_sign_posn</b>;
+<b><a name="line95">95   </a></b>	#ifdef <a href="../features.h/code.html#line295">__USE_ISOC99</a>
+<b><a name="line96">96   </a></b>	  /* 1 if int_curr_symbol precedes a positive value, 0 if succeeds.  */
+<b><a name="line97">97   </a></b>	  char <b>int_p_cs_precedes</b>;
+<b><a name="line98">98   </a></b>	  /* 1 iff a space separates int_curr_symbol from a positive value.  */
+<b><a name="line99">99   </a></b>	  char <b>int_p_sep_by_space</b>;
+<b><a name="line100">100  </a></b>	  /* 1 if int_curr_symbol precedes a negative value, 0 if succeeds.  */
+<b><a name="line101">101  </a></b>	  char <b>int_n_cs_precedes</b>;
+<b><a name="line102">102  </a></b>	  /* 1 iff a space separates int_curr_symbol from a negative value.  */
+<b><a name="line103">103  </a></b>	  char <b>int_n_sep_by_space</b>;
+<b><a name="line104">104  </a></b>	  /* Positive and negative sign positions:
+<b><a name="line105">105  </a></b>	     0 Parentheses surround the quantity and int_curr_symbol.
+<b><a name="line106">106  </a></b>	     1 The sign string precedes the quantity and int_curr_symbol.
+<b><a name="line107">107  </a></b>	     2 The sign string follows the quantity and int_curr_symbol.
+<b><a name="line108">108  </a></b>	     3 The sign string immediately precedes the int_curr_symbol.
+<b><a name="line109">109  </a></b>	     4 The sign string immediately follows the int_curr_symbol.  */
+<b><a name="line110">110  </a></b>	  char <b>int_p_sign_posn</b>;
+<b><a name="line111">111  </a></b>	  char <b>int_n_sign_posn</b>;
+<b><a name="line112">112  </a></b>	#else
+<b><a name="line113">113  </a></b>	  char __int_p_cs_precedes;
+<b><a name="line114">114  </a></b>	  char __int_p_sep_by_space;
+<b><a name="line115">115  </a></b>	  char __int_n_cs_precedes;
+<b><a name="line116">116  </a></b>	  char __int_n_sep_by_space;
+<b><a name="line117">117  </a></b>	  char __int_p_sign_posn;
+<b><a name="line118">118  </a></b>	  char __int_n_sign_posn;
+<b><a name="line119">119  </a></b>	#endif
+<b><a name="line120">120  </a></b>	};
+<b><a name="line121">121  </a></b>	
+<b><a name="line122">122  </a></b>	
+<b><a name="line123">123  </a></b>	/* Set and/or return the current locale.  */
+<b><a name="line124">124  </a></b>	extern char *setlocale (int __category, const char *__locale) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line125">125  </a></b>	
+<b><a name="line126">126  </a></b>	/* Return the numeric/monetary information for the current locale.  */
+<b><a name="line127">127  </a></b>	extern struct <a href="#line53">lconv</a> *localeconv (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line128">128  </a></b>	
+<b><a name="line129">129  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line130">130  </a></b>	
+<b><a name="line131">131  </a></b>	
+<b><a name="line132">132  </a></b>	#ifdef	<a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line133">133  </a></b>	/* The concept of one static locale per category is not very well
+<b><a name="line134">134  </a></b>	   thought out.  Many applications will need to process its data using
+<b><a name="line135">135  </a></b>	   information from several different locales.  Another application is
+<b><a name="line136">136  </a></b>	   the implementation of the internationalization handling in the
+<b><a name="line137">137  </a></b>	   upcoming ISO C++ standard library.  To support this another set of
+<b><a name="line138">138  </a></b>	   the functions using locale data exist which have an additional
+<b><a name="line139">139  </a></b>	   argument.
+<b><a name="line140">140  </a></b>	
+<b><a name="line141">141  </a></b>	   Attention: all these functions are *not* standardized in any form.
+<b><a name="line142">142  </a></b>	   This is a proof-of-concept implementation.  */
+<b><a name="line143">143  </a></b>	
+<b><a name="line144">144  </a></b>	/* Get locale datatype definition.  */
+<b><a name="line145">145  </a></b>	# include &lt;xlocale.h&gt;
+<b><a name="line146">146  </a></b>	
+<b><a name="line147">147  </a></b>	/* Return a reference to a data structure representing a set of locale
+<b><a name="line148">148  </a></b>	   datasets.  Unlike for the CATEGORY parameter for `setlocale' the
+<b><a name="line149">149  </a></b>	   CATEGORY_MASK parameter here uses a single bit for each category,
+<b><a name="line150">150  </a></b>	   made by OR'ing together LC_*_MASK bits above.  */
+<b><a name="line151">151  </a></b>	extern <a href="../xlocale.h/code.html#line39">__locale_t</a> newlocale (int __category_mask, const char *__locale,
+<b><a name="line152">152  </a></b>				     <a href="../xlocale.h/code.html#line39">__locale_t</a> __base) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line153">153  </a></b>	
+<b><a name="line154">154  </a></b>	/* These are the bits that can be set in the CATEGORY_MASK argument to
+<b><a name="line155">155  </a></b>	   `newlocale'.  In the GNU implementation, LC_FOO_MASK has the value
+<b><a name="line156">156  </a></b>	   of (1 &lt;&lt; LC_FOO), but this is not a part of the interface that
+<b><a name="line157">157  </a></b>	   callers can assume will be true.  */
+<b><a name="line158">158  </a></b>	# define <b>LC_CTYPE_MASK</b>		(1 &lt;&lt; __LC_CTYPE)
+<b><a name="line159">159  </a></b>	# define <b>LC_NUMERIC_MASK</b>	(1 &lt;&lt; __LC_NUMERIC)
+<b><a name="line160">160  </a></b>	# define <b>LC_TIME_MASK</b>		(1 &lt;&lt; __LC_TIME)
+<b><a name="line161">161  </a></b>	# define <b>LC_COLLATE_MASK</b>	(1 &lt;&lt; __LC_COLLATE)
+<b><a name="line162">162  </a></b>	# define <b>LC_MONETARY_MASK</b>	(1 &lt;&lt; __LC_MONETARY)
+<b><a name="line163">163  </a></b>	# define <b>LC_MESSAGES_MASK</b>	(1 &lt;&lt; __LC_MESSAGES)
+<b><a name="line164">164  </a></b>	# define <b>LC_PAPER_MASK</b>		(1 &lt;&lt; __LC_PAPER)
+<b><a name="line165">165  </a></b>	# define <b>LC_NAME_MASK</b>		(1 &lt;&lt; __LC_NAME)
+<b><a name="line166">166  </a></b>	# define <b>LC_ADDRESS_MASK</b>	(1 &lt;&lt; __LC_ADDRESS)
+<b><a name="line167">167  </a></b>	# define <b>LC_TELEPHONE_MASK</b>	(1 &lt;&lt; __LC_TELEPHONE)
+<b><a name="line168">168  </a></b>	# define <b>LC_MEASUREMENT_MASK</b>	(1 &lt;&lt; __LC_MEASUREMENT)
+<b><a name="line169">169  </a></b>	# define <b>LC_IDENTIFICATION_MASK</b>	(1 &lt;&lt; __LC_IDENTIFICATION)
+<b><a name="line170">170  </a></b>	# define <b>LC_ALL_MASK</b>		(LC_CTYPE_MASK \
+<b><a name="line171">171  </a></b>					 | LC_NUMERIC_MASK \
+<b><a name="line172">172  </a></b>					 | LC_TIME_MASK \
+<b><a name="line173">173  </a></b>					 | LC_COLLATE_MASK \
+<b><a name="line174">174  </a></b>					 | LC_MONETARY_MASK \
+<b><a name="line175">175  </a></b>					 | LC_MESSAGES_MASK \
+<b><a name="line176">176  </a></b>					 | LC_PAPER_MASK \
+<b><a name="line177">177  </a></b>					 | LC_NAME_MASK \
+<b><a name="line178">178  </a></b>					 | LC_ADDRESS_MASK \
+<b><a name="line179">179  </a></b>					 | LC_TELEPHONE_MASK \
+<b><a name="line180">180  </a></b>					 | LC_MEASUREMENT_MASK \
+<b><a name="line181">181  </a></b>					 | LC_IDENTIFICATION_MASK \
+<b><a name="line182">182  </a></b>					 )
+<b><a name="line183">183  </a></b>	
+<b><a name="line184">184  </a></b>	/* Return a duplicate of the set of locale in DATASET.  All usage
+<b><a name="line185">185  </a></b>	   counters are increased if necessary.  */
+<b><a name="line186">186  </a></b>	extern <a href="../xlocale.h/code.html#line39">__locale_t</a> duplocale (<a href="../xlocale.h/code.html#line39">__locale_t</a> __dataset) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line187">187  </a></b>	
+<b><a name="line188">188  </a></b>	/* Free the data associated with a locale dataset previously returned
+<b><a name="line189">189  </a></b>	   by a call to `setlocale_r'.  */
+<b><a name="line190">190  </a></b>	extern void freelocale (<a href="../xlocale.h/code.html#line39">__locale_t</a> __dataset) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line191">191  </a></b>	
+<b><a name="line192">192  </a></b>	/* Switch the current thread's locale to DATASET.
+<b><a name="line193">193  </a></b>	   If DATASET is null, instead just return the current setting.
+<b><a name="line194">194  </a></b>	   The special value LC_GLOBAL_LOCALE is the initial setting
+<b><a name="line195">195  </a></b>	   for all threads and can also be installed any time, meaning
+<b><a name="line196">196  </a></b>	   the thread uses the global settings controlled by `setlocale'.  */
+<b><a name="line197">197  </a></b>	extern <a href="../xlocale.h/code.html#line39">__locale_t</a> uselocale (<a href="../xlocale.h/code.html#line39">__locale_t</a> __dataset) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line198">198  </a></b>	
+<b><a name="line199">199  </a></b>	/* This value can be passed to `uselocale' and may be returned by it.
+<b><a name="line200">200  </a></b>	   Passing this value to any other function has undefined behavior.  */
+<b><a name="line201">201  </a></b>	# define <b>LC_GLOBAL_LOCALE</b>	((__locale_t) -1L)
+<b><a name="line202">202  </a></b>	
+<b><a name="line203">203  </a></b>	#endif
+<b><a name="line204">204  </a></b>	
+<b><a name="line205">205  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line99">__END_DECLS</a>
+<b><a name="line206">206  </a></b>	
+<b><a name="line207">207  </a></b>	#endif /* locale.h  */
+<b><a name="line208">208  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

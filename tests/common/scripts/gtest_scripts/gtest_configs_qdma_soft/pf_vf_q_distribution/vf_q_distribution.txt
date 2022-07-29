@@ -1,0 +1,15 @@
+name=vf_q_distribution
+test_mask=0x0D #bit 0 - auto mode, 1 - poll mode, bit 2 - intr mode, bit 3 - aggr mode
+repeat=1 #number of iterations
+filter=-*ST016_64B_desc*:*DMACTL*:*DEBUGFS*:*NT014*
+master_pf=0
+run_gtest=1
+pf_qmax_cfg_en=(1 1 1 1)
+pf_qmax=(0 0 0 0)
+pf_nvf=(64 60 60 68) #number of VFs in PF
+vf_pf0_qmax=(6 32 2 2 2 2 2 2 2 2 2 1 1 2 1 0 2 24 1 2 1 1 1 2 1 2 2 1 1 2 20 2 1 2 1 1 1 1 22 1 1 2 1 3 0 1 1 2 1 1 1 2 1 1 1 1 1 1 1 1 1 1 1 10) #q distribution for vf of pf1 - 256 queue
+vf_pf1_qmax=(0 3 0 0 0 2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 0 0 0 0 0 0 0 0 0 5 0 0 1 0 0 0 9 0 0 0 0 0 10 0 32 32 32 32 32 32 32 32 32 32 32 32 32 32 32) #q distribution for vf of pf0 - 512 queus 
+vf_pf2_qmax=(1 0 2 32 4 32 8 32 16 0 32 0 64 0 32 0 0 32 0 16 0 8 0 4 0 2 68 1 0 32 0 1 32 2 32 4 0 8 32 16 0 32 0 64 0 128 0 64 0 32 0 16 32 8 32 4 32 2 0 32) #q distribution for vf of pf2 - 1024 queues
+vf_pf3_qmax=(0 1 0 2 0 4 0 8 0 16 0 32 32 0 16 0 8 0 4 0 2 0 1 0 0 0 0 0 0 0 0 0 1 0 0 0 1 0 0 0 1 0 0 0 1 0 0 2 0 4 0 8 0 16 0 32 32 0 16 0 8 0 4 0 2 0 1 0) #q distribution for vf of pf3 - 256 queues
+valid_drv=(linux dpdk)
+#necessary dummy line

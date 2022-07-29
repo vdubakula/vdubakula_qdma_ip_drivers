@@ -1,0 +1,329 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/utility</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// &lt;utility&gt; -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2001-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/*
+<b><a name="line26">26   </a></b>	 *
+<b><a name="line27">27   </a></b>	 * Copyright (c) 1994
+<b><a name="line28">28   </a></b>	 * Hewlett-Packard Company
+<b><a name="line29">29   </a></b>	 *
+<b><a name="line30">30   </a></b>	 * Permission to use, copy, modify, distribute and sell this software
+<b><a name="line31">31   </a></b>	 * and its documentation for any purpose is hereby granted without fee,
+<b><a name="line32">32   </a></b>	 * provided that the above copyright notice appear in all copies and
+<b><a name="line33">33   </a></b>	 * that both that copyright notice and this permission notice appear
+<b><a name="line34">34   </a></b>	 * in supporting documentation.  Hewlett-Packard Company makes no
+<b><a name="line35">35   </a></b>	 * representations about the suitability of this software for any
+<b><a name="line36">36   </a></b>	 * purpose.  It is provided &quot;as is&quot; without express or implied warranty.
+<b><a name="line37">37   </a></b>	 *
+<b><a name="line38">38   </a></b>	 *
+<b><a name="line39">39   </a></b>	 * Copyright (c) 1996,1997
+<b><a name="line40">40   </a></b>	 * Silicon Graphics Computer Systems, Inc.
+<b><a name="line41">41   </a></b>	 *
+<b><a name="line42">42   </a></b>	 * Permission to use, copy, modify, distribute and sell this software
+<b><a name="line43">43   </a></b>	 * and its documentation for any purpose is hereby granted without fee,
+<b><a name="line44">44   </a></b>	 * provided that the above copyright notice appear in all copies and
+<b><a name="line45">45   </a></b>	 * that both that copyright notice and this permission notice appear
+<b><a name="line46">46   </a></b>	 * in supporting documentation.  Silicon Graphics makes no
+<b><a name="line47">47   </a></b>	 * representations about the suitability of this software for any
+<b><a name="line48">48   </a></b>	 * purpose.  It is provided &quot;as is&quot; without express or implied warranty.
+<b><a name="line49">49   </a></b>	 */
+<b><a name="line50">50   </a></b>	
+<b><a name="line51">51   </a></b>	/** @file include/utility
+<b><a name="line52">52   </a></b>	 *  This is a Standard C++ Library header. 
+<b><a name="line53">53   </a></b>	 */
+<b><a name="line54">54   </a></b>	
+<b><a name="line55">55   </a></b>	#ifndef _GLIBCXX_UTILITY
+<b><a name="line56">56   </a></b>	#define <b>_GLIBCXX_UTILITY</b> 1
+<b><a name="line57">57   </a></b>	
+<b><a name="line58">58   </a></b>	#pragma GCC system_header
+<b><a name="line59">59   </a></b>	
+<b><a name="line60">60   </a></b>	/**
+<b><a name="line61">61   </a></b>	 * @defgroup utilities Utilities
+<b><a name="line62">62   </a></b>	 *
+<b><a name="line63">63   </a></b>	 * Components deemed generally useful. Includes pair, tuple,
+<b><a name="line64">64   </a></b>	 * forward/move helpers, ratio, function object, metaprogramming and
+<b><a name="line65">65   </a></b>	 * type traits, time, date, and memory functions.
+<b><a name="line66">66   </a></b>	 */
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	#include &lt;bits/c++config.h&gt;
+<b><a name="line69">69   </a></b>	#include &lt;bits/stl_relops.h&gt;
+<b><a name="line70">70   </a></b>	#include &lt;bits/stl_pair.h&gt;
+<b><a name="line71">71   </a></b>	
+<b><a name="line72">72   </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line73">73   </a></b>	
+<b><a name="line74">74   </a></b>	#include &lt;bits/move.h&gt;
+<b><a name="line75">75   </a></b>	#include &lt;initializer_list&gt;
+<b><a name="line76">76   </a></b>	
+<b><a name="line77">77   </a></b>	namespace <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line78">78   </a></b>	{
+<b><a name="line79">79   </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line80">80   </a></b>	
+<b><a name="line81">81   </a></b>	  template&lt;class <b>_Tp</b>&gt;
+<b><a name="line82">82   </a></b>	    class tuple_size;
+<b><a name="line83">83   </a></b>	
+<b><a name="line84">84   </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>_Int</b>, class <b>_Tp</b>&gt;
+<b><a name="line85">85   </a></b>	    class tuple_element;
+<b><a name="line86">86   </a></b>	
+<b><a name="line87">87   </a></b>	   // Various functions which give std::pair a tuple-like interface.
+<b><a name="line88">88   </a></b>	
+<b><a name="line89">89   </a></b>	  /// Partial specialization for std::pair
+<b><a name="line90">90   </a></b>	  template&lt;class <b>_Tp1</b>, class <b>_Tp2</b>&gt;
+<b><a name="line91">91   </a></b>	    struct <b>tuple_size</b>&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line90">_Tp1</a>, <a href="#line90">_Tp2</a>&gt;&gt;
+<b><a name="line92">92   </a></b>	    : public <a href="../type_traits/code.html#line69">integral_constant</a>&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>, 2&gt; { };
+<b><a name="line93">93   </a></b>	
+<b><a name="line94">94   </a></b>	  /// Partial specialization for std::pair
+<b><a name="line95">95   </a></b>	  template&lt;class <b>_Tp1</b>, class <b>_Tp2</b>&gt;
+<b><a name="line96">96   </a></b>	    struct <b>tuple_element</b>&lt;0, <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line95">_Tp1</a>, <a href="#line95">_Tp2</a>&gt;&gt;
+<b><a name="line97">97   </a></b>	    { typedef <a href="#line95">_Tp1</a> <b>type</b>; };
+<b><a name="line98">98   </a></b>	 
+<b><a name="line99">99   </a></b>	  /// Partial specialization for std::pair
+<b><a name="line100">100  </a></b>	  template&lt;class <b>_Tp1</b>, class <b>_Tp2</b>&gt;
+<b><a name="line101">101  </a></b>	    struct <b>tuple_element</b>&lt;1, <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line100">_Tp1</a>, <a href="#line100">_Tp2</a>&gt;&gt;
+<b><a name="line102">102  </a></b>	    { typedef <a href="#line100">_Tp2</a> <b>type</b>; };
+<b><a name="line103">103  </a></b>	
+<b><a name="line104">104  </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>_Int</b>&gt;
+<b><a name="line105">105  </a></b>	    struct __pair_get;
+<b><a name="line106">106  </a></b>	
+<b><a name="line107">107  </a></b>	  template&lt;&gt;
+<b><a name="line108">108  </a></b>	    struct <b>__pair_get</b>&lt;0&gt;
+<b><a name="line109">109  </a></b>	    {
+<b><a name="line110">110  </a></b>	      template&lt;typename <b>_Tp1</b>, typename <b>_Tp2</b>&gt;
+<b><a name="line111">111  </a></b>	        static constexpr <a href="#line110">_Tp1</a>&amp;
+<b><a name="line112">112  </a></b>	        <b>__get</b>(<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line110">_Tp1</a>, <a href="#line110">_Tp2</a>&gt;&amp; __pair) noexcept
+<b><a name="line113">113  </a></b>	        { return __pair.first; }
+<b><a name="line114">114  </a></b>	
+<b><a name="line115">115  </a></b>	      template&lt;typename <b>_Tp1</b>, typename <b>_Tp2</b>&gt;
+<b><a name="line116">116  </a></b>	        static constexpr <a href="#line115">_Tp1</a>&amp;&amp;
+<b><a name="line117">117  </a></b>	        <b>__move_get</b>(<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line115">_Tp1</a>, <a href="#line115">_Tp2</a>&gt;&amp;&amp; __pair) noexcept
+<b><a name="line118">118  </a></b>	        { return std::forward&lt;_Tp1&gt;(__pair.first); }
+<b><a name="line119">119  </a></b>	
+<b><a name="line120">120  </a></b>	      template&lt;typename <b>_Tp1</b>, typename <b>_Tp2</b>&gt;
+<b><a name="line121">121  </a></b>	        static constexpr const <a href="#line120">_Tp1</a>&amp;
+<b><a name="line122">122  </a></b>	        <b>__const_get</b>(const <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line120">_Tp1</a>, <a href="#line120">_Tp2</a>&gt;&amp; __pair) noexcept
+<b><a name="line123">123  </a></b>	        { return __pair.first; }
+<b><a name="line124">124  </a></b>	    };
+<b><a name="line125">125  </a></b>	
+<b><a name="line126">126  </a></b>	  template&lt;&gt;
+<b><a name="line127">127  </a></b>	    struct <b>__pair_get</b>&lt;1&gt;
+<b><a name="line128">128  </a></b>	    {
+<b><a name="line129">129  </a></b>	      template&lt;typename <b>_Tp1</b>, typename <b>_Tp2</b>&gt;
+<b><a name="line130">130  </a></b>	        static constexpr <a href="#line129">_Tp2</a>&amp;
+<b><a name="line131">131  </a></b>	        <b>__get</b>(<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line129">_Tp1</a>, <a href="#line129">_Tp2</a>&gt;&amp; __pair) noexcept
+<b><a name="line132">132  </a></b>	        { return __pair.second; }
+<b><a name="line133">133  </a></b>	
+<b><a name="line134">134  </a></b>	      template&lt;typename <b>_Tp1</b>, typename <b>_Tp2</b>&gt;
+<b><a name="line135">135  </a></b>	        static constexpr <a href="#line134">_Tp2</a>&amp;&amp;
+<b><a name="line136">136  </a></b>	        <b>__move_get</b>(<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line134">_Tp1</a>, <a href="#line134">_Tp2</a>&gt;&amp;&amp; __pair) noexcept
+<b><a name="line137">137  </a></b>	        { return std::forward&lt;_Tp2&gt;(__pair.second); }
+<b><a name="line138">138  </a></b>	
+<b><a name="line139">139  </a></b>	      template&lt;typename <b>_Tp1</b>, typename <b>_Tp2</b>&gt;
+<b><a name="line140">140  </a></b>	        static constexpr const <a href="#line139">_Tp2</a>&amp;
+<b><a name="line141">141  </a></b>	        <b>__const_get</b>(const <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line139">_Tp1</a>, <a href="#line139">_Tp2</a>&gt;&amp; __pair) noexcept
+<b><a name="line142">142  </a></b>	        { return __pair.second; }
+<b><a name="line143">143  </a></b>	    };
+<b><a name="line144">144  </a></b>	
+<b><a name="line145">145  </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>_Int</b>, class <b>_Tp1</b>, class <b>_Tp2</b>&gt;
+<b><a name="line146">146  </a></b>	    constexpr typename <a href="#line85">tuple_element</a>&lt;<a href="#line145">_Int</a>, <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line145">_Tp1</a>, <a href="#line145">_Tp2</a>&gt;&gt;::type&amp;
+<b><a name="line147">147  </a></b>	    <b>get</b>(<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line145">_Tp1</a>, <a href="#line145">_Tp2</a>&gt;&amp; __in) noexcept
+<b><a name="line148">148  </a></b>	    { return __pair_get&lt;_Int&gt;::__get(__in); }
+<b><a name="line149">149  </a></b>	
+<b><a name="line150">150  </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>_Int</b>, class <b>_Tp1</b>, class <b>_Tp2</b>&gt;
+<b><a name="line151">151  </a></b>	    constexpr typename <a href="#line85">tuple_element</a>&lt;<a href="#line150">_Int</a>, <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line150">_Tp1</a>, <a href="#line150">_Tp2</a>&gt;&gt;::type&amp;&amp;
+<b><a name="line152">152  </a></b>	    <b>get</b>(<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line150">_Tp1</a>, <a href="#line150">_Tp2</a>&gt;&amp;&amp; __in) noexcept
+<b><a name="line153">153  </a></b>	    { return __pair_get&lt;_Int&gt;::__move_get(std::move(__in)); }
+<b><a name="line154">154  </a></b>	
+<b><a name="line155">155  </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>_Int</b>, class <b>_Tp1</b>, class <b>_Tp2</b>&gt;
+<b><a name="line156">156  </a></b>	    constexpr const typename <a href="#line85">tuple_element</a>&lt;<a href="#line155">_Int</a>, <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line155">_Tp1</a>, <a href="#line155">_Tp2</a>&gt;&gt;::type&amp;
+<b><a name="line157">157  </a></b>	    <b>get</b>(const <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line155">_Tp1</a>, <a href="#line155">_Tp2</a>&gt;&amp; __in) noexcept
+<b><a name="line158">158  </a></b>	    { return __pair_get&lt;_Int&gt;::__const_get(__in); }
+<b><a name="line159">159  </a></b>	
+<b><a name="line160">160  </a></b>	#if __cplusplus &gt; 201103L
+<b><a name="line161">161  </a></b>	
+<b><a name="line162">162  </a></b>	#define __cpp_lib_tuples_by_type 201304
+<b><a name="line163">163  </a></b>	
+<b><a name="line164">164  </a></b>	  template &lt;typename _Tp, typename _Up&gt;
+<b><a name="line165">165  </a></b>	    constexpr _Tp&amp;
+<b><a name="line166">166  </a></b>	    get(pair&lt;_Tp, _Up&gt;&amp; __p) noexcept
+<b><a name="line167">167  </a></b>	    { return __p.first; }
+<b><a name="line168">168  </a></b>	
+<b><a name="line169">169  </a></b>	  template &lt;typename _Tp, typename _Up&gt;
+<b><a name="line170">170  </a></b>	    constexpr const _Tp&amp;
+<b><a name="line171">171  </a></b>	    get(const pair&lt;_Tp, _Up&gt;&amp; __p) noexcept
+<b><a name="line172">172  </a></b>	    { return __p.first; }
+<b><a name="line173">173  </a></b>	
+<b><a name="line174">174  </a></b>	  template &lt;typename _Tp, typename _Up&gt;
+<b><a name="line175">175  </a></b>	    constexpr _Tp&amp;&amp;
+<b><a name="line176">176  </a></b>	    get(pair&lt;_Tp, _Up&gt;&amp;&amp; __p) noexcept
+<b><a name="line177">177  </a></b>	    { return std::move(__p.first); }
+<b><a name="line178">178  </a></b>	
+<b><a name="line179">179  </a></b>	  template &lt;typename _Tp, typename _Up&gt;
+<b><a name="line180">180  </a></b>	    constexpr _Tp&amp;
+<b><a name="line181">181  </a></b>	    get(pair&lt;_Up, _Tp&gt;&amp; __p) noexcept
+<b><a name="line182">182  </a></b>	    { return __p.second; }
+<b><a name="line183">183  </a></b>	
+<b><a name="line184">184  </a></b>	  template &lt;typename _Tp, typename _Up&gt;
+<b><a name="line185">185  </a></b>	    constexpr const _Tp&amp;
+<b><a name="line186">186  </a></b>	    get(const pair&lt;_Up, _Tp&gt;&amp; __p) noexcept
+<b><a name="line187">187  </a></b>	    { return __p.second; }
+<b><a name="line188">188  </a></b>	
+<b><a name="line189">189  </a></b>	  template &lt;typename _Tp, typename _Up&gt;
+<b><a name="line190">190  </a></b>	    constexpr _Tp&amp;&amp;
+<b><a name="line191">191  </a></b>	    get(pair&lt;_Up, _Tp&gt;&amp;&amp; __p) noexcept
+<b><a name="line192">192  </a></b>	    { return std::move(__p.second); }
+<b><a name="line193">193  </a></b>	
+<b><a name="line194">194  </a></b>	#define __cpp_lib_exchange_function 201304
+<b><a name="line195">195  </a></b>	
+<b><a name="line196">196  </a></b>	  /// Assign @p __new_val to @p __obj and return its previous value.
+<b><a name="line197">197  </a></b>	  template &lt;typename _Tp, typename _Up = _Tp&gt;
+<b><a name="line198">198  </a></b>	    inline _Tp
+<b><a name="line199">199  </a></b>	    exchange(_Tp&amp; __obj, _Up&amp;&amp; __new_val)
+<b><a name="line200">200  </a></b>	    { return std::__exchange(__obj, std::forward&lt;_Up&gt;(__new_val)); }
+<b><a name="line201">201  </a></b>	#endif
+<b><a name="line202">202  </a></b>	
+<b><a name="line203">203  </a></b>	  // Stores a tuple of indices.  Used by tuple and pair, and by bind() to
+<b><a name="line204">204  </a></b>	  // extract the elements in a tuple.
+<b><a name="line205">205  </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>... <b>_Indexes</b>&gt;
+<b><a name="line206">206  </a></b>	    struct _Index_tuple
+<b><a name="line207">207  </a></b>	    {
+<b><a name="line208">208  </a></b>	      typedef <a href="#line206">_Index_tuple</a>&lt;<a href="#line205">_Indexes</a>..., sizeof...(<a href="#line205">_Indexes</a>)&gt; <b>__next</b>;
+<b><a name="line209">209  </a></b>	    };
+<b><a name="line210">210  </a></b>	
+<b><a name="line211">211  </a></b>	  // Builds an _Index_tuple&lt;0, 1, 2, ..., _Num-1&gt;.
+<b><a name="line212">212  </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>_Num</b>&gt;
+<b><a name="line213">213  </a></b>	    struct _Build_index_tuple
+<b><a name="line214">214  </a></b>	    {
+<b><a name="line215">215  </a></b>	      typedef typename <a href="#line213">_Build_index_tuple</a>&lt;<a href="#line212">_Num</a> - 1&gt;::__type::<a href="#line208">__next</a> <b>__type</b>;
+<b><a name="line216">216  </a></b>	    };
+<b><a name="line217">217  </a></b>	
+<b><a name="line218">218  </a></b>	  template&lt;&gt;
+<b><a name="line219">219  </a></b>	    struct <b>_Build_index_tuple</b>&lt;0&gt;
+<b><a name="line220">220  </a></b>	    {
+<b><a name="line221">221  </a></b>	      typedef <a href="#line206">_Index_tuple</a>&lt;&gt; <b>__type</b>;
+<b><a name="line222">222  </a></b>	    };
+<b><a name="line223">223  </a></b>	
+<b><a name="line224">224  </a></b>	#if __cplusplus &gt; 201103L
+<b><a name="line225">225  </a></b>	
+<b><a name="line226">226  </a></b>	#define __cpp_lib_integer_sequence 201304
+<b><a name="line227">227  </a></b>	
+<b><a name="line228">228  </a></b>	  /// Class template integer_sequence
+<b><a name="line229">229  </a></b>	  template&lt;typename _Tp, _Tp... _Idx&gt;
+<b><a name="line230">230  </a></b>	    struct integer_sequence
+<b><a name="line231">231  </a></b>	    {
+<b><a name="line232">232  </a></b>	      typedef _Tp value_type;
+<b><a name="line233">233  </a></b>	      static constexpr size_t size() { return sizeof...(_Idx); }
+<b><a name="line234">234  </a></b>	    };
+<b><a name="line235">235  </a></b>	
+<b><a name="line236">236  </a></b>	  template&lt;typename _Tp, _Tp _Num,
+<b><a name="line237">237  </a></b>		   typename _ISeq = typename _Build_index_tuple&lt;_Num&gt;::__type&gt;
+<b><a name="line238">238  </a></b>	    struct _Make_integer_sequence;
+<b><a name="line239">239  </a></b>	
+<b><a name="line240">240  </a></b>	  template&lt;typename _Tp, _Tp _Num,  size_t... _Idx&gt;
+<b><a name="line241">241  </a></b>	    struct _Make_integer_sequence&lt;_Tp, _Num, _Index_tuple&lt;_Idx...&gt;&gt;
+<b><a name="line242">242  </a></b>	    {
+<b><a name="line243">243  </a></b>	      static_assert( _Num &gt;= 0,
+<b><a name="line244">244  </a></b>			     &quot;Cannot make integer sequence of negative length&quot; );
+<b><a name="line245">245  </a></b>	
+<b><a name="line246">246  </a></b>	      typedef integer_sequence&lt;_Tp, static_cast&lt;_Tp&gt;(_Idx)...&gt; __type;
+<b><a name="line247">247  </a></b>	    };
+<b><a name="line248">248  </a></b>	
+<b><a name="line249">249  </a></b>	  /// Alias template make_integer_sequence
+<b><a name="line250">250  </a></b>	  template&lt;typename _Tp, _Tp _Num&gt;
+<b><a name="line251">251  </a></b>	    using make_integer_sequence
+<b><a name="line252">252  </a></b>	      = typename _Make_integer_sequence&lt;_Tp, _Num&gt;::__type;
+<b><a name="line253">253  </a></b>	
+<b><a name="line254">254  </a></b>	  /// Alias template index_sequence
+<b><a name="line255">255  </a></b>	  template&lt;size_t... _Idx&gt;
+<b><a name="line256">256  </a></b>	    using index_sequence = integer_sequence&lt;size_t, _Idx...&gt;;
+<b><a name="line257">257  </a></b>	
+<b><a name="line258">258  </a></b>	  /// Alias template make_index_sequence
+<b><a name="line259">259  </a></b>	  template&lt;size_t _Num&gt;
+<b><a name="line260">260  </a></b>	    using make_index_sequence = make_integer_sequence&lt;size_t, _Num&gt;;
+<b><a name="line261">261  </a></b>	
+<b><a name="line262">262  </a></b>	  /// Alias template index_sequence_for
+<b><a name="line263">263  </a></b>	  template&lt;typename... _Types&gt;
+<b><a name="line264">264  </a></b>	    using index_sequence_for = make_index_sequence&lt;sizeof...(_Types)&gt;;
+<b><a name="line265">265  </a></b>	#endif
+<b><a name="line266">266  </a></b>	
+<b><a name="line267">267  </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line268">268  </a></b>	} // namespace
+<b><a name="line269">269  </a></b>	
+<b><a name="line270">270  </a></b>	#endif
+<b><a name="line271">271  </a></b>	
+<b><a name="line272">272  </a></b>	#endif /* _GLIBCXX_UTILITY */
+<b><a name="line273">273  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

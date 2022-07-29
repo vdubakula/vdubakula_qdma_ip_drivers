@@ -1,0 +1,717 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/bits/alloc_traits.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Allocator traits -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2011-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file bits/alloc_traits.h
+<b><a name="line26">26   </a></b>	 *  This is an internal header file, included by other library headers.
+<b><a name="line27">27   </a></b>	 *  Do not attempt to use it directly. @headername{memory}
+<b><a name="line28">28   </a></b>	 */
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	#ifndef _ALLOC_TRAITS_H
+<b><a name="line31">31   </a></b>	#define <b>_ALLOC_TRAITS_H</b> 1
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	#include &lt;bits/memoryfwd.h&gt;
+<b><a name="line36">36   </a></b>	#include &lt;bits/ptr_traits.h&gt;
+<b><a name="line37">37   </a></b>	#include &lt;ext/numeric_traits.h&gt;
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line40">40   </a></b>	{
+<b><a name="line41">41   </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	  template&lt;typename <b>_Alloc</b>, typename <b>_Tp</b>&gt;
+<b><a name="line44">44   </a></b>	    class __alloctr_rebind_helper
+<b><a name="line45">45   </a></b>	    {
+<b><a name="line46">46   </a></b>	      template&lt;typename <b>_Alloc2</b>, typename <b>_Tp2</b>&gt;
+<b><a name="line47">47   </a></b>		static constexpr <a href="../../type_traits/code.html#line87">true_type</a>
+<b><a name="line48">48   </a></b>		_S_chk(typename <a href="#line46">_Alloc2</a>::template <a href="../allocator.h/code.html#line104">rebind</a>&lt;<a href="#line46">_Tp2</a>&gt;::<a href="../allocator.h/code.html#line105">other</a>*);
+<b><a name="line49">49   </a></b>	
+<b><a name="line50">50   </a></b>	      template&lt;typename, typename&gt;
+<b><a name="line51">51   </a></b>		static constexpr <a href="../../type_traits/code.html#line90">false_type</a>
+<b><a name="line52">52   </a></b>		_S_chk(...);
+<b><a name="line53">53   </a></b>	
+<b><a name="line54">54   </a></b>	    public:
+<b><a name="line55">55   </a></b>	      using <b>__type</b> = decltype(<a href="#line48">_S_chk</a>&lt;<a href="#line43">_Alloc</a>, <a href="#line43">_Tp</a>&gt;(nullptr));
+<b><a name="line56">56   </a></b>	    };
+<b><a name="line57">57   </a></b>	
+<b><a name="line58">58   </a></b>	  template&lt;typename <b>_Alloc</b>, typename <b>_Tp</b>,
+<b><a name="line59">59   </a></b>		   bool = <a href="#line44">__alloctr_rebind_helper</a>&lt;<a href="#line58">_Alloc</a>, <a href="#line58">_Tp</a>&gt;::<a href="#line55">__type</a>::<a href="../../type_traits/code.html#line71">value</a>&gt;
+<b><a name="line60">60   </a></b>	    struct __alloctr_rebind;
+<b><a name="line61">61   </a></b>	
+<b><a name="line62">62   </a></b>	  template&lt;typename <b>_Alloc</b>, typename <b>_Tp</b>&gt;
+<b><a name="line63">63   </a></b>	    struct <b>__alloctr_rebind</b>&lt;<a href="#line62">_Alloc</a>, <a href="#line62">_Tp</a>, true&gt;
+<b><a name="line64">64   </a></b>	    {
+<b><a name="line65">65   </a></b>	      typedef typename <a href="#line62">_Alloc</a>::template <a href="../allocator.h/code.html#line104">rebind</a>&lt;<a href="#line62">_Tp</a>&gt;::<a href="../allocator.h/code.html#line105">other</a> <b>__type</b>;
+<b><a name="line66">66   </a></b>	    };
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	  template&lt;template&lt;typename, typename...&gt; class <b>_Alloc</b>, typename <b>_Tp</b>,
+<b><a name="line69">69   </a></b>		   typename <b>_Up</b>, typename... <b>_Args</b>&gt;
+<b><a name="line70">70   </a></b>	    struct <b>__alloctr_rebind</b>&lt;<a href="#line68">_Alloc</a>&lt;<a href="#line69">_Up</a>, <a href="#line69">_Args</a>...&gt;, <a href="#line68">_Tp</a>, false&gt;
+<b><a name="line71">71   </a></b>	    {
+<b><a name="line72">72   </a></b>	      typedef <a href="#line68">_Alloc</a>&lt;<a href="#line68">_Tp</a>, <a href="#line69">_Args</a>...&gt; <b>__type</b>;
+<b><a name="line73">73   </a></b>	    };
+<b><a name="line74">74   </a></b>	
+<b><a name="line75">75   </a></b>	  template&lt;typename <b>_Alloc</b>, typename <b>_Tp</b>&gt;
+<b><a name="line76">76   </a></b>	    using __alloc_rebind = typename <a href="#line60">__alloctr_rebind</a>&lt;<a href="#line75">_Alloc</a>, <a href="#line75">_Tp</a>&gt;::<a href="#line65">__type</a>;
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	  /**
+<b><a name="line79">79   </a></b>	   * @brief  Uniform interface to all allocator types.
+<b><a name="line80">80   </a></b>	   * @ingroup allocators
+<b><a name="line81">81   </a></b>	  */
+<b><a name="line82">82   </a></b>	  template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line83">83   </a></b>	    struct allocator_traits
+<b><a name="line84">84   </a></b>	    {
+<b><a name="line85">85   </a></b>	      /// The allocator type
+<b><a name="line86">86   </a></b>	      typedef <a href="#line82">_Alloc</a> <b>allocator_type</b>;
+<b><a name="line87">87   </a></b>	      /// The allocated type
+<b><a name="line88">88   </a></b>	      typedef typename <a href="#line82">_Alloc</a>::<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/util/xlnx_util.h/code.html#line52">value_type</a> <b>value_type</b>;
+<b><a name="line89">89   </a></b>	
+<b><a name="line90">90   </a></b>	#define <b>_GLIBCXX_ALLOC_TR_NESTED_TYPE</b>(_NTYPE, _ALT) \
+<b><a name="line91">91   </a></b>	  private: \
+<b><a name="line92">92   </a></b>	  template&lt;typename _Tp&gt; \
+<b><a name="line93">93   </a></b>	    static typename _Tp::_NTYPE _S_##_NTYPE##_helper(_Tp*); \
+<b><a name="line94">94   </a></b>	  static _ALT _S_##_NTYPE##_helper(...); \
+<b><a name="line95">95   </a></b>	    typedef decltype(_S_##_NTYPE##_helper((_Alloc*)0)) __##_NTYPE; \
+<b><a name="line96">96   </a></b>	  public:
+<b><a name="line97">97   </a></b>	
+<b><a name="line98">98   </a></b>	<a href="#line90">_GLIBCXX_ALLOC_TR_NESTED_TYPE</a>(pointer, value_type*)
+<b><a name="line99">99   </a></b>	
+<b><a name="line100">100  </a></b>	      /**
+<b><a name="line101">101  </a></b>	       * @brief   The allocator's pointer type.
+<b><a name="line102">102  </a></b>	       *
+<b><a name="line103">103  </a></b>	       * @c Alloc::pointer if that type exists, otherwise @c value_type*
+<b><a name="line104">104  </a></b>	      */
+<b><a name="line105">105  </a></b>	      typedef <a href="#line98">__pointer</a> <b>pointer</b>;
+<b><a name="line106">106  </a></b>	
+<b><a name="line107">107  </a></b>	<a href="#line90">_GLIBCXX_ALLOC_TR_NESTED_TYPE</a>(const_pointer,
+<b><a name="line108">108  </a></b>	  typename pointer_traits&lt;pointer&gt;::template rebind&lt;const value_type&gt;)
+<b><a name="line109">109  </a></b>	
+<b><a name="line110">110  </a></b>	      /**
+<b><a name="line111">111  </a></b>	       * @brief   The allocator's const pointer type.
+<b><a name="line112">112  </a></b>	       *
+<b><a name="line113">113  </a></b>	       * @c Alloc::const_pointer if that type exists, otherwise
+<b><a name="line114">114  </a></b>	       * &lt;tt&gt; pointer_traits&lt;pointer&gt;::rebind&lt;const value_type&gt; &lt;/tt&gt;
+<b><a name="line115">115  </a></b>	      */
+<b><a name="line116">116  </a></b>	      typedef <a href="#line107">__const_pointer</a> <b>const_pointer</b>;
+<b><a name="line117">117  </a></b>	
+<b><a name="line118">118  </a></b>	<a href="#line90">_GLIBCXX_ALLOC_TR_NESTED_TYPE</a>(void_pointer,
+<b><a name="line119">119  </a></b>	  typename pointer_traits&lt;pointer&gt;::template rebind&lt;void&gt;)
+<b><a name="line120">120  </a></b>	
+<b><a name="line121">121  </a></b>	      /**
+<b><a name="line122">122  </a></b>	       * @brief   The allocator's void pointer type.
+<b><a name="line123">123  </a></b>	       *
+<b><a name="line124">124  </a></b>	       * @c Alloc::void_pointer if that type exists, otherwise
+<b><a name="line125">125  </a></b>	       * &lt;tt&gt; pointer_traits&lt;pointer&gt;::rebind&lt;void&gt; &lt;/tt&gt;
+<b><a name="line126">126  </a></b>	      */
+<b><a name="line127">127  </a></b>	      typedef <a href="#line118">__void_pointer</a> <b>void_pointer</b>;
+<b><a name="line128">128  </a></b>	
+<b><a name="line129">129  </a></b>	<a href="#line90">_GLIBCXX_ALLOC_TR_NESTED_TYPE</a>(const_void_pointer,
+<b><a name="line130">130  </a></b>	  typename pointer_traits&lt;pointer&gt;::template rebind&lt;const void&gt;)
+<b><a name="line131">131  </a></b>	
+<b><a name="line132">132  </a></b>	      /**
+<b><a name="line133">133  </a></b>	       * @brief   The allocator's const void pointer type.
+<b><a name="line134">134  </a></b>	       *
+<b><a name="line135">135  </a></b>	       * @c Alloc::const_void_pointer if that type exists, otherwise
+<b><a name="line136">136  </a></b>	       * &lt;tt&gt; pointer_traits&lt;pointer&gt;::rebind&lt;const void&gt; &lt;/tt&gt;
+<b><a name="line137">137  </a></b>	      */
+<b><a name="line138">138  </a></b>	      typedef <a href="#line129">__const_void_pointer</a> <b>const_void_pointer</b>;
+<b><a name="line139">139  </a></b>	
+<b><a name="line140">140  </a></b>	<a href="#line90">_GLIBCXX_ALLOC_TR_NESTED_TYPE</a>(difference_type,
+<b><a name="line141">141  </a></b>				      typename pointer_traits&lt;pointer&gt;::difference_type)
+<b><a name="line142">142  </a></b>	
+<b><a name="line143">143  </a></b>	      /**
+<b><a name="line144">144  </a></b>	       * @brief   The allocator's difference type
+<b><a name="line145">145  </a></b>	       *
+<b><a name="line146">146  </a></b>	       * @c Alloc::difference_type if that type exists, otherwise
+<b><a name="line147">147  </a></b>	       * &lt;tt&gt; pointer_traits&lt;pointer&gt;::difference_type &lt;/tt&gt;
+<b><a name="line148">148  </a></b>	      */
+<b><a name="line149">149  </a></b>	      typedef <a href="#line140">__difference_type</a> <b>difference_type</b>;
+<b><a name="line150">150  </a></b>	
+<b><a name="line151">151  </a></b>	<a href="#line90">_GLIBCXX_ALLOC_TR_NESTED_TYPE</a>(size_type,
+<b><a name="line152">152  </a></b>				      typename make_unsigned&lt;difference_type&gt;::type)
+<b><a name="line153">153  </a></b>	
+<b><a name="line154">154  </a></b>	      /**
+<b><a name="line155">155  </a></b>	       * @brief   The allocator's size type
+<b><a name="line156">156  </a></b>	       *
+<b><a name="line157">157  </a></b>	       * @c Alloc::size_type if that type exists, otherwise
+<b><a name="line158">158  </a></b>	       * &lt;tt&gt; make_unsigned&lt;difference_type&gt;::type &lt;/tt&gt;
+<b><a name="line159">159  </a></b>	      */
+<b><a name="line160">160  </a></b>	      typedef <a href="#line151">__size_type</a> <b>size_type</b>;
+<b><a name="line161">161  </a></b>	
+<b><a name="line162">162  </a></b>	<a href="#line90">_GLIBCXX_ALLOC_TR_NESTED_TYPE</a>(propagate_on_container_copy_assignment,
+<b><a name="line163">163  </a></b>				      false_type)
+<b><a name="line164">164  </a></b>	
+<b><a name="line165">165  </a></b>	      /**
+<b><a name="line166">166  </a></b>	       * @brief   How the allocator is propagated on copy assignment
+<b><a name="line167">167  </a></b>	       *
+<b><a name="line168">168  </a></b>	       * @c Alloc::propagate_on_container_copy_assignment if that type exists,
+<b><a name="line169">169  </a></b>	       * otherwise @c false_type
+<b><a name="line170">170  </a></b>	      */
+<b><a name="line171">171  </a></b>	      typedef <a href="#line162">__propagate_on_container_copy_assignment</a>
+<b><a name="line172">172  </a></b>		<b>propagate_on_container_copy_assignment</b>;
+<b><a name="line173">173  </a></b>	
+<b><a name="line174">174  </a></b>	<a href="#line90">_GLIBCXX_ALLOC_TR_NESTED_TYPE</a>(propagate_on_container_move_assignment,
+<b><a name="line175">175  </a></b>				      false_type)
+<b><a name="line176">176  </a></b>	
+<b><a name="line177">177  </a></b>	      /**
+<b><a name="line178">178  </a></b>	       * @brief   How the allocator is propagated on move assignment
+<b><a name="line179">179  </a></b>	       *
+<b><a name="line180">180  </a></b>	       * @c Alloc::propagate_on_container_move_assignment if that type exists,
+<b><a name="line181">181  </a></b>	       * otherwise @c false_type
+<b><a name="line182">182  </a></b>	      */
+<b><a name="line183">183  </a></b>	      typedef <a href="#line174">__propagate_on_container_move_assignment</a>
+<b><a name="line184">184  </a></b>		<b>propagate_on_container_move_assignment</b>;
+<b><a name="line185">185  </a></b>	
+<b><a name="line186">186  </a></b>	<a href="#line90">_GLIBCXX_ALLOC_TR_NESTED_TYPE</a>(propagate_on_container_swap,
+<b><a name="line187">187  </a></b>				      false_type)
+<b><a name="line188">188  </a></b>	
+<b><a name="line189">189  </a></b>	      /**
+<b><a name="line190">190  </a></b>	       * @brief   How the allocator is propagated on swap
+<b><a name="line191">191  </a></b>	       *
+<b><a name="line192">192  </a></b>	       * @c Alloc::propagate_on_container_swap if that type exists,
+<b><a name="line193">193  </a></b>	       * otherwise @c false_type
+<b><a name="line194">194  </a></b>	      */
+<b><a name="line195">195  </a></b>	      typedef <a href="#line186">__propagate_on_container_swap</a> <b>propagate_on_container_swap</b>;
+<b><a name="line196">196  </a></b>	
+<b><a name="line197">197  </a></b>	#undef <a href="#line90">_GLIBCXX_ALLOC_TR_NESTED_TYPE</a>
+<b><a name="line198">198  </a></b>	
+<b><a name="line199">199  </a></b>	      template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line200">200  </a></b>		using rebind_alloc = typename <a href="#line60">__alloctr_rebind</a>&lt;<a href="#line82">_Alloc</a>, <a href="#line199">_Tp</a>&gt;::<a href="#line65">__type</a>;
+<b><a name="line201">201  </a></b>	      template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line202">202  </a></b>		using <b>rebind_traits</b> = <a href="#line83">allocator_traits</a>&lt;<a href="#line200">rebind_alloc</a>&lt;<a href="#line201">_Tp</a>&gt;&gt;;
+<b><a name="line203">203  </a></b>	
+<b><a name="line204">204  </a></b>	    private:
+<b><a name="line205">205  </a></b>	      template&lt;typename <b>_Alloc2</b>&gt;
+<b><a name="line206">206  </a></b>		struct __allocate_helper
+<b><a name="line207">207  </a></b>		{
+<b><a name="line208">208  </a></b>		  template&lt;typename <b>_Alloc3</b>,
+<b><a name="line209">209  </a></b>		    typename = decltype(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::declval&lt;<a href="#line208">_Alloc3</a>*&gt;()-&gt;allocate(
+<b><a name="line210">210  </a></b>			  <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::declval&lt;<a href="#line160">size_type</a>&gt;(),
+<b><a name="line211">211  </a></b>			  <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::declval&lt;<a href="#line138">const_void_pointer</a>&gt;()))&gt;
+<b><a name="line212">212  </a></b>		    static <a href="../../type_traits/code.html#line87">true_type</a> __test(int);
+<b><a name="line213">213  </a></b>	
+<b><a name="line214">214  </a></b>		  template&lt;typename&gt;
+<b><a name="line215">215  </a></b>		    static <a href="../../type_traits/code.html#line90">false_type</a> __test(...);
+<b><a name="line216">216  </a></b>	
+<b><a name="line217">217  </a></b>		  using <b>type</b> = decltype(__test&lt;<a href="#line82">_Alloc</a>&gt;(0));
+<b><a name="line218">218  </a></b>		};
+<b><a name="line219">219  </a></b>	
+<b><a name="line220">220  </a></b>	      template&lt;typename <b>_Alloc2</b>&gt;
+<b><a name="line221">221  </a></b>		using <b>__has_allocate</b> = typename <a href="#line206">__allocate_helper</a>&lt;<a href="#line220">_Alloc2</a>&gt;::type;
+<b><a name="line222">222  </a></b>	
+<b><a name="line223">223  </a></b>	      template&lt;typename <b>_Alloc2</b>,
+<b><a name="line224">224  </a></b>		       typename = <a href="../../type_traits/code.html#line2108">_Require</a>&lt;<a href="#line221">__has_allocate</a>&lt;<a href="#line223">_Alloc2</a>&gt;&gt;&gt;
+<b><a name="line225">225  </a></b>		static <a href="#line105">pointer</a>
+<b><a name="line226">226  </a></b>		<b>_S_allocate</b>(<a href="#line223">_Alloc2</a>&amp; __a, <a href="#line160">size_type</a> __n, <a href="#line138">const_void_pointer</a> __hint)
+<b><a name="line227">227  </a></b>		{ return __a.allocate(__n, __hint); }
+<b><a name="line228">228  </a></b>	
+<b><a name="line229">229  </a></b>	      template&lt;typename <b>_Alloc2</b>, typename <b>_UnusedHint</b>,
+<b><a name="line230">230  </a></b>		       typename = <a href="../../type_traits/code.html#line2108">_Require</a>&lt;<a href="../../type_traits/code.html#line147">__not_</a>&lt;<a href="#line221">__has_allocate</a>&lt;<a href="#line229">_Alloc2</a>&gt;&gt;&gt;&gt;
+<b><a name="line231">231  </a></b>		static <a href="#line105">pointer</a>
+<b><a name="line232">232  </a></b>		<b>_S_allocate</b>(<a href="#line229">_Alloc2</a>&amp; __a, <a href="#line160">size_type</a> __n, <a href="#line229">_UnusedHint</a>)
+<b><a name="line233">233  </a></b>		{ return __a.allocate(__n); }
+<b><a name="line234">234  </a></b>	
+<b><a name="line235">235  </a></b>	      template&lt;typename <b>_Tp</b>, typename... <b>_Args</b>&gt;
+<b><a name="line236">236  </a></b>		struct __construct_helper
+<b><a name="line237">237  </a></b>		{
+<b><a name="line238">238  </a></b>		  template&lt;typename <b>_Alloc2</b>,
+<b><a name="line239">239  </a></b>		    typename = decltype(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::declval&lt;<a href="#line238">_Alloc2</a>*&gt;()-&gt;construct(
+<b><a name="line240">240  </a></b>			  <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::declval&lt;<a href="#line235">_Tp</a>*&gt;(), <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::declval&lt;<a href="#line235">_Args</a>&gt;()...))&gt;
+<b><a name="line241">241  </a></b>		    static <a href="../../type_traits/code.html#line87">true_type</a> __test(int);
+<b><a name="line242">242  </a></b>	
+<b><a name="line243">243  </a></b>		  template&lt;typename&gt;
+<b><a name="line244">244  </a></b>		    static <a href="../../type_traits/code.html#line90">false_type</a> __test(...);
+<b><a name="line245">245  </a></b>	
+<b><a name="line246">246  </a></b>		  using <b>type</b> = decltype(<a href="#line244">__test</a>&lt;<a href="#line82">_Alloc</a>&gt;(0));
+<b><a name="line247">247  </a></b>		};
+<b><a name="line248">248  </a></b>	
+<b><a name="line249">249  </a></b>	      template&lt;typename <b>_Tp</b>, typename... <b>_Args</b>&gt;
+<b><a name="line250">250  </a></b>		using __has_construct
+<b><a name="line251">251  </a></b>		  = typename <a href="#line236">__construct_helper</a>&lt;<a href="#line249">_Tp</a>, <a href="#line249">_Args</a>...&gt;::<a href="#line246">type</a>;
+<b><a name="line252">252  </a></b>	
+<b><a name="line253">253  </a></b>	      template&lt;typename <b>_Tp</b>, typename... <b>_Args</b>&gt;
+<b><a name="line254">254  </a></b>		static <a href="../../type_traits/code.html#line2108">_Require</a>&lt;<a href="#line250">__has_construct</a>&lt;<a href="#line253">_Tp</a>, <a href="#line253">_Args</a>...&gt;&gt;
+<b><a name="line255">255  </a></b>		_S_construct(<a href="#line82">_Alloc</a>&amp; __a, <a href="#line253">_Tp</a>* __p, <a href="#line253">_Args</a>&amp;&amp;... __args)
+<b><a name="line256">256  </a></b>		{ __a.construct(__p, std::forward&lt;_Args&gt;(__args)...); }
+<b><a name="line257">257  </a></b>	
+<b><a name="line258">258  </a></b>	      template&lt;typename <b>_Tp</b>, typename... <b>_Args</b>&gt;
+<b><a name="line259">259  </a></b>		static
+<b><a name="line260">260  </a></b>		<a href="../../type_traits/code.html#line2108">_Require</a>&lt;<a href="../../type_traits/code.html#line124">__and_</a>&lt;<a href="../../type_traits/code.html#line147">__not_</a>&lt;<a href="#line250">__has_construct</a>&lt;<a href="#line258">_Tp</a>, <a href="#line258">_Args</a>...&gt;&gt;,
+<b><a name="line261">261  </a></b>				       <a href="../../type_traits/code.html#line1089">is_constructible</a>&lt;<a href="#line258">_Tp</a>, <a href="#line258">_Args</a>...&gt;&gt;&gt;
+<b><a name="line262">262  </a></b>		_S_construct(<a href="#line82">_Alloc</a>&amp;, <a href="#line258">_Tp</a>* <b>__p</b>, <a href="#line258">_Args</a>&amp;&amp;... <b>__args</b>)
+<b><a name="line263">263  </a></b>		{ ::<a href="../../new/code.html#line129">new</a>((void*)<a href="#line262">__p</a>) <a href="#line258">_Tp</a>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../move.h/code.html#line76">forward</a>&lt;<a href="#line258">_Args</a>&gt;(<a href="#line262">__args</a>)...); }
+<b><a name="line264">264  </a></b>	
+<b><a name="line265">265  </a></b>	      template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line266">266  </a></b>		struct __destroy_helper
+<b><a name="line267">267  </a></b>		{
+<b><a name="line268">268  </a></b>		  template&lt;typename <b>_Alloc2</b>,
+<b><a name="line269">269  </a></b>		    typename = decltype(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::declval&lt;<a href="#line268">_Alloc2</a>*&gt;()-&gt;destroy(
+<b><a name="line270">270  </a></b>			  <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::declval&lt;<a href="#line265">_Tp</a>*&gt;()))&gt;
+<b><a name="line271">271  </a></b>		    static <a href="../../type_traits/code.html#line87">true_type</a> __test(int);
+<b><a name="line272">272  </a></b>	
+<b><a name="line273">273  </a></b>		  template&lt;typename&gt;
+<b><a name="line274">274  </a></b>		    static <a href="../../type_traits/code.html#line90">false_type</a> __test(...);
+<b><a name="line275">275  </a></b>	
+<b><a name="line276">276  </a></b>		  using <b>type</b> = decltype(<a href="#line274">__test</a>&lt;<a href="#line82">_Alloc</a>&gt;(0));
+<b><a name="line277">277  </a></b>		};
+<b><a name="line278">278  </a></b>	
+<b><a name="line279">279  </a></b>	      template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line280">280  </a></b>		using __has_destroy = typename <a href="#line266">__destroy_helper</a>&lt;<a href="#line279">_Tp</a>&gt;::<a href="#line276">type</a>;
+<b><a name="line281">281  </a></b>	
+<b><a name="line282">282  </a></b>	      template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line283">283  </a></b>		static <a href="../../type_traits/code.html#line2108">_Require</a>&lt;<a href="#line280">__has_destroy</a>&lt;<a href="#line282">_Tp</a>&gt;&gt;
+<b><a name="line284">284  </a></b>		_S_destroy(<a href="#line82">_Alloc</a>&amp; __a, <a href="#line282">_Tp</a>* __p)
+<b><a name="line285">285  </a></b>		{ __a.destroy(__p); }
+<b><a name="line286">286  </a></b>	
+<b><a name="line287">287  </a></b>	      template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line288">288  </a></b>		static <a href="../../type_traits/code.html#line2108">_Require</a>&lt;<a href="../../type_traits/code.html#line147">__not_</a>&lt;<a href="#line280">__has_destroy</a>&lt;<a href="#line287">_Tp</a>&gt;&gt;&gt;
+<b><a name="line289">289  </a></b>		_S_destroy(<a href="#line82">_Alloc</a>&amp;, <a href="#line287">_Tp</a>* <b>__p</b>)
+<b><a name="line290">290  </a></b>		{ <a href="#line289">__p</a>-&gt;~_Tp(); }
+<b><a name="line291">291  </a></b>	
+<b><a name="line292">292  </a></b>	      template&lt;typename <b>_Alloc2</b>&gt;
+<b><a name="line293">293  </a></b>		struct __maxsize_helper
+<b><a name="line294">294  </a></b>		{
+<b><a name="line295">295  </a></b>		  template&lt;typename <b>_Alloc3</b>,
+<b><a name="line296">296  </a></b>		    typename = decltype(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::declval&lt;<a href="#line295">_Alloc3</a>*&gt;()-&gt;max_size())&gt;
+<b><a name="line297">297  </a></b>		    static <a href="../../type_traits/code.html#line87">true_type</a> __test(int);
+<b><a name="line298">298  </a></b>	
+<b><a name="line299">299  </a></b>		  template&lt;typename&gt;
+<b><a name="line300">300  </a></b>		    static <a href="../../type_traits/code.html#line90">false_type</a> __test(...);
+<b><a name="line301">301  </a></b>	
+<b><a name="line302">302  </a></b>		  using <b>type</b> = decltype(<a href="#line300">__test</a>&lt;<a href="#line292">_Alloc2</a>&gt;(0));
+<b><a name="line303">303  </a></b>		};
+<b><a name="line304">304  </a></b>	
+<b><a name="line305">305  </a></b>	      template&lt;typename <b>_Alloc2</b>&gt;
+<b><a name="line306">306  </a></b>		using <b>__has_max_size</b> = typename <a href="#line293">__maxsize_helper</a>&lt;<a href="#line305">_Alloc2</a>&gt;::type;
+<b><a name="line307">307  </a></b>	
+<b><a name="line308">308  </a></b>	      template&lt;typename <b>_Alloc2</b>,
+<b><a name="line309">309  </a></b>		       typename = <a href="../../type_traits/code.html#line2108">_Require</a>&lt;<a href="#line306">__has_max_size</a>&lt;<a href="#line308">_Alloc2</a>&gt;&gt;&gt;
+<b><a name="line310">310  </a></b>		static <a href="#line160">size_type</a>
+<b><a name="line311">311  </a></b>		<b>_S_max_size</b>(<a href="#line308">_Alloc2</a>&amp; __a, int)
+<b><a name="line312">312  </a></b>		{ return __a.max_size(); }
+<b><a name="line313">313  </a></b>	
+<b><a name="line314">314  </a></b>	      template&lt;typename <b>_Alloc2</b>,
+<b><a name="line315">315  </a></b>		       typename = <a href="../../type_traits/code.html#line2108">_Require</a>&lt;<a href="../../type_traits/code.html#line147">__not_</a>&lt;<a href="#line306">__has_max_size</a>&lt;<a href="#line314">_Alloc2</a>&gt;&gt;&gt;&gt;
+<b><a name="line316">316  </a></b>		static <a href="#line160">size_type</a>
+<b><a name="line317">317  </a></b>		<b>_S_max_size</b>(<a href="#line314">_Alloc2</a>&amp;, ...)
+<b><a name="line318">318  </a></b>		{ return <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../ext/numeric_traits.h/code.html#line124">__numeric_traits</a>&lt;<a href="#line160">size_type</a>&gt;::<a href="../../ext/numeric_traits.h/code.html#line59">__max</a>; }
+<b><a name="line319">319  </a></b>	
+<b><a name="line320">320  </a></b>	      template&lt;typename <b>_Alloc2</b>&gt;
+<b><a name="line321">321  </a></b>		struct __select_helper
+<b><a name="line322">322  </a></b>		{
+<b><a name="line323">323  </a></b>		  template&lt;typename <b>_Alloc3</b>, typename
+<b><a name="line324">324  </a></b>		    = decltype(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::declval&lt;<a href="#line323">_Alloc3</a>*&gt;()
+<b><a name="line325">325  </a></b>			-&gt;select_on_container_copy_construction())&gt;
+<b><a name="line326">326  </a></b>		    static <a href="../../type_traits/code.html#line87">true_type</a> __test(int);
+<b><a name="line327">327  </a></b>	
+<b><a name="line328">328  </a></b>		  template&lt;typename&gt;
+<b><a name="line329">329  </a></b>		    static <a href="../../type_traits/code.html#line90">false_type</a> __test(...);
+<b><a name="line330">330  </a></b>	
+<b><a name="line331">331  </a></b>		  using <b>type</b> = decltype(__test&lt;<a href="#line320">_Alloc2</a>&gt;(0));
+<b><a name="line332">332  </a></b>		};
+<b><a name="line333">333  </a></b>	
+<b><a name="line334">334  </a></b>	      template&lt;typename <b>_Alloc2</b>&gt;
+<b><a name="line335">335  </a></b>		using <b>__has_soccc</b> = typename <a href="#line321">__select_helper</a>&lt;<a href="#line334">_Alloc2</a>&gt;::type;
+<b><a name="line336">336  </a></b>	
+<b><a name="line337">337  </a></b>	      template&lt;typename <b>_Alloc2</b>,
+<b><a name="line338">338  </a></b>		       typename = <a href="../../type_traits/code.html#line2108">_Require</a>&lt;<a href="#line335">__has_soccc</a>&lt;<a href="#line337">_Alloc2</a>&gt;&gt;&gt;
+<b><a name="line339">339  </a></b>		static <a href="#line337">_Alloc2</a>
+<b><a name="line340">340  </a></b>		_S_select(<a href="#line337">_Alloc2</a>&amp; __a, int)
+<b><a name="line341">341  </a></b>		{ return __a.select_on_container_copy_construction(); }
+<b><a name="line342">342  </a></b>	
+<b><a name="line343">343  </a></b>	      template&lt;typename <b>_Alloc2</b>,
+<b><a name="line344">344  </a></b>		       typename = <a href="../../type_traits/code.html#line2108">_Require</a>&lt;<a href="../../type_traits/code.html#line147">__not_</a>&lt;<a href="#line335">__has_soccc</a>&lt;<a href="#line343">_Alloc2</a>&gt;&gt;&gt;&gt;
+<b><a name="line345">345  </a></b>		static <a href="#line343">_Alloc2</a>
+<b><a name="line346">346  </a></b>		_S_select(<a href="#line343">_Alloc2</a>&amp; __a, ...)
+<b><a name="line347">347  </a></b>		{ return __a; }
+<b><a name="line348">348  </a></b>	
+<b><a name="line349">349  </a></b>	    public:
+<b><a name="line350">350  </a></b>	
+<b><a name="line351">351  </a></b>	      /**
+<b><a name="line352">352  </a></b>	       *  @brief  Allocate memory.
+<b><a name="line353">353  </a></b>	       *  @param  __a  An allocator.
+<b><a name="line354">354  </a></b>	       *  @param  __n  The number of objects to allocate space for.
+<b><a name="line355">355  </a></b>	       *
+<b><a name="line356">356  </a></b>	       *  Calls @c a.allocate(n)
+<b><a name="line357">357  </a></b>	      */
+<b><a name="line358">358  </a></b>	      static <a href="#line105">pointer</a>
+<b><a name="line359">359  </a></b>	      <b>allocate</b>(<a href="#line82">_Alloc</a>&amp; <b>__a</b>, <a href="#line160">size_type</a> <b>__n</b>)
+<b><a name="line360">360  </a></b>	      { return <a href="#line359">__a</a>.<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/util/xlnx_util.h/code.html#line70">allocate</a>(<a href="#line359">__n</a>); }
+<b><a name="line361">361  </a></b>	
+<b><a name="line362">362  </a></b>	      /**
+<b><a name="line363">363  </a></b>	       *  @brief  Allocate memory.
+<b><a name="line364">364  </a></b>	       *  @param  __a  An allocator.
+<b><a name="line365">365  </a></b>	       *  @param  __n  The number of objects to allocate space for.
+<b><a name="line366">366  </a></b>	       *  @param  __hint Aid to locality.
+<b><a name="line367">367  </a></b>	       *  @return Memory of suitable size and alignment for @a n objects
+<b><a name="line368">368  </a></b>	       *          of type @c value_type
+<b><a name="line369">369  </a></b>	       *
+<b><a name="line370">370  </a></b>	       *  Returns &lt;tt&gt; a.allocate(n, hint) &lt;/tt&gt; if that expression is
+<b><a name="line371">371  </a></b>	       *  well-formed, otherwise returns @c a.allocate(n)
+<b><a name="line372">372  </a></b>	      */
+<b><a name="line373">373  </a></b>	      static <a href="#line105">pointer</a>
+<b><a name="line374">374  </a></b>	      <b>allocate</b>(<a href="#line82">_Alloc</a>&amp; __a, <a href="#line160">size_type</a> __n, <a href="#line138">const_void_pointer</a> __hint)
+<b><a name="line375">375  </a></b>	      { return _S_allocate(__a, __n, __hint); }
+<b><a name="line376">376  </a></b>	
+<b><a name="line377">377  </a></b>	      /**
+<b><a name="line378">378  </a></b>	       *  @brief  Deallocate memory.
+<b><a name="line379">379  </a></b>	       *  @param  __a  An allocator.
+<b><a name="line380">380  </a></b>	       *  @param  __p  Pointer to the memory to deallocate.
+<b><a name="line381">381  </a></b>	       *  @param  __n  The number of objects space was allocated for.
+<b><a name="line382">382  </a></b>	       *
+<b><a name="line383">383  </a></b>	       *  Calls &lt;tt&gt; a.deallocate(p, n) &lt;/tt&gt;
+<b><a name="line384">384  </a></b>	      */
+<b><a name="line385">385  </a></b>	      static void <b>deallocate</b>(<a href="#line82">_Alloc</a>&amp; <b>__a</b>, <a href="#line105">pointer</a> <b>__p</b>, <a href="#line160">size_type</a> <b>__n</b>)
+<b><a name="line386">386  </a></b>	      { <a href="#line385">__a</a>.<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/util/xlnx_util.h/code.html#line81">deallocate</a>(<a href="#line385">__p</a>, <a href="#line385">__n</a>); }
+<b><a name="line387">387  </a></b>	
+<b><a name="line388">388  </a></b>	      /**
+<b><a name="line389">389  </a></b>	       *  @brief  Construct an object of type @a _Tp
+<b><a name="line390">390  </a></b>	       *  @param  __a  An allocator.
+<b><a name="line391">391  </a></b>	       *  @param  __p  Pointer to memory of suitable size and alignment for Tp
+<b><a name="line392">392  </a></b>	       *  @param  __args Constructor arguments.
+<b><a name="line393">393  </a></b>	       *
+<b><a name="line394">394  </a></b>	       *  Calls &lt;tt&gt; __a.construct(__p, std::forward&lt;Args&gt;(__args)...) &lt;/tt&gt;
+<b><a name="line395">395  </a></b>	       *  if that expression is well-formed, otherwise uses placement-new
+<b><a name="line396">396  </a></b>	       *  to construct an object of type @a _Tp at location @a __p from the
+<b><a name="line397">397  </a></b>	       *  arguments @a __args...
+<b><a name="line398">398  </a></b>	      */
+<b><a name="line399">399  </a></b>	      template&lt;typename <b>_Tp</b>, typename... <b>_Args</b>&gt;
+<b><a name="line400">400  </a></b>		static auto construct(<a href="#line82">_Alloc</a>&amp; <b>__a</b>, <a href="#line399">_Tp</a>* <b>__p</b>, <a href="#line399">_Args</a>&amp;&amp;... <b>__args</b>)
+<b><a name="line401">401  </a></b>		-&gt; decltype(<a href="#line262">_S_construct</a>(__a, __p, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../move.h/code.html#line76">forward</a>&lt;<a href="#line399">_Args</a>&gt;(__args)...))
+<b><a name="line402">402  </a></b>		{ <a href="#line262">_S_construct</a>(<a href="#line400">__a</a>, <a href="#line400">__p</a>, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../move.h/code.html#line76">forward</a>&lt;<a href="#line399">_Args</a>&gt;(<a href="#line400">__args</a>)...); }
+<b><a name="line403">403  </a></b>	
+<b><a name="line404">404  </a></b>	      /**
+<b><a name="line405">405  </a></b>	       *  @brief  Destroy an object of type @a _Tp
+<b><a name="line406">406  </a></b>	       *  @param  __a  An allocator.
+<b><a name="line407">407  </a></b>	       *  @param  __p  Pointer to the object to destroy
+<b><a name="line408">408  </a></b>	       *
+<b><a name="line409">409  </a></b>	       *  Calls @c __a.destroy(__p) if that expression is well-formed,
+<b><a name="line410">410  </a></b>	       *  otherwise calls @c __p-&gt;~_Tp()
+<b><a name="line411">411  </a></b>	      */
+<b><a name="line412">412  </a></b>	      template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line413">413  </a></b>		static void destroy(<a href="#line82">_Alloc</a>&amp; <b>__a</b>, <a href="#line412">_Tp</a>* <b>__p</b>)
+<b><a name="line414">414  </a></b>		{ <a href="#line289">_S_destroy</a>(<a href="#line413">__a</a>, <a href="#line413">__p</a>); }
+<b><a name="line415">415  </a></b>	
+<b><a name="line416">416  </a></b>	      /**
+<b><a name="line417">417  </a></b>	       *  @brief  The maximum supported allocation size
+<b><a name="line418">418  </a></b>	       *  @param  __a  An allocator.
+<b><a name="line419">419  </a></b>	       *  @return @c __a.max_size() or @c numeric_limits&lt;size_type&gt;::max()
+<b><a name="line420">420  </a></b>	       *
+<b><a name="line421">421  </a></b>	       *  Returns @c __a.max_size() if that expression is well-formed,
+<b><a name="line422">422  </a></b>	       *  otherwise returns @c numeric_limits&lt;size_type&gt;::max()
+<b><a name="line423">423  </a></b>	      */
+<b><a name="line424">424  </a></b>	      static <a href="#line160">size_type</a> max_size(const <a href="#line82">_Alloc</a>&amp; <b>__a</b>) noexcept
+<b><a name="line425">425  </a></b>	      { return <a href="#line317">_S_max_size</a>(<a href="#line424">__a</a>, 0); }
+<b><a name="line426">426  </a></b>	
+<b><a name="line427">427  </a></b>	      /**
+<b><a name="line428">428  </a></b>	       *  @brief  Obtain an allocator to use when copying a container.
+<b><a name="line429">429  </a></b>	       *  @param  __rhs  An allocator.
+<b><a name="line430">430  </a></b>	       *  @return @c __rhs.select_on_container_copy_construction() or @a __rhs
+<b><a name="line431">431  </a></b>	       *
+<b><a name="line432">432  </a></b>	       *  Returns @c __rhs.select_on_container_copy_construction() if that
+<b><a name="line433">433  </a></b>	       *  expression is well-formed, otherwise returns @a __rhs
+<b><a name="line434">434  </a></b>	      */
+<b><a name="line435">435  </a></b>	      static <a href="#line82">_Alloc</a>
+<b><a name="line436">436  </a></b>	      select_on_container_copy_construction(const <a href="#line82">_Alloc</a>&amp; __rhs)
+<b><a name="line437">437  </a></b>	      { return _S_select(__rhs, 0); }
+<b><a name="line438">438  </a></b>	    };
+<b><a name="line439">439  </a></b>	
+<b><a name="line440">440  </a></b>	  /// Partial specialization for std::allocator.
+<b><a name="line441">441  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line442">442  </a></b>	    struct <b>allocator_traits</b>&lt;<a href="../memoryfwd.h/code.html#line64">allocator</a>&lt;<a href="#line441">_Tp</a>&gt;&gt;
+<b><a name="line443">443  </a></b>	    {
+<b><a name="line444">444  </a></b>	      /// The allocator type
+<b><a name="line445">445  </a></b>	      using <b>allocator_type</b> = <a href="../allocator.h/code.html#line92">allocator</a>&lt;<a href="#line441">_Tp</a>&gt;;
+<b><a name="line446">446  </a></b>	      /// The allocated type
+<b><a name="line447">447  </a></b>	      using <b>value_type</b> = <a href="#line441">_Tp</a>;
+<b><a name="line448">448  </a></b>	
+<b><a name="line449">449  </a></b>	      /// The allocator's pointer type.
+<b><a name="line450">450  </a></b>	      using <b>pointer</b> = <a href="#line441">_Tp</a>*;
+<b><a name="line451">451  </a></b>	
+<b><a name="line452">452  </a></b>	      /// The allocator's const pointer type.
+<b><a name="line453">453  </a></b>	      using <b>const_pointer</b> = const <a href="#line441">_Tp</a>*;
+<b><a name="line454">454  </a></b>	
+<b><a name="line455">455  </a></b>	      /// The allocator's void pointer type.
+<b><a name="line456">456  </a></b>	      using <b>void_pointer</b> = void*;
+<b><a name="line457">457  </a></b>	
+<b><a name="line458">458  </a></b>	      /// The allocator's const void pointer type.
+<b><a name="line459">459  </a></b>	      using <b>const_void_pointer</b> = const void*;
+<b><a name="line460">460  </a></b>	
+<b><a name="line461">461  </a></b>	      /// The allocator's difference type
+<b><a name="line462">462  </a></b>	      using <b>difference_type</b> = <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line197">ptrdiff_t</a>;
+<b><a name="line463">463  </a></b>	
+<b><a name="line464">464  </a></b>	      /// The allocator's size type
+<b><a name="line465">465  </a></b>	      using <b>size_type</b> = <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>;
+<b><a name="line466">466  </a></b>	
+<b><a name="line467">467  </a></b>	      /// How the allocator is propagated on copy assignment
+<b><a name="line468">468  </a></b>	      using <b>propagate_on_container_copy_assignment</b> = <a href="../../type_traits/code.html#line90">false_type</a>;
+<b><a name="line469">469  </a></b>	
+<b><a name="line470">470  </a></b>	      /// How the allocator is propagated on move assignment
+<b><a name="line471">471  </a></b>	      using <b>propagate_on_container_move_assignment</b> = <a href="../../type_traits/code.html#line87">true_type</a>;
+<b><a name="line472">472  </a></b>	
+<b><a name="line473">473  </a></b>	      /// How the allocator is propagated on swap
+<b><a name="line474">474  </a></b>	      using <b>propagate_on_container_swap</b> = <a href="../../type_traits/code.html#line90">false_type</a>;
+<b><a name="line475">475  </a></b>	
+<b><a name="line476">476  </a></b>	      template&lt;typename <b>_Up</b>&gt;
+<b><a name="line477">477  </a></b>		using <b>rebind_alloc</b> = <a href="../allocator.h/code.html#line92">allocator</a>&lt;<a href="#line476">_Up</a>&gt;;
+<b><a name="line478">478  </a></b>	
+<b><a name="line479">479  </a></b>	      template&lt;typename <b>_Up</b>&gt;
+<b><a name="line480">480  </a></b>		using <b>rebind_traits</b> = <a href="#line83">allocator_traits</a>&lt;<a href="../memoryfwd.h/code.html#line64">allocator</a>&lt;<a href="#line479">_Up</a>&gt;&gt;;
+<b><a name="line481">481  </a></b>	
+<b><a name="line482">482  </a></b>	      /**
+<b><a name="line483">483  </a></b>	       *  @brief  Allocate memory.
+<b><a name="line484">484  </a></b>	       *  @param  __a  An allocator.
+<b><a name="line485">485  </a></b>	       *  @param  __n  The number of objects to allocate space for.
+<b><a name="line486">486  </a></b>	       *
+<b><a name="line487">487  </a></b>	       *  Calls @c a.allocate(n)
+<b><a name="line488">488  </a></b>	      */
+<b><a name="line489">489  </a></b>	      static <a href="#line450">pointer</a>
+<b><a name="line490">490  </a></b>	      allocate(<a href="#line445">allocator_type</a>&amp; <b>__a</b>, <a href="#line465">size_type</a> <b>__n</b>)
+<b><a name="line491">491  </a></b>	      { return <a href="#line490">__a</a>.<a href="../../ext/new_allocator.h/code.html#line99">allocate</a>(<a href="#line490">__n</a>); }
+<b><a name="line492">492  </a></b>	
+<b><a name="line493">493  </a></b>	      /**
+<b><a name="line494">494  </a></b>	       *  @brief  Allocate memory.
+<b><a name="line495">495  </a></b>	       *  @param  __a  An allocator.
+<b><a name="line496">496  </a></b>	       *  @param  __n  The number of objects to allocate space for.
+<b><a name="line497">497  </a></b>	       *  @param  __hint Aid to locality.
+<b><a name="line498">498  </a></b>	       *  @return Memory of suitable size and alignment for @a n objects
+<b><a name="line499">499  </a></b>	       *          of type @c value_type
+<b><a name="line500">500  </a></b>	       *
+<b><a name="line501">501  </a></b>	       *  Returns &lt;tt&gt; a.allocate(n, hint) &lt;/tt&gt;
+<b><a name="line502">502  </a></b>	      */
+<b><a name="line503">503  </a></b>	      static <a href="#line450">pointer</a>
+<b><a name="line504">504  </a></b>	      allocate(<a href="#line445">allocator_type</a>&amp; __a, <a href="#line465">size_type</a> __n, <a href="#line459">const_void_pointer</a> __hint)
+<b><a name="line505">505  </a></b>	      { return __a.allocate(__n, __hint); }
+<b><a name="line506">506  </a></b>	
+<b><a name="line507">507  </a></b>	      /**
+<b><a name="line508">508  </a></b>	       *  @brief  Deallocate memory.
+<b><a name="line509">509  </a></b>	       *  @param  __a  An allocator.
+<b><a name="line510">510  </a></b>	       *  @param  __p  Pointer to the memory to deallocate.
+<b><a name="line511">511  </a></b>	       *  @param  __n  The number of objects space was allocated for.
+<b><a name="line512">512  </a></b>	       *
+<b><a name="line513">513  </a></b>	       *  Calls &lt;tt&gt; a.deallocate(p, n) &lt;/tt&gt;
+<b><a name="line514">514  </a></b>	      */
+<b><a name="line515">515  </a></b>	      static void
+<b><a name="line516">516  </a></b>	      deallocate(<a href="#line445">allocator_type</a>&amp; <b>__a</b>, <a href="#line450">pointer</a> <b>__p</b>, <a href="#line465">size_type</a> <b>__n</b>)
+<b><a name="line517">517  </a></b>	      { <a href="#line516">__a</a>.<a href="../../ext/new_allocator.h/code.html#line109">deallocate</a>(<a href="#line516">__p</a>, <a href="#line516">__n</a>); }
+<b><a name="line518">518  </a></b>	
+<b><a name="line519">519  </a></b>	      /**
+<b><a name="line520">520  </a></b>	       *  @brief  Construct an object of type @a _Up
+<b><a name="line521">521  </a></b>	       *  @param  __a  An allocator.
+<b><a name="line522">522  </a></b>	       *  @param  __p  Pointer to memory of suitable size and alignment for Tp
+<b><a name="line523">523  </a></b>	       *  @param  __args Constructor arguments.
+<b><a name="line524">524  </a></b>	       *
+<b><a name="line525">525  </a></b>	       *  Calls &lt;tt&gt; __a.construct(__p, std::forward&lt;Args&gt;(__args)...) &lt;/tt&gt;
+<b><a name="line526">526  </a></b>	      */
+<b><a name="line527">527  </a></b>	      template&lt;typename <b>_Up</b>, typename... <b>_Args</b>&gt;
+<b><a name="line528">528  </a></b>		static void
+<b><a name="line529">529  </a></b>		construct(<a href="#line445">allocator_type</a>&amp; <b>__a</b>, <a href="#line527">_Up</a>* <b>__p</b>, <a href="#line527">_Args</a>&amp;&amp;... <b>__args</b>)
+<b><a name="line530">530  </a></b>		{ <a href="#line529">__a</a>.<a href="../../ext/new_allocator.h/code.html#line119">construct</a>(<a href="#line529">__p</a>, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../move.h/code.html#line76">forward</a>&lt;<a href="#line527">_Args</a>&gt;(<a href="#line529">__args</a>)...); }
+<b><a name="line531">531  </a></b>	
+<b><a name="line532">532  </a></b>	      /**
+<b><a name="line533">533  </a></b>	       *  @brief  Destroy an object of type @a _Up
+<b><a name="line534">534  </a></b>	       *  @param  __a  An allocator.
+<b><a name="line535">535  </a></b>	       *  @param  __p  Pointer to the object to destroy
+<b><a name="line536">536  </a></b>	       *
+<b><a name="line537">537  </a></b>	       *  Calls @c __a.destroy(__p).
+<b><a name="line538">538  </a></b>	      */
+<b><a name="line539">539  </a></b>	      template&lt;typename <b>_Up</b>&gt;
+<b><a name="line540">540  </a></b>		static void
+<b><a name="line541">541  </a></b>		destroy(<a href="#line445">allocator_type</a>&amp; <b>__a</b>, <a href="#line539">_Up</a>* <b>__p</b>)
+<b><a name="line542">542  </a></b>		{ <a href="#line541">__a</a>.<a href="../../ext/new_allocator.h/code.html#line124">destroy</a>(<a href="#line541">__p</a>); }
+<b><a name="line543">543  </a></b>	
+<b><a name="line544">544  </a></b>	      /**
+<b><a name="line545">545  </a></b>	       *  @brief  The maximum supported allocation size
+<b><a name="line546">546  </a></b>	       *  @param  __a  An allocator.
+<b><a name="line547">547  </a></b>	       *  @return @c __a.max_size()
+<b><a name="line548">548  </a></b>	      */
+<b><a name="line549">549  </a></b>	      static <a href="#line465">size_type</a>
+<b><a name="line550">550  </a></b>	      max_size(const <a href="#line445">allocator_type</a>&amp; <b>__a</b>) noexcept
+<b><a name="line551">551  </a></b>	      { return <a href="#line550">__a</a>.<a href="../../ext/new_allocator.h/code.html#line113">max_size</a>(); }
+<b><a name="line552">552  </a></b>	
+<b><a name="line553">553  </a></b>	      /**
+<b><a name="line554">554  </a></b>	       *  @brief  Obtain an allocator to use when copying a container.
+<b><a name="line555">555  </a></b>	       *  @param  __rhs  An allocator.
+<b><a name="line556">556  </a></b>	       *  @return @c __rhs
+<b><a name="line557">557  </a></b>	      */
+<b><a name="line558">558  </a></b>	      static <a href="#line445">allocator_type</a>
+<b><a name="line559">559  </a></b>	      select_on_container_copy_construction(const <a href="#line445">allocator_type</a>&amp; <b>__rhs</b>)
+<b><a name="line560">560  </a></b>	      { return <a href="#line559">__rhs</a>; }
+<b><a name="line561">561  </a></b>	    };
+<b><a name="line562">562  </a></b>	
+<b><a name="line563">563  </a></b>	
+<b><a name="line564">564  </a></b>	  template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line565">565  </a></b>	    inline void
+<b><a name="line566">566  </a></b>	    <b>__do_alloc_on_copy</b>(<a href="#line564">_Alloc</a>&amp; __one, const <a href="#line564">_Alloc</a>&amp; __two, <a href="../../type_traits/code.html#line87">true_type</a>)
+<b><a name="line567">567  </a></b>	    { __one = __two; }
+<b><a name="line568">568  </a></b>	
+<b><a name="line569">569  </a></b>	  template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line570">570  </a></b>	    inline void
+<b><a name="line571">571  </a></b>	    <b>__do_alloc_on_copy</b>(<a href="#line569">_Alloc</a>&amp;, const <a href="#line569">_Alloc</a>&amp;, <a href="../../type_traits/code.html#line90">false_type</a>)
+<b><a name="line572">572  </a></b>	    { }
+<b><a name="line573">573  </a></b>	
+<b><a name="line574">574  </a></b>	  template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line575">575  </a></b>	    inline void <b>__alloc_on_copy</b>(<a href="#line574">_Alloc</a>&amp; __one, const <a href="#line574">_Alloc</a>&amp; __two)
+<b><a name="line576">576  </a></b>	    {
+<b><a name="line577">577  </a></b>	      typedef allocator_traits&lt;_Alloc&gt; __traits;
+<b><a name="line578">578  </a></b>	      typedef typename __traits::propagate_on_container_copy_assignment __pocca;
+<b><a name="line579">579  </a></b>	      __do_alloc_on_copy(__one, __two, __pocca());
+<b><a name="line580">580  </a></b>	    }
+<b><a name="line581">581  </a></b>	
+<b><a name="line582">582  </a></b>	  template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line583">583  </a></b>	    inline <a href="#line582">_Alloc</a> <b>__alloc_on_copy</b>(const <a href="#line582">_Alloc</a>&amp; __a)
+<b><a name="line584">584  </a></b>	    {
+<b><a name="line585">585  </a></b>	      typedef allocator_traits&lt;_Alloc&gt; __traits;
+<b><a name="line586">586  </a></b>	      return __traits::select_on_container_copy_construction(__a);
+<b><a name="line587">587  </a></b>	    }
+<b><a name="line588">588  </a></b>	
+<b><a name="line589">589  </a></b>	  template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line590">590  </a></b>	    inline void __do_alloc_on_move(<a href="#line589">_Alloc</a>&amp; <b>__one</b>, <a href="#line589">_Alloc</a>&amp; <b>__two</b>, <a href="../../type_traits/code.html#line87">true_type</a>)
+<b><a name="line591">591  </a></b>	    { <a href="#line590">__one</a> <a href="../allocator.h/code.html#line92">=</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../move.h/code.html#line101">move</a>(<a href="#line590">__two</a>); }
+<b><a name="line592">592  </a></b>	
+<b><a name="line593">593  </a></b>	  template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line594">594  </a></b>	    inline void <b>__do_alloc_on_move</b>(<a href="#line593">_Alloc</a>&amp;, <a href="#line593">_Alloc</a>&amp;, <a href="../../type_traits/code.html#line90">false_type</a>)
+<b><a name="line595">595  </a></b>	    { }
+<b><a name="line596">596  </a></b>	
+<b><a name="line597">597  </a></b>	  template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line598">598  </a></b>	    inline void __alloc_on_move(<a href="#line597">_Alloc</a>&amp; <b>__one</b>, <a href="#line597">_Alloc</a>&amp; <b>__two</b>)
+<b><a name="line599">599  </a></b>	    {
+<b><a name="line600">600  </a></b>	      typedef <a href="#line83">allocator_traits</a>&lt;<a href="#line597">_Alloc</a>&gt; <b>__traits</b>;
+<b><a name="line601">601  </a></b>	      typedef typename <a href="#line600">__traits</a>::<a href="#line471">propagate_on_container_move_assignment</a> <b>__pocma</b>;
+<b><a name="line602">602  </a></b>	      <a href="#line590">__do_alloc_on_move</a>(<a href="#line598">__one</a>, <a href="#line598">__two</a>, <a href="#line601">__pocma</a>());
+<b><a name="line603">603  </a></b>	    }
+<b><a name="line604">604  </a></b>	
+<b><a name="line605">605  </a></b>	  template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line606">606  </a></b>	    inline void <b>__do_alloc_on_swap</b>(<a href="#line605">_Alloc</a>&amp; __one, <a href="#line605">_Alloc</a>&amp; __two, <a href="../../type_traits/code.html#line87">true_type</a>)
+<b><a name="line607">607  </a></b>	    {
+<b><a name="line608">608  </a></b>	      using std::swap;
+<b><a name="line609">609  </a></b>	      swap(__one, __two);
+<b><a name="line610">610  </a></b>	    }
+<b><a name="line611">611  </a></b>	
+<b><a name="line612">612  </a></b>	  template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line613">613  </a></b>	    inline void <b>__do_alloc_on_swap</b>(<a href="#line612">_Alloc</a>&amp;, <a href="#line612">_Alloc</a>&amp;, <a href="../../type_traits/code.html#line90">false_type</a>)
+<b><a name="line614">614  </a></b>	    { }
+<b><a name="line615">615  </a></b>	
+<b><a name="line616">616  </a></b>	  template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line617">617  </a></b>	    inline void <b>__alloc_on_swap</b>(<a href="#line616">_Alloc</a>&amp; __one, <a href="#line616">_Alloc</a>&amp; __two)
+<b><a name="line618">618  </a></b>	    {
+<b><a name="line619">619  </a></b>	      typedef allocator_traits&lt;_Alloc&gt; __traits;
+<b><a name="line620">620  </a></b>	      typedef typename __traits::propagate_on_container_swap __pocs;
+<b><a name="line621">621  </a></b>	      __do_alloc_on_swap(__one, __two, __pocs());
+<b><a name="line622">622  </a></b>	    }
+<b><a name="line623">623  </a></b>	
+<b><a name="line624">624  </a></b>	  template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line625">625  </a></b>	    class <b>__is_copy_insertable_impl</b>
+<b><a name="line626">626  </a></b>	    {
+<b><a name="line627">627  </a></b>	      typedef <a href="#line83">allocator_traits</a>&lt;<a href="#line624">_Alloc</a>&gt; <b>_Traits</b>;
+<b><a name="line628">628  </a></b>	
+<b><a name="line629">629  </a></b>	      template&lt;typename <b>_Up</b>, typename
+<b><a name="line630">630  </a></b>		       = decltype(<a href="#line627">_Traits</a>::construct(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::declval&lt;<a href="#line624">_Alloc</a>&amp;&gt;(),
+<b><a name="line631">631  </a></b>						     <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::declval&lt;<a href="#line629">_Up</a>*&gt;(),
+<b><a name="line632">632  </a></b>						     <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::declval&lt;const <a href="#line629">_Up</a>&amp;&gt;()))&gt;
+<b><a name="line633">633  </a></b>		static <a href="../../type_traits/code.html#line87">true_type</a>
+<b><a name="line634">634  </a></b>		_M_select(int);
+<b><a name="line635">635  </a></b>	
+<b><a name="line636">636  </a></b>	      template&lt;typename <b>_Up</b>&gt;
+<b><a name="line637">637  </a></b>		static <a href="../../type_traits/code.html#line90">false_type</a>
+<b><a name="line638">638  </a></b>		_M_select(...);
+<b><a name="line639">639  </a></b>	
+<b><a name="line640">640  </a></b>	    public:
+<b><a name="line641">641  </a></b>	      typedef decltype(_M_select&lt;typename <a href="#line624">_Alloc</a>::value_type&gt;(0)) <b>type</b>;
+<b><a name="line642">642  </a></b>	    };
+<b><a name="line643">643  </a></b>	
+<b><a name="line644">644  </a></b>	  // true if _Alloc::value_type is CopyInsertable into containers using _Alloc
+<b><a name="line645">645  </a></b>	  template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line646">646  </a></b>	    struct <b>__is_copy_insertable</b>
+<b><a name="line647">647  </a></b>	    : <a href="#line625">__is_copy_insertable_impl</a>&lt;<a href="#line645">_Alloc</a>&gt;::type
+<b><a name="line648">648  </a></b>	    { };
+<b><a name="line649">649  </a></b>	
+<b><a name="line650">650  </a></b>	  // std::allocator&lt;_Tp&gt; just requires CopyConstructible
+<b><a name="line651">651  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line652">652  </a></b>	    struct <b>__is_copy_insertable</b>&lt;<a href="../memoryfwd.h/code.html#line64">allocator</a>&lt;<a href="#line651">_Tp</a>&gt;&gt;
+<b><a name="line653">653  </a></b>	    : <a href="../../type_traits/code.html#line1107">is_copy_constructible</a>&lt;<a href="#line651">_Tp</a>&gt;
+<b><a name="line654">654  </a></b>	    { };
+<b><a name="line655">655  </a></b>	
+<b><a name="line656">656  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line657">657  </a></b>	} // namespace std
+<b><a name="line658">658  </a></b>	
+<b><a name="line659">659  </a></b>	#endif
+<b><a name="line660">660  </a></b>	#endif
+<b><a name="line661">661  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

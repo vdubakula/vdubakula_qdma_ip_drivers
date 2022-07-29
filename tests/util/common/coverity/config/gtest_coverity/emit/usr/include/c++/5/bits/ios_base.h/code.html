@@ -1,0 +1,1136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/bits/ios_base.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Iostreams base classes -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 1997-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file bits/ios_base.h
+<b><a name="line26">26   </a></b>	 *  This is an internal header file, included by other library headers.
+<b><a name="line27">27   </a></b>	 *  Do not attempt to use it directly. @headername{ios}
+<b><a name="line28">28   </a></b>	 */
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	//
+<b><a name="line31">31   </a></b>	// ISO C++ 14882: 27.4  Iostreams base classes
+<b><a name="line32">32   </a></b>	//
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	#ifndef _IOS_BASE_H
+<b><a name="line35">35   </a></b>	#define <b>_IOS_BASE_H</b> 1
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	#pragma GCC system_header
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	#include &lt;ext/atomicity.h&gt;
+<b><a name="line40">40   </a></b>	#include &lt;bits/localefwd.h&gt;
+<b><a name="line41">41   </a></b>	#include &lt;bits/locale_classes.h&gt;
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	#if __cplusplus &lt; 201103L
+<b><a name="line44">44   </a></b>	# include &lt;stdexcept&gt;
+<b><a name="line45">45   </a></b>	#else
+<b><a name="line46">46   </a></b>	# include &lt;system_error&gt;
+<b><a name="line47">47   </a></b>	#endif
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line50">50   </a></b>	{
+<b><a name="line51">51   </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line52">52   </a></b>	
+<b><a name="line53">53   </a></b>	  // The following definitions of bitmask types are enums, not ints,
+<b><a name="line54">54   </a></b>	  // as permitted (but not required) in the standard, in order to provide
+<b><a name="line55">55   </a></b>	  // better type safety in iostream calls.  A side effect is that
+<b><a name="line56">56   </a></b>	  // expressions involving them are no longer compile-time constants.
+<b><a name="line57">57   </a></b>	  enum <b>_Ios_Fmtflags</b> 
+<b><a name="line58">58   </a></b>	    { 
+<b><a name="line59">59   </a></b>	      <b>_S_boolalpha</b> 	= 1L &lt;&lt; 0,
+<b><a name="line60">60   </a></b>	      <b>_S_dec</b> 		= 1L &lt;&lt; 1,
+<b><a name="line61">61   </a></b>	      <b>_S_fixed</b> 		= 1L &lt;&lt; 2,
+<b><a name="line62">62   </a></b>	      <b>_S_hex</b> 		= 1L &lt;&lt; 3,
+<b><a name="line63">63   </a></b>	      <b>_S_internal</b> 	= 1L &lt;&lt; 4,
+<b><a name="line64">64   </a></b>	      <b>_S_left</b> 		= 1L &lt;&lt; 5,
+<b><a name="line65">65   </a></b>	      <b>_S_oct</b> 		= 1L &lt;&lt; 6,
+<b><a name="line66">66   </a></b>	      <b>_S_right</b> 		= 1L &lt;&lt; 7,
+<b><a name="line67">67   </a></b>	      <b>_S_scientific</b> 	= 1L &lt;&lt; 8,
+<b><a name="line68">68   </a></b>	      <b>_S_showbase</b> 	= 1L &lt;&lt; 9,
+<b><a name="line69">69   </a></b>	      <b>_S_showpoint</b> 	= 1L &lt;&lt; 10,
+<b><a name="line70">70   </a></b>	      <b>_S_showpos</b> 	= 1L &lt;&lt; 11,
+<b><a name="line71">71   </a></b>	      <b>_S_skipws</b> 	= 1L &lt;&lt; 12,
+<b><a name="line72">72   </a></b>	      <b>_S_unitbuf</b> 	= 1L &lt;&lt; 13,
+<b><a name="line73">73   </a></b>	      <b>_S_uppercase</b> 	= 1L &lt;&lt; 14,
+<b><a name="line74">74   </a></b>	      <b>_S_adjustfield</b> 	= <a href="#line64">_S_left</a> | <a href="#line66">_S_right</a> | <a href="#line63">_S_internal</a>,
+<b><a name="line75">75   </a></b>	      <b>_S_basefield</b> 	= <a href="#line60">_S_dec</a> | <a href="#line65">_S_oct</a> | <a href="#line62">_S_hex</a>,
+<b><a name="line76">76   </a></b>	      <b>_S_floatfield</b> 	= <a href="#line67">_S_scientific</a> | <a href="#line61">_S_fixed</a>,
+<b><a name="line77">77   </a></b>	      <b>_S_ios_fmtflags_end</b> = 1L &lt;&lt; 16,
+<b><a name="line78">78   </a></b>	      <b>_S_ios_fmtflags_max</b> = <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line618">__INT_MAX__</a>,
+<b><a name="line79">79   </a></b>	      <b>_S_ios_fmtflags_min</b> = ~<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line618">__INT_MAX__</a>
+<b><a name="line80">80   </a></b>	    };
+<b><a name="line81">81   </a></b>	
+<b><a name="line82">82   </a></b>	  inline <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line98">_GLIBCXX_CONSTEXPR</a> <a href="#line57">_Ios_Fmtflags</a>
+<b><a name="line83">83   </a></b>	  <b>operator&amp;</b>(<a href="#line57">_Ios_Fmtflags</a> <b>__a</b>, <a href="#line57">_Ios_Fmtflags</a> <b>__b</b>)
+<b><a name="line84">84   </a></b>	  { return <a href="#line57">_Ios_Fmtflags</a>(static_cast&lt;int&gt;(<a href="#line83">__a</a>) &amp; static_cast&lt;int&gt;(<a href="#line83">__b</a>)); }
+<b><a name="line85">85   </a></b>	
+<b><a name="line86">86   </a></b>	  inline <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line98">_GLIBCXX_CONSTEXPR</a> <a href="#line57">_Ios_Fmtflags</a>
+<b><a name="line87">87   </a></b>	  <b>operator|</b>(<a href="#line57">_Ios_Fmtflags</a> <b>__a</b>, <a href="#line57">_Ios_Fmtflags</a> <b>__b</b>)
+<b><a name="line88">88   </a></b>	  { return <a href="#line57">_Ios_Fmtflags</a>(static_cast&lt;int&gt;(<a href="#line87">__a</a>) | static_cast&lt;int&gt;(<a href="#line87">__b</a>)); }
+<b><a name="line89">89   </a></b>	
+<b><a name="line90">90   </a></b>	  inline <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line98">_GLIBCXX_CONSTEXPR</a> <a href="#line57">_Ios_Fmtflags</a>
+<b><a name="line91">91   </a></b>	  <b>operator^</b>(<a href="#line57">_Ios_Fmtflags</a> <b>__a</b>, <a href="#line57">_Ios_Fmtflags</a> <b>__b</b>)
+<b><a name="line92">92   </a></b>	  { return <a href="#line57">_Ios_Fmtflags</a>(static_cast&lt;int&gt;(<a href="#line91">__a</a>) ^ static_cast&lt;int&gt;(<a href="#line91">__b</a>)); }
+<b><a name="line93">93   </a></b>	
+<b><a name="line94">94   </a></b>	  inline <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line98">_GLIBCXX_CONSTEXPR</a> <a href="#line57">_Ios_Fmtflags</a>
+<b><a name="line95">95   </a></b>	  <b>operator~</b>(<a href="#line57">_Ios_Fmtflags</a> <b>__a</b>)
+<b><a name="line96">96   </a></b>	  { return <a href="#line57">_Ios_Fmtflags</a>(~static_cast&lt;int&gt;(<a href="#line95">__a</a>)); }
+<b><a name="line97">97   </a></b>	
+<b><a name="line98">98   </a></b>	  inline const <a href="#line57">_Ios_Fmtflags</a>&amp;
+<b><a name="line99">99   </a></b>	  <b>operator|=</b>(<a href="#line57">_Ios_Fmtflags</a>&amp; <b>__a</b>, <a href="#line57">_Ios_Fmtflags</a> <b>__b</b>)
+<b><a name="line100">100  </a></b>	  { return <a href="#line99">__a</a> = <a href="#line99">__a</a> <a href="#line87">|</a> <a href="#line99">__b</a>; }
+<b><a name="line101">101  </a></b>	
+<b><a name="line102">102  </a></b>	  inline const <a href="#line57">_Ios_Fmtflags</a>&amp;
+<b><a name="line103">103  </a></b>	  <b>operator&amp;=</b>(<a href="#line57">_Ios_Fmtflags</a>&amp; <b>__a</b>, <a href="#line57">_Ios_Fmtflags</a> <b>__b</b>)
+<b><a name="line104">104  </a></b>	  { return <a href="#line103">__a</a> = <a href="#line103">__a</a> <a href="#line83">&amp;</a> <a href="#line103">__b</a>; }
+<b><a name="line105">105  </a></b>	
+<b><a name="line106">106  </a></b>	  inline const <a href="#line57">_Ios_Fmtflags</a>&amp;
+<b><a name="line107">107  </a></b>	  <b>operator^=</b>(<a href="#line57">_Ios_Fmtflags</a>&amp; <b>__a</b>, <a href="#line57">_Ios_Fmtflags</a> <b>__b</b>)
+<b><a name="line108">108  </a></b>	  { return <a href="#line107">__a</a> = <a href="#line107">__a</a> <a href="#line91">^</a> <a href="#line107">__b</a>; }
+<b><a name="line109">109  </a></b>	
+<b><a name="line110">110  </a></b>	
+<b><a name="line111">111  </a></b>	  enum <b>_Ios_Openmode</b> 
+<b><a name="line112">112  </a></b>	    { 
+<b><a name="line113">113  </a></b>	      <b>_S_app</b> 		= 1L &lt;&lt; 0,
+<b><a name="line114">114  </a></b>	      <b>_S_ate</b> 		= 1L &lt;&lt; 1,
+<b><a name="line115">115  </a></b>	      <b>_S_bin</b> 		= 1L &lt;&lt; 2,
+<b><a name="line116">116  </a></b>	      <b>_S_in</b> 		= 1L &lt;&lt; 3,
+<b><a name="line117">117  </a></b>	      <b>_S_out</b> 		= 1L &lt;&lt; 4,
+<b><a name="line118">118  </a></b>	      <b>_S_trunc</b> 		= 1L &lt;&lt; 5,
+<b><a name="line119">119  </a></b>	      <b>_S_ios_openmode_end</b> = 1L &lt;&lt; 16,
+<b><a name="line120">120  </a></b>	      <b>_S_ios_openmode_max</b> = <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line618">__INT_MAX__</a>,
+<b><a name="line121">121  </a></b>	      <b>_S_ios_openmode_min</b> = ~<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line618">__INT_MAX__</a>
+<b><a name="line122">122  </a></b>	    };
+<b><a name="line123">123  </a></b>	
+<b><a name="line124">124  </a></b>	  inline <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line98">_GLIBCXX_CONSTEXPR</a> <a href="#line111">_Ios_Openmode</a>
+<b><a name="line125">125  </a></b>	  <b>operator&amp;</b>(<a href="#line111">_Ios_Openmode</a> <b>__a</b>, <a href="#line111">_Ios_Openmode</a> <b>__b</b>)
+<b><a name="line126">126  </a></b>	  { return <a href="#line111">_Ios_Openmode</a>(static_cast&lt;int&gt;(<a href="#line125">__a</a>) &amp; static_cast&lt;int&gt;(<a href="#line125">__b</a>)); }
+<b><a name="line127">127  </a></b>	
+<b><a name="line128">128  </a></b>	  inline <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line98">_GLIBCXX_CONSTEXPR</a> <a href="#line111">_Ios_Openmode</a>
+<b><a name="line129">129  </a></b>	  <b>operator|</b>(<a href="#line111">_Ios_Openmode</a> <b>__a</b>, <a href="#line111">_Ios_Openmode</a> <b>__b</b>)
+<b><a name="line130">130  </a></b>	  { return <a href="#line111">_Ios_Openmode</a>(static_cast&lt;int&gt;(<a href="#line129">__a</a>) | static_cast&lt;int&gt;(<a href="#line129">__b</a>)); }
+<b><a name="line131">131  </a></b>	
+<b><a name="line132">132  </a></b>	  inline <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line98">_GLIBCXX_CONSTEXPR</a> <a href="#line111">_Ios_Openmode</a>
+<b><a name="line133">133  </a></b>	  <b>operator^</b>(<a href="#line111">_Ios_Openmode</a> <b>__a</b>, <a href="#line111">_Ios_Openmode</a> <b>__b</b>)
+<b><a name="line134">134  </a></b>	  { return <a href="#line111">_Ios_Openmode</a>(static_cast&lt;int&gt;(<a href="#line133">__a</a>) ^ static_cast&lt;int&gt;(<a href="#line133">__b</a>)); }
+<b><a name="line135">135  </a></b>	
+<b><a name="line136">136  </a></b>	  inline <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line98">_GLIBCXX_CONSTEXPR</a> <a href="#line111">_Ios_Openmode</a>
+<b><a name="line137">137  </a></b>	  <b>operator~</b>(<a href="#line111">_Ios_Openmode</a> <b>__a</b>)
+<b><a name="line138">138  </a></b>	  { return <a href="#line111">_Ios_Openmode</a>(~static_cast&lt;int&gt;(<a href="#line137">__a</a>)); }
+<b><a name="line139">139  </a></b>	
+<b><a name="line140">140  </a></b>	  inline const <a href="#line111">_Ios_Openmode</a>&amp;
+<b><a name="line141">141  </a></b>	  <b>operator|=</b>(<a href="#line111">_Ios_Openmode</a>&amp; <b>__a</b>, <a href="#line111">_Ios_Openmode</a> <b>__b</b>)
+<b><a name="line142">142  </a></b>	  { return <a href="#line141">__a</a> = <a href="#line141">__a</a> <a href="#line129">|</a> <a href="#line141">__b</a>; }
+<b><a name="line143">143  </a></b>	
+<b><a name="line144">144  </a></b>	  inline const <a href="#line111">_Ios_Openmode</a>&amp;
+<b><a name="line145">145  </a></b>	  <b>operator&amp;=</b>(<a href="#line111">_Ios_Openmode</a>&amp; <b>__a</b>, <a href="#line111">_Ios_Openmode</a> <b>__b</b>)
+<b><a name="line146">146  </a></b>	  { return <a href="#line145">__a</a> = <a href="#line145">__a</a> <a href="#line125">&amp;</a> <a href="#line145">__b</a>; }
+<b><a name="line147">147  </a></b>	
+<b><a name="line148">148  </a></b>	  inline const <a href="#line111">_Ios_Openmode</a>&amp;
+<b><a name="line149">149  </a></b>	  <b>operator^=</b>(<a href="#line111">_Ios_Openmode</a>&amp; <b>__a</b>, <a href="#line111">_Ios_Openmode</a> <b>__b</b>)
+<b><a name="line150">150  </a></b>	  { return <a href="#line149">__a</a> = <a href="#line149">__a</a> <a href="#line133">^</a> <a href="#line149">__b</a>; }
+<b><a name="line151">151  </a></b>	
+<b><a name="line152">152  </a></b>	
+<b><a name="line153">153  </a></b>	  enum <b>_Ios_Iostate</b>
+<b><a name="line154">154  </a></b>	    { 
+<b><a name="line155">155  </a></b>	      <b>_S_goodbit</b> 		= 0,
+<b><a name="line156">156  </a></b>	      <b>_S_badbit</b> 		= 1L &lt;&lt; 0,
+<b><a name="line157">157  </a></b>	      <b>_S_eofbit</b> 		= 1L &lt;&lt; 1,
+<b><a name="line158">158  </a></b>	      <b>_S_failbit</b>		= 1L &lt;&lt; 2,
+<b><a name="line159">159  </a></b>	      <b>_S_ios_iostate_end</b> = 1L &lt;&lt; 16,
+<b><a name="line160">160  </a></b>	      <b>_S_ios_iostate_max</b> = <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line618">__INT_MAX__</a>,
+<b><a name="line161">161  </a></b>	      <b>_S_ios_iostate_min</b> = ~<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line618">__INT_MAX__</a>
+<b><a name="line162">162  </a></b>	    };
+<b><a name="line163">163  </a></b>	
+<b><a name="line164">164  </a></b>	  inline <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line98">_GLIBCXX_CONSTEXPR</a> <a href="#line153">_Ios_Iostate</a>
+<b><a name="line165">165  </a></b>	  <b>operator&amp;</b>(<a href="#line153">_Ios_Iostate</a> <b>__a</b>, <a href="#line153">_Ios_Iostate</a> <b>__b</b>)
+<b><a name="line166">166  </a></b>	  { return <a href="#line153">_Ios_Iostate</a>(static_cast&lt;int&gt;(<a href="#line165">__a</a>) &amp; static_cast&lt;int&gt;(<a href="#line165">__b</a>)); }
+<b><a name="line167">167  </a></b>	
+<b><a name="line168">168  </a></b>	  inline <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line98">_GLIBCXX_CONSTEXPR</a> <a href="#line153">_Ios_Iostate</a>
+<b><a name="line169">169  </a></b>	  <b>operator|</b>(<a href="#line153">_Ios_Iostate</a> <b>__a</b>, <a href="#line153">_Ios_Iostate</a> <b>__b</b>)
+<b><a name="line170">170  </a></b>	  { return <a href="#line153">_Ios_Iostate</a>(static_cast&lt;int&gt;(<a href="#line169">__a</a>) | static_cast&lt;int&gt;(<a href="#line169">__b</a>)); }
+<b><a name="line171">171  </a></b>	
+<b><a name="line172">172  </a></b>	  inline <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line98">_GLIBCXX_CONSTEXPR</a> <a href="#line153">_Ios_Iostate</a>
+<b><a name="line173">173  </a></b>	  <b>operator^</b>(<a href="#line153">_Ios_Iostate</a> <b>__a</b>, <a href="#line153">_Ios_Iostate</a> <b>__b</b>)
+<b><a name="line174">174  </a></b>	  { return <a href="#line153">_Ios_Iostate</a>(static_cast&lt;int&gt;(<a href="#line173">__a</a>) ^ static_cast&lt;int&gt;(<a href="#line173">__b</a>)); }
+<b><a name="line175">175  </a></b>	
+<b><a name="line176">176  </a></b>	  inline <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line98">_GLIBCXX_CONSTEXPR</a> <a href="#line153">_Ios_Iostate</a>
+<b><a name="line177">177  </a></b>	  <b>operator~</b>(<a href="#line153">_Ios_Iostate</a> <b>__a</b>)
+<b><a name="line178">178  </a></b>	  { return <a href="#line153">_Ios_Iostate</a>(~static_cast&lt;int&gt;(<a href="#line177">__a</a>)); }
+<b><a name="line179">179  </a></b>	
+<b><a name="line180">180  </a></b>	  inline const <a href="#line153">_Ios_Iostate</a>&amp;
+<b><a name="line181">181  </a></b>	  <b>operator|=</b>(<a href="#line153">_Ios_Iostate</a>&amp; <b>__a</b>, <a href="#line153">_Ios_Iostate</a> <b>__b</b>)
+<b><a name="line182">182  </a></b>	  { return <a href="#line181">__a</a> = <a href="#line181">__a</a> <a href="#line169">|</a> <a href="#line181">__b</a>; }
+<b><a name="line183">183  </a></b>	
+<b><a name="line184">184  </a></b>	  inline const <a href="#line153">_Ios_Iostate</a>&amp;
+<b><a name="line185">185  </a></b>	  <b>operator&amp;=</b>(<a href="#line153">_Ios_Iostate</a>&amp; <b>__a</b>, <a href="#line153">_Ios_Iostate</a> <b>__b</b>)
+<b><a name="line186">186  </a></b>	  { return <a href="#line185">__a</a> = <a href="#line185">__a</a> <a href="#line165">&amp;</a> <a href="#line185">__b</a>; }
+<b><a name="line187">187  </a></b>	
+<b><a name="line188">188  </a></b>	  inline const  <a href="#line153">_Ios_Iostate</a>&amp;
+<b><a name="line189">189  </a></b>	  <b>operator^=</b>(<a href="#line153">_Ios_Iostate</a>&amp; <b>__a</b>, <a href="#line153">_Ios_Iostate</a> <b>__b</b>)
+<b><a name="line190">190  </a></b>	  { return <a href="#line189">__a</a> = <a href="#line189">__a</a> <a href="#line173">^</a> <a href="#line189">__b</a>; }
+<b><a name="line191">191  </a></b>	
+<b><a name="line192">192  </a></b>	
+<b><a name="line193">193  </a></b>	  enum <b>_Ios_Seekdir</b> 
+<b><a name="line194">194  </a></b>	    { 
+<b><a name="line195">195  </a></b>	      <b>_S_beg</b> = 0,
+<b><a name="line196">196  </a></b>	      <b>_S_cur</b> = <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1287">_GLIBCXX_STDIO_SEEK_CUR</a>,
+<b><a name="line197">197  </a></b>	      <b>_S_end</b> = <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1290">_GLIBCXX_STDIO_SEEK_END</a>,
+<b><a name="line198">198  </a></b>	      <b>_S_ios_seekdir_end</b> = 1L &lt;&lt; 16 
+<b><a name="line199">199  </a></b>	    };
+<b><a name="line200">200  </a></b>	
+<b><a name="line201">201  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line202">202  </a></b>	  /// I/O error code
+<b><a name="line203">203  </a></b>	  enum class <b>io_errc</b> { <b>stream</b> = 1 };
+<b><a name="line204">204  </a></b>	
+<b><a name="line205">205  </a></b>	  template &lt;&gt; struct <b>is_error_code_enum</b>&lt;<a href="#line203">io_errc</a>&gt; : public <a href="../../type_traits/code.html#line87">true_type</a> { };
+<b><a name="line206">206  </a></b>	
+<b><a name="line207">207  </a></b>	  const <a href="../../system_error/code.html#line66">error_category</a>&amp; iostream_category() noexcept;
+<b><a name="line208">208  </a></b>	
+<b><a name="line209">209  </a></b>	  inline <a href="../../system_error/code.html#line47">error_code</a>
+<b><a name="line210">210  </a></b>	  <b>make_error_code</b>(<a href="#line203">io_errc</a> <b>e</b>) noexcept
+<b><a name="line211">211  </a></b>	  { return <a href="../../system_error/code.html#line143">error_code</a>(static_cast&lt;int&gt;(<a href="#line210">e</a>), <a href="#line207">iostream_category</a>()); }
+<b><a name="line212">212  </a></b>	
+<b><a name="line213">213  </a></b>	  inline <a href="../../system_error/code.html#line48">error_condition</a>
+<b><a name="line214">214  </a></b>	  <b>make_error_condition</b>(<a href="#line203">io_errc</a> <b>e</b>) noexcept
+<b><a name="line215">215  </a></b>	  { return <a href="../../system_error/code.html#line221">error_condition</a>(static_cast&lt;int&gt;(<a href="#line214">e</a>), <a href="#line207">iostream_category</a>()); }
+<b><a name="line216">216  </a></b>	#endif
+<b><a name="line217">217  </a></b>	
+<b><a name="line218">218  </a></b>	  // 27.4.2  Class ios_base
+<b><a name="line219">219  </a></b>	  /**
+<b><a name="line220">220  </a></b>	   *  @brief  The base of the I/O class hierarchy.
+<b><a name="line221">221  </a></b>	   *  @ingroup io
+<b><a name="line222">222  </a></b>	   *
+<b><a name="line223">223  </a></b>	   *  This class defines everything that can be defined about I/O that does
+<b><a name="line224">224  </a></b>	   *  not depend on the type of characters being input or output.  Most
+<b><a name="line225">225  </a></b>	   *  people will only see @c ios_base when they need to specify the full
+<b><a name="line226">226  </a></b>	   *  name of the various I/O flags (e.g., the openmodes).
+<b><a name="line227">227  </a></b>	  */
+<b><a name="line228">228  </a></b>	  class <b>ios_base</b>
+<b><a name="line229">229  </a></b>	  {
+<b><a name="line230">230  </a></b>	#if <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line212">_GLIBCXX_USE_CXX11_ABI</a>
+<b><a name="line231">231  </a></b>	#if __cplusplus &lt; 201103L
+<b><a name="line232">232  </a></b>	    // Type that is layout-compatible with std::system_error
+<b><a name="line233">233  </a></b>	    struct system_error : std::runtime_error
+<b><a name="line234">234  </a></b>	    {
+<b><a name="line235">235  </a></b>	      // Type that is layout-compatible with std::error_code
+<b><a name="line236">236  </a></b>	      struct error_code
+<b><a name="line237">237  </a></b>	      {
+<b><a name="line238">238  </a></b>		error_code() { }
+<b><a name="line239">239  </a></b>	      private:
+<b><a name="line240">240  </a></b>		int		_M_value;
+<b><a name="line241">241  </a></b>		const void*	_M_cat;
+<b><a name="line242">242  </a></b>	      } _M_code;
+<b><a name="line243">243  </a></b>	    };
+<b><a name="line244">244  </a></b>	#endif
+<b><a name="line245">245  </a></b>	#endif
+<b><a name="line246">246  </a></b>	  public:
+<b><a name="line247">247  </a></b>	
+<b><a name="line248">248  </a></b>	    /** 
+<b><a name="line249">249  </a></b>	     *  @brief These are thrown to indicate problems with io.
+<b><a name="line250">250  </a></b>	     *  @ingroup exceptions
+<b><a name="line251">251  </a></b>	     *
+<b><a name="line252">252  </a></b>	     *  27.4.2.1.1  Class ios_base::failure
+<b><a name="line253">253  </a></b>	     */
+<b><a name="line254">254  </a></b>	#if <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line212">_GLIBCXX_USE_CXX11_ABI</a>
+<b><a name="line255">255  </a></b>	    class <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line89">_GLIBCXX_ABI_TAG_CXX11</a> <b>failure</b> : public <a href="../../system_error/code.html#line49">system_error</a>
+<b><a name="line256">256  </a></b>	    {
+<b><a name="line257">257  </a></b>	    public:
+<b><a name="line258">258  </a></b>	      explicit
+<b><a name="line259">259  </a></b>	      failure(const <a href="../stringfwd.h/code.html#line74">string</a>&amp; __str);
+<b><a name="line260">260  </a></b>	
+<b><a name="line261">261  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line262">262  </a></b>	      explicit
+<b><a name="line263">263  </a></b>	      failure(const <a href="../stringfwd.h/code.html#line74">string</a>&amp;, const <a href="../../system_error/code.html#line47">error_code</a>&amp;);
+<b><a name="line264">264  </a></b>	
+<b><a name="line265">265  </a></b>	      explicit
+<b><a name="line266">266  </a></b>	      failure(const char*, const <a href="../../system_error/code.html#line47">error_code</a>&amp; = <a href="#line203">io_errc</a>::<a href="#line203">stream</a>);
+<b><a name="line267">267  </a></b>	#endif
+<b><a name="line268">268  </a></b>	
+<b><a name="line269">269  </a></b>	      virtual
+<b><a name="line270">270  </a></b>	      ~failure() throw();
+<b><a name="line271">271  </a></b>	
+<b><a name="line272">272  </a></b>	      virtual const char*
+<b><a name="line273">273  </a></b>	      what() const throw();
+<b><a name="line274">274  </a></b>	    };
+<b><a name="line275">275  </a></b>	#else
+<b><a name="line276">276  </a></b>	    class failure : public exception
+<b><a name="line277">277  </a></b>	    {
+<b><a name="line278">278  </a></b>	    public:
+<b><a name="line279">279  </a></b>	      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line280">280  </a></b>	      // 48.  Use of non-existent exception constructor
+<b><a name="line281">281  </a></b>	      explicit
+<b><a name="line282">282  </a></b>	      failure(const string&amp; __str) throw();
+<b><a name="line283">283  </a></b>	
+<b><a name="line284">284  </a></b>	      // This declaration is not useless:
+<b><a name="line285">285  </a></b>	      // http://gcc.gnu.org/onlinedocs/gcc-4.3.2/gcc/Vague-Linkage.html
+<b><a name="line286">286  </a></b>	      virtual
+<b><a name="line287">287  </a></b>	      ~failure() throw();
+<b><a name="line288">288  </a></b>	
+<b><a name="line289">289  </a></b>	      virtual const char*
+<b><a name="line290">290  </a></b>	      what() const throw();
+<b><a name="line291">291  </a></b>	
+<b><a name="line292">292  </a></b>	    private:
+<b><a name="line293">293  </a></b>	      string _M_msg;
+<b><a name="line294">294  </a></b>	    };
+<b><a name="line295">295  </a></b>	#endif
+<b><a name="line296">296  </a></b>	
+<b><a name="line297">297  </a></b>	    // 27.4.2.1.2  Type ios_base::fmtflags
+<b><a name="line298">298  </a></b>	    /**
+<b><a name="line299">299  </a></b>	     *  @brief This is a bitmask type.
+<b><a name="line300">300  </a></b>	     *
+<b><a name="line301">301  </a></b>	     *  @c @a _Ios_Fmtflags is implementation-defined, but it is valid to
+<b><a name="line302">302  </a></b>	     *  perform bitwise operations on these values and expect the Right
+<b><a name="line303">303  </a></b>	     *  Thing to happen.  Defined objects of type fmtflags are:
+<b><a name="line304">304  </a></b>	     *  - boolalpha
+<b><a name="line305">305  </a></b>	     *  - dec
+<b><a name="line306">306  </a></b>	     *  - fixed
+<b><a name="line307">307  </a></b>	     *  - hex
+<b><a name="line308">308  </a></b>	     *  - internal
+<b><a name="line309">309  </a></b>	     *  - left
+<b><a name="line310">310  </a></b>	     *  - oct
+<b><a name="line311">311  </a></b>	     *  - right
+<b><a name="line312">312  </a></b>	     *  - scientific
+<b><a name="line313">313  </a></b>	     *  - showbase
+<b><a name="line314">314  </a></b>	     *  - showpoint
+<b><a name="line315">315  </a></b>	     *  - showpos
+<b><a name="line316">316  </a></b>	     *  - skipws
+<b><a name="line317">317  </a></b>	     *  - unitbuf
+<b><a name="line318">318  </a></b>	     *  - uppercase
+<b><a name="line319">319  </a></b>	     *  - adjustfield
+<b><a name="line320">320  </a></b>	     *  - basefield
+<b><a name="line321">321  </a></b>	     *  - floatfield
+<b><a name="line322">322  </a></b>	    */
+<b><a name="line323">323  </a></b>	    typedef <a href="#line57">_Ios_Fmtflags</a> <b>fmtflags</b>;
+<b><a name="line324">324  </a></b>	
+<b><a name="line325">325  </a></b>	    /// Insert/extract @c bool in alphabetic rather than numeric format.
+<b><a name="line326">326  </a></b>	    static const <a href="#line323">fmtflags</a> boolalpha =   <a href="#line59">_S_boolalpha</a>;
+<b><a name="line327">327  </a></b>	
+<b><a name="line328">328  </a></b>	    /// Converts integer input or generates integer output in decimal base.
+<b><a name="line329">329  </a></b>	    static const <a href="#line323">fmtflags</a> dec =         <a href="#line60">_S_dec</a>;
+<b><a name="line330">330  </a></b>	
+<b><a name="line331">331  </a></b>	    /// Generate floating-point output in fixed-point notation.
+<b><a name="line332">332  </a></b>	    static const <a href="#line323">fmtflags</a> fixed =       <a href="#line61">_S_fixed</a>;
+<b><a name="line333">333  </a></b>	
+<b><a name="line334">334  </a></b>	    /// Converts integer input or generates integer output in hexadecimal base.
+<b><a name="line335">335  </a></b>	    static const <a href="#line323">fmtflags</a> hex =         <a href="#line62">_S_hex</a>;
+<b><a name="line336">336  </a></b>	
+<b><a name="line337">337  </a></b>	    /// Adds fill characters at a designated internal point in certain
+<b><a name="line338">338  </a></b>	    /// generated output, or identical to @c right if no such point is
+<b><a name="line339">339  </a></b>	    /// designated.
+<b><a name="line340">340  </a></b>	    static const <a href="#line323">fmtflags</a> internal =    <a href="#line63">_S_internal</a>;
+<b><a name="line341">341  </a></b>	
+<b><a name="line342">342  </a></b>	    /// Adds fill characters on the right (final positions) of certain
+<b><a name="line343">343  </a></b>	    /// generated output.  (I.e., the thing you print is flush left.)
+<b><a name="line344">344  </a></b>	    static const <a href="#line323">fmtflags</a> left =        <a href="#line64">_S_left</a>;
+<b><a name="line345">345  </a></b>	
+<b><a name="line346">346  </a></b>	    /// Converts integer input or generates integer output in octal base.
+<b><a name="line347">347  </a></b>	    static const <a href="#line323">fmtflags</a> oct =         <a href="#line65">_S_oct</a>;
+<b><a name="line348">348  </a></b>	
+<b><a name="line349">349  </a></b>	    /// Adds fill characters on the left (initial positions) of certain
+<b><a name="line350">350  </a></b>	    /// generated output.  (I.e., the thing you print is flush right.)
+<b><a name="line351">351  </a></b>	    static const <a href="#line323">fmtflags</a> right =       <a href="#line66">_S_right</a>;
+<b><a name="line352">352  </a></b>	
+<b><a name="line353">353  </a></b>	    /// Generates floating-point output in scientific notation.
+<b><a name="line354">354  </a></b>	    static const <a href="#line323">fmtflags</a> scientific =  <a href="#line67">_S_scientific</a>;
+<b><a name="line355">355  </a></b>	
+<b><a name="line356">356  </a></b>	    /// Generates a prefix indicating the numeric base of generated integer
+<b><a name="line357">357  </a></b>	    /// output.
+<b><a name="line358">358  </a></b>	    static const <a href="#line323">fmtflags</a> showbase =    <a href="#line68">_S_showbase</a>;
+<b><a name="line359">359  </a></b>	
+<b><a name="line360">360  </a></b>	    /// Generates a decimal-point character unconditionally in generated
+<b><a name="line361">361  </a></b>	    /// floating-point output.
+<b><a name="line362">362  </a></b>	    static const <a href="#line323">fmtflags</a> showpoint =   <a href="#line69">_S_showpoint</a>;
+<b><a name="line363">363  </a></b>	
+<b><a name="line364">364  </a></b>	    /// Generates a + sign in non-negative generated numeric output.
+<b><a name="line365">365  </a></b>	    static const <a href="#line323">fmtflags</a> showpos =     <a href="#line70">_S_showpos</a>;
+<b><a name="line366">366  </a></b>	
+<b><a name="line367">367  </a></b>	    /// Skips leading white space before certain input operations.
+<b><a name="line368">368  </a></b>	    static const <a href="#line323">fmtflags</a> skipws =      <a href="#line71">_S_skipws</a>;
+<b><a name="line369">369  </a></b>	
+<b><a name="line370">370  </a></b>	    /// Flushes output after each output operation.
+<b><a name="line371">371  </a></b>	    static const <a href="#line323">fmtflags</a> unitbuf =     <a href="#line72">_S_unitbuf</a>;
+<b><a name="line372">372  </a></b>	
+<b><a name="line373">373  </a></b>	    /// Replaces certain lowercase letters with their uppercase equivalents
+<b><a name="line374">374  </a></b>	    /// in generated output.
+<b><a name="line375">375  </a></b>	    static const <a href="#line323">fmtflags</a> uppercase =   <a href="#line73">_S_uppercase</a>;
+<b><a name="line376">376  </a></b>	
+<b><a name="line377">377  </a></b>	    /// A mask of left|right|internal.  Useful for the 2-arg form of @c setf.
+<b><a name="line378">378  </a></b>	    static const <a href="#line323">fmtflags</a> adjustfield = <a href="#line74">_S_adjustfield</a>;
+<b><a name="line379">379  </a></b>	
+<b><a name="line380">380  </a></b>	    /// A mask of dec|oct|hex.  Useful for the 2-arg form of @c setf.
+<b><a name="line381">381  </a></b>	    static const <a href="#line323">fmtflags</a> basefield =   <a href="#line75">_S_basefield</a>;
+<b><a name="line382">382  </a></b>	
+<b><a name="line383">383  </a></b>	    /// A mask of scientific|fixed.  Useful for the 2-arg form of @c setf.
+<b><a name="line384">384  </a></b>	    static const <a href="#line323">fmtflags</a> floatfield =  <a href="#line76">_S_floatfield</a>;
+<b><a name="line385">385  </a></b>	
+<b><a name="line386">386  </a></b>	    // 27.4.2.1.3  Type ios_base::iostate
+<b><a name="line387">387  </a></b>	    /**
+<b><a name="line388">388  </a></b>	     *  @brief This is a bitmask type.
+<b><a name="line389">389  </a></b>	     *
+<b><a name="line390">390  </a></b>	     *  @c @a _Ios_Iostate is implementation-defined, but it is valid to
+<b><a name="line391">391  </a></b>	     *  perform bitwise operations on these values and expect the Right
+<b><a name="line392">392  </a></b>	     *  Thing to happen.  Defined objects of type iostate are:
+<b><a name="line393">393  </a></b>	     *  - badbit
+<b><a name="line394">394  </a></b>	     *  - eofbit
+<b><a name="line395">395  </a></b>	     *  - failbit
+<b><a name="line396">396  </a></b>	     *  - goodbit
+<b><a name="line397">397  </a></b>	    */
+<b><a name="line398">398  </a></b>	    typedef <a href="#line153">_Ios_Iostate</a> <b>iostate</b>;
+<b><a name="line399">399  </a></b>	
+<b><a name="line400">400  </a></b>	    /// Indicates a loss of integrity in an input or output sequence (such
+<b><a name="line401">401  </a></b>	    /// as an irrecoverable read error from a file).
+<b><a name="line402">402  </a></b>	    static const <a href="#line398">iostate</a> badbit =	<a href="#line156">_S_badbit</a>;
+<b><a name="line403">403  </a></b>	
+<b><a name="line404">404  </a></b>	    /// Indicates that an input operation reached the end of an input sequence.
+<b><a name="line405">405  </a></b>	    static const <a href="#line398">iostate</a> eofbit =	<a href="#line157">_S_eofbit</a>;
+<b><a name="line406">406  </a></b>	
+<b><a name="line407">407  </a></b>	    /// Indicates that an input operation failed to read the expected
+<b><a name="line408">408  </a></b>	    /// characters, or that an output operation failed to generate the
+<b><a name="line409">409  </a></b>	    /// desired characters.
+<b><a name="line410">410  </a></b>	    static const <a href="#line398">iostate</a> failbit =	<a href="#line158">_S_failbit</a>;
+<b><a name="line411">411  </a></b>	
+<b><a name="line412">412  </a></b>	    /// Indicates all is well.
+<b><a name="line413">413  </a></b>	    static const <a href="#line398">iostate</a> goodbit =	<a href="#line155">_S_goodbit</a>;
+<b><a name="line414">414  </a></b>	
+<b><a name="line415">415  </a></b>	    // 27.4.2.1.4  Type ios_base::openmode
+<b><a name="line416">416  </a></b>	    /**
+<b><a name="line417">417  </a></b>	     *  @brief This is a bitmask type.
+<b><a name="line418">418  </a></b>	     *
+<b><a name="line419">419  </a></b>	     *  @c @a _Ios_Openmode is implementation-defined, but it is valid to
+<b><a name="line420">420  </a></b>	     *  perform bitwise operations on these values and expect the Right
+<b><a name="line421">421  </a></b>	     *  Thing to happen.  Defined objects of type openmode are:
+<b><a name="line422">422  </a></b>	     *  - app
+<b><a name="line423">423  </a></b>	     *  - ate
+<b><a name="line424">424  </a></b>	     *  - binary
+<b><a name="line425">425  </a></b>	     *  - in
+<b><a name="line426">426  </a></b>	     *  - out
+<b><a name="line427">427  </a></b>	     *  - trunc
+<b><a name="line428">428  </a></b>	    */
+<b><a name="line429">429  </a></b>	    typedef <a href="#line111">_Ios_Openmode</a> <b>openmode</b>;
+<b><a name="line430">430  </a></b>	
+<b><a name="line431">431  </a></b>	    /// Seek to end before each write.
+<b><a name="line432">432  </a></b>	    static const <a href="#line429">openmode</a> app =		<a href="#line113">_S_app</a>;
+<b><a name="line433">433  </a></b>	
+<b><a name="line434">434  </a></b>	    /// Open and seek to end immediately after opening.
+<b><a name="line435">435  </a></b>	    static const <a href="#line429">openmode</a> ate =		<a href="#line114">_S_ate</a>;
+<b><a name="line436">436  </a></b>	
+<b><a name="line437">437  </a></b>	    /// Perform input and output in binary mode (as opposed to text mode).
+<b><a name="line438">438  </a></b>	    /// This is probably not what you think it is; see
+<b><a name="line439">439  </a></b>	    /// https://gcc.gnu.org/onlinedocs/libstdc++/manual/fstreams.html#std.io.filestreams.binary
+<b><a name="line440">440  </a></b>	    static const <a href="#line429">openmode</a> binary =	<a href="#line115">_S_bin</a>;
+<b><a name="line441">441  </a></b>	
+<b><a name="line442">442  </a></b>	    /// Open for input.  Default for @c ifstream and fstream.
+<b><a name="line443">443  </a></b>	    static const <a href="#line429">openmode</a> in =		<a href="#line116">_S_in</a>;
+<b><a name="line444">444  </a></b>	
+<b><a name="line445">445  </a></b>	    /// Open for output.  Default for @c ofstream and fstream.
+<b><a name="line446">446  </a></b>	    static const <a href="#line429">openmode</a> out =		<a href="#line117">_S_out</a>;
+<b><a name="line447">447  </a></b>	
+<b><a name="line448">448  </a></b>	    /// Open for input.  Default for @c ofstream.
+<b><a name="line449">449  </a></b>	    static const <a href="#line429">openmode</a> trunc =	<a href="#line118">_S_trunc</a>;
+<b><a name="line450">450  </a></b>	
+<b><a name="line451">451  </a></b>	    // 27.4.2.1.5  Type ios_base::seekdir
+<b><a name="line452">452  </a></b>	    /**
+<b><a name="line453">453  </a></b>	     *  @brief This is an enumerated type.
+<b><a name="line454">454  </a></b>	     *
+<b><a name="line455">455  </a></b>	     *  @c @a _Ios_Seekdir is implementation-defined.  Defined values
+<b><a name="line456">456  </a></b>	     *  of type seekdir are:
+<b><a name="line457">457  </a></b>	     *  - beg
+<b><a name="line458">458  </a></b>	     *  - cur, equivalent to @c SEEK_CUR in the C standard library.
+<b><a name="line459">459  </a></b>	     *  - end, equivalent to @c SEEK_END in the C standard library.
+<b><a name="line460">460  </a></b>	    */
+<b><a name="line461">461  </a></b>	    typedef <a href="#line193">_Ios_Seekdir</a> <b>seekdir</b>;
+<b><a name="line462">462  </a></b>	
+<b><a name="line463">463  </a></b>	    /// Request a seek relative to the beginning of the stream.
+<b><a name="line464">464  </a></b>	    static const <a href="#line461">seekdir</a> beg =		<a href="#line195">_S_beg</a>;
+<b><a name="line465">465  </a></b>	
+<b><a name="line466">466  </a></b>	    /// Request a seek relative to the current position within the sequence.
+<b><a name="line467">467  </a></b>	    static const <a href="#line461">seekdir</a> cur =		<a href="#line196">_S_cur</a>;
+<b><a name="line468">468  </a></b>	
+<b><a name="line469">469  </a></b>	    /// Request a seek relative to the current end of the sequence.
+<b><a name="line470">470  </a></b>	    static const <a href="#line461">seekdir</a> end =		<a href="#line197">_S_end</a>;
+<b><a name="line471">471  </a></b>	
+<b><a name="line472">472  </a></b>	    // Annex D.6
+<b><a name="line473">473  </a></b>	    typedef int <b>io_state</b>;
+<b><a name="line474">474  </a></b>	    typedef int <b>open_mode</b>;
+<b><a name="line475">475  </a></b>	    typedef int <b>seek_dir</b>;
+<b><a name="line476">476  </a></b>	
+<b><a name="line477">477  </a></b>	    typedef <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../postypes.h/code.html#line228">streampos</a> <b>streampos</b>;
+<b><a name="line478">478  </a></b>	    typedef <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../postypes.h/code.html#line88">streamoff</a> <b>streamoff</b>;
+<b><a name="line479">479  </a></b>	
+<b><a name="line480">480  </a></b>	    // Callbacks;
+<b><a name="line481">481  </a></b>	    /**
+<b><a name="line482">482  </a></b>	     *  @brief  The set of events that may be passed to an event callback.
+<b><a name="line483">483  </a></b>	     *
+<b><a name="line484">484  </a></b>	     *  erase_event is used during ~ios() and copyfmt().  imbue_event is used
+<b><a name="line485">485  </a></b>	     *  during imbue().  copyfmt_event is used during copyfmt().
+<b><a name="line486">486  </a></b>	    */
+<b><a name="line487">487  </a></b>	    enum <b>event</b>
+<b><a name="line488">488  </a></b>	    {
+<b><a name="line489">489  </a></b>	      <b>erase_event</b>,
+<b><a name="line490">490  </a></b>	      <b>imbue_event</b>,
+<b><a name="line491">491  </a></b>	      <b>copyfmt_event</b>
+<b><a name="line492">492  </a></b>	    };
+<b><a name="line493">493  </a></b>	
+<b><a name="line494">494  </a></b>	    /**
+<b><a name="line495">495  </a></b>	     *  @brief  The type of an event callback function.
+<b><a name="line496">496  </a></b>	     *  @param  __e  One of the members of the event enum.
+<b><a name="line497">497  </a></b>	     *  @param  __b  Reference to the ios_base object.
+<b><a name="line498">498  </a></b>	     *  @param  __i  The integer provided when the callback was registered.
+<b><a name="line499">499  </a></b>	     *
+<b><a name="line500">500  </a></b>	     *  Event callbacks are user defined functions that get called during
+<b><a name="line501">501  </a></b>	     *  several ios_base and basic_ios functions, specifically imbue(),
+<b><a name="line502">502  </a></b>	     *  copyfmt(), and ~ios().
+<b><a name="line503">503  </a></b>	    */
+<b><a name="line504">504  </a></b>	    typedef void (*<b>event_callback</b>) (<a href="#line487">event</a> __e, <a href="../../iosfwd/code.html#line74">ios_base</a>&amp; __b, int __i);
+<b><a name="line505">505  </a></b>	
+<b><a name="line506">506  </a></b>	    /**
+<b><a name="line507">507  </a></b>	     *  @brief  Add the callback __fn with parameter __index.
+<b><a name="line508">508  </a></b>	     *  @param  __fn  The function to add.
+<b><a name="line509">509  </a></b>	     *  @param  __index  The integer to pass to the function when invoked.
+<b><a name="line510">510  </a></b>	     *
+<b><a name="line511">511  </a></b>	     *  Registers a function as an event callback with an integer parameter to
+<b><a name="line512">512  </a></b>	     *  be passed to the function when invoked.  Multiple copies of the
+<b><a name="line513">513  </a></b>	     *  function are allowed.  If there are multiple callbacks, they are
+<b><a name="line514">514  </a></b>	     *  invoked in the order they were registered.
+<b><a name="line515">515  </a></b>	    */
+<b><a name="line516">516  </a></b>	    void
+<b><a name="line517">517  </a></b>	    register_callback(<a href="#line504">event_callback</a> __fn, int __index);
+<b><a name="line518">518  </a></b>	
+<b><a name="line519">519  </a></b>	  protected:
+<b><a name="line520">520  </a></b>	    <a href="../postypes.h/code.html#line98">streamsize</a>		<b>_M_precision</b>;
+<b><a name="line521">521  </a></b>	    <a href="../postypes.h/code.html#line98">streamsize</a>		<b>_M_width</b>;
+<b><a name="line522">522  </a></b>	    <a href="#line323">fmtflags</a>		<b>_M_flags</b>;
+<b><a name="line523">523  </a></b>	    <a href="#line398">iostate</a>		<b>_M_exception</b>;
+<b><a name="line524">524  </a></b>	    <a href="#line398">iostate</a>		<b>_M_streambuf_state</b>;
+<b><a name="line525">525  </a></b>	
+<b><a name="line526">526  </a></b>	    // 27.4.2.6  Members for callbacks
+<b><a name="line527">527  </a></b>	    // 27.4.2.6  ios_base callbacks
+<b><a name="line528">528  </a></b>	    struct <b>_Callback_list</b>
+<b><a name="line529">529  </a></b>	    {
+<b><a name="line530">530  </a></b>	      // Data Members
+<b><a name="line531">531  </a></b>	      <a href="#line528">_Callback_list</a>*		<b>_M_next</b>;
+<b><a name="line532">532  </a></b>	      <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line504">event_callback</a>	<b>_M_fn</b>;
+<b><a name="line533">533  </a></b>	      int			<b>_M_index</b>;
+<b><a name="line534">534  </a></b>	      <a href="../../../../x86_64-linux-gnu/c++/5/bits/atomic_word.h/code.html#line32">_Atomic_word</a>		<b>_M_refcount</b>;  // 0 means one reference.
+<b><a name="line535">535  </a></b>	
+<b><a name="line536">536  </a></b>	      <b>_Callback_list</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line504">event_callback</a> <b>__fn</b>, int <b>__index</b>,
+<b><a name="line537">537  </a></b>			     <a href="#line528">_Callback_list</a>* <b>__cb</b>)
+<b><a name="line538">538  </a></b>	      : <a href="#line531">_M_next</a>(<a href="#line537">__cb</a>), <a href="#line532">_M_fn</a>(<a href="#line536">__fn</a>), <a href="#line533">_M_index</a>(<a href="#line536">__index</a>), <a href="#line534">_M_refcount</a>(0) { }
+<b><a name="line539">539  </a></b>	
+<b><a name="line540">540  </a></b>	      void
+<b><a name="line541">541  </a></b>	      <b>_M_add_reference</b>() { <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../ext/atomicity.h/code.html#line92">__atomic_add_dispatch</a>(&amp;<a href="#line534">_M_refcount</a>, 1); }
+<b><a name="line542">542  </a></b>	
+<b><a name="line543">543  </a></b>	      // 0 =&gt; OK to delete.
+<b><a name="line544">544  </a></b>	      int
+<b><a name="line545">545  </a></b>	      <b>_M_remove_reference</b>() 
+<b><a name="line546">546  </a></b>	      {
+<b><a name="line547">547  </a></b>	        // Be race-detector-friendly.  For more info see bits/c++config.
+<b><a name="line548">548  </a></b>	        <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line463">_GLIBCXX_SYNCHRONIZATION_HAPPENS_BEFORE</a>(&amp;_M_refcount);
+<b><a name="line549">549  </a></b>	        int <b>__res</b> = <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../ext/atomicity.h/code.html#line78">__exchange_and_add_dispatch</a>(&amp;<a href="#line534">_M_refcount</a>, -1);
+<b><a name="line550">550  </a></b>	        if (<a href="#line549">__res</a> == 0)
+<b><a name="line551">551  </a></b>	          {
+<b><a name="line552">552  </a></b>	            <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line466">_GLIBCXX_SYNCHRONIZATION_HAPPENS_AFTER</a>(&amp;_M_refcount);
+<b><a name="line553">553  </a></b>	          }
+<b><a name="line554">554  </a></b>	        return <a href="#line549">__res</a>;
+<b><a name="line555">555  </a></b>	      }
+<b><a name="line556">556  </a></b>	    };
+<b><a name="line557">557  </a></b>	
+<b><a name="line558">558  </a></b>	     <a href="#line528">_Callback_list</a>*	<b>_M_callbacks</b>;
+<b><a name="line559">559  </a></b>	
+<b><a name="line560">560  </a></b>	    void
+<b><a name="line561">561  </a></b>	    _M_call_callbacks(<a href="#line487">event</a> __ev) throw();
+<b><a name="line562">562  </a></b>	
+<b><a name="line563">563  </a></b>	    void
+<b><a name="line564">564  </a></b>	    _M_dispose_callbacks(void) throw();
+<b><a name="line565">565  </a></b>	
+<b><a name="line566">566  </a></b>	    // 27.4.2.5  Members for iword/pword storage
+<b><a name="line567">567  </a></b>	    struct <b>_Words</b>
+<b><a name="line568">568  </a></b>	    {
+<b><a name="line569">569  </a></b>	      void*	<b>_M_pword</b>;
+<b><a name="line570">570  </a></b>	      long	<b>_M_iword</b>;
+<b><a name="line571">571  </a></b>	      <b>_Words</b>() : <a href="#line569">_M_pword</a>(0), <a href="#line570">_M_iword</a>(0) { }
+<b><a name="line572">572  </a></b>	    };
+<b><a name="line573">573  </a></b>	
+<b><a name="line574">574  </a></b>	    // Only for failed iword/pword calls.
+<b><a name="line575">575  </a></b>	    <a href="#line567">_Words</a>		<b>_M_word_zero</b>;
+<b><a name="line576">576  </a></b>	
+<b><a name="line577">577  </a></b>	    // Guaranteed storage.
+<b><a name="line578">578  </a></b>	    // The first 5 iword and pword slots are reserved for internal use.
+<b><a name="line579">579  </a></b>	    enum { <b>_S_local_word_size</b> = 8 };
+<b><a name="line580">580  </a></b>	    <a href="#line567">_Words</a>		<b>_M_local_word</b>[<a href="#line579">_S_local_word_size</a>];
+<b><a name="line581">581  </a></b>	
+<b><a name="line582">582  </a></b>	    // Allocated storage.
+<b><a name="line583">583  </a></b>	    int			<b>_M_word_size</b>;
+<b><a name="line584">584  </a></b>	    <a href="#line567">_Words</a>*		<b>_M_word</b>;
+<b><a name="line585">585  </a></b>	
+<b><a name="line586">586  </a></b>	    <a href="#line567">_Words</a>&amp;
+<b><a name="line587">587  </a></b>	    _M_grow_words(int __index, bool __iword);
+<b><a name="line588">588  </a></b>	
+<b><a name="line589">589  </a></b>	    // Members for locale and locale caching.
+<b><a name="line590">590  </a></b>	    <a href="../localefwd.h/code.html#line55">locale</a>		<b>_M_ios_locale</b>;
+<b><a name="line591">591  </a></b>	
+<b><a name="line592">592  </a></b>	    void
+<b><a name="line593">593  </a></b>	    _M_init() throw();
+<b><a name="line594">594  </a></b>	
+<b><a name="line595">595  </a></b>	  public:
+<b><a name="line596">596  </a></b>	
+<b><a name="line597">597  </a></b>	    // 27.4.2.1.6  Class ios_base::Init
+<b><a name="line598">598  </a></b>	    // Used to initialize standard streams. In theory, g++ could use
+<b><a name="line599">599  </a></b>	    // -finit-priority to order this stuff correctly without going
+<b><a name="line600">600  </a></b>	    // through these machinations.
+<b><a name="line601">601  </a></b>	    class <b>Init</b>
+<b><a name="line602">602  </a></b>	    {
+<b><a name="line603">603  </a></b>	      friend class <a href="../../iosfwd/code.html#line74">ios_base</a>;
+<b><a name="line604">604  </a></b>	    public:
+<b><a name="line605">605  </a></b>	      Init();
+<b><a name="line606">606  </a></b>	      ~Init();
+<b><a name="line607">607  </a></b>	
+<b><a name="line608">608  </a></b>	    private:
+<b><a name="line609">609  </a></b>	      static <a href="../../../../x86_64-linux-gnu/c++/5/bits/atomic_word.h/code.html#line32">_Atomic_word</a>	_S_refcount;
+<b><a name="line610">610  </a></b>	      static bool		_S_synced_with_stdio;
+<b><a name="line611">611  </a></b>	    };
+<b><a name="line612">612  </a></b>	
+<b><a name="line613">613  </a></b>	    // [27.4.2.2] fmtflags state functions
+<b><a name="line614">614  </a></b>	    /**
+<b><a name="line615">615  </a></b>	     *  @brief  Access to format flags.
+<b><a name="line616">616  </a></b>	     *  @return  The format control flags for both input and output.
+<b><a name="line617">617  </a></b>	    */
+<b><a name="line618">618  </a></b>	    <a href="#line323">fmtflags</a>
+<b><a name="line619">619  </a></b>	    <b>flags</b>() const
+<b><a name="line620">620  </a></b>	    { return <a href="#line522">_M_flags</a>; }
+<b><a name="line621">621  </a></b>	
+<b><a name="line622">622  </a></b>	    /**
+<b><a name="line623">623  </a></b>	     *  @brief  Setting new format flags all at once.
+<b><a name="line624">624  </a></b>	     *  @param  __fmtfl  The new flags to set.
+<b><a name="line625">625  </a></b>	     *  @return  The previous format control flags.
+<b><a name="line626">626  </a></b>	     *
+<b><a name="line627">627  </a></b>	     *  This function overwrites all the format flags with @a __fmtfl.
+<b><a name="line628">628  </a></b>	    */
+<b><a name="line629">629  </a></b>	    <a href="#line323">fmtflags</a>
+<b><a name="line630">630  </a></b>	    <b>flags</b>(<a href="#line323">fmtflags</a> <b>__fmtfl</b>)
+<b><a name="line631">631  </a></b>	    {
+<b><a name="line632">632  </a></b>	      <a href="#line323">fmtflags</a> <b>__old</b> = <a href="#line522">_M_flags</a>;
+<b><a name="line633">633  </a></b>	      <a href="#line522">_M_flags</a> = <a href="#line630">__fmtfl</a>;
+<b><a name="line634">634  </a></b>	      return <a href="#line632">__old</a>;
+<b><a name="line635">635  </a></b>	    }
+<b><a name="line636">636  </a></b>	
+<b><a name="line637">637  </a></b>	    /**
+<b><a name="line638">638  </a></b>	     *  @brief  Setting new format flags.
+<b><a name="line639">639  </a></b>	     *  @param  __fmtfl  Additional flags to set.
+<b><a name="line640">640  </a></b>	     *  @return  The previous format control flags.
+<b><a name="line641">641  </a></b>	     *
+<b><a name="line642">642  </a></b>	     *  This function sets additional flags in format control.  Flags that
+<b><a name="line643">643  </a></b>	     *  were previously set remain set.
+<b><a name="line644">644  </a></b>	    */
+<b><a name="line645">645  </a></b>	    <a href="#line323">fmtflags</a>
+<b><a name="line646">646  </a></b>	    <b>setf</b>(<a href="#line323">fmtflags</a> <b>__fmtfl</b>)
+<b><a name="line647">647  </a></b>	    {
+<b><a name="line648">648  </a></b>	      <a href="#line323">fmtflags</a> <b>__old</b> = <a href="#line522">_M_flags</a>;
+<b><a name="line649">649  </a></b>	      <a href="#line522">_M_flags</a> <a href="#line99">|=</a> <a href="#line646">__fmtfl</a>;
+<b><a name="line650">650  </a></b>	      return <a href="#line648">__old</a>;
+<b><a name="line651">651  </a></b>	    }
+<b><a name="line652">652  </a></b>	
+<b><a name="line653">653  </a></b>	    /**
+<b><a name="line654">654  </a></b>	     *  @brief  Setting new format flags.
+<b><a name="line655">655  </a></b>	     *  @param  __fmtfl  Additional flags to set.
+<b><a name="line656">656  </a></b>	     *  @param  __mask  The flags mask for @a fmtfl.
+<b><a name="line657">657  </a></b>	     *  @return  The previous format control flags.
+<b><a name="line658">658  </a></b>	     *
+<b><a name="line659">659  </a></b>	     *  This function clears @a mask in the format flags, then sets
+<b><a name="line660">660  </a></b>	     *  @a fmtfl @c &amp; @a mask.  An example mask is @c ios_base::adjustfield.
+<b><a name="line661">661  </a></b>	    */
+<b><a name="line662">662  </a></b>	    <a href="#line323">fmtflags</a>
+<b><a name="line663">663  </a></b>	    <b>setf</b>(<a href="#line323">fmtflags</a> <b>__fmtfl</b>, <a href="#line323">fmtflags</a> <b>__mask</b>)
+<b><a name="line664">664  </a></b>	    {
+<b><a name="line665">665  </a></b>	      <a href="#line323">fmtflags</a> <b>__old</b> = <a href="#line522">_M_flags</a>;
+<b><a name="line666">666  </a></b>	      <a href="#line522">_M_flags</a> <a href="#line103">&amp;=</a> <a href="#line95">~</a><a href="#line663">__mask</a>;
+<b><a name="line667">667  </a></b>	      <a href="#line522">_M_flags</a> <a href="#line99">|=</a> (<a href="#line663">__fmtfl</a> <a href="#line83">&amp;</a> <a href="#line663">__mask</a>);
+<b><a name="line668">668  </a></b>	      return <a href="#line665">__old</a>;
+<b><a name="line669">669  </a></b>	    }
+<b><a name="line670">670  </a></b>	
+<b><a name="line671">671  </a></b>	    /**
+<b><a name="line672">672  </a></b>	     *  @brief  Clearing format flags.
+<b><a name="line673">673  </a></b>	     *  @param  __mask  The flags to unset.
+<b><a name="line674">674  </a></b>	     *
+<b><a name="line675">675  </a></b>	     *  This function clears @a __mask in the format flags.
+<b><a name="line676">676  </a></b>	    */
+<b><a name="line677">677  </a></b>	    void
+<b><a name="line678">678  </a></b>	    <b>unsetf</b>(<a href="#line323">fmtflags</a> <b>__mask</b>)
+<b><a name="line679">679  </a></b>	    { <a href="#line522">_M_flags</a> <a href="#line103">&amp;=</a> <a href="#line95">~</a><a href="#line678">__mask</a>; }
+<b><a name="line680">680  </a></b>	
+<b><a name="line681">681  </a></b>	    /**
+<b><a name="line682">682  </a></b>	     *  @brief  Flags access.
+<b><a name="line683">683  </a></b>	     *  @return  The precision to generate on certain output operations.
+<b><a name="line684">684  </a></b>	     *
+<b><a name="line685">685  </a></b>	     *  Be careful if you try to give a definition of @a precision here; see
+<b><a name="line686">686  </a></b>	     *  DR 189.
+<b><a name="line687">687  </a></b>	    */
+<b><a name="line688">688  </a></b>	    <a href="../postypes.h/code.html#line98">streamsize</a>
+<b><a name="line689">689  </a></b>	    <b>precision</b>() const
+<b><a name="line690">690  </a></b>	    { return <a href="#line520">_M_precision</a>; }
+<b><a name="line691">691  </a></b>	
+<b><a name="line692">692  </a></b>	    /**
+<b><a name="line693">693  </a></b>	     *  @brief  Changing flags.
+<b><a name="line694">694  </a></b>	     *  @param  __prec  The new precision value.
+<b><a name="line695">695  </a></b>	     *  @return  The previous value of precision().
+<b><a name="line696">696  </a></b>	    */
+<b><a name="line697">697  </a></b>	    <a href="../postypes.h/code.html#line98">streamsize</a>
+<b><a name="line698">698  </a></b>	    <b>precision</b>(<a href="../postypes.h/code.html#line98">streamsize</a> <b>__prec</b>)
+<b><a name="line699">699  </a></b>	    {
+<b><a name="line700">700  </a></b>	      <a href="../postypes.h/code.html#line98">streamsize</a> <b>__old</b> = <a href="#line520">_M_precision</a>;
+<b><a name="line701">701  </a></b>	      <a href="#line520">_M_precision</a> = <a href="#line698">__prec</a>;
+<b><a name="line702">702  </a></b>	      return <a href="#line700">__old</a>;
+<b><a name="line703">703  </a></b>	    }
+<b><a name="line704">704  </a></b>	
+<b><a name="line705">705  </a></b>	    /**
+<b><a name="line706">706  </a></b>	     *  @brief  Flags access.
+<b><a name="line707">707  </a></b>	     *  @return  The minimum field width to generate on output operations.
+<b><a name="line708">708  </a></b>	     *
+<b><a name="line709">709  </a></b>	     *  &lt;em&gt;Minimum field width&lt;/em&gt; refers to the number of characters.
+<b><a name="line710">710  </a></b>	    */
+<b><a name="line711">711  </a></b>	    <a href="../postypes.h/code.html#line98">streamsize</a>
+<b><a name="line712">712  </a></b>	    <b>width</b>() const
+<b><a name="line713">713  </a></b>	    { return <a href="#line521">_M_width</a>; }
+<b><a name="line714">714  </a></b>	
+<b><a name="line715">715  </a></b>	    /**
+<b><a name="line716">716  </a></b>	     *  @brief  Changing flags.
+<b><a name="line717">717  </a></b>	     *  @param  __wide  The new width value.
+<b><a name="line718">718  </a></b>	     *  @return  The previous value of width().
+<b><a name="line719">719  </a></b>	    */
+<b><a name="line720">720  </a></b>	    <a href="../postypes.h/code.html#line98">streamsize</a>
+<b><a name="line721">721  </a></b>	    <b>width</b>(<a href="../postypes.h/code.html#line98">streamsize</a> <b>__wide</b>)
+<b><a name="line722">722  </a></b>	    {
+<b><a name="line723">723  </a></b>	      <a href="../postypes.h/code.html#line98">streamsize</a> <b>__old</b> = <a href="#line521">_M_width</a>;
+<b><a name="line724">724  </a></b>	      <a href="#line521">_M_width</a> = <a href="#line721">__wide</a>;
+<b><a name="line725">725  </a></b>	      return <a href="#line723">__old</a>;
+<b><a name="line726">726  </a></b>	    }
+<b><a name="line727">727  </a></b>	
+<b><a name="line728">728  </a></b>	    // [27.4.2.4] ios_base static members
+<b><a name="line729">729  </a></b>	    /**
+<b><a name="line730">730  </a></b>	     *  @brief  Interaction with the standard C I/O objects.
+<b><a name="line731">731  </a></b>	     *  @param  __sync  Whether to synchronize or not.
+<b><a name="line732">732  </a></b>	     *  @return  True if the standard streams were previously synchronized.
+<b><a name="line733">733  </a></b>	     *
+<b><a name="line734">734  </a></b>	     *  The synchronization referred to is @e only that between the standard
+<b><a name="line735">735  </a></b>	     *  C facilities (e.g., stdout) and the standard C++ objects (e.g.,
+<b><a name="line736">736  </a></b>	     *  cout).  User-declared streams are unaffected.  See
+<b><a name="line737">737  </a></b>	     *  https://gcc.gnu.org/onlinedocs/libstdc++/manual/fstreams.html#std.io.filestreams.binary
+<b><a name="line738">738  </a></b>	    */
+<b><a name="line739">739  </a></b>	    static bool
+<b><a name="line740">740  </a></b>	    sync_with_stdio(bool __sync = true);
+<b><a name="line741">741  </a></b>	
+<b><a name="line742">742  </a></b>	    // [27.4.2.3] ios_base locale functions
+<b><a name="line743">743  </a></b>	    /**
+<b><a name="line744">744  </a></b>	     *  @brief  Setting a new locale.
+<b><a name="line745">745  </a></b>	     *  @param  __loc  The new locale.
+<b><a name="line746">746  </a></b>	     *  @return  The previous locale.
+<b><a name="line747">747  </a></b>	     *
+<b><a name="line748">748  </a></b>	     *  Sets the new locale for this stream, and then invokes each callback
+<b><a name="line749">749  </a></b>	     *  with imbue_event.
+<b><a name="line750">750  </a></b>	    */
+<b><a name="line751">751  </a></b>	    <a href="../localefwd.h/code.html#line55">locale</a>
+<b><a name="line752">752  </a></b>	    imbue(const <a href="../localefwd.h/code.html#line55">locale</a>&amp; __loc) throw();
+<b><a name="line753">753  </a></b>	
+<b><a name="line754">754  </a></b>	    /**
+<b><a name="line755">755  </a></b>	     *  @brief  Locale access
+<b><a name="line756">756  </a></b>	     *  @return  A copy of the current locale.
+<b><a name="line757">757  </a></b>	     *
+<b><a name="line758">758  </a></b>	     *  If @c imbue(loc) has previously been called, then this function
+<b><a name="line759">759  </a></b>	     *  returns @c loc.  Otherwise, it returns a copy of @c std::locale(),
+<b><a name="line760">760  </a></b>	     *  the global C++ locale.
+<b><a name="line761">761  </a></b>	    */
+<b><a name="line762">762  </a></b>	    <a href="../localefwd.h/code.html#line55">locale</a>
+<b><a name="line763">763  </a></b>	    <b>getloc</b>() const
+<b><a name="line764">764  </a></b>	    { return <a href="#line590">_M_ios_locale</a>; }
+<b><a name="line765">765  </a></b>	
+<b><a name="line766">766  </a></b>	    /**
+<b><a name="line767">767  </a></b>	     *  @brief  Locale access
+<b><a name="line768">768  </a></b>	     *  @return  A reference to the current locale.
+<b><a name="line769">769  </a></b>	     *
+<b><a name="line770">770  </a></b>	     *  Like getloc above, but returns a reference instead of
+<b><a name="line771">771  </a></b>	     *  generating a copy.
+<b><a name="line772">772  </a></b>	    */
+<b><a name="line773">773  </a></b>	    const <a href="../localefwd.h/code.html#line55">locale</a>&amp;
+<b><a name="line774">774  </a></b>	    <b>_M_getloc</b>() const
+<b><a name="line775">775  </a></b>	    { return <a href="#line590">_M_ios_locale</a>; }
+<b><a name="line776">776  </a></b>	
+<b><a name="line777">777  </a></b>	    // [27.4.2.5] ios_base storage functions
+<b><a name="line778">778  </a></b>	    /**
+<b><a name="line779">779  </a></b>	     *  @brief  Access to unique indices.
+<b><a name="line780">780  </a></b>	     *  @return  An integer different from all previous calls.
+<b><a name="line781">781  </a></b>	     *
+<b><a name="line782">782  </a></b>	     *  This function returns a unique integer every time it is called.  It
+<b><a name="line783">783  </a></b>	     *  can be used for any purpose, but is primarily intended to be a unique
+<b><a name="line784">784  </a></b>	     *  index for the iword and pword functions.  The expectation is that an
+<b><a name="line785">785  </a></b>	     *  application calls xalloc in order to obtain an index in the iword and
+<b><a name="line786">786  </a></b>	     *  pword arrays that can be used without fear of conflict.
+<b><a name="line787">787  </a></b>	     *
+<b><a name="line788">788  </a></b>	     *  The implementation maintains a static variable that is incremented and
+<b><a name="line789">789  </a></b>	     *  returned on each invocation.  xalloc is guaranteed to return an index
+<b><a name="line790">790  </a></b>	     *  that is safe to use in the iword and pword arrays.
+<b><a name="line791">791  </a></b>	    */
+<b><a name="line792">792  </a></b>	    static int
+<b><a name="line793">793  </a></b>	    xalloc() throw();
+<b><a name="line794">794  </a></b>	
+<b><a name="line795">795  </a></b>	    /**
+<b><a name="line796">796  </a></b>	     *  @brief  Access to integer array.
+<b><a name="line797">797  </a></b>	     *  @param  __ix  Index into the array.
+<b><a name="line798">798  </a></b>	     *  @return  A reference to an integer associated with the index.
+<b><a name="line799">799  </a></b>	     *
+<b><a name="line800">800  </a></b>	     *  The iword function provides access to an array of integers that can be
+<b><a name="line801">801  </a></b>	     *  used for any purpose.  The array grows as required to hold the
+<b><a name="line802">802  </a></b>	     *  supplied index.  All integers in the array are initialized to 0.
+<b><a name="line803">803  </a></b>	     *
+<b><a name="line804">804  </a></b>	     *  The implementation reserves several indices.  You should use xalloc to
+<b><a name="line805">805  </a></b>	     *  obtain an index that is safe to use.  Also note that since the array
+<b><a name="line806">806  </a></b>	     *  can grow dynamically, it is not safe to hold onto the reference.
+<b><a name="line807">807  </a></b>	    */
+<b><a name="line808">808  </a></b>	    long&amp;
+<b><a name="line809">809  </a></b>	    <b>iword</b>(int <b>__ix</b>)
+<b><a name="line810">810  </a></b>	    {
+<b><a name="line811">811  </a></b>	      <a href="#line567">_Words</a>&amp; <b>__word</b> = (<a href="#line809">__ix</a> &lt; <a href="#line583">_M_word_size</a>)
+<b><a name="line812">812  </a></b>				? <a href="#line584">_M_word</a>[<a href="#line809">__ix</a>] : <a href="#line587">_M_grow_words</a>(<a href="#line809">__ix</a>, true);
+<b><a name="line813">813  </a></b>	      return <a href="#line811">__word</a>.<a href="#line570">_M_iword</a>;
+<b><a name="line814">814  </a></b>	    }
+<b><a name="line815">815  </a></b>	
+<b><a name="line816">816  </a></b>	    /**
+<b><a name="line817">817  </a></b>	     *  @brief  Access to void pointer array.
+<b><a name="line818">818  </a></b>	     *  @param  __ix  Index into the array.
+<b><a name="line819">819  </a></b>	     *  @return  A reference to a void* associated with the index.
+<b><a name="line820">820  </a></b>	     *
+<b><a name="line821">821  </a></b>	     *  The pword function provides access to an array of pointers that can be
+<b><a name="line822">822  </a></b>	     *  used for any purpose.  The array grows as required to hold the
+<b><a name="line823">823  </a></b>	     *  supplied index.  All pointers in the array are initialized to 0.
+<b><a name="line824">824  </a></b>	     *
+<b><a name="line825">825  </a></b>	     *  The implementation reserves several indices.  You should use xalloc to
+<b><a name="line826">826  </a></b>	     *  obtain an index that is safe to use.  Also note that since the array
+<b><a name="line827">827  </a></b>	     *  can grow dynamically, it is not safe to hold onto the reference.
+<b><a name="line828">828  </a></b>	    */
+<b><a name="line829">829  </a></b>	    void*&amp;
+<b><a name="line830">830  </a></b>	    <b>pword</b>(int <b>__ix</b>)
+<b><a name="line831">831  </a></b>	    {
+<b><a name="line832">832  </a></b>	      <a href="#line567">_Words</a>&amp; <b>__word</b> = (<a href="#line830">__ix</a> &lt; <a href="#line583">_M_word_size</a>)
+<b><a name="line833">833  </a></b>				? <a href="#line584">_M_word</a>[<a href="#line830">__ix</a>] : <a href="#line587">_M_grow_words</a>(<a href="#line830">__ix</a>, false);
+<b><a name="line834">834  </a></b>	      return <a href="#line832">__word</a>.<a href="#line569">_M_pword</a>;
+<b><a name="line835">835  </a></b>	    }
+<b><a name="line836">836  </a></b>	
+<b><a name="line837">837  </a></b>	    // Destructor
+<b><a name="line838">838  </a></b>	    /**
+<b><a name="line839">839  </a></b>	     *  Invokes each callback with erase_event.  Destroys local storage.
+<b><a name="line840">840  </a></b>	     *
+<b><a name="line841">841  </a></b>	     *  Note that the ios_base object for the standard streams never gets
+<b><a name="line842">842  </a></b>	     *  destroyed.  As a result, any callbacks registered with the standard
+<b><a name="line843">843  </a></b>	     *  streams will not get invoked with erase_event (unless copyfmt is
+<b><a name="line844">844  </a></b>	     *  used).
+<b><a name="line845">845  </a></b>	    */
+<b><a name="line846">846  </a></b>	    virtual ~ios_base();
+<b><a name="line847">847  </a></b>	
+<b><a name="line848">848  </a></b>	  protected:
+<b><a name="line849">849  </a></b>	    ios_base() throw ();
+<b><a name="line850">850  </a></b>	
+<b><a name="line851">851  </a></b>	#if __cplusplus &lt; 201103L
+<b><a name="line852">852  </a></b>	  // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line853">853  </a></b>	  // 50.  Copy constructor and assignment operator of ios_base
+<b><a name="line854">854  </a></b>	  private:
+<b><a name="line855">855  </a></b>	    ios_base(const ios_base&amp;);
+<b><a name="line856">856  </a></b>	
+<b><a name="line857">857  </a></b>	    ios_base&amp;
+<b><a name="line858">858  </a></b>	    operator=(const ios_base&amp;);
+<b><a name="line859">859  </a></b>	#else
+<b><a name="line860">860  </a></b>	  public:
+<b><a name="line861">861  </a></b>	    <b>ios_base</b>(const <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;) = delete;
+<b><a name="line862">862  </a></b>	
+<b><a name="line863">863  </a></b>	    <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line864">864  </a></b>	    <b>operator=</b>(const <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;) = delete;
+<b><a name="line865">865  </a></b>	
+<b><a name="line866">866  </a></b>	  protected:
+<b><a name="line867">867  </a></b>	    void
+<b><a name="line868">868  </a></b>	    _M_move(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp;) noexcept;
+<b><a name="line869">869  </a></b>	
+<b><a name="line870">870  </a></b>	    void
+<b><a name="line871">871  </a></b>	    _M_swap(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; __rhs) noexcept;
+<b><a name="line872">872  </a></b>	#endif
+<b><a name="line873">873  </a></b>	  };
+<b><a name="line874">874  </a></b>	
+<b><a name="line875">875  </a></b>	  // [27.4.5.1] fmtflags manipulators
+<b><a name="line876">876  </a></b>	  /// Calls base.setf(ios_base::boolalpha).
+<b><a name="line877">877  </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line878">878  </a></b>	  <b>boolalpha</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line879">879  </a></b>	  {
+<b><a name="line880">880  </a></b>	    <a href="#line878">__base</a>.<a href="#line646">setf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line326">boolalpha</a>);
+<b><a name="line881">881  </a></b>	    return <a href="#line878">__base</a>;
+<b><a name="line882">882  </a></b>	  }
+<b><a name="line883">883  </a></b>	
+<b><a name="line884">884  </a></b>	  /// Calls base.unsetf(ios_base::boolalpha).
+<b><a name="line885">885  </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line886">886  </a></b>	  <b>noboolalpha</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line887">887  </a></b>	  {
+<b><a name="line888">888  </a></b>	    <a href="#line886">__base</a>.<a href="#line678">unsetf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line326">boolalpha</a>);
+<b><a name="line889">889  </a></b>	    return <a href="#line886">__base</a>;
+<b><a name="line890">890  </a></b>	  }
+<b><a name="line891">891  </a></b>	
+<b><a name="line892">892  </a></b>	  /// Calls base.setf(ios_base::showbase).
+<b><a name="line893">893  </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line894">894  </a></b>	  <b>showbase</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line895">895  </a></b>	  {
+<b><a name="line896">896  </a></b>	    <a href="#line894">__base</a>.<a href="#line646">setf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line358">showbase</a>);
+<b><a name="line897">897  </a></b>	    return <a href="#line894">__base</a>;
+<b><a name="line898">898  </a></b>	  }
+<b><a name="line899">899  </a></b>	
+<b><a name="line900">900  </a></b>	  /// Calls base.unsetf(ios_base::showbase).
+<b><a name="line901">901  </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line902">902  </a></b>	  <b>noshowbase</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line903">903  </a></b>	  {
+<b><a name="line904">904  </a></b>	    <a href="#line902">__base</a>.<a href="#line678">unsetf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line358">showbase</a>);
+<b><a name="line905">905  </a></b>	    return <a href="#line902">__base</a>;
+<b><a name="line906">906  </a></b>	  }
+<b><a name="line907">907  </a></b>	
+<b><a name="line908">908  </a></b>	  /// Calls base.setf(ios_base::showpoint).
+<b><a name="line909">909  </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line910">910  </a></b>	  <b>showpoint</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line911">911  </a></b>	  {
+<b><a name="line912">912  </a></b>	    <a href="#line910">__base</a>.<a href="#line646">setf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line362">showpoint</a>);
+<b><a name="line913">913  </a></b>	    return <a href="#line910">__base</a>;
+<b><a name="line914">914  </a></b>	  }
+<b><a name="line915">915  </a></b>	
+<b><a name="line916">916  </a></b>	  /// Calls base.unsetf(ios_base::showpoint).
+<b><a name="line917">917  </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line918">918  </a></b>	  <b>noshowpoint</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line919">919  </a></b>	  {
+<b><a name="line920">920  </a></b>	    <a href="#line918">__base</a>.<a href="#line678">unsetf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line362">showpoint</a>);
+<b><a name="line921">921  </a></b>	    return <a href="#line918">__base</a>;
+<b><a name="line922">922  </a></b>	  }
+<b><a name="line923">923  </a></b>	
+<b><a name="line924">924  </a></b>	  /// Calls base.setf(ios_base::showpos).
+<b><a name="line925">925  </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line926">926  </a></b>	  <b>showpos</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line927">927  </a></b>	  {
+<b><a name="line928">928  </a></b>	    <a href="#line926">__base</a>.<a href="#line646">setf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line365">showpos</a>);
+<b><a name="line929">929  </a></b>	    return <a href="#line926">__base</a>;
+<b><a name="line930">930  </a></b>	  }
+<b><a name="line931">931  </a></b>	
+<b><a name="line932">932  </a></b>	  /// Calls base.unsetf(ios_base::showpos).
+<b><a name="line933">933  </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line934">934  </a></b>	  <b>noshowpos</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line935">935  </a></b>	  {
+<b><a name="line936">936  </a></b>	    <a href="#line934">__base</a>.<a href="#line678">unsetf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line365">showpos</a>);
+<b><a name="line937">937  </a></b>	    return <a href="#line934">__base</a>;
+<b><a name="line938">938  </a></b>	  }
+<b><a name="line939">939  </a></b>	
+<b><a name="line940">940  </a></b>	  /// Calls base.setf(ios_base::skipws).
+<b><a name="line941">941  </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line942">942  </a></b>	  <b>skipws</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line943">943  </a></b>	  {
+<b><a name="line944">944  </a></b>	    <a href="#line942">__base</a>.<a href="#line646">setf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line368">skipws</a>);
+<b><a name="line945">945  </a></b>	    return <a href="#line942">__base</a>;
+<b><a name="line946">946  </a></b>	  }
+<b><a name="line947">947  </a></b>	
+<b><a name="line948">948  </a></b>	  /// Calls base.unsetf(ios_base::skipws).
+<b><a name="line949">949  </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line950">950  </a></b>	  <b>noskipws</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line951">951  </a></b>	  {
+<b><a name="line952">952  </a></b>	    <a href="#line950">__base</a>.<a href="#line678">unsetf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line368">skipws</a>);
+<b><a name="line953">953  </a></b>	    return <a href="#line950">__base</a>;
+<b><a name="line954">954  </a></b>	  }
+<b><a name="line955">955  </a></b>	
+<b><a name="line956">956  </a></b>	  /// Calls base.setf(ios_base::uppercase).
+<b><a name="line957">957  </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line958">958  </a></b>	  <b>uppercase</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line959">959  </a></b>	  {
+<b><a name="line960">960  </a></b>	    <a href="#line958">__base</a>.<a href="#line646">setf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line375">uppercase</a>);
+<b><a name="line961">961  </a></b>	    return <a href="#line958">__base</a>;
+<b><a name="line962">962  </a></b>	  }
+<b><a name="line963">963  </a></b>	
+<b><a name="line964">964  </a></b>	  /// Calls base.unsetf(ios_base::uppercase).
+<b><a name="line965">965  </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line966">966  </a></b>	  <b>nouppercase</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line967">967  </a></b>	  {
+<b><a name="line968">968  </a></b>	    <a href="#line966">__base</a>.<a href="#line678">unsetf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line375">uppercase</a>);
+<b><a name="line969">969  </a></b>	    return <a href="#line966">__base</a>;
+<b><a name="line970">970  </a></b>	  }
+<b><a name="line971">971  </a></b>	
+<b><a name="line972">972  </a></b>	  /// Calls base.setf(ios_base::unitbuf).
+<b><a name="line973">973  </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line974">974  </a></b>	  <b>unitbuf</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line975">975  </a></b>	  {
+<b><a name="line976">976  </a></b>	     <a href="#line974">__base</a>.<a href="#line646">setf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line371">unitbuf</a>);
+<b><a name="line977">977  </a></b>	     return <a href="#line974">__base</a>;
+<b><a name="line978">978  </a></b>	  }
+<b><a name="line979">979  </a></b>	
+<b><a name="line980">980  </a></b>	  /// Calls base.unsetf(ios_base::unitbuf).
+<b><a name="line981">981  </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line982">982  </a></b>	  <b>nounitbuf</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line983">983  </a></b>	  {
+<b><a name="line984">984  </a></b>	     <a href="#line982">__base</a>.<a href="#line678">unsetf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line371">unitbuf</a>);
+<b><a name="line985">985  </a></b>	     return <a href="#line982">__base</a>;
+<b><a name="line986">986  </a></b>	  }
+<b><a name="line987">987  </a></b>	
+<b><a name="line988">988  </a></b>	  // [27.4.5.2] adjustfield manipulators
+<b><a name="line989">989  </a></b>	  /// Calls base.setf(ios_base::internal, ios_base::adjustfield).
+<b><a name="line990">990  </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line991">991  </a></b>	  <b>internal</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line992">992  </a></b>	  {
+<b><a name="line993">993  </a></b>	     <a href="#line991">__base</a>.<a href="#line663">setf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line340">internal</a>, <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line378">adjustfield</a>);
+<b><a name="line994">994  </a></b>	     return <a href="#line991">__base</a>;
+<b><a name="line995">995  </a></b>	  }
+<b><a name="line996">996  </a></b>	
+<b><a name="line997">997  </a></b>	  /// Calls base.setf(ios_base::left, ios_base::adjustfield).
+<b><a name="line998">998  </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line999">999  </a></b>	  <b>left</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line1000">1000 </a></b>	  {
+<b><a name="line1001">1001 </a></b>	    <a href="#line999">__base</a>.<a href="#line663">setf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line344">left</a>, <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line378">adjustfield</a>);
+<b><a name="line1002">1002 </a></b>	    return <a href="#line999">__base</a>;
+<b><a name="line1003">1003 </a></b>	  }
+<b><a name="line1004">1004 </a></b>	
+<b><a name="line1005">1005 </a></b>	  /// Calls base.setf(ios_base::right, ios_base::adjustfield).
+<b><a name="line1006">1006 </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line1007">1007 </a></b>	  <b>right</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line1008">1008 </a></b>	  {
+<b><a name="line1009">1009 </a></b>	    <a href="#line1007">__base</a>.<a href="#line663">setf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line351">right</a>, <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line378">adjustfield</a>);
+<b><a name="line1010">1010 </a></b>	    return <a href="#line1007">__base</a>;
+<b><a name="line1011">1011 </a></b>	  }
+<b><a name="line1012">1012 </a></b>	
+<b><a name="line1013">1013 </a></b>	  // [27.4.5.3] basefield manipulators
+<b><a name="line1014">1014 </a></b>	  /// Calls base.setf(ios_base::dec, ios_base::basefield).
+<b><a name="line1015">1015 </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line1016">1016 </a></b>	  <b>dec</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line1017">1017 </a></b>	  {
+<b><a name="line1018">1018 </a></b>	    <a href="#line1016">__base</a>.<a href="#line663">setf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line329">dec</a>, <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line381">basefield</a>);
+<b><a name="line1019">1019 </a></b>	    return <a href="#line1016">__base</a>;
+<b><a name="line1020">1020 </a></b>	  }
+<b><a name="line1021">1021 </a></b>	
+<b><a name="line1022">1022 </a></b>	  /// Calls base.setf(ios_base::hex, ios_base::basefield).
+<b><a name="line1023">1023 </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line1024">1024 </a></b>	  <b>hex</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line1025">1025 </a></b>	  {
+<b><a name="line1026">1026 </a></b>	    <a href="#line1024">__base</a>.<a href="#line663">setf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line335">hex</a>, <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line381">basefield</a>);
+<b><a name="line1027">1027 </a></b>	    return <a href="#line1024">__base</a>;
+<b><a name="line1028">1028 </a></b>	  }
+<b><a name="line1029">1029 </a></b>	
+<b><a name="line1030">1030 </a></b>	  /// Calls base.setf(ios_base::oct, ios_base::basefield).
+<b><a name="line1031">1031 </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line1032">1032 </a></b>	  <b>oct</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line1033">1033 </a></b>	  {
+<b><a name="line1034">1034 </a></b>	    <a href="#line1032">__base</a>.<a href="#line663">setf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line347">oct</a>, <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line381">basefield</a>);
+<b><a name="line1035">1035 </a></b>	    return <a href="#line1032">__base</a>;
+<b><a name="line1036">1036 </a></b>	  }
+<b><a name="line1037">1037 </a></b>	
+<b><a name="line1038">1038 </a></b>	  // [27.4.5.4] floatfield manipulators
+<b><a name="line1039">1039 </a></b>	  /// Calls base.setf(ios_base::fixed, ios_base::floatfield).
+<b><a name="line1040">1040 </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line1041">1041 </a></b>	  <b>fixed</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line1042">1042 </a></b>	  {
+<b><a name="line1043">1043 </a></b>	    <a href="#line1041">__base</a>.<a href="#line663">setf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line332">fixed</a>, <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line384">floatfield</a>);
+<b><a name="line1044">1044 </a></b>	    return <a href="#line1041">__base</a>;
+<b><a name="line1045">1045 </a></b>	  }
+<b><a name="line1046">1046 </a></b>	
+<b><a name="line1047">1047 </a></b>	  /// Calls base.setf(ios_base::scientific, ios_base::floatfield).
+<b><a name="line1048">1048 </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line1049">1049 </a></b>	  <b>scientific</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line1050">1050 </a></b>	  {
+<b><a name="line1051">1051 </a></b>	    <a href="#line1049">__base</a>.<a href="#line663">setf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line354">scientific</a>, <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line384">floatfield</a>);
+<b><a name="line1052">1052 </a></b>	    return <a href="#line1049">__base</a>;
+<b><a name="line1053">1053 </a></b>	  }
+<b><a name="line1054">1054 </a></b>	
+<b><a name="line1055">1055 </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line1056">1056 </a></b>	  // New C++11 floatfield manipulators
+<b><a name="line1057">1057 </a></b>	
+<b><a name="line1058">1058 </a></b>	  /// Calls
+<b><a name="line1059">1059 </a></b>	  /// base.setf(ios_base::fixed|ios_base::scientific, ios_base::floatfield)
+<b><a name="line1060">1060 </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line1061">1061 </a></b>	  <b>hexfloat</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line1062">1062 </a></b>	  {
+<b><a name="line1063">1063 </a></b>	    <a href="#line1061">__base</a>.<a href="#line663">setf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line332">fixed</a> <a href="#line87">|</a> <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line354">scientific</a>, <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line384">floatfield</a>);
+<b><a name="line1064">1064 </a></b>	    return <a href="#line1061">__base</a>;
+<b><a name="line1065">1065 </a></b>	  }
+<b><a name="line1066">1066 </a></b>	
+<b><a name="line1067">1067 </a></b>	  /// Calls @c base.unsetf(ios_base::floatfield)
+<b><a name="line1068">1068 </a></b>	  inline <a href="../../iosfwd/code.html#line74">ios_base</a>&amp;
+<b><a name="line1069">1069 </a></b>	  <b>defaultfloat</b>(<a href="../../iosfwd/code.html#line74">ios_base</a>&amp; <b>__base</b>)
+<b><a name="line1070">1070 </a></b>	  {
+<b><a name="line1071">1071 </a></b>	    <a href="#line1069">__base</a>.<a href="#line678">unsetf</a>(<a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="#line384">floatfield</a>);
+<b><a name="line1072">1072 </a></b>	    return <a href="#line1069">__base</a>;
+<b><a name="line1073">1073 </a></b>	  }
+<b><a name="line1074">1074 </a></b>	#endif
+<b><a name="line1075">1075 </a></b>	
+<b><a name="line1076">1076 </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line1077">1077 </a></b>	} // namespace
+<b><a name="line1078">1078 </a></b>	
+<b><a name="line1079">1079 </a></b>	#endif /* _IOS_BASE_H */
+<b><a name="line1080">1080 </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

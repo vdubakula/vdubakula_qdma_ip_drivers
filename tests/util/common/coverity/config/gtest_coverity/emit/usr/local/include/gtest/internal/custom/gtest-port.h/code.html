@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/gtest/internal/custom/gtest-port.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Copyright 2015, Google Inc.
+<b><a name="line2">2    </a></b>	// All rights reserved.
+<b><a name="line3">3    </a></b>	//
+<b><a name="line4">4    </a></b>	// Redistribution and use in source and binary forms, with or without
+<b><a name="line5">5    </a></b>	// modification, are permitted provided that the following conditions are
+<b><a name="line6">6    </a></b>	// met:
+<b><a name="line7">7    </a></b>	//
+<b><a name="line8">8    </a></b>	//     * Redistributions of source code must retain the above copyright
+<b><a name="line9">9    </a></b>	// notice, this list of conditions and the following disclaimer.
+<b><a name="line10">10   </a></b>	//     * Redistributions in binary form must reproduce the above
+<b><a name="line11">11   </a></b>	// copyright notice, this list of conditions and the following disclaimer
+<b><a name="line12">12   </a></b>	// in the documentation and/or other materials provided with the
+<b><a name="line13">13   </a></b>	// distribution.
+<b><a name="line14">14   </a></b>	//     * Neither the name of Google Inc. nor the names of its
+<b><a name="line15">15   </a></b>	// contributors may be used to endorse or promote products derived from
+<b><a name="line16">16   </a></b>	// this software without specific prior written permission.
+<b><a name="line17">17   </a></b>	//
+<b><a name="line18">18   </a></b>	// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+<b><a name="line19">19   </a></b>	// &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+<b><a name="line20">20   </a></b>	// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+<b><a name="line21">21   </a></b>	// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+<b><a name="line22">22   </a></b>	// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+<b><a name="line23">23   </a></b>	// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+<b><a name="line24">24   </a></b>	// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+<b><a name="line25">25   </a></b>	// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+<b><a name="line26">26   </a></b>	// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+<b><a name="line27">27   </a></b>	// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+<b><a name="line28">28   </a></b>	// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+<b><a name="line29">29   </a></b>	//
+<b><a name="line30">30   </a></b>	// Injection point for custom user configurations.
+<b><a name="line31">31   </a></b>	// The following macros can be defined:
+<b><a name="line32">32   </a></b>	//
+<b><a name="line33">33   </a></b>	//   Flag related macros:
+<b><a name="line34">34   </a></b>	//     GTEST_FLAG(flag_name)
+<b><a name="line35">35   </a></b>	//     GTEST_USE_OWN_FLAGFILE_FLAG_  - Define to 0 when the system provides its
+<b><a name="line36">36   </a></b>	//                                     own flagfile flag parsing.
+<b><a name="line37">37   </a></b>	//     GTEST_DECLARE_bool_(name)
+<b><a name="line38">38   </a></b>	//     GTEST_DECLARE_int32_(name)
+<b><a name="line39">39   </a></b>	//     GTEST_DECLARE_string_(name)
+<b><a name="line40">40   </a></b>	//     GTEST_DEFINE_bool_(name, default_val, doc)
+<b><a name="line41">41   </a></b>	//     GTEST_DEFINE_int32_(name, default_val, doc)
+<b><a name="line42">42   </a></b>	//     GTEST_DEFINE_string_(name, default_val, doc)
+<b><a name="line43">43   </a></b>	//
+<b><a name="line44">44   </a></b>	//   Test filtering:
+<b><a name="line45">45   </a></b>	//     GTEST_TEST_FILTER_ENV_VAR_ - The name of an environment variable that
+<b><a name="line46">46   </a></b>	//                                  will be used if --GTEST_FLAG(test_filter)
+<b><a name="line47">47   </a></b>	//                                  is not provided.
+<b><a name="line48">48   </a></b>	//
+<b><a name="line49">49   </a></b>	//   Logging:
+<b><a name="line50">50   </a></b>	//     GTEST_LOG_(severity)
+<b><a name="line51">51   </a></b>	//     GTEST_CHECK_(condition)
+<b><a name="line52">52   </a></b>	//     Functions LogToStderr() and FlushInfoLog() have to be provided too.
+<b><a name="line53">53   </a></b>	//
+<b><a name="line54">54   </a></b>	//   Threading:
+<b><a name="line55">55   </a></b>	//     GTEST_HAS_NOTIFICATION_ - Enabled if Notification is already provided.
+<b><a name="line56">56   </a></b>	//     GTEST_HAS_MUTEX_AND_THREAD_LOCAL_ - Enabled if Mutex and ThreadLocal are
+<b><a name="line57">57   </a></b>	//                                         already provided.
+<b><a name="line58">58   </a></b>	//     Must also provide GTEST_DECLARE_STATIC_MUTEX_(mutex) and
+<b><a name="line59">59   </a></b>	//     GTEST_DEFINE_STATIC_MUTEX_(mutex)
+<b><a name="line60">60   </a></b>	//
+<b><a name="line61">61   </a></b>	//     GTEST_EXCLUSIVE_LOCK_REQUIRED_(locks)
+<b><a name="line62">62   </a></b>	//     GTEST_LOCK_EXCLUDED_(locks)
+<b><a name="line63">63   </a></b>	//
+<b><a name="line64">64   </a></b>	// ** Custom implementation starts here **
+<b><a name="line65">65   </a></b>	
+<b><a name="line66">66   </a></b>	#ifndef GTEST_INCLUDE_GTEST_INTERNAL_CUSTOM_GTEST_PORT_H_
+<b><a name="line67">67   </a></b>	#define <b>GTEST_INCLUDE_GTEST_INTERNAL_CUSTOM_GTEST_PORT_H_</b>
+<b><a name="line68">68   </a></b>	
+<b><a name="line69">69   </a></b>	#endif  // GTEST_INCLUDE_GTEST_INTERNAL_CUSTOM_GTEST_PORT_H_
+<b><a name="line70">70   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

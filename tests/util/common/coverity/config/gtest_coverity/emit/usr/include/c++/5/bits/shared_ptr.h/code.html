@@ -1,0 +1,711 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/bits/shared_ptr.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// shared_ptr and weak_ptr implementation -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2007-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	// GCC Note: Based on files from version 1.32.0 of the Boost library.
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>	//  shared_count.hpp
+<b><a name="line28">28   </a></b>	//  Copyright (c) 2001, 2002, 2003 Peter Dimov and Multi Media Ltd.
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	//  shared_ptr.hpp
+<b><a name="line31">31   </a></b>	//  Copyright (C) 1998, 1999 Greg Colvin and Beman Dawes.
+<b><a name="line32">32   </a></b>	//  Copyright (C) 2001, 2002, 2003 Peter Dimov
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	//  weak_ptr.hpp
+<b><a name="line35">35   </a></b>	//  Copyright (C) 2001, 2002, 2003 Peter Dimov
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	//  enable_shared_from_this.hpp
+<b><a name="line38">38   </a></b>	//  Copyright (C) 2002 Peter Dimov
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	// Distributed under the Boost Software License, Version 1.0. (See
+<b><a name="line41">41   </a></b>	// accompanying file LICENSE_1_0.txt or copy at
+<b><a name="line42">42   </a></b>	// http://www.boost.org/LICENSE_1_0.txt)
+<b><a name="line43">43   </a></b>	
+<b><a name="line44">44   </a></b>	/** @file bits/shared_ptr.h
+<b><a name="line45">45   </a></b>	 *  This is an internal header file, included by other library headers.
+<b><a name="line46">46   </a></b>	 *  Do not attempt to use it directly. @headername{memory}
+<b><a name="line47">47   </a></b>	 */
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	#ifndef _SHARED_PTR_H
+<b><a name="line50">50   </a></b>	#define <b>_SHARED_PTR_H</b> 1
+<b><a name="line51">51   </a></b>	
+<b><a name="line52">52   </a></b>	#include &lt;bits/shared_ptr_base.h&gt;
+<b><a name="line53">53   </a></b>	
+<b><a name="line54">54   </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line55">55   </a></b>	{
+<b><a name="line56">56   </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line57">57   </a></b>	
+<b><a name="line58">58   </a></b>	  /**
+<b><a name="line59">59   </a></b>	   * @addtogroup pointer_abstractions
+<b><a name="line60">60   </a></b>	   * @{
+<b><a name="line61">61   </a></b>	   */
+<b><a name="line62">62   </a></b>	
+<b><a name="line63">63   </a></b>	  /// 20.7.2.2.11 shared_ptr I/O
+<b><a name="line64">64   </a></b>	  template&lt;typename <b>_Ch</b>, typename <b>_Tr</b>, typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line65">65   </a></b>	    inline <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line64">_Ch</a>, <a href="#line64">_Tr</a>&gt;&amp;
+<b><a name="line66">66   </a></b>	    <b>operator&lt;&lt;</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line64">_Ch</a>, <a href="#line64">_Tr</a>&gt;&amp; __os,
+<b><a name="line67">67   </a></b>		       const <a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line64">_Tp</a>, <a href="#line64">_Lp</a>&gt;&amp; __p)
+<b><a name="line68">68   </a></b>	    {
+<b><a name="line69">69   </a></b>	      __os &lt;&lt; __p.get();
+<b><a name="line70">70   </a></b>	      return __os;
+<b><a name="line71">71   </a></b>	    }
+<b><a name="line72">72   </a></b>	
+<b><a name="line73">73   </a></b>	  /// 20.7.2.2.10 shared_ptr get_deleter
+<b><a name="line74">74   </a></b>	  template&lt;typename <b>_Del</b>, typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line75">75   </a></b>	    inline <a href="#line74">_Del</a>*
+<b><a name="line76">76   </a></b>	    <b>get_deleter</b>(const <a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line74">_Tp</a>, <a href="#line74">_Lp</a>&gt;&amp; __p) noexcept
+<b><a name="line77">77   </a></b>	    {
+<b><a name="line78">78   </a></b>	#if <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line444">__cpp_rtti</a>
+<b><a name="line79">79   </a></b>	      return static_cast&lt;_Del*&gt;(__p._M_get_deleter(typeid(_Del)));
+<b><a name="line80">80   </a></b>	#else
+<b><a name="line81">81   </a></b>	      return 0;
+<b><a name="line82">82   </a></b>	#endif
+<b><a name="line83">83   </a></b>	    }
+<b><a name="line84">84   </a></b>	
+<b><a name="line85">85   </a></b>	
+<b><a name="line86">86   </a></b>	  /**
+<b><a name="line87">87   </a></b>	   *  @brief  A smart pointer with reference-counted copy semantics.
+<b><a name="line88">88   </a></b>	   *
+<b><a name="line89">89   </a></b>	   *  The object pointed to is deleted when the last shared_ptr pointing to
+<b><a name="line90">90   </a></b>	   *  it is destroyed or reset.
+<b><a name="line91">91   </a></b>	  */
+<b><a name="line92">92   </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line93">93   </a></b>	    class shared_ptr : public <a href="../shared_ptr_base.h/code.html#line867">__shared_ptr</a>&lt;<a href="#line92">_Tp</a>&gt;
+<b><a name="line94">94   </a></b>	    {
+<b><a name="line95">95   </a></b>	      template&lt;typename <b>_Ptr</b>&gt;
+<b><a name="line96">96   </a></b>		using <b>_Convertible</b>
+<b><a name="line97">97   </a></b>		  = typename <a href="../../type_traits/code.html#line2099">enable_if</a>&lt;<a href="../../type_traits/code.html#line1491">is_convertible</a>&lt;<a href="#line95">_Ptr</a>, <a href="#line92">_Tp</a>*&gt;::value&gt;::type;
+<b><a name="line98">98   </a></b>	
+<b><a name="line99">99   </a></b>	    public:
+<b><a name="line100">100  </a></b>	      /**
+<b><a name="line101">101  </a></b>	       *  @brief  Construct an empty %shared_ptr.
+<b><a name="line102">102  </a></b>	       *  @post   use_count()==0 &amp;&amp; get()==0
+<b><a name="line103">103  </a></b>	       */
+<b><a name="line104">104  </a></b>	      constexpr shared_ptr() noexcept
+<b><a name="line105">105  </a></b>	      : <a href="../shared_ptr_base.h/code.html#line867">__shared_ptr</a>&lt;<a href="#line92">_Tp</a>&gt;() { }
+<b><a name="line106">106  </a></b>	
+<b><a name="line107">107  </a></b>	      <b>shared_ptr</b>(const <a href="#line93">shared_ptr</a>&amp;) noexcept = default;
+<b><a name="line108">108  </a></b>	
+<b><a name="line109">109  </a></b>	      /**
+<b><a name="line110">110  </a></b>	       *  @brief  Construct a %shared_ptr that owns the pointer @a __p.
+<b><a name="line111">111  </a></b>	       *  @param  __p  A pointer that is convertible to element_type*.
+<b><a name="line112">112  </a></b>	       *  @post   use_count() == 1 &amp;&amp; get() == __p
+<b><a name="line113">113  </a></b>	       *  @throw  std::bad_alloc, in which case @c delete @a __p is called.
+<b><a name="line114">114  </a></b>	       */
+<b><a name="line115">115  </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line116">116  </a></b>		explicit shared_ptr(<a href="#line115">_Tp1</a>* __p)
+<b><a name="line117">117  </a></b>	        : __shared_ptr&lt;_Tp&gt;(__p) { }
+<b><a name="line118">118  </a></b>	
+<b><a name="line119">119  </a></b>	      /**
+<b><a name="line120">120  </a></b>	       *  @brief  Construct a %shared_ptr that owns the pointer @a __p
+<b><a name="line121">121  </a></b>	       *          and the deleter @a __d.
+<b><a name="line122">122  </a></b>	       *  @param  __p  A pointer.
+<b><a name="line123">123  </a></b>	       *  @param  __d  A deleter.
+<b><a name="line124">124  </a></b>	       *  @post   use_count() == 1 &amp;&amp; get() == __p
+<b><a name="line125">125  </a></b>	       *  @throw  std::bad_alloc, in which case @a __d(__p) is called.
+<b><a name="line126">126  </a></b>	       *
+<b><a name="line127">127  </a></b>	       *  Requirements: _Deleter's copy constructor and destructor must
+<b><a name="line128">128  </a></b>	       *  not throw
+<b><a name="line129">129  </a></b>	       *
+<b><a name="line130">130  </a></b>	       *  __shared_ptr will release __p by calling __d(__p)
+<b><a name="line131">131  </a></b>	       */
+<b><a name="line132">132  </a></b>	      template&lt;typename <b>_Tp1</b>, typename <b>_Deleter</b>&gt;
+<b><a name="line133">133  </a></b>		shared_ptr(<a href="#line132">_Tp1</a>* <b>__p</b>, <a href="#line132">_Deleter</a> <b>__d</b>)
+<b><a name="line134">134  </a></b>	        : <a href="../shared_ptr_base.h/code.html#line867">__shared_ptr</a>&lt;<a href="#line92">_Tp</a>&gt;(<a href="#line133">__p</a>, <a href="#line133">__d</a>) { }
+<b><a name="line135">135  </a></b>	
+<b><a name="line136">136  </a></b>	      /**
+<b><a name="line137">137  </a></b>	       *  @brief  Construct a %shared_ptr that owns a null pointer
+<b><a name="line138">138  </a></b>	       *          and the deleter @a __d.
+<b><a name="line139">139  </a></b>	       *  @param  __p  A null pointer constant.
+<b><a name="line140">140  </a></b>	       *  @param  __d  A deleter.
+<b><a name="line141">141  </a></b>	       *  @post   use_count() == 1 &amp;&amp; get() == __p
+<b><a name="line142">142  </a></b>	       *  @throw  std::bad_alloc, in which case @a __d(__p) is called.
+<b><a name="line143">143  </a></b>	       *
+<b><a name="line144">144  </a></b>	       *  Requirements: _Deleter's copy constructor and destructor must
+<b><a name="line145">145  </a></b>	       *  not throw
+<b><a name="line146">146  </a></b>	       *
+<b><a name="line147">147  </a></b>	       *  The last owner will call __d(__p)
+<b><a name="line148">148  </a></b>	       */
+<b><a name="line149">149  </a></b>	      template&lt;typename <b>_Deleter</b>&gt;
+<b><a name="line150">150  </a></b>		shared_ptr(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a> __p, <a href="#line149">_Deleter</a> __d)
+<b><a name="line151">151  </a></b>	        : __shared_ptr&lt;_Tp&gt;(__p, __d) { }
+<b><a name="line152">152  </a></b>	
+<b><a name="line153">153  </a></b>	      /**
+<b><a name="line154">154  </a></b>	       *  @brief  Construct a %shared_ptr that owns the pointer @a __p
+<b><a name="line155">155  </a></b>	       *          and the deleter @a __d.
+<b><a name="line156">156  </a></b>	       *  @param  __p  A pointer.
+<b><a name="line157">157  </a></b>	       *  @param  __d  A deleter.
+<b><a name="line158">158  </a></b>	       *  @param  __a  An allocator.
+<b><a name="line159">159  </a></b>	       *  @post   use_count() == 1 &amp;&amp; get() == __p
+<b><a name="line160">160  </a></b>	       *  @throw  std::bad_alloc, in which case @a __d(__p) is called.
+<b><a name="line161">161  </a></b>	       *
+<b><a name="line162">162  </a></b>	       *  Requirements: _Deleter's copy constructor and destructor must
+<b><a name="line163">163  </a></b>	       *  not throw _Alloc's copy constructor and destructor must not
+<b><a name="line164">164  </a></b>	       *  throw.
+<b><a name="line165">165  </a></b>	       *
+<b><a name="line166">166  </a></b>	       *  __shared_ptr will release __p by calling __d(__p)
+<b><a name="line167">167  </a></b>	       */
+<b><a name="line168">168  </a></b>	      template&lt;typename <b>_Tp1</b>, typename <b>_Deleter</b>, typename <b>_Alloc</b>&gt;
+<b><a name="line169">169  </a></b>		shared_ptr(<a href="#line168">_Tp1</a>* __p, <a href="#line168">_Deleter</a> __d, <a href="#line168">_Alloc</a> __a)
+<b><a name="line170">170  </a></b>		: __shared_ptr&lt;_Tp&gt;(__p, __d, std::move(__a)) { }
+<b><a name="line171">171  </a></b>	
+<b><a name="line172">172  </a></b>	      /**
+<b><a name="line173">173  </a></b>	       *  @brief  Construct a %shared_ptr that owns a null pointer
+<b><a name="line174">174  </a></b>	       *          and the deleter @a __d.
+<b><a name="line175">175  </a></b>	       *  @param  __p  A null pointer constant.
+<b><a name="line176">176  </a></b>	       *  @param  __d  A deleter.
+<b><a name="line177">177  </a></b>	       *  @param  __a  An allocator.
+<b><a name="line178">178  </a></b>	       *  @post   use_count() == 1 &amp;&amp; get() == __p
+<b><a name="line179">179  </a></b>	       *  @throw  std::bad_alloc, in which case @a __d(__p) is called.
+<b><a name="line180">180  </a></b>	       *
+<b><a name="line181">181  </a></b>	       *  Requirements: _Deleter's copy constructor and destructor must
+<b><a name="line182">182  </a></b>	       *  not throw _Alloc's copy constructor and destructor must not
+<b><a name="line183">183  </a></b>	       *  throw.
+<b><a name="line184">184  </a></b>	       *
+<b><a name="line185">185  </a></b>	       *  The last owner will call __d(__p)
+<b><a name="line186">186  </a></b>	       */
+<b><a name="line187">187  </a></b>	      template&lt;typename <b>_Deleter</b>, typename <b>_Alloc</b>&gt;
+<b><a name="line188">188  </a></b>		shared_ptr(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a> __p, <a href="#line187">_Deleter</a> __d, <a href="#line187">_Alloc</a> __a)
+<b><a name="line189">189  </a></b>		: __shared_ptr&lt;_Tp&gt;(__p, __d, std::move(__a)) { }
+<b><a name="line190">190  </a></b>	
+<b><a name="line191">191  </a></b>	      // Aliasing constructor
+<b><a name="line192">192  </a></b>	
+<b><a name="line193">193  </a></b>	      /**
+<b><a name="line194">194  </a></b>	       *  @brief  Constructs a %shared_ptr instance that stores @a __p
+<b><a name="line195">195  </a></b>	       *          and shares ownership with @a __r.
+<b><a name="line196">196  </a></b>	       *  @param  __r  A %shared_ptr.
+<b><a name="line197">197  </a></b>	       *  @param  __p  A pointer that will remain valid while @a *__r is valid.
+<b><a name="line198">198  </a></b>	       *  @post   get() == __p &amp;&amp; use_count() == __r.use_count()
+<b><a name="line199">199  </a></b>	       *
+<b><a name="line200">200  </a></b>	       *  This can be used to construct a @c shared_ptr to a sub-object
+<b><a name="line201">201  </a></b>	       *  of an object managed by an existing @c shared_ptr.
+<b><a name="line202">202  </a></b>	       *
+<b><a name="line203">203  </a></b>	       * @code
+<b><a name="line204">204  </a></b>	       * shared_ptr&lt; pair&lt;int,int&gt; &gt; pii(new pair&lt;int,int&gt;());
+<b><a name="line205">205  </a></b>	       * shared_ptr&lt;int&gt; pi(pii, &amp;pii-&gt;first);
+<b><a name="line206">206  </a></b>	       * assert(pii.use_count() == 2);
+<b><a name="line207">207  </a></b>	       * @endcode
+<b><a name="line208">208  </a></b>	       */
+<b><a name="line209">209  </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line210">210  </a></b>		shared_ptr(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line209">_Tp1</a>&gt;&amp; __r, <a href="#line92">_Tp</a>* __p) noexcept
+<b><a name="line211">211  </a></b>		: __shared_ptr&lt;_Tp&gt;(__r, __p) { }
+<b><a name="line212">212  </a></b>	
+<b><a name="line213">213  </a></b>	      /**
+<b><a name="line214">214  </a></b>	       *  @brief  If @a __r is empty, constructs an empty %shared_ptr;
+<b><a name="line215">215  </a></b>	       *          otherwise construct a %shared_ptr that shares ownership
+<b><a name="line216">216  </a></b>	       *          with @a __r.
+<b><a name="line217">217  </a></b>	       *  @param  __r  A %shared_ptr.
+<b><a name="line218">218  </a></b>	       *  @post   get() == __r.get() &amp;&amp; use_count() == __r.use_count()
+<b><a name="line219">219  </a></b>	       */
+<b><a name="line220">220  </a></b>	      template&lt;typename <b>_Tp1</b>, typename = <a href="#line96">_Convertible</a>&lt;_Tp1*&gt;&gt;
+<b><a name="line221">221  </a></b>		shared_ptr(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line220">_Tp1</a>&gt;&amp; __r) noexcept
+<b><a name="line222">222  </a></b>	        : __shared_ptr&lt;_Tp&gt;(__r) { }
+<b><a name="line223">223  </a></b>	
+<b><a name="line224">224  </a></b>	      /**
+<b><a name="line225">225  </a></b>	       *  @brief  Move-constructs a %shared_ptr instance from @a __r.
+<b><a name="line226">226  </a></b>	       *  @param  __r  A %shared_ptr rvalue.
+<b><a name="line227">227  </a></b>	       *  @post   *this contains the old value of @a __r, @a __r is empty.
+<b><a name="line228">228  </a></b>	       */
+<b><a name="line229">229  </a></b>	      shared_ptr(<a href="#line93">shared_ptr</a>&amp;&amp; <b>__r</b>) noexcept
+<b><a name="line230">230  </a></b>	      : <a href="../shared_ptr_base.h/code.html#line867">__shared_ptr</a>&lt;<a href="#line92">_Tp</a>&gt;(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../move.h/code.html#line101">move</a>(<a href="#line229">__r</a>)) { }
+<b><a name="line231">231  </a></b>	
+<b><a name="line232">232  </a></b>	      /**
+<b><a name="line233">233  </a></b>	       *  @brief  Move-constructs a %shared_ptr instance from @a __r.
+<b><a name="line234">234  </a></b>	       *  @param  __r  A %shared_ptr rvalue.
+<b><a name="line235">235  </a></b>	       *  @post   *this contains the old value of @a __r, @a __r is empty.
+<b><a name="line236">236  </a></b>	       */
+<b><a name="line237">237  </a></b>	      template&lt;typename <b>_Tp1</b>, typename = <a href="#line96">_Convertible</a>&lt;_Tp1*&gt;&gt;
+<b><a name="line238">238  </a></b>		shared_ptr(<a href="#line93">shared_ptr</a>&lt;<a href="#line237">_Tp1</a>&gt;&amp;&amp; <b>__r</b>) noexcept
+<b><a name="line239">239  </a></b>		: <a href="../shared_ptr_base.h/code.html#line867">__shared_ptr</a>&lt;<a href="#line92">_Tp</a>&gt;(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../move.h/code.html#line101">move</a>(<a href="#line238">__r</a>)) { }
+<b><a name="line240">240  </a></b>	
+<b><a name="line241">241  </a></b>	      /**
+<b><a name="line242">242  </a></b>	       *  @brief  Constructs a %shared_ptr that shares ownership with @a __r
+<b><a name="line243">243  </a></b>	       *          and stores a copy of the pointer stored in @a __r.
+<b><a name="line244">244  </a></b>	       *  @param  __r  A weak_ptr.
+<b><a name="line245">245  </a></b>	       *  @post   use_count() == __r.use_count()
+<b><a name="line246">246  </a></b>	       *  @throw  bad_weak_ptr when __r.expired(),
+<b><a name="line247">247  </a></b>	       *          in which case the constructor has no effect.
+<b><a name="line248">248  </a></b>	       */
+<b><a name="line249">249  </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line250">250  </a></b>		explicit shared_ptr(const <a href="../shared_ptr_base.h/code.html#line348">weak_ptr</a>&lt;<a href="#line249">_Tp1</a>&gt;&amp; __r)
+<b><a name="line251">251  </a></b>		: __shared_ptr&lt;_Tp&gt;(__r) { }
+<b><a name="line252">252  </a></b>	
+<b><a name="line253">253  </a></b>	#if <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line78">_GLIBCXX_USE_DEPRECATED</a>
+<b><a name="line254">254  </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line255">255  </a></b>		shared_ptr(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../unique_ptr.h/code.html#line49">auto_ptr</a>&lt;<a href="#line254">_Tp1</a>&gt;&amp;&amp; __r);
+<b><a name="line256">256  </a></b>	#endif
+<b><a name="line257">257  </a></b>	
+<b><a name="line258">258  </a></b>	      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line259">259  </a></b>	      // 2399. shared_ptr's constructor from unique_ptr should be constrained
+<b><a name="line260">260  </a></b>	      template&lt;typename <b>_Tp1</b>, typename <b>_Del</b>, typename
+<b><a name="line261">261  </a></b>		       = <a href="#line96">_Convertible</a>&lt;typename <a href="../unique_ptr.h/code.html#line129">unique_ptr</a>&lt;<a href="#line260">_Tp1</a>, <a href="#line260">_Del</a>&gt;::pointer&gt;&gt;
+<b><a name="line262">262  </a></b>		shared_ptr(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../unique_ptr.h/code.html#line129">unique_ptr</a>&lt;<a href="#line260">_Tp1</a>, <a href="#line260">_Del</a>&gt;&amp;&amp; __r)
+<b><a name="line263">263  </a></b>		: __shared_ptr&lt;_Tp&gt;(std::move(__r)) { }
+<b><a name="line264">264  </a></b>	
+<b><a name="line265">265  </a></b>	      /**
+<b><a name="line266">266  </a></b>	       *  @brief  Construct an empty %shared_ptr.
+<b><a name="line267">267  </a></b>	       *  @post   use_count() == 0 &amp;&amp; get() == nullptr
+<b><a name="line268">268  </a></b>	       */
+<b><a name="line269">269  </a></b>	      constexpr shared_ptr(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>) noexcept : shared_ptr() { }
+<b><a name="line270">270  </a></b>	
+<b><a name="line271">271  </a></b>	      <a href="#line93">shared_ptr</a>&amp; <b>operator=</b>(const <a href="#line93">shared_ptr</a>&amp;) noexcept = default;
+<b><a name="line272">272  </a></b>	
+<b><a name="line273">273  </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line274">274  </a></b>		<a href="#line93">shared_ptr</a>&amp;
+<b><a name="line275">275  </a></b>		operator=(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line273">_Tp1</a>&gt;&amp; __r) noexcept
+<b><a name="line276">276  </a></b>		{
+<b><a name="line277">277  </a></b>		  this-&gt;__shared_ptr&lt;_Tp&gt;::operator=(__r);
+<b><a name="line278">278  </a></b>		  return *this;
+<b><a name="line279">279  </a></b>		}
+<b><a name="line280">280  </a></b>	
+<b><a name="line281">281  </a></b>	#if <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line78">_GLIBCXX_USE_DEPRECATED</a>
+<b><a name="line282">282  </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line283">283  </a></b>		<a href="#line93">shared_ptr</a>&amp;
+<b><a name="line284">284  </a></b>		operator=(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../unique_ptr.h/code.html#line49">auto_ptr</a>&lt;<a href="#line282">_Tp1</a>&gt;&amp;&amp; __r)
+<b><a name="line285">285  </a></b>		{
+<b><a name="line286">286  </a></b>		  this-&gt;__shared_ptr&lt;_Tp&gt;::operator=(std::move(__r));
+<b><a name="line287">287  </a></b>		  return *this;
+<b><a name="line288">288  </a></b>		}
+<b><a name="line289">289  </a></b>	#endif
+<b><a name="line290">290  </a></b>	
+<b><a name="line291">291  </a></b>	      <a href="#line93">shared_ptr</a>&amp;
+<b><a name="line292">292  </a></b>	      operator=(<a href="#line93">shared_ptr</a>&amp;&amp; __r) noexcept
+<b><a name="line293">293  </a></b>	      {
+<b><a name="line294">294  </a></b>		this-&gt;__shared_ptr&lt;_Tp&gt;::operator=(std::move(__r));
+<b><a name="line295">295  </a></b>		return *this;
+<b><a name="line296">296  </a></b>	      }
+<b><a name="line297">297  </a></b>	
+<b><a name="line298">298  </a></b>	      template&lt;class <b>_Tp1</b>&gt;
+<b><a name="line299">299  </a></b>		<a href="#line93">shared_ptr</a>&amp;
+<b><a name="line300">300  </a></b>		operator=(<a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line298">_Tp1</a>&gt;&amp;&amp; __r) noexcept
+<b><a name="line301">301  </a></b>		{
+<b><a name="line302">302  </a></b>		  this-&gt;__shared_ptr&lt;_Tp&gt;::operator=(std::move(__r));
+<b><a name="line303">303  </a></b>		  return *this;
+<b><a name="line304">304  </a></b>		}
+<b><a name="line305">305  </a></b>	
+<b><a name="line306">306  </a></b>	      template&lt;typename <b>_Tp1</b>, typename <b>_Del</b>&gt;
+<b><a name="line307">307  </a></b>		<a href="#line93">shared_ptr</a>&amp;
+<b><a name="line308">308  </a></b>		operator=(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../unique_ptr.h/code.html#line129">unique_ptr</a>&lt;<a href="#line306">_Tp1</a>, <a href="#line306">_Del</a>&gt;&amp;&amp; __r)
+<b><a name="line309">309  </a></b>		{
+<b><a name="line310">310  </a></b>		  this-&gt;__shared_ptr&lt;_Tp&gt;::operator=(std::move(__r));
+<b><a name="line311">311  </a></b>		  return *this;
+<b><a name="line312">312  </a></b>		}
+<b><a name="line313">313  </a></b>	
+<b><a name="line314">314  </a></b>	    private:
+<b><a name="line315">315  </a></b>	      // This constructor is non-standard, it is used by allocate_shared.
+<b><a name="line316">316  </a></b>	      template&lt;typename <b>_Alloc</b>, typename... <b>_Args</b>&gt;
+<b><a name="line317">317  </a></b>		shared_ptr(<a href="../shared_ptr_base.h/code.html#line496">_Sp_make_shared_tag</a> <b>__tag</b>, const <a href="#line316">_Alloc</a>&amp; <b>__a</b>,
+<b><a name="line318">318  </a></b>			   <a href="#line316">_Args</a>&amp;&amp;... <b>__args</b>)
+<b><a name="line319">319  </a></b>		: <a href="../shared_ptr_base.h/code.html#line867">__shared_ptr</a>&lt;<a href="#line92">_Tp</a>&gt;(<a href="#line317">__tag</a>, <a href="#line317">__a</a>, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../move.h/code.html#line76">forward</a>&lt;<a href="#line316">_Args</a>&gt;(<a href="#line318">__args</a>)...)
+<b><a name="line320">320  </a></b>		{ }
+<b><a name="line321">321  </a></b>	
+<b><a name="line322">322  </a></b>	      template&lt;typename <b>_Tp1</b>, typename <b>_Alloc</b>, typename... <b>_Args</b>&gt;
+<b><a name="line323">323  </a></b>		friend <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line322">_Tp1</a>&gt;
+<b><a name="line324">324  </a></b>		allocate_shared(const <a href="#line322">_Alloc</a>&amp; __a, <a href="#line322">_Args</a>&amp;&amp;... __args);
+<b><a name="line325">325  </a></b>	
+<b><a name="line326">326  </a></b>	      // This constructor is non-standard, it is used by weak_ptr::lock().
+<b><a name="line327">327  </a></b>	      shared_ptr(const <a href="#line470">weak_ptr</a>&lt;<a href="#line92">_Tp</a>&gt;&amp; __r, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../new/code.html#line82">nothrow_t</a>)
+<b><a name="line328">328  </a></b>	      : __shared_ptr&lt;_Tp&gt;(__r, std::nothrow) { }
+<b><a name="line329">329  </a></b>	
+<b><a name="line330">330  </a></b>	      friend class <a href="#line470">weak_ptr</a>&lt;<a href="#line92">_Tp</a>&gt;;
+<b><a name="line331">331  </a></b>	    };
+<b><a name="line332">332  </a></b>	
+<b><a name="line333">333  </a></b>	  // 20.7.2.2.7 shared_ptr comparisons
+<b><a name="line334">334  </a></b>	  template&lt;typename <b>_Tp1</b>, typename <b>_Tp2</b>&gt;
+<b><a name="line335">335  </a></b>	    inline bool
+<b><a name="line336">336  </a></b>	    <b>operator==</b>(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line334">_Tp1</a>&gt;&amp; __a,
+<b><a name="line337">337  </a></b>		       const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line334">_Tp2</a>&gt;&amp; __b) noexcept
+<b><a name="line338">338  </a></b>	    { return __a.get() == __b.get(); }
+<b><a name="line339">339  </a></b>	
+<b><a name="line340">340  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line341">341  </a></b>	    inline bool
+<b><a name="line342">342  </a></b>	    <b>operator==</b>(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line340">_Tp</a>&gt;&amp; __a, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>) noexcept
+<b><a name="line343">343  </a></b>	    { return !__a; }
+<b><a name="line344">344  </a></b>	
+<b><a name="line345">345  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line346">346  </a></b>	    inline bool
+<b><a name="line347">347  </a></b>	    <b>operator==</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>, const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line345">_Tp</a>&gt;&amp; __a) noexcept
+<b><a name="line348">348  </a></b>	    { return !__a; }
+<b><a name="line349">349  </a></b>	
+<b><a name="line350">350  </a></b>	  template&lt;typename <b>_Tp1</b>, typename <b>_Tp2</b>&gt;
+<b><a name="line351">351  </a></b>	    inline bool
+<b><a name="line352">352  </a></b>	    <b>operator!=</b>(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line350">_Tp1</a>&gt;&amp; __a,
+<b><a name="line353">353  </a></b>		       const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line350">_Tp2</a>&gt;&amp; __b) noexcept
+<b><a name="line354">354  </a></b>	    { return __a.get() != __b.get(); }
+<b><a name="line355">355  </a></b>	
+<b><a name="line356">356  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line357">357  </a></b>	    inline bool
+<b><a name="line358">358  </a></b>	    <b>operator!=</b>(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line356">_Tp</a>&gt;&amp; __a, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>) noexcept
+<b><a name="line359">359  </a></b>	    { return (bool)__a; }
+<b><a name="line360">360  </a></b>	
+<b><a name="line361">361  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line362">362  </a></b>	    inline bool
+<b><a name="line363">363  </a></b>	    <b>operator!=</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>, const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line361">_Tp</a>&gt;&amp; __a) noexcept
+<b><a name="line364">364  </a></b>	    { return (bool)__a; }
+<b><a name="line365">365  </a></b>	
+<b><a name="line366">366  </a></b>	  template&lt;typename <b>_Tp1</b>, typename <b>_Tp2</b>&gt;
+<b><a name="line367">367  </a></b>	    inline bool
+<b><a name="line368">368  </a></b>	    <b>operator&lt;</b>(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line366">_Tp1</a>&gt;&amp; __a,
+<b><a name="line369">369  </a></b>		      const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line366">_Tp2</a>&gt;&amp; __b) noexcept
+<b><a name="line370">370  </a></b>	    {
+<b><a name="line371">371  </a></b>	      typedef typename std::common_type&lt;_Tp1*, _Tp2*&gt;::type _CT;
+<b><a name="line372">372  </a></b>	      return std::less&lt;_CT&gt;()(__a.get(), __b.get());
+<b><a name="line373">373  </a></b>	    }
+<b><a name="line374">374  </a></b>	
+<b><a name="line375">375  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line376">376  </a></b>	    inline bool
+<b><a name="line377">377  </a></b>	    <b>operator&lt;</b>(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line375">_Tp</a>&gt;&amp; __a, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>) noexcept
+<b><a name="line378">378  </a></b>	    { return std::less&lt;_Tp*&gt;()(__a.get(), nullptr); }
+<b><a name="line379">379  </a></b>	
+<b><a name="line380">380  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line381">381  </a></b>	    inline bool
+<b><a name="line382">382  </a></b>	    <b>operator&lt;</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>, const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line380">_Tp</a>&gt;&amp; __a) noexcept
+<b><a name="line383">383  </a></b>	    { return std::less&lt;_Tp*&gt;()(nullptr, __a.get()); }
+<b><a name="line384">384  </a></b>	
+<b><a name="line385">385  </a></b>	  template&lt;typename <b>_Tp1</b>, typename <b>_Tp2</b>&gt;
+<b><a name="line386">386  </a></b>	    inline bool
+<b><a name="line387">387  </a></b>	    <b>operator&lt;=</b>(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line385">_Tp1</a>&gt;&amp; __a,
+<b><a name="line388">388  </a></b>		       const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line385">_Tp2</a>&gt;&amp; __b) noexcept
+<b><a name="line389">389  </a></b>	    { return !(__b &lt; __a); }
+<b><a name="line390">390  </a></b>	
+<b><a name="line391">391  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line392">392  </a></b>	    inline bool
+<b><a name="line393">393  </a></b>	    <b>operator&lt;=</b>(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line391">_Tp</a>&gt;&amp; __a, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>) noexcept
+<b><a name="line394">394  </a></b>	    { return !(nullptr &lt; __a); }
+<b><a name="line395">395  </a></b>	
+<b><a name="line396">396  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line397">397  </a></b>	    inline bool
+<b><a name="line398">398  </a></b>	    <b>operator&lt;=</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>, const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line396">_Tp</a>&gt;&amp; __a) noexcept
+<b><a name="line399">399  </a></b>	    { return !(__a &lt; nullptr); }
+<b><a name="line400">400  </a></b>	
+<b><a name="line401">401  </a></b>	  template&lt;typename <b>_Tp1</b>, typename <b>_Tp2</b>&gt;
+<b><a name="line402">402  </a></b>	    inline bool
+<b><a name="line403">403  </a></b>	    <b>operator&gt;</b>(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line401">_Tp1</a>&gt;&amp; __a,
+<b><a name="line404">404  </a></b>		      const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line401">_Tp2</a>&gt;&amp; __b) noexcept
+<b><a name="line405">405  </a></b>	    { return (__b &lt; __a); }
+<b><a name="line406">406  </a></b>	
+<b><a name="line407">407  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line408">408  </a></b>	    inline bool
+<b><a name="line409">409  </a></b>	    <b>operator&gt;</b>(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line407">_Tp</a>&gt;&amp; __a, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>) noexcept
+<b><a name="line410">410  </a></b>	    { return std::less&lt;_Tp*&gt;()(nullptr, __a.get()); }
+<b><a name="line411">411  </a></b>	
+<b><a name="line412">412  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line413">413  </a></b>	    inline bool
+<b><a name="line414">414  </a></b>	    <b>operator&gt;</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>, const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line412">_Tp</a>&gt;&amp; __a) noexcept
+<b><a name="line415">415  </a></b>	    { return std::less&lt;_Tp*&gt;()(__a.get(), nullptr); }
+<b><a name="line416">416  </a></b>	
+<b><a name="line417">417  </a></b>	  template&lt;typename <b>_Tp1</b>, typename <b>_Tp2</b>&gt;
+<b><a name="line418">418  </a></b>	    inline bool
+<b><a name="line419">419  </a></b>	    <b>operator&gt;=</b>(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line417">_Tp1</a>&gt;&amp; __a,
+<b><a name="line420">420  </a></b>		       const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line417">_Tp2</a>&gt;&amp; __b) noexcept
+<b><a name="line421">421  </a></b>	    { return !(__a &lt; __b); }
+<b><a name="line422">422  </a></b>	
+<b><a name="line423">423  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line424">424  </a></b>	    inline bool
+<b><a name="line425">425  </a></b>	    <b>operator&gt;=</b>(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line423">_Tp</a>&gt;&amp; __a, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>) noexcept
+<b><a name="line426">426  </a></b>	    { return !(__a &lt; nullptr); }
+<b><a name="line427">427  </a></b>	
+<b><a name="line428">428  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line429">429  </a></b>	    inline bool
+<b><a name="line430">430  </a></b>	    <b>operator&gt;=</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>, const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line428">_Tp</a>&gt;&amp; __a) noexcept
+<b><a name="line431">431  </a></b>	    { return !(nullptr &lt; __a); }
+<b><a name="line432">432  </a></b>	
+<b><a name="line433">433  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line434">434  </a></b>	    struct <b>less</b>&lt;<a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line433">_Tp</a>&gt;&gt; : public <a href="../shared_ptr_base.h/code.html#line1281">_Sp_less</a>&lt;<a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line433">_Tp</a>&gt;&gt;
+<b><a name="line435">435  </a></b>	    { };
+<b><a name="line436">436  </a></b>	
+<b><a name="line437">437  </a></b>	  // 20.7.2.2.8 shared_ptr specialized algorithms.
+<b><a name="line438">438  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line439">439  </a></b>	    inline void
+<b><a name="line440">440  </a></b>	    <b>swap</b>(<a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line438">_Tp</a>&gt;&amp; __a, <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line438">_Tp</a>&gt;&amp; __b) noexcept
+<b><a name="line441">441  </a></b>	    { __a.swap(__b); }
+<b><a name="line442">442  </a></b>	
+<b><a name="line443">443  </a></b>	  // 20.7.2.2.9 shared_ptr casts.
+<b><a name="line444">444  </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Tp1</b>&gt;
+<b><a name="line445">445  </a></b>	    inline <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line444">_Tp</a>&gt;
+<b><a name="line446">446  </a></b>	    <b>static_pointer_cast</b>(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line444">_Tp1</a>&gt;&amp; __r) noexcept
+<b><a name="line447">447  </a></b>	    { return shared_ptr&lt;_Tp&gt;(__r, static_cast&lt;_Tp*&gt;(__r.get())); }
+<b><a name="line448">448  </a></b>	
+<b><a name="line449">449  </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Tp1</b>&gt;
+<b><a name="line450">450  </a></b>	    inline <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line449">_Tp</a>&gt;
+<b><a name="line451">451  </a></b>	    <b>const_pointer_cast</b>(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line449">_Tp1</a>&gt;&amp; __r) noexcept
+<b><a name="line452">452  </a></b>	    { return shared_ptr&lt;_Tp&gt;(__r, const_cast&lt;_Tp*&gt;(__r.get())); }
+<b><a name="line453">453  </a></b>	
+<b><a name="line454">454  </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Tp1</b>&gt;
+<b><a name="line455">455  </a></b>	    inline <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line454">_Tp</a>&gt;
+<b><a name="line456">456  </a></b>	    <b>dynamic_pointer_cast</b>(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line454">_Tp1</a>&gt;&amp; __r) noexcept
+<b><a name="line457">457  </a></b>	    {
+<b><a name="line458">458  </a></b>	      if (_Tp* __p = dynamic_cast&lt;_Tp*&gt;(__r.get()))
+<b><a name="line459">459  </a></b>		return shared_ptr&lt;_Tp&gt;(__r, __p);
+<b><a name="line460">460  </a></b>	      return shared_ptr&lt;_Tp&gt;();
+<b><a name="line461">461  </a></b>	    }
+<b><a name="line462">462  </a></b>	
+<b><a name="line463">463  </a></b>	
+<b><a name="line464">464  </a></b>	  /**
+<b><a name="line465">465  </a></b>	   *  @brief  A smart pointer with weak semantics.
+<b><a name="line466">466  </a></b>	   *
+<b><a name="line467">467  </a></b>	   *  With forwarding constructors and assignment operators.
+<b><a name="line468">468  </a></b>	   */
+<b><a name="line469">469  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line470">470  </a></b>	    class weak_ptr : public <a href="../shared_ptr_base.h/code.html#line1340">__weak_ptr</a>&lt;<a href="#line469">_Tp</a>&gt;
+<b><a name="line471">471  </a></b>	    {
+<b><a name="line472">472  </a></b>	      template&lt;typename <b>_Ptr</b>&gt;
+<b><a name="line473">473  </a></b>		using <b>_Convertible</b>
+<b><a name="line474">474  </a></b>		  = typename <a href="../../type_traits/code.html#line2099">enable_if</a>&lt;<a href="../../type_traits/code.html#line1491">is_convertible</a>&lt;<a href="#line472">_Ptr</a>, <a href="#line469">_Tp</a>*&gt;::value&gt;::type;
+<b><a name="line475">475  </a></b>	
+<b><a name="line476">476  </a></b>	    public:
+<b><a name="line477">477  </a></b>	      constexpr <b>weak_ptr</b>() noexcept = default;
+<b><a name="line478">478  </a></b>	
+<b><a name="line479">479  </a></b>	      template&lt;typename <b>_Tp1</b>, typename = <a href="#line473">_Convertible</a>&lt;_Tp1*&gt;&gt;
+<b><a name="line480">480  </a></b>		weak_ptr(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line479">_Tp1</a>&gt;&amp; __r) noexcept
+<b><a name="line481">481  </a></b>		: __weak_ptr&lt;_Tp&gt;(__r) { }
+<b><a name="line482">482  </a></b>	
+<b><a name="line483">483  </a></b>	      <b>weak_ptr</b>(const <a href="#line470">weak_ptr</a>&amp;) noexcept = default;
+<b><a name="line484">484  </a></b>	
+<b><a name="line485">485  </a></b>	      template&lt;typename <b>_Tp1</b>, typename = <a href="#line473">_Convertible</a>&lt;_Tp1*&gt;&gt;
+<b><a name="line486">486  </a></b>		weak_ptr(const <a href="../shared_ptr_base.h/code.html#line348">weak_ptr</a>&lt;<a href="#line485">_Tp1</a>&gt;&amp; __r) noexcept
+<b><a name="line487">487  </a></b>		: __weak_ptr&lt;_Tp&gt;(__r) { }
+<b><a name="line488">488  </a></b>	
+<b><a name="line489">489  </a></b>	      <b>weak_ptr</b>(<a href="#line470">weak_ptr</a>&amp;&amp;) noexcept = default;
+<b><a name="line490">490  </a></b>	
+<b><a name="line491">491  </a></b>	      template&lt;typename <b>_Tp1</b>, typename = <a href="#line473">_Convertible</a>&lt;_Tp1*&gt;&gt;
+<b><a name="line492">492  </a></b>		weak_ptr(<a href="../shared_ptr_base.h/code.html#line348">weak_ptr</a>&lt;<a href="#line491">_Tp1</a>&gt;&amp;&amp; __r) noexcept
+<b><a name="line493">493  </a></b>		: __weak_ptr&lt;_Tp&gt;(std::move(__r)) { }
+<b><a name="line494">494  </a></b>	
+<b><a name="line495">495  </a></b>	      <a href="#line470">weak_ptr</a>&amp;
+<b><a name="line496">496  </a></b>	      <b>operator=</b>(const <a href="#line470">weak_ptr</a>&amp; __r) noexcept = default;
+<b><a name="line497">497  </a></b>	
+<b><a name="line498">498  </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line499">499  </a></b>		<a href="#line470">weak_ptr</a>&amp;
+<b><a name="line500">500  </a></b>		operator=(const <a href="../shared_ptr_base.h/code.html#line348">weak_ptr</a>&lt;<a href="#line498">_Tp1</a>&gt;&amp; __r) noexcept
+<b><a name="line501">501  </a></b>		{
+<b><a name="line502">502  </a></b>		  this-&gt;__weak_ptr&lt;_Tp&gt;::operator=(__r);
+<b><a name="line503">503  </a></b>		  return *this;
+<b><a name="line504">504  </a></b>		}
+<b><a name="line505">505  </a></b>	
+<b><a name="line506">506  </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line507">507  </a></b>		<a href="#line470">weak_ptr</a>&amp;
+<b><a name="line508">508  </a></b>		operator=(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line506">_Tp1</a>&gt;&amp; __r) noexcept
+<b><a name="line509">509  </a></b>		{
+<b><a name="line510">510  </a></b>		  this-&gt;__weak_ptr&lt;_Tp&gt;::operator=(__r);
+<b><a name="line511">511  </a></b>		  return *this;
+<b><a name="line512">512  </a></b>		}
+<b><a name="line513">513  </a></b>	
+<b><a name="line514">514  </a></b>	      <a href="#line470">weak_ptr</a>&amp;
+<b><a name="line515">515  </a></b>	      <b>operator=</b>(<a href="#line470">weak_ptr</a>&amp;&amp; __r) noexcept = default;
+<b><a name="line516">516  </a></b>	
+<b><a name="line517">517  </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line518">518  </a></b>		<a href="#line470">weak_ptr</a>&amp;
+<b><a name="line519">519  </a></b>		operator=(<a href="../shared_ptr_base.h/code.html#line348">weak_ptr</a>&lt;<a href="#line517">_Tp1</a>&gt;&amp;&amp; __r) noexcept
+<b><a name="line520">520  </a></b>		{
+<b><a name="line521">521  </a></b>		  this-&gt;__weak_ptr&lt;_Tp&gt;::operator=(std::move(__r));
+<b><a name="line522">522  </a></b>		  return *this;
+<b><a name="line523">523  </a></b>		}
+<b><a name="line524">524  </a></b>	
+<b><a name="line525">525  </a></b>	      <a href="#line93">shared_ptr</a>&lt;<a href="#line469">_Tp</a>&gt;
+<b><a name="line526">526  </a></b>	      lock() const noexcept
+<b><a name="line527">527  </a></b>	      { return shared_ptr&lt;_Tp&gt;(*this, std::nothrow); }
+<b><a name="line528">528  </a></b>	    };
+<b><a name="line529">529  </a></b>	
+<b><a name="line530">530  </a></b>	  // 20.7.2.3.6 weak_ptr specialized algorithms.
+<b><a name="line531">531  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line532">532  </a></b>	    inline void
+<b><a name="line533">533  </a></b>	    <b>swap</b>(<a href="../shared_ptr_base.h/code.html#line348">weak_ptr</a>&lt;<a href="#line531">_Tp</a>&gt;&amp; __a, <a href="../shared_ptr_base.h/code.html#line348">weak_ptr</a>&lt;<a href="#line531">_Tp</a>&gt;&amp; __b) noexcept
+<b><a name="line534">534  </a></b>	    { __a.swap(__b); }
+<b><a name="line535">535  </a></b>	
+<b><a name="line536">536  </a></b>	
+<b><a name="line537">537  </a></b>	  /// Primary template owner_less
+<b><a name="line538">538  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line539">539  </a></b>	    struct <a href="../shared_ptr_base.h/code.html#line351">owner_less</a>;
+<b><a name="line540">540  </a></b>	
+<b><a name="line541">541  </a></b>	  /// Partial specialization of owner_less for shared_ptr.
+<b><a name="line542">542  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line543">543  </a></b>	    struct <b>owner_less</b>&lt;<a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line542">_Tp</a>&gt;&gt;
+<b><a name="line544">544  </a></b>	    : public <a href="../shared_ptr_base.h/code.html#line1488">_Sp_owner_less</a>&lt;<a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line542">_Tp</a>&gt;, <a href="../shared_ptr_base.h/code.html#line348">weak_ptr</a>&lt;<a href="#line542">_Tp</a>&gt;&gt;
+<b><a name="line545">545  </a></b>	    { };
+<b><a name="line546">546  </a></b>	
+<b><a name="line547">547  </a></b>	  /// Partial specialization of owner_less for weak_ptr.
+<b><a name="line548">548  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line549">549  </a></b>	    struct <b>owner_less</b>&lt;<a href="../shared_ptr_base.h/code.html#line348">weak_ptr</a>&lt;<a href="#line548">_Tp</a>&gt;&gt;
+<b><a name="line550">550  </a></b>	    : public <a href="../shared_ptr_base.h/code.html#line1488">_Sp_owner_less</a>&lt;<a href="../shared_ptr_base.h/code.html#line348">weak_ptr</a>&lt;<a href="#line548">_Tp</a>&gt;, <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line548">_Tp</a>&gt;&gt;
+<b><a name="line551">551  </a></b>	    { };
+<b><a name="line552">552  </a></b>	
+<b><a name="line553">553  </a></b>	  /**
+<b><a name="line554">554  </a></b>	   *  @brief Base class allowing use of member function shared_from_this.
+<b><a name="line555">555  </a></b>	   */
+<b><a name="line556">556  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line557">557  </a></b>	    class enable_shared_from_this
+<b><a name="line558">558  </a></b>	    {
+<b><a name="line559">559  </a></b>	    protected:
+<b><a name="line560">560  </a></b>	      constexpr <b>enable_shared_from_this</b>() noexcept { }
+<b><a name="line561">561  </a></b>	
+<b><a name="line562">562  </a></b>	      <b>enable_shared_from_this</b>(const <a href="../shared_ptr_base.h/code.html#line354">enable_shared_from_this</a>&amp;) noexcept { }
+<b><a name="line563">563  </a></b>	
+<b><a name="line564">564  </a></b>	      <a href="../shared_ptr_base.h/code.html#line354">enable_shared_from_this</a>&amp;
+<b><a name="line565">565  </a></b>	      <b>operator=</b>(const <a href="../shared_ptr_base.h/code.html#line354">enable_shared_from_this</a>&amp;) noexcept
+<b><a name="line566">566  </a></b>	      { return *this; }
+<b><a name="line567">567  </a></b>	
+<b><a name="line568">568  </a></b>	      <b>~enable_shared_from_this</b>() { }
+<b><a name="line569">569  </a></b>	
+<b><a name="line570">570  </a></b>	    public:
+<b><a name="line571">571  </a></b>	      <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line556">_Tp</a>&gt;
+<b><a name="line572">572  </a></b>	      <b>shared_from_this</b>()
+<b><a name="line573">573  </a></b>	      { return shared_ptr&lt;_Tp&gt;(this-&gt;_M_weak_this); }
+<b><a name="line574">574  </a></b>	
+<b><a name="line575">575  </a></b>	      <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;const <a href="#line556">_Tp</a>&gt;
+<b><a name="line576">576  </a></b>	      <b>shared_from_this</b>() const
+<b><a name="line577">577  </a></b>	      { return shared_ptr&lt;const _Tp&gt;(this-&gt;_M_weak_this); }
+<b><a name="line578">578  </a></b>	
+<b><a name="line579">579  </a></b>	    private:
+<b><a name="line580">580  </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line581">581  </a></b>		void
+<b><a name="line582">582  </a></b>		<b>_M_weak_assign</b>(<a href="#line580">_Tp1</a>* __p, const <a href="../shared_ptr_base.h/code.html#line562">__shared_count</a>&lt;&gt;&amp; __n) const noexcept
+<b><a name="line583">583  </a></b>		{ _M_weak_this._M_assign(__p, __n); }
+<b><a name="line584">584  </a></b>	
+<b><a name="line585">585  </a></b>	      template&lt;typename <b>_Tp1</b>, typename <b>_Tp2</b>&gt;
+<b><a name="line586">586  </a></b>		friend void
+<b><a name="line587">587  </a></b>		__enable_shared_from_this_helper(const <a href="../shared_ptr_base.h/code.html#line562">__shared_count</a>&lt;&gt;&amp;,
+<b><a name="line588">588  </a></b>						 const <a href="../shared_ptr_base.h/code.html#line354">enable_shared_from_this</a>&lt;<a href="#line585">_Tp1</a>&gt;*,
+<b><a name="line589">589  </a></b>						 const <a href="#line585">_Tp2</a>*) noexcept;
+<b><a name="line590">590  </a></b>	
+<b><a name="line591">591  </a></b>	      mutable <a href="../shared_ptr_base.h/code.html#line348">weak_ptr</a>&lt;<a href="#line556">_Tp</a>&gt;  <b>_M_weak_this</b>;
+<b><a name="line592">592  </a></b>	    };
+<b><a name="line593">593  </a></b>	
+<b><a name="line594">594  </a></b>	  template&lt;typename <b>_Tp1</b>, typename <b>_Tp2</b>&gt;
+<b><a name="line595">595  </a></b>	    inline void
+<b><a name="line596">596  </a></b>	    <b>__enable_shared_from_this_helper</b>(const <a href="../shared_ptr_base.h/code.html#line562">__shared_count</a>&lt;&gt;&amp; __pn,
+<b><a name="line597">597  </a></b>					     const <a href="../shared_ptr_base.h/code.html#line354">enable_shared_from_this</a>&lt;<a href="#line594">_Tp1</a>&gt;*
+<b><a name="line598">598  </a></b>					     __pe, const <a href="#line594">_Tp2</a>* __px) noexcept
+<b><a name="line599">599  </a></b>	    {
+<b><a name="line600">600  </a></b>	      if (__pe != nullptr)
+<b><a name="line601">601  </a></b>		__pe-&gt;_M_weak_assign(const_cast&lt;_Tp2*&gt;(__px), __pn);
+<b><a name="line602">602  </a></b>	    }
+<b><a name="line603">603  </a></b>	
+<b><a name="line604">604  </a></b>	  /**
+<b><a name="line605">605  </a></b>	   *  @brief  Create an object that is owned by a shared_ptr.
+<b><a name="line606">606  </a></b>	   *  @param  __a     An allocator.
+<b><a name="line607">607  </a></b>	   *  @param  __args  Arguments for the @a _Tp object's constructor.
+<b><a name="line608">608  </a></b>	   *  @return A shared_ptr that owns the newly created object.
+<b><a name="line609">609  </a></b>	   *  @throw  An exception thrown from @a _Alloc::allocate or from the
+<b><a name="line610">610  </a></b>	   *          constructor of @a _Tp.
+<b><a name="line611">611  </a></b>	   *
+<b><a name="line612">612  </a></b>	   *  A copy of @a __a will be used to allocate memory for the shared_ptr
+<b><a name="line613">613  </a></b>	   *  and the new object.
+<b><a name="line614">614  </a></b>	   */
+<b><a name="line615">615  </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Alloc</b>, typename... <b>_Args</b>&gt;
+<b><a name="line616">616  </a></b>	    inline <a href="#line93">shared_ptr</a>&lt;<a href="#line615">_Tp</a>&gt;
+<b><a name="line617">617  </a></b>	    allocate_shared(const <a href="#line615">_Alloc</a>&amp; <b>__a</b>, <a href="#line615">_Args</a>&amp;&amp;... <b>__args</b>)
+<b><a name="line618">618  </a></b>	    {
+<b><a name="line619">619  </a></b>	      return <a href="#line317">shared_ptr</a>&lt;<a href="#line615">_Tp</a>&gt;(<a href="../shared_ptr_base.h/code.html#line496">_Sp_make_shared_tag</a>(), <a href="#line617">__a</a>,
+<b><a name="line620">620  </a></b>				     <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../move.h/code.html#line76">forward</a>&lt;<a href="#line615">_Args</a>&gt;(<a href="#line617">__args</a>)...);
+<b><a name="line621">621  </a></b>	    }
+<b><a name="line622">622  </a></b>	
+<b><a name="line623">623  </a></b>	  /**
+<b><a name="line624">624  </a></b>	   *  @brief  Create an object that is owned by a shared_ptr.
+<b><a name="line625">625  </a></b>	   *  @param  __args  Arguments for the @a _Tp object's constructor.
+<b><a name="line626">626  </a></b>	   *  @return A shared_ptr that owns the newly created object.
+<b><a name="line627">627  </a></b>	   *  @throw  std::bad_alloc, or an exception thrown from the
+<b><a name="line628">628  </a></b>	   *          constructor of @a _Tp.
+<b><a name="line629">629  </a></b>	   */
+<b><a name="line630">630  </a></b>	  template&lt;typename <b>_Tp</b>, typename... <b>_Args</b>&gt;
+<b><a name="line631">631  </a></b>	    inline <a href="#line93">shared_ptr</a>&lt;<a href="#line630">_Tp</a>&gt;
+<b><a name="line632">632  </a></b>	    make_shared(<a href="#line630">_Args</a>&amp;&amp;... <b>__args</b>)
+<b><a name="line633">633  </a></b>	    {
+<b><a name="line634">634  </a></b>	      typedef typename <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../type_traits/code.html#line1500">remove_const</a>&lt;<a href="#line630">_Tp</a>&gt;::<a href="../../type_traits/code.html#line1501">type</a> <b>_Tp_nc</b>;
+<b><a name="line635">635  </a></b>	      return <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="#line617">allocate_shared</a>&lt;<a href="#line630">_Tp</a>&gt;(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../allocator.h/code.html#line92">allocator</a>&lt;<a href="#line634">_Tp_nc</a>&gt;(),
+<b><a name="line636">636  </a></b>					       <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../move.h/code.html#line76">forward</a>&lt;<a href="#line630">_Args</a>&gt;(<a href="#line632">__args</a>)...);
+<b><a name="line637">637  </a></b>	    }
+<b><a name="line638">638  </a></b>	
+<b><a name="line639">639  </a></b>	  /// std::hash specialization for shared_ptr.
+<b><a name="line640">640  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line641">641  </a></b>	    struct <b>hash</b>&lt;<a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line640">_Tp</a>&gt;&gt;
+<b><a name="line642">642  </a></b>	    : public <a href="../functional_hash.h/code.html#line50">__hash_base</a>&lt;<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>, <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line640">_Tp</a>&gt;&gt;
+<b><a name="line643">643  </a></b>	    {
+<b><a name="line644">644  </a></b>	      <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>
+<b><a name="line645">645  </a></b>	      <b>operator()</b>(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line640">_Tp</a>&gt;&amp; __s) const noexcept
+<b><a name="line646">646  </a></b>	      { return std::hash&lt;_Tp*&gt;()(__s.get()); }
+<b><a name="line647">647  </a></b>	    };
+<b><a name="line648">648  </a></b>	
+<b><a name="line649">649  </a></b>	  // @} group pointer_abstractions
+<b><a name="line650">650  </a></b>	
+<b><a name="line651">651  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line652">652  </a></b>	} // namespace
+<b><a name="line653">653  </a></b>	
+<b><a name="line654">654  </a></b>	#endif // _SHARED_PTR_H
+<b><a name="line655">655  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

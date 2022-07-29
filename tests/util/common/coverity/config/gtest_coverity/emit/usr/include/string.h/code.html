@@ -1,0 +1,717 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/string.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 1991-2016 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line5">5    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line6">6    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line7">7    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line10">10   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line11">11   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line12">12   </a></b>	   Lesser General Public License for more details.
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line15">15   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line16">16   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	/*
+<b><a name="line19">19   </a></b>	 *	ISO C99 Standard: 7.21 String handling	&lt;string.h&gt;
+<b><a name="line20">20   </a></b>	 */
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	#ifndef	_STRING_H
+<b><a name="line23">23   </a></b>	#define	<b>_STRING_H</b>	1
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	#include &lt;features.h&gt;
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line98">__BEGIN_DECLS</a>
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	/* Get size_t and NULL from &lt;stddef.h&gt;.  */
+<b><a name="line30">30   </a></b>	#define	<b>__need_size_t</b>
+<b><a name="line31">31   </a></b>	#define	<b>__need_NULL</b>
+<b><a name="line32">32   </a></b>	#include &lt;stddef.h&gt;
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	/* Tell the caller that we provide correct C++ prototypes.  */
+<b><a name="line35">35   </a></b>	#if defined __cplusplus &amp;&amp; <a href="../features.h/code.html#line136">__GNUC_PREREQ</a> (4, 4)
+<b><a name="line36">36   </a></b>	# define <b>__CORRECT_ISO_CPP_STRING_H_PROTO</b>
+<b><a name="line37">37   </a></b>	#endif
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line41">41   </a></b>	/* Copy N bytes of SRC to DEST.  */
+<b><a name="line42">42   </a></b>	extern void *<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line208">memcpy</a> (void *__restrict __dest, const void *__restrict __src,
+<b><a name="line43">43   </a></b>			     <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line44">44   </a></b>	/* Copy N bytes of SRC to DEST, guaranteeing
+<b><a name="line45">45   </a></b>	   correct behavior for overlapping strings.  */
+<b><a name="line46">46   </a></b>	extern void *<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line211">memmove</a> (void *__dest, const void *__src, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n)
+<b><a name="line47">47   </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line48">48   </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line49">49   </a></b>	
+<b><a name="line50">50   </a></b>	/* Copy no more than N bytes of SRC to DEST, stopping when C is found.
+<b><a name="line51">51   </a></b>	   Return the position in DEST one byte past where C was copied,
+<b><a name="line52">52   </a></b>	   or NULL if C was not found in the first N bytes of SRC.  */
+<b><a name="line53">53   </a></b>	#if defined <a href="../features.h/code.html#line317">__USE_MISC</a> || defined <a href="../features.h/code.html#line279">__USE_XOPEN</a>
+<b><a name="line54">54   </a></b>	extern void *memccpy (void *__restrict __dest, const void *__restrict __src,
+<b><a name="line55">55   </a></b>			      int __c, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n)
+<b><a name="line56">56   </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line57">57   </a></b>	#endif /* Misc || X/Open.  */
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	
+<b><a name="line60">60   </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line61">61   </a></b>	/* Set N bytes of S to C.  */
+<b><a name="line62">62   </a></b>	extern void *<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line266">memset</a> (void *__s, int __c, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line63">63   </a></b>	
+<b><a name="line64">64   </a></b>	/* Compare N bytes of S1 and S2.  */
+<b><a name="line65">65   </a></b>	extern int <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line226">memcmp</a> (const void *__s1, const void *__s2, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n)
+<b><a name="line66">66   </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	/* Search N bytes of S for C.  */
+<b><a name="line69">69   </a></b>	#ifdef <a href="#line36">__CORRECT_ISO_CPP_STRING_H_PROTO</a>
+<b><a name="line70">70   </a></b>	extern &quot;C++&quot;
+<b><a name="line71">71   </a></b>	{
+<b><a name="line72">72   </a></b>	extern void *memchr (void *__s, int __c, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n)
+<b><a name="line73">73   </a></b>	      <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;memchr&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line74">74   </a></b>	extern const void *<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line242">memchr</a> (const void *__s, int __c, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n)
+<b><a name="line75">75   </a></b>	      <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;memchr&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line76">76   </a></b>	
+<b><a name="line77">77   </a></b>	# ifdef __OPTIMIZE__
+<b><a name="line78">78   </a></b>	__extern_always_inline void *
+<b><a name="line79">79   </a></b>	memchr (void *__s, int __c, size_t __n) __THROW
+<b><a name="line80">80   </a></b>	{
+<b><a name="line81">81   </a></b>	  return __builtin_memchr (__s, __c, __n);
+<b><a name="line82">82   </a></b>	}
+<b><a name="line83">83   </a></b>	
+<b><a name="line84">84   </a></b>	__extern_always_inline const void *
+<b><a name="line85">85   </a></b>	memchr (const void *__s, int __c, size_t __n) __THROW
+<b><a name="line86">86   </a></b>	{
+<b><a name="line87">87   </a></b>	  return __builtin_memchr (__s, __c, __n);
+<b><a name="line88">88   </a></b>	}
+<b><a name="line89">89   </a></b>	# endif
+<b><a name="line90">90   </a></b>	}
+<b><a name="line91">91   </a></b>	#else
+<b><a name="line92">92   </a></b>	extern void *memchr (const void *__s, int __c, size_t __n)
+<b><a name="line93">93   </a></b>	      __THROW __attribute_pure__ __nonnull ((1));
+<b><a name="line94">94   </a></b>	#endif
+<b><a name="line95">95   </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line96">96   </a></b>	
+<b><a name="line97">97   </a></b>	#ifdef <a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line98">98   </a></b>	/* Search in S for C.  This is similar to `memchr' but there is no
+<b><a name="line99">99   </a></b>	   length limit.  */
+<b><a name="line100">100  </a></b>	# ifdef <a href="#line36">__CORRECT_ISO_CPP_STRING_H_PROTO</a>
+<b><a name="line101">101  </a></b>	extern &quot;C++&quot; void *rawmemchr (void *__s, int __c)
+<b><a name="line102">102  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;rawmemchr&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line103">103  </a></b>	extern &quot;C++&quot; const void *rawmemchr (const void *__s, int __c)
+<b><a name="line104">104  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;rawmemchr&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line105">105  </a></b>	# else
+<b><a name="line106">106  </a></b>	extern void *rawmemchr (const void *__s, int __c)
+<b><a name="line107">107  </a></b>	     __THROW __attribute_pure__ __nonnull ((1));
+<b><a name="line108">108  </a></b>	# endif
+<b><a name="line109">109  </a></b>	
+<b><a name="line110">110  </a></b>	/* Search N bytes of S for the final occurrence of C.  */
+<b><a name="line111">111  </a></b>	# ifdef <a href="#line36">__CORRECT_ISO_CPP_STRING_H_PROTO</a>
+<b><a name="line112">112  </a></b>	extern &quot;C++&quot; void *memrchr (void *__s, int __c, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n)
+<b><a name="line113">113  </a></b>	      <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;memrchr&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line114">114  </a></b>	extern &quot;C++&quot; const void *<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line275">memrchr</a> (const void *__s, int __c, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n)
+<b><a name="line115">115  </a></b>	      <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;memrchr&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line116">116  </a></b>	# else
+<b><a name="line117">117  </a></b>	extern void *memrchr (const void *__s, int __c, size_t __n)
+<b><a name="line118">118  </a></b>	      __THROW __attribute_pure__ __nonnull ((1));
+<b><a name="line119">119  </a></b>	# endif
+<b><a name="line120">120  </a></b>	#endif
+<b><a name="line121">121  </a></b>	
+<b><a name="line122">122  </a></b>	
+<b><a name="line123">123  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line124">124  </a></b>	/* Copy SRC to DEST.  */
+<b><a name="line125">125  </a></b>	extern char *<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line214">strcpy</a> (char *__restrict __dest, const char *__restrict __src)
+<b><a name="line126">126  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line127">127  </a></b>	/* Copy no more than N characters of SRC to DEST.  */
+<b><a name="line128">128  </a></b>	extern char *<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line217">strncpy</a> (char *__restrict __dest,
+<b><a name="line129">129  </a></b>			      const char *__restrict __src, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n)
+<b><a name="line130">130  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line131">131  </a></b>	
+<b><a name="line132">132  </a></b>	/* Append SRC onto DEST.  */
+<b><a name="line133">133  </a></b>	extern char *<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line220">strcat</a> (char *__restrict __dest, const char *__restrict __src)
+<b><a name="line134">134  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line135">135  </a></b>	/* Append no more than N characters from SRC onto DEST.  */
+<b><a name="line136">136  </a></b>	extern char *<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line223">strncat</a> (char *__restrict __dest, const char *__restrict __src,
+<b><a name="line137">137  </a></b>			      <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line138">138  </a></b>	
+<b><a name="line139">139  </a></b>	/* Compare S1 and S2.  */
+<b><a name="line140">140  </a></b>	extern int <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line229">strcmp</a> (const char *__s1, const char *__s2)
+<b><a name="line141">141  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line142">142  </a></b>	/* Compare N characters of S1 and S2.  */
+<b><a name="line143">143  </a></b>	extern int <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line235">strncmp</a> (const char *__s1, const char *__s2, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n)
+<b><a name="line144">144  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line145">145  </a></b>	
+<b><a name="line146">146  </a></b>	/* Compare the collated forms of S1 and S2.  */
+<b><a name="line147">147  </a></b>	extern int <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line232">strcoll</a> (const char *__s1, const char *__s2)
+<b><a name="line148">148  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line149">149  </a></b>	/* Put a transformation of SRC into no more than N bytes of DEST.  */
+<b><a name="line150">150  </a></b>	extern <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line239">strxfrm</a> (char *__restrict __dest,
+<b><a name="line151">151  </a></b>			       const char *__restrict __src, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n)
+<b><a name="line152">152  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((2));
+<b><a name="line153">153  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line154">154  </a></b>	
+<b><a name="line155">155  </a></b>	#ifdef <a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line156">156  </a></b>	/* The following functions are equivalent to the both above but they
+<b><a name="line157">157  </a></b>	   take the locale they use for the collation as an extra argument.
+<b><a name="line158">158  </a></b>	   This is not standardsized but something like will come.  */
+<b><a name="line159">159  </a></b>	# include &lt;xlocale.h&gt;
+<b><a name="line160">160  </a></b>	
+<b><a name="line161">161  </a></b>	/* Compare the collated forms of S1 and S2 using rules from L.  */
+<b><a name="line162">162  </a></b>	extern int strcoll_l (const char *__s1, const char *__s2, <a href="../xlocale.h/code.html#line39">__locale_t</a> __l)
+<b><a name="line163">163  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2, 3));
+<b><a name="line164">164  </a></b>	/* Put a transformation of SRC into no more than N bytes of DEST.  */
+<b><a name="line165">165  </a></b>	extern <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> strxfrm_l (char *__dest, const char *__src, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n,
+<b><a name="line166">166  </a></b>				 <a href="../xlocale.h/code.html#line39">__locale_t</a> __l) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((2, 4));
+<b><a name="line167">167  </a></b>	#endif
+<b><a name="line168">168  </a></b>	
+<b><a name="line169">169  </a></b>	#if defined <a href="../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a> || defined <a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line170">170  </a></b>	/* Duplicate S, returning an identical malloc'd string.  */
+<b><a name="line171">171  </a></b>	extern char *<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line281">strdup</a> (const char *__s)
+<b><a name="line172">172  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line211">__attribute_malloc__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line173">173  </a></b>	#endif
+<b><a name="line174">174  </a></b>	
+<b><a name="line175">175  </a></b>	/* Return a malloc'd copy of at most N bytes of STRING.  The
+<b><a name="line176">176  </a></b>	   resultant string is terminated even if no null terminator
+<b><a name="line177">177  </a></b>	   appears before STRING[N].  */
+<b><a name="line178">178  </a></b>	#if defined <a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line179">179  </a></b>	extern char *strndup (const char *__string, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n)
+<b><a name="line180">180  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line211">__attribute_malloc__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line181">181  </a></b>	#endif
+<b><a name="line182">182  </a></b>	
+<b><a name="line183">183  </a></b>	#if defined <a href="../features.h/code.html#line325">__USE_GNU</a> &amp;&amp; defined <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line240">__GNUC__</a>
+<b><a name="line184">184  </a></b>	/* Duplicate S, returning an identical alloca'd string.  */
+<b><a name="line185">185  </a></b>	# define <b>strdupa</b>(s)							      \
+<b><a name="line186">186  </a></b>	  (__extension__							      \
+<b><a name="line187">187  </a></b>	    ({									      \
+<b><a name="line188">188  </a></b>	      const char *__old = (s);						      \
+<b><a name="line189">189  </a></b>	      size_t __len = strlen (__old) + 1;				      \
+<b><a name="line190">190  </a></b>	      char *__new = (char *) __builtin_alloca (__len);			      \
+<b><a name="line191">191  </a></b>	      (char *) memcpy (__new, __old, __len);				      \
+<b><a name="line192">192  </a></b>	    }))
+<b><a name="line193">193  </a></b>	
+<b><a name="line194">194  </a></b>	/* Return an alloca'd copy of at most N bytes of string.  */
+<b><a name="line195">195  </a></b>	# define <b>strndupa</b>(s, n)							      \
+<b><a name="line196">196  </a></b>	  (__extension__							      \
+<b><a name="line197">197  </a></b>	    ({									      \
+<b><a name="line198">198  </a></b>	      const char *__old = (s);						      \
+<b><a name="line199">199  </a></b>	      size_t __len = strnlen (__old, (n));				      \
+<b><a name="line200">200  </a></b>	      char *__new = (char *) __builtin_alloca (__len + 1);		      \
+<b><a name="line201">201  </a></b>	      __new[__len] = '\0';						      \
+<b><a name="line202">202  </a></b>	      (char *) memcpy (__new, __old, __len);				      \
+<b><a name="line203">203  </a></b>	    }))
+<b><a name="line204">204  </a></b>	#endif
+<b><a name="line205">205  </a></b>	
+<b><a name="line206">206  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line207">207  </a></b>	/* Find the first occurrence of C in S.  */
+<b><a name="line208">208  </a></b>	#ifdef <a href="#line36">__CORRECT_ISO_CPP_STRING_H_PROTO</a>
+<b><a name="line209">209  </a></b>	extern &quot;C++&quot;
+<b><a name="line210">210  </a></b>	{
+<b><a name="line211">211  </a></b>	extern char *strchr (char *__s, int __c)
+<b><a name="line212">212  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;strchr&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line213">213  </a></b>	extern const char *<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line245">strchr</a> (const char *__s, int __c)
+<b><a name="line214">214  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;strchr&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line215">215  </a></b>	
+<b><a name="line216">216  </a></b>	# ifdef __OPTIMIZE__
+<b><a name="line217">217  </a></b>	__extern_always_inline char *
+<b><a name="line218">218  </a></b>	strchr (char *__s, int __c) __THROW
+<b><a name="line219">219  </a></b>	{
+<b><a name="line220">220  </a></b>	  return __builtin_strchr (__s, __c);
+<b><a name="line221">221  </a></b>	}
+<b><a name="line222">222  </a></b>	
+<b><a name="line223">223  </a></b>	__extern_always_inline const char *
+<b><a name="line224">224  </a></b>	strchr (const char *__s, int __c) __THROW
+<b><a name="line225">225  </a></b>	{
+<b><a name="line226">226  </a></b>	  return __builtin_strchr (__s, __c);
+<b><a name="line227">227  </a></b>	}
+<b><a name="line228">228  </a></b>	# endif
+<b><a name="line229">229  </a></b>	}
+<b><a name="line230">230  </a></b>	#else
+<b><a name="line231">231  </a></b>	extern char *strchr (const char *__s, int __c)
+<b><a name="line232">232  </a></b>	     __THROW __attribute_pure__ __nonnull ((1));
+<b><a name="line233">233  </a></b>	#endif
+<b><a name="line234">234  </a></b>	/* Find the last occurrence of C in S.  */
+<b><a name="line235">235  </a></b>	#ifdef <a href="#line36">__CORRECT_ISO_CPP_STRING_H_PROTO</a>
+<b><a name="line236">236  </a></b>	extern &quot;C++&quot;
+<b><a name="line237">237  </a></b>	{
+<b><a name="line238">238  </a></b>	extern char *strrchr (char *__s, int __c)
+<b><a name="line239">239  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;strrchr&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line240">240  </a></b>	extern const char *<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line254">strrchr</a> (const char *__s, int __c)
+<b><a name="line241">241  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;strrchr&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line242">242  </a></b>	
+<b><a name="line243">243  </a></b>	# ifdef __OPTIMIZE__
+<b><a name="line244">244  </a></b>	__extern_always_inline char *
+<b><a name="line245">245  </a></b>	strrchr (char *__s, int __c) __THROW
+<b><a name="line246">246  </a></b>	{
+<b><a name="line247">247  </a></b>	  return __builtin_strrchr (__s, __c);
+<b><a name="line248">248  </a></b>	}
+<b><a name="line249">249  </a></b>	
+<b><a name="line250">250  </a></b>	__extern_always_inline const char *
+<b><a name="line251">251  </a></b>	strrchr (const char *__s, int __c) __THROW
+<b><a name="line252">252  </a></b>	{
+<b><a name="line253">253  </a></b>	  return __builtin_strrchr (__s, __c);
+<b><a name="line254">254  </a></b>	}
+<b><a name="line255">255  </a></b>	# endif
+<b><a name="line256">256  </a></b>	}
+<b><a name="line257">257  </a></b>	#else
+<b><a name="line258">258  </a></b>	extern char *strrchr (const char *__s, int __c)
+<b><a name="line259">259  </a></b>	     __THROW __attribute_pure__ __nonnull ((1));
+<b><a name="line260">260  </a></b>	#endif
+<b><a name="line261">261  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line262">262  </a></b>	
+<b><a name="line263">263  </a></b>	#ifdef <a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line264">264  </a></b>	/* This function is similar to `strchr'.  But it returns a pointer to
+<b><a name="line265">265  </a></b>	   the closing NUL byte in case C is not found in S.  */
+<b><a name="line266">266  </a></b>	# ifdef <a href="#line36">__CORRECT_ISO_CPP_STRING_H_PROTO</a>
+<b><a name="line267">267  </a></b>	extern &quot;C++&quot; char *strchrnul (char *__s, int __c)
+<b><a name="line268">268  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;strchrnul&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line269">269  </a></b>	extern &quot;C++&quot; const char *strchrnul (const char *__s, int __c)
+<b><a name="line270">270  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;strchrnul&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line271">271  </a></b>	# else
+<b><a name="line272">272  </a></b>	extern char *strchrnul (const char *__s, int __c)
+<b><a name="line273">273  </a></b>	     __THROW __attribute_pure__ __nonnull ((1));
+<b><a name="line274">274  </a></b>	# endif
+<b><a name="line275">275  </a></b>	#endif
+<b><a name="line276">276  </a></b>	
+<b><a name="line277">277  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line278">278  </a></b>	/* Return the length of the initial segment of S which
+<b><a name="line279">279  </a></b>	   consists entirely of characters not in REJECT.  */
+<b><a name="line280">280  </a></b>	extern <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line248">strcspn</a> (const char *__s, const char *__reject)
+<b><a name="line281">281  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line282">282  </a></b>	/* Return the length of the initial segment of S which
+<b><a name="line283">283  </a></b>	   consists entirely of characters in ACCEPT.  */
+<b><a name="line284">284  </a></b>	extern <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line257">strspn</a> (const char *__s, const char *__accept)
+<b><a name="line285">285  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line286">286  </a></b>	/* Find the first occurrence in S of any character in ACCEPT.  */
+<b><a name="line287">287  </a></b>	#ifdef <a href="#line36">__CORRECT_ISO_CPP_STRING_H_PROTO</a>
+<b><a name="line288">288  </a></b>	extern &quot;C++&quot;
+<b><a name="line289">289  </a></b>	{
+<b><a name="line290">290  </a></b>	extern char *strpbrk (char *__s, const char *__accept)
+<b><a name="line291">291  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;strpbrk&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line292">292  </a></b>	extern const char *<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line251">strpbrk</a> (const char *__s, const char *__accept)
+<b><a name="line293">293  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;strpbrk&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line294">294  </a></b>	
+<b><a name="line295">295  </a></b>	# ifdef __OPTIMIZE__
+<b><a name="line296">296  </a></b>	__extern_always_inline char *
+<b><a name="line297">297  </a></b>	strpbrk (char *__s, const char *__accept) __THROW
+<b><a name="line298">298  </a></b>	{
+<b><a name="line299">299  </a></b>	  return __builtin_strpbrk (__s, __accept);
+<b><a name="line300">300  </a></b>	}
+<b><a name="line301">301  </a></b>	
+<b><a name="line302">302  </a></b>	__extern_always_inline const char *
+<b><a name="line303">303  </a></b>	strpbrk (const char *__s, const char *__accept) __THROW
+<b><a name="line304">304  </a></b>	{
+<b><a name="line305">305  </a></b>	  return __builtin_strpbrk (__s, __accept);
+<b><a name="line306">306  </a></b>	}
+<b><a name="line307">307  </a></b>	# endif
+<b><a name="line308">308  </a></b>	}
+<b><a name="line309">309  </a></b>	#else
+<b><a name="line310">310  </a></b>	extern char *strpbrk (const char *__s, const char *__accept)
+<b><a name="line311">311  </a></b>	     __THROW __attribute_pure__ __nonnull ((1, 2));
+<b><a name="line312">312  </a></b>	#endif
+<b><a name="line313">313  </a></b>	/* Find the first occurrence of NEEDLE in HAYSTACK.  */
+<b><a name="line314">314  </a></b>	#ifdef <a href="#line36">__CORRECT_ISO_CPP_STRING_H_PROTO</a>
+<b><a name="line315">315  </a></b>	extern &quot;C++&quot;
+<b><a name="line316">316  </a></b>	{
+<b><a name="line317">317  </a></b>	extern char *strstr (char *__haystack, const char *__needle)
+<b><a name="line318">318  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;strstr&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line319">319  </a></b>	extern const char *<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line260">strstr</a> (const char *__haystack, const char *__needle)
+<b><a name="line320">320  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;strstr&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line321">321  </a></b>	
+<b><a name="line322">322  </a></b>	# ifdef __OPTIMIZE__
+<b><a name="line323">323  </a></b>	__extern_always_inline char *
+<b><a name="line324">324  </a></b>	strstr (char *__haystack, const char *__needle) __THROW
+<b><a name="line325">325  </a></b>	{
+<b><a name="line326">326  </a></b>	  return __builtin_strstr (__haystack, __needle);
+<b><a name="line327">327  </a></b>	}
+<b><a name="line328">328  </a></b>	
+<b><a name="line329">329  </a></b>	__extern_always_inline const char *
+<b><a name="line330">330  </a></b>	strstr (const char *__haystack, const char *__needle) __THROW
+<b><a name="line331">331  </a></b>	{
+<b><a name="line332">332  </a></b>	  return __builtin_strstr (__haystack, __needle);
+<b><a name="line333">333  </a></b>	}
+<b><a name="line334">334  </a></b>	# endif
+<b><a name="line335">335  </a></b>	}
+<b><a name="line336">336  </a></b>	#else
+<b><a name="line337">337  </a></b>	extern char *strstr (const char *__haystack, const char *__needle)
+<b><a name="line338">338  </a></b>	     __THROW __attribute_pure__ __nonnull ((1, 2));
+<b><a name="line339">339  </a></b>	#endif
+<b><a name="line340">340  </a></b>	
+<b><a name="line341">341  </a></b>	
+<b><a name="line342">342  </a></b>	/* Divide S into tokens separated by characters in DELIM.  */
+<b><a name="line343">343  </a></b>	extern char *<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line263">strtok</a> (char *__restrict __s, const char *__restrict __delim)
+<b><a name="line344">344  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((2));
+<b><a name="line345">345  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line346">346  </a></b>	
+<b><a name="line347">347  </a></b>	/* Divide S into tokens separated by characters in DELIM.  Information
+<b><a name="line348">348  </a></b>	   passed between calls are stored in SAVE_PTR.  */
+<b><a name="line349">349  </a></b>	extern char *__strtok_r (char *__restrict __s,
+<b><a name="line350">350  </a></b>				 const char *__restrict __delim,
+<b><a name="line351">351  </a></b>				 char **__restrict __save_ptr)
+<b><a name="line352">352  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((2, 3));
+<b><a name="line353">353  </a></b>	#ifdef <a href="../features.h/code.html#line249">__USE_POSIX</a>
+<b><a name="line354">354  </a></b>	extern char *strtok_r (char *__restrict __s, const char *__restrict __delim,
+<b><a name="line355">355  </a></b>			       char **__restrict __save_ptr)
+<b><a name="line356">356  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((2, 3));
+<b><a name="line357">357  </a></b>	#endif
+<b><a name="line358">358  </a></b>	
+<b><a name="line359">359  </a></b>	#ifdef <a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line360">360  </a></b>	/* Similar to `strstr' but this function ignores the case of both strings.  */
+<b><a name="line361">361  </a></b>	# ifdef <a href="#line36">__CORRECT_ISO_CPP_STRING_H_PROTO</a>
+<b><a name="line362">362  </a></b>	extern &quot;C++&quot; char *strcasestr (char *__haystack, const char *__needle)
+<b><a name="line363">363  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;strcasestr&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line364">364  </a></b>	extern &quot;C++&quot; const char *strcasestr (const char *__haystack,
+<b><a name="line365">365  </a></b>					     const char *__needle)
+<b><a name="line366">366  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;strcasestr&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line367">367  </a></b>	# else
+<b><a name="line368">368  </a></b>	extern char *strcasestr (const char *__haystack, const char *__needle)
+<b><a name="line369">369  </a></b>	     __THROW __attribute_pure__ __nonnull ((1, 2));
+<b><a name="line370">370  </a></b>	# endif
+<b><a name="line371">371  </a></b>	#endif
+<b><a name="line372">372  </a></b>	
+<b><a name="line373">373  </a></b>	#ifdef <a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line374">374  </a></b>	/* Find the first occurrence of NEEDLE in HAYSTACK.
+<b><a name="line375">375  </a></b>	   NEEDLE is NEEDLELEN bytes long;
+<b><a name="line376">376  </a></b>	   HAYSTACK is HAYSTACKLEN bytes long.  */
+<b><a name="line377">377  </a></b>	extern void *memmem (const void *__haystack, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __haystacklen,
+<b><a name="line378">378  </a></b>			     const void *__needle, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __needlelen)
+<b><a name="line379">379  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 3));
+<b><a name="line380">380  </a></b>	
+<b><a name="line381">381  </a></b>	/* Copy N bytes of SRC to DEST, return pointer to bytes after the
+<b><a name="line382">382  </a></b>	   last written byte.  */
+<b><a name="line383">383  </a></b>	extern void *__mempcpy (void *__restrict __dest,
+<b><a name="line384">384  </a></b>				const void *__restrict __src, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n)
+<b><a name="line385">385  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line386">386  </a></b>	extern void *mempcpy (void *__restrict __dest,
+<b><a name="line387">387  </a></b>			      const void *__restrict __src, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n)
+<b><a name="line388">388  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line389">389  </a></b>	#endif
+<b><a name="line390">390  </a></b>	
+<b><a name="line391">391  </a></b>	
+<b><a name="line392">392  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line393">393  </a></b>	/* Return the length of S.  */
+<b><a name="line394">394  </a></b>	extern <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line269">strlen</a> (const char *__s)
+<b><a name="line395">395  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line396">396  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line397">397  </a></b>	
+<b><a name="line398">398  </a></b>	#ifdef	<a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line399">399  </a></b>	/* Find the length of STRING, but scan at most MAXLEN characters.
+<b><a name="line400">400  </a></b>	   If no '\0' terminator is found in that many characters, return MAXLEN.  */
+<b><a name="line401">401  </a></b>	extern <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> strnlen (const char *__string, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __maxlen)
+<b><a name="line402">402  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line403">403  </a></b>	#endif
+<b><a name="line404">404  </a></b>	
+<b><a name="line405">405  </a></b>	
+<b><a name="line406">406  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line407">407  </a></b>	/* Return a string describing the meaning of the `errno' code in ERRNUM.  */
+<b><a name="line408">408  </a></b>	extern char *<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line272">strerror</a> (int __errnum) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line409">409  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line410">410  </a></b>	#ifdef <a href="../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line411">411  </a></b>	/* Reentrant version of `strerror'.
+<b><a name="line412">412  </a></b>	   There are 2 flavors of `strerror_r', GNU which returns the string
+<b><a name="line413">413  </a></b>	   and may or may not use the supplied temporary buffer and POSIX one
+<b><a name="line414">414  </a></b>	   which fills the string into the buffer.
+<b><a name="line415">415  </a></b>	   To use the POSIX version, -D_XOPEN_SOURCE=600 or -D_POSIX_C_SOURCE=200112L
+<b><a name="line416">416  </a></b>	   without -D_GNU_SOURCE is needed, otherwise the GNU version is
+<b><a name="line417">417  </a></b>	   preferred.  */
+<b><a name="line418">418  </a></b>	# if defined <a href="../features.h/code.html#line265">__USE_XOPEN2K</a> &amp;&amp; !defined <a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line419">419  </a></b>	/* Fill BUF with a string describing the meaning of the `errno' code in
+<b><a name="line420">420  </a></b>	   ERRNUM.  */
+<b><a name="line421">421  </a></b>	#  ifdef __REDIRECT_NTH
+<b><a name="line422">422  </a></b>	extern int __REDIRECT_NTH (strerror_r,
+<b><a name="line423">423  </a></b>				   (int __errnum, char *__buf, size_t __buflen),
+<b><a name="line424">424  </a></b>				   __xpg_strerror_r) __nonnull ((2));
+<b><a name="line425">425  </a></b>	#  else
+<b><a name="line426">426  </a></b>	extern int __xpg_strerror_r (int __errnum, char *__buf, size_t __buflen)
+<b><a name="line427">427  </a></b>	     __THROW __nonnull ((2));
+<b><a name="line428">428  </a></b>	#   define strerror_r __xpg_strerror_r
+<b><a name="line429">429  </a></b>	#  endif
+<b><a name="line430">430  </a></b>	# else
+<b><a name="line431">431  </a></b>	/* If a temporary buffer is required, at most BUFLEN bytes of BUF will be
+<b><a name="line432">432  </a></b>	   used.  */
+<b><a name="line433">433  </a></b>	extern char *strerror_r (int __errnum, char *__buf, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __buflen)
+<b><a name="line434">434  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((2)) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line435">435  </a></b>	# endif
+<b><a name="line436">436  </a></b>	#endif
+<b><a name="line437">437  </a></b>	
+<b><a name="line438">438  </a></b>	#ifdef <a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line439">439  </a></b>	/* Translate error number to string according to the locale L.  */
+<b><a name="line440">440  </a></b>	extern char *strerror_l (int __errnum, <a href="../xlocale.h/code.html#line39">__locale_t</a> __l) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line441">441  </a></b>	#endif
+<b><a name="line442">442  </a></b>	
+<b><a name="line443">443  </a></b>	
+<b><a name="line444">444  </a></b>	/* We define this function always since `bzero' is sometimes needed when
+<b><a name="line445">445  </a></b>	   the namespace rules does not allow this.  */
+<b><a name="line446">446  </a></b>	extern void __bzero (void *__s, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line447">447  </a></b>	
+<b><a name="line448">448  </a></b>	#ifdef <a href="../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line449">449  </a></b>	/* Copy N bytes of SRC to DEST (like memmove, but args reversed).  */
+<b><a name="line450">450  </a></b>	extern void bcopy (const void *__src, void *__dest, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n)
+<b><a name="line451">451  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line452">452  </a></b>	
+<b><a name="line453">453  </a></b>	/* Set N bytes of S to 0.  */
+<b><a name="line454">454  </a></b>	extern void bzero (void *__s, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line455">455  </a></b>	
+<b><a name="line456">456  </a></b>	/* Compare N bytes of S1 and S2 (same as memcmp).  */
+<b><a name="line457">457  </a></b>	extern int bcmp (const void *__s1, const void *__s2, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n)
+<b><a name="line458">458  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line459">459  </a></b>	
+<b><a name="line460">460  </a></b>	/* Find the first occurrence of C in S (same as strchr).  */
+<b><a name="line461">461  </a></b>	# ifdef <a href="#line36">__CORRECT_ISO_CPP_STRING_H_PROTO</a>
+<b><a name="line462">462  </a></b>	extern &quot;C++&quot;
+<b><a name="line463">463  </a></b>	{
+<b><a name="line464">464  </a></b>	extern char *index (char *__s, int __c)
+<b><a name="line465">465  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;index&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line466">466  </a></b>	extern const char *index (const char *__s, int __c)
+<b><a name="line467">467  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;index&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line468">468  </a></b>	
+<b><a name="line469">469  </a></b>	#  if defined __OPTIMIZE__ &amp;&amp; !defined __CORRECT_ISO_CPP_STRINGS_H_PROTO
+<b><a name="line470">470  </a></b>	__extern_always_inline char *
+<b><a name="line471">471  </a></b>	index (char *__s, int __c) __THROW
+<b><a name="line472">472  </a></b>	{
+<b><a name="line473">473  </a></b>	  return __builtin_index (__s, __c);
+<b><a name="line474">474  </a></b>	}
+<b><a name="line475">475  </a></b>	
+<b><a name="line476">476  </a></b>	__extern_always_inline const char *
+<b><a name="line477">477  </a></b>	index (const char *__s, int __c) __THROW
+<b><a name="line478">478  </a></b>	{
+<b><a name="line479">479  </a></b>	  return __builtin_index (__s, __c);
+<b><a name="line480">480  </a></b>	}
+<b><a name="line481">481  </a></b>	#  endif
+<b><a name="line482">482  </a></b>	}
+<b><a name="line483">483  </a></b>	# else
+<b><a name="line484">484  </a></b>	extern char *index (const char *__s, int __c)
+<b><a name="line485">485  </a></b>	     __THROW __attribute_pure__ __nonnull ((1));
+<b><a name="line486">486  </a></b>	# endif
+<b><a name="line487">487  </a></b>	
+<b><a name="line488">488  </a></b>	/* Find the last occurrence of C in S (same as strrchr).  */
+<b><a name="line489">489  </a></b>	# ifdef <a href="#line36">__CORRECT_ISO_CPP_STRING_H_PROTO</a>
+<b><a name="line490">490  </a></b>	extern &quot;C++&quot;
+<b><a name="line491">491  </a></b>	{
+<b><a name="line492">492  </a></b>	extern char *rindex (char *__s, int __c)
+<b><a name="line493">493  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;rindex&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line494">494  </a></b>	extern const char *rindex (const char *__s, int __c)
+<b><a name="line495">495  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;rindex&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line496">496  </a></b>	
+<b><a name="line497">497  </a></b>	#  if defined __OPTIMIZE__ &amp;&amp; !defined __CORRECT_ISO_CPP_STRINGS_H_PROTO
+<b><a name="line498">498  </a></b>	__extern_always_inline char *
+<b><a name="line499">499  </a></b>	rindex (char *__s, int __c) __THROW
+<b><a name="line500">500  </a></b>	{
+<b><a name="line501">501  </a></b>	  return __builtin_rindex (__s, __c);
+<b><a name="line502">502  </a></b>	}
+<b><a name="line503">503  </a></b>	
+<b><a name="line504">504  </a></b>	__extern_always_inline const char *
+<b><a name="line505">505  </a></b>	rindex (const char *__s, int __c) __THROW
+<b><a name="line506">506  </a></b>	{
+<b><a name="line507">507  </a></b>	  return __builtin_rindex (__s, __c);
+<b><a name="line508">508  </a></b>	}
+<b><a name="line509">509  </a></b>	#endif
+<b><a name="line510">510  </a></b>	}
+<b><a name="line511">511  </a></b>	# else
+<b><a name="line512">512  </a></b>	extern char *rindex (const char *__s, int __c)
+<b><a name="line513">513  </a></b>	     __THROW __attribute_pure__ __nonnull ((1));
+<b><a name="line514">514  </a></b>	# endif
+<b><a name="line515">515  </a></b>	
+<b><a name="line516">516  </a></b>	/* Return the position of the first bit set in I, or 0 if none are set.
+<b><a name="line517">517  </a></b>	   The least-significant bit is position 1, the most-significant 32.  */
+<b><a name="line518">518  </a></b>	extern int ffs (int __i) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __attribute__ ((__const__));
+<b><a name="line519">519  </a></b>	
+<b><a name="line520">520  </a></b>	/* The following two functions are non-standard but necessary for non-32 bit
+<b><a name="line521">521  </a></b>	   platforms.  */
+<b><a name="line522">522  </a></b>	# ifdef	<a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line523">523  </a></b>	extern int ffsl (long int __l) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __attribute__ ((__const__));
+<b><a name="line524">524  </a></b>	__extension__ extern int ffsll (long long int __ll)
+<b><a name="line525">525  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __attribute__ ((__const__));
+<b><a name="line526">526  </a></b>	# endif
+<b><a name="line527">527  </a></b>	
+<b><a name="line528">528  </a></b>	/* Compare S1 and S2, ignoring case.  */
+<b><a name="line529">529  </a></b>	extern int strcasecmp (const char *__s1, const char *__s2)
+<b><a name="line530">530  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line531">531  </a></b>	
+<b><a name="line532">532  </a></b>	/* Compare no more than N chars of S1 and S2, ignoring case.  */
+<b><a name="line533">533  </a></b>	extern int strncasecmp (const char *__s1, const char *__s2, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n)
+<b><a name="line534">534  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line535">535  </a></b>	#endif /* Use misc.  */
+<b><a name="line536">536  </a></b>	
+<b><a name="line537">537  </a></b>	#ifdef	<a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line538">538  </a></b>	/* Again versions of a few functions which use the given locale instead
+<b><a name="line539">539  </a></b>	   of the global one.  */
+<b><a name="line540">540  </a></b>	extern int strcasecmp_l (const char *__s1, const char *__s2,
+<b><a name="line541">541  </a></b>				 <a href="../xlocale.h/code.html#line39">__locale_t</a> __loc)
+<b><a name="line542">542  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2, 3));
+<b><a name="line543">543  </a></b>	
+<b><a name="line544">544  </a></b>	extern int strncasecmp_l (const char *__s1, const char *__s2,
+<b><a name="line545">545  </a></b>				  <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n, <a href="../xlocale.h/code.html#line39">__locale_t</a> __loc)
+<b><a name="line546">546  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2, 4));
+<b><a name="line547">547  </a></b>	#endif
+<b><a name="line548">548  </a></b>	
+<b><a name="line549">549  </a></b>	#ifdef	<a href="../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line550">550  </a></b>	/* Return the next DELIM-delimited token from *STRINGP,
+<b><a name="line551">551  </a></b>	   terminating it with a '\0', and update *STRINGP to point past it.  */
+<b><a name="line552">552  </a></b>	extern char *strsep (char **__restrict __stringp,
+<b><a name="line553">553  </a></b>			     const char *__restrict __delim)
+<b><a name="line554">554  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line555">555  </a></b>	#endif
+<b><a name="line556">556  </a></b>	
+<b><a name="line557">557  </a></b>	#ifdef	<a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line558">558  </a></b>	/* Return a string describing the meaning of the signal number in SIG.  */
+<b><a name="line559">559  </a></b>	extern char *strsignal (int __sig) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line560">560  </a></b>	
+<b><a name="line561">561  </a></b>	/* Copy SRC to DEST, returning the address of the terminating '\0' in DEST.  */
+<b><a name="line562">562  </a></b>	extern char *__stpcpy (char *__restrict __dest, const char *__restrict __src)
+<b><a name="line563">563  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line564">564  </a></b>	extern char *<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line278">stpcpy</a> (char *__restrict __dest, const char *__restrict __src)
+<b><a name="line565">565  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line566">566  </a></b>	
+<b><a name="line567">567  </a></b>	/* Copy no more than N characters of SRC to DEST, returning the address of
+<b><a name="line568">568  </a></b>	   the last character written into DEST.  */
+<b><a name="line569">569  </a></b>	extern char *__stpncpy (char *__restrict __dest,
+<b><a name="line570">570  </a></b>				const char *__restrict __src, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n)
+<b><a name="line571">571  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line572">572  </a></b>	extern char *stpncpy (char *__restrict __dest,
+<b><a name="line573">573  </a></b>			      const char *__restrict __src, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n)
+<b><a name="line574">574  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line575">575  </a></b>	#endif
+<b><a name="line576">576  </a></b>	
+<b><a name="line577">577  </a></b>	#ifdef	<a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line578">578  </a></b>	/* Compare S1 and S2 as strings holding name &amp; indices/version numbers.  */
+<b><a name="line579">579  </a></b>	extern int strverscmp (const char *__s1, const char *__s2)
+<b><a name="line580">580  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line229">__attribute_pure__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line581">581  </a></b>	
+<b><a name="line582">582  </a></b>	/* Sautee STRING briskly.  */
+<b><a name="line583">583  </a></b>	extern char *strfry (char *__string) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line584">584  </a></b>	
+<b><a name="line585">585  </a></b>	/* Frobnicate N bytes of S.  */
+<b><a name="line586">586  </a></b>	extern void *memfrob (void *__s, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line587">587  </a></b>	
+<b><a name="line588">588  </a></b>	# ifndef basename
+<b><a name="line589">589  </a></b>	/* Return the file name within directory of FILENAME.  We don't
+<b><a name="line590">590  </a></b>	   declare the function if the `basename' macro is available (defined
+<b><a name="line591">591  </a></b>	   in &lt;libgen.h&gt;) which makes the XPG version of this function
+<b><a name="line592">592  </a></b>	   available.  */
+<b><a name="line593">593  </a></b>	#  ifdef <a href="#line36">__CORRECT_ISO_CPP_STRING_H_PROTO</a>
+<b><a name="line594">594  </a></b>	extern &quot;C++&quot; char *basename (char *__filename)
+<b><a name="line595">595  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;basename&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line596">596  </a></b>	extern &quot;C++&quot; const char *basename (const char *__filename)
+<b><a name="line597">597  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __asm (&quot;basename&quot;) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line598">598  </a></b>	#  else
+<b><a name="line599">599  </a></b>	extern char *basename (const char *__filename) __THROW __nonnull ((1));
+<b><a name="line600">600  </a></b>	#  endif
+<b><a name="line601">601  </a></b>	# endif
+<b><a name="line602">602  </a></b>	#endif
+<b><a name="line603">603  </a></b>	
+<b><a name="line604">604  </a></b>	
+<b><a name="line605">605  </a></b>	#if defined <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line240">__GNUC__</a> &amp;&amp; <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line240">__GNUC__</a> &gt;= 2
+<b><a name="line606">606  </a></b>	# if defined __OPTIMIZE__ &amp;&amp; !defined __OPTIMIZE_SIZE__ \
+<b><a name="line607">607  </a></b>	     &amp;&amp; !defined __NO_INLINE__ &amp;&amp; !defined __cplusplus
+<b><a name="line608">608  </a></b>	/* When using GNU CC we provide some optimized versions of selected
+<b><a name="line609">609  </a></b>	   functions from this header.  There are two kinds of optimizations:
+<b><a name="line610">610  </a></b>	
+<b><a name="line611">611  </a></b>	   - machine-dependent optimizations, most probably using inline
+<b><a name="line612">612  </a></b>	     assembler code; these might be quite expensive since the code
+<b><a name="line613">613  </a></b>	     size can increase significantly.
+<b><a name="line614">614  </a></b>	     These optimizations are not used unless the symbol
+<b><a name="line615">615  </a></b>		__USE_STRING_INLINES
+<b><a name="line616">616  </a></b>	     is defined before including this header.
+<b><a name="line617">617  </a></b>	
+<b><a name="line618">618  </a></b>	   - machine-independent optimizations which do not increase the
+<b><a name="line619">619  </a></b>	     code size significantly and which optimize mainly situations
+<b><a name="line620">620  </a></b>	     where one or more arguments are compile-time constants.
+<b><a name="line621">621  </a></b>	     These optimizations are used always when the compiler is
+<b><a name="line622">622  </a></b>	     taught to optimize.
+<b><a name="line623">623  </a></b>	
+<b><a name="line624">624  </a></b>	   One can inhibit all optimizations by defining __NO_STRING_INLINES.  */
+<b><a name="line625">625  </a></b>	
+<b><a name="line626">626  </a></b>	/* Get the machine-dependent optimizations (if any).  */
+<b><a name="line627">627  </a></b>	#  include &lt;bits/string.h&gt;
+<b><a name="line628">628  </a></b>	
+<b><a name="line629">629  </a></b>	/* These are generic optimizations which do not add too much inline code.  */
+<b><a name="line630">630  </a></b>	#  include &lt;bits/string2.h&gt;
+<b><a name="line631">631  </a></b>	# endif
+<b><a name="line632">632  </a></b>	
+<b><a name="line633">633  </a></b>	# if <a href="../features.h/code.html#line340">__USE_FORTIFY_LEVEL</a> &gt; 0 &amp;&amp; defined <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line343">__fortify_function</a>
+<b><a name="line634">634  </a></b>	/* Functions with security checks.  */
+<b><a name="line635">635  </a></b>	#  include &lt;bits/string3.h&gt;
+<b><a name="line636">636  </a></b>	# endif
+<b><a name="line637">637  </a></b>	#endif
+<b><a name="line638">638  </a></b>	
+<b><a name="line639">639  </a></b>	#if defined <a href="../features.h/code.html#line325">__USE_GNU</a> &amp;&amp; defined __OPTIMIZE__ \
+<b><a name="line640">640  </a></b>	    &amp;&amp; defined <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line334">__extern_always_inline</a> &amp;&amp; <a href="../features.h/code.html#line136">__GNUC_PREREQ</a> (3,2)
+<b><a name="line641">641  </a></b>	# if !defined _FORCE_INLINES &amp;&amp; !defined _HAVE_STRING_ARCH_mempcpy
+<b><a name="line642">642  </a></b>	
+<b><a name="line643">643  </a></b>	#undef mempcpy
+<b><a name="line644">644  </a></b>	#undef __mempcpy
+<b><a name="line645">645  </a></b>	#define mempcpy(dest, src, n) __mempcpy_inline (dest, src, n)
+<b><a name="line646">646  </a></b>	#define __mempcpy(dest, src, n) __mempcpy_inline (dest, src, n)
+<b><a name="line647">647  </a></b>	
+<b><a name="line648">648  </a></b>	__extern_always_inline void *
+<b><a name="line649">649  </a></b>	__mempcpy_inline (void *__restrict __dest,
+<b><a name="line650">650  </a></b>			  const void *__restrict __src, size_t __n)
+<b><a name="line651">651  </a></b>	{
+<b><a name="line652">652  </a></b>	  return (char *) memcpy (__dest, __src, __n) + __n;
+<b><a name="line653">653  </a></b>	}
+<b><a name="line654">654  </a></b>	
+<b><a name="line655">655  </a></b>	# endif
+<b><a name="line656">656  </a></b>	#endif
+<b><a name="line657">657  </a></b>	
+<b><a name="line658">658  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line99">__END_DECLS</a>
+<b><a name="line659">659  </a></b>	
+<b><a name="line660">660  </a></b>	#endif /* string.h  */
+<b><a name="line661">661  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

@@ -1,0 +1,90 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: .</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/*
+<b><a name="line2">2    </a></b>	  Copyright (c) 2015 Synopsys, Inc. All rights reserved worldwide.
+<b><a name="line3">3    </a></b>	  The information contained in this file is the proprietary and confidential
+<b><a name="line4">4    </a></b>	  information of Synopsys, Inc. and its licensors, and is supplied subject to,
+<b><a name="line5">5    </a></b>	  and may be used only by Synopsys customers in accordance with the terms and
+<b><a name="line6">6    </a></b>	  conditions of a previously executed license agreement between Synopsys and that
+<b><a name="line7">7    </a></b>	  customer.
+<b><a name="line8">8    </a></b>	*/
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	/* user_nodefs.h
+<b><a name="line11">11   </a></b>	 *
+<b><a name="line12">12   </a></b>	 * Add company-specific nodefs here.  As the documentation for Prevent
+<b><a name="line13">13   </a></b>	 * describes, a nodef changes a function-style macro into a function
+<b><a name="line14">14   </a></b>	 * call.  The benefit of this change is that Prevent cannot identify
+<b><a name="line15">15   </a></b>	 * macro names during the analysis, but it can identify function
+<b><a name="line16">16   </a></b>	 * calls.  Thus, if, for example, you want to configure a
+<b><a name="line17">17   </a></b>	 * company-specific assert macro, you will first need to convert that
+<b><a name="line18">18   </a></b>	 * macro into a function call, then you will need to use the
+<b><a name="line19">19   </a></b>	 * cov-make-library utility to create a model for the new function
+<b><a name="line20">20   </a></b>	 * call.
+<b><a name="line21">21   </a></b>	 *
+<b><a name="line22">22   </a></b>	 * NOTE: In C++, it is critical that you create prototypes for the new
+<b><a name="line23">23   </a></b>	 * function calls that you are creating with the #nodef directive.  If
+<b><a name="line24">24   </a></b>	 * you #nodef my_assert, then you must make prototypes for every
+<b><a name="line25">25   </a></b>	 * possible type signature of my_assert.  Because C++ allows
+<b><a name="line26">26   </a></b>	 * overloading, though, it is perfectly fine to have more than one
+<b><a name="line27">27   </a></b>	 * prototype for a single function call.
+<b><a name="line28">28   </a></b>	 */
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	/** Enter company-specific nodefs here:
+<b><a name="line31">31   </a></b>	#nodef my_assert
+<b><a name="line32">32   </a></b>	...
+<b><a name="line33">33   </a></b>	**/
+<b><a name="line34">34   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

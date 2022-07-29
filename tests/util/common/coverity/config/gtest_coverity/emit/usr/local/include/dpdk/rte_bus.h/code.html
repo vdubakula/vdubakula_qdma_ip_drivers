@@ -1,0 +1,430 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_bus.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/*-
+<b><a name="line2">2    </a></b>	 *   BSD LICENSE
+<b><a name="line3">3    </a></b>	 *
+<b><a name="line4">4    </a></b>	 *   Copyright 2016 NXP
+<b><a name="line5">5    </a></b>	 *
+<b><a name="line6">6    </a></b>	 *   Redistribution and use in source and binary forms, with or without
+<b><a name="line7">7    </a></b>	 *   modification, are permitted provided that the following conditions
+<b><a name="line8">8    </a></b>	 *   are met:
+<b><a name="line9">9    </a></b>	 *
+<b><a name="line10">10   </a></b>	 *     * Redistributions of source code must retain the above copyright
+<b><a name="line11">11   </a></b>	 *       notice, this list of conditions and the following disclaimer.
+<b><a name="line12">12   </a></b>	 *     * Redistributions in binary form must reproduce the above copyright
+<b><a name="line13">13   </a></b>	 *       notice, this list of conditions and the following disclaimer in
+<b><a name="line14">14   </a></b>	 *       the documentation and/or other materials provided with the
+<b><a name="line15">15   </a></b>	 *       distribution.
+<b><a name="line16">16   </a></b>	 *     * Neither the name of NXP nor the names of its
+<b><a name="line17">17   </a></b>	 *       contributors may be used to endorse or promote products derived
+<b><a name="line18">18   </a></b>	 *       from this software without specific prior written permission.
+<b><a name="line19">19   </a></b>	 *
+<b><a name="line20">20   </a></b>	 *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+<b><a name="line21">21   </a></b>	 *   &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+<b><a name="line22">22   </a></b>	 *   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+<b><a name="line23">23   </a></b>	 *   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+<b><a name="line24">24   </a></b>	 *   OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+<b><a name="line25">25   </a></b>	 *   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+<b><a name="line26">26   </a></b>	 *   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+<b><a name="line27">27   </a></b>	 *   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+<b><a name="line28">28   </a></b>	 *   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+<b><a name="line29">29   </a></b>	 *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+<b><a name="line30">30   </a></b>	 *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+<b><a name="line31">31   </a></b>	 */
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	#ifndef _RTE_BUS_H_
+<b><a name="line34">34   </a></b>	#define <b>_RTE_BUS_H_</b>
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	/**
+<b><a name="line37">37   </a></b>	 * @file
+<b><a name="line38">38   </a></b>	 *
+<b><a name="line39">39   </a></b>	 * DPDK device bus interface
+<b><a name="line40">40   </a></b>	 *
+<b><a name="line41">41   </a></b>	 * This file exposes API and interfaces for bus abstraction
+<b><a name="line42">42   </a></b>	 * over the devices and drivers in EAL.
+<b><a name="line43">43   </a></b>	 */
+<b><a name="line44">44   </a></b>	
+<b><a name="line45">45   </a></b>	#ifdef __cplusplus
+<b><a name="line46">46   </a></b>	extern &quot;C&quot; {
+<b><a name="line47">47   </a></b>	#endif
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	#include &lt;stdio.h&gt;
+<b><a name="line50">50   </a></b>	#include &lt;sys/queue.h&gt;
+<b><a name="line51">51   </a></b>	
+<b><a name="line52">52   </a></b>	#include &lt;rte_log.h&gt;
+<b><a name="line53">53   </a></b>	#include &lt;rte_dev.h&gt;
+<b><a name="line54">54   </a></b>	
+<b><a name="line55">55   </a></b>	/** Double linked list of buses */
+<b><a name="line56">56   </a></b>	<a href="../../../../include/x86_64-linux-gnu/sys/queue.h/code.html#line372">TAILQ_HEAD</a>(rte_bus_list, rte_bus);
+<b><a name="line57">57   </a></b>	
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	/**
+<b><a name="line60">60   </a></b>	 * IOVA mapping mode.
+<b><a name="line61">61   </a></b>	 *
+<b><a name="line62">62   </a></b>	 * IOVA mapping mode is iommu programming mode of a device.
+<b><a name="line63">63   </a></b>	 * That device (for example: IOMMU backed DMA device) based
+<b><a name="line64">64   </a></b>	 * on rte_iova_mode will generate physical or virtual address.
+<b><a name="line65">65   </a></b>	 *
+<b><a name="line66">66   </a></b>	 */
+<b><a name="line67">67   </a></b>	enum <b>rte_iova_mode</b> {
+<b><a name="line68">68   </a></b>		<b>RTE_IOVA_DC</b> = 0,	/* Don't care mode */
+<b><a name="line69">69   </a></b>		<b>RTE_IOVA_PA</b> = (1 &lt;&lt; 0), /* DMA using physical address */
+<b><a name="line70">70   </a></b>		<b>RTE_IOVA_VA</b> = (1 &lt;&lt; 1)  /* DMA using virtual address */
+<b><a name="line71">71   </a></b>	};
+<b><a name="line72">72   </a></b>	
+<b><a name="line73">73   </a></b>	/**
+<b><a name="line74">74   </a></b>	 * Bus specific scan for devices attached on the bus.
+<b><a name="line75">75   </a></b>	 * For each bus object, the scan would be responsible for finding devices and
+<b><a name="line76">76   </a></b>	 * adding them to its private device list.
+<b><a name="line77">77   </a></b>	 *
+<b><a name="line78">78   </a></b>	 * A bus should mandatorily implement this method.
+<b><a name="line79">79   </a></b>	 *
+<b><a name="line80">80   </a></b>	 * @return
+<b><a name="line81">81   </a></b>	 *	0 for successful scan
+<b><a name="line82">82   </a></b>	 *	&lt;0 for unsuccessful scan with error value
+<b><a name="line83">83   </a></b>	 */
+<b><a name="line84">84   </a></b>	typedef int (*<b>rte_bus_scan_t</b>)(void);
+<b><a name="line85">85   </a></b>	
+<b><a name="line86">86   </a></b>	/**
+<b><a name="line87">87   </a></b>	 * Implementation specific probe function which is responsible for linking
+<b><a name="line88">88   </a></b>	 * devices on that bus with applicable drivers.
+<b><a name="line89">89   </a></b>	 *
+<b><a name="line90">90   </a></b>	 * This is called while iterating over each registered bus.
+<b><a name="line91">91   </a></b>	 *
+<b><a name="line92">92   </a></b>	 * @return
+<b><a name="line93">93   </a></b>	 *	0 for successful probe
+<b><a name="line94">94   </a></b>	 *	!0 for any error while probing
+<b><a name="line95">95   </a></b>	 */
+<b><a name="line96">96   </a></b>	typedef int (*<b>rte_bus_probe_t</b>)(void);
+<b><a name="line97">97   </a></b>	
+<b><a name="line98">98   </a></b>	/**
+<b><a name="line99">99   </a></b>	 * Device iterator to find a device on a bus.
+<b><a name="line100">100  </a></b>	 *
+<b><a name="line101">101  </a></b>	 * This function returns an rte_device if one of those held by the bus
+<b><a name="line102">102  </a></b>	 * matches the data passed as parameter.
+<b><a name="line103">103  </a></b>	 *
+<b><a name="line104">104  </a></b>	 * If the comparison function returns zero this function should stop iterating
+<b><a name="line105">105  </a></b>	 * over any more devices. To continue a search the device of a previous search
+<b><a name="line106">106  </a></b>	 * can be passed via the start parameter.
+<b><a name="line107">107  </a></b>	 *
+<b><a name="line108">108  </a></b>	 * @param cmp
+<b><a name="line109">109  </a></b>	 *	Comparison function.
+<b><a name="line110">110  </a></b>	 *
+<b><a name="line111">111  </a></b>	 * @param data
+<b><a name="line112">112  </a></b>	 *	Data to compare each device against.
+<b><a name="line113">113  </a></b>	 *
+<b><a name="line114">114  </a></b>	 * @param start
+<b><a name="line115">115  </a></b>	 *	starting point for the iteration
+<b><a name="line116">116  </a></b>	 *
+<b><a name="line117">117  </a></b>	 * @return
+<b><a name="line118">118  </a></b>	 *	The first device matching the data, NULL if none exists.
+<b><a name="line119">119  </a></b>	 */
+<b><a name="line120">120  </a></b>	typedef struct <a href="../rte_dev.h/code.html#line156">rte_device</a> *
+<b><a name="line121">121  </a></b>	(*<b>rte_bus_find_device_t</b>)(const struct <a href="../rte_dev.h/code.html#line156">rte_device</a> *start, <a href="../rte_dev.h/code.html#line258">rte_dev_cmp_t</a> cmp,
+<b><a name="line122">122  </a></b>				 const void *data);
+<b><a name="line123">123  </a></b>	
+<b><a name="line124">124  </a></b>	/**
+<b><a name="line125">125  </a></b>	 * Implementation specific probe function which is responsible for linking
+<b><a name="line126">126  </a></b>	 * devices on that bus with applicable drivers.
+<b><a name="line127">127  </a></b>	 *
+<b><a name="line128">128  </a></b>	 * @param dev
+<b><a name="line129">129  </a></b>	 *	Device pointer that was returned by a previous call to find_device.
+<b><a name="line130">130  </a></b>	 *
+<b><a name="line131">131  </a></b>	 * @return
+<b><a name="line132">132  </a></b>	 *	0 on success.
+<b><a name="line133">133  </a></b>	 *	!0 on error.
+<b><a name="line134">134  </a></b>	 */
+<b><a name="line135">135  </a></b>	typedef int (*<b>rte_bus_plug_t</b>)(struct <a href="../rte_dev.h/code.html#line156">rte_device</a> *dev);
+<b><a name="line136">136  </a></b>	
+<b><a name="line137">137  </a></b>	/**
+<b><a name="line138">138  </a></b>	 * Implementation specific remove function which is responsible for unlinking
+<b><a name="line139">139  </a></b>	 * devices on that bus from assigned driver.
+<b><a name="line140">140  </a></b>	 *
+<b><a name="line141">141  </a></b>	 * @param dev
+<b><a name="line142">142  </a></b>	 *	Device pointer that was returned by a previous call to find_device.
+<b><a name="line143">143  </a></b>	 *
+<b><a name="line144">144  </a></b>	 * @return
+<b><a name="line145">145  </a></b>	 *	0 on success.
+<b><a name="line146">146  </a></b>	 *	!0 on error.
+<b><a name="line147">147  </a></b>	 */
+<b><a name="line148">148  </a></b>	typedef int (*<b>rte_bus_unplug_t</b>)(struct <a href="../rte_dev.h/code.html#line156">rte_device</a> *dev);
+<b><a name="line149">149  </a></b>	
+<b><a name="line150">150  </a></b>	/**
+<b><a name="line151">151  </a></b>	 * Bus specific parsing function.
+<b><a name="line152">152  </a></b>	 * Validates the syntax used in the textual representation of a device,
+<b><a name="line153">153  </a></b>	 * If the syntax is valid and ``addr`` is not NULL, writes the bus-specific
+<b><a name="line154">154  </a></b>	 * device representation to ``addr``.
+<b><a name="line155">155  </a></b>	 *
+<b><a name="line156">156  </a></b>	 * @param[in] name
+<b><a name="line157">157  </a></b>	 *	device textual description
+<b><a name="line158">158  </a></b>	 *
+<b><a name="line159">159  </a></b>	 * @param[out] addr
+<b><a name="line160">160  </a></b>	 *	device information location address, into which parsed info
+<b><a name="line161">161  </a></b>	 *	should be written. If NULL, nothing should be written, which
+<b><a name="line162">162  </a></b>	 *	is not an error.
+<b><a name="line163">163  </a></b>	 *
+<b><a name="line164">164  </a></b>	 * @return
+<b><a name="line165">165  </a></b>	 *	0 if parsing was successful.
+<b><a name="line166">166  </a></b>	 *	!0 for any error.
+<b><a name="line167">167  </a></b>	 */
+<b><a name="line168">168  </a></b>	typedef int (*<b>rte_bus_parse_t</b>)(const char *name, void *addr);
+<b><a name="line169">169  </a></b>	
+<b><a name="line170">170  </a></b>	/**
+<b><a name="line171">171  </a></b>	 * Implement a specific hot-unplug handler, which is responsible for
+<b><a name="line172">172  </a></b>	 * handle the failure when device be hot-unplugged. When the event of
+<b><a name="line173">173  </a></b>	 * hot-unplug be detected, it could call this function to handle
+<b><a name="line174">174  </a></b>	 * the hot-unplug failure and avoid app crash.
+<b><a name="line175">175  </a></b>	 * @param dev
+<b><a name="line176">176  </a></b>	 *	Pointer of the device structure.
+<b><a name="line177">177  </a></b>	 *
+<b><a name="line178">178  </a></b>	 * @return
+<b><a name="line179">179  </a></b>	 *	0 on success.
+<b><a name="line180">180  </a></b>	 *	!0 on error.
+<b><a name="line181">181  </a></b>	 */
+<b><a name="line182">182  </a></b>	typedef int (*<b>rte_bus_hot_unplug_handler_t</b>)(struct <a href="../rte_dev.h/code.html#line156">rte_device</a> *dev);
+<b><a name="line183">183  </a></b>	
+<b><a name="line184">184  </a></b>	/**
+<b><a name="line185">185  </a></b>	 * Implement a specific sigbus handler, which is responsible for handling
+<b><a name="line186">186  </a></b>	 * the sigbus error which is either original memory error, or specific memory
+<b><a name="line187">187  </a></b>	 * error that caused of device be hot-unplugged. When sigbus error be captured,
+<b><a name="line188">188  </a></b>	 * it could call this function to handle sigbus error.
+<b><a name="line189">189  </a></b>	 * @param failure_addr
+<b><a name="line190">190  </a></b>	 *	Pointer of the fault address of the sigbus error.
+<b><a name="line191">191  </a></b>	 *
+<b><a name="line192">192  </a></b>	 * @return
+<b><a name="line193">193  </a></b>	 *	0 for success handle the sigbus for hot-unplug.
+<b><a name="line194">194  </a></b>	 *	1 for not process it, because it is a generic sigbus error.
+<b><a name="line195">195  </a></b>	 *	-1 for failed to handle the sigbus for hot-unplug.
+<b><a name="line196">196  </a></b>	 */
+<b><a name="line197">197  </a></b>	typedef int (*<b>rte_bus_sigbus_handler_t</b>)(const void *failure_addr);
+<b><a name="line198">198  </a></b>	
+<b><a name="line199">199  </a></b>	/**
+<b><a name="line200">200  </a></b>	 * Bus scan policies
+<b><a name="line201">201  </a></b>	 */
+<b><a name="line202">202  </a></b>	enum <b>rte_bus_scan_mode</b> {
+<b><a name="line203">203  </a></b>		<b>RTE_BUS_SCAN_UNDEFINED</b>,
+<b><a name="line204">204  </a></b>		<b>RTE_BUS_SCAN_WHITELIST</b>,
+<b><a name="line205">205  </a></b>		<b>RTE_BUS_SCAN_BLACKLIST</b>,
+<b><a name="line206">206  </a></b>	};
+<b><a name="line207">207  </a></b>	
+<b><a name="line208">208  </a></b>	/**
+<b><a name="line209">209  </a></b>	 * A structure used to configure bus operations.
+<b><a name="line210">210  </a></b>	 */
+<b><a name="line211">211  </a></b>	struct <b>rte_bus_conf</b> {
+<b><a name="line212">212  </a></b>		enum <a href="#line202">rte_bus_scan_mode</a> <b>scan_mode</b>; /**&lt; Scan policy. */
+<b><a name="line213">213  </a></b>	};
+<b><a name="line214">214  </a></b>	
+<b><a name="line215">215  </a></b>	
+<b><a name="line216">216  </a></b>	/**
+<b><a name="line217">217  </a></b>	 * Get common iommu class of the all the devices on the bus. The bus may
+<b><a name="line218">218  </a></b>	 * check that those devices are attached to iommu driver.
+<b><a name="line219">219  </a></b>	 * If no devices are attached to the bus. The bus may return with don't care
+<b><a name="line220">220  </a></b>	 * (_DC) value.
+<b><a name="line221">221  </a></b>	 * Otherwise, The bus will return appropriate _pa or _va iova mode.
+<b><a name="line222">222  </a></b>	 *
+<b><a name="line223">223  </a></b>	 * @return
+<b><a name="line224">224  </a></b>	 *      enum rte_iova_mode value.
+<b><a name="line225">225  </a></b>	 */
+<b><a name="line226">226  </a></b>	typedef enum <a href="#line67">rte_iova_mode</a> (*<b>rte_bus_get_iommu_class_t</b>)(void);
+<b><a name="line227">227  </a></b>	
+<b><a name="line228">228  </a></b>	
+<b><a name="line229">229  </a></b>	/**
+<b><a name="line230">230  </a></b>	 * A structure describing a generic bus.
+<b><a name="line231">231  </a></b>	 */
+<b><a name="line232">232  </a></b>	struct <b>rte_bus</b> {
+<b><a name="line233">233  </a></b>		<a href="../../../../include/x86_64-linux-gnu/sys/queue.h/code.html#line382">TAILQ_ENTRY</a>(rte_bus) <b>next</b>;   /**&lt; Next bus object in linked list */
+<b><a name="line234">234  </a></b>		const char *<b>name</b>;            /**&lt; Name of the bus */
+<b><a name="line235">235  </a></b>		<a href="#line84">rte_bus_scan_t</a> <b>scan</b>;         /**&lt; Scan for devices attached to bus */
+<b><a name="line236">236  </a></b>		<a href="#line96">rte_bus_probe_t</a> <b>probe</b>;       /**&lt; Probe devices on bus */
+<b><a name="line237">237  </a></b>		<a href="#line121">rte_bus_find_device_t</a> <b>find_device</b>; /**&lt; Find a device on the bus */
+<b><a name="line238">238  </a></b>		<a href="#line135">rte_bus_plug_t</a> <b>plug</b>;         /**&lt; Probe single device for drivers */
+<b><a name="line239">239  </a></b>		<a href="#line148">rte_bus_unplug_t</a> <b>unplug</b>;     /**&lt; Remove single device from driver */
+<b><a name="line240">240  </a></b>		<a href="#line168">rte_bus_parse_t</a> <b>parse</b>;       /**&lt; Parse a device name */
+<b><a name="line241">241  </a></b>		struct <a href="#line211">rte_bus_conf</a> <b>conf</b>;    /**&lt; Bus configuration */
+<b><a name="line242">242  </a></b>		<a href="#line226">rte_bus_get_iommu_class_t</a> <b>get_iommu_class</b>; /**&lt; Get iommu class */
+<b><a name="line243">243  </a></b>		<a href="../rte_dev.h/code.html#line344">rte_dev_iterate_t</a> <b>dev_iterate</b>; /**&lt; Device iterator. */
+<b><a name="line244">244  </a></b>		<a href="#line182">rte_bus_hot_unplug_handler_t</a> <b>hot_unplug_handler</b>;
+<b><a name="line245">245  </a></b>					/**&lt; handle hot-unplug failure on the bus */
+<b><a name="line246">246  </a></b>		<a href="#line197">rte_bus_sigbus_handler_t</a> <b>sigbus_handler</b>;
+<b><a name="line247">247  </a></b>						/**&lt; handle sigbus error on the bus */
+<b><a name="line248">248  </a></b>	
+<b><a name="line249">249  </a></b>	};
+<b><a name="line250">250  </a></b>	
+<b><a name="line251">251  </a></b>	/**
+<b><a name="line252">252  </a></b>	 * Register a Bus handler.
+<b><a name="line253">253  </a></b>	 *
+<b><a name="line254">254  </a></b>	 * @param bus
+<b><a name="line255">255  </a></b>	 *   A pointer to a rte_bus structure describing the bus
+<b><a name="line256">256  </a></b>	 *   to be registered.
+<b><a name="line257">257  </a></b>	 */
+<b><a name="line258">258  </a></b>	void rte_bus_register(struct <a href="../rte_dev.h/code.html#line160">rte_bus</a> *bus);
+<b><a name="line259">259  </a></b>	
+<b><a name="line260">260  </a></b>	/**
+<b><a name="line261">261  </a></b>	 * Unregister a Bus handler.
+<b><a name="line262">262  </a></b>	 *
+<b><a name="line263">263  </a></b>	 * @param bus
+<b><a name="line264">264  </a></b>	 *   A pointer to a rte_bus structure describing the bus
+<b><a name="line265">265  </a></b>	 *   to be unregistered.
+<b><a name="line266">266  </a></b>	 */
+<b><a name="line267">267  </a></b>	void rte_bus_unregister(struct <a href="../rte_dev.h/code.html#line160">rte_bus</a> *bus);
+<b><a name="line268">268  </a></b>	
+<b><a name="line269">269  </a></b>	/**
+<b><a name="line270">270  </a></b>	 * Scan all the buses.
+<b><a name="line271">271  </a></b>	 *
+<b><a name="line272">272  </a></b>	 * @return
+<b><a name="line273">273  </a></b>	 *   0 in case of success in scanning all buses
+<b><a name="line274">274  </a></b>	 *  !0 in case of failure to scan
+<b><a name="line275">275  </a></b>	 */
+<b><a name="line276">276  </a></b>	int rte_bus_scan(void);
+<b><a name="line277">277  </a></b>	
+<b><a name="line278">278  </a></b>	/**
+<b><a name="line279">279  </a></b>	 * For each device on the buses, perform a driver 'match' and call the
+<b><a name="line280">280  </a></b>	 * driver-specific probe for device initialization.
+<b><a name="line281">281  </a></b>	 *
+<b><a name="line282">282  </a></b>	 * @return
+<b><a name="line283">283  </a></b>	 *	 0 for successful match/probe
+<b><a name="line284">284  </a></b>	 *	!0 otherwise
+<b><a name="line285">285  </a></b>	 */
+<b><a name="line286">286  </a></b>	int rte_bus_probe(void);
+<b><a name="line287">287  </a></b>	
+<b><a name="line288">288  </a></b>	/**
+<b><a name="line289">289  </a></b>	 * Dump information of all the buses registered with EAL.
+<b><a name="line290">290  </a></b>	 *
+<b><a name="line291">291  </a></b>	 * @param f
+<b><a name="line292">292  </a></b>	 *	 A valid and open output stream handle
+<b><a name="line293">293  </a></b>	 */
+<b><a name="line294">294  </a></b>	void rte_bus_dump(<a href="../../../../include/stdio.h/code.html#line48">FILE</a> *f);
+<b><a name="line295">295  </a></b>	
+<b><a name="line296">296  </a></b>	/**
+<b><a name="line297">297  </a></b>	 * Bus comparison function.
+<b><a name="line298">298  </a></b>	 *
+<b><a name="line299">299  </a></b>	 * @param bus
+<b><a name="line300">300  </a></b>	 *	Bus under test.
+<b><a name="line301">301  </a></b>	 *
+<b><a name="line302">302  </a></b>	 * @param data
+<b><a name="line303">303  </a></b>	 *	Data to compare against.
+<b><a name="line304">304  </a></b>	 *
+<b><a name="line305">305  </a></b>	 * @return
+<b><a name="line306">306  </a></b>	 *	0 if the bus matches the data.
+<b><a name="line307">307  </a></b>	 *	!0 if the bus does not match.
+<b><a name="line308">308  </a></b>	 *	&lt;0 if ordering is possible and the bus is lower than the data.
+<b><a name="line309">309  </a></b>	 *	&gt;0 if ordering is possible and the bus is greater than the data.
+<b><a name="line310">310  </a></b>	 */
+<b><a name="line311">311  </a></b>	typedef int (*<b>rte_bus_cmp_t</b>)(const struct <a href="../rte_dev.h/code.html#line160">rte_bus</a> *bus, const void *data);
+<b><a name="line312">312  </a></b>	
+<b><a name="line313">313  </a></b>	/**
+<b><a name="line314">314  </a></b>	 * Bus iterator to find a particular bus.
+<b><a name="line315">315  </a></b>	 *
+<b><a name="line316">316  </a></b>	 * This function compares each registered bus to find one that matches
+<b><a name="line317">317  </a></b>	 * the data passed as parameter.
+<b><a name="line318">318  </a></b>	 *
+<b><a name="line319">319  </a></b>	 * If the comparison function returns zero this function will stop iterating
+<b><a name="line320">320  </a></b>	 * over any more buses. To continue a search the bus of a previous search can
+<b><a name="line321">321  </a></b>	 * be passed via the start parameter.
+<b><a name="line322">322  </a></b>	 *
+<b><a name="line323">323  </a></b>	 * @param start
+<b><a name="line324">324  </a></b>	 *	Starting point for the iteration.
+<b><a name="line325">325  </a></b>	 *
+<b><a name="line326">326  </a></b>	 * @param cmp
+<b><a name="line327">327  </a></b>	 *	Comparison function.
+<b><a name="line328">328  </a></b>	 *
+<b><a name="line329">329  </a></b>	 * @param data
+<b><a name="line330">330  </a></b>	 *	 Data to pass to comparison function.
+<b><a name="line331">331  </a></b>	 *
+<b><a name="line332">332  </a></b>	 * @return
+<b><a name="line333">333  </a></b>	 *	 A pointer to a rte_bus structure or NULL in case no bus matches
+<b><a name="line334">334  </a></b>	 */
+<b><a name="line335">335  </a></b>	struct <a href="../rte_dev.h/code.html#line160">rte_bus</a> *rte_bus_find(const struct <a href="../rte_dev.h/code.html#line160">rte_bus</a> *start, <a href="#line311">rte_bus_cmp_t</a> cmp,
+<b><a name="line336">336  </a></b>				     const void *data);
+<b><a name="line337">337  </a></b>	
+<b><a name="line338">338  </a></b>	/**
+<b><a name="line339">339  </a></b>	 * Find the registered bus for a particular device.
+<b><a name="line340">340  </a></b>	 */
+<b><a name="line341">341  </a></b>	struct <a href="../rte_dev.h/code.html#line160">rte_bus</a> *rte_bus_find_by_device(const struct <a href="../rte_dev.h/code.html#line156">rte_device</a> *dev);
+<b><a name="line342">342  </a></b>	
+<b><a name="line343">343  </a></b>	/**
+<b><a name="line344">344  </a></b>	 * Find the registered bus for a given name.
+<b><a name="line345">345  </a></b>	 */
+<b><a name="line346">346  </a></b>	struct <a href="../rte_dev.h/code.html#line160">rte_bus</a> *rte_bus_find_by_name(const char *busname);
+<b><a name="line347">347  </a></b>	
+<b><a name="line348">348  </a></b>	
+<b><a name="line349">349  </a></b>	/**
+<b><a name="line350">350  </a></b>	 * Get the common iommu class of devices bound on to buses available in the
+<b><a name="line351">351  </a></b>	 * system. The default mode is PA.
+<b><a name="line352">352  </a></b>	 *
+<b><a name="line353">353  </a></b>	 * @return
+<b><a name="line354">354  </a></b>	 *     enum rte_iova_mode value.
+<b><a name="line355">355  </a></b>	 */
+<b><a name="line356">356  </a></b>	enum <a href="#line67">rte_iova_mode</a> rte_bus_get_iommu_class(void);
+<b><a name="line357">357  </a></b>	
+<b><a name="line358">358  </a></b>	/**
+<b><a name="line359">359  </a></b>	 * Helper for Bus registration.
+<b><a name="line360">360  </a></b>	 * The constructor has higher priority than PMD constructors.
+<b><a name="line361">361  </a></b>	 */
+<b><a name="line362">362  </a></b>	#define <b>RTE_REGISTER_BUS</b>(nm, bus) \
+<b><a name="line363">363  </a></b>	RTE_INIT_PRIO(businitfn_ ##nm, BUS) \
+<b><a name="line364">364  </a></b>	{\
+<b><a name="line365">365  </a></b>		(bus).name = RTE_STR(nm);\
+<b><a name="line366">366  </a></b>		rte_bus_register(&amp;bus); \
+<b><a name="line367">367  </a></b>	}
+<b><a name="line368">368  </a></b>	
+<b><a name="line369">369  </a></b>	#ifdef __cplusplus
+<b><a name="line370">370  </a></b>	}
+<b><a name="line371">371  </a></b>	#endif
+<b><a name="line372">372  </a></b>	
+<b><a name="line373">373  </a></b>	#endif /* _RTE_BUS_H */
+<b><a name="line374">374  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

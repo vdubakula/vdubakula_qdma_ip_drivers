@@ -1,0 +1,136 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/signum.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Signal number definitions.  Linux version.
+<b><a name="line2">2    </a></b>	   Copyright (C) 1995-2016 Free Software Foundation, Inc.
+<b><a name="line3">3    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line6">6    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line7">7    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line8">8    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line13">13   </a></b>	   Lesser General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line16">16   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line17">17   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	#ifdef	<a href="../../../signal.h/code.html#line25">_SIGNAL_H</a>
+<b><a name="line20">20   </a></b>	
+<b><a name="line21">21   </a></b>	/* Fake signal functions.  */
+<b><a name="line22">22   </a></b>	#define <b>SIG_ERR</b>	((__sighandler_t) -1)		/* Error return.  */
+<b><a name="line23">23   </a></b>	#define <b>SIG_DFL</b>	((__sighandler_t) 0)		/* Default action.  */
+<b><a name="line24">24   </a></b>	#define <b>SIG_IGN</b>	((__sighandler_t) 1)		/* Ignore signal.  */
+<b><a name="line25">25   </a></b>	
+<b><a name="line26">26   </a></b>	#ifdef <a href="../../../features.h/code.html#line282">__USE_UNIX98</a>
+<b><a name="line27">27   </a></b>	# define <b>SIG_HOLD</b>	((__sighandler_t) 2)	/* Add signal to hold mask.  */
+<b><a name="line28">28   </a></b>	#endif
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	
+<b><a name="line31">31   </a></b>	/* Signals.  */
+<b><a name="line32">32   </a></b>	#define	<b>SIGHUP</b>		1	/* Hangup (POSIX).  */
+<b><a name="line33">33   </a></b>	#define	<b>SIGINT</b>		2	/* Interrupt (ANSI).  */
+<b><a name="line34">34   </a></b>	#define	<b>SIGQUIT</b>		3	/* Quit (POSIX).  */
+<b><a name="line35">35   </a></b>	#define	<b>SIGILL</b>		4	/* Illegal instruction (ANSI).  */
+<b><a name="line36">36   </a></b>	#define	<b>SIGTRAP</b>		5	/* Trace trap (POSIX).  */
+<b><a name="line37">37   </a></b>	#define	<b>SIGABRT</b>		6	/* Abort (ANSI).  */
+<b><a name="line38">38   </a></b>	#define	<b>SIGIOT</b>		6	/* IOT trap (4.2 BSD).  */
+<b><a name="line39">39   </a></b>	#define	<b>SIGBUS</b>		7	/* BUS error (4.2 BSD).  */
+<b><a name="line40">40   </a></b>	#define	<b>SIGFPE</b>		8	/* Floating-point exception (ANSI).  */
+<b><a name="line41">41   </a></b>	#define	<b>SIGKILL</b>		9	/* Kill, unblockable (POSIX).  */
+<b><a name="line42">42   </a></b>	#define	<b>SIGUSR1</b>		10	/* User-defined signal 1 (POSIX).  */
+<b><a name="line43">43   </a></b>	#define	<b>SIGSEGV</b>		11	/* Segmentation violation (ANSI).  */
+<b><a name="line44">44   </a></b>	#define	<b>SIGUSR2</b>		12	/* User-defined signal 2 (POSIX).  */
+<b><a name="line45">45   </a></b>	#define	<b>SIGPIPE</b>		13	/* Broken pipe (POSIX).  */
+<b><a name="line46">46   </a></b>	#define	<b>SIGALRM</b>		14	/* Alarm clock (POSIX).  */
+<b><a name="line47">47   </a></b>	#define	<b>SIGTERM</b>		15	/* Termination (ANSI).  */
+<b><a name="line48">48   </a></b>	#define	<b>SIGSTKFLT</b>	16	/* Stack fault.  */
+<b><a name="line49">49   </a></b>	#define	<b>SIGCLD</b>		SIGCHLD	/* Same as SIGCHLD (System V).  */
+<b><a name="line50">50   </a></b>	#define	<b>SIGCHLD</b>		17	/* Child status has changed (POSIX).  */
+<b><a name="line51">51   </a></b>	#define	<b>SIGCONT</b>		18	/* Continue (POSIX).  */
+<b><a name="line52">52   </a></b>	#define	<b>SIGSTOP</b>		19	/* Stop, unblockable (POSIX).  */
+<b><a name="line53">53   </a></b>	#define	<b>SIGTSTP</b>		20	/* Keyboard stop (POSIX).  */
+<b><a name="line54">54   </a></b>	#define	<b>SIGTTIN</b>		21	/* Background read from tty (POSIX).  */
+<b><a name="line55">55   </a></b>	#define	<b>SIGTTOU</b>		22	/* Background write to tty (POSIX).  */
+<b><a name="line56">56   </a></b>	#define	<b>SIGURG</b>		23	/* Urgent condition on socket (4.2 BSD).  */
+<b><a name="line57">57   </a></b>	#define	<b>SIGXCPU</b>		24	/* CPU limit exceeded (4.2 BSD).  */
+<b><a name="line58">58   </a></b>	#define	<b>SIGXFSZ</b>		25	/* File size limit exceeded (4.2 BSD).  */
+<b><a name="line59">59   </a></b>	#define	<b>SIGVTALRM</b>	26	/* Virtual alarm clock (4.2 BSD).  */
+<b><a name="line60">60   </a></b>	#define	<b>SIGPROF</b>		27	/* Profiling alarm clock (4.2 BSD).  */
+<b><a name="line61">61   </a></b>	#define	<b>SIGWINCH</b>	28	/* Window size change (4.3 BSD, Sun).  */
+<b><a name="line62">62   </a></b>	#define	<b>SIGPOLL</b>		SIGIO	/* Pollable event occurred (System V).  */
+<b><a name="line63">63   </a></b>	#define	<b>SIGIO</b>		29	/* I/O now possible (4.2 BSD).  */
+<b><a name="line64">64   </a></b>	#define	<b>SIGPWR</b>		30	/* Power failure restart (System V).  */
+<b><a name="line65">65   </a></b>	#define <b>SIGSYS</b>		31	/* Bad system call.  */
+<b><a name="line66">66   </a></b>	#define <b>SIGUNUSED</b>	31
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	#define	<b>_NSIG</b>		65	/* Biggest signal number + 1
+<b><a name="line69">69   </a></b>					   (including real-time signals).  */
+<b><a name="line70">70   </a></b>	
+<b><a name="line71">71   </a></b>	#define <b>SIGRTMIN</b>        (__libc_current_sigrtmin ())
+<b><a name="line72">72   </a></b>	#define <b>SIGRTMAX</b>        (__libc_current_sigrtmax ())
+<b><a name="line73">73   </a></b>	
+<b><a name="line74">74   </a></b>	/* These are the hard limits of the kernel.  These values should not be
+<b><a name="line75">75   </a></b>	   used directly at user level.  */
+<b><a name="line76">76   </a></b>	#define <b>__SIGRTMIN</b>	32
+<b><a name="line77">77   </a></b>	#define <b>__SIGRTMAX</b>	(_NSIG - 1)
+<b><a name="line78">78   </a></b>	
+<b><a name="line79">79   </a></b>	#endif	/* &lt;signal.h&gt; included.  */
+<b><a name="line80">80   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

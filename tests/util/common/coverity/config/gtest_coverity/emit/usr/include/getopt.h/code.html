@@ -1,0 +1,248 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/getopt.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Declarations for getopt.
+<b><a name="line2">2    </a></b>	   Copyright (C) 1989-2016 Free Software Foundation, Inc.
+<b><a name="line3">3    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line6">6    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line7">7    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line8">8    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line13">13   </a></b>	   Lesser General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line16">16   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line17">17   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	#ifndef _GETOPT_H
+<b><a name="line20">20   </a></b>	
+<b><a name="line21">21   </a></b>	#ifndef <a href="../unistd.h/code.html#line873">__need_getopt</a>
+<b><a name="line22">22   </a></b>	# define <b>_GETOPT_H</b> 1
+<b><a name="line23">23   </a></b>	#endif
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/* If __GNU_LIBRARY__ is not already defined, either we are being used
+<b><a name="line26">26   </a></b>	   standalone, or this is the first header included in the source file.
+<b><a name="line27">27   </a></b>	   If we are being used with glibc, we need to include &lt;features.h&gt;, but
+<b><a name="line28">28   </a></b>	   that does not exist if we are standalone.  So: if __GNU_LIBRARY__ is
+<b><a name="line29">29   </a></b>	   not defined, include &lt;ctype.h&gt;, which will pull in &lt;features.h&gt; for us
+<b><a name="line30">30   </a></b>	   if it's from glibc.  (Why ctype.h?  It's guaranteed to exist and it
+<b><a name="line31">31   </a></b>	   doesn't flood the namespace with stuff the way some other headers do.)  */
+<b><a name="line32">32   </a></b>	#if !defined <a href="../features.h/code.html#line354">__GNU_LIBRARY__</a>
+<b><a name="line33">33   </a></b>	# include &lt;ctype.h&gt;
+<b><a name="line34">34   </a></b>	#endif
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	#ifndef <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>
+<b><a name="line37">37   </a></b>	# ifndef __GNUC_PREREQ
+<b><a name="line38">38   </a></b>	#  define __GNUC_PREREQ(maj, min) (0)
+<b><a name="line39">39   </a></b>	# endif
+<b><a name="line40">40   </a></b>	# if defined __cplusplus &amp;&amp; __GNUC_PREREQ (2,8)
+<b><a name="line41">41   </a></b>	#  define __THROW	throw ()
+<b><a name="line42">42   </a></b>	# else
+<b><a name="line43">43   </a></b>	#  define __THROW
+<b><a name="line44">44   </a></b>	# endif
+<b><a name="line45">45   </a></b>	#endif
+<b><a name="line46">46   </a></b>	
+<b><a name="line47">47   </a></b>	#ifdef	__cplusplus
+<b><a name="line48">48   </a></b>	extern &quot;C&quot; {
+<b><a name="line49">49   </a></b>	#endif
+<b><a name="line50">50   </a></b>	
+<b><a name="line51">51   </a></b>	/* For communication from `getopt' to the caller.
+<b><a name="line52">52   </a></b>	   When `getopt' finds an option that takes an argument,
+<b><a name="line53">53   </a></b>	   the argument value is returned here.
+<b><a name="line54">54   </a></b>	   Also, when `ordering' is RETURN_IN_ORDER,
+<b><a name="line55">55   </a></b>	   each non-option ARGV-element is returned here.  */
+<b><a name="line56">56   </a></b>	
+<b><a name="line57">57   </a></b>	extern char *optarg;
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	/* Index in ARGV of the next element to be scanned.
+<b><a name="line60">60   </a></b>	   This is used for communication to and from the caller
+<b><a name="line61">61   </a></b>	   and for communication between successive calls to `getopt'.
+<b><a name="line62">62   </a></b>	
+<b><a name="line63">63   </a></b>	   On entry to `getopt', zero means this is the first call; initialize.
+<b><a name="line64">64   </a></b>	
+<b><a name="line65">65   </a></b>	   When `getopt' returns -1, this is the index of the first of the
+<b><a name="line66">66   </a></b>	   non-option elements that the caller should itself scan.
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	   Otherwise, `optind' communicates from one call to the next
+<b><a name="line69">69   </a></b>	   how much of ARGV has been scanned so far.  */
+<b><a name="line70">70   </a></b>	
+<b><a name="line71">71   </a></b>	extern int optind;
+<b><a name="line72">72   </a></b>	
+<b><a name="line73">73   </a></b>	/* Callers store zero here to inhibit the error message `getopt' prints
+<b><a name="line74">74   </a></b>	   for unrecognized options.  */
+<b><a name="line75">75   </a></b>	
+<b><a name="line76">76   </a></b>	extern int opterr;
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	/* Set to an option character which was unrecognized.  */
+<b><a name="line79">79   </a></b>	
+<b><a name="line80">80   </a></b>	extern int optopt;
+<b><a name="line81">81   </a></b>	
+<b><a name="line82">82   </a></b>	#ifndef <a href="../unistd.h/code.html#line873">__need_getopt</a>
+<b><a name="line83">83   </a></b>	/* Describe the long-named options requested by the application.
+<b><a name="line84">84   </a></b>	   The LONG_OPTIONS argument to getopt_long or getopt_long_only is a vector
+<b><a name="line85">85   </a></b>	   of `struct option' terminated by an element containing a name which is
+<b><a name="line86">86   </a></b>	   zero.
+<b><a name="line87">87   </a></b>	
+<b><a name="line88">88   </a></b>	   The field `has_arg' is:
+<b><a name="line89">89   </a></b>	   no_argument		(or 0) if the option does not take an argument,
+<b><a name="line90">90   </a></b>	   required_argument	(or 1) if the option requires an argument,
+<b><a name="line91">91   </a></b>	   optional_argument 	(or 2) if the option takes an optional argument.
+<b><a name="line92">92   </a></b>	
+<b><a name="line93">93   </a></b>	   If the field `flag' is not NULL, it points to a variable that is set
+<b><a name="line94">94   </a></b>	   to the value given in the field `val' when the option is found, but
+<b><a name="line95">95   </a></b>	   left unchanged if the option is not found.
+<b><a name="line96">96   </a></b>	
+<b><a name="line97">97   </a></b>	   To have a long-named option do something other than set an `int' to
+<b><a name="line98">98   </a></b>	   a compiled-in constant, such as set a value from `optarg', set the
+<b><a name="line99">99   </a></b>	   option's `flag' field to zero and its `val' field to a nonzero
+<b><a name="line100">100  </a></b>	   value (the equivalent single-letter option character, if there is
+<b><a name="line101">101  </a></b>	   one).  For long options that have a zero `flag' field, `getopt'
+<b><a name="line102">102  </a></b>	   returns the contents of the `val' field.  */
+<b><a name="line103">103  </a></b>	
+<b><a name="line104">104  </a></b>	struct <b>option</b>
+<b><a name="line105">105  </a></b>	{
+<b><a name="line106">106  </a></b>	  const char *<b>name</b>;
+<b><a name="line107">107  </a></b>	  /* has_arg can't be an enum because some compilers complain about
+<b><a name="line108">108  </a></b>	     type mismatches in all the code that assumes it is an int.  */
+<b><a name="line109">109  </a></b>	  int <b>has_arg</b>;
+<b><a name="line110">110  </a></b>	  int *<b>flag</b>;
+<b><a name="line111">111  </a></b>	  int <b>val</b>;
+<b><a name="line112">112  </a></b>	};
+<b><a name="line113">113  </a></b>	
+<b><a name="line114">114  </a></b>	/* Names for the values of the `has_arg' field of `struct option'.  */
+<b><a name="line115">115  </a></b>	
+<b><a name="line116">116  </a></b>	# define <b>no_argument</b>		0
+<b><a name="line117">117  </a></b>	# define <b>required_argument</b>	1
+<b><a name="line118">118  </a></b>	# define <b>optional_argument</b>	2
+<b><a name="line119">119  </a></b>	#endif	/* need getopt */
+<b><a name="line120">120  </a></b>	
+<b><a name="line121">121  </a></b>	
+<b><a name="line122">122  </a></b>	/* Get definitions and prototypes for functions to process the
+<b><a name="line123">123  </a></b>	   arguments in ARGV (ARGC of them, minus the program name) for
+<b><a name="line124">124  </a></b>	   options given in OPTS.
+<b><a name="line125">125  </a></b>	
+<b><a name="line126">126  </a></b>	   Return the option character from OPTS just read.  Return -1 when
+<b><a name="line127">127  </a></b>	   there are no more options.  For unrecognized options, or options
+<b><a name="line128">128  </a></b>	   missing arguments, `optopt' is set to the option letter, and '?' is
+<b><a name="line129">129  </a></b>	   returned.
+<b><a name="line130">130  </a></b>	
+<b><a name="line131">131  </a></b>	   The OPTS string is a list of characters which are recognized option
+<b><a name="line132">132  </a></b>	   letters, optionally followed by colons, specifying that that letter
+<b><a name="line133">133  </a></b>	   takes an argument, to be placed in `optarg'.
+<b><a name="line134">134  </a></b>	
+<b><a name="line135">135  </a></b>	   If a letter in OPTS is followed by two colons, its argument is
+<b><a name="line136">136  </a></b>	   optional.  This behavior is specific to the GNU `getopt'.
+<b><a name="line137">137  </a></b>	
+<b><a name="line138">138  </a></b>	   The argument `--' causes premature termination of argument
+<b><a name="line139">139  </a></b>	   scanning, explicitly telling `getopt' that there are no more
+<b><a name="line140">140  </a></b>	   options.
+<b><a name="line141">141  </a></b>	
+<b><a name="line142">142  </a></b>	   If OPTS begins with `--', then non-option arguments are treated as
+<b><a name="line143">143  </a></b>	   arguments to the option '\0'.  This behavior is specific to the GNU
+<b><a name="line144">144  </a></b>	   `getopt'.  */
+<b><a name="line145">145  </a></b>	
+<b><a name="line146">146  </a></b>	#ifdef <a href="../features.h/code.html#line354">__GNU_LIBRARY__</a>
+<b><a name="line147">147  </a></b>	/* Many other libraries have conflicting prototypes for getopt, with
+<b><a name="line148">148  </a></b>	   differences in the consts, in stdlib.h.  To avoid compilation
+<b><a name="line149">149  </a></b>	   errors, only prototype getopt for the GNU C library.  */
+<b><a name="line150">150  </a></b>	extern int getopt (int ___argc, char *const *___argv, const char *__shortopts)
+<b><a name="line151">151  </a></b>	       <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line152">152  </a></b>	
+<b><a name="line153">153  </a></b>	# if defined <a href="../unistd.h/code.html#line873">__need_getopt</a> &amp;&amp; defined <a href="../features.h/code.html#line253">__USE_POSIX2</a> \
+<b><a name="line154">154  </a></b>	  &amp;&amp; !defined __USE_POSIX_IMPLICITLY &amp;&amp; !defined <a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line155">155  </a></b>	/* The GNU getopt has more functionality than the standard version.  The
+<b><a name="line156">156  </a></b>	   additional functionality can be disable at runtime.  This redirection
+<b><a name="line157">157  </a></b>	   helps to also do this at runtime.  */
+<b><a name="line158">158  </a></b>	#  ifdef __REDIRECT
+<b><a name="line159">159  </a></b>	  extern int __REDIRECT_NTH (getopt, (int ___argc, char *const *___argv,
+<b><a name="line160">160  </a></b>					      const char *__shortopts),
+<b><a name="line161">161  </a></b>				     __posix_getopt);
+<b><a name="line162">162  </a></b>	#  else
+<b><a name="line163">163  </a></b>	extern int __posix_getopt (int ___argc, char *const *___argv,
+<b><a name="line164">164  </a></b>				   const char *__shortopts) __THROW;
+<b><a name="line165">165  </a></b>	#   define getopt __posix_getopt
+<b><a name="line166">166  </a></b>	#  endif
+<b><a name="line167">167  </a></b>	# endif
+<b><a name="line168">168  </a></b>	#else /* not __GNU_LIBRARY__ */
+<b><a name="line169">169  </a></b>	extern int getopt ();
+<b><a name="line170">170  </a></b>	#endif /* __GNU_LIBRARY__ */
+<b><a name="line171">171  </a></b>	
+<b><a name="line172">172  </a></b>	#ifndef <a href="../unistd.h/code.html#line873">__need_getopt</a>
+<b><a name="line173">173  </a></b>	extern int getopt_long (int ___argc, char *const *___argv,
+<b><a name="line174">174  </a></b>				const char *__shortopts,
+<b><a name="line175">175  </a></b>			        const struct <a href="#line104">option</a> *__longopts, int *__longind)
+<b><a name="line176">176  </a></b>	       <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line177">177  </a></b>	extern int getopt_long_only (int ___argc, char *const *___argv,
+<b><a name="line178">178  </a></b>				     const char *__shortopts,
+<b><a name="line179">179  </a></b>			             const struct <a href="#line104">option</a> *__longopts, int *__longind)
+<b><a name="line180">180  </a></b>	       <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line181">181  </a></b>	
+<b><a name="line182">182  </a></b>	#endif
+<b><a name="line183">183  </a></b>	
+<b><a name="line184">184  </a></b>	#ifdef	__cplusplus
+<b><a name="line185">185  </a></b>	}
+<b><a name="line186">186  </a></b>	#endif
+<b><a name="line187">187  </a></b>	
+<b><a name="line188">188  </a></b>	/* Make sure we later can get all the definitions and declarations.  */
+<b><a name="line189">189  </a></b>	#undef <a href="../unistd.h/code.html#line873">__need_getopt</a>
+<b><a name="line190">190  </a></b>	
+<b><a name="line191">191  </a></b>	#endif /* getopt.h */
+<b><a name="line192">192  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

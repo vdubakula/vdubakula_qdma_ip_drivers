@@ -1,0 +1,291 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_pci.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2010-2015 Intel Corporation.
+<b><a name="line3">3    </a></b>	 * Copyright 2013-2014 6WIND S.A.
+<b><a name="line4">4    </a></b>	 */
+<b><a name="line5">5    </a></b>	
+<b><a name="line6">6    </a></b>	#ifndef _RTE_PCI_H_
+<b><a name="line7">7    </a></b>	#define <b>_RTE_PCI_H_</b>
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	/**
+<b><a name="line10">10   </a></b>	 * @file
+<b><a name="line11">11   </a></b>	 *
+<b><a name="line12">12   </a></b>	 * RTE PCI Library
+<b><a name="line13">13   </a></b>	 */
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	#ifdef __cplusplus
+<b><a name="line16">16   </a></b>	extern &quot;C&quot; {
+<b><a name="line17">17   </a></b>	#endif
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	#include &lt;stdio.h&gt;
+<b><a name="line20">20   </a></b>	#include &lt;stdlib.h&gt;
+<b><a name="line21">21   </a></b>	#include &lt;limits.h&gt;
+<b><a name="line22">22   </a></b>	#include &lt;errno.h&gt;
+<b><a name="line23">23   </a></b>	#include &lt;sys/queue.h&gt;
+<b><a name="line24">24   </a></b>	#include &lt;stdint.h&gt;
+<b><a name="line25">25   </a></b>	#include &lt;inttypes.h&gt;
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>	#include &lt;rte_debug.h&gt;
+<b><a name="line28">28   </a></b>	#include &lt;rte_interrupts.h&gt;
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	/** Formatting string for PCI device identifier: Ex: 0000:00:01.0 */
+<b><a name="line31">31   </a></b>	#define <b>PCI_PRI_FMT</b> &quot;%.4&quot; PRIx16 &quot;:%.2&quot; PRIx8 &quot;:%.2&quot; PRIx8 &quot;.%&quot; PRIx8
+<b><a name="line32">32   </a></b>	#define <b>PCI_PRI_STR_SIZE</b> sizeof(&quot;XXXXXXXX:XX:XX.X&quot;)
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	/** Short formatting string, without domain, for PCI device: Ex: 00:01.0 */
+<b><a name="line35">35   </a></b>	#define <b>PCI_SHORT_PRI_FMT</b> &quot;%.2&quot; PRIx8 &quot;:%.2&quot; PRIx8 &quot;.%&quot; PRIx8
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	/** Nb. of values in PCI device identifier format string. */
+<b><a name="line38">38   </a></b>	#define <b>PCI_FMT_NVAL</b> 4
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	/** Nb. of values in PCI resource format. */
+<b><a name="line41">41   </a></b>	#define <b>PCI_RESOURCE_FMT_NVAL</b> 3
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	/** Maximum number of PCI resources. */
+<b><a name="line44">44   </a></b>	#define <b>PCI_MAX_RESOURCE</b> 6
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	/**
+<b><a name="line47">47   </a></b>	 * A structure describing an ID for a PCI driver. Each driver provides a
+<b><a name="line48">48   </a></b>	 * table of these IDs for each device that it supports.
+<b><a name="line49">49   </a></b>	 */
+<b><a name="line50">50   </a></b>	struct <b>rte_pci_id</b> {
+<b><a name="line51">51   </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>class_id</b>;            /**&lt; Class ID or RTE_CLASS_ANY_ID. */
+<b><a name="line52">52   </a></b>		<a href="../../../../include/stdint.h/code.html#line49">uint16_t</a> <b>vendor_id</b>;           /**&lt; Vendor ID or PCI_ANY_ID. */
+<b><a name="line53">53   </a></b>		<a href="../../../../include/stdint.h/code.html#line49">uint16_t</a> <b>device_id</b>;           /**&lt; Device ID or PCI_ANY_ID. */
+<b><a name="line54">54   </a></b>		<a href="../../../../include/stdint.h/code.html#line49">uint16_t</a> <b>subsystem_vendor_id</b>; /**&lt; Subsystem vendor ID or PCI_ANY_ID. */
+<b><a name="line55">55   </a></b>		<a href="../../../../include/stdint.h/code.html#line49">uint16_t</a> <b>subsystem_device_id</b>; /**&lt; Subsystem device ID or PCI_ANY_ID. */
+<b><a name="line56">56   </a></b>	};
+<b><a name="line57">57   </a></b>	
+<b><a name="line58">58   </a></b>	/**
+<b><a name="line59">59   </a></b>	 * A structure describing the location of a PCI device.
+<b><a name="line60">60   </a></b>	 */
+<b><a name="line61">61   </a></b>	struct <b>rte_pci_addr</b> {
+<b><a name="line62">62   </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>domain</b>;                /**&lt; Device domain */
+<b><a name="line63">63   </a></b>		<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> <b>bus</b>;                    /**&lt; Device bus */
+<b><a name="line64">64   </a></b>		<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> <b>devid</b>;                  /**&lt; Device ID */
+<b><a name="line65">65   </a></b>		<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> <b>function</b>;               /**&lt; Device function. */
+<b><a name="line66">66   </a></b>	};
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	/** Any PCI device identifier (vendor, device, ...) */
+<b><a name="line69">69   </a></b>	#define <b>PCI_ANY_ID</b> (0xffff)
+<b><a name="line70">70   </a></b>	#define <b>RTE_CLASS_ANY_ID</b> (0xffffff)
+<b><a name="line71">71   </a></b>	
+<b><a name="line72">72   </a></b>	/**
+<b><a name="line73">73   </a></b>	 * A structure describing a PCI mapping.
+<b><a name="line74">74   </a></b>	 */
+<b><a name="line75">75   </a></b>	struct <b>pci_map</b> {
+<b><a name="line76">76   </a></b>		void *<b>addr</b>;
+<b><a name="line77">77   </a></b>		char *<b>path</b>;
+<b><a name="line78">78   </a></b>		<a href="../../../../include/stdint.h/code.html#line55">uint64_t</a> <b>offset</b>;
+<b><a name="line79">79   </a></b>		<a href="../../../../include/stdint.h/code.html#line55">uint64_t</a> <b>size</b>;
+<b><a name="line80">80   </a></b>		<a href="../../../../include/stdint.h/code.html#line55">uint64_t</a> <b>phaddr</b>;
+<b><a name="line81">81   </a></b>	};
+<b><a name="line82">82   </a></b>	
+<b><a name="line83">83   </a></b>	struct <b>pci_msix_table</b> {
+<b><a name="line84">84   </a></b>		int <b>bar_index</b>;
+<b><a name="line85">85   </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>offset</b>;
+<b><a name="line86">86   </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>size</b>;
+<b><a name="line87">87   </a></b>	};
+<b><a name="line88">88   </a></b>	
+<b><a name="line89">89   </a></b>	/**
+<b><a name="line90">90   </a></b>	 * A structure describing a mapped PCI resource.
+<b><a name="line91">91   </a></b>	 * For multi-process we need to reproduce all PCI mappings in secondary
+<b><a name="line92">92   </a></b>	 * processes, so save them in a tailq.
+<b><a name="line93">93   </a></b>	 */
+<b><a name="line94">94   </a></b>	struct <b>mapped_pci_resource</b> {
+<b><a name="line95">95   </a></b>		<a href="../../../../include/x86_64-linux-gnu/sys/queue.h/code.html#line382">TAILQ_ENTRY</a>(mapped_pci_resource) <b>next</b>;
+<b><a name="line96">96   </a></b>	
+<b><a name="line97">97   </a></b>		struct <a href="#line61">rte_pci_addr</a> <b>pci_addr</b>;
+<b><a name="line98">98   </a></b>		char <b>path</b>[<a href="../../../../include/linux/limits.h/code.html#line12">PATH_MAX</a>];
+<b><a name="line99">99   </a></b>		int <b>nb_maps</b>;
+<b><a name="line100">100  </a></b>		struct <a href="#line75">pci_map</a> <b>maps</b>[<a href="#line44">PCI_MAX_RESOURCE</a>];
+<b><a name="line101">101  </a></b>		struct <a href="#line83">pci_msix_table</a> <b>msix_table</b>;
+<b><a name="line102">102  </a></b>	};
+<b><a name="line103">103  </a></b>	
+<b><a name="line104">104  </a></b>	
+<b><a name="line105">105  </a></b>	/** mapped pci device list */
+<b><a name="line106">106  </a></b>	<a href="../../../../include/x86_64-linux-gnu/sys/queue.h/code.html#line372">TAILQ_HEAD</a>(mapped_pci_res_list, mapped_pci_resource);
+<b><a name="line107">107  </a></b>	
+<b><a name="line108">108  </a></b>	/**
+<b><a name="line109">109  </a></b>	 * @deprecated
+<b><a name="line110">110  </a></b>	 * Utility function to produce a PCI Bus-Device-Function value
+<b><a name="line111">111  </a></b>	 * given a string representation. Assumes that the BDF is provided without
+<b><a name="line112">112  </a></b>	 * a domain prefix (i.e. domain returned is always 0)
+<b><a name="line113">113  </a></b>	 *
+<b><a name="line114">114  </a></b>	 * @param input
+<b><a name="line115">115  </a></b>	 *	The input string to be parsed. Should have the format XX:XX.X
+<b><a name="line116">116  </a></b>	 * @param dev_addr
+<b><a name="line117">117  </a></b>	 *	The PCI Bus-Device-Function address to be returned.
+<b><a name="line118">118  </a></b>	 *	Domain will always be returned as 0
+<b><a name="line119">119  </a></b>	 * @return
+<b><a name="line120">120  </a></b>	 *  0 on success, negative on error.
+<b><a name="line121">121  </a></b>	 */
+<b><a name="line122">122  </a></b>	int eal_parse_pci_BDF(const char *input, struct <a href="#line61">rte_pci_addr</a> *dev_addr);
+<b><a name="line123">123  </a></b>	
+<b><a name="line124">124  </a></b>	/**
+<b><a name="line125">125  </a></b>	 * @deprecated
+<b><a name="line126">126  </a></b>	 * Utility function to produce a PCI Bus-Device-Function value
+<b><a name="line127">127  </a></b>	 * given a string representation. Assumes that the BDF is provided including
+<b><a name="line128">128  </a></b>	 * a domain prefix.
+<b><a name="line129">129  </a></b>	 *
+<b><a name="line130">130  </a></b>	 * @param input
+<b><a name="line131">131  </a></b>	 *	The input string to be parsed. Should have the format XXXX:XX:XX.X
+<b><a name="line132">132  </a></b>	 * @param dev_addr
+<b><a name="line133">133  </a></b>	 *	The PCI Bus-Device-Function address to be returned
+<b><a name="line134">134  </a></b>	 * @return
+<b><a name="line135">135  </a></b>	 *  0 on success, negative on error.
+<b><a name="line136">136  </a></b>	 */
+<b><a name="line137">137  </a></b>	int eal_parse_pci_DomBDF(const char *input, struct <a href="#line61">rte_pci_addr</a> *dev_addr);
+<b><a name="line138">138  </a></b>	
+<b><a name="line139">139  </a></b>	/**
+<b><a name="line140">140  </a></b>	 * Utility function to write a pci device name, this device name can later be
+<b><a name="line141">141  </a></b>	 * used to retrieve the corresponding rte_pci_addr using eal_parse_pci_*
+<b><a name="line142">142  </a></b>	 * BDF helpers.
+<b><a name="line143">143  </a></b>	 *
+<b><a name="line144">144  </a></b>	 * @param addr
+<b><a name="line145">145  </a></b>	 *	The PCI Bus-Device-Function address
+<b><a name="line146">146  </a></b>	 * @param output
+<b><a name="line147">147  </a></b>	 *	The output buffer string
+<b><a name="line148">148  </a></b>	 * @param size
+<b><a name="line149">149  </a></b>	 *	The output buffer size
+<b><a name="line150">150  </a></b>	 */
+<b><a name="line151">151  </a></b>	void rte_pci_device_name(const struct <a href="#line61">rte_pci_addr</a> *addr,
+<b><a name="line152">152  </a></b>			     char *output, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> size);
+<b><a name="line153">153  </a></b>	
+<b><a name="line154">154  </a></b>	/**
+<b><a name="line155">155  </a></b>	 * @deprecated
+<b><a name="line156">156  </a></b>	 * Utility function to compare two PCI device addresses.
+<b><a name="line157">157  </a></b>	 *
+<b><a name="line158">158  </a></b>	 * @param addr
+<b><a name="line159">159  </a></b>	 *	The PCI Bus-Device-Function address to compare
+<b><a name="line160">160  </a></b>	 * @param addr2
+<b><a name="line161">161  </a></b>	 *	The PCI Bus-Device-Function address to compare
+<b><a name="line162">162  </a></b>	 * @return
+<b><a name="line163">163  </a></b>	 *	0 on equal PCI address.
+<b><a name="line164">164  </a></b>	 *	Positive on addr is greater than addr2.
+<b><a name="line165">165  </a></b>	 *	Negative on addr is less than addr2, or error.
+<b><a name="line166">166  </a></b>	 */
+<b><a name="line167">167  </a></b>	int rte_eal_compare_pci_addr(const struct <a href="#line61">rte_pci_addr</a> *addr,
+<b><a name="line168">168  </a></b>				     const struct <a href="#line61">rte_pci_addr</a> *addr2);
+<b><a name="line169">169  </a></b>	
+<b><a name="line170">170  </a></b>	/**
+<b><a name="line171">171  </a></b>	 * Utility function to compare two PCI device addresses.
+<b><a name="line172">172  </a></b>	 *
+<b><a name="line173">173  </a></b>	 * @param addr
+<b><a name="line174">174  </a></b>	 *	The PCI Bus-Device-Function address to compare
+<b><a name="line175">175  </a></b>	 * @param addr2
+<b><a name="line176">176  </a></b>	 *	The PCI Bus-Device-Function address to compare
+<b><a name="line177">177  </a></b>	 * @return
+<b><a name="line178">178  </a></b>	 *	0 on equal PCI address.
+<b><a name="line179">179  </a></b>	 *	Positive on addr is greater than addr2.
+<b><a name="line180">180  </a></b>	 *	Negative on addr is less than addr2, or error.
+<b><a name="line181">181  </a></b>	 */
+<b><a name="line182">182  </a></b>	int rte_pci_addr_cmp(const struct <a href="#line61">rte_pci_addr</a> *addr,
+<b><a name="line183">183  </a></b>			     const struct <a href="#line61">rte_pci_addr</a> *addr2);
+<b><a name="line184">184  </a></b>	
+<b><a name="line185">185  </a></b>	
+<b><a name="line186">186  </a></b>	/**
+<b><a name="line187">187  </a></b>	 * Utility function to parse a string into a PCI location.
+<b><a name="line188">188  </a></b>	 *
+<b><a name="line189">189  </a></b>	 * @param str
+<b><a name="line190">190  </a></b>	 *	The string to parse
+<b><a name="line191">191  </a></b>	 * @param addr
+<b><a name="line192">192  </a></b>	 *	The reference to the structure where the location
+<b><a name="line193">193  </a></b>	 *	is stored.
+<b><a name="line194">194  </a></b>	 * @return
+<b><a name="line195">195  </a></b>	 *	0 on success
+<b><a name="line196">196  </a></b>	 *	&lt;0 otherwise
+<b><a name="line197">197  </a></b>	 */
+<b><a name="line198">198  </a></b>	int rte_pci_addr_parse(const char *str, struct <a href="#line61">rte_pci_addr</a> *addr);
+<b><a name="line199">199  </a></b>	
+<b><a name="line200">200  </a></b>	/**
+<b><a name="line201">201  </a></b>	 * Map a particular resource from a file.
+<b><a name="line202">202  </a></b>	 *
+<b><a name="line203">203  </a></b>	 * @param requested_addr
+<b><a name="line204">204  </a></b>	 *      The starting address for the new mapping range.
+<b><a name="line205">205  </a></b>	 * @param fd
+<b><a name="line206">206  </a></b>	 *      The file descriptor.
+<b><a name="line207">207  </a></b>	 * @param offset
+<b><a name="line208">208  </a></b>	 *      The offset for the mapping range.
+<b><a name="line209">209  </a></b>	 * @param size
+<b><a name="line210">210  </a></b>	 *      The size for the mapping range.
+<b><a name="line211">211  </a></b>	 * @param additional_flags
+<b><a name="line212">212  </a></b>	 *      The additional flags for the mapping range.
+<b><a name="line213">213  </a></b>	 * @return
+<b><a name="line214">214  </a></b>	 *   - On success, the function returns a pointer to the mapped area.
+<b><a name="line215">215  </a></b>	 *   - On error, the value MAP_FAILED is returned.
+<b><a name="line216">216  </a></b>	 */
+<b><a name="line217">217  </a></b>	void *pci_map_resource(void *requested_addr, int fd, <a href="../../../../include/x86_64-linux-gnu/sys/types.h/code.html#line86">off_t</a> offset,
+<b><a name="line218">218  </a></b>			<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> size, int additional_flags);
+<b><a name="line219">219  </a></b>	
+<b><a name="line220">220  </a></b>	/**
+<b><a name="line221">221  </a></b>	 * Unmap a particular resource.
+<b><a name="line222">222  </a></b>	 *
+<b><a name="line223">223  </a></b>	 * @param requested_addr
+<b><a name="line224">224  </a></b>	 *      The address for the unmapping range.
+<b><a name="line225">225  </a></b>	 * @param size
+<b><a name="line226">226  </a></b>	 *      The size for the unmapping range.
+<b><a name="line227">227  </a></b>	 */
+<b><a name="line228">228  </a></b>	void pci_unmap_resource(void *requested_addr, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> size);
+<b><a name="line229">229  </a></b>	
+<b><a name="line230">230  </a></b>	#ifdef __cplusplus
+<b><a name="line231">231  </a></b>	}
+<b><a name="line232">232  </a></b>	#endif
+<b><a name="line233">233  </a></b>	
+<b><a name="line234">234  </a></b>	#endif /* _RTE_PCI_H_ */
+<b><a name="line235">235  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

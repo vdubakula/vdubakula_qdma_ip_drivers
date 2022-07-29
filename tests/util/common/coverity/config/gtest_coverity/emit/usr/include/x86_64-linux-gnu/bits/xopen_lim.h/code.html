@@ -1,0 +1,200 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/xopen_lim.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 1996-2016 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line5">5    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line6">6    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line7">7    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line10">10   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line11">11   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line12">12   </a></b>	   Lesser General Public License for more details.
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line15">15   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line16">16   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	/*
+<b><a name="line19">19   </a></b>	 * Never include this file directly; use &lt;limits.h&gt; instead.
+<b><a name="line20">20   </a></b>	 */
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	/* Additional definitions from X/Open Portability Guide, Issue 4, Version 2
+<b><a name="line23">23   </a></b>	   System Interfaces and Headers, 4.16 &lt;limits.h&gt;
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	   Please note only the values which are not greater than the minimum
+<b><a name="line26">26   </a></b>	   stated in the standard document are listed.  The `sysconf' functions
+<b><a name="line27">27   </a></b>	   should be used to obtain the actual value.  */
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	#ifndef _XOPEN_LIM_H
+<b><a name="line30">30   </a></b>	#define <b>_XOPEN_LIM_H</b>	1
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	#define <b>__need_IOV_MAX</b>
+<b><a name="line33">33   </a></b>	#include &lt;bits/stdio_lim.h&gt;
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	/* We do not provide fixed values for
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	   ARG_MAX	Maximum length of argument to the `exec' function
+<b><a name="line38">38   </a></b>			including environment data.
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	   ATEXIT_MAX	Maximum number of functions that may be registered
+<b><a name="line41">41   </a></b>			with `atexit'.
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	   CHILD_MAX	Maximum number of simultaneous processes per real
+<b><a name="line44">44   </a></b>			user ID.
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	   OPEN_MAX	Maximum number of files that one process can have open
+<b><a name="line47">47   </a></b>			at anyone time.
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	   PAGESIZE
+<b><a name="line50">50   </a></b>	   PAGE_SIZE	Size of bytes of a page.
+<b><a name="line51">51   </a></b>	
+<b><a name="line52">52   </a></b>	   PASS_MAX	Maximum number of significant bytes in a password.
+<b><a name="line53">53   </a></b>	
+<b><a name="line54">54   </a></b>	   We only provide a fixed limit for
+<b><a name="line55">55   </a></b>	
+<b><a name="line56">56   </a></b>	   IOV_MAX	Maximum number of `iovec' structures that one process has
+<b><a name="line57">57   </a></b>			available for use with `readv' or writev'.
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	   if this is indeed fixed by the underlying system.
+<b><a name="line60">60   </a></b>	*/
+<b><a name="line61">61   </a></b>	
+<b><a name="line62">62   </a></b>	
+<b><a name="line63">63   </a></b>	/* Maximum number of `iovec' structures that one process has available
+<b><a name="line64">64   </a></b>	   for use with `readv' or writev'.  */
+<b><a name="line65">65   </a></b>	#define	<b>_XOPEN_IOV_MAX</b>	_POSIX_UIO_MAXIOV
+<b><a name="line66">66   </a></b>	
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	/* Maximum value of `digit' in calls to the `printf' and `scanf'
+<b><a name="line69">69   </a></b>	   functions.  We have no limit, so return a reasonable value.  */
+<b><a name="line70">70   </a></b>	#define <b>NL_ARGMAX</b>	_POSIX_ARG_MAX
+<b><a name="line71">71   </a></b>	
+<b><a name="line72">72   </a></b>	/* Maximum number of bytes in a `LANG' name.  We have no limit.  */
+<b><a name="line73">73   </a></b>	#define <b>NL_LANGMAX</b>	_POSIX2_LINE_MAX
+<b><a name="line74">74   </a></b>	
+<b><a name="line75">75   </a></b>	/* Maximum message number.  We have no limit.  */
+<b><a name="line76">76   </a></b>	#define <b>NL_MSGMAX</b>	INT_MAX
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	/* Maximum number of bytes in N-to-1 collation mapping.  We have no
+<b><a name="line79">79   </a></b>	   limit.  */
+<b><a name="line80">80   </a></b>	#define <b>NL_NMAX</b>		INT_MAX
+<b><a name="line81">81   </a></b>	
+<b><a name="line82">82   </a></b>	/* Maximum set number.  We have no limit.  */
+<b><a name="line83">83   </a></b>	#define <b>NL_SETMAX</b>	INT_MAX
+<b><a name="line84">84   </a></b>	
+<b><a name="line85">85   </a></b>	/* Maximum number of bytes in a message.  We have no limit.  */
+<b><a name="line86">86   </a></b>	#define <b>NL_TEXTMAX</b>	INT_MAX
+<b><a name="line87">87   </a></b>	
+<b><a name="line88">88   </a></b>	/* Default process priority.  */
+<b><a name="line89">89   </a></b>	#define <b>NZERO</b>		20
+<b><a name="line90">90   </a></b>	
+<b><a name="line91">91   </a></b>	
+<b><a name="line92">92   </a></b>	/* Number of bits in a word of type `int'.  */
+<b><a name="line93">93   </a></b>	#ifdef INT_MAX
+<b><a name="line94">94   </a></b>	# if INT_MAX == 32767
+<b><a name="line95">95   </a></b>	#  define WORD_BIT	16
+<b><a name="line96">96   </a></b>	# else
+<b><a name="line97">97   </a></b>	#  if INT_MAX == 2147483647
+<b><a name="line98">98   </a></b>	#   define WORD_BIT	32
+<b><a name="line99">99   </a></b>	#  else
+<b><a name="line100">100  </a></b>	/* Safe assumption.  */
+<b><a name="line101">101  </a></b>	#   define WORD_BIT	64
+<b><a name="line102">102  </a></b>	#  endif
+<b><a name="line103">103  </a></b>	# endif
+<b><a name="line104">104  </a></b>	#elif defined <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line618">__INT_MAX__</a>
+<b><a name="line105">105  </a></b>	# if <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line618">__INT_MAX__</a> == 32767
+<b><a name="line106">106  </a></b>	#  define WORD_BIT	16
+<b><a name="line107">107  </a></b>	# else
+<b><a name="line108">108  </a></b>	#  if <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line618">__INT_MAX__</a> == 2147483647
+<b><a name="line109">109  </a></b>	#   define <b>WORD_BIT</b>	32
+<b><a name="line110">110  </a></b>	#  else
+<b><a name="line111">111  </a></b>	/* Safe assumption.  */
+<b><a name="line112">112  </a></b>	#   define WORD_BIT	64
+<b><a name="line113">113  </a></b>	#  endif
+<b><a name="line114">114  </a></b>	# endif
+<b><a name="line115">115  </a></b>	#else
+<b><a name="line116">116  </a></b>	# define WORD_BIT	32
+<b><a name="line117">117  </a></b>	#endif
+<b><a name="line118">118  </a></b>	
+<b><a name="line119">119  </a></b>	/* Number of bits in a word of type `long int'.  */
+<b><a name="line120">120  </a></b>	#ifdef LONG_MAX
+<b><a name="line121">121  </a></b>	# if LONG_MAX == 2147483647
+<b><a name="line122">122  </a></b>	#  define LONG_BIT	32
+<b><a name="line123">123  </a></b>	# else
+<b><a name="line124">124  </a></b>	/* Safe assumption.  */
+<b><a name="line125">125  </a></b>	#  define LONG_BIT	64
+<b><a name="line126">126  </a></b>	# endif
+<b><a name="line127">127  </a></b>	#elif defined <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line507">__LONG_MAX__</a>
+<b><a name="line128">128  </a></b>	# if <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line507">__LONG_MAX__</a> == 2147483647
+<b><a name="line129">129  </a></b>	#  define LONG_BIT	32
+<b><a name="line130">130  </a></b>	# else
+<b><a name="line131">131  </a></b>	/* Safe assumption.  */
+<b><a name="line132">132  </a></b>	#  define <b>LONG_BIT</b>	64
+<b><a name="line133">133  </a></b>	# endif
+<b><a name="line134">134  </a></b>	#else
+<b><a name="line135">135  </a></b>	# include &lt;bits/wordsize.h&gt;
+<b><a name="line136">136  </a></b>	# if __WORDSIZE == 64
+<b><a name="line137">137  </a></b>	#  define LONG_BIT	64
+<b><a name="line138">138  </a></b>	# else
+<b><a name="line139">139  </a></b>	#  define LONG_BIT	32
+<b><a name="line140">140  </a></b>	# endif
+<b><a name="line141">141  </a></b>	#endif
+<b><a name="line142">142  </a></b>	
+<b><a name="line143">143  </a></b>	#endif /* bits/xopen_lim.h */
+<b><a name="line144">144  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

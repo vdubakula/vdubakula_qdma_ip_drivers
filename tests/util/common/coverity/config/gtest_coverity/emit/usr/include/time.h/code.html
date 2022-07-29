@@ -1,0 +1,491 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/time.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 1991-2016 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line5">5    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line6">6    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line7">7    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line10">10   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line11">11   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line12">12   </a></b>	   Lesser General Public License for more details.
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line15">15   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line16">16   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	/*
+<b><a name="line19">19   </a></b>	 *	ISO C99 Standard: 7.23 Date and time	&lt;time.h&gt;
+<b><a name="line20">20   </a></b>	 */
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	#ifndef	_TIME_H
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>	#if (! defined <a href="../sched.h/code.html#line31">__need_time_t</a> &amp;&amp; !defined <a href="../x86_64-linux-gnu/sys/types.h/code.html#line127">__need_clock_t</a> &amp;&amp; \
+<b><a name="line25">25   </a></b>	     ! defined <a href="../sched.h/code.html#line32">__need_timespec</a>)
+<b><a name="line26">26   </a></b>	# define <b>_TIME_H</b>	1
+<b><a name="line27">27   </a></b>	# include &lt;features.h&gt;
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line98">__BEGIN_DECLS</a>
+<b><a name="line30">30   </a></b>	
+<b><a name="line31">31   </a></b>	#endif
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	#ifdef	<a href="#line26">_TIME_H</a>
+<b><a name="line34">34   </a></b>	/* Get size_t and NULL from &lt;stddef.h&gt;.  */
+<b><a name="line35">35   </a></b>	# define <b>__need_size_t</b>
+<b><a name="line36">36   </a></b>	# define <b>__need_NULL</b>
+<b><a name="line37">37   </a></b>	# include &lt;stddef.h&gt;
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	/* This defines CLOCKS_PER_SEC, which is the number of processor clock
+<b><a name="line40">40   </a></b>	   ticks per second.  */
+<b><a name="line41">41   </a></b>	# include &lt;bits/time.h&gt;
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	/* This is the obsolete POSIX.1-1988 name for the same constant.  */
+<b><a name="line44">44   </a></b>	# if !defined __STRICT_ANSI__ &amp;&amp; !defined <a href="../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line45">45   </a></b>	#  ifndef CLK_TCK
+<b><a name="line46">46   </a></b>	#   define CLK_TCK	CLOCKS_PER_SEC
+<b><a name="line47">47   </a></b>	#  endif
+<b><a name="line48">48   </a></b>	# endif
+<b><a name="line49">49   </a></b>	
+<b><a name="line50">50   </a></b>	#endif /* &lt;time.h&gt; included.  */
+<b><a name="line51">51   </a></b>	
+<b><a name="line52">52   </a></b>	#if !defined <a href="#line53">__clock_t_defined</a> &amp;&amp; (defined <a href="#line26">_TIME_H</a> || defined <a href="../x86_64-linux-gnu/sys/types.h/code.html#line127">__need_clock_t</a>)
+<b><a name="line53">53   </a></b>	# define <b>__clock_t_defined</b>	1
+<b><a name="line54">54   </a></b>	
+<b><a name="line55">55   </a></b>	# include &lt;bits/types.h&gt;
+<b><a name="line56">56   </a></b>	
+<b><a name="line57">57   </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line58">58   </a></b>	/* Returned by `clock'.  */
+<b><a name="line59">59   </a></b>	typedef <a href="../x86_64-linux-gnu/bits/types.h/code.html#line135">__clock_t</a> <b>clock_t</b>;
+<b><a name="line60">60   </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line61">61   </a></b>	#if defined <a href="../features.h/code.html#line279">__USE_XOPEN</a> || defined <a href="../features.h/code.html#line249">__USE_POSIX</a>
+<b><a name="line62">62   </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line124">__USING_NAMESPACE_STD</a>(clock_t)
+<b><a name="line63">63   </a></b>	#endif
+<b><a name="line64">64   </a></b>	
+<b><a name="line65">65   </a></b>	#endif /* clock_t not defined and &lt;time.h&gt; or need clock_t.  */
+<b><a name="line66">66   </a></b>	#undef	<a href="../x86_64-linux-gnu/sys/types.h/code.html#line127">__need_clock_t</a>
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	#if !defined <a href="#line69">__time_t_defined</a> &amp;&amp; (defined <a href="#line26">_TIME_H</a> || defined <a href="../sched.h/code.html#line31">__need_time_t</a>)
+<b><a name="line69">69   </a></b>	# define <b>__time_t_defined</b>	1
+<b><a name="line70">70   </a></b>	
+<b><a name="line71">71   </a></b>	# include &lt;bits/types.h&gt;
+<b><a name="line72">72   </a></b>	
+<b><a name="line73">73   </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line74">74   </a></b>	/* Returned by `time'.  */
+<b><a name="line75">75   </a></b>	typedef <a href="../x86_64-linux-gnu/bits/types.h/code.html#line139">__time_t</a> <b>time_t</b>;
+<b><a name="line76">76   </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line77">77   </a></b>	#ifdef <a href="../features.h/code.html#line249">__USE_POSIX</a>
+<b><a name="line78">78   </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line124">__USING_NAMESPACE_STD</a>(time_t)
+<b><a name="line79">79   </a></b>	#endif
+<b><a name="line80">80   </a></b>	
+<b><a name="line81">81   </a></b>	#endif /* time_t not defined and &lt;time.h&gt; or need time_t.  */
+<b><a name="line82">82   </a></b>	#undef	<a href="../sched.h/code.html#line31">__need_time_t</a>
+<b><a name="line83">83   </a></b>	
+<b><a name="line84">84   </a></b>	#if !defined <a href="#line86">__clockid_t_defined</a> &amp;&amp; \
+<b><a name="line85">85   </a></b>	   ((defined <a href="#line26">_TIME_H</a> &amp;&amp; defined <a href="../features.h/code.html#line257">__USE_POSIX199309</a>) || defined <a href="../x86_64-linux-gnu/sys/types.h/code.html#line131">__need_clockid_t</a>)
+<b><a name="line86">86   </a></b>	# define <b>__clockid_t_defined</b>	1
+<b><a name="line87">87   </a></b>	
+<b><a name="line88">88   </a></b>	# include &lt;bits/types.h&gt;
+<b><a name="line89">89   </a></b>	
+<b><a name="line90">90   </a></b>	/* Clock ID used in clock and timer functions.  */
+<b><a name="line91">91   </a></b>	typedef <a href="../x86_64-linux-gnu/bits/types.h/code.html#line147">__clockid_t</a> <b>clockid_t</b>;
+<b><a name="line92">92   </a></b>	
+<b><a name="line93">93   </a></b>	#endif /* clockid_t not defined and &lt;time.h&gt; or need clockid_t.  */
+<b><a name="line94">94   </a></b>	#undef	__clockid_time_t
+<b><a name="line95">95   </a></b>	
+<b><a name="line96">96   </a></b>	#if !defined <a href="#line98">__timer_t_defined</a> &amp;&amp; \
+<b><a name="line97">97   </a></b>	    ((defined <a href="#line26">_TIME_H</a> &amp;&amp; defined <a href="../features.h/code.html#line257">__USE_POSIX199309</a>) || defined <a href="../x86_64-linux-gnu/sys/types.h/code.html#line130">__need_timer_t</a>)
+<b><a name="line98">98   </a></b>	# define <b>__timer_t_defined</b>	1
+<b><a name="line99">99   </a></b>	
+<b><a name="line100">100  </a></b>	# include &lt;bits/types.h&gt;
+<b><a name="line101">101  </a></b>	
+<b><a name="line102">102  </a></b>	/* Timer ID returned by `timer_create'.  */
+<b><a name="line103">103  </a></b>	typedef <a href="../x86_64-linux-gnu/bits/types.h/code.html#line150">__timer_t</a> <b>timer_t</b>;
+<b><a name="line104">104  </a></b>	
+<b><a name="line105">105  </a></b>	#endif /* timer_t not defined and &lt;time.h&gt; or need timer_t.  */
+<b><a name="line106">106  </a></b>	#undef	<a href="../x86_64-linux-gnu/sys/types.h/code.html#line130">__need_timer_t</a>
+<b><a name="line107">107  </a></b>	
+<b><a name="line108">108  </a></b>	
+<b><a name="line109">109  </a></b>	#if (!defined <a href="#line114">__timespec_defined</a>					\
+<b><a name="line110">110  </a></b>	     &amp;&amp; ((defined <a href="#line26">_TIME_H</a>						\
+<b><a name="line111">111  </a></b>		  &amp;&amp; (defined <a href="../features.h/code.html#line257">__USE_POSIX199309</a>					\
+<b><a name="line112">112  </a></b>		      || defined <a href="../features.h/code.html#line194">__USE_ISOC11</a>))					\
+<b><a name="line113">113  </a></b>		 || defined <a href="../sched.h/code.html#line32">__need_timespec</a>))
+<b><a name="line114">114  </a></b>	# define <b>__timespec_defined</b>	1
+<b><a name="line115">115  </a></b>	
+<b><a name="line116">116  </a></b>	# include &lt;bits/types.h&gt;	/* This defines __time_t for us.  */
+<b><a name="line117">117  </a></b>	
+<b><a name="line118">118  </a></b>	/* POSIX.1b structure for a time value.  This is like a `struct timeval' but
+<b><a name="line119">119  </a></b>	   has nanoseconds instead of microseconds.  */
+<b><a name="line120">120  </a></b>	struct <b>timespec</b>
+<b><a name="line121">121  </a></b>	  {
+<b><a name="line122">122  </a></b>	    <a href="../x86_64-linux-gnu/bits/types.h/code.html#line139">__time_t</a> <b>tv_sec</b>;		/* Seconds.  */
+<b><a name="line123">123  </a></b>	    <a href="../x86_64-linux-gnu/bits/types.h/code.html#line175">__syscall_slong_t</a> <b>tv_nsec</b>;	/* Nanoseconds.  */
+<b><a name="line124">124  </a></b>	  };
+<b><a name="line125">125  </a></b>	
+<b><a name="line126">126  </a></b>	#endif /* timespec not defined and &lt;time.h&gt; or need timespec.  */
+<b><a name="line127">127  </a></b>	#undef	<a href="../sched.h/code.html#line32">__need_timespec</a>
+<b><a name="line128">128  </a></b>	
+<b><a name="line129">129  </a></b>	
+<b><a name="line130">130  </a></b>	#ifdef	<a href="#line26">_TIME_H</a>
+<b><a name="line131">131  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line132">132  </a></b>	/* Used by other time functions.  */
+<b><a name="line133">133  </a></b>	struct <b>tm</b>
+<b><a name="line134">134  </a></b>	{
+<b><a name="line135">135  </a></b>	  int <b>tm_sec</b>;			/* Seconds.	[0-60] (1 leap second) */
+<b><a name="line136">136  </a></b>	  int <b>tm_min</b>;			/* Minutes.	[0-59] */
+<b><a name="line137">137  </a></b>	  int <b>tm_hour</b>;			/* Hours.	[0-23] */
+<b><a name="line138">138  </a></b>	  int <b>tm_mday</b>;			/* Day.		[1-31] */
+<b><a name="line139">139  </a></b>	  int <b>tm_mon</b>;			/* Month.	[0-11] */
+<b><a name="line140">140  </a></b>	  int <b>tm_year</b>;			/* Year	- 1900.  */
+<b><a name="line141">141  </a></b>	  int <b>tm_wday</b>;			/* Day of week.	[0-6] */
+<b><a name="line142">142  </a></b>	  int <b>tm_yday</b>;			/* Days in year.[0-365]	*/
+<b><a name="line143">143  </a></b>	  int <b>tm_isdst</b>;			/* DST.		[-1/0/1]*/
+<b><a name="line144">144  </a></b>	
+<b><a name="line145">145  </a></b>	# ifdef	<a href="../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line146">146  </a></b>	  long int <b>tm_gmtoff</b>;		/* Seconds east of UTC.  */
+<b><a name="line147">147  </a></b>	  const char *<b>tm_zone</b>;		/* Timezone abbreviation.  */
+<b><a name="line148">148  </a></b>	# else
+<b><a name="line149">149  </a></b>	  long int __tm_gmtoff;		/* Seconds east of UTC.  */
+<b><a name="line150">150  </a></b>	  const char *__tm_zone;	/* Timezone abbreviation.  */
+<b><a name="line151">151  </a></b>	# endif
+<b><a name="line152">152  </a></b>	};
+<b><a name="line153">153  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line154">154  </a></b>	#if defined <a href="../features.h/code.html#line279">__USE_XOPEN</a> || defined <a href="../features.h/code.html#line249">__USE_POSIX</a>
+<b><a name="line155">155  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line124">__USING_NAMESPACE_STD</a>(tm)
+<b><a name="line156">156  </a></b>	#endif
+<b><a name="line157">157  </a></b>	
+<b><a name="line158">158  </a></b>	
+<b><a name="line159">159  </a></b>	# ifdef <a href="../features.h/code.html#line257">__USE_POSIX199309</a>
+<b><a name="line160">160  </a></b>	/* POSIX.1b structure for timer start values and intervals.  */
+<b><a name="line161">161  </a></b>	struct <b>itimerspec</b>
+<b><a name="line162">162  </a></b>	  {
+<b><a name="line163">163  </a></b>	    struct <a href="#line120">timespec</a> <b>it_interval</b>;
+<b><a name="line164">164  </a></b>	    struct <a href="#line120">timespec</a> <b>it_value</b>;
+<b><a name="line165">165  </a></b>	  };
+<b><a name="line166">166  </a></b>	
+<b><a name="line167">167  </a></b>	/* We can use a simple forward declaration.  */
+<b><a name="line168">168  </a></b>	struct sigevent;
+<b><a name="line169">169  </a></b>	
+<b><a name="line170">170  </a></b>	# endif	/* POSIX.1b */
+<b><a name="line171">171  </a></b>	
+<b><a name="line172">172  </a></b>	# ifdef <a href="../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line173">173  </a></b>	#  ifndef <a href="../sched.h/code.html#line38">__pid_t_defined</a>
+<b><a name="line174">174  </a></b>	typedef __pid_t pid_t;
+<b><a name="line175">175  </a></b>	#   define __pid_t_defined
+<b><a name="line176">176  </a></b>	#  endif
+<b><a name="line177">177  </a></b>	# endif
+<b><a name="line178">178  </a></b>	
+<b><a name="line179">179  </a></b>	
+<b><a name="line180">180  </a></b>	# ifdef <a href="../features.h/code.html#line194">__USE_ISOC11</a>
+<b><a name="line181">181  </a></b>	/* Time base values for timespec_get.  */
+<b><a name="line182">182  </a></b>	# define <b>TIME_UTC</b> 1
+<b><a name="line183">183  </a></b>	# endif
+<b><a name="line184">184  </a></b>	
+<b><a name="line185">185  </a></b>	
+<b><a name="line186">186  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line187">187  </a></b>	/* Time used by the program so far (user time + system time).
+<b><a name="line188">188  </a></b>	   The result / CLOCKS_PER_SECOND is program time in seconds.  */
+<b><a name="line189">189  </a></b>	extern <a href="#line59">clock_t</a> clock (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line190">190  </a></b>	
+<b><a name="line191">191  </a></b>	/* Return the current time and put it in *TIMER if TIMER is not NULL.  */
+<b><a name="line192">192  </a></b>	extern <a href="#line75">time_t</a> time (<a href="#line75">time_t</a> *__timer) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line193">193  </a></b>	
+<b><a name="line194">194  </a></b>	/* Return the difference between TIME1 and TIME0.  */
+<b><a name="line195">195  </a></b>	extern double difftime (<a href="#line75">time_t</a> __time1, <a href="#line75">time_t</a> __time0)
+<b><a name="line196">196  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __attribute__ ((__const__));
+<b><a name="line197">197  </a></b>	
+<b><a name="line198">198  </a></b>	/* Return the `time_t' representation of TP and normalize TP.  */
+<b><a name="line199">199  </a></b>	extern <a href="#line75">time_t</a> mktime (struct <a href="../wchar.h/code.html#line137">tm</a> *__tp) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line200">200  </a></b>	
+<b><a name="line201">201  </a></b>	
+<b><a name="line202">202  </a></b>	/* Format TP into S according to FORMAT.
+<b><a name="line203">203  </a></b>	   Write no more than MAXSIZE characters and return the number
+<b><a name="line204">204  </a></b>	   of characters written, or 0 if it would exceed MAXSIZE.  */
+<b><a name="line205">205  </a></b>	extern <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> strftime (char *__restrict __s, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __maxsize,
+<b><a name="line206">206  </a></b>				const char *__restrict __format,
+<b><a name="line207">207  </a></b>				const struct <a href="../wchar.h/code.html#line137">tm</a> *__restrict __tp) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line208">208  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line209">209  </a></b>	
+<b><a name="line210">210  </a></b>	# ifdef <a href="../features.h/code.html#line279">__USE_XOPEN</a>
+<b><a name="line211">211  </a></b>	/* Parse S according to FORMAT and store binary time information in TP.
+<b><a name="line212">212  </a></b>	   The return value is a pointer to the first unparsed character in S.  */
+<b><a name="line213">213  </a></b>	extern char *strptime (const char *__restrict __s,
+<b><a name="line214">214  </a></b>			       const char *__restrict __fmt, struct <a href="../wchar.h/code.html#line137">tm</a> *__tp)
+<b><a name="line215">215  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line216">216  </a></b>	# endif
+<b><a name="line217">217  </a></b>	
+<b><a name="line218">218  </a></b>	# ifdef <a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line219">219  </a></b>	/* Similar to the two functions above but take the information from
+<b><a name="line220">220  </a></b>	   the provided locale and not the global locale.  */
+<b><a name="line221">221  </a></b>	# include &lt;xlocale.h&gt;
+<b><a name="line222">222  </a></b>	
+<b><a name="line223">223  </a></b>	extern <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> strftime_l (char *__restrict __s, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __maxsize,
+<b><a name="line224">224  </a></b>				  const char *__restrict __format,
+<b><a name="line225">225  </a></b>				  const struct <a href="../wchar.h/code.html#line137">tm</a> *__restrict __tp,
+<b><a name="line226">226  </a></b>				  <a href="../xlocale.h/code.html#line39">__locale_t</a> __loc) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line227">227  </a></b>	# endif
+<b><a name="line228">228  </a></b>	
+<b><a name="line229">229  </a></b>	# ifdef <a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line230">230  </a></b>	extern char *strptime_l (const char *__restrict __s,
+<b><a name="line231">231  </a></b>				 const char *__restrict __fmt, struct <a href="../wchar.h/code.html#line137">tm</a> *__tp,
+<b><a name="line232">232  </a></b>				 <a href="../xlocale.h/code.html#line39">__locale_t</a> __loc) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line233">233  </a></b>	# endif
+<b><a name="line234">234  </a></b>	
+<b><a name="line235">235  </a></b>	
+<b><a name="line236">236  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line237">237  </a></b>	/* Return the `struct tm' representation of *TIMER
+<b><a name="line238">238  </a></b>	   in Universal Coordinated Time (aka Greenwich Mean Time).  */
+<b><a name="line239">239  </a></b>	extern struct <a href="../wchar.h/code.html#line137">tm</a> *gmtime (const <a href="#line75">time_t</a> *__timer) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line240">240  </a></b>	
+<b><a name="line241">241  </a></b>	/* Return the `struct tm' representation
+<b><a name="line242">242  </a></b>	   of *TIMER in the local timezone.  */
+<b><a name="line243">243  </a></b>	extern struct <a href="../wchar.h/code.html#line137">tm</a> *localtime (const <a href="#line75">time_t</a> *__timer) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line244">244  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line245">245  </a></b>	
+<b><a name="line246">246  </a></b>	# ifdef <a href="../features.h/code.html#line249">__USE_POSIX</a>
+<b><a name="line247">247  </a></b>	/* Return the `struct tm' representation of *TIMER in UTC,
+<b><a name="line248">248  </a></b>	   using *TP to store the result.  */
+<b><a name="line249">249  </a></b>	extern struct <a href="../wchar.h/code.html#line137">tm</a> *gmtime_r (const <a href="#line75">time_t</a> *__restrict __timer,
+<b><a name="line250">250  </a></b>				    struct <a href="../wchar.h/code.html#line137">tm</a> *__restrict __tp) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line251">251  </a></b>	
+<b><a name="line252">252  </a></b>	/* Return the `struct tm' representation of *TIMER in local time,
+<b><a name="line253">253  </a></b>	   using *TP to store the result.  */
+<b><a name="line254">254  </a></b>	extern struct <a href="../wchar.h/code.html#line137">tm</a> *localtime_r (const <a href="#line75">time_t</a> *__restrict __timer,
+<b><a name="line255">255  </a></b>				       struct <a href="../wchar.h/code.html#line137">tm</a> *__restrict __tp) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line256">256  </a></b>	# endif	/* POSIX */
+<b><a name="line257">257  </a></b>	
+<b><a name="line258">258  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line259">259  </a></b>	/* Return a string of the form &quot;Day Mon dd hh:mm:ss yyyy\n&quot;
+<b><a name="line260">260  </a></b>	   that is the representation of TP in this format.  */
+<b><a name="line261">261  </a></b>	extern char *asctime (const struct <a href="../wchar.h/code.html#line137">tm</a> *__tp) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line262">262  </a></b>	
+<b><a name="line263">263  </a></b>	/* Equivalent to `asctime (localtime (timer))'.  */
+<b><a name="line264">264  </a></b>	extern char *ctime (const <a href="#line75">time_t</a> *__timer) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line265">265  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line266">266  </a></b>	
+<b><a name="line267">267  </a></b>	# ifdef <a href="../features.h/code.html#line249">__USE_POSIX</a>
+<b><a name="line268">268  </a></b>	/* Reentrant versions of the above functions.  */
+<b><a name="line269">269  </a></b>	
+<b><a name="line270">270  </a></b>	/* Return in BUF a string of the form &quot;Day Mon dd hh:mm:ss yyyy\n&quot;
+<b><a name="line271">271  </a></b>	   that is the representation of TP in this format.  */
+<b><a name="line272">272  </a></b>	extern char *asctime_r (const struct <a href="../wchar.h/code.html#line137">tm</a> *__restrict __tp,
+<b><a name="line273">273  </a></b>				char *__restrict __buf) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line274">274  </a></b>	
+<b><a name="line275">275  </a></b>	/* Equivalent to `asctime_r (localtime_r (timer, *TMP*), buf)'.  */
+<b><a name="line276">276  </a></b>	extern char *ctime_r (const <a href="#line75">time_t</a> *__restrict __timer,
+<b><a name="line277">277  </a></b>			      char *__restrict __buf) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line278">278  </a></b>	# endif	/* POSIX */
+<b><a name="line279">279  </a></b>	
+<b><a name="line280">280  </a></b>	
+<b><a name="line281">281  </a></b>	/* Defined in localtime.c.  */
+<b><a name="line282">282  </a></b>	extern char *__tzname[2];	/* Current timezone names.  */
+<b><a name="line283">283  </a></b>	extern int __daylight;		/* If daylight-saving time is ever in use.  */
+<b><a name="line284">284  </a></b>	extern long int __timezone;	/* Seconds west of UTC.  */
+<b><a name="line285">285  </a></b>	
+<b><a name="line286">286  </a></b>	
+<b><a name="line287">287  </a></b>	# ifdef	<a href="../features.h/code.html#line249">__USE_POSIX</a>
+<b><a name="line288">288  </a></b>	/* Same as above.  */
+<b><a name="line289">289  </a></b>	extern char *tzname[2];
+<b><a name="line290">290  </a></b>	
+<b><a name="line291">291  </a></b>	/* Set time conversion information from the TZ environment variable.
+<b><a name="line292">292  </a></b>	   If TZ is not defined, a locale-dependent default is used.  */
+<b><a name="line293">293  </a></b>	extern void tzset (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line294">294  </a></b>	# endif
+<b><a name="line295">295  </a></b>	
+<b><a name="line296">296  </a></b>	# if defined <a href="../features.h/code.html#line317">__USE_MISC</a> || defined <a href="../features.h/code.html#line279">__USE_XOPEN</a>
+<b><a name="line297">297  </a></b>	extern int daylight;
+<b><a name="line298">298  </a></b>	extern long int timezone;
+<b><a name="line299">299  </a></b>	# endif
+<b><a name="line300">300  </a></b>	
+<b><a name="line301">301  </a></b>	# ifdef <a href="../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line302">302  </a></b>	/* Set the system time to *WHEN.
+<b><a name="line303">303  </a></b>	   This call is restricted to the superuser.  */
+<b><a name="line304">304  </a></b>	extern int stime (const <a href="#line75">time_t</a> *__when) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line305">305  </a></b>	# endif
+<b><a name="line306">306  </a></b>	
+<b><a name="line307">307  </a></b>	
+<b><a name="line308">308  </a></b>	/* Nonzero if YEAR is a leap year (every 4 years,
+<b><a name="line309">309  </a></b>	   except every 100th isn't, and every 400th is).  */
+<b><a name="line310">310  </a></b>	# define <b>__isleap</b>(year)	\
+<b><a name="line311">311  </a></b>	  ((year) % 4 == 0 &amp;&amp; ((year) % 100 != 0 || (year) % 400 == 0))
+<b><a name="line312">312  </a></b>	
+<b><a name="line313">313  </a></b>	
+<b><a name="line314">314  </a></b>	# ifdef <a href="../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line315">315  </a></b>	/* Miscellaneous functions many Unices inherited from the public domain
+<b><a name="line316">316  </a></b>	   localtime package.  These are included only for compatibility.  */
+<b><a name="line317">317  </a></b>	
+<b><a name="line318">318  </a></b>	/* Like `mktime', but for TP represents Universal Time, not local time.  */
+<b><a name="line319">319  </a></b>	extern <a href="#line75">time_t</a> timegm (struct <a href="../wchar.h/code.html#line137">tm</a> *__tp) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line320">320  </a></b>	
+<b><a name="line321">321  </a></b>	/* Another name for `mktime'.  */
+<b><a name="line322">322  </a></b>	extern <a href="#line75">time_t</a> timelocal (struct <a href="../wchar.h/code.html#line137">tm</a> *__tp) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line323">323  </a></b>	
+<b><a name="line324">324  </a></b>	/* Return the number of days in YEAR.  */
+<b><a name="line325">325  </a></b>	extern int dysize (int __year) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>  __attribute__ ((__const__));
+<b><a name="line326">326  </a></b>	# endif
+<b><a name="line327">327  </a></b>	
+<b><a name="line328">328  </a></b>	
+<b><a name="line329">329  </a></b>	# ifdef <a href="../features.h/code.html#line257">__USE_POSIX199309</a>
+<b><a name="line330">330  </a></b>	/* Pause execution for a number of nanoseconds.
+<b><a name="line331">331  </a></b>	
+<b><a name="line332">332  </a></b>	   This function is a cancellation point and therefore not marked with
+<b><a name="line333">333  </a></b>	   __THROW.  */
+<b><a name="line334">334  </a></b>	extern int nanosleep (const struct <a href="#line120">timespec</a> *__requested_time,
+<b><a name="line335">335  </a></b>			      struct <a href="#line120">timespec</a> *__remaining);
+<b><a name="line336">336  </a></b>	
+<b><a name="line337">337  </a></b>	
+<b><a name="line338">338  </a></b>	/* Get resolution of clock CLOCK_ID.  */
+<b><a name="line339">339  </a></b>	extern int clock_getres (<a href="#line91">clockid_t</a> __clock_id, struct <a href="#line120">timespec</a> *__res) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line340">340  </a></b>	
+<b><a name="line341">341  </a></b>	/* Get current value of clock CLOCK_ID and store it in TP.  */
+<b><a name="line342">342  </a></b>	extern int clock_gettime (<a href="#line91">clockid_t</a> __clock_id, struct <a href="#line120">timespec</a> *__tp) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line343">343  </a></b>	
+<b><a name="line344">344  </a></b>	/* Set clock CLOCK_ID to value TP.  */
+<b><a name="line345">345  </a></b>	extern int clock_settime (<a href="#line91">clockid_t</a> __clock_id, const struct <a href="#line120">timespec</a> *__tp)
+<b><a name="line346">346  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line347">347  </a></b>	
+<b><a name="line348">348  </a></b>	#  ifdef <a href="../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line349">349  </a></b>	/* High-resolution sleep with the specified clock.
+<b><a name="line350">350  </a></b>	
+<b><a name="line351">351  </a></b>	   This function is a cancellation point and therefore not marked with
+<b><a name="line352">352  </a></b>	   __THROW.  */
+<b><a name="line353">353  </a></b>	extern int clock_nanosleep (<a href="#line91">clockid_t</a> __clock_id, int __flags,
+<b><a name="line354">354  </a></b>				    const struct <a href="#line120">timespec</a> *__req,
+<b><a name="line355">355  </a></b>				    struct <a href="#line120">timespec</a> *__rem);
+<b><a name="line356">356  </a></b>	
+<b><a name="line357">357  </a></b>	/* Return clock ID for CPU-time clock.  */
+<b><a name="line358">358  </a></b>	extern int clock_getcpuclockid (<a href="../sched.h/code.html#line37">pid_t</a> __pid, <a href="#line91">clockid_t</a> *__clock_id) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line359">359  </a></b>	#  endif
+<b><a name="line360">360  </a></b>	
+<b><a name="line361">361  </a></b>	
+<b><a name="line362">362  </a></b>	/* Create new per-process timer using CLOCK_ID.  */
+<b><a name="line363">363  </a></b>	extern int timer_create (<a href="#line91">clockid_t</a> __clock_id,
+<b><a name="line364">364  </a></b>				 struct <a href="#line168">sigevent</a> *__restrict __evp,
+<b><a name="line365">365  </a></b>				 <a href="#line103">timer_t</a> *__restrict __timerid) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line366">366  </a></b>	
+<b><a name="line367">367  </a></b>	/* Delete timer TIMERID.  */
+<b><a name="line368">368  </a></b>	extern int timer_delete (<a href="#line103">timer_t</a> __timerid) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line369">369  </a></b>	
+<b><a name="line370">370  </a></b>	/* Set timer TIMERID to VALUE, returning old value in OVALUE.  */
+<b><a name="line371">371  </a></b>	extern int timer_settime (<a href="#line103">timer_t</a> __timerid, int __flags,
+<b><a name="line372">372  </a></b>				  const struct <a href="#line161">itimerspec</a> *__restrict __value,
+<b><a name="line373">373  </a></b>				  struct <a href="#line161">itimerspec</a> *__restrict __ovalue) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line374">374  </a></b>	
+<b><a name="line375">375  </a></b>	/* Get current value of timer TIMERID and store it in VALUE.  */
+<b><a name="line376">376  </a></b>	extern int timer_gettime (<a href="#line103">timer_t</a> __timerid, struct <a href="#line161">itimerspec</a> *__value)
+<b><a name="line377">377  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line378">378  </a></b>	
+<b><a name="line379">379  </a></b>	/* Get expiration overrun for timer TIMERID.  */
+<b><a name="line380">380  </a></b>	extern int timer_getoverrun (<a href="#line103">timer_t</a> __timerid) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line381">381  </a></b>	# endif
+<b><a name="line382">382  </a></b>	
+<b><a name="line383">383  </a></b>	
+<b><a name="line384">384  </a></b>	# ifdef <a href="../features.h/code.html#line194">__USE_ISOC11</a>
+<b><a name="line385">385  </a></b>	/* Set TS to calendar time based in time base BASE.  */
+<b><a name="line386">386  </a></b>	extern int timespec_get (struct <a href="#line120">timespec</a> *__ts, int __base)
+<b><a name="line387">387  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line388">388  </a></b>	# endif
+<b><a name="line389">389  </a></b>	
+<b><a name="line390">390  </a></b>	
+<b><a name="line391">391  </a></b>	# ifdef <a href="../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a>
+<b><a name="line392">392  </a></b>	/* Set to one of the following values to indicate an error.
+<b><a name="line393">393  </a></b>	     1  the DATEMSK environment variable is null or undefined,
+<b><a name="line394">394  </a></b>	     2  the template file cannot be opened for reading,
+<b><a name="line395">395  </a></b>	     3  failed to get file status information,
+<b><a name="line396">396  </a></b>	     4  the template file is not a regular file,
+<b><a name="line397">397  </a></b>	     5  an error is encountered while reading the template file,
+<b><a name="line398">398  </a></b>	     6  memory allication failed (not enough memory available),
+<b><a name="line399">399  </a></b>	     7  there is no line in the template that matches the input,
+<b><a name="line400">400  </a></b>	     8  invalid input specification Example: February 31 or a time is
+<b><a name="line401">401  </a></b>		specified that can not be represented in a time_t (representing
+<b><a name="line402">402  </a></b>		the time in seconds since 00:00:00 UTC, January 1, 1970) */
+<b><a name="line403">403  </a></b>	extern int getdate_err;
+<b><a name="line404">404  </a></b>	
+<b><a name="line405">405  </a></b>	/* Parse the given string as a date specification and return a value
+<b><a name="line406">406  </a></b>	   representing the value.  The templates from the file identified by
+<b><a name="line407">407  </a></b>	   the environment variable DATEMSK are used.  In case of an error
+<b><a name="line408">408  </a></b>	   `getdate_err' is set.
+<b><a name="line409">409  </a></b>	
+<b><a name="line410">410  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line411">411  </a></b>	   marked with __THROW.  */
+<b><a name="line412">412  </a></b>	extern struct <a href="../wchar.h/code.html#line137">tm</a> *getdate (const char *__string);
+<b><a name="line413">413  </a></b>	# endif
+<b><a name="line414">414  </a></b>	
+<b><a name="line415">415  </a></b>	# ifdef <a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line416">416  </a></b>	/* Since `getdate' is not reentrant because of the use of `getdate_err'
+<b><a name="line417">417  </a></b>	   and the static buffer to return the result in, we provide a thread-safe
+<b><a name="line418">418  </a></b>	   variant.  The functionality is the same.  The result is returned in
+<b><a name="line419">419  </a></b>	   the buffer pointed to by RESBUFP and in case of an error the return
+<b><a name="line420">420  </a></b>	   value is != 0 with the same values as given above for `getdate_err'.
+<b><a name="line421">421  </a></b>	
+<b><a name="line422">422  </a></b>	   This function is not part of POSIX and therefore no official
+<b><a name="line423">423  </a></b>	   cancellation point.  But due to similarity with an POSIX interface
+<b><a name="line424">424  </a></b>	   or due to the implementation it is a cancellation point and
+<b><a name="line425">425  </a></b>	   therefore not marked with __THROW.  */
+<b><a name="line426">426  </a></b>	extern int getdate_r (const char *__restrict __string,
+<b><a name="line427">427  </a></b>			      struct <a href="../wchar.h/code.html#line137">tm</a> *__restrict __resbufp);
+<b><a name="line428">428  </a></b>	# endif
+<b><a name="line429">429  </a></b>	
+<b><a name="line430">430  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line99">__END_DECLS</a>
+<b><a name="line431">431  </a></b>	
+<b><a name="line432">432  </a></b>	#endif /* &lt;time.h&gt; included.  */
+<b><a name="line433">433  </a></b>	
+<b><a name="line434">434  </a></b>	#endif /* &lt;time.h&gt; not already included.  */
+<b><a name="line435">435  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

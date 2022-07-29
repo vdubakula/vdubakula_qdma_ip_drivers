@@ -1,0 +1,171 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/c++/5/bits/c++locale.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Wrapper for underlying C-language localization -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2001-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file bits/c++locale.h
+<b><a name="line26">26   </a></b>	 *  This is an internal header file, included by other library headers.
+<b><a name="line27">27   </a></b>	 *  Do not attempt to use it directly. @headername{locale}
+<b><a name="line28">28   </a></b>	 */
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	//
+<b><a name="line31">31   </a></b>	// ISO C++ 14882: 22.8  Standard locale categories.
+<b><a name="line32">32   </a></b>	//
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	// Written by Benjamin Kosnik &lt;bkoz@redhat.com&gt;
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	#ifndef _GLIBCXX_CXX_LOCALE_H
+<b><a name="line37">37   </a></b>	#define <b>_GLIBCXX_CXX_LOCALE_H</b> 1
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	#pragma GCC system_header
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	#include &lt;clocale&gt;
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	#define <b>_GLIBCXX_C_LOCALE_GNU</b> 1
+<b><a name="line44">44   </a></b>	
+<b><a name="line45">45   </a></b>	#define <b>_GLIBCXX_NUM_CATEGORIES</b> 6
+<b><a name="line46">46   </a></b>	
+<b><a name="line47">47   </a></b>	#if <a href="../../../../../features.h/code.html#line358">__GLIBC__</a> &gt; 2 || (<a href="../../../../../features.h/code.html#line358">__GLIBC__</a> == 2 &amp;&amp; <a href="../../../../../features.h/code.html#line359">__GLIBC_MINOR__</a> &gt; 2)
+<b><a name="line48">48   </a></b>	namespace <a href="../c++config.h/code.html#line220">__gnu_cxx</a> <a href="../c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line49">49   </a></b>	{
+<b><a name="line50">50   </a></b>	<a href="../c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line51">51   </a></b>	
+<b><a name="line52">52   </a></b>	  extern &quot;C&quot; __typeof(<a href="../../../../../locale.h/code.html#line197">uselocale</a>) __uselocale;
+<b><a name="line53">53   </a></b>	
+<b><a name="line54">54   </a></b>	<a href="../c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line55">55   </a></b>	} // namespace
+<b><a name="line56">56   </a></b>	#endif
+<b><a name="line57">57   </a></b>	
+<b><a name="line58">58   </a></b>	namespace <a href="../c++config.h/code.html#line194">std</a> <a href="../c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line59">59   </a></b>	{
+<b><a name="line60">60   </a></b>	<a href="../c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line61">61   </a></b>	
+<b><a name="line62">62   </a></b>	  typedef <a href="../../../../../xlocale.h/code.html#line39">__locale_t</a>		<b>__c_locale</b>;
+<b><a name="line63">63   </a></b>	
+<b><a name="line64">64   </a></b>	  // Convert numeric value of type double and long double to string and
+<b><a name="line65">65   </a></b>	  // return length of string.  If vsnprintf is available use it, otherwise
+<b><a name="line66">66   </a></b>	  // fall back to the unsafe vsprintf which, in general, can be dangerous
+<b><a name="line67">67   </a></b>	  // and should be avoided.
+<b><a name="line68">68   </a></b>	  inline int
+<b><a name="line69">69   </a></b>	  <b>__convert_from_v</b>(const <a href="#line62">__c_locale</a>&amp; <b>__cloc</b> __attribute__ ((__unused__)),
+<b><a name="line70">70   </a></b>			   char* <b>__out</b>,
+<b><a name="line71">71   </a></b>			   const int <b>__size</b> __attribute__ ((__unused__)),
+<b><a name="line72">72   </a></b>			   const char* <b>__fmt</b>, ...)
+<b><a name="line73">73   </a></b>	  {
+<b><a name="line74">74   </a></b>	#if <a href="../../../../../features.h/code.html#line358">__GLIBC__</a> &gt; 2 || (<a href="../../../../../features.h/code.html#line358">__GLIBC__</a> == 2 &amp;&amp; <a href="../../../../../features.h/code.html#line359">__GLIBC_MINOR__</a> &gt; 2)
+<b><a name="line75">75   </a></b>	    <a href="#line62">__c_locale</a> <b>__old</b> = <a href="../c++config.h/code.html#line220">__gnu_cxx</a>::<a href="#line52">__uselocale</a>(<a href="#line69">__cloc</a>);
+<b><a name="line76">76   </a></b>	#else
+<b><a name="line77">77   </a></b>	    char* __old = std::setlocale(LC_NUMERIC, 0);
+<b><a name="line78">78   </a></b>	    char* __sav = 0;
+<b><a name="line79">79   </a></b>	    if (__builtin_strcmp(__old, &quot;C&quot;))
+<b><a name="line80">80   </a></b>	      {
+<b><a name="line81">81   </a></b>		const size_t __len = __builtin_strlen(__old) + 1;
+<b><a name="line82">82   </a></b>		__sav = new char[__len];
+<b><a name="line83">83   </a></b>		__builtin_memcpy(__sav, __old, __len);
+<b><a name="line84">84   </a></b>		std::setlocale(LC_NUMERIC, &quot;C&quot;);
+<b><a name="line85">85   </a></b>	      }
+<b><a name="line86">86   </a></b>	#endif
+<b><a name="line87">87   </a></b>	
+<b><a name="line88">88   </a></b>	    __builtin_va_list <b>__args</b>;
+<b><a name="line89">89   </a></b>	    __builtin_va_start(<a href="#line88">__args</a>, <a href="#line72">__fmt</a>);
+<b><a name="line90">90   </a></b>	
+<b><a name="line91">91   </a></b>	#ifdef <a href="../c++config.h/code.html#line1309">_GLIBCXX_USE_C99</a>
+<b><a name="line92">92   </a></b>	    const int <b>__ret</b> = <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line356">__builtin_vsnprintf</a>(<a href="#line70">__out</a>, <a href="#line71">__size</a>, <a href="#line72">__fmt</a>, <a href="#line88">__args</a>);
+<b><a name="line93">93   </a></b>	#else
+<b><a name="line94">94   </a></b>	    const int __ret = __builtin_vsprintf(__out, __fmt, __args);
+<b><a name="line95">95   </a></b>	#endif
+<b><a name="line96">96   </a></b>	
+<b><a name="line97">97   </a></b>	    __builtin_va_end(<a href="#line88">__args</a>);
+<b><a name="line98">98   </a></b>	
+<b><a name="line99">99   </a></b>	#if <a href="../../../../../features.h/code.html#line358">__GLIBC__</a> &gt; 2 || (<a href="../../../../../features.h/code.html#line358">__GLIBC__</a> == 2 &amp;&amp; <a href="../../../../../features.h/code.html#line359">__GLIBC_MINOR__</a> &gt; 2)
+<b><a name="line100">100  </a></b>	    <a href="../c++config.h/code.html#line220">__gnu_cxx</a>::<a href="#line52">__uselocale</a>(<a href="#line75">__old</a>);
+<b><a name="line101">101  </a></b>	#else
+<b><a name="line102">102  </a></b>	    if (__sav)
+<b><a name="line103">103  </a></b>	      {
+<b><a name="line104">104  </a></b>		std::setlocale(LC_NUMERIC, __sav);
+<b><a name="line105">105  </a></b>		delete [] __sav;
+<b><a name="line106">106  </a></b>	      }
+<b><a name="line107">107  </a></b>	#endif
+<b><a name="line108">108  </a></b>	    return <a href="#line92">__ret</a>;
+<b><a name="line109">109  </a></b>	  }
+<b><a name="line110">110  </a></b>	
+<b><a name="line111">111  </a></b>	<a href="../c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line112">112  </a></b>	} // namespace
+<b><a name="line113">113  </a></b>	
+<b><a name="line114">114  </a></b>	#endif
+<b><a name="line115">115  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

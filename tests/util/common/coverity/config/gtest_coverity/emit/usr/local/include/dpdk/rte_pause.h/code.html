@@ -1,0 +1,81 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_pause.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2017 Cavium, Inc
+<b><a name="line3">3    </a></b>	 */
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	#ifndef _RTE_PAUSE_X86_H_
+<b><a name="line6">6    </a></b>	#define <b>_RTE_PAUSE_X86_H_</b>
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	#ifdef __cplusplus
+<b><a name="line9">9    </a></b>	extern &quot;C&quot; {
+<b><a name="line10">10   </a></b>	#endif
+<b><a name="line11">11   </a></b>	
+<b><a name="line12">12   </a></b>	#include &quot;generic/rte_pause.h&quot;
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	#include &lt;emmintrin.h&gt;
+<b><a name="line15">15   </a></b>	static inline void <b>rte_pause</b>(void)
+<b><a name="line16">16   </a></b>	{
+<b><a name="line17">17   </a></b>		<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/xmmintrin.h/code.html#line1262">_mm_pause</a>();
+<b><a name="line18">18   </a></b>	}
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	#ifdef __cplusplus
+<b><a name="line21">21   </a></b>	}
+<b><a name="line22">22   </a></b>	#endif
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>	#endif /* _RTE_PAUSE_X86_H_ */
+<b><a name="line25">25   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

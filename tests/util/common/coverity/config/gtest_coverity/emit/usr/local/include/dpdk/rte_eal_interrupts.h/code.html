@@ -1,0 +1,280 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_eal_interrupts.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2010-2014 Intel Corporation
+<b><a name="line3">3    </a></b>	 */
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	#ifndef <a href="../rte_interrupts.h/code.html#line6">_RTE_INTERRUPTS_H_</a>
+<b><a name="line6">6    </a></b>	#error &quot;don't include this file directly, please include generic &lt;rte_interrupts.h&gt;&quot;
+<b><a name="line7">7    </a></b>	#endif
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	/**
+<b><a name="line10">10   </a></b>	 * @file rte_eal_interrupts.h
+<b><a name="line11">11   </a></b>	 * @internal
+<b><a name="line12">12   </a></b>	 *
+<b><a name="line13">13   </a></b>	 * Contains function prototypes exposed by the EAL for interrupt handling by
+<b><a name="line14">14   </a></b>	 * drivers and other DPDK internal consumers.
+<b><a name="line15">15   </a></b>	 */
+<b><a name="line16">16   </a></b>	
+<b><a name="line17">17   </a></b>	#ifndef _RTE_EAL_INTERRUPTS_H_
+<b><a name="line18">18   </a></b>	#define <b>_RTE_EAL_INTERRUPTS_H_</b>
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	#define <b>RTE_MAX_RXTX_INTR_VEC_ID</b>     32
+<b><a name="line21">21   </a></b>	#define <b>RTE_INTR_VEC_ZERO_OFFSET</b>      0
+<b><a name="line22">22   </a></b>	#define <b>RTE_INTR_VEC_RXTX_OFFSET</b>      1
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>	/**
+<b><a name="line25">25   </a></b>	 * The interrupt source type, e.g. UIO, VFIO, ALARM etc.
+<b><a name="line26">26   </a></b>	 */
+<b><a name="line27">27   </a></b>	enum <b>rte_intr_handle_type</b> {
+<b><a name="line28">28   </a></b>		<b>RTE_INTR_HANDLE_UNKNOWN</b> = 0,  /**&lt; generic unknown handle */
+<b><a name="line29">29   </a></b>		<b>RTE_INTR_HANDLE_UIO</b>,          /**&lt; uio device handle */
+<b><a name="line30">30   </a></b>		<b>RTE_INTR_HANDLE_UIO_INTX</b>,     /**&lt; uio generic handle */
+<b><a name="line31">31   </a></b>		<b>RTE_INTR_HANDLE_VFIO_LEGACY</b>,  /**&lt; vfio device handle (legacy) */
+<b><a name="line32">32   </a></b>		<b>RTE_INTR_HANDLE_VFIO_MSI</b>,     /**&lt; vfio device handle (MSI) */
+<b><a name="line33">33   </a></b>		<b>RTE_INTR_HANDLE_VFIO_MSIX</b>,    /**&lt; vfio device handle (MSIX) */
+<b><a name="line34">34   </a></b>		<b>RTE_INTR_HANDLE_ALARM</b>,        /**&lt; alarm handle */
+<b><a name="line35">35   </a></b>		<b>RTE_INTR_HANDLE_EXT</b>,          /**&lt; external handler */
+<b><a name="line36">36   </a></b>		<b>RTE_INTR_HANDLE_VDEV</b>,         /**&lt; virtual device */
+<b><a name="line37">37   </a></b>		<b>RTE_INTR_HANDLE_DEV_EVENT</b>,    /**&lt; device event handle */
+<b><a name="line38">38   </a></b>		<b>RTE_INTR_HANDLE_VFIO_REQ</b>,     /**&lt; VFIO request handle */
+<b><a name="line39">39   </a></b>		<b>RTE_INTR_HANDLE_MAX</b>           /**&lt; count of elements */
+<b><a name="line40">40   </a></b>	};
+<b><a name="line41">41   </a></b>	
+<b><a name="line42">42   </a></b>	#define <b>RTE_INTR_EVENT_ADD</b>            1UL
+<b><a name="line43">43   </a></b>	#define <b>RTE_INTR_EVENT_DEL</b>            2UL
+<b><a name="line44">44   </a></b>	
+<b><a name="line45">45   </a></b>	typedef void (*<b>rte_intr_event_cb_t</b>)(int fd, void *arg);
+<b><a name="line46">46   </a></b>	
+<b><a name="line47">47   </a></b>	struct <b>rte_epoll_data</b> {
+<b><a name="line48">48   </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>event</b>;               /**&lt; event type */
+<b><a name="line49">49   </a></b>		void *<b>data</b>;                   /**&lt; User data */
+<b><a name="line50">50   </a></b>		<a href="#line45">rte_intr_event_cb_t</a> <b>cb_fun</b>;   /**&lt; IN: callback fun */
+<b><a name="line51">51   </a></b>		void *<b>cb_arg</b>;	              /**&lt; IN: callback arg */
+<b><a name="line52">52   </a></b>	};
+<b><a name="line53">53   </a></b>	
+<b><a name="line54">54   </a></b>	enum {
+<b><a name="line55">55   </a></b>		<b>RTE_EPOLL_INVALID</b> = 0,
+<b><a name="line56">56   </a></b>		<b>RTE_EPOLL_VALID</b>,
+<b><a name="line57">57   </a></b>		<b>RTE_EPOLL_EXEC</b>,
+<b><a name="line58">58   </a></b>	};
+<b><a name="line59">59   </a></b>	
+<b><a name="line60">60   </a></b>	/** interrupt epoll event obj, taken by epoll_event.ptr */
+<b><a name="line61">61   </a></b>	struct <b>rte_epoll_event</b> {
+<b><a name="line62">62   </a></b>		volatile <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>status</b>;  /**&lt; OUT: event status */
+<b><a name="line63">63   </a></b>		int <b>fd</b>;                    /**&lt; OUT: event fd */
+<b><a name="line64">64   </a></b>		int <b>epfd</b>;       /**&lt; OUT: epoll instance the ev associated with */
+<b><a name="line65">65   </a></b>		struct <a href="#line47">rte_epoll_data</a> <b>epdata</b>;
+<b><a name="line66">66   </a></b>	};
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	/** Handle for interrupts. */
+<b><a name="line69">69   </a></b>	struct <b>rte_intr_handle</b> {
+<b><a name="line70">70   </a></b>		<a href="../rte_common.h/code.html#line37">RTE_STD_C11</a>
+<b><a name="line71">71   </a></b>		union {
+<b><a name="line72">72   </a></b>			int <b>vfio_dev_fd</b>;  /**&lt; VFIO device file descriptor */
+<b><a name="line73">73   </a></b>			int <b>uio_cfg_fd</b>;  /**&lt; UIO cfg file desc for uio_pci_generic */
+<b><a name="line74">74   </a></b>		};
+<b><a name="line75">75   </a></b>		int <b>fd</b>;	 /**&lt; interrupt event file descriptor */
+<b><a name="line76">76   </a></b>		enum <a href="#line27">rte_intr_handle_type</a> <b>type</b>;  /**&lt; handle type */
+<b><a name="line77">77   </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>max_intr</b>;             /**&lt; max interrupt requested */
+<b><a name="line78">78   </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>nb_efd</b>;               /**&lt; number of available efd(event fd) */
+<b><a name="line79">79   </a></b>		<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> <b>efd_counter_size</b>;      /**&lt; size of efd counter, used for vdev */
+<b><a name="line80">80   </a></b>		int <b>efds</b>[<a href="#line20">RTE_MAX_RXTX_INTR_VEC_ID</a>];  /**&lt; intr vectors/efds mapping */
+<b><a name="line81">81   </a></b>		struct <a href="#line61">rte_epoll_event</a> <b>elist</b>[<a href="#line20">RTE_MAX_RXTX_INTR_VEC_ID</a>];
+<b><a name="line82">82   </a></b>					       /**&lt; intr vector epoll event */
+<b><a name="line83">83   </a></b>		int *<b>intr_vec</b>;                 /**&lt; intr vector number array */
+<b><a name="line84">84   </a></b>	};
+<b><a name="line85">85   </a></b>	
+<b><a name="line86">86   </a></b>	#define <b>RTE_EPOLL_PER_THREAD</b>        -1  /**&lt; to hint using per thread epfd */
+<b><a name="line87">87   </a></b>	
+<b><a name="line88">88   </a></b>	/**
+<b><a name="line89">89   </a></b>	 * It waits for events on the epoll instance.
+<b><a name="line90">90   </a></b>	 *
+<b><a name="line91">91   </a></b>	 * @param epfd
+<b><a name="line92">92   </a></b>	 *   Epoll instance fd on which the caller wait for events.
+<b><a name="line93">93   </a></b>	 * @param events
+<b><a name="line94">94   </a></b>	 *   Memory area contains the events that will be available for the caller.
+<b><a name="line95">95   </a></b>	 * @param maxevents
+<b><a name="line96">96   </a></b>	 *   Up to maxevents are returned, must greater than zero.
+<b><a name="line97">97   </a></b>	 * @param timeout
+<b><a name="line98">98   </a></b>	 *   Specifying a timeout of -1 causes a block indefinitely.
+<b><a name="line99">99   </a></b>	 *   Specifying a timeout equal to zero cause to return immediately.
+<b><a name="line100">100  </a></b>	 * @return
+<b><a name="line101">101  </a></b>	 *   - On success, returns the number of available event.
+<b><a name="line102">102  </a></b>	 *   - On failure, a negative value.
+<b><a name="line103">103  </a></b>	 */
+<b><a name="line104">104  </a></b>	int
+<b><a name="line105">105  </a></b>	rte_epoll_wait(int epfd, struct <a href="#line61">rte_epoll_event</a> *events,
+<b><a name="line106">106  </a></b>		       int maxevents, int timeout);
+<b><a name="line107">107  </a></b>	
+<b><a name="line108">108  </a></b>	/**
+<b><a name="line109">109  </a></b>	 * It performs control operations on epoll instance referred by the epfd.
+<b><a name="line110">110  </a></b>	 * It requests that the operation op be performed for the target fd.
+<b><a name="line111">111  </a></b>	 *
+<b><a name="line112">112  </a></b>	 * @param epfd
+<b><a name="line113">113  </a></b>	 *   Epoll instance fd on which the caller perform control operations.
+<b><a name="line114">114  </a></b>	 * @param op
+<b><a name="line115">115  </a></b>	 *   The operation be performed for the target fd.
+<b><a name="line116">116  </a></b>	 * @param fd
+<b><a name="line117">117  </a></b>	 *   The target fd on which the control ops perform.
+<b><a name="line118">118  </a></b>	 * @param event
+<b><a name="line119">119  </a></b>	 *   Describes the object linked to the fd.
+<b><a name="line120">120  </a></b>	 *   Note: The caller must take care the object deletion after CTL_DEL.
+<b><a name="line121">121  </a></b>	 * @return
+<b><a name="line122">122  </a></b>	 *   - On success, zero.
+<b><a name="line123">123  </a></b>	 *   - On failure, a negative value.
+<b><a name="line124">124  </a></b>	 */
+<b><a name="line125">125  </a></b>	int
+<b><a name="line126">126  </a></b>	rte_epoll_ctl(int epfd, int op, int fd,
+<b><a name="line127">127  </a></b>		      struct <a href="#line61">rte_epoll_event</a> *event);
+<b><a name="line128">128  </a></b>	
+<b><a name="line129">129  </a></b>	/**
+<b><a name="line130">130  </a></b>	 * The function returns the per thread epoll instance.
+<b><a name="line131">131  </a></b>	 *
+<b><a name="line132">132  </a></b>	 * @return
+<b><a name="line133">133  </a></b>	 *   epfd the epoll instance referred to.
+<b><a name="line134">134  </a></b>	 */
+<b><a name="line135">135  </a></b>	int
+<b><a name="line136">136  </a></b>	rte_intr_tls_epfd(void);
+<b><a name="line137">137  </a></b>	
+<b><a name="line138">138  </a></b>	/**
+<b><a name="line139">139  </a></b>	 * @param intr_handle
+<b><a name="line140">140  </a></b>	 *   Pointer to the interrupt handle.
+<b><a name="line141">141  </a></b>	 * @param epfd
+<b><a name="line142">142  </a></b>	 *   Epoll instance fd which the intr vector associated to.
+<b><a name="line143">143  </a></b>	 * @param op
+<b><a name="line144">144  </a></b>	 *   The operation be performed for the vector.
+<b><a name="line145">145  </a></b>	 *   Operation type of {ADD, DEL}.
+<b><a name="line146">146  </a></b>	 * @param vec
+<b><a name="line147">147  </a></b>	 *   RX intr vector number added to the epoll instance wait list.
+<b><a name="line148">148  </a></b>	 * @param data
+<b><a name="line149">149  </a></b>	 *   User raw data.
+<b><a name="line150">150  </a></b>	 * @return
+<b><a name="line151">151  </a></b>	 *   - On success, zero.
+<b><a name="line152">152  </a></b>	 *   - On failure, a negative value.
+<b><a name="line153">153  </a></b>	 */
+<b><a name="line154">154  </a></b>	int
+<b><a name="line155">155  </a></b>	rte_intr_rx_ctl(struct <a href="../rte_interrupts.h/code.html#line22">rte_intr_handle</a> *intr_handle,
+<b><a name="line156">156  </a></b>			int epfd, int op, unsigned int vec, void *data);
+<b><a name="line157">157  </a></b>	
+<b><a name="line158">158  </a></b>	/**
+<b><a name="line159">159  </a></b>	 * It deletes registered eventfds.
+<b><a name="line160">160  </a></b>	 *
+<b><a name="line161">161  </a></b>	 * @param intr_handle
+<b><a name="line162">162  </a></b>	 *   Pointer to the interrupt handle.
+<b><a name="line163">163  </a></b>	 */
+<b><a name="line164">164  </a></b>	void
+<b><a name="line165">165  </a></b>	rte_intr_free_epoll_fd(struct <a href="../rte_interrupts.h/code.html#line22">rte_intr_handle</a> *intr_handle);
+<b><a name="line166">166  </a></b>	
+<b><a name="line167">167  </a></b>	/**
+<b><a name="line168">168  </a></b>	 * It enables the packet I/O interrupt event if it's necessary.
+<b><a name="line169">169  </a></b>	 * It creates event fd for each interrupt vector when MSIX is used,
+<b><a name="line170">170  </a></b>	 * otherwise it multiplexes a single event fd.
+<b><a name="line171">171  </a></b>	 *
+<b><a name="line172">172  </a></b>	 * @param intr_handle
+<b><a name="line173">173  </a></b>	 *   Pointer to the interrupt handle.
+<b><a name="line174">174  </a></b>	 * @param nb_efd
+<b><a name="line175">175  </a></b>	 *   Number of interrupt vector trying to enable.
+<b><a name="line176">176  </a></b>	 *   The value 0 is not allowed.
+<b><a name="line177">177  </a></b>	 * @return
+<b><a name="line178">178  </a></b>	 *   - On success, zero.
+<b><a name="line179">179  </a></b>	 *   - On failure, a negative value.
+<b><a name="line180">180  </a></b>	 */
+<b><a name="line181">181  </a></b>	int
+<b><a name="line182">182  </a></b>	rte_intr_efd_enable(struct <a href="../rte_interrupts.h/code.html#line22">rte_intr_handle</a> *intr_handle, <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> nb_efd);
+<b><a name="line183">183  </a></b>	
+<b><a name="line184">184  </a></b>	/**
+<b><a name="line185">185  </a></b>	 * It disables the packet I/O interrupt event.
+<b><a name="line186">186  </a></b>	 * It deletes registered eventfds and closes the open fds.
+<b><a name="line187">187  </a></b>	 *
+<b><a name="line188">188  </a></b>	 * @param intr_handle
+<b><a name="line189">189  </a></b>	 *   Pointer to the interrupt handle.
+<b><a name="line190">190  </a></b>	 */
+<b><a name="line191">191  </a></b>	void
+<b><a name="line192">192  </a></b>	rte_intr_efd_disable(struct <a href="../rte_interrupts.h/code.html#line22">rte_intr_handle</a> *intr_handle);
+<b><a name="line193">193  </a></b>	
+<b><a name="line194">194  </a></b>	/**
+<b><a name="line195">195  </a></b>	 * The packet I/O interrupt on datapath is enabled or not.
+<b><a name="line196">196  </a></b>	 *
+<b><a name="line197">197  </a></b>	 * @param intr_handle
+<b><a name="line198">198  </a></b>	 *   Pointer to the interrupt handle.
+<b><a name="line199">199  </a></b>	 */
+<b><a name="line200">200  </a></b>	int
+<b><a name="line201">201  </a></b>	rte_intr_dp_is_en(struct <a href="../rte_interrupts.h/code.html#line22">rte_intr_handle</a> *intr_handle);
+<b><a name="line202">202  </a></b>	
+<b><a name="line203">203  </a></b>	/**
+<b><a name="line204">204  </a></b>	 * The interrupt handle instance allows other causes or not.
+<b><a name="line205">205  </a></b>	 * Other causes stand for any none packet I/O interrupts.
+<b><a name="line206">206  </a></b>	 *
+<b><a name="line207">207  </a></b>	 * @param intr_handle
+<b><a name="line208">208  </a></b>	 *   Pointer to the interrupt handle.
+<b><a name="line209">209  </a></b>	 */
+<b><a name="line210">210  </a></b>	int
+<b><a name="line211">211  </a></b>	rte_intr_allow_others(struct <a href="../rte_interrupts.h/code.html#line22">rte_intr_handle</a> *intr_handle);
+<b><a name="line212">212  </a></b>	
+<b><a name="line213">213  </a></b>	/**
+<b><a name="line214">214  </a></b>	 * The multiple interrupt vector capability of interrupt handle instance.
+<b><a name="line215">215  </a></b>	 * It returns zero if no multiple interrupt vector support.
+<b><a name="line216">216  </a></b>	 *
+<b><a name="line217">217  </a></b>	 * @param intr_handle
+<b><a name="line218">218  </a></b>	 *   Pointer to the interrupt handle.
+<b><a name="line219">219  </a></b>	 */
+<b><a name="line220">220  </a></b>	int
+<b><a name="line221">221  </a></b>	rte_intr_cap_multiple(struct <a href="../rte_interrupts.h/code.html#line22">rte_intr_handle</a> *intr_handle);
+<b><a name="line222">222  </a></b>	
+<b><a name="line223">223  </a></b>	#endif /* _RTE_EAL_INTERRUPTS_H_ */
+<b><a name="line224">224  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

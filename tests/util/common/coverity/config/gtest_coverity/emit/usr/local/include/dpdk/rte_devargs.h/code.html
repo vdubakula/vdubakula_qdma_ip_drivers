@@ -1,0 +1,303 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_devargs.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright 2014 6WIND S.A.
+<b><a name="line3">3    </a></b>	 */
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	#ifndef _RTE_DEVARGS_H_
+<b><a name="line6">6    </a></b>	#define <b>_RTE_DEVARGS_H_</b>
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	/**
+<b><a name="line9">9    </a></b>	 * @file
+<b><a name="line10">10   </a></b>	 *
+<b><a name="line11">11   </a></b>	 * RTE devargs: list of devices and their user arguments
+<b><a name="line12">12   </a></b>	 *
+<b><a name="line13">13   </a></b>	 * This file stores a list of devices and their arguments given by
+<b><a name="line14">14   </a></b>	 * the user when a DPDK application is started. These devices can be PCI
+<b><a name="line15">15   </a></b>	 * devices or virtual devices. These devices are stored at startup in a
+<b><a name="line16">16   </a></b>	 * list of rte_devargs structures.
+<b><a name="line17">17   </a></b>	 */
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	#ifdef __cplusplus
+<b><a name="line20">20   </a></b>	extern &quot;C&quot; {
+<b><a name="line21">21   </a></b>	#endif
+<b><a name="line22">22   </a></b>	
+<b><a name="line23">23   </a></b>	#include &lt;stdio.h&gt;
+<b><a name="line24">24   </a></b>	#include &lt;sys/queue.h&gt;
+<b><a name="line25">25   </a></b>	#include &lt;rte_compat.h&gt;
+<b><a name="line26">26   </a></b>	#include &lt;rte_bus.h&gt;
+<b><a name="line27">27   </a></b>	
+<b><a name="line28">28   </a></b>	/**
+<b><a name="line29">29   </a></b>	 * Type of generic device
+<b><a name="line30">30   </a></b>	 */
+<b><a name="line31">31   </a></b>	enum <b>rte_devtype</b> {
+<b><a name="line32">32   </a></b>		<b>RTE_DEVTYPE_WHITELISTED_PCI</b>,
+<b><a name="line33">33   </a></b>		<b>RTE_DEVTYPE_BLACKLISTED_PCI</b>,
+<b><a name="line34">34   </a></b>		<b>RTE_DEVTYPE_VIRTUAL</b>,
+<b><a name="line35">35   </a></b>	};
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	/**
+<b><a name="line38">38   </a></b>	 * Structure that stores a device given by the user with its arguments
+<b><a name="line39">39   </a></b>	 *
+<b><a name="line40">40   </a></b>	 * A user device is a physical or a virtual device given by the user to
+<b><a name="line41">41   </a></b>	 * the DPDK application at startup through command line arguments.
+<b><a name="line42">42   </a></b>	 *
+<b><a name="line43">43   </a></b>	 * The structure stores the configuration of the device, its PCI
+<b><a name="line44">44   </a></b>	 * identifier if it's a PCI device or the driver name if it's a virtual
+<b><a name="line45">45   </a></b>	 * device.
+<b><a name="line46">46   </a></b>	 */
+<b><a name="line47">47   </a></b>	struct <b>rte_devargs</b> {
+<b><a name="line48">48   </a></b>		/** Next in list. */
+<b><a name="line49">49   </a></b>		<a href="../../../../include/x86_64-linux-gnu/sys/queue.h/code.html#line382">TAILQ_ENTRY</a>(rte_devargs) <b>next</b>;
+<b><a name="line50">50   </a></b>		/** Type of device. */
+<b><a name="line51">51   </a></b>		enum <a href="#line31">rte_devtype</a> <b>type</b>;
+<b><a name="line52">52   </a></b>		/** Device policy. */
+<b><a name="line53">53   </a></b>		enum <a href="../rte_dev.h/code.html#line124">rte_dev_policy</a> <b>policy</b>;
+<b><a name="line54">54   </a></b>		/** Name of the device. */
+<b><a name="line55">55   </a></b>		char <b>name</b>[<a href="../rte_dev.h/code.html#line151">RTE_DEV_NAME_MAX_LEN</a>];
+<b><a name="line56">56   </a></b>		<a href="../rte_common.h/code.html#line37">RTE_STD_C11</a>
+<b><a name="line57">57   </a></b>		union {
+<b><a name="line58">58   </a></b>		/** Arguments string as given by user or &quot;&quot; for no argument. */
+<b><a name="line59">59   </a></b>			char *<b>args</b>;
+<b><a name="line60">60   </a></b>			const char *<b>drv_str</b>;
+<b><a name="line61">61   </a></b>		};
+<b><a name="line62">62   </a></b>		struct <a href="../rte_dev.h/code.html#line160">rte_bus</a> *<b>bus</b>; /**&lt; bus handle. */
+<b><a name="line63">63   </a></b>		struct <a href="../rte_dev.h/code.html#line311">rte_class</a> *<b>cls</b>; /**&lt; class handle. */
+<b><a name="line64">64   </a></b>		const char *<b>bus_str</b>; /**&lt; bus-related part of device string. */
+<b><a name="line65">65   </a></b>		const char *<b>cls_str</b>; /**&lt; class-related part of device string. */
+<b><a name="line66">66   </a></b>		const char *<b>data</b>; /**&lt; Device string storage. */
+<b><a name="line67">67   </a></b>	};
+<b><a name="line68">68   </a></b>	
+<b><a name="line69">69   </a></b>	/**
+<b><a name="line70">70   </a></b>	 * Parse a device string.
+<b><a name="line71">71   </a></b>	 *
+<b><a name="line72">72   </a></b>	 * Verify that a bus is capable of handling the device passed
+<b><a name="line73">73   </a></b>	 * in argument. Store which bus will handle the device, its name
+<b><a name="line74">74   </a></b>	 * and the eventual device parameters.
+<b><a name="line75">75   </a></b>	 *
+<b><a name="line76">76   </a></b>	 * The syntax is:
+<b><a name="line77">77   </a></b>	 *
+<b><a name="line78">78   </a></b>	 *     bus:device_identifier,arg1=val1,arg2=val2
+<b><a name="line79">79   </a></b>	 *
+<b><a name="line80">80   </a></b>	 * where &quot;bus:&quot; is the bus name followed by any character separator.
+<b><a name="line81">81   </a></b>	 * The bus name is optional. If no bus name is specified, each bus
+<b><a name="line82">82   </a></b>	 * will attempt to recognize the device identifier. The first one
+<b><a name="line83">83   </a></b>	 * to succeed will be used.
+<b><a name="line84">84   </a></b>	 *
+<b><a name="line85">85   </a></b>	 * Examples:
+<b><a name="line86">86   </a></b>	 *
+<b><a name="line87">87   </a></b>	 *     pci:0000:05.00.0,arg=val
+<b><a name="line88">88   </a></b>	 *     05.00.0,arg=val
+<b><a name="line89">89   </a></b>	 *     vdev:net_ring0
+<b><a name="line90">90   </a></b>	 *
+<b><a name="line91">91   </a></b>	 * @param da
+<b><a name="line92">92   </a></b>	 *   The devargs structure holding the device information.
+<b><a name="line93">93   </a></b>	 *
+<b><a name="line94">94   </a></b>	 * @param dev
+<b><a name="line95">95   </a></b>	 *   String describing a device.
+<b><a name="line96">96   </a></b>	 *
+<b><a name="line97">97   </a></b>	 * @return
+<b><a name="line98">98   </a></b>	 *   - 0 on success.
+<b><a name="line99">99   </a></b>	 *   - Negative errno on error.
+<b><a name="line100">100  </a></b>	 */
+<b><a name="line101">101  </a></b>	<a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line102">102  </a></b>	int
+<b><a name="line103">103  </a></b>	rte_devargs_parse(struct <a href="../rte_dev.h/code.html#line162">rte_devargs</a> *da, const char *dev);
+<b><a name="line104">104  </a></b>	
+<b><a name="line105">105  </a></b>	/**
+<b><a name="line106">106  </a></b>	 * Parse a device string.
+<b><a name="line107">107  </a></b>	 *
+<b><a name="line108">108  </a></b>	 * Verify that a bus is capable of handling the device passed
+<b><a name="line109">109  </a></b>	 * in argument. Store which bus will handle the device, its name
+<b><a name="line110">110  </a></b>	 * and the eventual device parameters.
+<b><a name="line111">111  </a></b>	 *
+<b><a name="line112">112  </a></b>	 * The device string is built with a printf-like syntax.
+<b><a name="line113">113  </a></b>	 *
+<b><a name="line114">114  </a></b>	 * The syntax is:
+<b><a name="line115">115  </a></b>	 *
+<b><a name="line116">116  </a></b>	 *     bus:device_identifier,arg1=val1,arg2=val2
+<b><a name="line117">117  </a></b>	 *
+<b><a name="line118">118  </a></b>	 * where &quot;bus:&quot; is the bus name followed by any character separator.
+<b><a name="line119">119  </a></b>	 * The bus name is optional. If no bus name is specified, each bus
+<b><a name="line120">120  </a></b>	 * will attempt to recognize the device identifier. The first one
+<b><a name="line121">121  </a></b>	 * to succeed will be used.
+<b><a name="line122">122  </a></b>	 *
+<b><a name="line123">123  </a></b>	 * Examples:
+<b><a name="line124">124  </a></b>	 *
+<b><a name="line125">125  </a></b>	 *     pci:0000:05.00.0,arg=val
+<b><a name="line126">126  </a></b>	 *     05.00.0,arg=val
+<b><a name="line127">127  </a></b>	 *     vdev:net_ring0
+<b><a name="line128">128  </a></b>	 *
+<b><a name="line129">129  </a></b>	 * @param da
+<b><a name="line130">130  </a></b>	 *   The devargs structure holding the device information.
+<b><a name="line131">131  </a></b>	 * @param format
+<b><a name="line132">132  </a></b>	 *   Format string describing a device.
+<b><a name="line133">133  </a></b>	 *
+<b><a name="line134">134  </a></b>	 * @return
+<b><a name="line135">135  </a></b>	 *   - 0 on success.
+<b><a name="line136">136  </a></b>	 *   - Negative errno on error.
+<b><a name="line137">137  </a></b>	 */
+<b><a name="line138">138  </a></b>	<a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line139">139  </a></b>	int
+<b><a name="line140">140  </a></b>	rte_devargs_parsef(struct <a href="../rte_dev.h/code.html#line162">rte_devargs</a> *da,
+<b><a name="line141">141  </a></b>			   const char *format, ...)
+<b><a name="line142">142  </a></b>	__attribute__((format(printf, 2, 0)));
+<b><a name="line143">143  </a></b>	
+<b><a name="line144">144  </a></b>	/**
+<b><a name="line145">145  </a></b>	 * Insert an rte_devargs in the global list.
+<b><a name="line146">146  </a></b>	 *
+<b><a name="line147">147  </a></b>	 * @param da
+<b><a name="line148">148  </a></b>	 *  The devargs structure to insert.
+<b><a name="line149">149  </a></b>	 *  If a devargs for the same device is already inserted,
+<b><a name="line150">150  </a></b>	 *  it will be updated and returned. It means *da pointer can change.
+<b><a name="line151">151  </a></b>	 *
+<b><a name="line152">152  </a></b>	 * @return
+<b><a name="line153">153  </a></b>	 *   - 0 on success
+<b><a name="line154">154  </a></b>	 *   - Negative on error.
+<b><a name="line155">155  </a></b>	 */
+<b><a name="line156">156  </a></b>	<a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line157">157  </a></b>	int
+<b><a name="line158">158  </a></b>	rte_devargs_insert(struct <a href="../rte_dev.h/code.html#line162">rte_devargs</a> **da);
+<b><a name="line159">159  </a></b>	
+<b><a name="line160">160  </a></b>	/**
+<b><a name="line161">161  </a></b>	 * Add a device to the user device list
+<b><a name="line162">162  </a></b>	 * See rte_devargs_parse() for details.
+<b><a name="line163">163  </a></b>	 *
+<b><a name="line164">164  </a></b>	 * @param devtype
+<b><a name="line165">165  </a></b>	 *   The type of the device.
+<b><a name="line166">166  </a></b>	 * @param devargs_str
+<b><a name="line167">167  </a></b>	 *   The arguments as given by the user.
+<b><a name="line168">168  </a></b>	 *
+<b><a name="line169">169  </a></b>	 * @return
+<b><a name="line170">170  </a></b>	 *   - 0 on success
+<b><a name="line171">171  </a></b>	 *   - A negative value on error
+<b><a name="line172">172  </a></b>	 */
+<b><a name="line173">173  </a></b>	<a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line174">174  </a></b>	int rte_devargs_add(enum <a href="#line31">rte_devtype</a> devtype, const char *devargs_str);
+<b><a name="line175">175  </a></b>	
+<b><a name="line176">176  </a></b>	/**
+<b><a name="line177">177  </a></b>	 * Remove a device from the user device list.
+<b><a name="line178">178  </a></b>	 * Its resources are freed.
+<b><a name="line179">179  </a></b>	 * If the devargs cannot be found, nothing happens.
+<b><a name="line180">180  </a></b>	 *
+<b><a name="line181">181  </a></b>	 * @param devargs
+<b><a name="line182">182  </a></b>	 *   The instance or a copy of devargs to remove.
+<b><a name="line183">183  </a></b>	 *
+<b><a name="line184">184  </a></b>	 * @return
+<b><a name="line185">185  </a></b>	 *   0 on success.
+<b><a name="line186">186  </a></b>	 *   &lt;0 on error.
+<b><a name="line187">187  </a></b>	 *   &gt;0 if the devargs was not within the user device list.
+<b><a name="line188">188  </a></b>	 */
+<b><a name="line189">189  </a></b>	<a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line190">190  </a></b>	int rte_devargs_remove(struct <a href="../rte_dev.h/code.html#line162">rte_devargs</a> *devargs);
+<b><a name="line191">191  </a></b>	
+<b><a name="line192">192  </a></b>	/**
+<b><a name="line193">193  </a></b>	 * Count the number of user devices of a specified type
+<b><a name="line194">194  </a></b>	 *
+<b><a name="line195">195  </a></b>	 * @param devtype
+<b><a name="line196">196  </a></b>	 *   The type of the devices to counted.
+<b><a name="line197">197  </a></b>	 *
+<b><a name="line198">198  </a></b>	 * @return
+<b><a name="line199">199  </a></b>	 *   The number of devices.
+<b><a name="line200">200  </a></b>	 */
+<b><a name="line201">201  </a></b>	<a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line202">202  </a></b>	unsigned int
+<b><a name="line203">203  </a></b>	rte_devargs_type_count(enum <a href="#line31">rte_devtype</a> devtype);
+<b><a name="line204">204  </a></b>	
+<b><a name="line205">205  </a></b>	/**
+<b><a name="line206">206  </a></b>	 * This function dumps the list of user device and their arguments.
+<b><a name="line207">207  </a></b>	 *
+<b><a name="line208">208  </a></b>	 * @param f
+<b><a name="line209">209  </a></b>	 *   A pointer to a file for output
+<b><a name="line210">210  </a></b>	 */
+<b><a name="line211">211  </a></b>	<a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line212">212  </a></b>	void rte_devargs_dump(<a href="../../../../include/stdio.h/code.html#line48">FILE</a> *f);
+<b><a name="line213">213  </a></b>	
+<b><a name="line214">214  </a></b>	/**
+<b><a name="line215">215  </a></b>	 * Find next rte_devargs matching the provided bus name.
+<b><a name="line216">216  </a></b>	 *
+<b><a name="line217">217  </a></b>	 * @param busname
+<b><a name="line218">218  </a></b>	 *   Limit the iteration to devargs related to buses
+<b><a name="line219">219  </a></b>	 *   matching this name.
+<b><a name="line220">220  </a></b>	 *   Will return any next rte_devargs if NULL.
+<b><a name="line221">221  </a></b>	 *
+<b><a name="line222">222  </a></b>	 * @param start
+<b><a name="line223">223  </a></b>	 *   Starting iteration point. The iteration will start at
+<b><a name="line224">224  </a></b>	 *   the first rte_devargs if NULL.
+<b><a name="line225">225  </a></b>	 *
+<b><a name="line226">226  </a></b>	 * @return
+<b><a name="line227">227  </a></b>	 *   Next rte_devargs entry matching the requested bus,
+<b><a name="line228">228  </a></b>	 *   NULL if there is none.
+<b><a name="line229">229  </a></b>	 */
+<b><a name="line230">230  </a></b>	<a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line231">231  </a></b>	struct <a href="../rte_dev.h/code.html#line162">rte_devargs</a> *
+<b><a name="line232">232  </a></b>	rte_devargs_next(const char *busname, const struct <a href="../rte_dev.h/code.html#line162">rte_devargs</a> *start);
+<b><a name="line233">233  </a></b>	
+<b><a name="line234">234  </a></b>	/**
+<b><a name="line235">235  </a></b>	 * Iterate over all rte_devargs for a specific bus.
+<b><a name="line236">236  </a></b>	 */
+<b><a name="line237">237  </a></b>	#define <b>RTE_EAL_DEVARGS_FOREACH</b>(busname, da) \
+<b><a name="line238">238  </a></b>		for (da = rte_devargs_next(busname, NULL); \
+<b><a name="line239">239  </a></b>		     da != NULL; \
+<b><a name="line240">240  </a></b>		     da = rte_devargs_next(busname, da)) \
+<b><a name="line241">241  </a></b>	
+<b><a name="line242">242  </a></b>	#ifdef __cplusplus
+<b><a name="line243">243  </a></b>	}
+<b><a name="line244">244  </a></b>	#endif
+<b><a name="line245">245  </a></b>	
+<b><a name="line246">246  </a></b>	#endif /* _RTE_DEVARGS_H_ */
+<b><a name="line247">247  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

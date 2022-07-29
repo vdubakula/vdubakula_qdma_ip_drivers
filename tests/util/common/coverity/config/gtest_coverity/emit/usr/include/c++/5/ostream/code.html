@@ -1,0 +1,697 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/ostream</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Output streams -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 1997-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file include/ostream
+<b><a name="line26">26   </a></b>	 *  This is a Standard C++ Library header.
+<b><a name="line27">27   </a></b>	 */
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	//
+<b><a name="line30">30   </a></b>	// ISO C++ 14882: 27.6.2  Output streams
+<b><a name="line31">31   </a></b>	//
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	#ifndef _GLIBCXX_OSTREAM
+<b><a name="line34">34   </a></b>	#define <b>_GLIBCXX_OSTREAM</b> 1
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	#pragma GCC system_header
+<b><a name="line37">37   </a></b>	
+<b><a name="line38">38   </a></b>	#include &lt;ios&gt;
+<b><a name="line39">39   </a></b>	#include &lt;bits/ostream_insert.h&gt;
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	namespace <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line42">42   </a></b>	{
+<b><a name="line43">43   </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line44">44   </a></b>	
+<b><a name="line45">45   </a></b>	  /**
+<b><a name="line46">46   </a></b>	   *  @brief  Template class basic_ostream.
+<b><a name="line47">47   </a></b>	   *  @ingroup io
+<b><a name="line48">48   </a></b>	   *
+<b><a name="line49">49   </a></b>	   *  @tparam _CharT  Type of character stream.
+<b><a name="line50">50   </a></b>	   *  @tparam _Traits  Traits for character type, defaults to
+<b><a name="line51">51   </a></b>	   *                   char_traits&lt;_CharT&gt;.
+<b><a name="line52">52   </a></b>	   *
+<b><a name="line53">53   </a></b>	   *  This is the base class for all output streams.  It provides text
+<b><a name="line54">54   </a></b>	   *  formatting of all builtin types, and communicates with any class
+<b><a name="line55">55   </a></b>	   *  derived from basic_streambuf to do the actual output.
+<b><a name="line56">56   </a></b>	  */
+<b><a name="line57">57   </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line58">58   </a></b>	    class <b>basic_ostream</b> : virtual public <a href="../iosfwd/code.html#line77">basic_ios</a>&lt;<a href="#line57">_CharT</a>, <a href="#line57">_Traits</a>&gt;
+<b><a name="line59">59   </a></b>	    {
+<b><a name="line60">60   </a></b>	    public:
+<b><a name="line61">61   </a></b>	      // Types (inherited from basic_ios):
+<b><a name="line62">62   </a></b>	      typedef <a href="#line57">_CharT</a>			 		<b>char_type</b>;
+<b><a name="line63">63   </a></b>	      typedef typename <a href="#line57">_Traits</a>::<a href="../bits/char_traits.h/code.html#line236">int_type</a> 		<b>int_type</b>;
+<b><a name="line64">64   </a></b>	      typedef typename <a href="#line57">_Traits</a>::<a href="../bits/char_traits.h/code.html#line237">pos_type</a> 		<b>pos_type</b>;
+<b><a name="line65">65   </a></b>	      typedef typename <a href="#line57">_Traits</a>::<a href="../bits/char_traits.h/code.html#line238">off_type</a> 		<b>off_type</b>;
+<b><a name="line66">66   </a></b>	      typedef <a href="#line57">_Traits</a>			 		<b>traits_type</b>;
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	      // Non-standard Types:
+<b><a name="line69">69   </a></b>	      typedef <a href="../iosfwd/code.html#line80">basic_streambuf</a>&lt;<a href="#line57">_CharT</a>, <a href="#line57">_Traits</a>&gt; 		<b>__streambuf_type</b>;
+<b><a name="line70">70   </a></b>	      typedef <a href="../iosfwd/code.html#line77">basic_ios</a>&lt;<a href="#line57">_CharT</a>, <a href="#line57">_Traits</a>&gt;		<b>__ios_type</b>;
+<b><a name="line71">71   </a></b>	      typedef <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line57">_CharT</a>, <a href="#line57">_Traits</a>&gt;		<b>__ostream_type</b>;
+<b><a name="line72">72   </a></b>	      typedef <a href="../bits/locale_facets.h/code.html#line2289">num_put</a>&lt;<a href="#line57">_CharT</a>, <a href="../iosfwd/code.html#line128">ostreambuf_iterator</a>&lt;<a href="#line57">_CharT</a>, <a href="#line57">_Traits</a>&gt; &gt;
+<b><a name="line73">73   </a></b>	      							<b>__num_put_type</b>;
+<b><a name="line74">74   </a></b>	      typedef <a href="../bits/localefwd.h/code.html#line127">ctype</a>&lt;<a href="#line57">_CharT</a>&gt;	      			<b>__ctype_type</b>;
+<b><a name="line75">75   </a></b>	
+<b><a name="line76">76   </a></b>	      /**
+<b><a name="line77">77   </a></b>	       *  @brief  Base constructor.
+<b><a name="line78">78   </a></b>	       *
+<b><a name="line79">79   </a></b>	       *  This ctor is almost never called by the user directly, rather from
+<b><a name="line80">80   </a></b>	       *  derived classes' initialization lists, which pass a pointer to
+<b><a name="line81">81   </a></b>	       *  their own stream buffer.
+<b><a name="line82">82   </a></b>	      */
+<b><a name="line83">83   </a></b>	      explicit
+<b><a name="line84">84   </a></b>	      basic_ostream(<a href="#line69">__streambuf_type</a>* __sb)
+<b><a name="line85">85   </a></b>	      { this-&gt;init(__sb); }
+<b><a name="line86">86   </a></b>	
+<b><a name="line87">87   </a></b>	      /**
+<b><a name="line88">88   </a></b>	       *  @brief  Base destructor.
+<b><a name="line89">89   </a></b>	       *
+<b><a name="line90">90   </a></b>	       *  This does very little apart from providing a virtual base dtor.
+<b><a name="line91">91   </a></b>	      */
+<b><a name="line92">92   </a></b>	      virtual
+<b><a name="line93">93   </a></b>	      ~basic_ostream() { }
+<b><a name="line94">94   </a></b>	
+<b><a name="line95">95   </a></b>	      /// Safe prefix/suffix operations.
+<b><a name="line96">96   </a></b>	      class sentry;
+<b><a name="line97">97   </a></b>	      friend class <a href="#line96">sentry</a>;
+<b><a name="line98">98   </a></b>	
+<b><a name="line99">99   </a></b>	      //@{
+<b><a name="line100">100  </a></b>	      /**
+<b><a name="line101">101  </a></b>	       *  @brief  Interface for manipulators.
+<b><a name="line102">102  </a></b>	       *
+<b><a name="line103">103  </a></b>	       *  Manipulators such as @c std::endl and @c std::hex use these
+<b><a name="line104">104  </a></b>	       *  functions in constructs like &quot;std::cout &lt;&lt; std::endl&quot;.  For more
+<b><a name="line105">105  </a></b>	       *  information, see the iomanip header.
+<b><a name="line106">106  </a></b>	      */
+<b><a name="line107">107  </a></b>	      <a href="#line71">__ostream_type</a>&amp;
+<b><a name="line108">108  </a></b>	      operator&lt;&lt;(<a href="#line71">__ostream_type</a>&amp; (*<b>__pf</b>)(<a href="#line71">__ostream_type</a>&amp;))
+<b><a name="line109">109  </a></b>	      {
+<b><a name="line110">110  </a></b>		// _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line111">111  </a></b>		// DR 60. What is a formatted input function?
+<b><a name="line112">112  </a></b>		// The inserters for manipulators are *not* formatted output functions.
+<b><a name="line113">113  </a></b>		return <a href="#line108">__pf</a>(*this);
+<b><a name="line114">114  </a></b>	      }
+<b><a name="line115">115  </a></b>	
+<b><a name="line116">116  </a></b>	      <a href="#line71">__ostream_type</a>&amp;
+<b><a name="line117">117  </a></b>	      operator&lt;&lt;(<a href="#line70">__ios_type</a>&amp; (*__pf)(<a href="#line70">__ios_type</a>&amp;))
+<b><a name="line118">118  </a></b>	      {
+<b><a name="line119">119  </a></b>		// _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line120">120  </a></b>		// DR 60. What is a formatted input function?
+<b><a name="line121">121  </a></b>		// The inserters for manipulators are *not* formatted output functions.
+<b><a name="line122">122  </a></b>		__pf(*this);
+<b><a name="line123">123  </a></b>		return *this;
+<b><a name="line124">124  </a></b>	      }
+<b><a name="line125">125  </a></b>	
+<b><a name="line126">126  </a></b>	      <a href="#line71">__ostream_type</a>&amp;
+<b><a name="line127">127  </a></b>	      operator&lt;&lt;(<a href="../iosfwd/code.html#line74">ios_base</a>&amp; (*<b>__pf</b>) (<a href="../iosfwd/code.html#line74">ios_base</a>&amp;))
+<b><a name="line128">128  </a></b>	      {
+<b><a name="line129">129  </a></b>		// _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line130">130  </a></b>		// DR 60. What is a formatted input function?
+<b><a name="line131">131  </a></b>		// The inserters for manipulators are *not* formatted output functions.
+<b><a name="line132">132  </a></b>		<a href="#line127">__pf</a>(*this);
+<b><a name="line133">133  </a></b>		return *this;
+<b><a name="line134">134  </a></b>	      }
+<b><a name="line135">135  </a></b>	      //@}
+<b><a name="line136">136  </a></b>	
+<b><a name="line137">137  </a></b>	      //@{
+<b><a name="line138">138  </a></b>	      /**
+<b><a name="line139">139  </a></b>	       *  @name Inserters
+<b><a name="line140">140  </a></b>	       *
+<b><a name="line141">141  </a></b>	       *  All the @c operator&lt;&lt; functions (aka &lt;em&gt;formatted output
+<b><a name="line142">142  </a></b>	       *  functions&lt;/em&gt;) have some common behavior.  Each starts by
+<b><a name="line143">143  </a></b>	       *  constructing a temporary object of type std::basic_ostream::sentry.
+<b><a name="line144">144  </a></b>	       *  This can have several effects, concluding with the setting of a
+<b><a name="line145">145  </a></b>	       *  status flag; see the sentry documentation for more.
+<b><a name="line146">146  </a></b>	       *
+<b><a name="line147">147  </a></b>	       *  If the sentry status is good, the function tries to generate
+<b><a name="line148">148  </a></b>	       *  whatever data is appropriate for the type of the argument.
+<b><a name="line149">149  </a></b>	       *
+<b><a name="line150">150  </a></b>	       *  If an exception is thrown during insertion, ios_base::badbit
+<b><a name="line151">151  </a></b>	       *  will be turned on in the stream's error state without causing an
+<b><a name="line152">152  </a></b>	       *  ios_base::failure to be thrown.  The original exception will then
+<b><a name="line153">153  </a></b>	       *  be rethrown.
+<b><a name="line154">154  </a></b>	      */
+<b><a name="line155">155  </a></b>	
+<b><a name="line156">156  </a></b>	      //@{
+<b><a name="line157">157  </a></b>	      /**
+<b><a name="line158">158  </a></b>	       *  @brief Integer arithmetic inserters
+<b><a name="line159">159  </a></b>	       *  @param  __n A variable of builtin integral type.
+<b><a name="line160">160  </a></b>	       *  @return  @c *this if successful
+<b><a name="line161">161  </a></b>	       *
+<b><a name="line162">162  </a></b>	       *  These functions use the stream's current locale (specifically, the
+<b><a name="line163">163  </a></b>	       *  @c num_get facet) to perform numeric formatting.
+<b><a name="line164">164  </a></b>	      */
+<b><a name="line165">165  </a></b>	      <a href="#line71">__ostream_type</a>&amp;
+<b><a name="line166">166  </a></b>	      operator&lt;&lt;(long <b>__n</b>)
+<b><a name="line167">167  </a></b>	      { return <a href="#line415">_M_insert</a>(<a href="#line166">__n</a>); }
+<b><a name="line168">168  </a></b>	
+<b><a name="line169">169  </a></b>	      <a href="#line71">__ostream_type</a>&amp;
+<b><a name="line170">170  </a></b>	      operator&lt;&lt;(unsigned long <b>__n</b>)
+<b><a name="line171">171  </a></b>	      { return <a href="#line415">_M_insert</a>(<a href="#line170">__n</a>); }
+<b><a name="line172">172  </a></b>	
+<b><a name="line173">173  </a></b>	      <a href="#line71">__ostream_type</a>&amp;
+<b><a name="line174">174  </a></b>	      operator&lt;&lt;(bool __n)
+<b><a name="line175">175  </a></b>	      { return _M_insert(__n); }
+<b><a name="line176">176  </a></b>	
+<b><a name="line177">177  </a></b>	      <a href="#line71">__ostream_type</a>&amp;
+<b><a name="line178">178  </a></b>	      operator&lt;&lt;(short __n);
+<b><a name="line179">179  </a></b>	
+<b><a name="line180">180  </a></b>	      <a href="#line71">__ostream_type</a>&amp;
+<b><a name="line181">181  </a></b>	      operator&lt;&lt;(unsigned short __n)
+<b><a name="line182">182  </a></b>	      {
+<b><a name="line183">183  </a></b>		// _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line184">184  </a></b>		// 117. basic_ostream uses nonexistent num_put member functions.
+<b><a name="line185">185  </a></b>		return _M_insert(static_cast&lt;unsigned long&gt;(__n));
+<b><a name="line186">186  </a></b>	      }
+<b><a name="line187">187  </a></b>	
+<b><a name="line188">188  </a></b>	      <a href="#line71">__ostream_type</a>&amp;
+<b><a name="line189">189  </a></b>	      operator&lt;&lt;(int __n);
+<b><a name="line190">190  </a></b>	
+<b><a name="line191">191  </a></b>	      <a href="#line71">__ostream_type</a>&amp;
+<b><a name="line192">192  </a></b>	      operator&lt;&lt;(unsigned int <b>__n</b>)
+<b><a name="line193">193  </a></b>	      {
+<b><a name="line194">194  </a></b>		// _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line195">195  </a></b>		// 117. basic_ostream uses nonexistent num_put member functions.
+<b><a name="line196">196  </a></b>		return <a href="#line415">_M_insert</a>(static_cast&lt;unsigned long&gt;(<a href="#line192">__n</a>));
+<b><a name="line197">197  </a></b>	      }
+<b><a name="line198">198  </a></b>	
+<b><a name="line199">199  </a></b>	#ifdef <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1385">_GLIBCXX_USE_LONG_LONG</a>
+<b><a name="line200">200  </a></b>	      <a href="#line71">__ostream_type</a>&amp;
+<b><a name="line201">201  </a></b>	      operator&lt;&lt;(long long __n)
+<b><a name="line202">202  </a></b>	      { return _M_insert(__n); }
+<b><a name="line203">203  </a></b>	
+<b><a name="line204">204  </a></b>	      <a href="#line71">__ostream_type</a>&amp;
+<b><a name="line205">205  </a></b>	      operator&lt;&lt;(unsigned long long __n)
+<b><a name="line206">206  </a></b>	      { return _M_insert(__n); }
+<b><a name="line207">207  </a></b>	#endif
+<b><a name="line208">208  </a></b>	      //@}
+<b><a name="line209">209  </a></b>	
+<b><a name="line210">210  </a></b>	      //@{
+<b><a name="line211">211  </a></b>	      /**
+<b><a name="line212">212  </a></b>	       *  @brief  Floating point arithmetic inserters
+<b><a name="line213">213  </a></b>	       *  @param  __f A variable of builtin floating point type.
+<b><a name="line214">214  </a></b>	       *  @return  @c *this if successful
+<b><a name="line215">215  </a></b>	       *
+<b><a name="line216">216  </a></b>	       *  These functions use the stream's current locale (specifically, the
+<b><a name="line217">217  </a></b>	       *  @c num_get facet) to perform numeric formatting.
+<b><a name="line218">218  </a></b>	      */
+<b><a name="line219">219  </a></b>	      <a href="#line71">__ostream_type</a>&amp;
+<b><a name="line220">220  </a></b>	      operator&lt;&lt;(double __f)
+<b><a name="line221">221  </a></b>	      { return _M_insert(__f); }
+<b><a name="line222">222  </a></b>	
+<b><a name="line223">223  </a></b>	      <a href="#line71">__ostream_type</a>&amp;
+<b><a name="line224">224  </a></b>	      operator&lt;&lt;(float __f)
+<b><a name="line225">225  </a></b>	      {
+<b><a name="line226">226  </a></b>		// _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line227">227  </a></b>		// 117. basic_ostream uses nonexistent num_put member functions.
+<b><a name="line228">228  </a></b>		return _M_insert(static_cast&lt;double&gt;(__f));
+<b><a name="line229">229  </a></b>	      }
+<b><a name="line230">230  </a></b>	
+<b><a name="line231">231  </a></b>	      <a href="#line71">__ostream_type</a>&amp;
+<b><a name="line232">232  </a></b>	      operator&lt;&lt;(long double __f)
+<b><a name="line233">233  </a></b>	      { return _M_insert(__f); }
+<b><a name="line234">234  </a></b>	      //@}
+<b><a name="line235">235  </a></b>	
+<b><a name="line236">236  </a></b>	      /**
+<b><a name="line237">237  </a></b>	       *  @brief  Pointer arithmetic inserters
+<b><a name="line238">238  </a></b>	       *  @param  __p A variable of pointer type.
+<b><a name="line239">239  </a></b>	       *  @return  @c *this if successful
+<b><a name="line240">240  </a></b>	       *
+<b><a name="line241">241  </a></b>	       *  These functions use the stream's current locale (specifically, the
+<b><a name="line242">242  </a></b>	       *  @c num_get facet) to perform numeric formatting.
+<b><a name="line243">243  </a></b>	      */
+<b><a name="line244">244  </a></b>	      <a href="#line71">__ostream_type</a>&amp;
+<b><a name="line245">245  </a></b>	      operator&lt;&lt;(const void* <b>__p</b>)
+<b><a name="line246">246  </a></b>	      { return <a href="#line415">_M_insert</a>(<a href="#line245">__p</a>); }
+<b><a name="line247">247  </a></b>	
+<b><a name="line248">248  </a></b>	      /**
+<b><a name="line249">249  </a></b>	       *  @brief  Extracting from another streambuf.
+<b><a name="line250">250  </a></b>	       *  @param  __sb  A pointer to a streambuf
+<b><a name="line251">251  </a></b>	       *
+<b><a name="line252">252  </a></b>	       *  This function behaves like one of the basic arithmetic extractors,
+<b><a name="line253">253  </a></b>	       *  in that it also constructs a sentry object and has the same error
+<b><a name="line254">254  </a></b>	       *  handling behavior.
+<b><a name="line255">255  </a></b>	       *
+<b><a name="line256">256  </a></b>	       *  If @p __sb is NULL, the stream will set failbit in its error state.
+<b><a name="line257">257  </a></b>	       *
+<b><a name="line258">258  </a></b>	       *  Characters are extracted from @p __sb and inserted into @c *this
+<b><a name="line259">259  </a></b>	       *  until one of the following occurs:
+<b><a name="line260">260  </a></b>	       *
+<b><a name="line261">261  </a></b>	       *  - the input stream reaches end-of-file,
+<b><a name="line262">262  </a></b>	       *  - insertion into the output sequence fails (in this case, the
+<b><a name="line263">263  </a></b>	       *    character that would have been inserted is not extracted), or
+<b><a name="line264">264  </a></b>	       *  - an exception occurs while getting a character from @p __sb, which
+<b><a name="line265">265  </a></b>	       *    sets failbit in the error state
+<b><a name="line266">266  </a></b>	       *
+<b><a name="line267">267  </a></b>	       *  If the function inserts no characters, failbit is set.
+<b><a name="line268">268  </a></b>	      */
+<b><a name="line269">269  </a></b>	      <a href="#line71">__ostream_type</a>&amp;
+<b><a name="line270">270  </a></b>	      operator&lt;&lt;(<a href="#line69">__streambuf_type</a>* __sb);
+<b><a name="line271">271  </a></b>	      //@}
+<b><a name="line272">272  </a></b>	
+<b><a name="line273">273  </a></b>	      //@{
+<b><a name="line274">274  </a></b>	      /**
+<b><a name="line275">275  </a></b>	       *  @name Unformatted Output Functions
+<b><a name="line276">276  </a></b>	       *
+<b><a name="line277">277  </a></b>	       *  All the unformatted output functions have some common behavior.
+<b><a name="line278">278  </a></b>	       *  Each starts by constructing a temporary object of type
+<b><a name="line279">279  </a></b>	       *  std::basic_ostream::sentry.  This has several effects, concluding
+<b><a name="line280">280  </a></b>	       *  with the setting of a status flag; see the sentry documentation
+<b><a name="line281">281  </a></b>	       *  for more.
+<b><a name="line282">282  </a></b>	       *
+<b><a name="line283">283  </a></b>	       *  If the sentry status is good, the function tries to generate
+<b><a name="line284">284  </a></b>	       *  whatever data is appropriate for the type of the argument.
+<b><a name="line285">285  </a></b>	       *
+<b><a name="line286">286  </a></b>	       *  If an exception is thrown during insertion, ios_base::badbit
+<b><a name="line287">287  </a></b>	       *  will be turned on in the stream's error state.  If badbit is on in
+<b><a name="line288">288  </a></b>	       *  the stream's exceptions mask, the exception will be rethrown
+<b><a name="line289">289  </a></b>	       *  without completing its actions.
+<b><a name="line290">290  </a></b>	      */
+<b><a name="line291">291  </a></b>	
+<b><a name="line292">292  </a></b>	      /**
+<b><a name="line293">293  </a></b>	       *  @brief  Simple insertion.
+<b><a name="line294">294  </a></b>	       *  @param  __c  The character to insert.
+<b><a name="line295">295  </a></b>	       *  @return  *this
+<b><a name="line296">296  </a></b>	       *
+<b><a name="line297">297  </a></b>	       *  Tries to insert @p __c.
+<b><a name="line298">298  </a></b>	       *
+<b><a name="line299">299  </a></b>	       *  @note  This function is not overloaded on signed char and
+<b><a name="line300">300  </a></b>	       *         unsigned char.
+<b><a name="line301">301  </a></b>	      */
+<b><a name="line302">302  </a></b>	      <a href="#line71">__ostream_type</a>&amp;
+<b><a name="line303">303  </a></b>	      put(<a href="#line62">char_type</a> __c);
+<b><a name="line304">304  </a></b>	
+<b><a name="line305">305  </a></b>	      /**
+<b><a name="line306">306  </a></b>	       *  @brief  Core write functionality, without sentry.
+<b><a name="line307">307  </a></b>	       *  @param  __s  The array to insert.
+<b><a name="line308">308  </a></b>	       *  @param  __n  Maximum number of characters to insert.
+<b><a name="line309">309  </a></b>	      */
+<b><a name="line310">310  </a></b>	      void
+<b><a name="line311">311  </a></b>	      _M_write(const <a href="#line62">char_type</a>* __s, <a href="../bits/postypes.h/code.html#line98">streamsize</a> __n)
+<b><a name="line312">312  </a></b>	      {
+<b><a name="line313">313  </a></b>		const streamsize __put = this-&gt;rdbuf()-&gt;sputn(__s, __n);
+<b><a name="line314">314  </a></b>		if (__put != __n)
+<b><a name="line315">315  </a></b>		  this-&gt;setstate(ios_base::badbit);
+<b><a name="line316">316  </a></b>	      }
+<b><a name="line317">317  </a></b>	
+<b><a name="line318">318  </a></b>	      /**
+<b><a name="line319">319  </a></b>	       *  @brief  Character string insertion.
+<b><a name="line320">320  </a></b>	       *  @param  __s  The array to insert.
+<b><a name="line321">321  </a></b>	       *  @param  __n  Maximum number of characters to insert.
+<b><a name="line322">322  </a></b>	       *  @return  *this
+<b><a name="line323">323  </a></b>	       *
+<b><a name="line324">324  </a></b>	       *  Characters are copied from @p __s and inserted into the stream until
+<b><a name="line325">325  </a></b>	       *  one of the following happens:
+<b><a name="line326">326  </a></b>	       *
+<b><a name="line327">327  </a></b>	       *  - @p __n characters are inserted
+<b><a name="line328">328  </a></b>	       *  - inserting into the output sequence fails (in this case, badbit
+<b><a name="line329">329  </a></b>	       *    will be set in the stream's error state)
+<b><a name="line330">330  </a></b>	       *
+<b><a name="line331">331  </a></b>	       *  @note  This function is not overloaded on signed char and
+<b><a name="line332">332  </a></b>	       *         unsigned char.
+<b><a name="line333">333  </a></b>	      */
+<b><a name="line334">334  </a></b>	      <a href="#line71">__ostream_type</a>&amp;
+<b><a name="line335">335  </a></b>	      write(const <a href="#line62">char_type</a>* __s, <a href="../bits/postypes.h/code.html#line98">streamsize</a> __n);
+<b><a name="line336">336  </a></b>	      //@}
+<b><a name="line337">337  </a></b>	
+<b><a name="line338">338  </a></b>	      /**
+<b><a name="line339">339  </a></b>	       *  @brief  Synchronizing the stream buffer.
+<b><a name="line340">340  </a></b>	       *  @return  *this
+<b><a name="line341">341  </a></b>	       *
+<b><a name="line342">342  </a></b>	       *  If @c rdbuf() is a null pointer, changes nothing.
+<b><a name="line343">343  </a></b>	       *
+<b><a name="line344">344  </a></b>	       *  Otherwise, calls @c rdbuf()-&gt;pubsync(), and if that returns -1,
+<b><a name="line345">345  </a></b>	       *  sets badbit.
+<b><a name="line346">346  </a></b>	      */
+<b><a name="line347">347  </a></b>	      <a href="#line71">__ostream_type</a>&amp;
+<b><a name="line348">348  </a></b>	      flush();
+<b><a name="line349">349  </a></b>	
+<b><a name="line350">350  </a></b>	      /**
+<b><a name="line351">351  </a></b>	       *  @brief  Getting the current write position.
+<b><a name="line352">352  </a></b>	       *  @return  A file position object.
+<b><a name="line353">353  </a></b>	       *
+<b><a name="line354">354  </a></b>	       *  If @c fail() is not false, returns @c pos_type(-1) to indicate
+<b><a name="line355">355  </a></b>	       *  failure.  Otherwise returns @c rdbuf()-&gt;pubseekoff(0,cur,out).
+<b><a name="line356">356  </a></b>	      */
+<b><a name="line357">357  </a></b>	      <a href="#line64">pos_type</a>
+<b><a name="line358">358  </a></b>	      tellp();
+<b><a name="line359">359  </a></b>	
+<b><a name="line360">360  </a></b>	      /**
+<b><a name="line361">361  </a></b>	       *  @brief  Changing the current write position.
+<b><a name="line362">362  </a></b>	       *  @param  __pos  A file position object.
+<b><a name="line363">363  </a></b>	       *  @return  *this
+<b><a name="line364">364  </a></b>	       *
+<b><a name="line365">365  </a></b>	       *  If @c fail() is not true, calls @c rdbuf()-&gt;pubseekpos(pos).  If
+<b><a name="line366">366  </a></b>	       *  that function fails, sets failbit.
+<b><a name="line367">367  </a></b>	      */
+<b><a name="line368">368  </a></b>	      <a href="#line71">__ostream_type</a>&amp;
+<b><a name="line369">369  </a></b>	      seekp(<a href="#line64">pos_type</a>);
+<b><a name="line370">370  </a></b>	
+<b><a name="line371">371  </a></b>	      /**
+<b><a name="line372">372  </a></b>	       *  @brief  Changing the current write position.
+<b><a name="line373">373  </a></b>	       *  @param  __off  A file offset object.
+<b><a name="line374">374  </a></b>	       *  @param  __dir  The direction in which to seek.
+<b><a name="line375">375  </a></b>	       *  @return  *this
+<b><a name="line376">376  </a></b>	       *
+<b><a name="line377">377  </a></b>	       *  If @c fail() is not true, calls @c rdbuf()-&gt;pubseekoff(off,dir).
+<b><a name="line378">378  </a></b>	       *  If that function fails, sets failbit.
+<b><a name="line379">379  </a></b>	      */
+<b><a name="line380">380  </a></b>	       <a href="#line71">__ostream_type</a>&amp;
+<b><a name="line381">381  </a></b>	      seekp(<a href="#line65">off_type</a>, <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line461">seekdir</a>);
+<b><a name="line382">382  </a></b>	
+<b><a name="line383">383  </a></b>	    protected:
+<b><a name="line384">384  </a></b>	      basic_ostream()
+<b><a name="line385">385  </a></b>	      { this-&gt;<a href="../bits/basic_ios.h/code.html#line472">init</a>(0); }
+<b><a name="line386">386  </a></b>	
+<b><a name="line387">387  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line388">388  </a></b>	      // Non-standard constructor that does not call init()
+<b><a name="line389">389  </a></b>	      basic_ostream(<a href="../iosfwd/code.html#line89">basic_iostream</a>&lt;<a href="#line57">_CharT</a>, <a href="#line57">_Traits</a>&gt;&amp;) { }
+<b><a name="line390">390  </a></b>	
+<b><a name="line391">391  </a></b>	      <b>basic_ostream</b>(const <a href="../iosfwd/code.html#line86">basic_ostream</a>&amp;) = delete;
+<b><a name="line392">392  </a></b>	
+<b><a name="line393">393  </a></b>	      basic_ostream(<a href="../iosfwd/code.html#line86">basic_ostream</a>&amp;&amp; __rhs)
+<b><a name="line394">394  </a></b>	      : __ios_type()
+<b><a name="line395">395  </a></b>	      { __ios_type::move(__rhs); }
+<b><a name="line396">396  </a></b>	
+<b><a name="line397">397  </a></b>	      // 27.7.3.3 Assign/swap
+<b><a name="line398">398  </a></b>	
+<b><a name="line399">399  </a></b>	      <a href="../iosfwd/code.html#line86">basic_ostream</a>&amp; <b>operator=</b>(const <a href="../iosfwd/code.html#line86">basic_ostream</a>&amp;) = delete;
+<b><a name="line400">400  </a></b>	
+<b><a name="line401">401  </a></b>	      <a href="../iosfwd/code.html#line86">basic_ostream</a>&amp;
+<b><a name="line402">402  </a></b>	      operator=(<a href="../iosfwd/code.html#line86">basic_ostream</a>&amp;&amp; __rhs)
+<b><a name="line403">403  </a></b>	      {
+<b><a name="line404">404  </a></b>		swap(__rhs);
+<b><a name="line405">405  </a></b>		return *this;
+<b><a name="line406">406  </a></b>	      }
+<b><a name="line407">407  </a></b>	
+<b><a name="line408">408  </a></b>	      void
+<b><a name="line409">409  </a></b>	      swap(<a href="../iosfwd/code.html#line86">basic_ostream</a>&amp; __rhs)
+<b><a name="line410">410  </a></b>	      { __ios_type::swap(__rhs); }
+<b><a name="line411">411  </a></b>	#endif
+<b><a name="line412">412  </a></b>	
+<b><a name="line413">413  </a></b>	      template&lt;typename <b>_ValueT</b>&gt;
+<b><a name="line414">414  </a></b>		<a href="#line71">__ostream_type</a>&amp;
+<b><a name="line415">415  </a></b>		_M_insert(<a href="#line413">_ValueT</a> __v);
+<b><a name="line416">416  </a></b>	    };
+<b><a name="line417">417  </a></b>	
+<b><a name="line418">418  </a></b>	  /**
+<b><a name="line419">419  </a></b>	   *  @brief  Performs setup work for output streams.
+<b><a name="line420">420  </a></b>	   *
+<b><a name="line421">421  </a></b>	   *  Objects of this class are created before all of the standard
+<b><a name="line422">422  </a></b>	   *  inserters are run.  It is responsible for &lt;em&gt;exception-safe prefix and
+<b><a name="line423">423  </a></b>	   *  suffix operations&lt;/em&gt;.
+<b><a name="line424">424  </a></b>	  */
+<b><a name="line425">425  </a></b>	  template &lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line426">426  </a></b>	    class <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line425">_CharT</a>, <a href="#line425">_Traits</a>&gt;::<b>sentry</b>
+<b><a name="line427">427  </a></b>	    {
+<b><a name="line428">428  </a></b>	      // Data Members.
+<b><a name="line429">429  </a></b>	      bool 				<b>_M_ok</b>;
+<b><a name="line430">430  </a></b>	      <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line425">_CharT</a>, <a href="#line425">_Traits</a>&gt;&amp; 	<b>_M_os</b>;
+<b><a name="line431">431  </a></b>	
+<b><a name="line432">432  </a></b>	    public:
+<b><a name="line433">433  </a></b>	      /**
+<b><a name="line434">434  </a></b>	       *  @brief  The constructor performs preparatory work.
+<b><a name="line435">435  </a></b>	       *  @param  __os  The output stream to guard.
+<b><a name="line436">436  </a></b>	       *
+<b><a name="line437">437  </a></b>	       *  If the stream state is good (@a __os.good() is true), then if the
+<b><a name="line438">438  </a></b>	       *  stream is tied to another output stream, @c is.tie()-&gt;flush()
+<b><a name="line439">439  </a></b>	       *  is called to synchronize the output sequences.
+<b><a name="line440">440  </a></b>	       *
+<b><a name="line441">441  </a></b>	       *  If the stream state is still good, then the sentry state becomes
+<b><a name="line442">442  </a></b>	       *  true (@a okay).
+<b><a name="line443">443  </a></b>	      */
+<b><a name="line444">444  </a></b>	      explicit
+<b><a name="line445">445  </a></b>	      sentry(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line425">_CharT</a>, <a href="#line425">_Traits</a>&gt;&amp; __os);
+<b><a name="line446">446  </a></b>	
+<b><a name="line447">447  </a></b>	      /**
+<b><a name="line448">448  </a></b>	       *  @brief  Possibly flushes the stream.
+<b><a name="line449">449  </a></b>	       *
+<b><a name="line450">450  </a></b>	       *  If @c ios_base::unitbuf is set in @c os.flags(), and
+<b><a name="line451">451  </a></b>	       *  @c std::uncaught_exception() is true, the sentry destructor calls
+<b><a name="line452">452  </a></b>	       *  @c flush() on the output stream.
+<b><a name="line453">453  </a></b>	      */
+<b><a name="line454">454  </a></b>	      ~sentry()
+<b><a name="line455">455  </a></b>	      {
+<b><a name="line456">456  </a></b>		// XXX MT
+<b><a name="line457">457  </a></b>		if (bool(_M_os.flags() &amp; ios_base::unitbuf) &amp;&amp; !uncaught_exception())
+<b><a name="line458">458  </a></b>		  {
+<b><a name="line459">459  </a></b>		    // Can't call flush directly or else will get into recursive lock.
+<b><a name="line460">460  </a></b>		    if (_M_os.rdbuf() &amp;&amp; _M_os.rdbuf()-&gt;pubsync() == -1)
+<b><a name="line461">461  </a></b>		      _M_os.setstate(ios_base::badbit);
+<b><a name="line462">462  </a></b>		  }
+<b><a name="line463">463  </a></b>	      }
+<b><a name="line464">464  </a></b>	
+<b><a name="line465">465  </a></b>	      /**
+<b><a name="line466">466  </a></b>	       *  @brief  Quick status checking.
+<b><a name="line467">467  </a></b>	       *  @return  The sentry state.
+<b><a name="line468">468  </a></b>	       *
+<b><a name="line469">469  </a></b>	       *  For ease of use, sentries may be converted to booleans.  The
+<b><a name="line470">470  </a></b>	       *  return value is that of the sentry state (true == okay).
+<b><a name="line471">471  </a></b>	      */
+<b><a name="line472">472  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line473">473  </a></b>	      explicit
+<b><a name="line474">474  </a></b>	#endif
+<b><a name="line475">475  </a></b>	      operator bool() const
+<b><a name="line476">476  </a></b>	      { return _M_ok; }
+<b><a name="line477">477  </a></b>	    };
+<b><a name="line478">478  </a></b>	
+<b><a name="line479">479  </a></b>	  //@{
+<b><a name="line480">480  </a></b>	  /**
+<b><a name="line481">481  </a></b>	   *  @brief  Character inserters
+<b><a name="line482">482  </a></b>	   *  @param  __out  An output stream.
+<b><a name="line483">483  </a></b>	   *  @param  __c  A character.
+<b><a name="line484">484  </a></b>	   *  @return  out
+<b><a name="line485">485  </a></b>	   *
+<b><a name="line486">486  </a></b>	   *  Behaves like one of the formatted arithmetic inserters described in
+<b><a name="line487">487  </a></b>	   *  std::basic_ostream.  After constructing a sentry object with good
+<b><a name="line488">488  </a></b>	   *  status, this function inserts a single character and any required
+<b><a name="line489">489  </a></b>	   *  padding (as determined by [22.2.2.2.2]).  @c __out.width(0) is then
+<b><a name="line490">490  </a></b>	   *  called.
+<b><a name="line491">491  </a></b>	   *
+<b><a name="line492">492  </a></b>	   *  If @p __c is of type @c char and the character type of the stream is not
+<b><a name="line493">493  </a></b>	   *  @c char, the character is widened before insertion.
+<b><a name="line494">494  </a></b>	  */
+<b><a name="line495">495  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line496">496  </a></b>	    inline <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line495">_CharT</a>, <a href="#line495">_Traits</a>&gt;&amp;
+<b><a name="line497">497  </a></b>	    operator&lt;&lt;(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line495">_CharT</a>, <a href="#line495">_Traits</a>&gt;&amp; __out, <a href="#line495">_CharT</a> __c)
+<b><a name="line498">498  </a></b>	    { return __ostream_insert(__out, &amp;__c, 1); }
+<b><a name="line499">499  </a></b>	
+<b><a name="line500">500  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line501">501  </a></b>	    inline <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line500">_CharT</a>, <a href="#line500">_Traits</a>&gt;&amp;
+<b><a name="line502">502  </a></b>	    operator&lt;&lt;(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line500">_CharT</a>, <a href="#line500">_Traits</a>&gt;&amp; __out, char __c)
+<b><a name="line503">503  </a></b>	    { return (__out &lt;&lt; __out.widen(__c)); }
+<b><a name="line504">504  </a></b>	
+<b><a name="line505">505  </a></b>	  // Specialization
+<b><a name="line506">506  </a></b>	  template &lt;class <b>_Traits</b>&gt;
+<b><a name="line507">507  </a></b>	    inline <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;char, <a href="#line506">_Traits</a>&gt;&amp;
+<b><a name="line508">508  </a></b>	    operator&lt;&lt;(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;char, <a href="#line506">_Traits</a>&gt;&amp; <b>__out</b>, char <b>__c</b>)
+<b><a name="line509">509  </a></b>	    { return <a href="../bits/ostream_insert.h/code.html#line76">__ostream_insert</a>(<a href="#line508">__out</a>, &amp;<a href="#line508">__c</a>, 1); }
+<b><a name="line510">510  </a></b>	
+<b><a name="line511">511  </a></b>	  // Signed and unsigned
+<b><a name="line512">512  </a></b>	  template&lt;class <b>_Traits</b>&gt;
+<b><a name="line513">513  </a></b>	    inline <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;char, <a href="#line512">_Traits</a>&gt;&amp;
+<b><a name="line514">514  </a></b>	    operator&lt;&lt;(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;char, <a href="#line512">_Traits</a>&gt;&amp; __out, signed char __c)
+<b><a name="line515">515  </a></b>	    { return (__out &lt;&lt; static_cast&lt;char&gt;(__c)); }
+<b><a name="line516">516  </a></b>	
+<b><a name="line517">517  </a></b>	  template&lt;class <b>_Traits</b>&gt;
+<b><a name="line518">518  </a></b>	    inline <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;char, <a href="#line517">_Traits</a>&gt;&amp;
+<b><a name="line519">519  </a></b>	    operator&lt;&lt;(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;char, <a href="#line517">_Traits</a>&gt;&amp; <b>__out</b>, unsigned char <b>__c</b>)
+<b><a name="line520">520  </a></b>	    { return (<a href="#line519">__out</a> <a href="#line508">&lt;&lt;</a> static_cast&lt;char&gt;(<a href="#line519">__c</a>)); }
+<b><a name="line521">521  </a></b>	  //@}
+<b><a name="line522">522  </a></b>	
+<b><a name="line523">523  </a></b>	  //@{
+<b><a name="line524">524  </a></b>	  /**
+<b><a name="line525">525  </a></b>	   *  @brief  String inserters
+<b><a name="line526">526  </a></b>	   *  @param  __out  An output stream.
+<b><a name="line527">527  </a></b>	   *  @param  __s  A character string.
+<b><a name="line528">528  </a></b>	   *  @return  out
+<b><a name="line529">529  </a></b>	   *  @pre  @p __s must be a non-NULL pointer
+<b><a name="line530">530  </a></b>	   *
+<b><a name="line531">531  </a></b>	   *  Behaves like one of the formatted arithmetic inserters described in
+<b><a name="line532">532  </a></b>	   *  std::basic_ostream.  After constructing a sentry object with good
+<b><a name="line533">533  </a></b>	   *  status, this function inserts @c traits::length(__s) characters starting
+<b><a name="line534">534  </a></b>	   *  at @p __s, widened if necessary, followed by any required padding (as
+<b><a name="line535">535  </a></b>	   *  determined by [22.2.2.2.2]).  @c __out.width(0) is then called.
+<b><a name="line536">536  </a></b>	  */
+<b><a name="line537">537  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line538">538  </a></b>	    inline <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line537">_CharT</a>, <a href="#line537">_Traits</a>&gt;&amp;
+<b><a name="line539">539  </a></b>	    operator&lt;&lt;(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line537">_CharT</a>, <a href="#line537">_Traits</a>&gt;&amp; __out, const <a href="#line537">_CharT</a>* __s)
+<b><a name="line540">540  </a></b>	    {
+<b><a name="line541">541  </a></b>	      if (!__s)
+<b><a name="line542">542  </a></b>		__out.setstate(ios_base::badbit);
+<b><a name="line543">543  </a></b>	      else
+<b><a name="line544">544  </a></b>		__ostream_insert(__out, __s,
+<b><a name="line545">545  </a></b>				 static_cast&lt;streamsize&gt;(_Traits::length(__s)));
+<b><a name="line546">546  </a></b>	      return __out;
+<b><a name="line547">547  </a></b>	    }
+<b><a name="line548">548  </a></b>	
+<b><a name="line549">549  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line550">550  </a></b>	    <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line549">_CharT</a>, <a href="#line549">_Traits</a>&gt; &amp;
+<b><a name="line551">551  </a></b>	    operator&lt;&lt;(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line549">_CharT</a>, <a href="#line549">_Traits</a>&gt;&amp; __out, const char* __s);
+<b><a name="line552">552  </a></b>	
+<b><a name="line553">553  </a></b>	  // Partial specializations
+<b><a name="line554">554  </a></b>	  template&lt;class <b>_Traits</b>&gt;
+<b><a name="line555">555  </a></b>	    inline <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;char, <a href="#line554">_Traits</a>&gt;&amp;
+<b><a name="line556">556  </a></b>	    operator&lt;&lt;(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;char, <a href="#line554">_Traits</a>&gt;&amp; <b>__out</b>, const char* <b>__s</b>)
+<b><a name="line557">557  </a></b>	    {
+<b><a name="line558">558  </a></b>	      if (!<a href="#line556">__s</a>)
+<b><a name="line559">559  </a></b>		<a href="#line556">__out</a>.<a href="../bits/basic_ios.h/code.html#line157">setstate</a>(<a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line402">badbit</a>);
+<b><a name="line560">560  </a></b>	      else
+<b><a name="line561">561  </a></b>		<a href="../bits/ostream_insert.h/code.html#line76">__ostream_insert</a>(<a href="#line556">__out</a>, <a href="#line556">__s</a>,
+<b><a name="line562">562  </a></b>				 static_cast&lt;<a href="../bits/postypes.h/code.html#line98">streamsize</a>&gt;(<a href="#line554">_Traits</a>::<a href="../bits/char_traits.h/code.html#line266">length</a>(<a href="#line556">__s</a>)));
+<b><a name="line563">563  </a></b>	      return <a href="#line556">__out</a>;
+<b><a name="line564">564  </a></b>	    }
+<b><a name="line565">565  </a></b>	
+<b><a name="line566">566  </a></b>	  // Signed and unsigned
+<b><a name="line567">567  </a></b>	  template&lt;class <b>_Traits</b>&gt;
+<b><a name="line568">568  </a></b>	    inline <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;char, <a href="#line567">_Traits</a>&gt;&amp;
+<b><a name="line569">569  </a></b>	    operator&lt;&lt;(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;char, <a href="#line567">_Traits</a>&gt;&amp; __out, const signed char* __s)
+<b><a name="line570">570  </a></b>	    { return (__out &lt;&lt; reinterpret_cast&lt;const char*&gt;(__s)); }
+<b><a name="line571">571  </a></b>	
+<b><a name="line572">572  </a></b>	  template&lt;class <b>_Traits</b>&gt;
+<b><a name="line573">573  </a></b>	    inline <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;char, <a href="#line572">_Traits</a>&gt; &amp;
+<b><a name="line574">574  </a></b>	    operator&lt;&lt;(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;char, <a href="#line572">_Traits</a>&gt;&amp; __out, const unsigned char* __s)
+<b><a name="line575">575  </a></b>	    { return (__out &lt;&lt; reinterpret_cast&lt;const char*&gt;(__s)); }
+<b><a name="line576">576  </a></b>	  //@}
+<b><a name="line577">577  </a></b>	
+<b><a name="line578">578  </a></b>	  // Standard basic_ostream manipulators
+<b><a name="line579">579  </a></b>	
+<b><a name="line580">580  </a></b>	  /**
+<b><a name="line581">581  </a></b>	   *  @brief  Write a newline and flush the stream.
+<b><a name="line582">582  </a></b>	   *
+<b><a name="line583">583  </a></b>	   *  This manipulator is often mistakenly used when a simple newline is
+<b><a name="line584">584  </a></b>	   *  desired, leading to poor buffering performance.  See
+<b><a name="line585">585  </a></b>	   *  https://gcc.gnu.org/onlinedocs/libstdc++/manual/streambufs.html#io.streambuf.buffering
+<b><a name="line586">586  </a></b>	   *  for more on this subject.
+<b><a name="line587">587  </a></b>	  */
+<b><a name="line588">588  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line589">589  </a></b>	    inline <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line588">_CharT</a>, <a href="#line588">_Traits</a>&gt;&amp;
+<b><a name="line590">590  </a></b>	    endl(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line588">_CharT</a>, <a href="#line588">_Traits</a>&gt;&amp; <b>__os</b>)
+<b><a name="line591">591  </a></b>	    { return <a href="#line612">flush</a>(<a href="#line590">__os</a>.<a href="#line303">put</a>(<a href="#line590">__os</a>.<a href="../bits/basic_ios.h/code.html#line449">widen</a>('\n'))); }
+<b><a name="line592">592  </a></b>	
+<b><a name="line593">593  </a></b>	  /**
+<b><a name="line594">594  </a></b>	   *  @brief  Write a null character into the output sequence.
+<b><a name="line595">595  </a></b>	   *
+<b><a name="line596">596  </a></b>	   *  &lt;em&gt;Null character&lt;/em&gt; is @c CharT() by definition.  For CharT
+<b><a name="line597">597  </a></b>	   *  of @c char, this correctly writes the ASCII @c NUL character
+<b><a name="line598">598  </a></b>	   *  string terminator.
+<b><a name="line599">599  </a></b>	  */
+<b><a name="line600">600  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line601">601  </a></b>	    inline <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line600">_CharT</a>, <a href="#line600">_Traits</a>&gt;&amp;
+<b><a name="line602">602  </a></b>	    ends(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line600">_CharT</a>, <a href="#line600">_Traits</a>&gt;&amp; __os)
+<b><a name="line603">603  </a></b>	    { return __os.put(_CharT()); }
+<b><a name="line604">604  </a></b>	
+<b><a name="line605">605  </a></b>	  /**
+<b><a name="line606">606  </a></b>	   *  @brief  Flushes the output stream.
+<b><a name="line607">607  </a></b>	   *
+<b><a name="line608">608  </a></b>	   *  This manipulator simply calls the stream's @c flush() member function.
+<b><a name="line609">609  </a></b>	  */
+<b><a name="line610">610  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line611">611  </a></b>	    inline <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line610">_CharT</a>, <a href="#line610">_Traits</a>&gt;&amp;
+<b><a name="line612">612  </a></b>	    flush(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line610">_CharT</a>, <a href="#line610">_Traits</a>&gt;&amp; <b>__os</b>)
+<b><a name="line613">613  </a></b>	    { return <a href="#line612">__os</a>.<a href="#line348">flush</a>(); }
+<b><a name="line614">614  </a></b>	
+<b><a name="line615">615  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line616">616  </a></b>	  /**
+<b><a name="line617">617  </a></b>	   *  @brief  Generic inserter for rvalue stream
+<b><a name="line618">618  </a></b>	   *  @param  __os  An input stream.
+<b><a name="line619">619  </a></b>	   *  @param  __x  A reference to the object being inserted.
+<b><a name="line620">620  </a></b>	   *  @return  os
+<b><a name="line621">621  </a></b>	   *
+<b><a name="line622">622  </a></b>	   *  This is just a forwarding function to allow insertion to
+<b><a name="line623">623  </a></b>	   *  rvalue streams since they won't bind to the inserter functions
+<b><a name="line624">624  </a></b>	   *  that take an lvalue reference.
+<b><a name="line625">625  </a></b>	  */
+<b><a name="line626">626  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>, typename <b>_Tp</b>&gt;
+<b><a name="line627">627  </a></b>	    inline <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line626">_CharT</a>, <a href="#line626">_Traits</a>&gt;&amp;
+<b><a name="line628">628  </a></b>	    <b>operator&lt;&lt;</b>(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line626">_CharT</a>, <a href="#line626">_Traits</a>&gt;&amp;&amp; __os, const <a href="#line626">_Tp</a>&amp; __x)
+<b><a name="line629">629  </a></b>	    {
+<b><a name="line630">630  </a></b>	      __os &lt;&lt; __x;
+<b><a name="line631">631  </a></b>	      return __os;
+<b><a name="line632">632  </a></b>	    }
+<b><a name="line633">633  </a></b>	#endif // C++11
+<b><a name="line634">634  </a></b>	
+<b><a name="line635">635  </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line636">636  </a></b>	} // namespace std
+<b><a name="line637">637  </a></b>	
+<b><a name="line638">638  </a></b>	#include &lt;bits/ostream.tcc&gt;
+<b><a name="line639">639  </a></b>	
+<b><a name="line640">640  </a></b>	#endif	/* _GLIBCXX_OSTREAM */
+<b><a name="line641">641  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

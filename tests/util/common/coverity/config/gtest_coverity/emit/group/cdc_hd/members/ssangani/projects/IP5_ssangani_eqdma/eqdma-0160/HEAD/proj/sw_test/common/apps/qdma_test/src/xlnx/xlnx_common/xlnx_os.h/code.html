@@ -1,0 +1,113 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/xlnx/xlnx_common/xlnx_os.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	#pragma once
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	#include &lt;array&gt;
+<b><a name="line4">4    </a></b>	#include &lt;cerrno&gt;
+<b><a name="line5">5    </a></b>	#include &lt;cstddef&gt;
+<b><a name="line6">6    </a></b>	#include &lt;cstdio&gt;
+<b><a name="line7">7    </a></b>	#include &lt;cstdlib&gt;
+<b><a name="line8">8    </a></b>	#include &lt;memory&gt;
+<b><a name="line9">9    </a></b>	#include &lt;string&gt;
+<b><a name="line10">10   </a></b>	#include &lt;system_error&gt;
+<b><a name="line11">11   </a></b>	
+<b><a name="line12">12   </a></b>	namespace <b>xlnx</b> {
+<b><a name="line13">13   </a></b>	namespace <b>os</b> {
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	    static void* aligned_alloc(<a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> size, <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> alignment);
+<b><a name="line16">16   </a></b>	    static void aligned_free(void* ptr);
+<b><a name="line17">17   </a></b>	    static <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stringfwd.h/code.html#line74">string</a> execute_command(const char* cmd);
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	} // namespace os
+<b><a name="line20">20   </a></b>	} // namespace xlnx
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	inline void* <a href="#line12">xlnx</a>::<a href="#line13">os</a>::<b>aligned_alloc</b>(<a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>size</b>, <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>align</b>) {
+<b><a name="line23">23   </a></b>	#ifdef <a href="../../../../logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line159">__linux__</a>
+<b><a name="line24">24   </a></b>	    void * <b>ptr</b> = ::<a href="/usr/include/stdlib.h/code.html#line509">aligned_alloc</a>(<a href="#line22">align</a>, <a href="#line22">size</a>);
+<b><a name="line25">25   </a></b>	    if(<a href="#line24">ptr</a> == 0)
+<b><a name="line26">26   </a></b>	    {
+<b><a name="line27">27   </a></b>	        <a href="/usr/include/stdio.h/code.html#line846">perror</a>(&quot;alignment&quot;);
+<b><a name="line28">28   </a></b>	    }
+<b><a name="line29">29   </a></b>	#elif _WIN32
+<b><a name="line30">30   </a></b>	    void * ptr = _aligned_malloc(size, align);
+<b><a name="line31">31   </a></b>	#endif
+<b><a name="line32">32   </a></b>	    return <a href="#line24">ptr</a>;
+<b><a name="line33">33   </a></b>	}
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	inline void <a href="#line12">xlnx</a>::<a href="#line13">os</a>::<b>aligned_free</b>(void* <b>ptr</b>) {
+<b><a name="line36">36   </a></b>	#ifdef <a href="../../../../logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line159">__linux__</a>
+<b><a name="line37">37   </a></b>	    <a href="/usr/include/stdlib.h/code.html#line483">free</a>(<a href="#line35">ptr</a>);
+<b><a name="line38">38   </a></b>	#elif _WIN32
+<b><a name="line39">39   </a></b>	    _aligned_free(ptr);
+<b><a name="line40">40   </a></b>	#endif
+<b><a name="line41">41   </a></b>	}
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	#ifndef _WIN32
+<b><a name="line44">44   </a></b>	inline <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stringfwd.h/code.html#line74">string</a> <a href="#line12">xlnx</a>::<a href="#line13">os</a>::<b>execute_command</b>(const char* <b>cmd</b>) {
+<b><a name="line45">45   </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/array/code.html#line89">array</a>&lt;char, 128&gt; <b>buffer</b>;
+<b><a name="line46">46   </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stringfwd.h/code.html#line74">string</a> <b>result</b>;
+<b><a name="line47">47   </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/shared_ptr.h/code.html#line93">shared_ptr</a>&lt;<a href="/usr/include/stdio.h/code.html#line48">FILE</a>&gt; <b>pipe</b>(<a href="/usr/include/stdio.h/code.html#line872">popen</a>(<a href="#line44">cmd</a>, &quot;r&quot;), <a href="/usr/include/stdio.h/code.html#line878">pclose</a>);
+<b><a name="line48">48   </a></b>	    if (!<a href="#line47">pipe</a>) {
+<b><a name="line49">49   </a></b>	        throw <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/system_error/code.html#line49">system_error</a>(<a href="/usr/include/x86_64-linux-gnu/bits/errno.h/code.html#line54">errno</a>, <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/system_error/code.html#line126">system_category</a>(), &quot;popen() failed!&quot;);
+<b><a name="line50">50   </a></b>	    }
+<b><a name="line51">51   </a></b>	    while (!<a href="/usr/include/stdio.h/code.html#line828">feof</a>(<a href="#line47">pipe</a>.<a href="/usr/include/c++/5/bits/shared_ptr_base.h/code.html#line1059">get</a>())) {
+<b><a name="line52">52   </a></b>	        if (<a href="/usr/include/stdio.h/code.html#line622">fgets</a>(<a href="#line45">buffer</a>.<a href="/usr/include/c++/5/array/code.html#line229">data</a>(), 128, <a href="#line47">pipe</a>.<a href="/usr/include/c++/5/bits/shared_ptr_base.h/code.html#line1059">get</a>()) != nullptr)
+<b><a name="line53">53   </a></b>	            <a href="#line46">result</a> <a href="/usr/include/c++/5/bits/basic_string.h/code.html#line950">+=</a> <a href="#line45">buffer</a>.<a href="/usr/include/c++/5/array/code.html#line229">data</a>();
+<b><a name="line54">54   </a></b>	    }
+<b><a name="line55">55   </a></b>	    return <a href="#line46">result</a>;
+<b><a name="line56">56   </a></b>	}
+<b><a name="line57">57   </a></b>	#endif
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

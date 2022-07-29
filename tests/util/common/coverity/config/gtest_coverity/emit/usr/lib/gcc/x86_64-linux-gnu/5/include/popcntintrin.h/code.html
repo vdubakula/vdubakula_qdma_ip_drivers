@@ -1,0 +1,110 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/lib/gcc/x86_64-linux-gnu/5/include/popcntintrin.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 2009-2015 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	   This file is part of GCC.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   GCC is free software; you can redistribute it and/or modify
+<b><a name="line6">6    </a></b>	   it under the terms of the GNU General Public License as published by
+<b><a name="line7">7    </a></b>	   the Free Software Foundation; either version 3, or (at your option)
+<b><a name="line8">8    </a></b>	   any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   GCC is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line13">13   </a></b>	   GNU General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line16">16   </a></b>	   permissions described in the GCC Runtime Library Exception, version
+<b><a name="line17">17   </a></b>	   3.1, as published by the Free Software Foundation.
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	   You should have received a copy of the GNU General Public License and
+<b><a name="line20">20   </a></b>	   a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line21">21   </a></b>	   see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line22">22   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>	#ifndef _POPCNTINTRIN_H_INCLUDED
+<b><a name="line25">25   </a></b>	#define <b>_POPCNTINTRIN_H_INCLUDED</b>
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>	#ifndef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line129">__POPCNT__</a>
+<b><a name="line28">28   </a></b>	#pragma GCC push_options
+<b><a name="line29">29   </a></b>	#pragma GCC target(&quot;popcnt&quot;)
+<b><a name="line30">30   </a></b>	#define __DISABLE_POPCNT__
+<b><a name="line31">31   </a></b>	#endif /* __POPCNT__ */
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	/* Calculate a number of bits set to 1.  */
+<b><a name="line34">34   </a></b>	extern __inline int __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line35">35   </a></b>	<b>_mm_popcnt_u32</b> (unsigned int <b>__X</b>)
+<b><a name="line36">36   </a></b>	{
+<b><a name="line37">37   </a></b>	  return <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1090">__builtin_popcount</a> (<a href="#line35">__X</a>);
+<b><a name="line38">38   </a></b>	}
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	#ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a>
+<b><a name="line41">41   </a></b>	extern __inline long long  __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line42">42   </a></b>	<b>_mm_popcnt_u64</b> (unsigned long long <b>__X</b>)
+<b><a name="line43">43   </a></b>	{
+<b><a name="line44">44   </a></b>	  return <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1092">__builtin_popcountll</a> (<a href="#line42">__X</a>);
+<b><a name="line45">45   </a></b>	}
+<b><a name="line46">46   </a></b>	#endif
+<b><a name="line47">47   </a></b>	
+<b><a name="line48">48   </a></b>	#ifdef __DISABLE_POPCNT__
+<b><a name="line49">49   </a></b>	#undef __DISABLE_POPCNT__
+<b><a name="line50">50   </a></b>	#pragma GCC pop_options
+<b><a name="line51">51   </a></b>	#endif  /* __DISABLE_POPCNT__ */
+<b><a name="line52">52   </a></b>	
+<b><a name="line53">53   </a></b>	#endif /* _POPCNTINTRIN_H_INCLUDED */
+<b><a name="line54">54   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

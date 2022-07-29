@@ -1,0 +1,11 @@
+iterations=1
+queue_dir=both	#other options c2h or both
+wb_acc=5
+ring_idx=0
+tmr_idx=5
+cntr_idx=7
+pfch_en=0
+trig_mode=1
+run_time=10 #secs
+num_threads=10
+outstanding=5

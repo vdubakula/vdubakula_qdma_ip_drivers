@@ -1,0 +1,15 @@
+name=pf0_intr_mixed_mode
+test_mask=0x08 #bit 0 - auto mode, 1 - poll mode, bit 2 - intr mode, bit 3 - aggr mode
+repeat=1 #number of iterations
+filter=-*ST016_64B_desc*:*DMACTL*:*DEBUGFS*:*PCIE003*
+master_pf=1
+run_gtest=1
+pf_qmax_cfg_en=(1 1 1 1)
+pf_qmax=(5 681 681 681)
+pf_nvf=(0 0 0 0) #number of VFs in PF
+vf_pf0_qmax=()
+vf_pf1_qmax=()
+vf_pf2_qmax=()
+vf_pf3_qmax=()
+valid_drv=(linux)
+#necessary dummy line

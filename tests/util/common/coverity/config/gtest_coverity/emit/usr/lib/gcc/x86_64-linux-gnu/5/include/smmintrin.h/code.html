@@ -1,0 +1,919 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/lib/gcc/x86_64-linux-gnu/5/include/smmintrin.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 2007-2015 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	   This file is part of GCC.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   GCC is free software; you can redistribute it and/or modify
+<b><a name="line6">6    </a></b>	   it under the terms of the GNU General Public License as published by
+<b><a name="line7">7    </a></b>	   the Free Software Foundation; either version 3, or (at your option)
+<b><a name="line8">8    </a></b>	   any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   GCC is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line13">13   </a></b>	   GNU General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line16">16   </a></b>	   permissions described in the GCC Runtime Library Exception, version
+<b><a name="line17">17   </a></b>	   3.1, as published by the Free Software Foundation.
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	   You should have received a copy of the GNU General Public License and
+<b><a name="line20">20   </a></b>	   a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line21">21   </a></b>	   see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line22">22   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>	/* Implemented from the specification included in the Intel C++ Compiler
+<b><a name="line25">25   </a></b>	   User Guide and Reference, version 10.0.  */
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>	#ifndef _SMMINTRIN_H_INCLUDED
+<b><a name="line28">28   </a></b>	#define <b>_SMMINTRIN_H_INCLUDED</b>
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	/* We need definitions from the SSSE3, SSE3, SSE2 and SSE header
+<b><a name="line31">31   </a></b>	   files.  */
+<b><a name="line32">32   </a></b>	#include &lt;tmmintrin.h&gt;
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	#ifndef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line48">__SSE4_1__</a>
+<b><a name="line35">35   </a></b>	#pragma GCC push_options
+<b><a name="line36">36   </a></b>	#pragma GCC target(&quot;sse4.1&quot;)
+<b><a name="line37">37   </a></b>	#define __DISABLE_SSE4_1__
+<b><a name="line38">38   </a></b>	#endif /* __SSE4_1__ */
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	/* Rounding mode macros. */
+<b><a name="line41">41   </a></b>	#define <b>_MM_FROUND_TO_NEAREST_INT</b>	0x00
+<b><a name="line42">42   </a></b>	#define <b>_MM_FROUND_TO_NEG_INF</b>		0x01
+<b><a name="line43">43   </a></b>	#define <b>_MM_FROUND_TO_POS_INF</b>		0x02
+<b><a name="line44">44   </a></b>	#define <b>_MM_FROUND_TO_ZERO</b>		0x03
+<b><a name="line45">45   </a></b>	#define <b>_MM_FROUND_CUR_DIRECTION</b>	0x04
+<b><a name="line46">46   </a></b>	
+<b><a name="line47">47   </a></b>	#define <b>_MM_FROUND_RAISE_EXC</b>		0x00
+<b><a name="line48">48   </a></b>	#define <b>_MM_FROUND_NO_EXC</b>		0x08
+<b><a name="line49">49   </a></b>	
+<b><a name="line50">50   </a></b>	#define <b>_MM_FROUND_NINT</b>		\
+<b><a name="line51">51   </a></b>	  (_MM_FROUND_TO_NEAREST_INT | _MM_FROUND_RAISE_EXC)
+<b><a name="line52">52   </a></b>	#define <b>_MM_FROUND_FLOOR</b>	\
+<b><a name="line53">53   </a></b>	  (_MM_FROUND_TO_NEG_INF | _MM_FROUND_RAISE_EXC)
+<b><a name="line54">54   </a></b>	#define <b>_MM_FROUND_CEIL</b>		\
+<b><a name="line55">55   </a></b>	  (_MM_FROUND_TO_POS_INF | _MM_FROUND_RAISE_EXC)
+<b><a name="line56">56   </a></b>	#define <b>_MM_FROUND_TRUNC</b>	\
+<b><a name="line57">57   </a></b>	  (_MM_FROUND_TO_ZERO | _MM_FROUND_RAISE_EXC)
+<b><a name="line58">58   </a></b>	#define <b>_MM_FROUND_RINT</b>		\
+<b><a name="line59">59   </a></b>	  (_MM_FROUND_CUR_DIRECTION | _MM_FROUND_RAISE_EXC)
+<b><a name="line60">60   </a></b>	#define <b>_MM_FROUND_NEARBYINT</b>	\
+<b><a name="line61">61   </a></b>	  (_MM_FROUND_CUR_DIRECTION | _MM_FROUND_NO_EXC)
+<b><a name="line62">62   </a></b>	
+<b><a name="line63">63   </a></b>	/* Test Instruction */
+<b><a name="line64">64   </a></b>	/* Packed integer 128-bit bitwise comparison. Return 1 if
+<b><a name="line65">65   </a></b>	   (__V &amp; __M) == 0.  */
+<b><a name="line66">66   </a></b>	extern __inline int __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line67">67   </a></b>	<b>_mm_testz_si128</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__M</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__V</b>)
+<b><a name="line68">68   </a></b>	{
+<b><a name="line69">69   </a></b>	  return <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1064">__builtin_ia32_ptestz128</a> ((<a href="../emmintrin.h/code.html#line41">__v2di</a>)<a href="#line67">__M</a>, (<a href="../emmintrin.h/code.html#line41">__v2di</a>)<a href="#line67">__V</a>);
+<b><a name="line70">70   </a></b>	}
+<b><a name="line71">71   </a></b>	
+<b><a name="line72">72   </a></b>	/* Packed integer 128-bit bitwise comparison. Return 1 if
+<b><a name="line73">73   </a></b>	   (__V &amp; ~__M) == 0.  */
+<b><a name="line74">74   </a></b>	extern __inline int __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line75">75   </a></b>	<b>_mm_testc_si128</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__M</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__V</b>)
+<b><a name="line76">76   </a></b>	{
+<b><a name="line77">77   </a></b>	  return <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1062">__builtin_ia32_ptestc128</a> ((<a href="../emmintrin.h/code.html#line41">__v2di</a>)<a href="#line75">__M</a>, (<a href="../emmintrin.h/code.html#line41">__v2di</a>)<a href="#line75">__V</a>);
+<b><a name="line78">78   </a></b>	}
+<b><a name="line79">79   </a></b>	
+<b><a name="line80">80   </a></b>	/* Packed integer 128-bit bitwise comparison. Return 1 if
+<b><a name="line81">81   </a></b>	   (__V &amp; __M) != 0 &amp;&amp; (__V &amp; ~__M) != 0.  */
+<b><a name="line82">82   </a></b>	extern __inline int __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line83">83   </a></b>	<b>_mm_testnzc_si128</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__M</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__V</b>)
+<b><a name="line84">84   </a></b>	{
+<b><a name="line85">85   </a></b>	  return <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1063">__builtin_ia32_ptestnzc128</a> ((<a href="../emmintrin.h/code.html#line41">__v2di</a>)<a href="#line83">__M</a>, (<a href="../emmintrin.h/code.html#line41">__v2di</a>)<a href="#line83">__V</a>);
+<b><a name="line86">86   </a></b>	}
+<b><a name="line87">87   </a></b>	
+<b><a name="line88">88   </a></b>	/* Macros for packed integer 128-bit comparison intrinsics.  */
+<b><a name="line89">89   </a></b>	#define <b>_mm_test_all_zeros</b>(M, V) _mm_testz_si128 ((M), (V))
+<b><a name="line90">90   </a></b>	
+<b><a name="line91">91   </a></b>	#define <b>_mm_test_all_ones</b>(V) \
+<b><a name="line92">92   </a></b>	  _mm_testc_si128 ((V), _mm_cmpeq_epi32 ((V), (V)))
+<b><a name="line93">93   </a></b>	
+<b><a name="line94">94   </a></b>	#define <b>_mm_test_mix_ones_zeros</b>(M, V) _mm_testnzc_si128 ((M), (V))
+<b><a name="line95">95   </a></b>	
+<b><a name="line96">96   </a></b>	/* Packed/scalar double precision floating point rounding.  */
+<b><a name="line97">97   </a></b>	
+<b><a name="line98">98   </a></b>	#ifdef __OPTIMIZE__
+<b><a name="line99">99   </a></b>	extern __inline __m128d __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line100">100  </a></b>	_mm_round_pd (__m128d __V, const int __M)
+<b><a name="line101">101  </a></b>	{
+<b><a name="line102">102  </a></b>	  return (__m128d) __builtin_ia32_roundpd ((__v2df)__V, __M);
+<b><a name="line103">103  </a></b>	}
+<b><a name="line104">104  </a></b>	
+<b><a name="line105">105  </a></b>	extern __inline __m128d __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line106">106  </a></b>	_mm_round_sd(__m128d __D, __m128d __V, const int __M)
+<b><a name="line107">107  </a></b>	{
+<b><a name="line108">108  </a></b>	  return (__m128d) __builtin_ia32_roundsd ((__v2df)__D,
+<b><a name="line109">109  </a></b>						   (__v2df)__V,
+<b><a name="line110">110  </a></b>						   __M);
+<b><a name="line111">111  </a></b>	}
+<b><a name="line112">112  </a></b>	#else
+<b><a name="line113">113  </a></b>	#define <b>_mm_round_pd</b>(V, M) \
+<b><a name="line114">114  </a></b>	  ((__m128d) __builtin_ia32_roundpd ((__v2df)(__m128d)(V), (int)(M)))
+<b><a name="line115">115  </a></b>	
+<b><a name="line116">116  </a></b>	#define <b>_mm_round_sd</b>(D, V, M)						\
+<b><a name="line117">117  </a></b>	  ((__m128d) __builtin_ia32_roundsd ((__v2df)(__m128d)(D),		\
+<b><a name="line118">118  </a></b>					     (__v2df)(__m128d)(V), (int)(M)))
+<b><a name="line119">119  </a></b>	#endif
+<b><a name="line120">120  </a></b>	
+<b><a name="line121">121  </a></b>	/* Packed/scalar single precision floating point rounding.  */
+<b><a name="line122">122  </a></b>	
+<b><a name="line123">123  </a></b>	#ifdef __OPTIMIZE__
+<b><a name="line124">124  </a></b>	extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line125">125  </a></b>	_mm_round_ps (__m128 __V, const int __M)
+<b><a name="line126">126  </a></b>	{
+<b><a name="line127">127  </a></b>	  return (__m128) __builtin_ia32_roundps ((__v4sf)__V, __M);
+<b><a name="line128">128  </a></b>	}
+<b><a name="line129">129  </a></b>	
+<b><a name="line130">130  </a></b>	extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line131">131  </a></b>	_mm_round_ss (__m128 __D, __m128 __V, const int __M)
+<b><a name="line132">132  </a></b>	{
+<b><a name="line133">133  </a></b>	  return (__m128) __builtin_ia32_roundss ((__v4sf)__D,
+<b><a name="line134">134  </a></b>						  (__v4sf)__V,
+<b><a name="line135">135  </a></b>						  __M);
+<b><a name="line136">136  </a></b>	}
+<b><a name="line137">137  </a></b>	#else
+<b><a name="line138">138  </a></b>	#define <b>_mm_round_ps</b>(V, M) \
+<b><a name="line139">139  </a></b>	  ((__m128) __builtin_ia32_roundps ((__v4sf)(__m128)(V), (int)(M)))
+<b><a name="line140">140  </a></b>	
+<b><a name="line141">141  </a></b>	#define <b>_mm_round_ss</b>(D, V, M)						\
+<b><a name="line142">142  </a></b>	  ((__m128) __builtin_ia32_roundss ((__v4sf)(__m128)(D),		\
+<b><a name="line143">143  </a></b>					    (__v4sf)(__m128)(V), (int)(M)))
+<b><a name="line144">144  </a></b>	#endif
+<b><a name="line145">145  </a></b>	
+<b><a name="line146">146  </a></b>	/* Macros for ceil/floor intrinsics.  */
+<b><a name="line147">147  </a></b>	#define <b>_mm_ceil_pd</b>(V)	   _mm_round_pd ((V), _MM_FROUND_CEIL)
+<b><a name="line148">148  </a></b>	#define <b>_mm_ceil_sd</b>(D, V)  _mm_round_sd ((D), (V), _MM_FROUND_CEIL)
+<b><a name="line149">149  </a></b>	
+<b><a name="line150">150  </a></b>	#define <b>_mm_floor_pd</b>(V)	   _mm_round_pd((V), _MM_FROUND_FLOOR)
+<b><a name="line151">151  </a></b>	#define <b>_mm_floor_sd</b>(D, V) _mm_round_sd ((D), (V), _MM_FROUND_FLOOR)
+<b><a name="line152">152  </a></b>	
+<b><a name="line153">153  </a></b>	#define <b>_mm_ceil_ps</b>(V)	   _mm_round_ps ((V), _MM_FROUND_CEIL)
+<b><a name="line154">154  </a></b>	#define <b>_mm_ceil_ss</b>(D, V)  _mm_round_ss ((D), (V), _MM_FROUND_CEIL)
+<b><a name="line155">155  </a></b>	
+<b><a name="line156">156  </a></b>	#define <b>_mm_floor_ps</b>(V)	   _mm_round_ps ((V), _MM_FROUND_FLOOR)
+<b><a name="line157">157  </a></b>	#define <b>_mm_floor_ss</b>(D, V) _mm_round_ss ((D), (V), _MM_FROUND_FLOOR)
+<b><a name="line158">158  </a></b>	
+<b><a name="line159">159  </a></b>	/* SSE4.1 */
+<b><a name="line160">160  </a></b>	
+<b><a name="line161">161  </a></b>	/* Integer blend instructions - select data from 2 sources using
+<b><a name="line162">162  </a></b>	   constant/variable mask.  */
+<b><a name="line163">163  </a></b>	
+<b><a name="line164">164  </a></b>	#ifdef __OPTIMIZE__
+<b><a name="line165">165  </a></b>	extern __inline __m128i __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line166">166  </a></b>	_mm_blend_epi16 (__m128i __X, __m128i __Y, const int __M)
+<b><a name="line167">167  </a></b>	{
+<b><a name="line168">168  </a></b>	  return (__m128i) __builtin_ia32_pblendw128 ((__v8hi)__X,
+<b><a name="line169">169  </a></b>						      (__v8hi)__Y,
+<b><a name="line170">170  </a></b>						      __M);
+<b><a name="line171">171  </a></b>	}
+<b><a name="line172">172  </a></b>	#else
+<b><a name="line173">173  </a></b>	#define <b>_mm_blend_epi16</b>(X, Y, M)					\
+<b><a name="line174">174  </a></b>	  ((__m128i) __builtin_ia32_pblendw128 ((__v8hi)(__m128i)(X),		\
+<b><a name="line175">175  </a></b>						(__v8hi)(__m128i)(Y), (int)(M)))
+<b><a name="line176">176  </a></b>	#endif
+<b><a name="line177">177  </a></b>	
+<b><a name="line178">178  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line179">179  </a></b>	<b>_mm_blendv_epi8</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__Y</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__M</b>)
+<b><a name="line180">180  </a></b>	{
+<b><a name="line181">181  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1014">__builtin_ia32_pblendvb128</a> ((<a href="../emmintrin.h/code.html#line47">__v16qi</a>)<a href="#line179">__X</a>,
+<b><a name="line182">182  </a></b>						       (<a href="../emmintrin.h/code.html#line47">__v16qi</a>)<a href="#line179">__Y</a>,
+<b><a name="line183">183  </a></b>						       (<a href="../emmintrin.h/code.html#line47">__v16qi</a>)<a href="#line179">__M</a>);
+<b><a name="line184">184  </a></b>	}
+<b><a name="line185">185  </a></b>	
+<b><a name="line186">186  </a></b>	/* Single precision floating point blend instructions - select data
+<b><a name="line187">187  </a></b>	   from 2 sources using constant/variable mask.  */
+<b><a name="line188">188  </a></b>	
+<b><a name="line189">189  </a></b>	#ifdef __OPTIMIZE__
+<b><a name="line190">190  </a></b>	extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line191">191  </a></b>	_mm_blend_ps (__m128 __X, __m128 __Y, const int __M)
+<b><a name="line192">192  </a></b>	{
+<b><a name="line193">193  </a></b>	  return (__m128) __builtin_ia32_blendps ((__v4sf)__X,
+<b><a name="line194">194  </a></b>						  (__v4sf)__Y,
+<b><a name="line195">195  </a></b>						  __M);
+<b><a name="line196">196  </a></b>	}
+<b><a name="line197">197  </a></b>	#else
+<b><a name="line198">198  </a></b>	#define <b>_mm_blend_ps</b>(X, Y, M)						\
+<b><a name="line199">199  </a></b>	  ((__m128) __builtin_ia32_blendps ((__v4sf)(__m128)(X),		\
+<b><a name="line200">200  </a></b>					    (__v4sf)(__m128)(Y), (int)(M)))
+<b><a name="line201">201  </a></b>	#endif
+<b><a name="line202">202  </a></b>	
+<b><a name="line203">203  </a></b>	extern __inline <a href="../xmmintrin.h/code.html#line69">__m128</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line204">204  </a></b>	<b>_mm_blendv_ps</b> (<a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__X</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__Y</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__M</b>)
+<b><a name="line205">205  </a></b>	{
+<b><a name="line206">206  </a></b>	  return (<a href="../xmmintrin.h/code.html#line69">__m128</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1007">__builtin_ia32_blendvps</a> ((<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line204">__X</a>,
+<b><a name="line207">207  </a></b>						   (<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line204">__Y</a>,
+<b><a name="line208">208  </a></b>						   (<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line204">__M</a>);
+<b><a name="line209">209  </a></b>	}
+<b><a name="line210">210  </a></b>	
+<b><a name="line211">211  </a></b>	/* Double precision floating point blend instructions - select data
+<b><a name="line212">212  </a></b>	   from 2 sources using constant/variable mask.  */
+<b><a name="line213">213  </a></b>	
+<b><a name="line214">214  </a></b>	#ifdef __OPTIMIZE__
+<b><a name="line215">215  </a></b>	extern __inline __m128d __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line216">216  </a></b>	_mm_blend_pd (__m128d __X, __m128d __Y, const int __M)
+<b><a name="line217">217  </a></b>	{
+<b><a name="line218">218  </a></b>	  return (__m128d) __builtin_ia32_blendpd ((__v2df)__X,
+<b><a name="line219">219  </a></b>						   (__v2df)__Y,
+<b><a name="line220">220  </a></b>						   __M);
+<b><a name="line221">221  </a></b>	}
+<b><a name="line222">222  </a></b>	#else
+<b><a name="line223">223  </a></b>	#define <b>_mm_blend_pd</b>(X, Y, M)						\
+<b><a name="line224">224  </a></b>	  ((__m128d) __builtin_ia32_blendpd ((__v2df)(__m128d)(X),		\
+<b><a name="line225">225  </a></b>					     (__v2df)(__m128d)(Y), (int)(M)))
+<b><a name="line226">226  </a></b>	#endif
+<b><a name="line227">227  </a></b>	
+<b><a name="line228">228  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line53">__m128d</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line229">229  </a></b>	<b>_mm_blendv_pd</b> (<a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__X</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__Y</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__M</b>)
+<b><a name="line230">230  </a></b>	{
+<b><a name="line231">231  </a></b>	  return (<a href="../emmintrin.h/code.html#line53">__m128d</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1006">__builtin_ia32_blendvpd</a> ((<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line229">__X</a>,
+<b><a name="line232">232  </a></b>						    (<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line229">__Y</a>,
+<b><a name="line233">233  </a></b>						    (<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line229">__M</a>);
+<b><a name="line234">234  </a></b>	}
+<b><a name="line235">235  </a></b>	
+<b><a name="line236">236  </a></b>	/* Dot product instructions with mask-defined summing and zeroing parts
+<b><a name="line237">237  </a></b>	   of result.  */
+<b><a name="line238">238  </a></b>	
+<b><a name="line239">239  </a></b>	#ifdef __OPTIMIZE__
+<b><a name="line240">240  </a></b>	extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line241">241  </a></b>	_mm_dp_ps (__m128 __X, __m128 __Y, const int __M)
+<b><a name="line242">242  </a></b>	{
+<b><a name="line243">243  </a></b>	  return (__m128) __builtin_ia32_dpps ((__v4sf)__X,
+<b><a name="line244">244  </a></b>					       (__v4sf)__Y,
+<b><a name="line245">245  </a></b>					       __M);
+<b><a name="line246">246  </a></b>	}
+<b><a name="line247">247  </a></b>	
+<b><a name="line248">248  </a></b>	extern __inline __m128d __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line249">249  </a></b>	_mm_dp_pd (__m128d __X, __m128d __Y, const int __M)
+<b><a name="line250">250  </a></b>	{
+<b><a name="line251">251  </a></b>	  return (__m128d) __builtin_ia32_dppd ((__v2df)__X,
+<b><a name="line252">252  </a></b>						(__v2df)__Y,
+<b><a name="line253">253  </a></b>						__M);
+<b><a name="line254">254  </a></b>	}
+<b><a name="line255">255  </a></b>	#else
+<b><a name="line256">256  </a></b>	#define <b>_mm_dp_ps</b>(X, Y, M)						\
+<b><a name="line257">257  </a></b>	  ((__m128) __builtin_ia32_dpps ((__v4sf)(__m128)(X),			\
+<b><a name="line258">258  </a></b>					 (__v4sf)(__m128)(Y), (int)(M)))
+<b><a name="line259">259  </a></b>	
+<b><a name="line260">260  </a></b>	#define <b>_mm_dp_pd</b>(X, Y, M)						\
+<b><a name="line261">261  </a></b>	  ((__m128d) __builtin_ia32_dppd ((__v2df)(__m128d)(X),			\
+<b><a name="line262">262  </a></b>					  (__v2df)(__m128d)(Y), (int)(M)))
+<b><a name="line263">263  </a></b>	#endif
+<b><a name="line264">264  </a></b>	
+<b><a name="line265">265  </a></b>	/* Packed integer 64-bit comparison, zeroing or filling with ones
+<b><a name="line266">266  </a></b>	   corresponding parts of result.  */
+<b><a name="line267">267  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line268">268  </a></b>	<b>_mm_cmpeq_epi64</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__Y</b>)
+<b><a name="line269">269  </a></b>	{
+<b><a name="line270">270  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) ((<a href="../emmintrin.h/code.html#line41">__v2di</a>)<a href="#line268">__X</a> == (<a href="../emmintrin.h/code.html#line41">__v2di</a>)<a href="#line268">__Y</a>);
+<b><a name="line271">271  </a></b>	}
+<b><a name="line272">272  </a></b>	
+<b><a name="line273">273  </a></b>	/*  Min/max packed integer instructions.  */
+<b><a name="line274">274  </a></b>	
+<b><a name="line275">275  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line276">276  </a></b>	<b>_mm_min_epi8</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__Y</b>)
+<b><a name="line277">277  </a></b>	{
+<b><a name="line278">278  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1022">__builtin_ia32_pminsb128</a> ((<a href="../emmintrin.h/code.html#line47">__v16qi</a>)<a href="#line276">__X</a>, (<a href="../emmintrin.h/code.html#line47">__v16qi</a>)<a href="#line276">__Y</a>);
+<b><a name="line279">279  </a></b>	}
+<b><a name="line280">280  </a></b>	
+<b><a name="line281">281  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line282">282  </a></b>	<b>_mm_max_epi8</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__Y</b>)
+<b><a name="line283">283  </a></b>	{
+<b><a name="line284">284  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1018">__builtin_ia32_pmaxsb128</a> ((<a href="../emmintrin.h/code.html#line47">__v16qi</a>)<a href="#line282">__X</a>, (<a href="../emmintrin.h/code.html#line47">__v16qi</a>)<a href="#line282">__Y</a>);
+<b><a name="line285">285  </a></b>	}
+<b><a name="line286">286  </a></b>	
+<b><a name="line287">287  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line288">288  </a></b>	<b>_mm_min_epu16</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__Y</b>)
+<b><a name="line289">289  </a></b>	{
+<b><a name="line290">290  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1025">__builtin_ia32_pminuw128</a> ((<a href="../emmintrin.h/code.html#line45">__v8hi</a>)<a href="#line288">__X</a>, (<a href="../emmintrin.h/code.html#line45">__v8hi</a>)<a href="#line288">__Y</a>);
+<b><a name="line291">291  </a></b>	}
+<b><a name="line292">292  </a></b>	
+<b><a name="line293">293  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line294">294  </a></b>	<b>_mm_max_epu16</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__Y</b>)
+<b><a name="line295">295  </a></b>	{
+<b><a name="line296">296  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1021">__builtin_ia32_pmaxuw128</a> ((<a href="../emmintrin.h/code.html#line45">__v8hi</a>)<a href="#line294">__X</a>, (<a href="../emmintrin.h/code.html#line45">__v8hi</a>)<a href="#line294">__Y</a>);
+<b><a name="line297">297  </a></b>	}
+<b><a name="line298">298  </a></b>	
+<b><a name="line299">299  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line300">300  </a></b>	<b>_mm_min_epi32</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__Y</b>)
+<b><a name="line301">301  </a></b>	{
+<b><a name="line302">302  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1023">__builtin_ia32_pminsd128</a> ((<a href="../emmintrin.h/code.html#line43">__v4si</a>)<a href="#line300">__X</a>, (<a href="../emmintrin.h/code.html#line43">__v4si</a>)<a href="#line300">__Y</a>);
+<b><a name="line303">303  </a></b>	}
+<b><a name="line304">304  </a></b>	
+<b><a name="line305">305  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line306">306  </a></b>	<b>_mm_max_epi32</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__Y</b>)
+<b><a name="line307">307  </a></b>	{
+<b><a name="line308">308  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1019">__builtin_ia32_pmaxsd128</a> ((<a href="../emmintrin.h/code.html#line43">__v4si</a>)<a href="#line306">__X</a>, (<a href="../emmintrin.h/code.html#line43">__v4si</a>)<a href="#line306">__Y</a>);
+<b><a name="line309">309  </a></b>	}
+<b><a name="line310">310  </a></b>	
+<b><a name="line311">311  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line312">312  </a></b>	<b>_mm_min_epu32</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__Y</b>)
+<b><a name="line313">313  </a></b>	{
+<b><a name="line314">314  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1024">__builtin_ia32_pminud128</a> ((<a href="../emmintrin.h/code.html#line43">__v4si</a>)<a href="#line312">__X</a>, (<a href="../emmintrin.h/code.html#line43">__v4si</a>)<a href="#line312">__Y</a>);
+<b><a name="line315">315  </a></b>	}
+<b><a name="line316">316  </a></b>	
+<b><a name="line317">317  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line318">318  </a></b>	<b>_mm_max_epu32</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__Y</b>)
+<b><a name="line319">319  </a></b>	{
+<b><a name="line320">320  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1020">__builtin_ia32_pmaxud128</a> ((<a href="../emmintrin.h/code.html#line43">__v4si</a>)<a href="#line318">__X</a>, (<a href="../emmintrin.h/code.html#line43">__v4si</a>)<a href="#line318">__Y</a>);
+<b><a name="line321">321  </a></b>	}
+<b><a name="line322">322  </a></b>	
+<b><a name="line323">323  </a></b>	/* Packed integer 32-bit multiplication with truncation of upper
+<b><a name="line324">324  </a></b>	   halves of results.  */
+<b><a name="line325">325  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line326">326  </a></b>	<b>_mm_mullo_epi32</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__Y</b>)
+<b><a name="line327">327  </a></b>	{
+<b><a name="line328">328  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) ((<a href="../emmintrin.h/code.html#line44">__v4su</a>)<a href="#line326">__X</a> * (<a href="../emmintrin.h/code.html#line44">__v4su</a>)<a href="#line326">__Y</a>);
+<b><a name="line329">329  </a></b>	}
+<b><a name="line330">330  </a></b>	
+<b><a name="line331">331  </a></b>	/* Packed integer 32-bit multiplication of 2 pairs of operands
+<b><a name="line332">332  </a></b>	   with two 64-bit results.  */
+<b><a name="line333">333  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line334">334  </a></b>	<b>_mm_mul_epi32</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__Y</b>)
+<b><a name="line335">335  </a></b>	{
+<b><a name="line336">336  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1038">__builtin_ia32_pmuldq128</a> ((<a href="../emmintrin.h/code.html#line43">__v4si</a>)<a href="#line334">__X</a>, (<a href="../emmintrin.h/code.html#line43">__v4si</a>)<a href="#line334">__Y</a>);
+<b><a name="line337">337  </a></b>	}
+<b><a name="line338">338  </a></b>	
+<b><a name="line339">339  </a></b>	/* Insert single precision float into packed single precision array
+<b><a name="line340">340  </a></b>	   element selected by index N.  The bits [7-6] of N define S
+<b><a name="line341">341  </a></b>	   index, the bits [5-4] define D index, and bits [3-0] define
+<b><a name="line342">342  </a></b>	   zeroing mask for D.  */
+<b><a name="line343">343  </a></b>	
+<b><a name="line344">344  </a></b>	#ifdef __OPTIMIZE__
+<b><a name="line345">345  </a></b>	extern __inline __m128 __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line346">346  </a></b>	_mm_insert_ps (__m128 __D, __m128 __S, const int __N)
+<b><a name="line347">347  </a></b>	{
+<b><a name="line348">348  </a></b>	  return (__m128) __builtin_ia32_insertps128 ((__v4sf)__D,
+<b><a name="line349">349  </a></b>						      (__v4sf)__S,
+<b><a name="line350">350  </a></b>						      __N);
+<b><a name="line351">351  </a></b>	}
+<b><a name="line352">352  </a></b>	#else
+<b><a name="line353">353  </a></b>	#define <b>_mm_insert_ps</b>(D, S, N)						\
+<b><a name="line354">354  </a></b>	  ((__m128) __builtin_ia32_insertps128 ((__v4sf)(__m128)(D),		\
+<b><a name="line355">355  </a></b>						(__v4sf)(__m128)(S), (int)(N)))
+<b><a name="line356">356  </a></b>	#endif
+<b><a name="line357">357  </a></b>	
+<b><a name="line358">358  </a></b>	/* Helper macro to create the N value for _mm_insert_ps.  */
+<b><a name="line359">359  </a></b>	#define <b>_MM_MK_INSERTPS_NDX</b>(S, D, M) (((S) &lt;&lt; 6) | ((D) &lt;&lt; 4) | (M))
+<b><a name="line360">360  </a></b>	
+<b><a name="line361">361  </a></b>	/* Extract binary representation of single precision float from packed
+<b><a name="line362">362  </a></b>	   single precision array element of X selected by index N.  */
+<b><a name="line363">363  </a></b>	
+<b><a name="line364">364  </a></b>	#ifdef __OPTIMIZE__
+<b><a name="line365">365  </a></b>	extern __inline int __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line366">366  </a></b>	_mm_extract_ps (__m128 __X, const int __N)
+<b><a name="line367">367  </a></b>	{
+<b><a name="line368">368  </a></b>	  union { int i; float f; } __tmp;
+<b><a name="line369">369  </a></b>	  __tmp.f = __builtin_ia32_vec_ext_v4sf ((__v4sf)__X, __N);
+<b><a name="line370">370  </a></b>	  return __tmp.i;
+<b><a name="line371">371  </a></b>	}
+<b><a name="line372">372  </a></b>	#else
+<b><a name="line373">373  </a></b>	#define <b>_mm_extract_ps</b>(X, N)						\
+<b><a name="line374">374  </a></b>	  (__extension__							\
+<b><a name="line375">375  </a></b>	   ({									\
+<b><a name="line376">376  </a></b>	     union { int i; float f; } __tmp;					\
+<b><a name="line377">377  </a></b>	     __tmp.f = __builtin_ia32_vec_ext_v4sf ((__v4sf)(__m128)(X), (int)(N)); \
+<b><a name="line378">378  </a></b>	     __tmp.i;								\
+<b><a name="line379">379  </a></b>	   }))
+<b><a name="line380">380  </a></b>	#endif
+<b><a name="line381">381  </a></b>	
+<b><a name="line382">382  </a></b>	/* Extract binary representation of single precision float into
+<b><a name="line383">383  </a></b>	   D from packed single precision array element of S selected
+<b><a name="line384">384  </a></b>	   by index N.  */
+<b><a name="line385">385  </a></b>	#define <b>_MM_EXTRACT_FLOAT</b>(D, S, N) \
+<b><a name="line386">386  </a></b>	  { (D) = __builtin_ia32_vec_ext_v4sf ((__v4sf)(S), (N)); }
+<b><a name="line387">387  </a></b>	  
+<b><a name="line388">388  </a></b>	/* Extract specified single precision float element into the lower
+<b><a name="line389">389  </a></b>	   part of __m128.  */
+<b><a name="line390">390  </a></b>	#define <b>_MM_PICK_OUT_PS</b>(X, N)				\
+<b><a name="line391">391  </a></b>	  _mm_insert_ps (_mm_setzero_ps (), (X), 		\
+<b><a name="line392">392  </a></b>			 _MM_MK_INSERTPS_NDX ((N), 0, 0x0e))
+<b><a name="line393">393  </a></b>	
+<b><a name="line394">394  </a></b>	/* Insert integer, S, into packed integer array element of D
+<b><a name="line395">395  </a></b>	   selected by index N.  */
+<b><a name="line396">396  </a></b>	
+<b><a name="line397">397  </a></b>	#ifdef __OPTIMIZE__
+<b><a name="line398">398  </a></b>	extern __inline __m128i __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line399">399  </a></b>	_mm_insert_epi8 (__m128i __D, int __S, const int __N)
+<b><a name="line400">400  </a></b>	{
+<b><a name="line401">401  </a></b>	  return (__m128i) __builtin_ia32_vec_set_v16qi ((__v16qi)__D,
+<b><a name="line402">402  </a></b>							 __S, __N);
+<b><a name="line403">403  </a></b>	}
+<b><a name="line404">404  </a></b>	
+<b><a name="line405">405  </a></b>	extern __inline __m128i __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line406">406  </a></b>	_mm_insert_epi32 (__m128i __D, int __S, const int __N)
+<b><a name="line407">407  </a></b>	{
+<b><a name="line408">408  </a></b>	  return (__m128i) __builtin_ia32_vec_set_v4si ((__v4si)__D,
+<b><a name="line409">409  </a></b>							 __S, __N);
+<b><a name="line410">410  </a></b>	}
+<b><a name="line411">411  </a></b>	
+<b><a name="line412">412  </a></b>	#ifdef __x86_64__
+<b><a name="line413">413  </a></b>	extern __inline __m128i __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line414">414  </a></b>	_mm_insert_epi64 (__m128i __D, long long __S, const int __N)
+<b><a name="line415">415  </a></b>	{
+<b><a name="line416">416  </a></b>	  return (__m128i) __builtin_ia32_vec_set_v2di ((__v2di)__D,
+<b><a name="line417">417  </a></b>							 __S, __N);
+<b><a name="line418">418  </a></b>	}
+<b><a name="line419">419  </a></b>	#endif
+<b><a name="line420">420  </a></b>	#else
+<b><a name="line421">421  </a></b>	#define <b>_mm_insert_epi8</b>(D, S, N)					\
+<b><a name="line422">422  </a></b>	  ((__m128i) __builtin_ia32_vec_set_v16qi ((__v16qi)(__m128i)(D),	\
+<b><a name="line423">423  </a></b>						   (int)(S), (int)(N)))
+<b><a name="line424">424  </a></b>	
+<b><a name="line425">425  </a></b>	#define <b>_mm_insert_epi32</b>(D, S, N)				\
+<b><a name="line426">426  </a></b>	  ((__m128i) __builtin_ia32_vec_set_v4si ((__v4si)(__m128i)(D),	\
+<b><a name="line427">427  </a></b>						  (int)(S), (int)(N)))
+<b><a name="line428">428  </a></b>	
+<b><a name="line429">429  </a></b>	#ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a>
+<b><a name="line430">430  </a></b>	#define <b>_mm_insert_epi64</b>(D, S, N)					\
+<b><a name="line431">431  </a></b>	  ((__m128i) __builtin_ia32_vec_set_v2di ((__v2di)(__m128i)(D),		\
+<b><a name="line432">432  </a></b>						  (long long)(S), (int)(N)))
+<b><a name="line433">433  </a></b>	#endif
+<b><a name="line434">434  </a></b>	#endif
+<b><a name="line435">435  </a></b>	
+<b><a name="line436">436  </a></b>	/* Extract integer from packed integer array element of X selected by
+<b><a name="line437">437  </a></b>	   index N.  */
+<b><a name="line438">438  </a></b>	
+<b><a name="line439">439  </a></b>	#ifdef __OPTIMIZE__
+<b><a name="line440">440  </a></b>	extern __inline int __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line441">441  </a></b>	_mm_extract_epi8 (__m128i __X, const int __N)
+<b><a name="line442">442  </a></b>	{
+<b><a name="line443">443  </a></b>	   return (unsigned char) __builtin_ia32_vec_ext_v16qi ((__v16qi)__X, __N);
+<b><a name="line444">444  </a></b>	}
+<b><a name="line445">445  </a></b>	
+<b><a name="line446">446  </a></b>	extern __inline int __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line447">447  </a></b>	_mm_extract_epi32 (__m128i __X, const int __N)
+<b><a name="line448">448  </a></b>	{
+<b><a name="line449">449  </a></b>	   return __builtin_ia32_vec_ext_v4si ((__v4si)__X, __N);
+<b><a name="line450">450  </a></b>	}
+<b><a name="line451">451  </a></b>	
+<b><a name="line452">452  </a></b>	#ifdef __x86_64__
+<b><a name="line453">453  </a></b>	extern __inline long long  __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line454">454  </a></b>	_mm_extract_epi64 (__m128i __X, const int __N)
+<b><a name="line455">455  </a></b>	{
+<b><a name="line456">456  </a></b>	  return __builtin_ia32_vec_ext_v2di ((__v2di)__X, __N);
+<b><a name="line457">457  </a></b>	}
+<b><a name="line458">458  </a></b>	#endif
+<b><a name="line459">459  </a></b>	#else
+<b><a name="line460">460  </a></b>	#define <b>_mm_extract_epi8</b>(X, N) \
+<b><a name="line461">461  </a></b>	  ((int) (unsigned char) __builtin_ia32_vec_ext_v16qi ((__v16qi)(__m128i)(X), (int)(N)))
+<b><a name="line462">462  </a></b>	#define <b>_mm_extract_epi32</b>(X, N) \
+<b><a name="line463">463  </a></b>	  ((int) __builtin_ia32_vec_ext_v4si ((__v4si)(__m128i)(X), (int)(N)))
+<b><a name="line464">464  </a></b>	
+<b><a name="line465">465  </a></b>	#ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a>
+<b><a name="line466">466  </a></b>	#define <b>_mm_extract_epi64</b>(X, N) \
+<b><a name="line467">467  </a></b>	  ((long long) __builtin_ia32_vec_ext_v2di ((__v2di)(__m128i)(X), (int)(N)))
+<b><a name="line468">468  </a></b>	#endif
+<b><a name="line469">469  </a></b>	#endif
+<b><a name="line470">470  </a></b>	
+<b><a name="line471">471  </a></b>	/* Return horizontal packed word minimum and its index in bits [15:0]
+<b><a name="line472">472  </a></b>	   and bits [18:16] respectively.  */
+<b><a name="line473">473  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line474">474  </a></b>	<b>_mm_minpos_epu16</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>)
+<b><a name="line475">475  </a></b>	{
+<b><a name="line476">476  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1017">__builtin_ia32_phminposuw128</a> ((<a href="../emmintrin.h/code.html#line45">__v8hi</a>)<a href="#line474">__X</a>);
+<b><a name="line477">477  </a></b>	}
+<b><a name="line478">478  </a></b>	
+<b><a name="line479">479  </a></b>	/* Packed integer sign-extension.  */
+<b><a name="line480">480  </a></b>	
+<b><a name="line481">481  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line482">482  </a></b>	<b>_mm_cvtepi8_epi32</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>)
+<b><a name="line483">483  </a></b>	{
+<b><a name="line484">484  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1026">__builtin_ia32_pmovsxbd128</a> ((<a href="../emmintrin.h/code.html#line47">__v16qi</a>)<a href="#line482">__X</a>);
+<b><a name="line485">485  </a></b>	}
+<b><a name="line486">486  </a></b>	
+<b><a name="line487">487  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line488">488  </a></b>	<b>_mm_cvtepi16_epi32</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>)
+<b><a name="line489">489  </a></b>	{
+<b><a name="line490">490  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1030">__builtin_ia32_pmovsxwd128</a> ((<a href="../emmintrin.h/code.html#line45">__v8hi</a>)<a href="#line488">__X</a>);
+<b><a name="line491">491  </a></b>	}
+<b><a name="line492">492  </a></b>	
+<b><a name="line493">493  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line494">494  </a></b>	<b>_mm_cvtepi8_epi64</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>)
+<b><a name="line495">495  </a></b>	{
+<b><a name="line496">496  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1027">__builtin_ia32_pmovsxbq128</a> ((<a href="../emmintrin.h/code.html#line47">__v16qi</a>)<a href="#line494">__X</a>);
+<b><a name="line497">497  </a></b>	}
+<b><a name="line498">498  </a></b>	
+<b><a name="line499">499  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line500">500  </a></b>	<b>_mm_cvtepi32_epi64</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>)
+<b><a name="line501">501  </a></b>	{
+<b><a name="line502">502  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1029">__builtin_ia32_pmovsxdq128</a> ((<a href="../emmintrin.h/code.html#line43">__v4si</a>)<a href="#line500">__X</a>);
+<b><a name="line503">503  </a></b>	}
+<b><a name="line504">504  </a></b>	
+<b><a name="line505">505  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line506">506  </a></b>	<b>_mm_cvtepi16_epi64</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>)
+<b><a name="line507">507  </a></b>	{
+<b><a name="line508">508  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1031">__builtin_ia32_pmovsxwq128</a> ((<a href="../emmintrin.h/code.html#line45">__v8hi</a>)<a href="#line506">__X</a>);
+<b><a name="line509">509  </a></b>	}
+<b><a name="line510">510  </a></b>	
+<b><a name="line511">511  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line512">512  </a></b>	<b>_mm_cvtepi8_epi16</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>)
+<b><a name="line513">513  </a></b>	{
+<b><a name="line514">514  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1028">__builtin_ia32_pmovsxbw128</a> ((<a href="../emmintrin.h/code.html#line47">__v16qi</a>)<a href="#line512">__X</a>);
+<b><a name="line515">515  </a></b>	}
+<b><a name="line516">516  </a></b>	
+<b><a name="line517">517  </a></b>	/* Packed integer zero-extension. */
+<b><a name="line518">518  </a></b>	
+<b><a name="line519">519  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line520">520  </a></b>	<b>_mm_cvtepu8_epi32</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>)
+<b><a name="line521">521  </a></b>	{
+<b><a name="line522">522  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1032">__builtin_ia32_pmovzxbd128</a> ((<a href="../emmintrin.h/code.html#line47">__v16qi</a>)<a href="#line520">__X</a>);
+<b><a name="line523">523  </a></b>	}
+<b><a name="line524">524  </a></b>	
+<b><a name="line525">525  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line526">526  </a></b>	<b>_mm_cvtepu16_epi32</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>)
+<b><a name="line527">527  </a></b>	{
+<b><a name="line528">528  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1036">__builtin_ia32_pmovzxwd128</a> ((<a href="../emmintrin.h/code.html#line45">__v8hi</a>)<a href="#line526">__X</a>);
+<b><a name="line529">529  </a></b>	}
+<b><a name="line530">530  </a></b>	
+<b><a name="line531">531  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line532">532  </a></b>	<b>_mm_cvtepu8_epi64</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>)
+<b><a name="line533">533  </a></b>	{
+<b><a name="line534">534  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1033">__builtin_ia32_pmovzxbq128</a> ((<a href="../emmintrin.h/code.html#line47">__v16qi</a>)<a href="#line532">__X</a>);
+<b><a name="line535">535  </a></b>	}
+<b><a name="line536">536  </a></b>	
+<b><a name="line537">537  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line538">538  </a></b>	<b>_mm_cvtepu32_epi64</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>)
+<b><a name="line539">539  </a></b>	{
+<b><a name="line540">540  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1035">__builtin_ia32_pmovzxdq128</a> ((<a href="../emmintrin.h/code.html#line43">__v4si</a>)<a href="#line538">__X</a>);
+<b><a name="line541">541  </a></b>	}
+<b><a name="line542">542  </a></b>	
+<b><a name="line543">543  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line544">544  </a></b>	<b>_mm_cvtepu16_epi64</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>)
+<b><a name="line545">545  </a></b>	{
+<b><a name="line546">546  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1037">__builtin_ia32_pmovzxwq128</a> ((<a href="../emmintrin.h/code.html#line45">__v8hi</a>)<a href="#line544">__X</a>);
+<b><a name="line547">547  </a></b>	}
+<b><a name="line548">548  </a></b>	
+<b><a name="line549">549  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line550">550  </a></b>	<b>_mm_cvtepu8_epi16</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>)
+<b><a name="line551">551  </a></b>	{
+<b><a name="line552">552  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1034">__builtin_ia32_pmovzxbw128</a> ((<a href="../emmintrin.h/code.html#line47">__v16qi</a>)<a href="#line550">__X</a>);
+<b><a name="line553">553  </a></b>	}
+<b><a name="line554">554  </a></b>	
+<b><a name="line555">555  </a></b>	/* Pack 8 double words from 2 operands into 8 words of result with
+<b><a name="line556">556  </a></b>	   unsigned saturation. */
+<b><a name="line557">557  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line558">558  </a></b>	<b>_mm_packus_epi32</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__Y</b>)
+<b><a name="line559">559  </a></b>	{
+<b><a name="line560">560  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1013">__builtin_ia32_packusdw128</a> ((<a href="../emmintrin.h/code.html#line43">__v4si</a>)<a href="#line558">__X</a>, (<a href="../emmintrin.h/code.html#line43">__v4si</a>)<a href="#line558">__Y</a>);
+<b><a name="line561">561  </a></b>	}
+<b><a name="line562">562  </a></b>	
+<b><a name="line563">563  </a></b>	/* Sum absolute 8-bit integer difference of adjacent groups of 4
+<b><a name="line564">564  </a></b>	   byte integers in the first 2 operands.  Starting offsets within
+<b><a name="line565">565  </a></b>	   operands are determined by the 3rd mask operand.  */
+<b><a name="line566">566  </a></b>	
+<b><a name="line567">567  </a></b>	#ifdef __OPTIMIZE__
+<b><a name="line568">568  </a></b>	extern __inline __m128i __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line569">569  </a></b>	_mm_mpsadbw_epu8 (__m128i __X, __m128i __Y, const int __M)
+<b><a name="line570">570  </a></b>	{
+<b><a name="line571">571  </a></b>	  return (__m128i) __builtin_ia32_mpsadbw128 ((__v16qi)__X,
+<b><a name="line572">572  </a></b>						      (__v16qi)__Y, __M);
+<b><a name="line573">573  </a></b>	}
+<b><a name="line574">574  </a></b>	#else
+<b><a name="line575">575  </a></b>	#define <b>_mm_mpsadbw_epu8</b>(X, Y, M)					\
+<b><a name="line576">576  </a></b>	  ((__m128i) __builtin_ia32_mpsadbw128 ((__v16qi)(__m128i)(X),		\
+<b><a name="line577">577  </a></b>						(__v16qi)(__m128i)(Y), (int)(M)))
+<b><a name="line578">578  </a></b>	#endif
+<b><a name="line579">579  </a></b>	
+<b><a name="line580">580  </a></b>	/* Load double quadword using non-temporal aligned hint.  */
+<b><a name="line581">581  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line582">582  </a></b>	<b>_mm_stream_load_si128</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> *<b>__X</b>)
+<b><a name="line583">583  </a></b>	{
+<b><a name="line584">584  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1011">__builtin_ia32_movntdqa</a> ((<a href="../emmintrin.h/code.html#line41">__v2di</a> *) <a href="#line582">__X</a>);
+<b><a name="line585">585  </a></b>	}
+<b><a name="line586">586  </a></b>	
+<b><a name="line587">587  </a></b>	#ifndef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line276">__SSE4_2__</a>
+<b><a name="line588">588  </a></b>	#pragma GCC push_options
+<b><a name="line589">589  </a></b>	#pragma GCC target(&quot;sse4.2&quot;)
+<b><a name="line590">590  </a></b>	#define __DISABLE_SSE4_2__
+<b><a name="line591">591  </a></b>	#endif /* __SSE4_2__ */
+<b><a name="line592">592  </a></b>	
+<b><a name="line593">593  </a></b>	/* These macros specify the source data format.  */
+<b><a name="line594">594  </a></b>	#define <b>_SIDD_UBYTE_OPS</b>			0x00
+<b><a name="line595">595  </a></b>	#define <b>_SIDD_UWORD_OPS</b>			0x01
+<b><a name="line596">596  </a></b>	#define <b>_SIDD_SBYTE_OPS</b>			0x02
+<b><a name="line597">597  </a></b>	#define <b>_SIDD_SWORD_OPS</b>			0x03
+<b><a name="line598">598  </a></b>	
+<b><a name="line599">599  </a></b>	/* These macros specify the comparison operation.  */
+<b><a name="line600">600  </a></b>	#define <b>_SIDD_CMP_EQUAL_ANY</b>		0x00
+<b><a name="line601">601  </a></b>	#define <b>_SIDD_CMP_RANGES</b>		0x04
+<b><a name="line602">602  </a></b>	#define <b>_SIDD_CMP_EQUAL_EACH</b>		0x08
+<b><a name="line603">603  </a></b>	#define <b>_SIDD_CMP_EQUAL_ORDERED</b>		0x0c
+<b><a name="line604">604  </a></b>	
+<b><a name="line605">605  </a></b>	/* These macros specify the polarity.  */
+<b><a name="line606">606  </a></b>	#define <b>_SIDD_POSITIVE_POLARITY</b>		0x00
+<b><a name="line607">607  </a></b>	#define <b>_SIDD_NEGATIVE_POLARITY</b>		0x10
+<b><a name="line608">608  </a></b>	#define <b>_SIDD_MASKED_POSITIVE_POLARITY</b>	0x20
+<b><a name="line609">609  </a></b>	#define <b>_SIDD_MASKED_NEGATIVE_POLARITY</b>	0x30
+<b><a name="line610">610  </a></b>	
+<b><a name="line611">611  </a></b>	/* These macros specify the output selection in _mm_cmpXstri ().  */
+<b><a name="line612">612  </a></b>	#define <b>_SIDD_LEAST_SIGNIFICANT</b>		0x00
+<b><a name="line613">613  </a></b>	#define <b>_SIDD_MOST_SIGNIFICANT</b>		0x40
+<b><a name="line614">614  </a></b>	
+<b><a name="line615">615  </a></b>	/* These macros specify the output selection in _mm_cmpXstrm ().  */
+<b><a name="line616">616  </a></b>	#define <b>_SIDD_BIT_MASK</b>			0x00
+<b><a name="line617">617  </a></b>	#define <b>_SIDD_UNIT_MASK</b>			0x40
+<b><a name="line618">618  </a></b>	
+<b><a name="line619">619  </a></b>	/* Intrinsics for text/string processing.  */
+<b><a name="line620">620  </a></b>	
+<b><a name="line621">621  </a></b>	#ifdef __OPTIMIZE__
+<b><a name="line622">622  </a></b>	extern __inline __m128i __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line623">623  </a></b>	_mm_cmpistrm (__m128i __X, __m128i __Y, const int __M)
+<b><a name="line624">624  </a></b>	{
+<b><a name="line625">625  </a></b>	  return (__m128i) __builtin_ia32_pcmpistrm128 ((__v16qi)__X,
+<b><a name="line626">626  </a></b>							(__v16qi)__Y,
+<b><a name="line627">627  </a></b>							__M);
+<b><a name="line628">628  </a></b>	}
+<b><a name="line629">629  </a></b>	
+<b><a name="line630">630  </a></b>	extern __inline int __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line631">631  </a></b>	_mm_cmpistri (__m128i __X, __m128i __Y, const int __M)
+<b><a name="line632">632  </a></b>	{
+<b><a name="line633">633  </a></b>	  return __builtin_ia32_pcmpistri128 ((__v16qi)__X,
+<b><a name="line634">634  </a></b>					      (__v16qi)__Y,
+<b><a name="line635">635  </a></b>					      __M);
+<b><a name="line636">636  </a></b>	}
+<b><a name="line637">637  </a></b>	
+<b><a name="line638">638  </a></b>	extern __inline __m128i __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line639">639  </a></b>	_mm_cmpestrm (__m128i __X, int __LX, __m128i __Y, int __LY, const int __M)
+<b><a name="line640">640  </a></b>	{
+<b><a name="line641">641  </a></b>	  return (__m128i) __builtin_ia32_pcmpestrm128 ((__v16qi)__X, __LX,
+<b><a name="line642">642  </a></b>							(__v16qi)__Y, __LY,
+<b><a name="line643">643  </a></b>							__M);
+<b><a name="line644">644  </a></b>	}
+<b><a name="line645">645  </a></b>	
+<b><a name="line646">646  </a></b>	extern __inline int __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line647">647  </a></b>	_mm_cmpestri (__m128i __X, int __LX, __m128i __Y, int __LY, const int __M)
+<b><a name="line648">648  </a></b>	{
+<b><a name="line649">649  </a></b>	  return __builtin_ia32_pcmpestri128 ((__v16qi)__X, __LX,
+<b><a name="line650">650  </a></b>					      (__v16qi)__Y, __LY,
+<b><a name="line651">651  </a></b>					      __M);
+<b><a name="line652">652  </a></b>	}
+<b><a name="line653">653  </a></b>	#else
+<b><a name="line654">654  </a></b>	#define <b>_mm_cmpistrm</b>(X, Y, M)						\
+<b><a name="line655">655  </a></b>	  ((__m128i) __builtin_ia32_pcmpistrm128 ((__v16qi)(__m128i)(X),	\
+<b><a name="line656">656  </a></b>						  (__v16qi)(__m128i)(Y), (int)(M)))
+<b><a name="line657">657  </a></b>	#define <b>_mm_cmpistri</b>(X, Y, M)						\
+<b><a name="line658">658  </a></b>	  ((int) __builtin_ia32_pcmpistri128 ((__v16qi)(__m128i)(X),		\
+<b><a name="line659">659  </a></b>					      (__v16qi)(__m128i)(Y), (int)(M)))
+<b><a name="line660">660  </a></b>	
+<b><a name="line661">661  </a></b>	#define <b>_mm_cmpestrm</b>(X, LX, Y, LY, M)					\
+<b><a name="line662">662  </a></b>	  ((__m128i) __builtin_ia32_pcmpestrm128 ((__v16qi)(__m128i)(X),	\
+<b><a name="line663">663  </a></b>						  (int)(LX), (__v16qi)(__m128i)(Y), \
+<b><a name="line664">664  </a></b>						  (int)(LY), (int)(M)))
+<b><a name="line665">665  </a></b>	#define <b>_mm_cmpestri</b>(X, LX, Y, LY, M)					\
+<b><a name="line666">666  </a></b>	  ((int) __builtin_ia32_pcmpestri128 ((__v16qi)(__m128i)(X), (int)(LX),	\
+<b><a name="line667">667  </a></b>					      (__v16qi)(__m128i)(Y), (int)(LY),	\
+<b><a name="line668">668  </a></b>					      (int)(M)))
+<b><a name="line669">669  </a></b>	#endif
+<b><a name="line670">670  </a></b>	
+<b><a name="line671">671  </a></b>	/* Intrinsics for text/string processing and reading values of
+<b><a name="line672">672  </a></b>	   EFlags.  */
+<b><a name="line673">673  </a></b>	
+<b><a name="line674">674  </a></b>	#ifdef __OPTIMIZE__
+<b><a name="line675">675  </a></b>	extern __inline int __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line676">676  </a></b>	_mm_cmpistra (__m128i __X, __m128i __Y, const int __M)
+<b><a name="line677">677  </a></b>	{
+<b><a name="line678">678  </a></b>	  return __builtin_ia32_pcmpistria128 ((__v16qi)__X,
+<b><a name="line679">679  </a></b>					       (__v16qi)__Y,
+<b><a name="line680">680  </a></b>					       __M);
+<b><a name="line681">681  </a></b>	}
+<b><a name="line682">682  </a></b>	
+<b><a name="line683">683  </a></b>	extern __inline int __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line684">684  </a></b>	_mm_cmpistrc (__m128i __X, __m128i __Y, const int __M)
+<b><a name="line685">685  </a></b>	{
+<b><a name="line686">686  </a></b>	  return __builtin_ia32_pcmpistric128 ((__v16qi)__X,
+<b><a name="line687">687  </a></b>					       (__v16qi)__Y,
+<b><a name="line688">688  </a></b>					       __M);
+<b><a name="line689">689  </a></b>	}
+<b><a name="line690">690  </a></b>	
+<b><a name="line691">691  </a></b>	extern __inline int __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line692">692  </a></b>	_mm_cmpistro (__m128i __X, __m128i __Y, const int __M)
+<b><a name="line693">693  </a></b>	{
+<b><a name="line694">694  </a></b>	  return __builtin_ia32_pcmpistrio128 ((__v16qi)__X,
+<b><a name="line695">695  </a></b>					       (__v16qi)__Y,
+<b><a name="line696">696  </a></b>					       __M);
+<b><a name="line697">697  </a></b>	}
+<b><a name="line698">698  </a></b>	
+<b><a name="line699">699  </a></b>	extern __inline int __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line700">700  </a></b>	_mm_cmpistrs (__m128i __X, __m128i __Y, const int __M)
+<b><a name="line701">701  </a></b>	{
+<b><a name="line702">702  </a></b>	  return __builtin_ia32_pcmpistris128 ((__v16qi)__X,
+<b><a name="line703">703  </a></b>					       (__v16qi)__Y,
+<b><a name="line704">704  </a></b>					       __M);
+<b><a name="line705">705  </a></b>	}
+<b><a name="line706">706  </a></b>	
+<b><a name="line707">707  </a></b>	extern __inline int __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line708">708  </a></b>	_mm_cmpistrz (__m128i __X, __m128i __Y, const int __M)
+<b><a name="line709">709  </a></b>	{
+<b><a name="line710">710  </a></b>	  return __builtin_ia32_pcmpistriz128 ((__v16qi)__X,
+<b><a name="line711">711  </a></b>					       (__v16qi)__Y,
+<b><a name="line712">712  </a></b>					       __M);
+<b><a name="line713">713  </a></b>	}
+<b><a name="line714">714  </a></b>	
+<b><a name="line715">715  </a></b>	extern __inline int __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line716">716  </a></b>	_mm_cmpestra (__m128i __X, int __LX, __m128i __Y, int __LY, const int __M)
+<b><a name="line717">717  </a></b>	{
+<b><a name="line718">718  </a></b>	  return __builtin_ia32_pcmpestria128 ((__v16qi)__X, __LX,
+<b><a name="line719">719  </a></b>					       (__v16qi)__Y, __LY,
+<b><a name="line720">720  </a></b>					       __M);
+<b><a name="line721">721  </a></b>	}
+<b><a name="line722">722  </a></b>	
+<b><a name="line723">723  </a></b>	extern __inline int __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line724">724  </a></b>	_mm_cmpestrc (__m128i __X, int __LX, __m128i __Y, int __LY, const int __M)
+<b><a name="line725">725  </a></b>	{
+<b><a name="line726">726  </a></b>	  return __builtin_ia32_pcmpestric128 ((__v16qi)__X, __LX,
+<b><a name="line727">727  </a></b>					       (__v16qi)__Y, __LY,
+<b><a name="line728">728  </a></b>					       __M);
+<b><a name="line729">729  </a></b>	}
+<b><a name="line730">730  </a></b>	
+<b><a name="line731">731  </a></b>	extern __inline int __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line732">732  </a></b>	_mm_cmpestro (__m128i __X, int __LX, __m128i __Y, int __LY, const int __M)
+<b><a name="line733">733  </a></b>	{
+<b><a name="line734">734  </a></b>	  return __builtin_ia32_pcmpestrio128 ((__v16qi)__X, __LX,
+<b><a name="line735">735  </a></b>					       (__v16qi)__Y, __LY,
+<b><a name="line736">736  </a></b>					       __M);
+<b><a name="line737">737  </a></b>	}
+<b><a name="line738">738  </a></b>	
+<b><a name="line739">739  </a></b>	extern __inline int __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line740">740  </a></b>	_mm_cmpestrs (__m128i __X, int __LX, __m128i __Y, int __LY, const int __M)
+<b><a name="line741">741  </a></b>	{
+<b><a name="line742">742  </a></b>	  return __builtin_ia32_pcmpestris128 ((__v16qi)__X, __LX,
+<b><a name="line743">743  </a></b>					       (__v16qi)__Y, __LY,
+<b><a name="line744">744  </a></b>					       __M);
+<b><a name="line745">745  </a></b>	}
+<b><a name="line746">746  </a></b>	
+<b><a name="line747">747  </a></b>	extern __inline int __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line748">748  </a></b>	_mm_cmpestrz (__m128i __X, int __LX, __m128i __Y, int __LY, const int __M)
+<b><a name="line749">749  </a></b>	{
+<b><a name="line750">750  </a></b>	  return __builtin_ia32_pcmpestriz128 ((__v16qi)__X, __LX,
+<b><a name="line751">751  </a></b>					       (__v16qi)__Y, __LY,
+<b><a name="line752">752  </a></b>					       __M);
+<b><a name="line753">753  </a></b>	}
+<b><a name="line754">754  </a></b>	#else
+<b><a name="line755">755  </a></b>	#define <b>_mm_cmpistra</b>(X, Y, M)						\
+<b><a name="line756">756  </a></b>	  ((int) __builtin_ia32_pcmpistria128 ((__v16qi)(__m128i)(X),		\
+<b><a name="line757">757  </a></b>					       (__v16qi)(__m128i)(Y), (int)(M)))
+<b><a name="line758">758  </a></b>	#define <b>_mm_cmpistrc</b>(X, Y, M)						\
+<b><a name="line759">759  </a></b>	  ((int) __builtin_ia32_pcmpistric128 ((__v16qi)(__m128i)(X),		\
+<b><a name="line760">760  </a></b>					       (__v16qi)(__m128i)(Y), (int)(M)))
+<b><a name="line761">761  </a></b>	#define <b>_mm_cmpistro</b>(X, Y, M)						\
+<b><a name="line762">762  </a></b>	  ((int) __builtin_ia32_pcmpistrio128 ((__v16qi)(__m128i)(X),		\
+<b><a name="line763">763  </a></b>					       (__v16qi)(__m128i)(Y), (int)(M)))
+<b><a name="line764">764  </a></b>	#define <b>_mm_cmpistrs</b>(X, Y, M)						\
+<b><a name="line765">765  </a></b>	  ((int) __builtin_ia32_pcmpistris128 ((__v16qi)(__m128i)(X),		\
+<b><a name="line766">766  </a></b>					       (__v16qi)(__m128i)(Y), (int)(M)))
+<b><a name="line767">767  </a></b>	#define <b>_mm_cmpistrz</b>(X, Y, M)						\
+<b><a name="line768">768  </a></b>	  ((int) __builtin_ia32_pcmpistriz128 ((__v16qi)(__m128i)(X),		\
+<b><a name="line769">769  </a></b>					       (__v16qi)(__m128i)(Y), (int)(M)))
+<b><a name="line770">770  </a></b>	
+<b><a name="line771">771  </a></b>	#define <b>_mm_cmpestra</b>(X, LX, Y, LY, M)					\
+<b><a name="line772">772  </a></b>	  ((int) __builtin_ia32_pcmpestria128 ((__v16qi)(__m128i)(X), (int)(LX), \
+<b><a name="line773">773  </a></b>					       (__v16qi)(__m128i)(Y), (int)(LY), \
+<b><a name="line774">774  </a></b>					       (int)(M)))
+<b><a name="line775">775  </a></b>	#define <b>_mm_cmpestrc</b>(X, LX, Y, LY, M)					\
+<b><a name="line776">776  </a></b>	  ((int) __builtin_ia32_pcmpestric128 ((__v16qi)(__m128i)(X), (int)(LX), \
+<b><a name="line777">777  </a></b>					       (__v16qi)(__m128i)(Y), (int)(LY), \
+<b><a name="line778">778  </a></b>					       (int)(M)))
+<b><a name="line779">779  </a></b>	#define <b>_mm_cmpestro</b>(X, LX, Y, LY, M)					\
+<b><a name="line780">780  </a></b>	  ((int) __builtin_ia32_pcmpestrio128 ((__v16qi)(__m128i)(X), (int)(LX), \
+<b><a name="line781">781  </a></b>					       (__v16qi)(__m128i)(Y), (int)(LY), \
+<b><a name="line782">782  </a></b>					       (int)(M)))
+<b><a name="line783">783  </a></b>	#define <b>_mm_cmpestrs</b>(X, LX, Y, LY, M)					\
+<b><a name="line784">784  </a></b>	  ((int) __builtin_ia32_pcmpestris128 ((__v16qi)(__m128i)(X), (int)(LX), \
+<b><a name="line785">785  </a></b>					       (__v16qi)(__m128i)(Y), (int)(LY), \
+<b><a name="line786">786  </a></b>					       (int)(M)))
+<b><a name="line787">787  </a></b>	#define <b>_mm_cmpestrz</b>(X, LX, Y, LY, M)					\
+<b><a name="line788">788  </a></b>	  ((int) __builtin_ia32_pcmpestriz128 ((__v16qi)(__m128i)(X), (int)(LX), \
+<b><a name="line789">789  </a></b>					       (__v16qi)(__m128i)(Y), (int)(LY), \
+<b><a name="line790">790  </a></b>					       (int)(M)))
+<b><a name="line791">791  </a></b>	#endif
+<b><a name="line792">792  </a></b>	
+<b><a name="line793">793  </a></b>	/* Packed integer 64-bit comparison, zeroing or filling with ones
+<b><a name="line794">794  </a></b>	   corresponding parts of result.  */
+<b><a name="line795">795  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line796">796  </a></b>	<b>_mm_cmpgt_epi64</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__Y</b>)
+<b><a name="line797">797  </a></b>	{
+<b><a name="line798">798  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) ((<a href="../emmintrin.h/code.html#line41">__v2di</a>)<a href="#line796">__X</a> &gt; (<a href="../emmintrin.h/code.html#line41">__v2di</a>)<a href="#line796">__Y</a>);
+<b><a name="line799">799  </a></b>	}
+<b><a name="line800">800  </a></b>	
+<b><a name="line801">801  </a></b>	#ifdef __DISABLE_SSE4_2__
+<b><a name="line802">802  </a></b>	#undef __DISABLE_SSE4_2__
+<b><a name="line803">803  </a></b>	#pragma GCC pop_options
+<b><a name="line804">804  </a></b>	#endif /* __DISABLE_SSE4_2__ */
+<b><a name="line805">805  </a></b>	
+<b><a name="line806">806  </a></b>	#ifdef __DISABLE_SSE4_1__
+<b><a name="line807">807  </a></b>	#undef __DISABLE_SSE4_1__
+<b><a name="line808">808  </a></b>	#pragma GCC pop_options
+<b><a name="line809">809  </a></b>	#endif /* __DISABLE_SSE4_1__ */
+<b><a name="line810">810  </a></b>	
+<b><a name="line811">811  </a></b>	#include &lt;popcntintrin.h&gt;
+<b><a name="line812">812  </a></b>	
+<b><a name="line813">813  </a></b>	#ifndef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line48">__SSE4_1__</a>
+<b><a name="line814">814  </a></b>	#pragma GCC push_options
+<b><a name="line815">815  </a></b>	#pragma GCC target(&quot;sse4.1&quot;)
+<b><a name="line816">816  </a></b>	#define __DISABLE_SSE4_1__
+<b><a name="line817">817  </a></b>	#endif /* __SSE4_1__ */
+<b><a name="line818">818  </a></b>	
+<b><a name="line819">819  </a></b>	#ifndef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line276">__SSE4_2__</a>
+<b><a name="line820">820  </a></b>	#pragma GCC push_options
+<b><a name="line821">821  </a></b>	#pragma GCC target(&quot;sse4.2&quot;)
+<b><a name="line822">822  </a></b>	#define __DISABLE_SSE4_2__
+<b><a name="line823">823  </a></b>	#endif /* __SSE4_1__ */
+<b><a name="line824">824  </a></b>	
+<b><a name="line825">825  </a></b>	/* Accumulate CRC32 (polynomial 0x11EDC6F41) value.  */
+<b><a name="line826">826  </a></b>	extern __inline unsigned int __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line827">827  </a></b>	<b>_mm_crc32_u8</b> (unsigned int <b>__C</b>, unsigned char <b>__V</b>)
+<b><a name="line828">828  </a></b>	{
+<b><a name="line829">829  </a></b>	  return <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1085">__builtin_ia32_crc32qi</a> (<a href="#line827">__C</a>, <a href="#line827">__V</a>);
+<b><a name="line830">830  </a></b>	}
+<b><a name="line831">831  </a></b>	
+<b><a name="line832">832  </a></b>	extern __inline unsigned int __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line833">833  </a></b>	<b>_mm_crc32_u16</b> (unsigned int <b>__C</b>, unsigned short <b>__V</b>)
+<b><a name="line834">834  </a></b>	{
+<b><a name="line835">835  </a></b>	  return <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1086">__builtin_ia32_crc32hi</a> (<a href="#line833">__C</a>, <a href="#line833">__V</a>);
+<b><a name="line836">836  </a></b>	}
+<b><a name="line837">837  </a></b>	
+<b><a name="line838">838  </a></b>	extern __inline unsigned int __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line839">839  </a></b>	<b>_mm_crc32_u32</b> (unsigned int <b>__C</b>, unsigned int <b>__V</b>)
+<b><a name="line840">840  </a></b>	{
+<b><a name="line841">841  </a></b>	  return <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1087">__builtin_ia32_crc32si</a> (<a href="#line839">__C</a>, <a href="#line839">__V</a>);
+<b><a name="line842">842  </a></b>	}
+<b><a name="line843">843  </a></b>	
+<b><a name="line844">844  </a></b>	#ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a>
+<b><a name="line845">845  </a></b>	extern __inline unsigned long long __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line846">846  </a></b>	<b>_mm_crc32_u64</b> (unsigned long long <b>__C</b>, unsigned long long <b>__V</b>)
+<b><a name="line847">847  </a></b>	{
+<b><a name="line848">848  </a></b>	  return <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1088">__builtin_ia32_crc32di</a> (<a href="#line846">__C</a>, <a href="#line846">__V</a>);
+<b><a name="line849">849  </a></b>	}
+<b><a name="line850">850  </a></b>	#endif
+<b><a name="line851">851  </a></b>	
+<b><a name="line852">852  </a></b>	#ifdef __DISABLE_SSE4_2__
+<b><a name="line853">853  </a></b>	#undef __DISABLE_SSE4_2__
+<b><a name="line854">854  </a></b>	#pragma GCC pop_options
+<b><a name="line855">855  </a></b>	#endif /* __DISABLE_SSE4_2__ */
+<b><a name="line856">856  </a></b>	
+<b><a name="line857">857  </a></b>	#ifdef __DISABLE_SSE4_1__
+<b><a name="line858">858  </a></b>	#undef __DISABLE_SSE4_1__
+<b><a name="line859">859  </a></b>	#pragma GCC pop_options
+<b><a name="line860">860  </a></b>	#endif /* __DISABLE_SSE4_1__ */
+<b><a name="line861">861  </a></b>	
+<b><a name="line862">862  </a></b>	#endif /* _SMMINTRIN_H_INCLUDED */
+<b><a name="line863">863  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

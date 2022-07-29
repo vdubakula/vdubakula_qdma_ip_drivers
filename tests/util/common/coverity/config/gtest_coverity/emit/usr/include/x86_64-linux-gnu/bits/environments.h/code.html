@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/environments.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 1999-2016 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line5">5    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line6">6    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line7">7    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line10">10   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line11">11   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line12">12   </a></b>	   Lesser General Public License for more details.
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line15">15   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line16">16   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	#ifndef <a href="../../../unistd.h/code.html#line23">_UNISTD_H</a>
+<b><a name="line19">19   </a></b>	# error &quot;Never include this file directly.  Use &lt;unistd.h&gt; instead&quot;
+<b><a name="line20">20   </a></b>	#endif
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	#include &lt;bits/wordsize.h&gt;
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>	/* This header should define the following symbols under the described
+<b><a name="line25">25   </a></b>	   situations.  A value `1' means that the model is always supported,
+<b><a name="line26">26   </a></b>	   `-1' means it is never supported.  Undefined means it cannot be
+<b><a name="line27">27   </a></b>	   statically decided.
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	   _POSIX_V7_ILP32_OFF32   32bit int, long, pointers, and off_t type
+<b><a name="line30">30   </a></b>	   _POSIX_V7_ILP32_OFFBIG  32bit int, long, and pointers and larger off_t type
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	   _POSIX_V7_LP64_OFF32	   64bit long and pointers and 32bit off_t type
+<b><a name="line33">33   </a></b>	   _POSIX_V7_LPBIG_OFFBIG  64bit long and pointers and large off_t type
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	   The macros _POSIX_V6_ILP32_OFF32, _POSIX_V6_ILP32_OFFBIG,
+<b><a name="line36">36   </a></b>	   _POSIX_V6_LP64_OFF32, _POSIX_V6_LPBIG_OFFBIG, _XBS5_ILP32_OFF32,
+<b><a name="line37">37   </a></b>	   _XBS5_ILP32_OFFBIG, _XBS5_LP64_OFF32, and _XBS5_LPBIG_OFFBIG were
+<b><a name="line38">38   </a></b>	   used in previous versions of the Unix standard and are available
+<b><a name="line39">39   </a></b>	   only for compatibility.
+<b><a name="line40">40   </a></b>	*/
+<b><a name="line41">41   </a></b>	
+<b><a name="line42">42   </a></b>	#if <a href="../wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line43">43   </a></b>	
+<b><a name="line44">44   </a></b>	/* Environments with 32-bit wide pointers are optionally provided.
+<b><a name="line45">45   </a></b>	   Therefore following macros aren't defined:
+<b><a name="line46">46   </a></b>	   # undef _POSIX_V7_ILP32_OFF32
+<b><a name="line47">47   </a></b>	   # undef _POSIX_V7_ILP32_OFFBIG
+<b><a name="line48">48   </a></b>	   # undef _POSIX_V6_ILP32_OFF32
+<b><a name="line49">49   </a></b>	   # undef _POSIX_V6_ILP32_OFFBIG
+<b><a name="line50">50   </a></b>	   # undef _XBS5_ILP32_OFF32
+<b><a name="line51">51   </a></b>	   # undef _XBS5_ILP32_OFFBIG
+<b><a name="line52">52   </a></b>	   and users need to check at runtime.  */
+<b><a name="line53">53   </a></b>	
+<b><a name="line54">54   </a></b>	/* We also have no use (for now) for an environment with bigger pointers
+<b><a name="line55">55   </a></b>	   and offsets.  */
+<b><a name="line56">56   </a></b>	# define <b>_POSIX_V7_LPBIG_OFFBIG</b>	-1
+<b><a name="line57">57   </a></b>	# define <b>_POSIX_V6_LPBIG_OFFBIG</b>	-1
+<b><a name="line58">58   </a></b>	# define <b>_XBS5_LPBIG_OFFBIG</b>	-1
+<b><a name="line59">59   </a></b>	
+<b><a name="line60">60   </a></b>	/* By default we have 64-bit wide `long int', pointers and `off_t'.  */
+<b><a name="line61">61   </a></b>	# define <b>_POSIX_V7_LP64_OFF64</b>	1
+<b><a name="line62">62   </a></b>	# define <b>_POSIX_V6_LP64_OFF64</b>	1
+<b><a name="line63">63   </a></b>	# define <b>_XBS5_LP64_OFF64</b>	1
+<b><a name="line64">64   </a></b>	
+<b><a name="line65">65   </a></b>	#else /* __WORDSIZE == 32 */
+<b><a name="line66">66   </a></b>	
+<b><a name="line67">67   </a></b>	/* We have 32-bit wide `int', `long int' and pointers and all platforms
+<b><a name="line68">68   </a></b>	   support LFS.  -mx32 has 64-bit wide `off_t'.  */
+<b><a name="line69">69   </a></b>	# define _POSIX_V7_ILP32_OFFBIG	1
+<b><a name="line70">70   </a></b>	# define _POSIX_V6_ILP32_OFFBIG 1
+<b><a name="line71">71   </a></b>	# define _XBS5_ILP32_OFFBIG	1
+<b><a name="line72">72   </a></b>	
+<b><a name="line73">73   </a></b>	# ifndef __x86_64__
+<b><a name="line74">74   </a></b>	/* -m32 has 32-bit wide `off_t'.  */
+<b><a name="line75">75   </a></b>	#  define _POSIX_V7_ILP32_OFF32	1
+<b><a name="line76">76   </a></b>	#  define _POSIX_V6_ILP32_OFF32	1
+<b><a name="line77">77   </a></b>	#  define _XBS5_ILP32_OFF32	1
+<b><a name="line78">78   </a></b>	# endif
+<b><a name="line79">79   </a></b>	
+<b><a name="line80">80   </a></b>	/* We optionally provide an environment with the above size but an 64-bit
+<b><a name="line81">81   </a></b>	   side `off_t'.  Therefore we don't define _POSIX_V7_ILP32_OFFBIG.  */
+<b><a name="line82">82   </a></b>	
+<b><a name="line83">83   </a></b>	/* Environments with 64-bit wide pointers can be provided,
+<b><a name="line84">84   </a></b>	   so these macros aren't defined:
+<b><a name="line85">85   </a></b>	   # undef _POSIX_V7_LP64_OFF64
+<b><a name="line86">86   </a></b>	   # undef _POSIX_V7_LPBIG_OFFBIG
+<b><a name="line87">87   </a></b>	   # undef _POSIX_V6_LP64_OFF64
+<b><a name="line88">88   </a></b>	   # undef _POSIX_V6_LPBIG_OFFBIG
+<b><a name="line89">89   </a></b>	   # undef _XBS5_LP64_OFF64
+<b><a name="line90">90   </a></b>	   # undef _XBS5_LPBIG_OFFBIG
+<b><a name="line91">91   </a></b>	   and sysconf tests for it at runtime.  */
+<b><a name="line92">92   </a></b>	
+<b><a name="line93">93   </a></b>	#endif /* __WORDSIZE == 32 */
+<b><a name="line94">94   </a></b>	
+<b><a name="line95">95   </a></b>	#define <b>__ILP32_OFF32_CFLAGS</b>	&quot;-m32&quot;
+<b><a name="line96">96   </a></b>	#define <b>__ILP32_OFF32_LDFLAGS</b>	&quot;-m32&quot;
+<b><a name="line97">97   </a></b>	#if defined <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a> &amp;&amp; defined __ILP32__
+<b><a name="line98">98   </a></b>	# define __ILP32_OFFBIG_CFLAGS	&quot;-mx32&quot;
+<b><a name="line99">99   </a></b>	# define __ILP32_OFFBIG_LDFLAGS	&quot;-mx32&quot;
+<b><a name="line100">100  </a></b>	#else
+<b><a name="line101">101  </a></b>	# define <b>__ILP32_OFFBIG_CFLAGS</b>	&quot;-m32 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64&quot;
+<b><a name="line102">102  </a></b>	# define <b>__ILP32_OFFBIG_LDFLAGS</b>	&quot;-m32&quot;
+<b><a name="line103">103  </a></b>	#endif
+<b><a name="line104">104  </a></b>	#define <b>__LP64_OFF64_CFLAGS</b>	&quot;-m64&quot;
+<b><a name="line105">105  </a></b>	#define <b>__LP64_OFF64_LDFLAGS</b>	&quot;-m64&quot;
+<b><a name="line106">106  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

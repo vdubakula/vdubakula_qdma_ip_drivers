@@ -1,0 +1,933 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_memcpy.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2010-2014 Intel Corporation
+<b><a name="line3">3    </a></b>	 */
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	#ifndef _RTE_MEMCPY_X86_64_H_
+<b><a name="line6">6    </a></b>	#define <b>_RTE_MEMCPY_X86_64_H_</b>
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	/**
+<b><a name="line9">9    </a></b>	 * @file
+<b><a name="line10">10   </a></b>	 *
+<b><a name="line11">11   </a></b>	 * Functions for SSE/AVX/AVX2/AVX512 implementation of memcpy().
+<b><a name="line12">12   </a></b>	 */
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	#include &lt;stdio.h&gt;
+<b><a name="line15">15   </a></b>	#include &lt;stdint.h&gt;
+<b><a name="line16">16   </a></b>	#include &lt;string.h&gt;
+<b><a name="line17">17   </a></b>	#include &lt;rte_vect.h&gt;
+<b><a name="line18">18   </a></b>	#include &lt;rte_common.h&gt;
+<b><a name="line19">19   </a></b>	#include &lt;rte_config.h&gt;
+<b><a name="line20">20   </a></b>	
+<b><a name="line21">21   </a></b>	#ifdef __cplusplus
+<b><a name="line22">22   </a></b>	extern &quot;C&quot; {
+<b><a name="line23">23   </a></b>	#endif
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/**
+<b><a name="line26">26   </a></b>	 * Copy bytes from one location to another. The locations must not overlap.
+<b><a name="line27">27   </a></b>	 *
+<b><a name="line28">28   </a></b>	 * @note This is implemented as a macro, so it's address should not be taken
+<b><a name="line29">29   </a></b>	 * and care is needed as parameter expressions may be evaluated multiple times.
+<b><a name="line30">30   </a></b>	 *
+<b><a name="line31">31   </a></b>	 * @param dst
+<b><a name="line32">32   </a></b>	 *   Pointer to the destination of the data.
+<b><a name="line33">33   </a></b>	 * @param src
+<b><a name="line34">34   </a></b>	 *   Pointer to the source data.
+<b><a name="line35">35   </a></b>	 * @param n
+<b><a name="line36">36   </a></b>	 *   Number of bytes to copy.
+<b><a name="line37">37   </a></b>	 * @return
+<b><a name="line38">38   </a></b>	 *   Pointer to the destination data.
+<b><a name="line39">39   </a></b>	 */
+<b><a name="line40">40   </a></b>	static <a href="../rte_common.h/code.html#line146">__rte_always_inline</a> void *
+<b><a name="line41">41   </a></b>	rte_memcpy(void *dst, const void *src, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> n);
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	#ifdef RTE_MACHINE_CPUFLAG_AVX512F
+<b><a name="line44">44   </a></b>	
+<b><a name="line45">45   </a></b>	#define ALIGNMENT_MASK 0x3F
+<b><a name="line46">46   </a></b>	
+<b><a name="line47">47   </a></b>	/**
+<b><a name="line48">48   </a></b>	 * AVX512 implementation below
+<b><a name="line49">49   </a></b>	 */
+<b><a name="line50">50   </a></b>	
+<b><a name="line51">51   </a></b>	/**
+<b><a name="line52">52   </a></b>	 * Copy 16 bytes from one location to another,
+<b><a name="line53">53   </a></b>	 * locations should not overlap.
+<b><a name="line54">54   </a></b>	 */
+<b><a name="line55">55   </a></b>	static __rte_always_inline void
+<b><a name="line56">56   </a></b>	rte_mov16(uint8_t *dst, const uint8_t *src)
+<b><a name="line57">57   </a></b>	{
+<b><a name="line58">58   </a></b>		__m128i xmm0;
+<b><a name="line59">59   </a></b>	
+<b><a name="line60">60   </a></b>		xmm0 = _mm_loadu_si128((const __m128i *)src);
+<b><a name="line61">61   </a></b>		_mm_storeu_si128((__m128i *)dst, xmm0);
+<b><a name="line62">62   </a></b>	}
+<b><a name="line63">63   </a></b>	
+<b><a name="line64">64   </a></b>	/**
+<b><a name="line65">65   </a></b>	 * Copy 32 bytes from one location to another,
+<b><a name="line66">66   </a></b>	 * locations should not overlap.
+<b><a name="line67">67   </a></b>	 */
+<b><a name="line68">68   </a></b>	static __rte_always_inline void
+<b><a name="line69">69   </a></b>	rte_mov32(uint8_t *dst, const uint8_t *src)
+<b><a name="line70">70   </a></b>	{
+<b><a name="line71">71   </a></b>		__m256i ymm0;
+<b><a name="line72">72   </a></b>	
+<b><a name="line73">73   </a></b>		ymm0 = _mm256_loadu_si256((const __m256i *)src);
+<b><a name="line74">74   </a></b>		_mm256_storeu_si256((__m256i *)dst, ymm0);
+<b><a name="line75">75   </a></b>	}
+<b><a name="line76">76   </a></b>	
+<b><a name="line77">77   </a></b>	/**
+<b><a name="line78">78   </a></b>	 * Copy 64 bytes from one location to another,
+<b><a name="line79">79   </a></b>	 * locations should not overlap.
+<b><a name="line80">80   </a></b>	 */
+<b><a name="line81">81   </a></b>	static __rte_always_inline void
+<b><a name="line82">82   </a></b>	rte_mov64(uint8_t *dst, const uint8_t *src)
+<b><a name="line83">83   </a></b>	{
+<b><a name="line84">84   </a></b>		__m512i zmm0;
+<b><a name="line85">85   </a></b>	
+<b><a name="line86">86   </a></b>		zmm0 = _mm512_loadu_si512((const void *)src);
+<b><a name="line87">87   </a></b>		_mm512_storeu_si512((void *)dst, zmm0);
+<b><a name="line88">88   </a></b>	}
+<b><a name="line89">89   </a></b>	
+<b><a name="line90">90   </a></b>	/**
+<b><a name="line91">91   </a></b>	 * Copy 128 bytes from one location to another,
+<b><a name="line92">92   </a></b>	 * locations should not overlap.
+<b><a name="line93">93   </a></b>	 */
+<b><a name="line94">94   </a></b>	static __rte_always_inline void
+<b><a name="line95">95   </a></b>	rte_mov128(uint8_t *dst, const uint8_t *src)
+<b><a name="line96">96   </a></b>	{
+<b><a name="line97">97   </a></b>		rte_mov64(dst + 0 * 64, src + 0 * 64);
+<b><a name="line98">98   </a></b>		rte_mov64(dst + 1 * 64, src + 1 * 64);
+<b><a name="line99">99   </a></b>	}
+<b><a name="line100">100  </a></b>	
+<b><a name="line101">101  </a></b>	/**
+<b><a name="line102">102  </a></b>	 * Copy 256 bytes from one location to another,
+<b><a name="line103">103  </a></b>	 * locations should not overlap.
+<b><a name="line104">104  </a></b>	 */
+<b><a name="line105">105  </a></b>	static __rte_always_inline void
+<b><a name="line106">106  </a></b>	rte_mov256(uint8_t *dst, const uint8_t *src)
+<b><a name="line107">107  </a></b>	{
+<b><a name="line108">108  </a></b>		rte_mov64(dst + 0 * 64, src + 0 * 64);
+<b><a name="line109">109  </a></b>		rte_mov64(dst + 1 * 64, src + 1 * 64);
+<b><a name="line110">110  </a></b>		rte_mov64(dst + 2 * 64, src + 2 * 64);
+<b><a name="line111">111  </a></b>		rte_mov64(dst + 3 * 64, src + 3 * 64);
+<b><a name="line112">112  </a></b>	}
+<b><a name="line113">113  </a></b>	
+<b><a name="line114">114  </a></b>	/**
+<b><a name="line115">115  </a></b>	 * Copy 128-byte blocks from one location to another,
+<b><a name="line116">116  </a></b>	 * locations should not overlap.
+<b><a name="line117">117  </a></b>	 */
+<b><a name="line118">118  </a></b>	static inline void
+<b><a name="line119">119  </a></b>	rte_mov128blocks(uint8_t *dst, const uint8_t *src, size_t n)
+<b><a name="line120">120  </a></b>	{
+<b><a name="line121">121  </a></b>		__m512i zmm0, zmm1;
+<b><a name="line122">122  </a></b>	
+<b><a name="line123">123  </a></b>		while (n &gt;= 128) {
+<b><a name="line124">124  </a></b>			zmm0 = _mm512_loadu_si512((const void *)(src + 0 * 64));
+<b><a name="line125">125  </a></b>			n -= 128;
+<b><a name="line126">126  </a></b>			zmm1 = _mm512_loadu_si512((const void *)(src + 1 * 64));
+<b><a name="line127">127  </a></b>			src = src + 128;
+<b><a name="line128">128  </a></b>			_mm512_storeu_si512((void *)(dst + 0 * 64), zmm0);
+<b><a name="line129">129  </a></b>			_mm512_storeu_si512((void *)(dst + 1 * 64), zmm1);
+<b><a name="line130">130  </a></b>			dst = dst + 128;
+<b><a name="line131">131  </a></b>		}
+<b><a name="line132">132  </a></b>	}
+<b><a name="line133">133  </a></b>	
+<b><a name="line134">134  </a></b>	/**
+<b><a name="line135">135  </a></b>	 * Copy 512-byte blocks from one location to another,
+<b><a name="line136">136  </a></b>	 * locations should not overlap.
+<b><a name="line137">137  </a></b>	 */
+<b><a name="line138">138  </a></b>	static inline void
+<b><a name="line139">139  </a></b>	rte_mov512blocks(uint8_t *dst, const uint8_t *src, size_t n)
+<b><a name="line140">140  </a></b>	{
+<b><a name="line141">141  </a></b>		__m512i zmm0, zmm1, zmm2, zmm3, zmm4, zmm5, zmm6, zmm7;
+<b><a name="line142">142  </a></b>	
+<b><a name="line143">143  </a></b>		while (n &gt;= 512) {
+<b><a name="line144">144  </a></b>			zmm0 = _mm512_loadu_si512((const void *)(src + 0 * 64));
+<b><a name="line145">145  </a></b>			n -= 512;
+<b><a name="line146">146  </a></b>			zmm1 = _mm512_loadu_si512((const void *)(src + 1 * 64));
+<b><a name="line147">147  </a></b>			zmm2 = _mm512_loadu_si512((const void *)(src + 2 * 64));
+<b><a name="line148">148  </a></b>			zmm3 = _mm512_loadu_si512((const void *)(src + 3 * 64));
+<b><a name="line149">149  </a></b>			zmm4 = _mm512_loadu_si512((const void *)(src + 4 * 64));
+<b><a name="line150">150  </a></b>			zmm5 = _mm512_loadu_si512((const void *)(src + 5 * 64));
+<b><a name="line151">151  </a></b>			zmm6 = _mm512_loadu_si512((const void *)(src + 6 * 64));
+<b><a name="line152">152  </a></b>			zmm7 = _mm512_loadu_si512((const void *)(src + 7 * 64));
+<b><a name="line153">153  </a></b>			src = src + 512;
+<b><a name="line154">154  </a></b>			_mm512_storeu_si512((void *)(dst + 0 * 64), zmm0);
+<b><a name="line155">155  </a></b>			_mm512_storeu_si512((void *)(dst + 1 * 64), zmm1);
+<b><a name="line156">156  </a></b>			_mm512_storeu_si512((void *)(dst + 2 * 64), zmm2);
+<b><a name="line157">157  </a></b>			_mm512_storeu_si512((void *)(dst + 3 * 64), zmm3);
+<b><a name="line158">158  </a></b>			_mm512_storeu_si512((void *)(dst + 4 * 64), zmm4);
+<b><a name="line159">159  </a></b>			_mm512_storeu_si512((void *)(dst + 5 * 64), zmm5);
+<b><a name="line160">160  </a></b>			_mm512_storeu_si512((void *)(dst + 6 * 64), zmm6);
+<b><a name="line161">161  </a></b>			_mm512_storeu_si512((void *)(dst + 7 * 64), zmm7);
+<b><a name="line162">162  </a></b>			dst = dst + 512;
+<b><a name="line163">163  </a></b>		}
+<b><a name="line164">164  </a></b>	}
+<b><a name="line165">165  </a></b>	
+<b><a name="line166">166  </a></b>	static inline void *
+<b><a name="line167">167  </a></b>	rte_memcpy_generic(void *dst, const void *src, size_t n)
+<b><a name="line168">168  </a></b>	{
+<b><a name="line169">169  </a></b>		uintptr_t dstu = (uintptr_t)dst;
+<b><a name="line170">170  </a></b>		uintptr_t srcu = (uintptr_t)src;
+<b><a name="line171">171  </a></b>		void *ret = dst;
+<b><a name="line172">172  </a></b>		size_t dstofss;
+<b><a name="line173">173  </a></b>		size_t bits;
+<b><a name="line174">174  </a></b>	
+<b><a name="line175">175  </a></b>		/**
+<b><a name="line176">176  </a></b>		 * Copy less than 16 bytes
+<b><a name="line177">177  </a></b>		 */
+<b><a name="line178">178  </a></b>		if (n &lt; 16) {
+<b><a name="line179">179  </a></b>			if (n &amp; 0x01) {
+<b><a name="line180">180  </a></b>				*(uint8_t *)dstu = *(const uint8_t *)srcu;
+<b><a name="line181">181  </a></b>				srcu = (uintptr_t)((const uint8_t *)srcu + 1);
+<b><a name="line182">182  </a></b>				dstu = (uintptr_t)((uint8_t *)dstu + 1);
+<b><a name="line183">183  </a></b>			}
+<b><a name="line184">184  </a></b>			if (n &amp; 0x02) {
+<b><a name="line185">185  </a></b>				*(uint16_t *)dstu = *(const uint16_t *)srcu;
+<b><a name="line186">186  </a></b>				srcu = (uintptr_t)((const uint16_t *)srcu + 1);
+<b><a name="line187">187  </a></b>				dstu = (uintptr_t)((uint16_t *)dstu + 1);
+<b><a name="line188">188  </a></b>			}
+<b><a name="line189">189  </a></b>			if (n &amp; 0x04) {
+<b><a name="line190">190  </a></b>				*(uint32_t *)dstu = *(const uint32_t *)srcu;
+<b><a name="line191">191  </a></b>				srcu = (uintptr_t)((const uint32_t *)srcu + 1);
+<b><a name="line192">192  </a></b>				dstu = (uintptr_t)((uint32_t *)dstu + 1);
+<b><a name="line193">193  </a></b>			}
+<b><a name="line194">194  </a></b>			if (n &amp; 0x08)
+<b><a name="line195">195  </a></b>				*(uint64_t *)dstu = *(const uint64_t *)srcu;
+<b><a name="line196">196  </a></b>			return ret;
+<b><a name="line197">197  </a></b>		}
+<b><a name="line198">198  </a></b>	
+<b><a name="line199">199  </a></b>		/**
+<b><a name="line200">200  </a></b>		 * Fast way when copy size doesn't exceed 512 bytes
+<b><a name="line201">201  </a></b>		 */
+<b><a name="line202">202  </a></b>		if (n &lt;= 32) {
+<b><a name="line203">203  </a></b>			rte_mov16((uint8_t *)dst, (const uint8_t *)src);
+<b><a name="line204">204  </a></b>			rte_mov16((uint8_t *)dst - 16 + n,
+<b><a name="line205">205  </a></b>					  (const uint8_t *)src - 16 + n);
+<b><a name="line206">206  </a></b>			return ret;
+<b><a name="line207">207  </a></b>		}
+<b><a name="line208">208  </a></b>		if (n &lt;= 64) {
+<b><a name="line209">209  </a></b>			rte_mov32((uint8_t *)dst, (const uint8_t *)src);
+<b><a name="line210">210  </a></b>			rte_mov32((uint8_t *)dst - 32 + n,
+<b><a name="line211">211  </a></b>					  (const uint8_t *)src - 32 + n);
+<b><a name="line212">212  </a></b>			return ret;
+<b><a name="line213">213  </a></b>		}
+<b><a name="line214">214  </a></b>		if (n &lt;= 512) {
+<b><a name="line215">215  </a></b>			if (n &gt;= 256) {
+<b><a name="line216">216  </a></b>				n -= 256;
+<b><a name="line217">217  </a></b>				rte_mov256((uint8_t *)dst, (const uint8_t *)src);
+<b><a name="line218">218  </a></b>				src = (const uint8_t *)src + 256;
+<b><a name="line219">219  </a></b>				dst = (uint8_t *)dst + 256;
+<b><a name="line220">220  </a></b>			}
+<b><a name="line221">221  </a></b>			if (n &gt;= 128) {
+<b><a name="line222">222  </a></b>				n -= 128;
+<b><a name="line223">223  </a></b>				rte_mov128((uint8_t *)dst, (const uint8_t *)src);
+<b><a name="line224">224  </a></b>				src = (const uint8_t *)src + 128;
+<b><a name="line225">225  </a></b>				dst = (uint8_t *)dst + 128;
+<b><a name="line226">226  </a></b>			}
+<b><a name="line227">227  </a></b>	COPY_BLOCK_128_BACK63:
+<b><a name="line228">228  </a></b>			if (n &gt; 64) {
+<b><a name="line229">229  </a></b>				rte_mov64((uint8_t *)dst, (const uint8_t *)src);
+<b><a name="line230">230  </a></b>				rte_mov64((uint8_t *)dst - 64 + n,
+<b><a name="line231">231  </a></b>						  (const uint8_t *)src - 64 + n);
+<b><a name="line232">232  </a></b>				return ret;
+<b><a name="line233">233  </a></b>			}
+<b><a name="line234">234  </a></b>			if (n &gt; 0)
+<b><a name="line235">235  </a></b>				rte_mov64((uint8_t *)dst - 64 + n,
+<b><a name="line236">236  </a></b>						  (const uint8_t *)src - 64 + n);
+<b><a name="line237">237  </a></b>			return ret;
+<b><a name="line238">238  </a></b>		}
+<b><a name="line239">239  </a></b>	
+<b><a name="line240">240  </a></b>		/**
+<b><a name="line241">241  </a></b>		 * Make store aligned when copy size exceeds 512 bytes
+<b><a name="line242">242  </a></b>		 */
+<b><a name="line243">243  </a></b>		dstofss = ((uintptr_t)dst &amp; 0x3F);
+<b><a name="line244">244  </a></b>		if (dstofss &gt; 0) {
+<b><a name="line245">245  </a></b>			dstofss = 64 - dstofss;
+<b><a name="line246">246  </a></b>			n -= dstofss;
+<b><a name="line247">247  </a></b>			rte_mov64((uint8_t *)dst, (const uint8_t *)src);
+<b><a name="line248">248  </a></b>			src = (const uint8_t *)src + dstofss;
+<b><a name="line249">249  </a></b>			dst = (uint8_t *)dst + dstofss;
+<b><a name="line250">250  </a></b>		}
+<b><a name="line251">251  </a></b>	
+<b><a name="line252">252  </a></b>		/**
+<b><a name="line253">253  </a></b>		 * Copy 512-byte blocks.
+<b><a name="line254">254  </a></b>		 * Use copy block function for better instruction order control,
+<b><a name="line255">255  </a></b>		 * which is important when load is unaligned.
+<b><a name="line256">256  </a></b>		 */
+<b><a name="line257">257  </a></b>		rte_mov512blocks((uint8_t *)dst, (const uint8_t *)src, n);
+<b><a name="line258">258  </a></b>		bits = n;
+<b><a name="line259">259  </a></b>		n = n &amp; 511;
+<b><a name="line260">260  </a></b>		bits -= n;
+<b><a name="line261">261  </a></b>		src = (const uint8_t *)src + bits;
+<b><a name="line262">262  </a></b>		dst = (uint8_t *)dst + bits;
+<b><a name="line263">263  </a></b>	
+<b><a name="line264">264  </a></b>		/**
+<b><a name="line265">265  </a></b>		 * Copy 128-byte blocks.
+<b><a name="line266">266  </a></b>		 * Use copy block function for better instruction order control,
+<b><a name="line267">267  </a></b>		 * which is important when load is unaligned.
+<b><a name="line268">268  </a></b>		 */
+<b><a name="line269">269  </a></b>		if (n &gt;= 128) {
+<b><a name="line270">270  </a></b>			rte_mov128blocks((uint8_t *)dst, (const uint8_t *)src, n);
+<b><a name="line271">271  </a></b>			bits = n;
+<b><a name="line272">272  </a></b>			n = n &amp; 127;
+<b><a name="line273">273  </a></b>			bits -= n;
+<b><a name="line274">274  </a></b>			src = (const uint8_t *)src + bits;
+<b><a name="line275">275  </a></b>			dst = (uint8_t *)dst + bits;
+<b><a name="line276">276  </a></b>		}
+<b><a name="line277">277  </a></b>	
+<b><a name="line278">278  </a></b>		/**
+<b><a name="line279">279  </a></b>		 * Copy whatever left
+<b><a name="line280">280  </a></b>		 */
+<b><a name="line281">281  </a></b>		goto COPY_BLOCK_128_BACK63;
+<b><a name="line282">282  </a></b>	}
+<b><a name="line283">283  </a></b>	
+<b><a name="line284">284  </a></b>	#elif defined RTE_MACHINE_CPUFLAG_AVX2
+<b><a name="line285">285  </a></b>	
+<b><a name="line286">286  </a></b>	#define ALIGNMENT_MASK 0x1F
+<b><a name="line287">287  </a></b>	
+<b><a name="line288">288  </a></b>	/**
+<b><a name="line289">289  </a></b>	 * AVX2 implementation below
+<b><a name="line290">290  </a></b>	 */
+<b><a name="line291">291  </a></b>	
+<b><a name="line292">292  </a></b>	/**
+<b><a name="line293">293  </a></b>	 * Copy 16 bytes from one location to another,
+<b><a name="line294">294  </a></b>	 * locations should not overlap.
+<b><a name="line295">295  </a></b>	 */
+<b><a name="line296">296  </a></b>	static __rte_always_inline void
+<b><a name="line297">297  </a></b>	rte_mov16(uint8_t *dst, const uint8_t *src)
+<b><a name="line298">298  </a></b>	{
+<b><a name="line299">299  </a></b>		__m128i xmm0;
+<b><a name="line300">300  </a></b>	
+<b><a name="line301">301  </a></b>		xmm0 = _mm_loadu_si128((const __m128i *)src);
+<b><a name="line302">302  </a></b>		_mm_storeu_si128((__m128i *)dst, xmm0);
+<b><a name="line303">303  </a></b>	}
+<b><a name="line304">304  </a></b>	
+<b><a name="line305">305  </a></b>	/**
+<b><a name="line306">306  </a></b>	 * Copy 32 bytes from one location to another,
+<b><a name="line307">307  </a></b>	 * locations should not overlap.
+<b><a name="line308">308  </a></b>	 */
+<b><a name="line309">309  </a></b>	static __rte_always_inline void
+<b><a name="line310">310  </a></b>	rte_mov32(uint8_t *dst, const uint8_t *src)
+<b><a name="line311">311  </a></b>	{
+<b><a name="line312">312  </a></b>		__m256i ymm0;
+<b><a name="line313">313  </a></b>	
+<b><a name="line314">314  </a></b>		ymm0 = _mm256_loadu_si256((const __m256i *)src);
+<b><a name="line315">315  </a></b>		_mm256_storeu_si256((__m256i *)dst, ymm0);
+<b><a name="line316">316  </a></b>	}
+<b><a name="line317">317  </a></b>	
+<b><a name="line318">318  </a></b>	/**
+<b><a name="line319">319  </a></b>	 * Copy 64 bytes from one location to another,
+<b><a name="line320">320  </a></b>	 * locations should not overlap.
+<b><a name="line321">321  </a></b>	 */
+<b><a name="line322">322  </a></b>	static __rte_always_inline void
+<b><a name="line323">323  </a></b>	rte_mov64(uint8_t *dst, const uint8_t *src)
+<b><a name="line324">324  </a></b>	{
+<b><a name="line325">325  </a></b>		rte_mov32((uint8_t *)dst + 0 * 32, (const uint8_t *)src + 0 * 32);
+<b><a name="line326">326  </a></b>		rte_mov32((uint8_t *)dst + 1 * 32, (const uint8_t *)src + 1 * 32);
+<b><a name="line327">327  </a></b>	}
+<b><a name="line328">328  </a></b>	
+<b><a name="line329">329  </a></b>	/**
+<b><a name="line330">330  </a></b>	 * Copy 128 bytes from one location to another,
+<b><a name="line331">331  </a></b>	 * locations should not overlap.
+<b><a name="line332">332  </a></b>	 */
+<b><a name="line333">333  </a></b>	static inline void
+<b><a name="line334">334  </a></b>	rte_mov128(uint8_t *dst, const uint8_t *src)
+<b><a name="line335">335  </a></b>	{
+<b><a name="line336">336  </a></b>		rte_mov32((uint8_t *)dst + 0 * 32, (const uint8_t *)src + 0 * 32);
+<b><a name="line337">337  </a></b>		rte_mov32((uint8_t *)dst + 1 * 32, (const uint8_t *)src + 1 * 32);
+<b><a name="line338">338  </a></b>		rte_mov32((uint8_t *)dst + 2 * 32, (const uint8_t *)src + 2 * 32);
+<b><a name="line339">339  </a></b>		rte_mov32((uint8_t *)dst + 3 * 32, (const uint8_t *)src + 3 * 32);
+<b><a name="line340">340  </a></b>	}
+<b><a name="line341">341  </a></b>	
+<b><a name="line342">342  </a></b>	/**
+<b><a name="line343">343  </a></b>	 * Copy 128-byte blocks from one location to another,
+<b><a name="line344">344  </a></b>	 * locations should not overlap.
+<b><a name="line345">345  </a></b>	 */
+<b><a name="line346">346  </a></b>	static inline void
+<b><a name="line347">347  </a></b>	rte_mov128blocks(uint8_t *dst, const uint8_t *src, size_t n)
+<b><a name="line348">348  </a></b>	{
+<b><a name="line349">349  </a></b>		__m256i ymm0, ymm1, ymm2, ymm3;
+<b><a name="line350">350  </a></b>	
+<b><a name="line351">351  </a></b>		while (n &gt;= 128) {
+<b><a name="line352">352  </a></b>			ymm0 = _mm256_loadu_si256((const __m256i *)((const uint8_t *)src + 0 * 32));
+<b><a name="line353">353  </a></b>			n -= 128;
+<b><a name="line354">354  </a></b>			ymm1 = _mm256_loadu_si256((const __m256i *)((const uint8_t *)src + 1 * 32));
+<b><a name="line355">355  </a></b>			ymm2 = _mm256_loadu_si256((const __m256i *)((const uint8_t *)src + 2 * 32));
+<b><a name="line356">356  </a></b>			ymm3 = _mm256_loadu_si256((const __m256i *)((const uint8_t *)src + 3 * 32));
+<b><a name="line357">357  </a></b>			src = (const uint8_t *)src + 128;
+<b><a name="line358">358  </a></b>			_mm256_storeu_si256((__m256i *)((uint8_t *)dst + 0 * 32), ymm0);
+<b><a name="line359">359  </a></b>			_mm256_storeu_si256((__m256i *)((uint8_t *)dst + 1 * 32), ymm1);
+<b><a name="line360">360  </a></b>			_mm256_storeu_si256((__m256i *)((uint8_t *)dst + 2 * 32), ymm2);
+<b><a name="line361">361  </a></b>			_mm256_storeu_si256((__m256i *)((uint8_t *)dst + 3 * 32), ymm3);
+<b><a name="line362">362  </a></b>			dst = (uint8_t *)dst + 128;
+<b><a name="line363">363  </a></b>		}
+<b><a name="line364">364  </a></b>	}
+<b><a name="line365">365  </a></b>	
+<b><a name="line366">366  </a></b>	static inline void *
+<b><a name="line367">367  </a></b>	rte_memcpy_generic(void *dst, const void *src, size_t n)
+<b><a name="line368">368  </a></b>	{
+<b><a name="line369">369  </a></b>		uintptr_t dstu = (uintptr_t)dst;
+<b><a name="line370">370  </a></b>		uintptr_t srcu = (uintptr_t)src;
+<b><a name="line371">371  </a></b>		void *ret = dst;
+<b><a name="line372">372  </a></b>		size_t dstofss;
+<b><a name="line373">373  </a></b>		size_t bits;
+<b><a name="line374">374  </a></b>	
+<b><a name="line375">375  </a></b>		/**
+<b><a name="line376">376  </a></b>		 * Copy less than 16 bytes
+<b><a name="line377">377  </a></b>		 */
+<b><a name="line378">378  </a></b>		if (n &lt; 16) {
+<b><a name="line379">379  </a></b>			if (n &amp; 0x01) {
+<b><a name="line380">380  </a></b>				*(uint8_t *)dstu = *(const uint8_t *)srcu;
+<b><a name="line381">381  </a></b>				srcu = (uintptr_t)((const uint8_t *)srcu + 1);
+<b><a name="line382">382  </a></b>				dstu = (uintptr_t)((uint8_t *)dstu + 1);
+<b><a name="line383">383  </a></b>			}
+<b><a name="line384">384  </a></b>			if (n &amp; 0x02) {
+<b><a name="line385">385  </a></b>				*(uint16_t *)dstu = *(const uint16_t *)srcu;
+<b><a name="line386">386  </a></b>				srcu = (uintptr_t)((const uint16_t *)srcu + 1);
+<b><a name="line387">387  </a></b>				dstu = (uintptr_t)((uint16_t *)dstu + 1);
+<b><a name="line388">388  </a></b>			}
+<b><a name="line389">389  </a></b>			if (n &amp; 0x04) {
+<b><a name="line390">390  </a></b>				*(uint32_t *)dstu = *(const uint32_t *)srcu;
+<b><a name="line391">391  </a></b>				srcu = (uintptr_t)((const uint32_t *)srcu + 1);
+<b><a name="line392">392  </a></b>				dstu = (uintptr_t)((uint32_t *)dstu + 1);
+<b><a name="line393">393  </a></b>			}
+<b><a name="line394">394  </a></b>			if (n &amp; 0x08) {
+<b><a name="line395">395  </a></b>				*(uint64_t *)dstu = *(const uint64_t *)srcu;
+<b><a name="line396">396  </a></b>			}
+<b><a name="line397">397  </a></b>			return ret;
+<b><a name="line398">398  </a></b>		}
+<b><a name="line399">399  </a></b>	
+<b><a name="line400">400  </a></b>		/**
+<b><a name="line401">401  </a></b>		 * Fast way when copy size doesn't exceed 256 bytes
+<b><a name="line402">402  </a></b>		 */
+<b><a name="line403">403  </a></b>		if (n &lt;= 32) {
+<b><a name="line404">404  </a></b>			rte_mov16((uint8_t *)dst, (const uint8_t *)src);
+<b><a name="line405">405  </a></b>			rte_mov16((uint8_t *)dst - 16 + n,
+<b><a name="line406">406  </a></b>					(const uint8_t *)src - 16 + n);
+<b><a name="line407">407  </a></b>			return ret;
+<b><a name="line408">408  </a></b>		}
+<b><a name="line409">409  </a></b>		if (n &lt;= 48) {
+<b><a name="line410">410  </a></b>			rte_mov16((uint8_t *)dst, (const uint8_t *)src);
+<b><a name="line411">411  </a></b>			rte_mov16((uint8_t *)dst + 16, (const uint8_t *)src + 16);
+<b><a name="line412">412  </a></b>			rte_mov16((uint8_t *)dst - 16 + n,
+<b><a name="line413">413  </a></b>					(const uint8_t *)src - 16 + n);
+<b><a name="line414">414  </a></b>			return ret;
+<b><a name="line415">415  </a></b>		}
+<b><a name="line416">416  </a></b>		if (n &lt;= 64) {
+<b><a name="line417">417  </a></b>			rte_mov32((uint8_t *)dst, (const uint8_t *)src);
+<b><a name="line418">418  </a></b>			rte_mov32((uint8_t *)dst - 32 + n,
+<b><a name="line419">419  </a></b>					(const uint8_t *)src - 32 + n);
+<b><a name="line420">420  </a></b>			return ret;
+<b><a name="line421">421  </a></b>		}
+<b><a name="line422">422  </a></b>		if (n &lt;= 256) {
+<b><a name="line423">423  </a></b>			if (n &gt;= 128) {
+<b><a name="line424">424  </a></b>				n -= 128;
+<b><a name="line425">425  </a></b>				rte_mov128((uint8_t *)dst, (const uint8_t *)src);
+<b><a name="line426">426  </a></b>				src = (const uint8_t *)src + 128;
+<b><a name="line427">427  </a></b>				dst = (uint8_t *)dst + 128;
+<b><a name="line428">428  </a></b>			}
+<b><a name="line429">429  </a></b>	COPY_BLOCK_128_BACK31:
+<b><a name="line430">430  </a></b>			if (n &gt;= 64) {
+<b><a name="line431">431  </a></b>				n -= 64;
+<b><a name="line432">432  </a></b>				rte_mov64((uint8_t *)dst, (const uint8_t *)src);
+<b><a name="line433">433  </a></b>				src = (const uint8_t *)src + 64;
+<b><a name="line434">434  </a></b>				dst = (uint8_t *)dst + 64;
+<b><a name="line435">435  </a></b>			}
+<b><a name="line436">436  </a></b>			if (n &gt; 32) {
+<b><a name="line437">437  </a></b>				rte_mov32((uint8_t *)dst, (const uint8_t *)src);
+<b><a name="line438">438  </a></b>				rte_mov32((uint8_t *)dst - 32 + n,
+<b><a name="line439">439  </a></b>						(const uint8_t *)src - 32 + n);
+<b><a name="line440">440  </a></b>				return ret;
+<b><a name="line441">441  </a></b>			}
+<b><a name="line442">442  </a></b>			if (n &gt; 0) {
+<b><a name="line443">443  </a></b>				rte_mov32((uint8_t *)dst - 32 + n,
+<b><a name="line444">444  </a></b>						(const uint8_t *)src - 32 + n);
+<b><a name="line445">445  </a></b>			}
+<b><a name="line446">446  </a></b>			return ret;
+<b><a name="line447">447  </a></b>		}
+<b><a name="line448">448  </a></b>	
+<b><a name="line449">449  </a></b>		/**
+<b><a name="line450">450  </a></b>		 * Make store aligned when copy size exceeds 256 bytes
+<b><a name="line451">451  </a></b>		 */
+<b><a name="line452">452  </a></b>		dstofss = (uintptr_t)dst &amp; 0x1F;
+<b><a name="line453">453  </a></b>		if (dstofss &gt; 0) {
+<b><a name="line454">454  </a></b>			dstofss = 32 - dstofss;
+<b><a name="line455">455  </a></b>			n -= dstofss;
+<b><a name="line456">456  </a></b>			rte_mov32((uint8_t *)dst, (const uint8_t *)src);
+<b><a name="line457">457  </a></b>			src = (const uint8_t *)src + dstofss;
+<b><a name="line458">458  </a></b>			dst = (uint8_t *)dst + dstofss;
+<b><a name="line459">459  </a></b>		}
+<b><a name="line460">460  </a></b>	
+<b><a name="line461">461  </a></b>		/**
+<b><a name="line462">462  </a></b>		 * Copy 128-byte blocks
+<b><a name="line463">463  </a></b>		 */
+<b><a name="line464">464  </a></b>		rte_mov128blocks((uint8_t *)dst, (const uint8_t *)src, n);
+<b><a name="line465">465  </a></b>		bits = n;
+<b><a name="line466">466  </a></b>		n = n &amp; 127;
+<b><a name="line467">467  </a></b>		bits -= n;
+<b><a name="line468">468  </a></b>		src = (const uint8_t *)src + bits;
+<b><a name="line469">469  </a></b>		dst = (uint8_t *)dst + bits;
+<b><a name="line470">470  </a></b>	
+<b><a name="line471">471  </a></b>		/**
+<b><a name="line472">472  </a></b>		 * Copy whatever left
+<b><a name="line473">473  </a></b>		 */
+<b><a name="line474">474  </a></b>		goto COPY_BLOCK_128_BACK31;
+<b><a name="line475">475  </a></b>	}
+<b><a name="line476">476  </a></b>	
+<b><a name="line477">477  </a></b>	#else /* RTE_MACHINE_CPUFLAG */
+<b><a name="line478">478  </a></b>	
+<b><a name="line479">479  </a></b>	#define <b>ALIGNMENT_MASK</b> 0x0F
+<b><a name="line480">480  </a></b>	
+<b><a name="line481">481  </a></b>	/**
+<b><a name="line482">482  </a></b>	 * SSE &amp; AVX implementation below
+<b><a name="line483">483  </a></b>	 */
+<b><a name="line484">484  </a></b>	
+<b><a name="line485">485  </a></b>	/**
+<b><a name="line486">486  </a></b>	 * Copy 16 bytes from one location to another,
+<b><a name="line487">487  </a></b>	 * locations should not overlap.
+<b><a name="line488">488  </a></b>	 */
+<b><a name="line489">489  </a></b>	static <a href="../rte_common.h/code.html#line146">__rte_always_inline</a> void
+<b><a name="line490">490  </a></b>	<b>rte_mov16</b>(<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *<b>dst</b>, const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *<b>src</b>)
+<b><a name="line491">491  </a></b>	{
+<b><a name="line492">492  </a></b>		<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/emmintrin.h/code.html#line52">__m128i</a> <b>xmm0</b>;
+<b><a name="line493">493  </a></b>	
+<b><a name="line494">494  </a></b>		<a href="#line492">xmm0</a> = <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/emmintrin.h/code.html#line696">_mm_loadu_si128</a>((const <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/emmintrin.h/code.html#line52">__m128i</a> *)(const <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/emmintrin.h/code.html#line52">__m128i</a> *)<a href="#line490">src</a>);
+<b><a name="line495">495  </a></b>		<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/emmintrin.h/code.html#line714">_mm_storeu_si128</a>((<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/emmintrin.h/code.html#line52">__m128i</a> *)<a href="#line490">dst</a>, <a href="#line492">xmm0</a>);
+<b><a name="line496">496  </a></b>	}
+<b><a name="line497">497  </a></b>	
+<b><a name="line498">498  </a></b>	/**
+<b><a name="line499">499  </a></b>	 * Copy 32 bytes from one location to another,
+<b><a name="line500">500  </a></b>	 * locations should not overlap.
+<b><a name="line501">501  </a></b>	 */
+<b><a name="line502">502  </a></b>	static <a href="../rte_common.h/code.html#line146">__rte_always_inline</a> void
+<b><a name="line503">503  </a></b>	<b>rte_mov32</b>(<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *<b>dst</b>, const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *<b>src</b>)
+<b><a name="line504">504  </a></b>	{
+<b><a name="line505">505  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line503">dst</a> + 0 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line503">src</a> + 0 * 16);
+<b><a name="line506">506  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line503">dst</a> + 1 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line503">src</a> + 1 * 16);
+<b><a name="line507">507  </a></b>	}
+<b><a name="line508">508  </a></b>	
+<b><a name="line509">509  </a></b>	/**
+<b><a name="line510">510  </a></b>	 * Copy 64 bytes from one location to another,
+<b><a name="line511">511  </a></b>	 * locations should not overlap.
+<b><a name="line512">512  </a></b>	 */
+<b><a name="line513">513  </a></b>	static <a href="../rte_common.h/code.html#line146">__rte_always_inline</a> void
+<b><a name="line514">514  </a></b>	<b>rte_mov64</b>(<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *<b>dst</b>, const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *<b>src</b>)
+<b><a name="line515">515  </a></b>	{
+<b><a name="line516">516  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line514">dst</a> + 0 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line514">src</a> + 0 * 16);
+<b><a name="line517">517  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line514">dst</a> + 1 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line514">src</a> + 1 * 16);
+<b><a name="line518">518  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line514">dst</a> + 2 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line514">src</a> + 2 * 16);
+<b><a name="line519">519  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line514">dst</a> + 3 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line514">src</a> + 3 * 16);
+<b><a name="line520">520  </a></b>	}
+<b><a name="line521">521  </a></b>	
+<b><a name="line522">522  </a></b>	/**
+<b><a name="line523">523  </a></b>	 * Copy 128 bytes from one location to another,
+<b><a name="line524">524  </a></b>	 * locations should not overlap.
+<b><a name="line525">525  </a></b>	 */
+<b><a name="line526">526  </a></b>	static inline void
+<b><a name="line527">527  </a></b>	<b>rte_mov128</b>(<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *<b>dst</b>, const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *<b>src</b>)
+<b><a name="line528">528  </a></b>	{
+<b><a name="line529">529  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line527">dst</a> + 0 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line527">src</a> + 0 * 16);
+<b><a name="line530">530  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line527">dst</a> + 1 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line527">src</a> + 1 * 16);
+<b><a name="line531">531  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line527">dst</a> + 2 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line527">src</a> + 2 * 16);
+<b><a name="line532">532  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line527">dst</a> + 3 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line527">src</a> + 3 * 16);
+<b><a name="line533">533  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line527">dst</a> + 4 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line527">src</a> + 4 * 16);
+<b><a name="line534">534  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line527">dst</a> + 5 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line527">src</a> + 5 * 16);
+<b><a name="line535">535  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line527">dst</a> + 6 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line527">src</a> + 6 * 16);
+<b><a name="line536">536  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line527">dst</a> + 7 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line527">src</a> + 7 * 16);
+<b><a name="line537">537  </a></b>	}
+<b><a name="line538">538  </a></b>	
+<b><a name="line539">539  </a></b>	/**
+<b><a name="line540">540  </a></b>	 * Copy 256 bytes from one location to another,
+<b><a name="line541">541  </a></b>	 * locations should not overlap.
+<b><a name="line542">542  </a></b>	 */
+<b><a name="line543">543  </a></b>	static inline void
+<b><a name="line544">544  </a></b>	<b>rte_mov256</b>(<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *<b>dst</b>, const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *<b>src</b>)
+<b><a name="line545">545  </a></b>	{
+<b><a name="line546">546  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">dst</a> + 0 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">src</a> + 0 * 16);
+<b><a name="line547">547  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">dst</a> + 1 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">src</a> + 1 * 16);
+<b><a name="line548">548  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">dst</a> + 2 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">src</a> + 2 * 16);
+<b><a name="line549">549  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">dst</a> + 3 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">src</a> + 3 * 16);
+<b><a name="line550">550  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">dst</a> + 4 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">src</a> + 4 * 16);
+<b><a name="line551">551  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">dst</a> + 5 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">src</a> + 5 * 16);
+<b><a name="line552">552  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">dst</a> + 6 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">src</a> + 6 * 16);
+<b><a name="line553">553  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">dst</a> + 7 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">src</a> + 7 * 16);
+<b><a name="line554">554  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">dst</a> + 8 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">src</a> + 8 * 16);
+<b><a name="line555">555  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">dst</a> + 9 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">src</a> + 9 * 16);
+<b><a name="line556">556  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">dst</a> + 10 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">src</a> + 10 * 16);
+<b><a name="line557">557  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">dst</a> + 11 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">src</a> + 11 * 16);
+<b><a name="line558">558  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">dst</a> + 12 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">src</a> + 12 * 16);
+<b><a name="line559">559  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">dst</a> + 13 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">src</a> + 13 * 16);
+<b><a name="line560">560  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">dst</a> + 14 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">src</a> + 14 * 16);
+<b><a name="line561">561  </a></b>		<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">dst</a> + 15 * 16, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line544">src</a> + 15 * 16);
+<b><a name="line562">562  </a></b>	}
+<b><a name="line563">563  </a></b>	
+<b><a name="line564">564  </a></b>	/**
+<b><a name="line565">565  </a></b>	 * Macro for copying unaligned block from one location to another with constant load offset,
+<b><a name="line566">566  </a></b>	 * 47 bytes leftover maximum,
+<b><a name="line567">567  </a></b>	 * locations should not overlap.
+<b><a name="line568">568  </a></b>	 * Requirements:
+<b><a name="line569">569  </a></b>	 * - Store is aligned
+<b><a name="line570">570  </a></b>	 * - Load offset is &lt;offset&gt;, which must be immediate value within [1, 15]
+<b><a name="line571">571  </a></b>	 * - For &lt;src&gt;, make sure &lt;offset&gt; bit backwards &amp; &lt;16 - offset&gt; bit forwards are available for loading
+<b><a name="line572">572  </a></b>	 * - &lt;dst&gt;, &lt;src&gt;, &lt;len&gt; must be variables
+<b><a name="line573">573  </a></b>	 * - __m128i &lt;xmm0&gt; ~ &lt;xmm8&gt; must be pre-defined
+<b><a name="line574">574  </a></b>	 */
+<b><a name="line575">575  </a></b>	#define <b>MOVEUNALIGNED_LEFT47_IMM</b>(dst, src, len, offset)                                                     \
+<b><a name="line576">576  </a></b>	__extension__ ({                                                                                            \
+<b><a name="line577">577  </a></b>	    size_t tmp;                                                                                                \
+<b><a name="line578">578  </a></b>	    while (len &gt;= 128 + 16 - offset) {                                                                      \
+<b><a name="line579">579  </a></b>	        xmm0 = _mm_loadu_si128((const __m128i *)((const uint8_t *)src - offset + 0 * 16));                  \
+<b><a name="line580">580  </a></b>	        len -= 128;                                                                                         \
+<b><a name="line581">581  </a></b>	        xmm1 = _mm_loadu_si128((const __m128i *)((const uint8_t *)src - offset + 1 * 16));                  \
+<b><a name="line582">582  </a></b>	        xmm2 = _mm_loadu_si128((const __m128i *)((const uint8_t *)src - offset + 2 * 16));                  \
+<b><a name="line583">583  </a></b>	        xmm3 = _mm_loadu_si128((const __m128i *)((const uint8_t *)src - offset + 3 * 16));                  \
+<b><a name="line584">584  </a></b>	        xmm4 = _mm_loadu_si128((const __m128i *)((const uint8_t *)src - offset + 4 * 16));                  \
+<b><a name="line585">585  </a></b>	        xmm5 = _mm_loadu_si128((const __m128i *)((const uint8_t *)src - offset + 5 * 16));                  \
+<b><a name="line586">586  </a></b>	        xmm6 = _mm_loadu_si128((const __m128i *)((const uint8_t *)src - offset + 6 * 16));                  \
+<b><a name="line587">587  </a></b>	        xmm7 = _mm_loadu_si128((const __m128i *)((const uint8_t *)src - offset + 7 * 16));                  \
+<b><a name="line588">588  </a></b>	        xmm8 = _mm_loadu_si128((const __m128i *)((const uint8_t *)src - offset + 8 * 16));                  \
+<b><a name="line589">589  </a></b>	        src = (const uint8_t *)src + 128;                                                                   \
+<b><a name="line590">590  </a></b>	        _mm_storeu_si128((__m128i *)((uint8_t *)dst + 0 * 16), _mm_alignr_epi8(xmm1, xmm0, offset));        \
+<b><a name="line591">591  </a></b>	        _mm_storeu_si128((__m128i *)((uint8_t *)dst + 1 * 16), _mm_alignr_epi8(xmm2, xmm1, offset));        \
+<b><a name="line592">592  </a></b>	        _mm_storeu_si128((__m128i *)((uint8_t *)dst + 2 * 16), _mm_alignr_epi8(xmm3, xmm2, offset));        \
+<b><a name="line593">593  </a></b>	        _mm_storeu_si128((__m128i *)((uint8_t *)dst + 3 * 16), _mm_alignr_epi8(xmm4, xmm3, offset));        \
+<b><a name="line594">594  </a></b>	        _mm_storeu_si128((__m128i *)((uint8_t *)dst + 4 * 16), _mm_alignr_epi8(xmm5, xmm4, offset));        \
+<b><a name="line595">595  </a></b>	        _mm_storeu_si128((__m128i *)((uint8_t *)dst + 5 * 16), _mm_alignr_epi8(xmm6, xmm5, offset));        \
+<b><a name="line596">596  </a></b>	        _mm_storeu_si128((__m128i *)((uint8_t *)dst + 6 * 16), _mm_alignr_epi8(xmm7, xmm6, offset));        \
+<b><a name="line597">597  </a></b>	        _mm_storeu_si128((__m128i *)((uint8_t *)dst + 7 * 16), _mm_alignr_epi8(xmm8, xmm7, offset));        \
+<b><a name="line598">598  </a></b>	        dst = (uint8_t *)dst + 128;                                                                         \
+<b><a name="line599">599  </a></b>	    }                                                                                                       \
+<b><a name="line600">600  </a></b>	    tmp = len;                                                                                              \
+<b><a name="line601">601  </a></b>	    len = ((len - 16 + offset) &amp; 127) + 16 - offset;                                                        \
+<b><a name="line602">602  </a></b>	    tmp -= len;                                                                                             \
+<b><a name="line603">603  </a></b>	    src = (const uint8_t *)src + tmp;                                                                       \
+<b><a name="line604">604  </a></b>	    dst = (uint8_t *)dst + tmp;                                                                             \
+<b><a name="line605">605  </a></b>	    if (len &gt;= 32 + 16 - offset) {                                                                          \
+<b><a name="line606">606  </a></b>	        while (len &gt;= 32 + 16 - offset) {                                                                   \
+<b><a name="line607">607  </a></b>	            xmm0 = _mm_loadu_si128((const __m128i *)((const uint8_t *)src - offset + 0 * 16));              \
+<b><a name="line608">608  </a></b>	            len -= 32;                                                                                      \
+<b><a name="line609">609  </a></b>	            xmm1 = _mm_loadu_si128((const __m128i *)((const uint8_t *)src - offset + 1 * 16));              \
+<b><a name="line610">610  </a></b>	            xmm2 = _mm_loadu_si128((const __m128i *)((const uint8_t *)src - offset + 2 * 16));              \
+<b><a name="line611">611  </a></b>	            src = (const uint8_t *)src + 32;                                                                \
+<b><a name="line612">612  </a></b>	            _mm_storeu_si128((__m128i *)((uint8_t *)dst + 0 * 16), _mm_alignr_epi8(xmm1, xmm0, offset));    \
+<b><a name="line613">613  </a></b>	            _mm_storeu_si128((__m128i *)((uint8_t *)dst + 1 * 16), _mm_alignr_epi8(xmm2, xmm1, offset));    \
+<b><a name="line614">614  </a></b>	            dst = (uint8_t *)dst + 32;                                                                      \
+<b><a name="line615">615  </a></b>	        }                                                                                                   \
+<b><a name="line616">616  </a></b>	        tmp = len;                                                                                          \
+<b><a name="line617">617  </a></b>	        len = ((len - 16 + offset) &amp; 31) + 16 - offset;                                                     \
+<b><a name="line618">618  </a></b>	        tmp -= len;                                                                                         \
+<b><a name="line619">619  </a></b>	        src = (const uint8_t *)src + tmp;                                                                   \
+<b><a name="line620">620  </a></b>	        dst = (uint8_t *)dst + tmp;                                                                         \
+<b><a name="line621">621  </a></b>	    }                                                                                                       \
+<b><a name="line622">622  </a></b>	})
+<b><a name="line623">623  </a></b>	
+<b><a name="line624">624  </a></b>	/**
+<b><a name="line625">625  </a></b>	 * Macro for copying unaligned block from one location to another,
+<b><a name="line626">626  </a></b>	 * 47 bytes leftover maximum,
+<b><a name="line627">627  </a></b>	 * locations should not overlap.
+<b><a name="line628">628  </a></b>	 * Use switch here because the aligning instruction requires immediate value for shift count.
+<b><a name="line629">629  </a></b>	 * Requirements:
+<b><a name="line630">630  </a></b>	 * - Store is aligned
+<b><a name="line631">631  </a></b>	 * - Load offset is &lt;offset&gt;, which must be within [1, 15]
+<b><a name="line632">632  </a></b>	 * - For &lt;src&gt;, make sure &lt;offset&gt; bit backwards &amp; &lt;16 - offset&gt; bit forwards are available for loading
+<b><a name="line633">633  </a></b>	 * - &lt;dst&gt;, &lt;src&gt;, &lt;len&gt; must be variables
+<b><a name="line634">634  </a></b>	 * - __m128i &lt;xmm0&gt; ~ &lt;xmm8&gt; used in MOVEUNALIGNED_LEFT47_IMM must be pre-defined
+<b><a name="line635">635  </a></b>	 */
+<b><a name="line636">636  </a></b>	#define <b>MOVEUNALIGNED_LEFT47</b>(dst, src, len, offset)                   \
+<b><a name="line637">637  </a></b>	__extension__ ({                                                      \
+<b><a name="line638">638  </a></b>	    switch (offset) {                                                 \
+<b><a name="line639">639  </a></b>	    case 0x01: MOVEUNALIGNED_LEFT47_IMM(dst, src, n, 0x01); break;    \
+<b><a name="line640">640  </a></b>	    case 0x02: MOVEUNALIGNED_LEFT47_IMM(dst, src, n, 0x02); break;    \
+<b><a name="line641">641  </a></b>	    case 0x03: MOVEUNALIGNED_LEFT47_IMM(dst, src, n, 0x03); break;    \
+<b><a name="line642">642  </a></b>	    case 0x04: MOVEUNALIGNED_LEFT47_IMM(dst, src, n, 0x04); break;    \
+<b><a name="line643">643  </a></b>	    case 0x05: MOVEUNALIGNED_LEFT47_IMM(dst, src, n, 0x05); break;    \
+<b><a name="line644">644  </a></b>	    case 0x06: MOVEUNALIGNED_LEFT47_IMM(dst, src, n, 0x06); break;    \
+<b><a name="line645">645  </a></b>	    case 0x07: MOVEUNALIGNED_LEFT47_IMM(dst, src, n, 0x07); break;    \
+<b><a name="line646">646  </a></b>	    case 0x08: MOVEUNALIGNED_LEFT47_IMM(dst, src, n, 0x08); break;    \
+<b><a name="line647">647  </a></b>	    case 0x09: MOVEUNALIGNED_LEFT47_IMM(dst, src, n, 0x09); break;    \
+<b><a name="line648">648  </a></b>	    case 0x0A: MOVEUNALIGNED_LEFT47_IMM(dst, src, n, 0x0A); break;    \
+<b><a name="line649">649  </a></b>	    case 0x0B: MOVEUNALIGNED_LEFT47_IMM(dst, src, n, 0x0B); break;    \
+<b><a name="line650">650  </a></b>	    case 0x0C: MOVEUNALIGNED_LEFT47_IMM(dst, src, n, 0x0C); break;    \
+<b><a name="line651">651  </a></b>	    case 0x0D: MOVEUNALIGNED_LEFT47_IMM(dst, src, n, 0x0D); break;    \
+<b><a name="line652">652  </a></b>	    case 0x0E: MOVEUNALIGNED_LEFT47_IMM(dst, src, n, 0x0E); break;    \
+<b><a name="line653">653  </a></b>	    case 0x0F: MOVEUNALIGNED_LEFT47_IMM(dst, src, n, 0x0F); break;    \
+<b><a name="line654">654  </a></b>	    default:;                                                         \
+<b><a name="line655">655  </a></b>	    }                                                                 \
+<b><a name="line656">656  </a></b>	})
+<b><a name="line657">657  </a></b>	
+<b><a name="line658">658  </a></b>	static inline void *
+<b><a name="line659">659  </a></b>	<b>rte_memcpy_generic</b>(void *<b>dst</b>, const void *<b>src</b>, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>n</b>)
+<b><a name="line660">660  </a></b>	{
+<b><a name="line661">661  </a></b>		<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/emmintrin.h/code.html#line52">__m128i</a> <b>xmm0</b>, <b>xmm1</b>, <b>xmm2</b>, <b>xmm3</b>, <b>xmm4</b>, <b>xmm5</b>, <b>xmm6</b>, <b>xmm7</b>, <b>xmm8</b>;
+<b><a name="line662">662  </a></b>		<a href="../../../../include/stdint.h/code.html#line122">uintptr_t</a> <b>dstu</b> = (<a href="../../../../include/stdint.h/code.html#line122">uintptr_t</a>)<a href="#line659">dst</a>;
+<b><a name="line663">663  </a></b>		<a href="../../../../include/stdint.h/code.html#line122">uintptr_t</a> <b>srcu</b> = (<a href="../../../../include/stdint.h/code.html#line122">uintptr_t</a>)<a href="#line659">src</a>;
+<b><a name="line664">664  </a></b>		void *<b>ret</b> = <a href="#line659">dst</a>;
+<b><a name="line665">665  </a></b>		<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>dstofss</b>;
+<b><a name="line666">666  </a></b>		<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>srcofs</b>;
+<b><a name="line667">667  </a></b>	
+<b><a name="line668">668  </a></b>		/**
+<b><a name="line669">669  </a></b>		 * Copy less than 16 bytes
+<b><a name="line670">670  </a></b>		 */
+<b><a name="line671">671  </a></b>		if (<a href="#line659">n</a> &lt; 16) {
+<b><a name="line672">672  </a></b>			if (<a href="#line659">n</a> &amp; 0x01) {
+<b><a name="line673">673  </a></b>				*(<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line662">dstu</a> = *(const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line663">srcu</a>;
+<b><a name="line674">674  </a></b>				<a href="#line663">srcu</a> = (<a href="../../../../include/stdint.h/code.html#line122">uintptr_t</a>)((const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line663">srcu</a> + 1);
+<b><a name="line675">675  </a></b>				<a href="#line662">dstu</a> = (<a href="../../../../include/stdint.h/code.html#line122">uintptr_t</a>)((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line662">dstu</a> + 1);
+<b><a name="line676">676  </a></b>			}
+<b><a name="line677">677  </a></b>			if (<a href="#line659">n</a> &amp; 0x02) {
+<b><a name="line678">678  </a></b>				*(<a href="../../../../include/stdint.h/code.html#line49">uint16_t</a> *)<a href="#line662">dstu</a> = *(const <a href="../../../../include/stdint.h/code.html#line49">uint16_t</a> *)<a href="#line663">srcu</a>;
+<b><a name="line679">679  </a></b>				<a href="#line663">srcu</a> = (<a href="../../../../include/stdint.h/code.html#line122">uintptr_t</a>)((const <a href="../../../../include/stdint.h/code.html#line49">uint16_t</a> *)<a href="#line663">srcu</a> + 1);
+<b><a name="line680">680  </a></b>				<a href="#line662">dstu</a> = (<a href="../../../../include/stdint.h/code.html#line122">uintptr_t</a>)((<a href="../../../../include/stdint.h/code.html#line49">uint16_t</a> *)<a href="#line662">dstu</a> + 1);
+<b><a name="line681">681  </a></b>			}
+<b><a name="line682">682  </a></b>			if (<a href="#line659">n</a> &amp; 0x04) {
+<b><a name="line683">683  </a></b>				*(<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> *)<a href="#line662">dstu</a> = *(const <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> *)<a href="#line663">srcu</a>;
+<b><a name="line684">684  </a></b>				<a href="#line663">srcu</a> = (<a href="../../../../include/stdint.h/code.html#line122">uintptr_t</a>)((const <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> *)<a href="#line663">srcu</a> + 1);
+<b><a name="line685">685  </a></b>				<a href="#line662">dstu</a> = (<a href="../../../../include/stdint.h/code.html#line122">uintptr_t</a>)((<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> *)<a href="#line662">dstu</a> + 1);
+<b><a name="line686">686  </a></b>			}
+<b><a name="line687">687  </a></b>			if (<a href="#line659">n</a> &amp; 0x08) {
+<b><a name="line688">688  </a></b>				*(<a href="../../../../include/stdint.h/code.html#line55">uint64_t</a> *)<a href="#line662">dstu</a> = *(const <a href="../../../../include/stdint.h/code.html#line55">uint64_t</a> *)<a href="#line663">srcu</a>;
+<b><a name="line689">689  </a></b>			}
+<b><a name="line690">690  </a></b>			return <a href="#line664">ret</a>;
+<b><a name="line691">691  </a></b>		}
+<b><a name="line692">692  </a></b>	
+<b><a name="line693">693  </a></b>		/**
+<b><a name="line694">694  </a></b>		 * Fast way when copy size doesn't exceed 512 bytes
+<b><a name="line695">695  </a></b>		 */
+<b><a name="line696">696  </a></b>		if (<a href="#line659">n</a> &lt;= 32) {
+<b><a name="line697">697  </a></b>			<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a>, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a>);
+<b><a name="line698">698  </a></b>			<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a> - 16 + <a href="#line659">n</a>, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a> - 16 + <a href="#line659">n</a>);
+<b><a name="line699">699  </a></b>			return <a href="#line664">ret</a>;
+<b><a name="line700">700  </a></b>		}
+<b><a name="line701">701  </a></b>		if (<a href="#line659">n</a> &lt;= 48) {
+<b><a name="line702">702  </a></b>			<a href="#line503">rte_mov32</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a>, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a>);
+<b><a name="line703">703  </a></b>			<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a> - 16 + <a href="#line659">n</a>, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a> - 16 + <a href="#line659">n</a>);
+<b><a name="line704">704  </a></b>			return <a href="#line664">ret</a>;
+<b><a name="line705">705  </a></b>		}
+<b><a name="line706">706  </a></b>		if (<a href="#line659">n</a> &lt;= 64) {
+<b><a name="line707">707  </a></b>			<a href="#line503">rte_mov32</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a>, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a>);
+<b><a name="line708">708  </a></b>			<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a> + 32, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a> + 32);
+<b><a name="line709">709  </a></b>			<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a> - 16 + <a href="#line659">n</a>, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a> - 16 + <a href="#line659">n</a>);
+<b><a name="line710">710  </a></b>			return <a href="#line664">ret</a>;
+<b><a name="line711">711  </a></b>		}
+<b><a name="line712">712  </a></b>		if (<a href="#line659">n</a> &lt;= 128) {
+<b><a name="line713">713  </a></b>			goto <a href="#rte_memcpy_generic:COPY_BLOCK_128_BACK15">COPY_BLOCK_128_BACK15</a>;
+<b><a name="line714">714  </a></b>		}
+<b><a name="line715">715  </a></b>		if (<a href="#line659">n</a> &lt;= 512) {
+<b><a name="line716">716  </a></b>			if (<a href="#line659">n</a> &gt;= 256) {
+<b><a name="line717">717  </a></b>				<a href="#line659">n</a> -= 256;
+<b><a name="line718">718  </a></b>				<a href="#line527">rte_mov128</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a>, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a>);
+<b><a name="line719">719  </a></b>				<a href="#line527">rte_mov128</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a> + 128, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a> + 128);
+<b><a name="line720">720  </a></b>				<a href="#line659">src</a> = (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a> + 256;
+<b><a name="line721">721  </a></b>				<a href="#line659">dst</a> = (<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a> + 256;
+<b><a name="line722">722  </a></b>			}
+<b><a name="line723">723  </a></b>	<a name="rte_memcpy_generic:COPY_BLOCK_255_BACK15">COPY_BLOCK_255_BACK15</a>:
+<b><a name="line724">724  </a></b>			if (<a href="#line659">n</a> &gt;= 128) {
+<b><a name="line725">725  </a></b>				<a href="#line659">n</a> -= 128;
+<b><a name="line726">726  </a></b>				<a href="#line527">rte_mov128</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a>, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a>);
+<b><a name="line727">727  </a></b>				<a href="#line659">src</a> = (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a> + 128;
+<b><a name="line728">728  </a></b>				<a href="#line659">dst</a> = (<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a> + 128;
+<b><a name="line729">729  </a></b>			}
+<b><a name="line730">730  </a></b>	<a name="rte_memcpy_generic:COPY_BLOCK_128_BACK15">COPY_BLOCK_128_BACK15</a>:
+<b><a name="line731">731  </a></b>			if (<a href="#line659">n</a> &gt;= 64) {
+<b><a name="line732">732  </a></b>				<a href="#line659">n</a> -= 64;
+<b><a name="line733">733  </a></b>				<a href="#line514">rte_mov64</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a>, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a>);
+<b><a name="line734">734  </a></b>				<a href="#line659">src</a> = (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a> + 64;
+<b><a name="line735">735  </a></b>				<a href="#line659">dst</a> = (<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a> + 64;
+<b><a name="line736">736  </a></b>			}
+<b><a name="line737">737  </a></b>	<a name="rte_memcpy_generic:COPY_BLOCK_64_BACK15">COPY_BLOCK_64_BACK15</a>:
+<b><a name="line738">738  </a></b>			if (<a href="#line659">n</a> &gt;= 32) {
+<b><a name="line739">739  </a></b>				<a href="#line659">n</a> -= 32;
+<b><a name="line740">740  </a></b>				<a href="#line503">rte_mov32</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a>, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a>);
+<b><a name="line741">741  </a></b>				<a href="#line659">src</a> = (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a> + 32;
+<b><a name="line742">742  </a></b>				<a href="#line659">dst</a> = (<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a> + 32;
+<b><a name="line743">743  </a></b>			}
+<b><a name="line744">744  </a></b>			if (<a href="#line659">n</a> &gt; 16) {
+<b><a name="line745">745  </a></b>				<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a>, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a>);
+<b><a name="line746">746  </a></b>				<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a> - 16 + <a href="#line659">n</a>, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a> - 16 + <a href="#line659">n</a>);
+<b><a name="line747">747  </a></b>				return <a href="#line664">ret</a>;
+<b><a name="line748">748  </a></b>			}
+<b><a name="line749">749  </a></b>			if (<a href="#line659">n</a> &gt; 0) {
+<b><a name="line750">750  </a></b>				<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a> - 16 + <a href="#line659">n</a>, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a> - 16 + <a href="#line659">n</a>);
+<b><a name="line751">751  </a></b>			}
+<b><a name="line752">752  </a></b>			return <a href="#line664">ret</a>;
+<b><a name="line753">753  </a></b>		}
+<b><a name="line754">754  </a></b>	
+<b><a name="line755">755  </a></b>		/**
+<b><a name="line756">756  </a></b>		 * Make store aligned when copy size exceeds 512 bytes,
+<b><a name="line757">757  </a></b>		 * and make sure the first 15 bytes are copied, because
+<b><a name="line758">758  </a></b>		 * unaligned copy functions require up to 15 bytes
+<b><a name="line759">759  </a></b>		 * backwards access.
+<b><a name="line760">760  </a></b>		 */
+<b><a name="line761">761  </a></b>		<a href="#line665">dstofss</a> = (<a href="../../../../include/stdint.h/code.html#line122">uintptr_t</a>)<a href="#line659">dst</a> &amp; 0x0F;
+<b><a name="line762">762  </a></b>		if (<a href="#line665">dstofss</a> &gt; 0) {
+<b><a name="line763">763  </a></b>			<a href="#line665">dstofss</a> = 16 - <a href="#line665">dstofss</a> + 16;
+<b><a name="line764">764  </a></b>			<a href="#line659">n</a> -= <a href="#line665">dstofss</a>;
+<b><a name="line765">765  </a></b>			<a href="#line503">rte_mov32</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a>, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a>);
+<b><a name="line766">766  </a></b>			<a href="#line659">src</a> = (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a> + <a href="#line665">dstofss</a>;
+<b><a name="line767">767  </a></b>			<a href="#line659">dst</a> = (<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a> + <a href="#line665">dstofss</a>;
+<b><a name="line768">768  </a></b>		}
+<b><a name="line769">769  </a></b>		<a href="#line666">srcofs</a> = ((<a href="../../../../include/stdint.h/code.html#line122">uintptr_t</a>)<a href="#line659">src</a> &amp; 0x0F);
+<b><a name="line770">770  </a></b>	
+<b><a name="line771">771  </a></b>		/**
+<b><a name="line772">772  </a></b>		 * For aligned copy
+<b><a name="line773">773  </a></b>		 */
+<b><a name="line774">774  </a></b>		if (<a href="#line666">srcofs</a> == 0) {
+<b><a name="line775">775  </a></b>			/**
+<b><a name="line776">776  </a></b>			 * Copy 256-byte blocks
+<b><a name="line777">777  </a></b>			 */
+<b><a name="line778">778  </a></b>			for (; <a href="#line659">n</a> &gt;= 256; <a href="#line659">n</a> -= 256) {
+<b><a name="line779">779  </a></b>				<a href="#line544">rte_mov256</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a>, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a>);
+<b><a name="line780">780  </a></b>				<a href="#line659">dst</a> = (<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">dst</a> + 256;
+<b><a name="line781">781  </a></b>				<a href="#line659">src</a> = (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line659">src</a> + 256;
+<b><a name="line782">782  </a></b>			}
+<b><a name="line783">783  </a></b>	
+<b><a name="line784">784  </a></b>			/**
+<b><a name="line785">785  </a></b>			 * Copy whatever left
+<b><a name="line786">786  </a></b>			 */
+<b><a name="line787">787  </a></b>			goto <a href="#rte_memcpy_generic:COPY_BLOCK_255_BACK15">COPY_BLOCK_255_BACK15</a>;
+<b><a name="line788">788  </a></b>		}
+<b><a name="line789">789  </a></b>	
+<b><a name="line790">790  </a></b>		/**
+<b><a name="line791">791  </a></b>		 * For copy with unaligned load
+<b><a name="line792">792  </a></b>		 */
+<b><a name="line793">793  </a></b>		<a href="#line636">MOVEUNALIGNED_LEFT47</a>(dst, src, n, srcofs);
+<b><a name="line794">794  </a></b>	
+<b><a name="line795">795  </a></b>		/**
+<b><a name="line796">796  </a></b>		 * Copy whatever left
+<b><a name="line797">797  </a></b>		 */
+<b><a name="line798">798  </a></b>		goto <a href="#rte_memcpy_generic:COPY_BLOCK_64_BACK15">COPY_BLOCK_64_BACK15</a>;
+<b><a name="line799">799  </a></b>	}
+<b><a name="line800">800  </a></b>	
+<b><a name="line801">801  </a></b>	#endif /* RTE_MACHINE_CPUFLAG */
+<b><a name="line802">802  </a></b>	
+<b><a name="line803">803  </a></b>	static inline void *
+<b><a name="line804">804  </a></b>	<b>rte_memcpy_aligned</b>(void *<b>dst</b>, const void *<b>src</b>, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>n</b>)
+<b><a name="line805">805  </a></b>	{
+<b><a name="line806">806  </a></b>		void *<b>ret</b> = <a href="#line804">dst</a>;
+<b><a name="line807">807  </a></b>	
+<b><a name="line808">808  </a></b>		/* Copy size &lt;= 16 bytes */
+<b><a name="line809">809  </a></b>		if (<a href="#line804">n</a> &lt; 16) {
+<b><a name="line810">810  </a></b>			if (<a href="#line804">n</a> &amp; 0x01) {
+<b><a name="line811">811  </a></b>				*(<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line804">dst</a> = *(const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line804">src</a>;
+<b><a name="line812">812  </a></b>				<a href="#line804">src</a> = (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line804">src</a> + 1;
+<b><a name="line813">813  </a></b>				<a href="#line804">dst</a> = (<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line804">dst</a> + 1;
+<b><a name="line814">814  </a></b>			}
+<b><a name="line815">815  </a></b>			if (<a href="#line804">n</a> &amp; 0x02) {
+<b><a name="line816">816  </a></b>				*(<a href="../../../../include/stdint.h/code.html#line49">uint16_t</a> *)<a href="#line804">dst</a> = *(const <a href="../../../../include/stdint.h/code.html#line49">uint16_t</a> *)<a href="#line804">src</a>;
+<b><a name="line817">817  </a></b>				<a href="#line804">src</a> = (const <a href="../../../../include/stdint.h/code.html#line49">uint16_t</a> *)<a href="#line804">src</a> + 1;
+<b><a name="line818">818  </a></b>				<a href="#line804">dst</a> = (<a href="../../../../include/stdint.h/code.html#line49">uint16_t</a> *)<a href="#line804">dst</a> + 1;
+<b><a name="line819">819  </a></b>			}
+<b><a name="line820">820  </a></b>			if (<a href="#line804">n</a> &amp; 0x04) {
+<b><a name="line821">821  </a></b>				*(<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> *)<a href="#line804">dst</a> = *(const <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> *)<a href="#line804">src</a>;
+<b><a name="line822">822  </a></b>				<a href="#line804">src</a> = (const <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> *)<a href="#line804">src</a> + 1;
+<b><a name="line823">823  </a></b>				<a href="#line804">dst</a> = (<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> *)<a href="#line804">dst</a> + 1;
+<b><a name="line824">824  </a></b>			}
+<b><a name="line825">825  </a></b>			if (<a href="#line804">n</a> &amp; 0x08)
+<b><a name="line826">826  </a></b>				*(<a href="../../../../include/stdint.h/code.html#line55">uint64_t</a> *)<a href="#line804">dst</a> = *(const <a href="../../../../include/stdint.h/code.html#line55">uint64_t</a> *)<a href="#line804">src</a>;
+<b><a name="line827">827  </a></b>	
+<b><a name="line828">828  </a></b>			return <a href="#line806">ret</a>;
+<b><a name="line829">829  </a></b>		}
+<b><a name="line830">830  </a></b>	
+<b><a name="line831">831  </a></b>		/* Copy 16 &lt;= size &lt;= 32 bytes */
+<b><a name="line832">832  </a></b>		if (<a href="#line804">n</a> &lt;= 32) {
+<b><a name="line833">833  </a></b>			<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line804">dst</a>, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line804">src</a>);
+<b><a name="line834">834  </a></b>			<a href="#line490">rte_mov16</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line804">dst</a> - 16 + <a href="#line804">n</a>,
+<b><a name="line835">835  </a></b>					(const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line804">src</a> - 16 + <a href="#line804">n</a>);
+<b><a name="line836">836  </a></b>	
+<b><a name="line837">837  </a></b>			return <a href="#line806">ret</a>;
+<b><a name="line838">838  </a></b>		}
+<b><a name="line839">839  </a></b>	
+<b><a name="line840">840  </a></b>		/* Copy 32 &lt; size &lt;= 64 bytes */
+<b><a name="line841">841  </a></b>		if (<a href="#line804">n</a> &lt;= 64) {
+<b><a name="line842">842  </a></b>			<a href="#line503">rte_mov32</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line804">dst</a>, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line804">src</a>);
+<b><a name="line843">843  </a></b>			<a href="#line503">rte_mov32</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line804">dst</a> - 32 + <a href="#line804">n</a>,
+<b><a name="line844">844  </a></b>					(const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line804">src</a> - 32 + <a href="#line804">n</a>);
+<b><a name="line845">845  </a></b>	
+<b><a name="line846">846  </a></b>			return <a href="#line806">ret</a>;
+<b><a name="line847">847  </a></b>		}
+<b><a name="line848">848  </a></b>	
+<b><a name="line849">849  </a></b>		/* Copy 64 bytes blocks */
+<b><a name="line850">850  </a></b>		for (; <a href="#line804">n</a> &gt;= 64; <a href="#line804">n</a> -= 64) {
+<b><a name="line851">851  </a></b>			<a href="#line514">rte_mov64</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line804">dst</a>, (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line804">src</a>);
+<b><a name="line852">852  </a></b>			<a href="#line804">dst</a> = (<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line804">dst</a> + 64;
+<b><a name="line853">853  </a></b>			<a href="#line804">src</a> = (const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line804">src</a> + 64;
+<b><a name="line854">854  </a></b>		}
+<b><a name="line855">855  </a></b>	
+<b><a name="line856">856  </a></b>		/* Copy whatever left */
+<b><a name="line857">857  </a></b>		<a href="#line514">rte_mov64</a>((<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line804">dst</a> - 64 + <a href="#line804">n</a>,
+<b><a name="line858">858  </a></b>				(const <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> *)<a href="#line804">src</a> - 64 + <a href="#line804">n</a>);
+<b><a name="line859">859  </a></b>	
+<b><a name="line860">860  </a></b>		return <a href="#line806">ret</a>;
+<b><a name="line861">861  </a></b>	}
+<b><a name="line862">862  </a></b>	
+<b><a name="line863">863  </a></b>	static inline void *
+<b><a name="line864">864  </a></b>	<b>rte_memcpy</b>(void *<b>dst</b>, const void *<b>src</b>, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>n</b>)
+<b><a name="line865">865  </a></b>	{
+<b><a name="line866">866  </a></b>		if (!(((<a href="../../../../include/stdint.h/code.html#line122">uintptr_t</a>)<a href="#line864">dst</a> | (<a href="../../../../include/stdint.h/code.html#line122">uintptr_t</a>)<a href="#line864">src</a>) &amp; <a href="#line479">ALIGNMENT_MASK</a>))
+<b><a name="line867">867  </a></b>			return <a href="#line804">rte_memcpy_aligned</a>(<a href="#line864">dst</a>, <a href="#line864">src</a>, <a href="#line864">n</a>);
+<b><a name="line868">868  </a></b>		else
+<b><a name="line869">869  </a></b>			return <a href="#line659">rte_memcpy_generic</a>(<a href="#line864">dst</a>, <a href="#line864">src</a>, <a href="#line864">n</a>);
+<b><a name="line870">870  </a></b>	}
+<b><a name="line871">871  </a></b>	
+<b><a name="line872">872  </a></b>	#ifdef __cplusplus
+<b><a name="line873">873  </a></b>	}
+<b><a name="line874">874  </a></b>	#endif
+<b><a name="line875">875  </a></b>	
+<b><a name="line876">876  </a></b>	#endif /* _RTE_MEMCPY_X86_64_H_ */
+<b><a name="line877">877  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

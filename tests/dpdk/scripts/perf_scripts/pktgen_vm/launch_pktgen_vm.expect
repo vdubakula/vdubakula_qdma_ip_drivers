@@ -1,0 +1,15 @@
+#!/usr/bin/expect
+
+set timeout -1
+
+set bdf [lindex $argv 0]
+set desc [lindex $argv 1]
+set pfch [lindex $argv 2]
+set c2 [lindex $argv 3]
+set c3 [lindex $argv 4]
+set c4 [lindex $argv 5]
+
+spawn ./build/app/pktgen -l 1-$c4 -n 4 -a $bdf,desc_prefetch=$pfch,cmpt_desc_len=$desc --iova-mode=pa -d librte_net_qdma.so -- -P -m "\[2-$c2:$c3-$c4\].0" -9 -N -f test_vm.lua
+set ids(1) $spawn_id
+expect -i $ids(1) "All set and done !!!!!!!!!!!"
+send  -i $ids(1) \r

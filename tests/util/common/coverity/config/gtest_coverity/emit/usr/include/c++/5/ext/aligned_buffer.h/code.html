@@ -1,0 +1,176 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/ext/aligned_buffer.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Aligned memory buffer -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2013-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file ext/aligned_buffer.h
+<b><a name="line26">26   </a></b>	 *  This file is a GNU extension to the Standard C++ Library.
+<b><a name="line27">27   </a></b>	 */
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	#ifndef _ALIGNED_BUFFER_H
+<b><a name="line30">30   </a></b>	#define <b>_ALIGNED_BUFFER_H</b> 1
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	#pragma GCC system_header
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line35">35   </a></b>	# include &lt;type_traits&gt;
+<b><a name="line36">36   </a></b>	#else
+<b><a name="line37">37   </a></b>	# include &lt;bits/c++0x_warning.h&gt;
+<b><a name="line38">38   </a></b>	#endif
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>
+<b><a name="line41">41   </a></b>	{
+<b><a name="line42">42   </a></b>	  // A utility type containing a POD object that can hold an object of type
+<b><a name="line43">43   </a></b>	  // _Tp initialized via placement new or allocator_traits::construct.
+<b><a name="line44">44   </a></b>	  // Intended for use as a data member subobject, use __aligned_buffer for
+<b><a name="line45">45   </a></b>	  // complete objects.
+<b><a name="line46">46   </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line47">47   </a></b>	    struct __aligned_membuf
+<b><a name="line48">48   </a></b>	    {
+<b><a name="line49">49   </a></b>	      // Target macro ADJUST_FIELD_ALIGN can produce different alignment for
+<b><a name="line50">50   </a></b>	      // types when used as class members. __aligned_membuf is intended
+<b><a name="line51">51   </a></b>	      // for use as a class member, so align the buffer as for a class member.
+<b><a name="line52">52   </a></b>	      struct _Tp2 { <a href="#line46">_Tp</a> <b>_M_t</b>; };
+<b><a name="line53">53   </a></b>	
+<b><a name="line54">54   </a></b>	      alignas(__alignof__(<a href="#line52">_Tp2</a>::<a href="#line52">_M_t</a>)) unsigned char <b>_M_storage</b>[sizeof(<a href="#line46">_Tp</a>)];
+<b><a name="line55">55   </a></b>	
+<b><a name="line56">56   </a></b>	      <b>__aligned_membuf</b>() = default;
+<b><a name="line57">57   </a></b>	
+<b><a name="line58">58   </a></b>	      // Can be used to avoid value-initialization zeroing _M_storage.
+<b><a name="line59">59   </a></b>	      __aligned_membuf(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>) { }
+<b><a name="line60">60   </a></b>	
+<b><a name="line61">61   </a></b>	      void*
+<b><a name="line62">62   </a></b>	      _M_addr() noexcept
+<b><a name="line63">63   </a></b>	      { return static_cast&lt;void*&gt;(&amp;<a href="#line54">_M_storage</a>); }
+<b><a name="line64">64   </a></b>	
+<b><a name="line65">65   </a></b>	      const void*
+<b><a name="line66">66   </a></b>	      _M_addr() const noexcept
+<b><a name="line67">67   </a></b>	      { return static_cast&lt;const void*&gt;(&amp;<a href="#line54">_M_storage</a>); }
+<b><a name="line68">68   </a></b>	
+<b><a name="line69">69   </a></b>	      <a href="#line46">_Tp</a>*
+<b><a name="line70">70   </a></b>	      _M_ptr() noexcept
+<b><a name="line71">71   </a></b>	      { return static_cast&lt;<a href="#line46">_Tp</a>*&gt;(<a href="#line62">_M_addr</a>()); }
+<b><a name="line72">72   </a></b>	
+<b><a name="line73">73   </a></b>	      const <a href="#line46">_Tp</a>*
+<b><a name="line74">74   </a></b>	      _M_ptr() const noexcept
+<b><a name="line75">75   </a></b>	      { return static_cast&lt;const <a href="#line46">_Tp</a>*&gt;(<a href="#line66">_M_addr</a>()); }
+<b><a name="line76">76   </a></b>	    };
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	  // Similar to __aligned_membuf but aligned for complete objects, not members.
+<b><a name="line79">79   </a></b>	  // This type is used in &lt;forward_list&gt;, &lt;future&gt;, &lt;bits/shared_ptr_base.h&gt;
+<b><a name="line80">80   </a></b>	  // and &lt;bits/hashtable_policy.h&gt;, but ideally they would use __aligned_membuf
+<b><a name="line81">81   </a></b>	  // instead, as it has smaller size for some types on some targets.
+<b><a name="line82">82   </a></b>	  // This type is still used to avoid an ABI change.
+<b><a name="line83">83   </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line84">84   </a></b>	    struct __aligned_buffer
+<b><a name="line85">85   </a></b>	    : <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../type_traits/code.html#line1986">aligned_storage</a>&lt;sizeof(<a href="#line83">_Tp</a>), <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../type_traits/code.html#line1410">alignment_of</a>&lt;<a href="#line83">_Tp</a>&gt;::<a href="../../type_traits/code.html#line71">value</a>&gt;
+<b><a name="line86">86   </a></b>	    {
+<b><a name="line87">87   </a></b>	      typename
+<b><a name="line88">88   </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../type_traits/code.html#line1986">aligned_storage</a>&lt;sizeof(<a href="#line83">_Tp</a>), <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../type_traits/code.html#line1410">alignment_of</a>&lt;<a href="#line83">_Tp</a>&gt;::<a href="../../type_traits/code.html#line71">value</a>&gt;::<a href="../../type_traits/code.html#line1988">type</a>
+<b><a name="line89">89   </a></b>		<b>_M_storage</b>;
+<b><a name="line90">90   </a></b>	
+<b><a name="line91">91   </a></b>	      <b>__aligned_buffer</b>() = default;
+<b><a name="line92">92   </a></b>	
+<b><a name="line93">93   </a></b>	      // Can be used to avoid value-initialization
+<b><a name="line94">94   </a></b>	      __aligned_buffer(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>) { }
+<b><a name="line95">95   </a></b>	
+<b><a name="line96">96   </a></b>	      void*
+<b><a name="line97">97   </a></b>	      _M_addr() noexcept
+<b><a name="line98">98   </a></b>	      {
+<b><a name="line99">99   </a></b>	        return static_cast&lt;void*&gt;(&amp;<a href="#line89">_M_storage</a>);
+<b><a name="line100">100  </a></b>	      }
+<b><a name="line101">101  </a></b>	
+<b><a name="line102">102  </a></b>	      const void*
+<b><a name="line103">103  </a></b>	      _M_addr() const noexcept
+<b><a name="line104">104  </a></b>	      {
+<b><a name="line105">105  </a></b>	        return static_cast&lt;const void*&gt;(&amp;_M_storage);
+<b><a name="line106">106  </a></b>	      }
+<b><a name="line107">107  </a></b>	
+<b><a name="line108">108  </a></b>	      <a href="#line83">_Tp</a>*
+<b><a name="line109">109  </a></b>	      _M_ptr() noexcept
+<b><a name="line110">110  </a></b>	      { return static_cast&lt;<a href="#line83">_Tp</a>*&gt;(<a href="#line97">_M_addr</a>()); }
+<b><a name="line111">111  </a></b>	
+<b><a name="line112">112  </a></b>	      const <a href="#line83">_Tp</a>*
+<b><a name="line113">113  </a></b>	      _M_ptr() const noexcept
+<b><a name="line114">114  </a></b>	      { return static_cast&lt;const _Tp*&gt;(_M_addr()); }
+<b><a name="line115">115  </a></b>	    };
+<b><a name="line116">116  </a></b>	
+<b><a name="line117">117  </a></b>	} // namespace
+<b><a name="line118">118  </a></b>	
+<b><a name="line119">119  </a></b>	#endif /* _ALIGNED_BUFFER_H */
+<b><a name="line120">120  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

@@ -1,0 +1,993 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/istream</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Input streams -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 1997-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	//
+<b><a name="line26">26   </a></b>	// ISO C++ 14882: 27.6.1  Input streams
+<b><a name="line27">27   </a></b>	//
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	/** @file include/istream
+<b><a name="line30">30   </a></b>	 *  This is a Standard C++ Library header.
+<b><a name="line31">31   </a></b>	 */
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	#ifndef _GLIBCXX_ISTREAM
+<b><a name="line34">34   </a></b>	#define <b>_GLIBCXX_ISTREAM</b> 1
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	#pragma GCC system_header
+<b><a name="line37">37   </a></b>	
+<b><a name="line38">38   </a></b>	#include &lt;ios&gt;
+<b><a name="line39">39   </a></b>	#include &lt;ostream&gt;
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	namespace <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line42">42   </a></b>	{
+<b><a name="line43">43   </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line44">44   </a></b>	
+<b><a name="line45">45   </a></b>	  /**
+<b><a name="line46">46   </a></b>	   *  @brief  Template class basic_istream.
+<b><a name="line47">47   </a></b>	   *  @ingroup io
+<b><a name="line48">48   </a></b>	   *
+<b><a name="line49">49   </a></b>	   *  @tparam _CharT  Type of character stream.
+<b><a name="line50">50   </a></b>	   *  @tparam _Traits  Traits for character type, defaults to
+<b><a name="line51">51   </a></b>	   *                   char_traits&lt;_CharT&gt;.
+<b><a name="line52">52   </a></b>	   *
+<b><a name="line53">53   </a></b>	   *  This is the base class for all input streams.  It provides text
+<b><a name="line54">54   </a></b>	   *  formatting of all builtin types, and communicates with any class
+<b><a name="line55">55   </a></b>	   *  derived from basic_streambuf to do the actual input.
+<b><a name="line56">56   </a></b>	  */
+<b><a name="line57">57   </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line58">58   </a></b>	    class <b>basic_istream</b> : virtual public <a href="../iosfwd/code.html#line77">basic_ios</a>&lt;<a href="#line57">_CharT</a>, <a href="#line57">_Traits</a>&gt;
+<b><a name="line59">59   </a></b>	    {
+<b><a name="line60">60   </a></b>	    public:
+<b><a name="line61">61   </a></b>	      // Types (inherited from basic_ios (27.4.4)):
+<b><a name="line62">62   </a></b>	      typedef <a href="#line57">_CharT</a>			 		<b>char_type</b>;
+<b><a name="line63">63   </a></b>	      typedef typename <a href="#line57">_Traits</a>::<a href="../bits/char_traits.h/code.html#line236">int_type</a> 		<b>int_type</b>;
+<b><a name="line64">64   </a></b>	      typedef typename <a href="#line57">_Traits</a>::<a href="../bits/char_traits.h/code.html#line237">pos_type</a> 		<b>pos_type</b>;
+<b><a name="line65">65   </a></b>	      typedef typename <a href="#line57">_Traits</a>::<a href="../bits/char_traits.h/code.html#line238">off_type</a> 		<b>off_type</b>;
+<b><a name="line66">66   </a></b>	      typedef <a href="#line57">_Traits</a>			 		<b>traits_type</b>;
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	      // Non-standard Types:
+<b><a name="line69">69   </a></b>	      typedef <a href="../iosfwd/code.html#line80">basic_streambuf</a>&lt;<a href="#line57">_CharT</a>, <a href="#line57">_Traits</a>&gt; 		<b>__streambuf_type</b>;
+<b><a name="line70">70   </a></b>	      typedef <a href="../iosfwd/code.html#line77">basic_ios</a>&lt;<a href="#line57">_CharT</a>, <a href="#line57">_Traits</a>&gt;		<b>__ios_type</b>;
+<b><a name="line71">71   </a></b>	      typedef <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line57">_CharT</a>, <a href="#line57">_Traits</a>&gt;		<b>__istream_type</b>;
+<b><a name="line72">72   </a></b>	      typedef <a href="../bits/locale_facets.h/code.html#line1948">num_get</a>&lt;<a href="#line57">_CharT</a>, <a href="../iosfwd/code.html#line125">istreambuf_iterator</a>&lt;<a href="#line57">_CharT</a>, <a href="#line57">_Traits</a>&gt; &gt;
+<b><a name="line73">73   </a></b>	 							<b>__num_get_type</b>;
+<b><a name="line74">74   </a></b>	      typedef <a href="../bits/localefwd.h/code.html#line127">ctype</a>&lt;<a href="#line57">_CharT</a>&gt;	      			<b>__ctype_type</b>;
+<b><a name="line75">75   </a></b>	
+<b><a name="line76">76   </a></b>	    protected:
+<b><a name="line77">77   </a></b>	      // Data Members:
+<b><a name="line78">78   </a></b>	      /**
+<b><a name="line79">79   </a></b>	       *  The number of characters extracted in the previous unformatted
+<b><a name="line80">80   </a></b>	       *  function; see gcount().
+<b><a name="line81">81   </a></b>	      */
+<b><a name="line82">82   </a></b>	      <a href="../bits/postypes.h/code.html#line98">streamsize</a> 		<b>_M_gcount</b>;
+<b><a name="line83">83   </a></b>	
+<b><a name="line84">84   </a></b>	    public:
+<b><a name="line85">85   </a></b>	      /**
+<b><a name="line86">86   </a></b>	       *  @brief  Base constructor.
+<b><a name="line87">87   </a></b>	       *
+<b><a name="line88">88   </a></b>	       *  This ctor is almost never called by the user directly, rather from
+<b><a name="line89">89   </a></b>	       *  derived classes' initialization lists, which pass a pointer to
+<b><a name="line90">90   </a></b>	       *  their own stream buffer.
+<b><a name="line91">91   </a></b>	      */
+<b><a name="line92">92   </a></b>	      explicit
+<b><a name="line93">93   </a></b>	      basic_istream(<a href="#line69">__streambuf_type</a>* __sb)
+<b><a name="line94">94   </a></b>	      : _M_gcount(streamsize(0))
+<b><a name="line95">95   </a></b>	      { this-&gt;init(__sb); }
+<b><a name="line96">96   </a></b>	
+<b><a name="line97">97   </a></b>	      /**
+<b><a name="line98">98   </a></b>	       *  @brief  Base destructor.
+<b><a name="line99">99   </a></b>	       *
+<b><a name="line100">100  </a></b>	       *  This does very little apart from providing a virtual base dtor.
+<b><a name="line101">101  </a></b>	      */
+<b><a name="line102">102  </a></b>	      virtual
+<b><a name="line103">103  </a></b>	      ~basic_istream()
+<b><a name="line104">104  </a></b>	      { <a href="#line82">_M_gcount</a> = <a href="../bits/postypes.h/code.html#line98">streamsize</a>(0); }
+<b><a name="line105">105  </a></b>	
+<b><a name="line106">106  </a></b>	      /// Safe prefix/suffix operations.
+<b><a name="line107">107  </a></b>	      class sentry;
+<b><a name="line108">108  </a></b>	      friend class <a href="#line107">sentry</a>;
+<b><a name="line109">109  </a></b>	
+<b><a name="line110">110  </a></b>	      //@{
+<b><a name="line111">111  </a></b>	      /**
+<b><a name="line112">112  </a></b>	       *  @brief  Interface for manipulators.
+<b><a name="line113">113  </a></b>	       *
+<b><a name="line114">114  </a></b>	       *  Manipulators such as @c std::ws and @c std::dec use these
+<b><a name="line115">115  </a></b>	       *  functions in constructs like
+<b><a name="line116">116  </a></b>	       *  &lt;code&gt;std::cin &gt;&gt; std::ws&lt;/code&gt;.
+<b><a name="line117">117  </a></b>	       *  For more information, see the iomanip header.
+<b><a name="line118">118  </a></b>	      */
+<b><a name="line119">119  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line120">120  </a></b>	      operator&gt;&gt;(<a href="#line71">__istream_type</a>&amp; (*__pf)(<a href="#line71">__istream_type</a>&amp;))
+<b><a name="line121">121  </a></b>	      { return __pf(*this); }
+<b><a name="line122">122  </a></b>	
+<b><a name="line123">123  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line124">124  </a></b>	      operator&gt;&gt;(<a href="#line70">__ios_type</a>&amp; (*__pf)(<a href="#line70">__ios_type</a>&amp;))
+<b><a name="line125">125  </a></b>	      {
+<b><a name="line126">126  </a></b>		__pf(*this);
+<b><a name="line127">127  </a></b>		return *this;
+<b><a name="line128">128  </a></b>	      }
+<b><a name="line129">129  </a></b>	
+<b><a name="line130">130  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line131">131  </a></b>	      operator&gt;&gt;(<a href="../iosfwd/code.html#line74">ios_base</a>&amp; (*<b>__pf</b>)(<a href="../iosfwd/code.html#line74">ios_base</a>&amp;))
+<b><a name="line132">132  </a></b>	      {
+<b><a name="line133">133  </a></b>		<a href="#line131">__pf</a>(*this);
+<b><a name="line134">134  </a></b>		return *this;
+<b><a name="line135">135  </a></b>	      }
+<b><a name="line136">136  </a></b>	      //@}
+<b><a name="line137">137  </a></b>	
+<b><a name="line138">138  </a></b>	      //@{
+<b><a name="line139">139  </a></b>	      /**
+<b><a name="line140">140  </a></b>	       *  @name Extractors
+<b><a name="line141">141  </a></b>	       *
+<b><a name="line142">142  </a></b>	       *  All the @c operator&gt;&gt; functions (aka &lt;em&gt;formatted input
+<b><a name="line143">143  </a></b>	       *  functions&lt;/em&gt;) have some common behavior.  Each starts by
+<b><a name="line144">144  </a></b>	       *  constructing a temporary object of type std::basic_istream::sentry
+<b><a name="line145">145  </a></b>	       *  with the second argument (noskipws) set to false.  This has several
+<b><a name="line146">146  </a></b>	       *  effects, concluding with the setting of a status flag; see the
+<b><a name="line147">147  </a></b>	       *  sentry documentation for more.
+<b><a name="line148">148  </a></b>	       *
+<b><a name="line149">149  </a></b>	       *  If the sentry status is good, the function tries to extract
+<b><a name="line150">150  </a></b>	       *  whatever data is appropriate for the type of the argument.
+<b><a name="line151">151  </a></b>	       *
+<b><a name="line152">152  </a></b>	       *  If an exception is thrown during extraction, ios_base::badbit
+<b><a name="line153">153  </a></b>	       *  will be turned on in the stream's error state without causing an
+<b><a name="line154">154  </a></b>	       *  ios_base::failure to be thrown.  The original exception will then
+<b><a name="line155">155  </a></b>	       *  be rethrown.
+<b><a name="line156">156  </a></b>	      */
+<b><a name="line157">157  </a></b>	
+<b><a name="line158">158  </a></b>	      //@{
+<b><a name="line159">159  </a></b>	      /**
+<b><a name="line160">160  </a></b>	       *  @brief  Integer arithmetic extractors
+<b><a name="line161">161  </a></b>	       *  @param  __n A variable of builtin integral type.
+<b><a name="line162">162  </a></b>	       *  @return  @c *this if successful
+<b><a name="line163">163  </a></b>	       *
+<b><a name="line164">164  </a></b>	       *  These functions use the stream's current locale (specifically, the
+<b><a name="line165">165  </a></b>	       *  @c num_get facet) to parse the input data.
+<b><a name="line166">166  </a></b>	      */
+<b><a name="line167">167  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line168">168  </a></b>	      operator&gt;&gt;(bool&amp; __n)
+<b><a name="line169">169  </a></b>	      { return _M_extract(__n); }
+<b><a name="line170">170  </a></b>	
+<b><a name="line171">171  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line172">172  </a></b>	      operator&gt;&gt;(short&amp; __n);
+<b><a name="line173">173  </a></b>	
+<b><a name="line174">174  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line175">175  </a></b>	      operator&gt;&gt;(unsigned short&amp; __n)
+<b><a name="line176">176  </a></b>	      { return _M_extract(__n); }
+<b><a name="line177">177  </a></b>	
+<b><a name="line178">178  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line179">179  </a></b>	      operator&gt;&gt;(int&amp; __n);
+<b><a name="line180">180  </a></b>	
+<b><a name="line181">181  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line182">182  </a></b>	      operator&gt;&gt;(unsigned int&amp; __n)
+<b><a name="line183">183  </a></b>	      { return _M_extract(__n); }
+<b><a name="line184">184  </a></b>	
+<b><a name="line185">185  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line186">186  </a></b>	      operator&gt;&gt;(long&amp; __n)
+<b><a name="line187">187  </a></b>	      { return _M_extract(__n); }
+<b><a name="line188">188  </a></b>	
+<b><a name="line189">189  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line190">190  </a></b>	      operator&gt;&gt;(unsigned long&amp; <b>__n</b>)
+<b><a name="line191">191  </a></b>	      { return <a href="#line641">_M_extract</a>(<a href="#line190">__n</a>); }
+<b><a name="line192">192  </a></b>	
+<b><a name="line193">193  </a></b>	#ifdef <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1385">_GLIBCXX_USE_LONG_LONG</a>
+<b><a name="line194">194  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line195">195  </a></b>	      operator&gt;&gt;(long long&amp; __n)
+<b><a name="line196">196  </a></b>	      { return _M_extract(__n); }
+<b><a name="line197">197  </a></b>	
+<b><a name="line198">198  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line199">199  </a></b>	      operator&gt;&gt;(unsigned long long&amp; __n)
+<b><a name="line200">200  </a></b>	      { return _M_extract(__n); }
+<b><a name="line201">201  </a></b>	#endif
+<b><a name="line202">202  </a></b>	      //@}
+<b><a name="line203">203  </a></b>	
+<b><a name="line204">204  </a></b>	      //@{
+<b><a name="line205">205  </a></b>	      /**
+<b><a name="line206">206  </a></b>	       *  @brief  Floating point arithmetic extractors
+<b><a name="line207">207  </a></b>	       *  @param  __f A variable of builtin floating point type.
+<b><a name="line208">208  </a></b>	       *  @return  @c *this if successful
+<b><a name="line209">209  </a></b>	       *
+<b><a name="line210">210  </a></b>	       *  These functions use the stream's current locale (specifically, the
+<b><a name="line211">211  </a></b>	       *  @c num_get facet) to parse the input data.
+<b><a name="line212">212  </a></b>	      */
+<b><a name="line213">213  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line214">214  </a></b>	      operator&gt;&gt;(float&amp; __f)
+<b><a name="line215">215  </a></b>	      { return _M_extract(__f); }
+<b><a name="line216">216  </a></b>	
+<b><a name="line217">217  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line218">218  </a></b>	      operator&gt;&gt;(double&amp; __f)
+<b><a name="line219">219  </a></b>	      { return _M_extract(__f); }
+<b><a name="line220">220  </a></b>	
+<b><a name="line221">221  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line222">222  </a></b>	      operator&gt;&gt;(long double&amp; __f)
+<b><a name="line223">223  </a></b>	      { return _M_extract(__f); }
+<b><a name="line224">224  </a></b>	      //@}
+<b><a name="line225">225  </a></b>	
+<b><a name="line226">226  </a></b>	      /**
+<b><a name="line227">227  </a></b>	       *  @brief  Basic arithmetic extractors
+<b><a name="line228">228  </a></b>	       *  @param  __p A variable of pointer type.
+<b><a name="line229">229  </a></b>	       *  @return  @c *this if successful
+<b><a name="line230">230  </a></b>	       *
+<b><a name="line231">231  </a></b>	       *  These functions use the stream's current locale (specifically, the
+<b><a name="line232">232  </a></b>	       *  @c num_get facet) to parse the input data.
+<b><a name="line233">233  </a></b>	      */
+<b><a name="line234">234  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line235">235  </a></b>	      operator&gt;&gt;(void*&amp; __p)
+<b><a name="line236">236  </a></b>	      { return _M_extract(__p); }
+<b><a name="line237">237  </a></b>	
+<b><a name="line238">238  </a></b>	      /**
+<b><a name="line239">239  </a></b>	       *  @brief  Extracting into another streambuf.
+<b><a name="line240">240  </a></b>	       *  @param  __sb  A pointer to a streambuf
+<b><a name="line241">241  </a></b>	       *
+<b><a name="line242">242  </a></b>	       *  This function behaves like one of the basic arithmetic extractors,
+<b><a name="line243">243  </a></b>	       *  in that it also constructs a sentry object and has the same error
+<b><a name="line244">244  </a></b>	       *  handling behavior.
+<b><a name="line245">245  </a></b>	       *
+<b><a name="line246">246  </a></b>	       *  If @p __sb is NULL, the stream will set failbit in its error state.
+<b><a name="line247">247  </a></b>	       *
+<b><a name="line248">248  </a></b>	       *  Characters are extracted from this stream and inserted into the
+<b><a name="line249">249  </a></b>	       *  @p __sb streambuf until one of the following occurs:
+<b><a name="line250">250  </a></b>	       *
+<b><a name="line251">251  </a></b>	       *  - the input stream reaches end-of-file,
+<b><a name="line252">252  </a></b>	       *  - insertion into the output buffer fails (in this case, the
+<b><a name="line253">253  </a></b>	       *    character that would have been inserted is not extracted), or
+<b><a name="line254">254  </a></b>	       *  - an exception occurs (and in this case is caught)
+<b><a name="line255">255  </a></b>	       *
+<b><a name="line256">256  </a></b>	       *  If the function inserts no characters, failbit is set.
+<b><a name="line257">257  </a></b>	      */
+<b><a name="line258">258  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line259">259  </a></b>	      operator&gt;&gt;(<a href="#line69">__streambuf_type</a>* __sb);
+<b><a name="line260">260  </a></b>	      //@}
+<b><a name="line261">261  </a></b>	
+<b><a name="line262">262  </a></b>	      // [27.6.1.3] unformatted input
+<b><a name="line263">263  </a></b>	      /**
+<b><a name="line264">264  </a></b>	       *  @brief  Character counting
+<b><a name="line265">265  </a></b>	       *  @return  The number of characters extracted by the previous
+<b><a name="line266">266  </a></b>	       *           unformatted input function dispatched for this stream.
+<b><a name="line267">267  </a></b>	      */
+<b><a name="line268">268  </a></b>	      <a href="../bits/postypes.h/code.html#line98">streamsize</a>
+<b><a name="line269">269  </a></b>	      gcount() const
+<b><a name="line270">270  </a></b>	      { return _M_gcount; }
+<b><a name="line271">271  </a></b>	
+<b><a name="line272">272  </a></b>	      //@{
+<b><a name="line273">273  </a></b>	      /**
+<b><a name="line274">274  </a></b>	       *  @name Unformatted Input Functions
+<b><a name="line275">275  </a></b>	       *
+<b><a name="line276">276  </a></b>	       *  All the unformatted input functions have some common behavior.
+<b><a name="line277">277  </a></b>	       *  Each starts by constructing a temporary object of type
+<b><a name="line278">278  </a></b>	       *  std::basic_istream::sentry with the second argument (noskipws)
+<b><a name="line279">279  </a></b>	       *  set to true.  This has several effects, concluding with the
+<b><a name="line280">280  </a></b>	       *  setting of a status flag; see the sentry documentation for more.
+<b><a name="line281">281  </a></b>	       *
+<b><a name="line282">282  </a></b>	       *  If the sentry status is good, the function tries to extract
+<b><a name="line283">283  </a></b>	       *  whatever data is appropriate for the type of the argument.
+<b><a name="line284">284  </a></b>	       *
+<b><a name="line285">285  </a></b>	       *  The number of characters extracted is stored for later retrieval
+<b><a name="line286">286  </a></b>	       *  by gcount().
+<b><a name="line287">287  </a></b>	       *
+<b><a name="line288">288  </a></b>	       *  If an exception is thrown during extraction, ios_base::badbit
+<b><a name="line289">289  </a></b>	       *  will be turned on in the stream's error state without causing an
+<b><a name="line290">290  </a></b>	       *  ios_base::failure to be thrown.  The original exception will then
+<b><a name="line291">291  </a></b>	       *  be rethrown.
+<b><a name="line292">292  </a></b>	      */
+<b><a name="line293">293  </a></b>	
+<b><a name="line294">294  </a></b>	      /**
+<b><a name="line295">295  </a></b>	       *  @brief  Simple extraction.
+<b><a name="line296">296  </a></b>	       *  @return  A character, or eof().
+<b><a name="line297">297  </a></b>	       *
+<b><a name="line298">298  </a></b>	       *  Tries to extract a character.  If none are available, sets failbit
+<b><a name="line299">299  </a></b>	       *  and returns traits::eof().
+<b><a name="line300">300  </a></b>	      */
+<b><a name="line301">301  </a></b>	      <a href="#line63">int_type</a>
+<b><a name="line302">302  </a></b>	      get();
+<b><a name="line303">303  </a></b>	
+<b><a name="line304">304  </a></b>	      /**
+<b><a name="line305">305  </a></b>	       *  @brief  Simple extraction.
+<b><a name="line306">306  </a></b>	       *  @param  __c  The character in which to store data.
+<b><a name="line307">307  </a></b>	       *  @return  *this
+<b><a name="line308">308  </a></b>	       *
+<b><a name="line309">309  </a></b>	       *  Tries to extract a character and store it in @a __c.  If none are
+<b><a name="line310">310  </a></b>	       *  available, sets failbit and returns traits::eof().
+<b><a name="line311">311  </a></b>	       *
+<b><a name="line312">312  </a></b>	       *  @note  This function is not overloaded on signed char and
+<b><a name="line313">313  </a></b>	       *         unsigned char.
+<b><a name="line314">314  </a></b>	      */
+<b><a name="line315">315  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line316">316  </a></b>	      get(<a href="#line62">char_type</a>&amp; __c);
+<b><a name="line317">317  </a></b>	
+<b><a name="line318">318  </a></b>	      /**
+<b><a name="line319">319  </a></b>	       *  @brief  Simple multiple-character extraction.
+<b><a name="line320">320  </a></b>	       *  @param  __s  Pointer to an array.
+<b><a name="line321">321  </a></b>	       *  @param  __n  Maximum number of characters to store in @a __s.
+<b><a name="line322">322  </a></b>	       *  @param  __delim  A &quot;stop&quot; character.
+<b><a name="line323">323  </a></b>	       *  @return  *this
+<b><a name="line324">324  </a></b>	       *
+<b><a name="line325">325  </a></b>	       *  Characters are extracted and stored into @a __s until one of the
+<b><a name="line326">326  </a></b>	       *  following happens:
+<b><a name="line327">327  </a></b>	       *
+<b><a name="line328">328  </a></b>	       *  - @c __n-1 characters are stored
+<b><a name="line329">329  </a></b>	       *  - the input sequence reaches EOF
+<b><a name="line330">330  </a></b>	       *  - the next character equals @a __delim, in which case the character
+<b><a name="line331">331  </a></b>	       *    is not extracted
+<b><a name="line332">332  </a></b>	       *
+<b><a name="line333">333  </a></b>	       * If no characters are stored, failbit is set in the stream's error
+<b><a name="line334">334  </a></b>	       * state.
+<b><a name="line335">335  </a></b>	       *
+<b><a name="line336">336  </a></b>	       * In any case, a null character is stored into the next location in
+<b><a name="line337">337  </a></b>	       * the array.
+<b><a name="line338">338  </a></b>	       *
+<b><a name="line339">339  </a></b>	       *  @note  This function is not overloaded on signed char and
+<b><a name="line340">340  </a></b>	       *         unsigned char.
+<b><a name="line341">341  </a></b>	      */
+<b><a name="line342">342  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line343">343  </a></b>	      get(<a href="#line62">char_type</a>* __s, <a href="../bits/postypes.h/code.html#line98">streamsize</a> __n, <a href="#line62">char_type</a> __delim);
+<b><a name="line344">344  </a></b>	
+<b><a name="line345">345  </a></b>	      /**
+<b><a name="line346">346  </a></b>	       *  @brief  Simple multiple-character extraction.
+<b><a name="line347">347  </a></b>	       *  @param  __s  Pointer to an array.
+<b><a name="line348">348  </a></b>	       *  @param  __n  Maximum number of characters to store in @a s.
+<b><a name="line349">349  </a></b>	       *  @return  *this
+<b><a name="line350">350  </a></b>	       *
+<b><a name="line351">351  </a></b>	       *  Returns @c get(__s,__n,widen(&amp;apos;\\n&amp;apos;)).
+<b><a name="line352">352  </a></b>	      */
+<b><a name="line353">353  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line354">354  </a></b>	      get(<a href="#line62">char_type</a>* __s, <a href="../bits/postypes.h/code.html#line98">streamsize</a> __n)
+<b><a name="line355">355  </a></b>	      { return this-&gt;get(__s, __n, this-&gt;widen('\n')); }
+<b><a name="line356">356  </a></b>	
+<b><a name="line357">357  </a></b>	      /**
+<b><a name="line358">358  </a></b>	       *  @brief  Extraction into another streambuf.
+<b><a name="line359">359  </a></b>	       *  @param  __sb  A streambuf in which to store data.
+<b><a name="line360">360  </a></b>	       *  @param  __delim  A &quot;stop&quot; character.
+<b><a name="line361">361  </a></b>	       *  @return  *this
+<b><a name="line362">362  </a></b>	       *
+<b><a name="line363">363  </a></b>	       *  Characters are extracted and inserted into @a __sb until one of the
+<b><a name="line364">364  </a></b>	       *  following happens:
+<b><a name="line365">365  </a></b>	       *
+<b><a name="line366">366  </a></b>	       *  - the input sequence reaches EOF
+<b><a name="line367">367  </a></b>	       *  - insertion into the output buffer fails (in this case, the
+<b><a name="line368">368  </a></b>	       *    character that would have been inserted is not extracted)
+<b><a name="line369">369  </a></b>	       *  - the next character equals @a __delim (in this case, the character
+<b><a name="line370">370  </a></b>	       *    is not extracted)
+<b><a name="line371">371  </a></b>	       *  - an exception occurs (and in this case is caught)
+<b><a name="line372">372  </a></b>	       *
+<b><a name="line373">373  </a></b>	       * If no characters are stored, failbit is set in the stream's error
+<b><a name="line374">374  </a></b>	       * state.
+<b><a name="line375">375  </a></b>	      */
+<b><a name="line376">376  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line377">377  </a></b>	      get(<a href="#line69">__streambuf_type</a>&amp; __sb, <a href="#line62">char_type</a> __delim);
+<b><a name="line378">378  </a></b>	
+<b><a name="line379">379  </a></b>	      /**
+<b><a name="line380">380  </a></b>	       *  @brief  Extraction into another streambuf.
+<b><a name="line381">381  </a></b>	       *  @param  __sb  A streambuf in which to store data.
+<b><a name="line382">382  </a></b>	       *  @return  *this
+<b><a name="line383">383  </a></b>	       *
+<b><a name="line384">384  </a></b>	       *  Returns @c get(__sb,widen(&amp;apos;\\n&amp;apos;)).
+<b><a name="line385">385  </a></b>	      */
+<b><a name="line386">386  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line387">387  </a></b>	      get(<a href="#line69">__streambuf_type</a>&amp; __sb)
+<b><a name="line388">388  </a></b>	      { return this-&gt;get(__sb, this-&gt;widen('\n')); }
+<b><a name="line389">389  </a></b>	
+<b><a name="line390">390  </a></b>	      /**
+<b><a name="line391">391  </a></b>	       *  @brief  String extraction.
+<b><a name="line392">392  </a></b>	       *  @param  __s  A character array in which to store the data.
+<b><a name="line393">393  </a></b>	       *  @param  __n  Maximum number of characters to extract.
+<b><a name="line394">394  </a></b>	       *  @param  __delim  A &quot;stop&quot; character.
+<b><a name="line395">395  </a></b>	       *  @return  *this
+<b><a name="line396">396  </a></b>	       *
+<b><a name="line397">397  </a></b>	       *  Extracts and stores characters into @a __s until one of the
+<b><a name="line398">398  </a></b>	       *  following happens.  Note that these criteria are required to be
+<b><a name="line399">399  </a></b>	       *  tested in the order listed here, to allow an input line to exactly
+<b><a name="line400">400  </a></b>	       *  fill the @a __s array without setting failbit.
+<b><a name="line401">401  </a></b>	       *
+<b><a name="line402">402  </a></b>	       *  -# the input sequence reaches end-of-file, in which case eofbit
+<b><a name="line403">403  </a></b>	       *     is set in the stream error state
+<b><a name="line404">404  </a></b>	       *  -# the next character equals @c __delim, in which case the character
+<b><a name="line405">405  </a></b>	       *     is extracted (and therefore counted in @c gcount()) but not stored
+<b><a name="line406">406  </a></b>	       *  -# @c __n-1 characters are stored, in which case failbit is set
+<b><a name="line407">407  </a></b>	       *     in the stream error state
+<b><a name="line408">408  </a></b>	       *
+<b><a name="line409">409  </a></b>	       *  If no characters are extracted, failbit is set.  (An empty line of
+<b><a name="line410">410  </a></b>	       *  input should therefore not cause failbit to be set.)
+<b><a name="line411">411  </a></b>	       *
+<b><a name="line412">412  </a></b>	       *  In any case, a null character is stored in the next location in
+<b><a name="line413">413  </a></b>	       *  the array.
+<b><a name="line414">414  </a></b>	      */
+<b><a name="line415">415  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line416">416  </a></b>	      getline(<a href="#line62">char_type</a>* __s, <a href="../bits/postypes.h/code.html#line98">streamsize</a> __n, <a href="#line62">char_type</a> __delim);
+<b><a name="line417">417  </a></b>	
+<b><a name="line418">418  </a></b>	      /**
+<b><a name="line419">419  </a></b>	       *  @brief  String extraction.
+<b><a name="line420">420  </a></b>	       *  @param  __s  A character array in which to store the data.
+<b><a name="line421">421  </a></b>	       *  @param  __n  Maximum number of characters to extract.
+<b><a name="line422">422  </a></b>	       *  @return  *this
+<b><a name="line423">423  </a></b>	       *
+<b><a name="line424">424  </a></b>	       *  Returns @c getline(__s,__n,widen(&amp;apos;\\n&amp;apos;)).
+<b><a name="line425">425  </a></b>	      */
+<b><a name="line426">426  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line427">427  </a></b>	      getline(<a href="#line62">char_type</a>* __s, <a href="../bits/postypes.h/code.html#line98">streamsize</a> __n)
+<b><a name="line428">428  </a></b>	      { return this-&gt;getline(__s, __n, this-&gt;widen('\n')); }
+<b><a name="line429">429  </a></b>	
+<b><a name="line430">430  </a></b>	      /**
+<b><a name="line431">431  </a></b>	       *  @brief  Discarding characters
+<b><a name="line432">432  </a></b>	       *  @param  __n  Number of characters to discard.
+<b><a name="line433">433  </a></b>	       *  @param  __delim  A &quot;stop&quot; character.
+<b><a name="line434">434  </a></b>	       *  @return  *this
+<b><a name="line435">435  </a></b>	       *
+<b><a name="line436">436  </a></b>	       *  Extracts characters and throws them away until one of the
+<b><a name="line437">437  </a></b>	       *  following happens:
+<b><a name="line438">438  </a></b>	       *  - if @a __n @c != @c std::numeric_limits&lt;int&gt;::max(), @a __n
+<b><a name="line439">439  </a></b>	       *    characters are extracted
+<b><a name="line440">440  </a></b>	       *  - the input sequence reaches end-of-file
+<b><a name="line441">441  </a></b>	       *  - the next character equals @a __delim (in this case, the character
+<b><a name="line442">442  </a></b>	       *    is extracted); note that this condition will never occur if
+<b><a name="line443">443  </a></b>	       *    @a __delim equals @c traits::eof().
+<b><a name="line444">444  </a></b>	       *
+<b><a name="line445">445  </a></b>	       *  NB: Provide three overloads, instead of the single function
+<b><a name="line446">446  </a></b>	       *  (with defaults) mandated by the Standard: this leads to a
+<b><a name="line447">447  </a></b>	       *  better performing implementation, while still conforming to
+<b><a name="line448">448  </a></b>	       *  the Standard.
+<b><a name="line449">449  </a></b>	      */
+<b><a name="line450">450  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line451">451  </a></b>	      ignore(<a href="../bits/postypes.h/code.html#line98">streamsize</a> __n, <a href="#line63">int_type</a> __delim);
+<b><a name="line452">452  </a></b>	
+<b><a name="line453">453  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line454">454  </a></b>	      ignore(<a href="../bits/postypes.h/code.html#line98">streamsize</a> __n);
+<b><a name="line455">455  </a></b>	
+<b><a name="line456">456  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line457">457  </a></b>	      ignore();
+<b><a name="line458">458  </a></b>	
+<b><a name="line459">459  </a></b>	      /**
+<b><a name="line460">460  </a></b>	       *  @brief  Looking ahead in the stream
+<b><a name="line461">461  </a></b>	       *  @return  The next character, or eof().
+<b><a name="line462">462  </a></b>	       *
+<b><a name="line463">463  </a></b>	       *  If, after constructing the sentry object, @c good() is false,
+<b><a name="line464">464  </a></b>	       *  returns @c traits::eof().  Otherwise reads but does not extract
+<b><a name="line465">465  </a></b>	       *  the next input character.
+<b><a name="line466">466  </a></b>	      */
+<b><a name="line467">467  </a></b>	      <a href="#line63">int_type</a>
+<b><a name="line468">468  </a></b>	      peek();
+<b><a name="line469">469  </a></b>	
+<b><a name="line470">470  </a></b>	      /**
+<b><a name="line471">471  </a></b>	       *  @brief  Extraction without delimiters.
+<b><a name="line472">472  </a></b>	       *  @param  __s  A character array.
+<b><a name="line473">473  </a></b>	       *  @param  __n  Maximum number of characters to store.
+<b><a name="line474">474  </a></b>	       *  @return  *this
+<b><a name="line475">475  </a></b>	       *
+<b><a name="line476">476  </a></b>	       *  If the stream state is @c good(), extracts characters and stores
+<b><a name="line477">477  </a></b>	       *  them into @a __s until one of the following happens:
+<b><a name="line478">478  </a></b>	       *  - @a __n characters are stored
+<b><a name="line479">479  </a></b>	       *  - the input sequence reaches end-of-file, in which case the error
+<b><a name="line480">480  </a></b>	       *    state is set to @c failbit|eofbit.
+<b><a name="line481">481  </a></b>	       *
+<b><a name="line482">482  </a></b>	       *  @note  This function is not overloaded on signed char and
+<b><a name="line483">483  </a></b>	       *         unsigned char.
+<b><a name="line484">484  </a></b>	      */
+<b><a name="line485">485  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line486">486  </a></b>	      read(<a href="#line62">char_type</a>* __s, <a href="../bits/postypes.h/code.html#line98">streamsize</a> __n);
+<b><a name="line487">487  </a></b>	
+<b><a name="line488">488  </a></b>	      /**
+<b><a name="line489">489  </a></b>	       *  @brief  Extraction until the buffer is exhausted, but no more.
+<b><a name="line490">490  </a></b>	       *  @param  __s  A character array.
+<b><a name="line491">491  </a></b>	       *  @param  __n  Maximum number of characters to store.
+<b><a name="line492">492  </a></b>	       *  @return  The number of characters extracted.
+<b><a name="line493">493  </a></b>	       *
+<b><a name="line494">494  </a></b>	       *  Extracts characters and stores them into @a __s depending on the
+<b><a name="line495">495  </a></b>	       *  number of characters remaining in the streambuf's buffer,
+<b><a name="line496">496  </a></b>	       *  @c rdbuf()-&gt;in_avail(), called @c A here:
+<b><a name="line497">497  </a></b>	       *  - if @c A @c == @c -1, sets eofbit and extracts no characters
+<b><a name="line498">498  </a></b>	       *  - if @c A @c == @c 0, extracts no characters
+<b><a name="line499">499  </a></b>	       *  - if @c A @c &gt; @c 0, extracts @c min(A,n)
+<b><a name="line500">500  </a></b>	       *
+<b><a name="line501">501  </a></b>	       *  The goal is to empty the current buffer, and to not request any
+<b><a name="line502">502  </a></b>	       *  more from the external input sequence controlled by the streambuf.
+<b><a name="line503">503  </a></b>	      */
+<b><a name="line504">504  </a></b>	      <a href="../bits/postypes.h/code.html#line98">streamsize</a>
+<b><a name="line505">505  </a></b>	      readsome(<a href="#line62">char_type</a>* __s, <a href="../bits/postypes.h/code.html#line98">streamsize</a> __n);
+<b><a name="line506">506  </a></b>	
+<b><a name="line507">507  </a></b>	      /**
+<b><a name="line508">508  </a></b>	       *  @brief  Unextracting a single character.
+<b><a name="line509">509  </a></b>	       *  @param  __c  The character to push back into the input stream.
+<b><a name="line510">510  </a></b>	       *  @return  *this
+<b><a name="line511">511  </a></b>	       *
+<b><a name="line512">512  </a></b>	       *  If @c rdbuf() is not null, calls @c rdbuf()-&gt;sputbackc(c).
+<b><a name="line513">513  </a></b>	       *
+<b><a name="line514">514  </a></b>	       *  If @c rdbuf() is null or if @c sputbackc() fails, sets badbit in
+<b><a name="line515">515  </a></b>	       *  the error state.
+<b><a name="line516">516  </a></b>	       *
+<b><a name="line517">517  </a></b>	       *  @note  This function first clears eofbit.  Since no characters
+<b><a name="line518">518  </a></b>	       *         are extracted, the next call to @c gcount() will return 0,
+<b><a name="line519">519  </a></b>	       *         as required by DR 60.
+<b><a name="line520">520  </a></b>	      */
+<b><a name="line521">521  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line522">522  </a></b>	      putback(<a href="#line62">char_type</a> __c);
+<b><a name="line523">523  </a></b>	
+<b><a name="line524">524  </a></b>	      /**
+<b><a name="line525">525  </a></b>	       *  @brief  Unextracting the previous character.
+<b><a name="line526">526  </a></b>	       *  @return  *this
+<b><a name="line527">527  </a></b>	       *
+<b><a name="line528">528  </a></b>	       *  If @c rdbuf() is not null, calls @c rdbuf()-&gt;sungetc(c).
+<b><a name="line529">529  </a></b>	       *
+<b><a name="line530">530  </a></b>	       *  If @c rdbuf() is null or if @c sungetc() fails, sets badbit in
+<b><a name="line531">531  </a></b>	       *  the error state.
+<b><a name="line532">532  </a></b>	       *
+<b><a name="line533">533  </a></b>	       *  @note  This function first clears eofbit.  Since no characters
+<b><a name="line534">534  </a></b>	       *         are extracted, the next call to @c gcount() will return 0,
+<b><a name="line535">535  </a></b>	       *         as required by DR 60.
+<b><a name="line536">536  </a></b>	      */
+<b><a name="line537">537  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line538">538  </a></b>	      unget();
+<b><a name="line539">539  </a></b>	
+<b><a name="line540">540  </a></b>	      /**
+<b><a name="line541">541  </a></b>	       *  @brief  Synchronizing the stream buffer.
+<b><a name="line542">542  </a></b>	       *  @return  0 on success, -1 on failure
+<b><a name="line543">543  </a></b>	       *
+<b><a name="line544">544  </a></b>	       *  If @c rdbuf() is a null pointer, returns -1.
+<b><a name="line545">545  </a></b>	       *
+<b><a name="line546">546  </a></b>	       *  Otherwise, calls @c rdbuf()-&gt;pubsync(), and if that returns -1,
+<b><a name="line547">547  </a></b>	       *  sets badbit and returns -1.
+<b><a name="line548">548  </a></b>	       *
+<b><a name="line549">549  </a></b>	       *  Otherwise, returns 0.
+<b><a name="line550">550  </a></b>	       *
+<b><a name="line551">551  </a></b>	       *  @note  This function does not count the number of characters
+<b><a name="line552">552  </a></b>	       *         extracted, if any, and therefore does not affect the next
+<b><a name="line553">553  </a></b>	       *         call to @c gcount().
+<b><a name="line554">554  </a></b>	      */
+<b><a name="line555">555  </a></b>	      int
+<b><a name="line556">556  </a></b>	      sync();
+<b><a name="line557">557  </a></b>	
+<b><a name="line558">558  </a></b>	      /**
+<b><a name="line559">559  </a></b>	       *  @brief  Getting the current read position.
+<b><a name="line560">560  </a></b>	       *  @return  A file position object.
+<b><a name="line561">561  </a></b>	       *
+<b><a name="line562">562  </a></b>	       *  If @c fail() is not false, returns @c pos_type(-1) to indicate
+<b><a name="line563">563  </a></b>	       *  failure.  Otherwise returns @c rdbuf()-&gt;pubseekoff(0,cur,in).
+<b><a name="line564">564  </a></b>	       *
+<b><a name="line565">565  </a></b>	       *  @note  This function does not count the number of characters
+<b><a name="line566">566  </a></b>	       *         extracted, if any, and therefore does not affect the next
+<b><a name="line567">567  </a></b>	       *         call to @c gcount().  At variance with putback, unget and
+<b><a name="line568">568  </a></b>	       *         seekg, eofbit is not cleared first.
+<b><a name="line569">569  </a></b>	      */
+<b><a name="line570">570  </a></b>	      <a href="#line64">pos_type</a>
+<b><a name="line571">571  </a></b>	      tellg();
+<b><a name="line572">572  </a></b>	
+<b><a name="line573">573  </a></b>	      /**
+<b><a name="line574">574  </a></b>	       *  @brief  Changing the current read position.
+<b><a name="line575">575  </a></b>	       *  @param  __pos  A file position object.
+<b><a name="line576">576  </a></b>	       *  @return  *this
+<b><a name="line577">577  </a></b>	       *
+<b><a name="line578">578  </a></b>	       *  If @c fail() is not true, calls @c rdbuf()-&gt;pubseekpos(__pos).  If
+<b><a name="line579">579  </a></b>	       *  that function fails, sets failbit.
+<b><a name="line580">580  </a></b>	       *
+<b><a name="line581">581  </a></b>	       *  @note  This function first clears eofbit.  It does not count the
+<b><a name="line582">582  </a></b>	       *         number of characters extracted, if any, and therefore does
+<b><a name="line583">583  </a></b>	       *         not affect the next call to @c gcount().
+<b><a name="line584">584  </a></b>	      */
+<b><a name="line585">585  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line586">586  </a></b>	      seekg(<a href="#line64">pos_type</a>);
+<b><a name="line587">587  </a></b>	
+<b><a name="line588">588  </a></b>	      /**
+<b><a name="line589">589  </a></b>	       *  @brief  Changing the current read position.
+<b><a name="line590">590  </a></b>	       *  @param  __off  A file offset object.
+<b><a name="line591">591  </a></b>	       *  @param  __dir  The direction in which to seek.
+<b><a name="line592">592  </a></b>	       *  @return  *this
+<b><a name="line593">593  </a></b>	       *
+<b><a name="line594">594  </a></b>	       *  If @c fail() is not true, calls @c rdbuf()-&gt;pubseekoff(__off,__dir).
+<b><a name="line595">595  </a></b>	       *  If that function fails, sets failbit.
+<b><a name="line596">596  </a></b>	       *
+<b><a name="line597">597  </a></b>	       *  @note  This function first clears eofbit.  It does not count the
+<b><a name="line598">598  </a></b>	       *         number of characters extracted, if any, and therefore does
+<b><a name="line599">599  </a></b>	       *         not affect the next call to @c gcount().
+<b><a name="line600">600  </a></b>	      */
+<b><a name="line601">601  </a></b>	      <a href="#line71">__istream_type</a>&amp;
+<b><a name="line602">602  </a></b>	      seekg(<a href="#line65">off_type</a>, <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line461">seekdir</a>);
+<b><a name="line603">603  </a></b>	      //@}
+<b><a name="line604">604  </a></b>	
+<b><a name="line605">605  </a></b>	    protected:
+<b><a name="line606">606  </a></b>	      basic_istream()
+<b><a name="line607">607  </a></b>	      : <a href="#line82">_M_gcount</a>(<a href="../bits/postypes.h/code.html#line98">streamsize</a>(0))
+<b><a name="line608">608  </a></b>	      { this-&gt;<a href="../bits/basic_ios.h/code.html#line472">init</a>(0); }
+<b><a name="line609">609  </a></b>	
+<b><a name="line610">610  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line611">611  </a></b>	      <b>basic_istream</b>(const <a href="../iosfwd/code.html#line83">basic_istream</a>&amp;) = delete;
+<b><a name="line612">612  </a></b>	
+<b><a name="line613">613  </a></b>	      basic_istream(<a href="../iosfwd/code.html#line83">basic_istream</a>&amp;&amp; __rhs)
+<b><a name="line614">614  </a></b>	      : __ios_type(), _M_gcount(__rhs._M_gcount)
+<b><a name="line615">615  </a></b>	      {
+<b><a name="line616">616  </a></b>		__ios_type::move(__rhs);
+<b><a name="line617">617  </a></b>		__rhs._M_gcount = 0;
+<b><a name="line618">618  </a></b>	      }
+<b><a name="line619">619  </a></b>	
+<b><a name="line620">620  </a></b>	      // 27.7.3.3 Assign/swap
+<b><a name="line621">621  </a></b>	
+<b><a name="line622">622  </a></b>	      <a href="../iosfwd/code.html#line83">basic_istream</a>&amp; <b>operator=</b>(const <a href="../iosfwd/code.html#line83">basic_istream</a>&amp;) = delete;
+<b><a name="line623">623  </a></b>	
+<b><a name="line624">624  </a></b>	      <a href="../iosfwd/code.html#line83">basic_istream</a>&amp;
+<b><a name="line625">625  </a></b>	      operator=(<a href="../iosfwd/code.html#line83">basic_istream</a>&amp;&amp; __rhs)
+<b><a name="line626">626  </a></b>	      {
+<b><a name="line627">627  </a></b>		swap(__rhs);
+<b><a name="line628">628  </a></b>		return *this;
+<b><a name="line629">629  </a></b>	      }
+<b><a name="line630">630  </a></b>	
+<b><a name="line631">631  </a></b>	      void
+<b><a name="line632">632  </a></b>	      swap(<a href="../iosfwd/code.html#line83">basic_istream</a>&amp; __rhs)
+<b><a name="line633">633  </a></b>	      {
+<b><a name="line634">634  </a></b>		__ios_type::swap(__rhs);
+<b><a name="line635">635  </a></b>		std::swap(_M_gcount, __rhs._M_gcount);
+<b><a name="line636">636  </a></b>	      }
+<b><a name="line637">637  </a></b>	#endif
+<b><a name="line638">638  </a></b>	
+<b><a name="line639">639  </a></b>	      template&lt;typename <b>_ValueT</b>&gt;
+<b><a name="line640">640  </a></b>		<a href="#line71">__istream_type</a>&amp;
+<b><a name="line641">641  </a></b>		_M_extract(<a href="#line639">_ValueT</a>&amp; __v);
+<b><a name="line642">642  </a></b>	    };
+<b><a name="line643">643  </a></b>	
+<b><a name="line644">644  </a></b>	  /// Explicit specialization declarations, defined in src/istream.cc.
+<b><a name="line645">645  </a></b>	  template&lt;&gt;
+<b><a name="line646">646  </a></b>	    <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;char&gt;&amp;
+<b><a name="line647">647  </a></b>	    <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;char&gt;::
+<b><a name="line648">648  </a></b>	    <a href="#line416">getline</a>(<a href="#line62">char_type</a>* __s, <a href="../bits/postypes.h/code.html#line98">streamsize</a> __n, <a href="#line62">char_type</a> __delim);
+<b><a name="line649">649  </a></b>	
+<b><a name="line650">650  </a></b>	  template&lt;&gt;
+<b><a name="line651">651  </a></b>	    <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;char&gt;&amp;
+<b><a name="line652">652  </a></b>	    <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;char&gt;::
+<b><a name="line653">653  </a></b>	    <a href="#line454">ignore</a>(<a href="../bits/postypes.h/code.html#line98">streamsize</a> __n);
+<b><a name="line654">654  </a></b>	
+<b><a name="line655">655  </a></b>	  template&lt;&gt;
+<b><a name="line656">656  </a></b>	    <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;char&gt;&amp;
+<b><a name="line657">657  </a></b>	    <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;char&gt;::
+<b><a name="line658">658  </a></b>	    <a href="#line451">ignore</a>(<a href="../bits/postypes.h/code.html#line98">streamsize</a> __n, <a href="#line63">int_type</a> __delim);
+<b><a name="line659">659  </a></b>	
+<b><a name="line660">660  </a></b>	#ifdef <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1432">_GLIBCXX_USE_WCHAR_T</a>
+<b><a name="line661">661  </a></b>	  template&lt;&gt;
+<b><a name="line662">662  </a></b>	    <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;wchar_t&gt;&amp;
+<b><a name="line663">663  </a></b>	    <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;wchar_t&gt;::
+<b><a name="line664">664  </a></b>	    <a href="#line416">getline</a>(<a href="#line62">char_type</a>* __s, <a href="../bits/postypes.h/code.html#line98">streamsize</a> __n, <a href="#line62">char_type</a> __delim);
+<b><a name="line665">665  </a></b>	
+<b><a name="line666">666  </a></b>	  template&lt;&gt;
+<b><a name="line667">667  </a></b>	    <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;wchar_t&gt;&amp;
+<b><a name="line668">668  </a></b>	    <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;wchar_t&gt;::
+<b><a name="line669">669  </a></b>	    <a href="#line454">ignore</a>(<a href="../bits/postypes.h/code.html#line98">streamsize</a> __n);
+<b><a name="line670">670  </a></b>	
+<b><a name="line671">671  </a></b>	  template&lt;&gt;
+<b><a name="line672">672  </a></b>	    <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;wchar_t&gt;&amp;
+<b><a name="line673">673  </a></b>	    <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;wchar_t&gt;::
+<b><a name="line674">674  </a></b>	    <a href="#line451">ignore</a>(<a href="../bits/postypes.h/code.html#line98">streamsize</a> __n, <a href="#line63">int_type</a> __delim);
+<b><a name="line675">675  </a></b>	#endif
+<b><a name="line676">676  </a></b>	
+<b><a name="line677">677  </a></b>	  /**
+<b><a name="line678">678  </a></b>	   *  @brief  Performs setup work for input streams.
+<b><a name="line679">679  </a></b>	   *
+<b><a name="line680">680  </a></b>	   *  Objects of this class are created before all of the standard
+<b><a name="line681">681  </a></b>	   *  extractors are run.  It is responsible for &lt;em&gt;exception-safe
+<b><a name="line682">682  </a></b>	   *  prefix and suffix operations,&lt;/em&gt; although only prefix actions
+<b><a name="line683">683  </a></b>	   *  are currently required by the standard.
+<b><a name="line684">684  </a></b>	  */
+<b><a name="line685">685  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line686">686  </a></b>	    class <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line685">_CharT</a>, <a href="#line685">_Traits</a>&gt;::<b>sentry</b>
+<b><a name="line687">687  </a></b>	    {
+<b><a name="line688">688  </a></b>	      // Data Members.
+<b><a name="line689">689  </a></b>	      bool <b>_M_ok</b>;
+<b><a name="line690">690  </a></b>	
+<b><a name="line691">691  </a></b>	    public:
+<b><a name="line692">692  </a></b>	      /// Easy access to dependent types.
+<b><a name="line693">693  </a></b>	      typedef <a href="#line685">_Traits</a> 					<b>traits_type</b>;
+<b><a name="line694">694  </a></b>	      typedef <a href="../iosfwd/code.html#line80">basic_streambuf</a>&lt;<a href="#line685">_CharT</a>, <a href="#line685">_Traits</a>&gt; 		<b>__streambuf_type</b>;
+<b><a name="line695">695  </a></b>	      typedef <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line685">_CharT</a>, <a href="#line685">_Traits</a>&gt; 		<b>__istream_type</b>;
+<b><a name="line696">696  </a></b>	      typedef typename <a href="#line695">__istream_type</a>::<a href="#line74">__ctype_type</a> 	<b>__ctype_type</b>;
+<b><a name="line697">697  </a></b>	      typedef typename <a href="#line685">_Traits</a>::<a href="../bits/char_traits.h/code.html#line236">int_type</a>		<b>__int_type</b>;
+<b><a name="line698">698  </a></b>	
+<b><a name="line699">699  </a></b>	      /**
+<b><a name="line700">700  </a></b>	       *  @brief  The constructor performs all the work.
+<b><a name="line701">701  </a></b>	       *  @param  __is  The input stream to guard.
+<b><a name="line702">702  </a></b>	       *  @param  __noskipws  Whether to consume whitespace or not.
+<b><a name="line703">703  </a></b>	       *
+<b><a name="line704">704  </a></b>	       *  If the stream state is good (@a __is.good() is true), then the
+<b><a name="line705">705  </a></b>	       *  following actions are performed, otherwise the sentry state
+<b><a name="line706">706  </a></b>	       *  is false (&lt;em&gt;not okay&lt;/em&gt;) and failbit is set in the
+<b><a name="line707">707  </a></b>	       *  stream state.
+<b><a name="line708">708  </a></b>	       *
+<b><a name="line709">709  </a></b>	       *  The sentry's preparatory actions are:
+<b><a name="line710">710  </a></b>	       *
+<b><a name="line711">711  </a></b>	       *  -# if the stream is tied to an output stream, @c is.tie()-&gt;flush()
+<b><a name="line712">712  </a></b>	       *     is called to synchronize the output sequence
+<b><a name="line713">713  </a></b>	       *  -# if @a __noskipws is false, and @c ios_base::skipws is set in
+<b><a name="line714">714  </a></b>	       *     @c is.flags(), the sentry extracts and discards whitespace
+<b><a name="line715">715  </a></b>	       *     characters from the stream.  The currently imbued locale is
+<b><a name="line716">716  </a></b>	       *     used to determine whether each character is whitespace.
+<b><a name="line717">717  </a></b>	       *
+<b><a name="line718">718  </a></b>	       *  If the stream state is still good, then the sentry state becomes
+<b><a name="line719">719  </a></b>	       *  true (@a okay).
+<b><a name="line720">720  </a></b>	      */
+<b><a name="line721">721  </a></b>	      explicit
+<b><a name="line722">722  </a></b>	      sentry(<a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line685">_CharT</a>, <a href="#line685">_Traits</a>&gt;&amp; __is, bool __noskipws = false);
+<b><a name="line723">723  </a></b>	
+<b><a name="line724">724  </a></b>	      /**
+<b><a name="line725">725  </a></b>	       *  @brief  Quick status checking.
+<b><a name="line726">726  </a></b>	       *  @return  The sentry state.
+<b><a name="line727">727  </a></b>	       *
+<b><a name="line728">728  </a></b>	       *  For ease of use, sentries may be converted to booleans.  The
+<b><a name="line729">729  </a></b>	       *  return value is that of the sentry state (true == okay).
+<b><a name="line730">730  </a></b>	      */
+<b><a name="line731">731  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line732">732  </a></b>	      explicit
+<b><a name="line733">733  </a></b>	#endif
+<b><a name="line734">734  </a></b>	      operator bool() const
+<b><a name="line735">735  </a></b>	      { return _M_ok; }
+<b><a name="line736">736  </a></b>	    };
+<b><a name="line737">737  </a></b>	
+<b><a name="line738">738  </a></b>	  //@{
+<b><a name="line739">739  </a></b>	  /**
+<b><a name="line740">740  </a></b>	   *  @brief  Character extractors
+<b><a name="line741">741  </a></b>	   *  @param  __in  An input stream.
+<b><a name="line742">742  </a></b>	   *  @param  __c  A character reference.
+<b><a name="line743">743  </a></b>	   *  @return  in
+<b><a name="line744">744  </a></b>	   *
+<b><a name="line745">745  </a></b>	   *  Behaves like one of the formatted arithmetic extractors described in
+<b><a name="line746">746  </a></b>	   *  std::basic_istream.  After constructing a sentry object with good
+<b><a name="line747">747  </a></b>	   *  status, this function extracts a character (if one is available) and
+<b><a name="line748">748  </a></b>	   *  stores it in @a __c.  Otherwise, sets failbit in the input stream.
+<b><a name="line749">749  </a></b>	  */
+<b><a name="line750">750  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line751">751  </a></b>	    <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line750">_CharT</a>, <a href="#line750">_Traits</a>&gt;&amp;
+<b><a name="line752">752  </a></b>	    operator&gt;&gt;(<a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line750">_CharT</a>, <a href="#line750">_Traits</a>&gt;&amp; __in, <a href="#line750">_CharT</a>&amp; __c);
+<b><a name="line753">753  </a></b>	
+<b><a name="line754">754  </a></b>	  template&lt;class <b>_Traits</b>&gt;
+<b><a name="line755">755  </a></b>	    inline <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;char, <a href="#line754">_Traits</a>&gt;&amp;
+<b><a name="line756">756  </a></b>	    operator&gt;&gt;(<a href="../iosfwd/code.html#line83">basic_istream</a>&lt;char, <a href="#line754">_Traits</a>&gt;&amp; __in, unsigned char&amp; __c)
+<b><a name="line757">757  </a></b>	    { return (__in &gt;&gt; reinterpret_cast&lt;char&amp;&gt;(__c)); }
+<b><a name="line758">758  </a></b>	
+<b><a name="line759">759  </a></b>	  template&lt;class <b>_Traits</b>&gt;
+<b><a name="line760">760  </a></b>	    inline <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;char, <a href="#line759">_Traits</a>&gt;&amp;
+<b><a name="line761">761  </a></b>	    operator&gt;&gt;(<a href="../iosfwd/code.html#line83">basic_istream</a>&lt;char, <a href="#line759">_Traits</a>&gt;&amp; __in, signed char&amp; __c)
+<b><a name="line762">762  </a></b>	    { return (__in &gt;&gt; reinterpret_cast&lt;char&amp;&gt;(__c)); }
+<b><a name="line763">763  </a></b>	  //@}
+<b><a name="line764">764  </a></b>	
+<b><a name="line765">765  </a></b>	  //@{
+<b><a name="line766">766  </a></b>	  /**
+<b><a name="line767">767  </a></b>	   *  @brief  Character string extractors
+<b><a name="line768">768  </a></b>	   *  @param  __in  An input stream.
+<b><a name="line769">769  </a></b>	   *  @param  __s  A pointer to a character array.
+<b><a name="line770">770  </a></b>	   *  @return  __in
+<b><a name="line771">771  </a></b>	   *
+<b><a name="line772">772  </a></b>	   *  Behaves like one of the formatted arithmetic extractors described in
+<b><a name="line773">773  </a></b>	   *  std::basic_istream.  After constructing a sentry object with good
+<b><a name="line774">774  </a></b>	   *  status, this function extracts up to @c n characters and stores them
+<b><a name="line775">775  </a></b>	   *  into the array starting at @a __s.  @c n is defined as:
+<b><a name="line776">776  </a></b>	   *
+<b><a name="line777">777  </a></b>	   *  - if @c width() is greater than zero, @c n is width() otherwise
+<b><a name="line778">778  </a></b>	   *  - @c n is &lt;em&gt;the number of elements of the largest array of *
+<b><a name="line779">779  </a></b>	   *  - @c char_type that can store a terminating @c eos.&lt;/em&gt;
+<b><a name="line780">780  </a></b>	   *  - [27.6.1.2.3]/6
+<b><a name="line781">781  </a></b>	   *
+<b><a name="line782">782  </a></b>	   *  Characters are extracted and stored until one of the following happens:
+<b><a name="line783">783  </a></b>	   *  - @c n-1 characters are stored
+<b><a name="line784">784  </a></b>	   *  - EOF is reached
+<b><a name="line785">785  </a></b>	   *  - the next character is whitespace according to the current locale
+<b><a name="line786">786  </a></b>	   *  - the next character is a null byte (i.e., @c charT() )
+<b><a name="line787">787  </a></b>	   *
+<b><a name="line788">788  </a></b>	   *  @c width(0) is then called for the input stream.
+<b><a name="line789">789  </a></b>	   *
+<b><a name="line790">790  </a></b>	   *  If no characters are extracted, sets failbit.
+<b><a name="line791">791  </a></b>	  */
+<b><a name="line792">792  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line793">793  </a></b>	    <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line792">_CharT</a>, <a href="#line792">_Traits</a>&gt;&amp;
+<b><a name="line794">794  </a></b>	    operator&gt;&gt;(<a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line792">_CharT</a>, <a href="#line792">_Traits</a>&gt;&amp; __in, <a href="#line792">_CharT</a>* __s);
+<b><a name="line795">795  </a></b>	
+<b><a name="line796">796  </a></b>	  // Explicit specialization declaration, defined in src/istream.cc.
+<b><a name="line797">797  </a></b>	  template&lt;&gt;
+<b><a name="line798">798  </a></b>	    <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;char&gt;&amp;
+<b><a name="line799">799  </a></b>	    <a href="../streambuf/code.html#line164">operator&gt;&gt;</a>(<a href="../iosfwd/code.html#line83">basic_istream</a>&lt;char&gt;&amp; __in, char* __s);
+<b><a name="line800">800  </a></b>	
+<b><a name="line801">801  </a></b>	  template&lt;class <b>_Traits</b>&gt;
+<b><a name="line802">802  </a></b>	    inline <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;char, <a href="#line801">_Traits</a>&gt;&amp;
+<b><a name="line803">803  </a></b>	    operator&gt;&gt;(<a href="../iosfwd/code.html#line83">basic_istream</a>&lt;char, <a href="#line801">_Traits</a>&gt;&amp; __in, unsigned char* __s)
+<b><a name="line804">804  </a></b>	    { return (__in &gt;&gt; reinterpret_cast&lt;char*&gt;(__s)); }
+<b><a name="line805">805  </a></b>	
+<b><a name="line806">806  </a></b>	  template&lt;class <b>_Traits</b>&gt;
+<b><a name="line807">807  </a></b>	    inline <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;char, <a href="#line806">_Traits</a>&gt;&amp;
+<b><a name="line808">808  </a></b>	    operator&gt;&gt;(<a href="../iosfwd/code.html#line83">basic_istream</a>&lt;char, <a href="#line806">_Traits</a>&gt;&amp; __in, signed char* __s)
+<b><a name="line809">809  </a></b>	    { return (__in &gt;&gt; reinterpret_cast&lt;char*&gt;(__s)); }
+<b><a name="line810">810  </a></b>	  //@}
+<b><a name="line811">811  </a></b>	
+<b><a name="line812">812  </a></b>	  /**
+<b><a name="line813">813  </a></b>	   *  @brief  Template class basic_iostream
+<b><a name="line814">814  </a></b>	   *  @ingroup io
+<b><a name="line815">815  </a></b>	   *
+<b><a name="line816">816  </a></b>	   *  @tparam _CharT  Type of character stream.
+<b><a name="line817">817  </a></b>	   *  @tparam _Traits  Traits for character type, defaults to
+<b><a name="line818">818  </a></b>	   *                   char_traits&lt;_CharT&gt;.
+<b><a name="line819">819  </a></b>	   *
+<b><a name="line820">820  </a></b>	   *  This class multiply inherits from the input and output stream classes
+<b><a name="line821">821  </a></b>	   *  simply to provide a single interface.
+<b><a name="line822">822  </a></b>	  */
+<b><a name="line823">823  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line824">824  </a></b>	    class <b>basic_iostream</b>
+<b><a name="line825">825  </a></b>	    : public <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line823">_CharT</a>, <a href="#line823">_Traits</a>&gt;,
+<b><a name="line826">826  </a></b>	      public <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line823">_CharT</a>, <a href="#line823">_Traits</a>&gt;
+<b><a name="line827">827  </a></b>	    {
+<b><a name="line828">828  </a></b>	    public:
+<b><a name="line829">829  </a></b>	      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line830">830  </a></b>	      // 271. basic_iostream missing typedefs
+<b><a name="line831">831  </a></b>	      // Types (inherited):
+<b><a name="line832">832  </a></b>	      typedef <a href="#line823">_CharT</a>			 		<b>char_type</b>;
+<b><a name="line833">833  </a></b>	      typedef typename <a href="#line823">_Traits</a>::<a href="../bits/char_traits.h/code.html#line236">int_type</a> 		<b>int_type</b>;
+<b><a name="line834">834  </a></b>	      typedef typename <a href="#line823">_Traits</a>::<a href="../bits/char_traits.h/code.html#line237">pos_type</a> 		<b>pos_type</b>;
+<b><a name="line835">835  </a></b>	      typedef typename <a href="#line823">_Traits</a>::<a href="../bits/char_traits.h/code.html#line238">off_type</a> 		<b>off_type</b>;
+<b><a name="line836">836  </a></b>	      typedef <a href="#line823">_Traits</a>			 		<b>traits_type</b>;
+<b><a name="line837">837  </a></b>	
+<b><a name="line838">838  </a></b>	      // Non-standard Types:
+<b><a name="line839">839  </a></b>	      typedef <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line823">_CharT</a>, <a href="#line823">_Traits</a>&gt;		<b>__istream_type</b>;
+<b><a name="line840">840  </a></b>	      typedef <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line823">_CharT</a>, <a href="#line823">_Traits</a>&gt;		<b>__ostream_type</b>;
+<b><a name="line841">841  </a></b>	
+<b><a name="line842">842  </a></b>	      /**
+<b><a name="line843">843  </a></b>	       *  @brief  Constructor does nothing.
+<b><a name="line844">844  </a></b>	       *
+<b><a name="line845">845  </a></b>	       *  Both of the parent classes are initialized with the same
+<b><a name="line846">846  </a></b>	       *  streambuf pointer passed to this constructor.
+<b><a name="line847">847  </a></b>	      */
+<b><a name="line848">848  </a></b>	      explicit
+<b><a name="line849">849  </a></b>	      basic_iostream(<a href="../iosfwd/code.html#line80">basic_streambuf</a>&lt;<a href="#line823">_CharT</a>, <a href="#line823">_Traits</a>&gt;* __sb)
+<b><a name="line850">850  </a></b>	      : __istream_type(__sb), __ostream_type(__sb) { }
+<b><a name="line851">851  </a></b>	
+<b><a name="line852">852  </a></b>	      /**
+<b><a name="line853">853  </a></b>	       *  @brief  Destructor does nothing.
+<b><a name="line854">854  </a></b>	      */
+<b><a name="line855">855  </a></b>	      virtual
+<b><a name="line856">856  </a></b>	      ~basic_iostream() { }
+<b><a name="line857">857  </a></b>	
+<b><a name="line858">858  </a></b>	    protected:
+<b><a name="line859">859  </a></b>	      basic_iostream()
+<b><a name="line860">860  </a></b>	      : <a href="#line839">__istream_type</a>(), <a href="#line840">__ostream_type</a>() { }
+<b><a name="line861">861  </a></b>	
+<b><a name="line862">862  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line863">863  </a></b>	      <b>basic_iostream</b>(const <a href="../iosfwd/code.html#line89">basic_iostream</a>&amp;) = delete;
+<b><a name="line864">864  </a></b>	
+<b><a name="line865">865  </a></b>	      basic_iostream(<a href="../iosfwd/code.html#line89">basic_iostream</a>&amp;&amp; __rhs)
+<b><a name="line866">866  </a></b>	      : __istream_type(std::move(__rhs)), __ostream_type(*this)
+<b><a name="line867">867  </a></b>	      { }
+<b><a name="line868">868  </a></b>	
+<b><a name="line869">869  </a></b>	      // 27.7.3.3 Assign/swap
+<b><a name="line870">870  </a></b>	
+<b><a name="line871">871  </a></b>	      <a href="../iosfwd/code.html#line89">basic_iostream</a>&amp; <b>operator=</b>(const <a href="../iosfwd/code.html#line89">basic_iostream</a>&amp;) = delete;
+<b><a name="line872">872  </a></b>	
+<b><a name="line873">873  </a></b>	      <a href="../iosfwd/code.html#line89">basic_iostream</a>&amp;
+<b><a name="line874">874  </a></b>	      operator=(<a href="../iosfwd/code.html#line89">basic_iostream</a>&amp;&amp; __rhs)
+<b><a name="line875">875  </a></b>	      {
+<b><a name="line876">876  </a></b>		swap(__rhs);
+<b><a name="line877">877  </a></b>		return *this;
+<b><a name="line878">878  </a></b>	      }
+<b><a name="line879">879  </a></b>	
+<b><a name="line880">880  </a></b>	      void
+<b><a name="line881">881  </a></b>	      swap(<a href="../iosfwd/code.html#line89">basic_iostream</a>&amp; __rhs)
+<b><a name="line882">882  </a></b>	      { __istream_type::swap(__rhs); }
+<b><a name="line883">883  </a></b>	#endif
+<b><a name="line884">884  </a></b>	    };
+<b><a name="line885">885  </a></b>	
+<b><a name="line886">886  </a></b>	  /**
+<b><a name="line887">887  </a></b>	   *  @brief  Quick and easy way to eat whitespace
+<b><a name="line888">888  </a></b>	   *
+<b><a name="line889">889  </a></b>	   *  This manipulator extracts whitespace characters, stopping when the
+<b><a name="line890">890  </a></b>	   *  next character is non-whitespace, or when the input sequence is empty.
+<b><a name="line891">891  </a></b>	   *  If the sequence is empty, @c eofbit is set in the stream, but not
+<b><a name="line892">892  </a></b>	   *  @c failbit.
+<b><a name="line893">893  </a></b>	   *
+<b><a name="line894">894  </a></b>	   *  The current locale is used to distinguish whitespace characters.
+<b><a name="line895">895  </a></b>	   *
+<b><a name="line896">896  </a></b>	   *  Example:
+<b><a name="line897">897  </a></b>	   *  @code
+<b><a name="line898">898  </a></b>	   *     MyClass   mc;
+<b><a name="line899">899  </a></b>	   *
+<b><a name="line900">900  </a></b>	   *     std::cin &gt;&gt; std::ws &gt;&gt; mc;
+<b><a name="line901">901  </a></b>	   *  @endcode
+<b><a name="line902">902  </a></b>	   *  will skip leading whitespace before calling operator&gt;&gt; on cin and your
+<b><a name="line903">903  </a></b>	   *  object.  Note that the same effect can be achieved by creating a
+<b><a name="line904">904  </a></b>	   *  std::basic_istream::sentry inside your definition of operator&gt;&gt;.
+<b><a name="line905">905  </a></b>	  */
+<b><a name="line906">906  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line907">907  </a></b>	    <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line906">_CharT</a>, <a href="#line906">_Traits</a>&gt;&amp;
+<b><a name="line908">908  </a></b>	    ws(<a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line906">_CharT</a>, <a href="#line906">_Traits</a>&gt;&amp; __is);
+<b><a name="line909">909  </a></b>	
+<b><a name="line910">910  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line911">911  </a></b>	  // [27.7.1.6] Rvalue stream extraction
+<b><a name="line912">912  </a></b>	  /**
+<b><a name="line913">913  </a></b>	   *  @brief  Generic extractor for rvalue stream
+<b><a name="line914">914  </a></b>	   *  @param  __is  An input stream.
+<b><a name="line915">915  </a></b>	   *  @param  __x  A reference to the extraction target.
+<b><a name="line916">916  </a></b>	   *  @return  is
+<b><a name="line917">917  </a></b>	   *
+<b><a name="line918">918  </a></b>	   *  This is just a forwarding function to allow extraction from
+<b><a name="line919">919  </a></b>	   *  rvalue streams since they won't bind to the extractor functions
+<b><a name="line920">920  </a></b>	   *  that take an lvalue reference.
+<b><a name="line921">921  </a></b>	  */
+<b><a name="line922">922  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>, typename <b>_Tp</b>&gt;
+<b><a name="line923">923  </a></b>	    inline <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line922">_CharT</a>, <a href="#line922">_Traits</a>&gt;&amp;
+<b><a name="line924">924  </a></b>	    <b>operator&gt;&gt;</b>(<a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line922">_CharT</a>, <a href="#line922">_Traits</a>&gt;&amp;&amp; __is, <a href="#line922">_Tp</a>&amp; __x)
+<b><a name="line925">925  </a></b>	    { 
+<b><a name="line926">926  </a></b>	      __is &gt;&gt; __x;
+<b><a name="line927">927  </a></b>	      return __is;
+<b><a name="line928">928  </a></b>	    }
+<b><a name="line929">929  </a></b>	#endif // C++11
+<b><a name="line930">930  </a></b>	
+<b><a name="line931">931  </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line932">932  </a></b>	} // namespace
+<b><a name="line933">933  </a></b>	
+<b><a name="line934">934  </a></b>	#include &lt;bits/istream.tcc&gt;
+<b><a name="line935">935  </a></b>	
+<b><a name="line936">936  </a></b>	#endif	/* _GLIBCXX_ISTREAM */
+<b><a name="line937">937  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

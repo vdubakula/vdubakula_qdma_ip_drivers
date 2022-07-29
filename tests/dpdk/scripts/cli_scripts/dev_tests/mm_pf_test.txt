@@ -1,0 +1,16 @@
+port_init 0 2 0 1024 4096
+port_init 1 2 0 1024 4096
+port_init 2 2 0 1024 4096
+port_init 3 2 0 1024 4096
+dma_to_device 0 2 mm_datafile_1MB.bin 0 4096 0
+dma_from_device 0 2 MM001_port0_qcount2_size4096.bin 0 4096 0
+dma_to_device 1 2 mm_datafile_1MB.bin 0 8192 0
+dma_from_device 1 2 MM001_port1_qcount2_size8192.bin 0 8192 0
+dma_to_device 2 2 mm_datafile_1MB.bin 0 12228 0
+dma_from_device 2 2 MM001_port2_qcount2_size12228.bin 0 12228 0
+dma_to_device 3 2 mm_datafile_1MB.bin 0 16384 0
+dma_from_device 3 2 MM001_port3_qcount2_size16384.bin 0 16384 0
+port_close 0
+port_close 1
+port_close 2
+port_close 3

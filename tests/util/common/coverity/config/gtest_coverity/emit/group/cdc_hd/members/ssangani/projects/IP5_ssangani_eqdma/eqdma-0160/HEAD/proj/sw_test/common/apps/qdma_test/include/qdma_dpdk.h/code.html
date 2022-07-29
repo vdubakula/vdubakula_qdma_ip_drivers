@@ -1,0 +1,298 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/include/qdma_dpdk.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/*-
+<b><a name="line2">2    </a></b>	 *   BSD LICENSE
+<b><a name="line3">3    </a></b>	 *
+<b><a name="line4">4    </a></b>	 *   Copyright(c) 2017-2018 Xilinx, Inc. All rights reserved.
+<b><a name="line5">5    </a></b>	 *
+<b><a name="line6">6    </a></b>	 *   Redistribution and use in source and binary forms, with or without
+<b><a name="line7">7    </a></b>	 *   modification, are permitted provided that the following conditions
+<b><a name="line8">8    </a></b>	 *   are met:
+<b><a name="line9">9    </a></b>	 *
+<b><a name="line10">10   </a></b>	 *     * Redistributions of source code must retain the above copyright
+<b><a name="line11">11   </a></b>	 *       notice, this list of conditions and the following disclaimer.
+<b><a name="line12">12   </a></b>	 *     * Redistributions in binary form must reproduce the above copyright
+<b><a name="line13">13   </a></b>	 *       notice, this list of conditions and the following disclaimer in
+<b><a name="line14">14   </a></b>	 *       the documentation and/or other materials provided with the
+<b><a name="line15">15   </a></b>	 *       distribution.
+<b><a name="line16">16   </a></b>	 *     * Neither the name of Xilinx, Inc. nor the names of its
+<b><a name="line17">17   </a></b>	 *       contributors may be used to endorse or promote products derived
+<b><a name="line18">18   </a></b>	 *       from this software without specific prior written permission.
+<b><a name="line19">19   </a></b>	 *
+<b><a name="line20">20   </a></b>	 *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+<b><a name="line21">21   </a></b>	 *   &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+<b><a name="line22">22   </a></b>	 *   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+<b><a name="line23">23   </a></b>	 *   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+<b><a name="line24">24   </a></b>	 *   OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+<b><a name="line25">25   </a></b>	 *   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+<b><a name="line26">26   </a></b>	 *   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+<b><a name="line27">27   </a></b>	 *   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+<b><a name="line28">28   </a></b>	 *   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+<b><a name="line29">29   </a></b>	 *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+<b><a name="line30">30   </a></b>	 *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+<b><a name="line31">31   </a></b>	 */
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	enum <b>rte_pmd_qdma_rx_bypass_mode</b> {
+<b><a name="line34">34   </a></b>		<b>RTE_PMD_QDMA_RX_BYPASS_NONE</b> = 0,
+<b><a name="line35">35   </a></b>		<b>RTE_PMD_QDMA_RX_BYPASS_CACHE</b> = 1,
+<b><a name="line36">36   </a></b>		<b>RTE_PMD_QDMA_RX_BYPASS_SIMPLE</b> = 2,
+<b><a name="line37">37   </a></b>		<b>RTE_PMD_QDMA_RX_BYPASS_MAX</b>
+<b><a name="line38">38   </a></b>	};
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	enum <b>rte_pmd_qdma_tx_bypass_mode</b> {
+<b><a name="line41">41   </a></b>		<b>RTE_PMD_QDMA_TX_BYPASS_NONE</b> = 0,
+<b><a name="line42">42   </a></b>		<b>RTE_PMD_QDMA_TX_BYPASS_ENABLE</b> = 1,
+<b><a name="line43">43   </a></b>		<b>RTE_PMD_QDMA_TX_BYPASS_MAX</b>
+<b><a name="line44">44   </a></b>	};
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	///Enum to specify the direction i.e. TX or RX
+<b><a name="line47">47   </a></b>	enum <b>rte_pmd_qdma_dir_type</b> {
+<b><a name="line48">48   </a></b>		<b>RTE_PMD_QDMA_TX</b> = 0,
+<b><a name="line49">49   </a></b>		<b>RTE_PMD_QDMA_RX</b>,
+<b><a name="line50">50   </a></b>		<b>RTE_PMD_QDMA_DIR_TYPE_MAX</b>
+<b><a name="line51">51   </a></b>	};
+<b><a name="line52">52   </a></b>	
+<b><a name="line53">53   </a></b>	enum <b>rte_pmd_qdma_pci_func_type</b> {
+<b><a name="line54">54   </a></b>		<b>RTE_PMD_QDMA_PCI_FUNC_PF</b>,
+<b><a name="line55">55   </a></b>		<b>RTE_PMD_QDMA_PCI_FUNC_VF</b>,
+<b><a name="line56">56   </a></b>		<b>RTE_PMD_QDMA_PCI_FUNC_TYPE_MAX</b>,
+<b><a name="line57">57   </a></b>	};
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	/**
+<b><a name="line60">60   </a></b>	 * queue_mode_t - queue modes
+<b><a name="line61">61   </a></b>	 */
+<b><a name="line62">62   </a></b>	enum <b>rte_pmd_qdma_queue_mode_t</b> {
+<b><a name="line63">63   </a></b>		<b>RTE_PMD_QDMA_MEMORY_MAPPED_MODE</b>,
+<b><a name="line64">64   </a></b>		<b>RTE_PMD_QDMA_STREAMING_MODE</b>,
+<b><a name="line65">65   </a></b>		<b>RTE_PMD_QDMA_QUEUE_MODE_MAX</b>,
+<b><a name="line66">66   </a></b>	};
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	/*
+<b><a name="line69">69   </a></b>	 * tigger_mode_t - trigger modes
+<b><a name="line70">70   </a></b>	 */
+<b><a name="line71">71   </a></b>	enum <b>rte_pmd_qdma_tigger_mode_t</b> {
+<b><a name="line72">72   </a></b>		<b>RTE_PMD_QDMA_TRIG_MODE_DISABLE</b>,
+<b><a name="line73">73   </a></b>		<b>RTE_PMD_QDMA_TRIG_MODE_EVERY</b>,
+<b><a name="line74">74   </a></b>		<b>RTE_PMD_QDMA_TRIG_MODE_USER_COUNT</b>,
+<b><a name="line75">75   </a></b>		<b>RTE_PMD_QDMA_TRIG_MODE_USER</b>,
+<b><a name="line76">76   </a></b>		<b>RTE_PMD_QDMA_TRIG_MODE_USER_TIMER</b>,
+<b><a name="line77">77   </a></b>		<b>RTE_PMD_QDMA_TRIG_MODE_USER_TIMER_COUNT</b>,
+<b><a name="line78">78   </a></b>		<b>RTE_PMD_QDMA_TRIG_MODE_MAX</b>,
+<b><a name="line79">79   </a></b>	};
+<b><a name="line80">80   </a></b>	
+<b><a name="line81">81   </a></b>	enum <b>rte_pmd_qdma_cmpt_desc_len</b> {
+<b><a name="line82">82   </a></b>		<b>RTE_PMD_QDMA_CMPT_DESC_LEN_8B</b> = 8,
+<b><a name="line83">83   </a></b>		<b>RTE_PMD_QDMA_CMPT_DESC_LEN_16B</b> = 16,
+<b><a name="line84">84   </a></b>		<b>RTE_PMD_QDMA_CMPT_DESC_LEN_32B</b> = 32,
+<b><a name="line85">85   </a></b>		<b>RTE_PMD_QDMA_CMPT_DESC_LEN_64B</b> = 64,
+<b><a name="line86">86   </a></b>		<b>RTE_PMD_QDMA_CMPT_DESC_LEN_MAX</b>,
+<b><a name="line87">87   </a></b>	};
+<b><a name="line88">88   </a></b>	#define <b>DEFAULT_QDMA_CMPT_DESC_LEN</b> (RTE_PMD_QDMA_CMPT_DESC_LEN_8B)
+<b><a name="line89">89   </a></b>	#define <b>RX_TX_MAX_RETRY</b>			(1000)
+<b><a name="line90">90   </a></b>	#define <b>QDMA_MAX_QUEUES</b> 2048
+<b><a name="line91">91   </a></b>	enum <b>rte_pmd_qdma_bypass_desc_len</b> {
+<b><a name="line92">92   </a></b>		<b>RTE_PMD_QDMA_BYPASS_DESC_LEN_8B</b> = 8,
+<b><a name="line93">93   </a></b>		<b>RTE_PMD_QDMA_BYPASS_DESC_LEN_16B</b> = 16,
+<b><a name="line94">94   </a></b>		<b>RTE_PMD_QDMA_BYPASS_DESC_LEN_32B</b> = 32,
+<b><a name="line95">95   </a></b>		<b>RTE_PMD_QDMA_BYPASS_DESC_LEN_64B</b> = 64,
+<b><a name="line96">96   </a></b>		<b>RTE_PMD_QDMA_BYPASS_DESC_LEN_MAX</b>,
+<b><a name="line97">97   </a></b>	};
+<b><a name="line98">98   </a></b>	
+<b><a name="line99">99   </a></b>	enum <b>rte_pmd_qdma_xdebug_type</b> {
+<b><a name="line100">100  </a></b>		<b>RTE_PMD_QDMA_XDEBUG_QDMA_GLOBAL_CSR</b>,
+<b><a name="line101">101  </a></b>		<b>RTE_PMD_QDMA_XDEBUG_QDMA_DEVICE_STRUCT</b>,
+<b><a name="line102">102  </a></b>		<b>RTE_PMD_QDMA_XDEBUG_QUEUE_INFO</b>,
+<b><a name="line103">103  </a></b>		<b>RTE_PMD_QDMA_XDEBUG_QUEUE_DESC_DUMP</b>,
+<b><a name="line104">104  </a></b>		<b>RTE_PMD_QDMA_XDEBUG_MAX</b>,
+<b><a name="line105">105  </a></b>	};
+<b><a name="line106">106  </a></b>	
+<b><a name="line107">107  </a></b>	enum <b>rte_pmd_qdma_xdebug_desc_type</b> {
+<b><a name="line108">108  </a></b>		<b>RTE_PMD_QDMA_XDEBUG_DESC_C2H</b>,
+<b><a name="line109">109  </a></b>		<b>RTE_PMD_QDMA_XDEBUG_DESC_H2C</b>,
+<b><a name="line110">110  </a></b>		<b>RTE_PMD_QDMA_XDEBUG_DESC_CMPT</b>,
+<b><a name="line111">111  </a></b>		<b>RTE_PMD_QDMA_XDEBUG_DESC_MAX</b>,
+<b><a name="line112">112  </a></b>	};
+<b><a name="line113">113  </a></b>	
+<b><a name="line114">114  </a></b>	enum <b>rte_pmd_qdma_device_type</b> {
+<b><a name="line115">115  </a></b>		/** @RTE_PMD_QDMA_DEVICE_SOFT - UltraScale+ IP's  */
+<b><a name="line116">116  </a></b>		<b>RTE_PMD_QDMA_DEVICE_SOFT</b>,
+<b><a name="line117">117  </a></b>		/** @RTE_PMD_QDMA_DEVICE_VERSAL -VERSAL IP  */
+<b><a name="line118">118  </a></b>		<b>RTE_PMD_QDMA_DEVICE_VERSAL</b>,
+<b><a name="line119">119  </a></b>		/** @RTE_PMD_QDMA_DEVICE_VERSAL_CPM5 - VERSAL CPM5  */
+<b><a name="line120">120  </a></b>		<b>RTE_PMD_QDMA_DEVICE_VERSAL_CPM5</b>,
+<b><a name="line121">121  </a></b>		/** @RTE_PMD_QDMA_DEVICE_NONE - Not a valid device  */
+<b><a name="line122">122  </a></b>		<b>RTE_PMD_QDMA_DEVICE_NONE</b>
+<b><a name="line123">123  </a></b>	};
+<b><a name="line124">124  </a></b>	
+<b><a name="line125">125  </a></b>	enum <b>rte_pmd_qdma_versal_ip_type</b> {
+<b><a name="line126">126  </a></b>		/** @RTE_PMD_QDMA_VERSAL_HARD_IP - Hard IP  */
+<b><a name="line127">127  </a></b>		<b>RTE_PMD_QDMA_VERSAL_HARD_IP</b>,
+<b><a name="line128">128  </a></b>		/** @RTE_PMD_QDMA_VERSAL_SOFT_IP - Soft IP  */
+<b><a name="line129">129  </a></b>		<b>RTE_PMD_QDMA_VERSAL_SOFT_IP</b>,
+<b><a name="line130">130  </a></b>		/** @RTE_PMD_QDMA_VERSAL_NONE - Not versal device  */
+<b><a name="line131">131  </a></b>		<b>RTE_PMD_QDMA_VERSAL_NONE</b>
+<b><a name="line132">132  </a></b>	};
+<b><a name="line133">133  </a></b>	
+<b><a name="line134">134  </a></b>	#define  <b>QDMA_DEVICE_SOFT</b>           RTE_PMD_QDMA_DEVICE_SOFT
+<b><a name="line135">135  </a></b>	#define  <b>QDMA_DEVICE_VERSAL</b>         RTE_PMD_QDMA_DEVICE_VERSAL
+<b><a name="line136">136  </a></b>	#define  <b>QDMA_DEVICE_VERSAL_CPM5</b>    RTE_PMD_QDMA_DEVICE_VERSAL_CPM5
+<b><a name="line137">137  </a></b>	
+<b><a name="line138">138  </a></b>	#define  <b>QDMA_VERSAL_HARD_IP</b>        RTE_PMD_QDMA_VERSAL_HARD_IP
+<b><a name="line139">139  </a></b>	#define  <b>QDMA_VERSAL_SOFT_IP</b>        RTE_PMD_QDMA_VERSAL_SOFT_IP
+<b><a name="line140">140  </a></b>	
+<b><a name="line141">141  </a></b>	struct <b>rte_pmd_qdma_xdebug_desc_param</b> {
+<b><a name="line142">142  </a></b>		<a href="/usr/include/stdint.h/code.html#line49">uint16_t</a> <b>queue</b>;
+<b><a name="line143">143  </a></b>		int <b>start</b>;
+<b><a name="line144">144  </a></b>		int <b>end</b>;
+<b><a name="line145">145  </a></b>		enum <a href="#line107">rte_pmd_qdma_xdebug_desc_type</a> <b>type</b>;
+<b><a name="line146">146  </a></b>	};
+<b><a name="line147">147  </a></b>	
+<b><a name="line148">148  </a></b>	
+<b><a name="line149">149  </a></b>	enum <b>xnl_st_c2h_cmpt_desc_size</b> {
+<b><a name="line150">150  </a></b>		<b>XNL_ST_C2H_CMPT_DESC_SIZE_8B</b> = 8,
+<b><a name="line151">151  </a></b>		<b>XNL_ST_C2H_CMPT_DESC_SIZE_16B</b> = 16,
+<b><a name="line152">152  </a></b>		<b>XNL_ST_C2H_CMPT_DESC_SIZE_32B</b> = 32,
+<b><a name="line153">153  </a></b>		<b>XNL_ST_C2H_CMPT_DESC_SIZE_64B</b> = 64
+<b><a name="line154">154  </a></b>	};
+<b><a name="line155">155  </a></b>	
+<b><a name="line156">156  </a></b>	enum <b>dma_data_direction</b> {
+<b><a name="line157">157  </a></b>		<b>DMA_BIDIRECTIONAL</b> = 0,
+<b><a name="line158">158  </a></b>		<b>DMA_TO_DEVICE</b> = 1,
+<b><a name="line159">159  </a></b>		<b>DMA_FROM_DEVICE</b> = 2,
+<b><a name="line160">160  </a></b>		<b>DMA_NONE</b> = 3,
+<b><a name="line161">161  </a></b>	};
+<b><a name="line162">162  </a></b>	
+<b><a name="line163">163  </a></b>	/**
+<b><a name="line164">164  </a></b>	 * struct rte_pmd_qdma_dev_attributes - QDMA device attributes
+<b><a name="line165">165  </a></b>	 */
+<b><a name="line166">166  </a></b>	struct <b>rte_pmd_qdma_dev_attributes</b> {
+<b><a name="line167">167  </a></b>		/** @num_pfs - Num of PFs*/
+<b><a name="line168">168  </a></b>		<a href="/usr/include/stdint.h/code.html#line48">uint8_t</a> <b>num_pfs</b>;
+<b><a name="line169">169  </a></b>		/** @num_qs - Num of Queues */
+<b><a name="line170">170  </a></b>		<a href="/usr/include/stdint.h/code.html#line49">uint16_t</a> <b>num_qs</b>;
+<b><a name="line171">171  </a></b>		/** @flr_present - FLR resent or not? */
+<b><a name="line172">172  </a></b>		<a href="/usr/include/stdint.h/code.html#line48">uint8_t</a> <b>flr_present</b>:1;
+<b><a name="line173">173  </a></b>		/** @st_en - ST mode supported or not? */
+<b><a name="line174">174  </a></b>		<a href="/usr/include/stdint.h/code.html#line48">uint8_t</a> <b>st_en</b>:1;
+<b><a name="line175">175  </a></b>		/** @mm_en - MM mode supported or not? */
+<b><a name="line176">176  </a></b>		<a href="/usr/include/stdint.h/code.html#line48">uint8_t</a> <b>mm_en</b>:1;
+<b><a name="line177">177  </a></b>		/** @mm_cmpt_en - MM with Completions supported or not? */
+<b><a name="line178">178  </a></b>		<a href="/usr/include/stdint.h/code.html#line48">uint8_t</a> <b>mm_cmpt_en</b>:1;
+<b><a name="line179">179  </a></b>		/** @mailbox_en - Mailbox supported or not? */
+<b><a name="line180">180  </a></b>		<a href="/usr/include/stdint.h/code.html#line48">uint8_t</a> <b>mailbox_en</b>:1;
+<b><a name="line181">181  </a></b>		/** @mm_channel_max - Num of MM channels */
+<b><a name="line182">182  </a></b>		<a href="/usr/include/stdint.h/code.html#line48">uint8_t</a> <b>mm_channel_max</b>;
+<b><a name="line183">183  </a></b>	
+<b><a name="line184">184  </a></b>		/** @cmpt_ovf_chk_dis - To indicate support of overflow check disable in CMPT ring */
+<b><a name="line185">185  </a></b>		<a href="/usr/include/stdint.h/code.html#line48">uint8_t</a> <b>cmpt_ovf_chk_dis</b>:1;
+<b><a name="line186">186  </a></b>		/** @sw_desc_64b - To indicate support of 64 bytes C2H/H2C descriptor format */
+<b><a name="line187">187  </a></b>		<a href="/usr/include/stdint.h/code.html#line48">uint8_t</a> <b>sw_desc_64b</b>:1;
+<b><a name="line188">188  </a></b>		/** @cmpt_desc_64b - To indicate support of 64 bytes CMPT descriptor format */
+<b><a name="line189">189  </a></b>		<a href="/usr/include/stdint.h/code.html#line48">uint8_t</a> <b>cmpt_desc_64b</b>:1;
+<b><a name="line190">190  </a></b>		/** @cmpt_trig_count_timer - To indicate support of counter + timer trigger mode */
+<b><a name="line191">191  </a></b>		<a href="/usr/include/stdint.h/code.html#line48">uint8_t</a> <b>cmpt_trig_count_timer</b>:1;
+<b><a name="line192">192  </a></b>		/** @device_type - Device Type */
+<b><a name="line193">193  </a></b>		enum <a href="#line114">rte_pmd_qdma_device_type</a> <b>device_type</b>;
+<b><a name="line194">194  </a></b>		/** @versal_ip_type - Versal IP Type */
+<b><a name="line195">195  </a></b>		enum <a href="#line125">rte_pmd_qdma_versal_ip_type</a> <b>versal_ip_type</b>;
+<b><a name="line196">196  </a></b>	};
+<b><a name="line197">197  </a></b>	extern &quot;C&quot; <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> qdma_pci_read_reg(struct <a href="/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line29">rte_eth_dev</a> *dev, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> bar, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> reg);
+<b><a name="line198">198  </a></b>	extern &quot;C&quot; void qdma_pci_write_reg(struct <a href="/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line29">rte_eth_dev</a> *dev, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> bar,
+<b><a name="line199">199  </a></b>	                    <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> reg, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> val);
+<b><a name="line200">200  </a></b>	
+<b><a name="line201">201  </a></b>	extern &quot;C&quot; int rte_pmd_qdma_dbg_regdump(<a href="/usr/include/stdint.h/code.html#line48">uint8_t</a> port_id);
+<b><a name="line202">202  </a></b>	extern &quot;C&quot; int rte_pmd_qdma_dbg_qdevice(<a href="/usr/include/stdint.h/code.html#line48">uint8_t</a> port_id);
+<b><a name="line203">203  </a></b>	extern &quot;C&quot; int rte_pmd_qdma_dbg_qinfo(<a href="/usr/include/stdint.h/code.html#line48">uint8_t</a> port_id, <a href="/usr/include/stdint.h/code.html#line49">uint16_t</a> queue);
+<b><a name="line204">204  </a></b>	extern &quot;C&quot; int rte_pmd_qdma_dbg_qdesc(<a href="/usr/include/stdint.h/code.html#line48">uint8_t</a> port_id, <a href="/usr/include/stdint.h/code.html#line49">uint16_t</a> queue,
+<b><a name="line205">205  </a></b>					int start, int end, enum <a href="#line107">rte_pmd_qdma_xdebug_desc_type</a> type);
+<b><a name="line206">206  </a></b>	
+<b><a name="line207">207  </a></b>	extern &quot;C&quot; int rte_pmd_qdma_get_bar_details(int portid, <a href="/usr/include/stdint.h/code.html#line38">int32_t</a> *config_bar_idx,
+<b><a name="line208">208  </a></b>	            <a href="/usr/include/stdint.h/code.html#line38">int32_t</a> *user_bar_idx, <a href="/usr/include/stdint.h/code.html#line38">int32_t</a> *bypass_bar_idx);
+<b><a name="line209">209  </a></b>	extern &quot;C&quot; int rte_pmd_qdma_get_queue_base(int portid, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> *queue_base);
+<b><a name="line210">210  </a></b>	extern &quot;C&quot; int rte_pmd_qdma_get_pci_func_type(int portid, enum <a href="#line53">rte_pmd_qdma_pci_func_type</a> *func_type);
+<b><a name="line211">211  </a></b>	
+<b><a name="line212">212  </a></b>	extern &quot;C&quot; int rte_pmd_qdma_get_immediate_data_state(int portid, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> qid, int *state);
+<b><a name="line213">213  </a></b>	
+<b><a name="line214">214  </a></b>	extern &quot;C&quot; int rte_pmd_qdma_set_queue_mode(int portid, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> qid, enum <a href="#line62">rte_pmd_qdma_queue_mode_t</a> mode);
+<b><a name="line215">215  </a></b>	extern &quot;C&quot; int rte_pmd_qdma_set_immediate_data_state(int portid, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> qid, <a href="/usr/include/stdint.h/code.html#line48">uint8_t</a> state);
+<b><a name="line216">216  </a></b>	extern &quot;C&quot; int rte_pmd_qdma_set_cmpt_overflow_check(int portid, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> qid, <a href="/usr/include/stdint.h/code.html#line48">uint8_t</a> enable);
+<b><a name="line217">217  </a></b>	extern &quot;C&quot; int rte_pmd_qdma_set_c2h_descriptor_prefetch(int portid, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> qid, <a href="/usr/include/stdint.h/code.html#line48">uint8_t</a> enable);
+<b><a name="line218">218  </a></b>	extern &quot;C&quot; int rte_pmd_qdma_set_mm_endpoint_addr(int portid, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> qid,
+<b><a name="line219">219  </a></b>	            enum <a href="#line47">rte_pmd_qdma_dir_type</a> dir, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> addr);
+<b><a name="line220">220  </a></b>	extern &quot;C&quot; int rte_pmd_qdma_configure_tx_bypass(int portid, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> qid,
+<b><a name="line221">221  </a></b>				enum <a href="#line40">rte_pmd_qdma_tx_bypass_mode</a> bypass_mode,
+<b><a name="line222">222  </a></b>				enum <a href="#line91">rte_pmd_qdma_bypass_desc_len</a> size);
+<b><a name="line223">223  </a></b>	extern &quot;C&quot; int rte_pmd_qdma_configure_rx_bypass(int portid, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> qid,
+<b><a name="line224">224  </a></b>				enum <a href="#line33">rte_pmd_qdma_rx_bypass_mode</a> bypass_mode,
+<b><a name="line225">225  </a></b>				enum <a href="#line91">rte_pmd_qdma_bypass_desc_len</a> size);
+<b><a name="line226">226  </a></b>	extern &quot;C&quot; int rte_pmd_qdma_get_device_capabilities(int portid,
+<b><a name="line227">227  </a></b>				struct <a href="#line166">rte_pmd_qdma_dev_attributes</a> *dev_attr);
+<b><a name="line228">228  </a></b>	extern &quot;C&quot; int rte_pmd_qdma_set_cmpt_descriptor_size(int portid, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> qid,
+<b><a name="line229">229  </a></b>	            enum <a href="#line81">rte_pmd_qdma_cmpt_desc_len</a> size);
+<b><a name="line230">230  </a></b>	extern &quot;C&quot; int rte_pmd_qdma_set_cmpt_trigger_mode(int portid, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> qid,
+<b><a name="line231">231  </a></b>	            enum <a href="#line71">rte_pmd_qdma_tigger_mode_t</a> mode);
+<b><a name="line232">232  </a></b>	extern &quot;C&quot; int rte_pmd_qdma_set_cmpt_timer(int portid, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> qid, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> value);
+<b><a name="line233">233  </a></b>	extern &quot;C&quot; <a href="/usr/include/stdint.h/code.html#line49">uint16_t</a> rte_pmd_qdma_mm_cmpt_process(int portid, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> qid, void *cmpt_buff,
+<b><a name="line234">234  </a></b>			                <a href="/usr/include/stdint.h/code.html#line49">uint16_t</a> nb_entries);
+<b><a name="line235">235  </a></b>	extern &quot;C&quot; int rte_pmd_qdma_dev_cmptq_stop(int portid, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> qid);
+<b><a name="line236">236  </a></b>	extern &quot;C&quot; int rte_pmd_qdma_dev_cmptq_start(int porid, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> qid);
+<b><a name="line237">237  </a></b>	extern &quot;C&quot; int rte_pmd_qdma_dev_cmptq_setup(int portid, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> qid,
+<b><a name="line238">238  </a></b>							<a href="/usr/include/stdint.h/code.html#line49">uint16_t</a> nb_cmpt_desc,
+<b><a name="line239">239  </a></b>							unsigned int socket_id);
+<b><a name="line240">240  </a></b>	
+<b><a name="line241">241  </a></b>	
+<b><a name="line242">242  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

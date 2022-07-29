@@ -1,0 +1,164 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/initializer_list</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// std::initializer_list support -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2008-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of GCC.
+<b><a name="line6">6    </a></b>	//
+<b><a name="line7">7    </a></b>	// GCC is free software; you can redistribute it and/or modify
+<b><a name="line8">8    </a></b>	// it under the terms of the GNU General Public License as published by
+<b><a name="line9">9    </a></b>	// the Free Software Foundation; either version 3, or (at your option)
+<b><a name="line10">10   </a></b>	// any later version.
+<b><a name="line11">11   </a></b>	//
+<b><a name="line12">12   </a></b>	// GCC is distributed in the hope that it will be useful,
+<b><a name="line13">13   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line14">14   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line15">15   </a></b>	// GNU General Public License for more details.
+<b><a name="line16">16   </a></b>	//
+<b><a name="line17">17   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line18">18   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line19">19   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line20">20   </a></b>	
+<b><a name="line21">21   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line22">22   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line23">23   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line24">24   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line25">25   </a></b>	
+<b><a name="line26">26   </a></b>	/** @file initializer_list
+<b><a name="line27">27   </a></b>	 *  This is a Standard C++ Library header.
+<b><a name="line28">28   </a></b>	 */
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	#ifndef _INITIALIZER_LIST
+<b><a name="line31">31   </a></b>	#define <b>_INITIALIZER_LIST</b>
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	#pragma GCC system_header
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	#if __cplusplus &lt; 201103L
+<b><a name="line36">36   </a></b>	# include &lt;bits/c++0x_warning.h&gt;
+<b><a name="line37">37   </a></b>	#else // C++0x
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	#pragma GCC visibility push(default)
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	#include &lt;bits/c++config.h&gt;
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	namespace <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>
+<b><a name="line44">44   </a></b>	{
+<b><a name="line45">45   </a></b>	  /// initializer_list
+<b><a name="line46">46   </a></b>	  template&lt;class <b>_E</b>&gt;
+<b><a name="line47">47   </a></b>	    class initializer_list
+<b><a name="line48">48   </a></b>	    {
+<b><a name="line49">49   </a></b>	    public:
+<b><a name="line50">50   </a></b>	      typedef <a href="#line46">_E</a> 		<b>value_type</b>;
+<b><a name="line51">51   </a></b>	      typedef const <a href="#line46">_E</a>&amp; 	<b>reference</b>;
+<b><a name="line52">52   </a></b>	      typedef const <a href="#line46">_E</a>&amp; 	<b>const_reference</b>;
+<b><a name="line53">53   </a></b>	      typedef <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> 		<b>size_type</b>;
+<b><a name="line54">54   </a></b>	      typedef const <a href="#line46">_E</a>* 	<b>iterator</b>;
+<b><a name="line55">55   </a></b>	      typedef const <a href="#line46">_E</a>* 	<b>const_iterator</b>;
+<b><a name="line56">56   </a></b>	
+<b><a name="line57">57   </a></b>	    private:
+<b><a name="line58">58   </a></b>	      <a href="#line54">iterator</a>			<b>_M_array</b>;
+<b><a name="line59">59   </a></b>	      <a href="#line53">size_type</a>			<b>_M_len</b>;
+<b><a name="line60">60   </a></b>	
+<b><a name="line61">61   </a></b>	      // The compiler can call a private constructor.
+<b><a name="line62">62   </a></b>	      constexpr initializer_list(<a href="#line55">const_iterator</a> __a, <a href="#line53">size_type</a> __l)
+<b><a name="line63">63   </a></b>	      : _M_array(__a), _M_len(__l) { }
+<b><a name="line64">64   </a></b>	
+<b><a name="line65">65   </a></b>	    public:
+<b><a name="line66">66   </a></b>	      constexpr initializer_list() noexcept
+<b><a name="line67">67   </a></b>	      : _M_array(0), _M_len(0) { }
+<b><a name="line68">68   </a></b>	
+<b><a name="line69">69   </a></b>	      // Number of elements.
+<b><a name="line70">70   </a></b>	      constexpr <a href="#line53">size_type</a>
+<b><a name="line71">71   </a></b>	      size() const noexcept { return _M_len; }
+<b><a name="line72">72   </a></b>	
+<b><a name="line73">73   </a></b>	      // First element.
+<b><a name="line74">74   </a></b>	      constexpr <a href="#line55">const_iterator</a>
+<b><a name="line75">75   </a></b>	      begin() const noexcept { return _M_array; }
+<b><a name="line76">76   </a></b>	
+<b><a name="line77">77   </a></b>	      // One past the last element.
+<b><a name="line78">78   </a></b>	      constexpr <a href="#line55">const_iterator</a>
+<b><a name="line79">79   </a></b>	      end() const noexcept { return begin() + size(); }
+<b><a name="line80">80   </a></b>	    };
+<b><a name="line81">81   </a></b>	
+<b><a name="line82">82   </a></b>	  /**
+<b><a name="line83">83   </a></b>	   *  @brief  Return an iterator pointing to the first element of
+<b><a name="line84">84   </a></b>	   *          the initializer_list.
+<b><a name="line85">85   </a></b>	   *  @param  __ils  Initializer list.
+<b><a name="line86">86   </a></b>	   */
+<b><a name="line87">87   </a></b>	  template&lt;class <b>_Tp</b>&gt;
+<b><a name="line88">88   </a></b>	    constexpr const <a href="#line87">_Tp</a>*
+<b><a name="line89">89   </a></b>	    <b>begin</b>(<a href="#line47">initializer_list</a>&lt;<a href="#line87">_Tp</a>&gt; __ils) noexcept
+<b><a name="line90">90   </a></b>	    { return __ils.begin(); }
+<b><a name="line91">91   </a></b>	
+<b><a name="line92">92   </a></b>	  /**
+<b><a name="line93">93   </a></b>	   *  @brief  Return an iterator pointing to one past the last element
+<b><a name="line94">94   </a></b>	   *          of the initializer_list.
+<b><a name="line95">95   </a></b>	   *  @param  __ils  Initializer list.
+<b><a name="line96">96   </a></b>	   */
+<b><a name="line97">97   </a></b>	  template&lt;class <b>_Tp</b>&gt;
+<b><a name="line98">98   </a></b>	    constexpr const <a href="#line97">_Tp</a>*
+<b><a name="line99">99   </a></b>	    <b>end</b>(<a href="#line47">initializer_list</a>&lt;<a href="#line97">_Tp</a>&gt; __ils) noexcept
+<b><a name="line100">100  </a></b>	    { return __ils.end(); }
+<b><a name="line101">101  </a></b>	}
+<b><a name="line102">102  </a></b>	
+<b><a name="line103">103  </a></b>	#pragma GCC visibility pop
+<b><a name="line104">104  </a></b>	
+<b><a name="line105">105  </a></b>	#endif // C++11
+<b><a name="line106">106  </a></b>	
+<b><a name="line107">107  </a></b>	#endif // _INITIALIZER_LIST
+<b><a name="line108">108  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

@@ -1,0 +1,227 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_ring_generic.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 *
+<b><a name="line3">3    </a></b>	 * Copyright (c) 2010-2017 Intel Corporation
+<b><a name="line4">4    </a></b>	 * Copyright (c) 2007-2009 Kip Macy kmacy@freebsd.org
+<b><a name="line5">5    </a></b>	 * All rights reserved.
+<b><a name="line6">6    </a></b>	 * Derived from FreeBSD's bufring.h
+<b><a name="line7">7    </a></b>	 * Used as BSD-3 Licensed with permission from Kip Macy.
+<b><a name="line8">8    </a></b>	 */
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	#ifndef _RTE_RING_GENERIC_H_
+<b><a name="line11">11   </a></b>	#define <b>_RTE_RING_GENERIC_H_</b>
+<b><a name="line12">12   </a></b>	
+<b><a name="line13">13   </a></b>	static <a href="../rte_common.h/code.html#line146">__rte_always_inline</a> void
+<b><a name="line14">14   </a></b>	<b>update_tail</b>(struct <a href="../rte_ring.h/code.html#line67">rte_ring_headtail</a> *<b>ht</b>, <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>old_val</b>, <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>new_val</b>,
+<b><a name="line15">15   </a></b>			<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>single</b>, <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>enqueue</b>)
+<b><a name="line16">16   </a></b>	{
+<b><a name="line17">17   </a></b>		if (<a href="#line15">enqueue</a>)
+<b><a name="line18">18   </a></b>			<a href="../rte_atomic.h/code.html#line30">rte_smp_wmb</a>();
+<b><a name="line19">19   </a></b>		else
+<b><a name="line20">20   </a></b>			<a href="../rte_atomic.h/code.html#line32">rte_smp_rmb</a>();
+<b><a name="line21">21   </a></b>		/*
+<b><a name="line22">22   </a></b>		 * If there are other enqueues/dequeues in progress that preceded us,
+<b><a name="line23">23   </a></b>		 * we need to wait for them to complete
+<b><a name="line24">24   </a></b>		 */
+<b><a name="line25">25   </a></b>		if (!<a href="#line15">single</a>)
+<b><a name="line26">26   </a></b>			while (<a href="../rte_branch_prediction.h/code.html#line38">unlikely</a>(ht-&gt;tail != old_val))
+<b><a name="line27">27   </a></b>				<a href="../generic/rte_pause.h/code.html#line21">rte_pause</a>();
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>		<a href="#line14">ht</a>-&gt;<a href="../rte_ring.h/code.html#line69">tail</a> = <a href="#line14">new_val</a>;
+<b><a name="line30">30   </a></b>	}
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	/**
+<b><a name="line33">33   </a></b>	 * @internal This function updates the producer head for enqueue
+<b><a name="line34">34   </a></b>	 *
+<b><a name="line35">35   </a></b>	 * @param r
+<b><a name="line36">36   </a></b>	 *   A pointer to the ring structure
+<b><a name="line37">37   </a></b>	 * @param is_sp
+<b><a name="line38">38   </a></b>	 *   Indicates whether multi-producer path is needed or not
+<b><a name="line39">39   </a></b>	 * @param n
+<b><a name="line40">40   </a></b>	 *   The number of elements we will want to enqueue, i.e. how far should the
+<b><a name="line41">41   </a></b>	 *   head be moved
+<b><a name="line42">42   </a></b>	 * @param behavior
+<b><a name="line43">43   </a></b>	 *   RTE_RING_QUEUE_FIXED:    Enqueue a fixed number of items from a ring
+<b><a name="line44">44   </a></b>	 *   RTE_RING_QUEUE_VARIABLE: Enqueue as many items as possible from ring
+<b><a name="line45">45   </a></b>	 * @param old_head
+<b><a name="line46">46   </a></b>	 *   Returns head value as it was before the move, i.e. where enqueue starts
+<b><a name="line47">47   </a></b>	 * @param new_head
+<b><a name="line48">48   </a></b>	 *   Returns the current/new head value i.e. where enqueue finishes
+<b><a name="line49">49   </a></b>	 * @param free_entries
+<b><a name="line50">50   </a></b>	 *   Returns the amount of free space in the ring BEFORE head was moved
+<b><a name="line51">51   </a></b>	 * @return
+<b><a name="line52">52   </a></b>	 *   Actual number of objects enqueued.
+<b><a name="line53">53   </a></b>	 *   If behavior == RTE_RING_QUEUE_FIXED, this will be 0 or n only.
+<b><a name="line54">54   </a></b>	 */
+<b><a name="line55">55   </a></b>	static <a href="../rte_common.h/code.html#line146">__rte_always_inline</a> unsigned int
+<b><a name="line56">56   </a></b>	<b>__rte_ring_move_prod_head</b>(struct <a href="../rte_ring.h/code.html#line83">rte_ring</a> *<b>r</b>, unsigned int <b>is_sp</b>,
+<b><a name="line57">57   </a></b>			unsigned int <b>n</b>, enum <a href="../rte_ring.h/code.html#line54">rte_ring_queue_behavior</a> <b>behavior</b>,
+<b><a name="line58">58   </a></b>			<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> *<b>old_head</b>, <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> *<b>new_head</b>,
+<b><a name="line59">59   </a></b>			<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> *<b>free_entries</b>)
+<b><a name="line60">60   </a></b>	{
+<b><a name="line61">61   </a></b>		const <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>capacity</b> = <a href="#line56">r</a>-&gt;<a href="../rte_ring.h/code.html#line95">capacity</a>;
+<b><a name="line62">62   </a></b>		unsigned int <b>max</b> = <a href="#line57">n</a>;
+<b><a name="line63">63   </a></b>		int <b>success</b>;
+<b><a name="line64">64   </a></b>	
+<b><a name="line65">65   </a></b>		do {
+<b><a name="line66">66   </a></b>			/* Reset n to the initial burst count */
+<b><a name="line67">67   </a></b>			<a href="#line57">n</a> = <a href="#line62">max</a>;
+<b><a name="line68">68   </a></b>	
+<b><a name="line69">69   </a></b>			*<a href="#line58">old_head</a> = <a href="#line56">r</a>-&gt;<a href="../rte_ring.h/code.html#line100">prod</a>.<a href="../rte_ring.h/code.html#line68">head</a>;
+<b><a name="line70">70   </a></b>	
+<b><a name="line71">71   </a></b>			/* add rmb barrier to avoid load/load reorder in weak
+<b><a name="line72">72   </a></b>			 * memory model. It is noop on x86
+<b><a name="line73">73   </a></b>			 */
+<b><a name="line74">74   </a></b>			<a href="../rte_atomic.h/code.html#line32">rte_smp_rmb</a>();
+<b><a name="line75">75   </a></b>	
+<b><a name="line76">76   </a></b>			/*
+<b><a name="line77">77   </a></b>			 *  The subtraction is done between two unsigned 32bits value
+<b><a name="line78">78   </a></b>			 * (the result is always modulo 32 bits even if we have
+<b><a name="line79">79   </a></b>			 * *old_head &gt; cons_tail). So 'free_entries' is always between 0
+<b><a name="line80">80   </a></b>			 * and capacity (which is &lt; size).
+<b><a name="line81">81   </a></b>			 */
+<b><a name="line82">82   </a></b>			*<a href="#line59">free_entries</a> = (<a href="#line61">capacity</a> + <a href="#line56">r</a>-&gt;<a href="../rte_ring.h/code.html#line104">cons</a>.<a href="../rte_ring.h/code.html#line69">tail</a> - *<a href="#line58">old_head</a>);
+<b><a name="line83">83   </a></b>	
+<b><a name="line84">84   </a></b>			/* check that we have enough room in ring */
+<b><a name="line85">85   </a></b>			if (<a href="../rte_branch_prediction.h/code.html#line38">unlikely</a>(n &gt; *free_entries))
+<b><a name="line86">86   </a></b>				<a href="#line57">n</a> = (<a href="#line57">behavior</a> == <a href="../rte_ring.h/code.html#line55">RTE_RING_QUEUE_FIXED</a>) ?
+<b><a name="line87">87   </a></b>						0 : *<a href="#line59">free_entries</a>;
+<b><a name="line88">88   </a></b>	
+<b><a name="line89">89   </a></b>			if (<a href="#line57">n</a> == 0)
+<b><a name="line90">90   </a></b>				return 0;
+<b><a name="line91">91   </a></b>	
+<b><a name="line92">92   </a></b>			*<a href="#line58">new_head</a> = *<a href="#line58">old_head</a> + <a href="#line57">n</a>;
+<b><a name="line93">93   </a></b>			if (<a href="#line56">is_sp</a>)
+<b><a name="line94">94   </a></b>				<a href="#line56">r</a>-&gt;<a href="../rte_ring.h/code.html#line100">prod</a>.<a href="../rte_ring.h/code.html#line68">head</a> = *<a href="#line58">new_head</a>, <a href="#line63">success</a> = 1;
+<b><a name="line95">95   </a></b>			else
+<b><a name="line96">96   </a></b>				<a href="#line63">success</a> = <a href="../generic/rte_atomic.h/code.html#line466">rte_atomic32_cmpset</a>(&amp;<a href="#line56">r</a>-&gt;<a href="../rte_ring.h/code.html#line100">prod</a>.<a href="../rte_ring.h/code.html#line68">head</a>,
+<b><a name="line97">97   </a></b>						*<a href="#line58">old_head</a>, *<a href="#line58">new_head</a>);
+<b><a name="line98">98   </a></b>		} while (<a href="../rte_branch_prediction.h/code.html#line38">unlikely</a>(success == 0));
+<b><a name="line99">99   </a></b>		return <a href="#line57">n</a>;
+<b><a name="line100">100  </a></b>	}
+<b><a name="line101">101  </a></b>	
+<b><a name="line102">102  </a></b>	/**
+<b><a name="line103">103  </a></b>	 * @internal This function updates the consumer head for dequeue
+<b><a name="line104">104  </a></b>	 *
+<b><a name="line105">105  </a></b>	 * @param r
+<b><a name="line106">106  </a></b>	 *   A pointer to the ring structure
+<b><a name="line107">107  </a></b>	 * @param is_sc
+<b><a name="line108">108  </a></b>	 *   Indicates whether multi-consumer path is needed or not
+<b><a name="line109">109  </a></b>	 * @param n
+<b><a name="line110">110  </a></b>	 *   The number of elements we will want to enqueue, i.e. how far should the
+<b><a name="line111">111  </a></b>	 *   head be moved
+<b><a name="line112">112  </a></b>	 * @param behavior
+<b><a name="line113">113  </a></b>	 *   RTE_RING_QUEUE_FIXED:    Dequeue a fixed number of items from a ring
+<b><a name="line114">114  </a></b>	 *   RTE_RING_QUEUE_VARIABLE: Dequeue as many items as possible from ring
+<b><a name="line115">115  </a></b>	 * @param old_head
+<b><a name="line116">116  </a></b>	 *   Returns head value as it was before the move, i.e. where dequeue starts
+<b><a name="line117">117  </a></b>	 * @param new_head
+<b><a name="line118">118  </a></b>	 *   Returns the current/new head value i.e. where dequeue finishes
+<b><a name="line119">119  </a></b>	 * @param entries
+<b><a name="line120">120  </a></b>	 *   Returns the number of entries in the ring BEFORE head was moved
+<b><a name="line121">121  </a></b>	 * @return
+<b><a name="line122">122  </a></b>	 *   - Actual number of objects dequeued.
+<b><a name="line123">123  </a></b>	 *     If behavior == RTE_RING_QUEUE_FIXED, this will be 0 or n only.
+<b><a name="line124">124  </a></b>	 */
+<b><a name="line125">125  </a></b>	static <a href="../rte_common.h/code.html#line146">__rte_always_inline</a> unsigned int
+<b><a name="line126">126  </a></b>	<b>__rte_ring_move_cons_head</b>(struct <a href="../rte_ring.h/code.html#line83">rte_ring</a> *<b>r</b>, unsigned int <b>is_sc</b>,
+<b><a name="line127">127  </a></b>			unsigned int <b>n</b>, enum <a href="../rte_ring.h/code.html#line54">rte_ring_queue_behavior</a> <b>behavior</b>,
+<b><a name="line128">128  </a></b>			<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> *<b>old_head</b>, <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> *<b>new_head</b>,
+<b><a name="line129">129  </a></b>			<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> *<b>entries</b>)
+<b><a name="line130">130  </a></b>	{
+<b><a name="line131">131  </a></b>		unsigned int <b>max</b> = <a href="#line127">n</a>;
+<b><a name="line132">132  </a></b>		int <b>success</b>;
+<b><a name="line133">133  </a></b>	
+<b><a name="line134">134  </a></b>		/* move cons.head atomically */
+<b><a name="line135">135  </a></b>		do {
+<b><a name="line136">136  </a></b>			/* Restore n as it may change every loop */
+<b><a name="line137">137  </a></b>			<a href="#line127">n</a> = <a href="#line131">max</a>;
+<b><a name="line138">138  </a></b>	
+<b><a name="line139">139  </a></b>			*<a href="#line128">old_head</a> = <a href="#line126">r</a>-&gt;<a href="../rte_ring.h/code.html#line104">cons</a>.<a href="../rte_ring.h/code.html#line68">head</a>;
+<b><a name="line140">140  </a></b>	
+<b><a name="line141">141  </a></b>			/* add rmb barrier to avoid load/load reorder in weak
+<b><a name="line142">142  </a></b>			 * memory model. It is noop on x86
+<b><a name="line143">143  </a></b>			 */
+<b><a name="line144">144  </a></b>			<a href="../rte_atomic.h/code.html#line32">rte_smp_rmb</a>();
+<b><a name="line145">145  </a></b>	
+<b><a name="line146">146  </a></b>			/* The subtraction is done between two unsigned 32bits value
+<b><a name="line147">147  </a></b>			 * (the result is always modulo 32 bits even if we have
+<b><a name="line148">148  </a></b>			 * cons_head &gt; prod_tail). So 'entries' is always between 0
+<b><a name="line149">149  </a></b>			 * and size(ring)-1.
+<b><a name="line150">150  </a></b>			 */
+<b><a name="line151">151  </a></b>			*<a href="#line129">entries</a> = (<a href="#line126">r</a>-&gt;<a href="../rte_ring.h/code.html#line100">prod</a>.<a href="../rte_ring.h/code.html#line69">tail</a> - *<a href="#line128">old_head</a>);
+<b><a name="line152">152  </a></b>	
+<b><a name="line153">153  </a></b>			/* Set the actual entries for dequeue */
+<b><a name="line154">154  </a></b>			if (<a href="#line127">n</a> &gt; *<a href="#line129">entries</a>)
+<b><a name="line155">155  </a></b>				<a href="#line127">n</a> = (<a href="#line127">behavior</a> == <a href="../rte_ring.h/code.html#line55">RTE_RING_QUEUE_FIXED</a>) ? 0 : *<a href="#line129">entries</a>;
+<b><a name="line156">156  </a></b>	
+<b><a name="line157">157  </a></b>			if (<a href="../rte_branch_prediction.h/code.html#line38">unlikely</a>(n == 0))
+<b><a name="line158">158  </a></b>				return 0;
+<b><a name="line159">159  </a></b>	
+<b><a name="line160">160  </a></b>			*<a href="#line128">new_head</a> = *<a href="#line128">old_head</a> + <a href="#line127">n</a>;
+<b><a name="line161">161  </a></b>			if (<a href="#line126">is_sc</a>)
+<b><a name="line162">162  </a></b>				<a href="#line126">r</a>-&gt;<a href="../rte_ring.h/code.html#line104">cons</a>.<a href="../rte_ring.h/code.html#line68">head</a> = *<a href="#line128">new_head</a>, <a href="#line132">success</a> = 1;
+<b><a name="line163">163  </a></b>			else
+<b><a name="line164">164  </a></b>				<a href="#line132">success</a> = <a href="../generic/rte_atomic.h/code.html#line466">rte_atomic32_cmpset</a>(&amp;<a href="#line126">r</a>-&gt;<a href="../rte_ring.h/code.html#line104">cons</a>.<a href="../rte_ring.h/code.html#line68">head</a>, *<a href="#line128">old_head</a>,
+<b><a name="line165">165  </a></b>						*<a href="#line128">new_head</a>);
+<b><a name="line166">166  </a></b>		} while (<a href="../rte_branch_prediction.h/code.html#line38">unlikely</a>(success == 0));
+<b><a name="line167">167  </a></b>		return <a href="#line127">n</a>;
+<b><a name="line168">168  </a></b>	}
+<b><a name="line169">169  </a></b>	
+<b><a name="line170">170  </a></b>	#endif /* _RTE_RING_GENERIC_H_ */
+<b><a name="line171">171  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/syslimits.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* syslimits.h stands for the system's own limits.h file.
+<b><a name="line2">2    </a></b>	   If we can use it ok unmodified, then we install this text.
+<b><a name="line3">3    </a></b>	   If fixincludes fixes it, then the fixed version is installed
+<b><a name="line4">4    </a></b>	   instead of this text.  */
+<b><a name="line5">5    </a></b>	
+<b><a name="line6">6    </a></b>	#define <b>_GCC_NEXT_LIMITS_H</b>		/* tell gcc's limits.h to recurse */
+<b><a name="line7">7    </a></b>	#include_next &lt;limits.h&gt;
+<b><a name="line8">8    </a></b>	#undef <a href="#line6">_GCC_NEXT_LIMITS_H</a>
+<b><a name="line9">9    </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

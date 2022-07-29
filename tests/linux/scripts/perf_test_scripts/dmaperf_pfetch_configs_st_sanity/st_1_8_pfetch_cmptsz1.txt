@@ -1,0 +1,20 @@
+name=st_1_8_pfetch-cmptsz1
+mode=st #mode
+dir=bi #dir
+pf_range=0:0 #no spaces
+q_range=0:7 #no spaces
+flags= #no spaces
+wb_acc=5
+tmr_idx=5
+cntr_idx=6
+pfetch_en=1
+dump_en=1
+cmptsz=1
+trig_mode=cntr_tmr
+rngidx=5
+ram_width=15 #31 bits - 2^31 = 2GB
+runtime=30 #secs
+num_threads=2
+bidir_en=1
+num_pkt=64
+pkt_sz=64

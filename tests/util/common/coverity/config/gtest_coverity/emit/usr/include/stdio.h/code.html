@@ -1,0 +1,1003 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/stdio.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Define ISO C stdio on top of C++ iostreams.
+<b><a name="line2">2    </a></b>	   Copyright (C) 1991-2016 Free Software Foundation, Inc.
+<b><a name="line3">3    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line6">6    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line7">7    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line8">8    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line13">13   </a></b>	   Lesser General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line16">16   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line17">17   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	/*
+<b><a name="line20">20   </a></b>	 *	ISO C99 Standard: 7.19 Input/output	&lt;stdio.h&gt;
+<b><a name="line21">21   </a></b>	 */
+<b><a name="line22">22   </a></b>	
+<b><a name="line23">23   </a></b>	#ifndef _STDIO_H
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	#if !defined <a href="../wchar.h/code.html#line34">__need_FILE</a> &amp;&amp; !defined <a href="../wchar.h/code.html#line32">__need___FILE</a>
+<b><a name="line26">26   </a></b>	# define <b>_STDIO_H</b>	1
+<b><a name="line27">27   </a></b>	# include &lt;features.h&gt;
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line98">__BEGIN_DECLS</a>
+<b><a name="line30">30   </a></b>	
+<b><a name="line31">31   </a></b>	# define <b>__need_size_t</b>
+<b><a name="line32">32   </a></b>	# define <b>__need_NULL</b>
+<b><a name="line33">33   </a></b>	# include &lt;stddef.h&gt;
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	# include &lt;bits/types.h&gt;
+<b><a name="line36">36   </a></b>	# define <b>__need_FILE</b>
+<b><a name="line37">37   </a></b>	# define <b>__need___FILE</b>
+<b><a name="line38">38   </a></b>	#endif /* Don't need FILE.  */
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	#if !defined <a href="#line56">__FILE_defined</a> &amp;&amp; defined <a href="../wchar.h/code.html#line34">__need_FILE</a>
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	/* Define outside of namespace so the C++ is happy.  */
+<b><a name="line44">44   </a></b>	struct _IO_FILE;
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line47">47   </a></b>	/* The opaque type of streams.  This is the definition used elsewhere.  */
+<b><a name="line48">48   </a></b>	typedef struct <a href="#line44">_IO_FILE</a> <b>FILE</b>;
+<b><a name="line49">49   </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line50">50   </a></b>	#if defined <a href="../features.h/code.html#line309">__USE_LARGEFILE64</a> || defined <a href="../features.h/code.html#line249">__USE_POSIX</a> \
+<b><a name="line51">51   </a></b>	    || defined <a href="../features.h/code.html#line295">__USE_ISOC99</a> || defined <a href="../features.h/code.html#line279">__USE_XOPEN</a> \
+<b><a name="line52">52   </a></b>	    || defined <a href="../features.h/code.html#line253">__USE_POSIX2</a>
+<b><a name="line53">53   </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line124">__USING_NAMESPACE_STD</a>(FILE)
+<b><a name="line54">54   </a></b>	#endif
+<b><a name="line55">55   </a></b>	
+<b><a name="line56">56   </a></b>	# define <b>__FILE_defined</b>	1
+<b><a name="line57">57   </a></b>	#endif /* FILE not defined.  */
+<b><a name="line58">58   </a></b>	#undef	<a href="../wchar.h/code.html#line34">__need_FILE</a>
+<b><a name="line59">59   </a></b>	
+<b><a name="line60">60   </a></b>	
+<b><a name="line61">61   </a></b>	#if !defined <a href="#line66">____FILE_defined</a> &amp;&amp; defined <a href="../wchar.h/code.html#line32">__need___FILE</a>
+<b><a name="line62">62   </a></b>	
+<b><a name="line63">63   </a></b>	/* The opaque type of streams.  This is the definition used elsewhere.  */
+<b><a name="line64">64   </a></b>	typedef struct <a href="#line44">_IO_FILE</a> <b>__FILE</b>;
+<b><a name="line65">65   </a></b>	
+<b><a name="line66">66   </a></b>	# define <b>____FILE_defined</b>	1
+<b><a name="line67">67   </a></b>	#endif /* __FILE not defined.  */
+<b><a name="line68">68   </a></b>	#undef	<a href="../wchar.h/code.html#line32">__need___FILE</a>
+<b><a name="line69">69   </a></b>	
+<b><a name="line70">70   </a></b>	
+<b><a name="line71">71   </a></b>	#ifdef	<a href="#line26">_STDIO_H</a>
+<b><a name="line72">72   </a></b>	#define <b>_STDIO_USES_IOSTREAM</b>
+<b><a name="line73">73   </a></b>	
+<b><a name="line74">74   </a></b>	#include &lt;libio.h&gt;
+<b><a name="line75">75   </a></b>	
+<b><a name="line76">76   </a></b>	#if defined <a href="../features.h/code.html#line279">__USE_XOPEN</a> || defined <a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line77">77   </a></b>	# ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line240">__GNUC__</a>
+<b><a name="line78">78   </a></b>	#  ifndef _VA_LIST_DEFINED
+<b><a name="line79">79   </a></b>	typedef <a href="../_G_config.h/code.html#line46">_G_va_list</a> <b>va_list</b>;
+<b><a name="line80">80   </a></b>	#   define <b>_VA_LIST_DEFINED</b>
+<b><a name="line81">81   </a></b>	#  endif
+<b><a name="line82">82   </a></b>	# else
+<b><a name="line83">83   </a></b>	#  include &lt;stdarg.h&gt;
+<b><a name="line84">84   </a></b>	# endif
+<b><a name="line85">85   </a></b>	#endif
+<b><a name="line86">86   </a></b>	
+<b><a name="line87">87   </a></b>	#ifdef <a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line88">88   </a></b>	# ifndef <a href="../x86_64-linux-gnu/sys/types.h/code.html#line90">__off_t_defined</a>
+<b><a name="line89">89   </a></b>	# ifndef __USE_FILE_OFFSET64
+<b><a name="line90">90   </a></b>	typedef __off_t off_t;
+<b><a name="line91">91   </a></b>	# else
+<b><a name="line92">92   </a></b>	typedef __off64_t off_t;
+<b><a name="line93">93   </a></b>	# endif
+<b><a name="line94">94   </a></b>	# define __off_t_defined
+<b><a name="line95">95   </a></b>	# endif
+<b><a name="line96">96   </a></b>	# if defined <a href="../features.h/code.html#line309">__USE_LARGEFILE64</a> &amp;&amp; !defined <a href="../x86_64-linux-gnu/sys/types.h/code.html#line94">__off64_t_defined</a>
+<b><a name="line97">97   </a></b>	typedef __off64_t off64_t;
+<b><a name="line98">98   </a></b>	# define __off64_t_defined
+<b><a name="line99">99   </a></b>	# endif
+<b><a name="line100">100  </a></b>	
+<b><a name="line101">101  </a></b>	# ifndef <a href="../x86_64-linux-gnu/sys/types.h/code.html#line110">__ssize_t_defined</a>
+<b><a name="line102">102  </a></b>	typedef __ssize_t ssize_t;
+<b><a name="line103">103  </a></b>	# define __ssize_t_defined
+<b><a name="line104">104  </a></b>	# endif
+<b><a name="line105">105  </a></b>	#endif
+<b><a name="line106">106  </a></b>	
+<b><a name="line107">107  </a></b>	/* The type of the second argument to `fgetpos' and `fsetpos'.  */
+<b><a name="line108">108  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line109">109  </a></b>	#ifndef __USE_FILE_OFFSET64
+<b><a name="line110">110  </a></b>	typedef <a href="../_G_config.h/code.html#line25">_G_fpos_t</a> <b>fpos_t</b>;
+<b><a name="line111">111  </a></b>	#else
+<b><a name="line112">112  </a></b>	typedef _G_fpos64_t fpos_t;
+<b><a name="line113">113  </a></b>	#endif
+<b><a name="line114">114  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line115">115  </a></b>	#ifdef <a href="../features.h/code.html#line309">__USE_LARGEFILE64</a>
+<b><a name="line116">116  </a></b>	typedef <a href="../_G_config.h/code.html#line30">_G_fpos64_t</a> <b>fpos64_t</b>;
+<b><a name="line117">117  </a></b>	#endif
+<b><a name="line118">118  </a></b>	
+<b><a name="line119">119  </a></b>	/* The possibilities for the third argument to `setvbuf'.  */
+<b><a name="line120">120  </a></b>	#define <b>_IOFBF</b> 0		/* Fully buffered.  */
+<b><a name="line121">121  </a></b>	#define <b>_IOLBF</b> 1		/* Line buffered.  */
+<b><a name="line122">122  </a></b>	#define <b>_IONBF</b> 2		/* No buffering.  */
+<b><a name="line123">123  </a></b>	
+<b><a name="line124">124  </a></b>	
+<b><a name="line125">125  </a></b>	/* Default buffer size.  */
+<b><a name="line126">126  </a></b>	#ifndef BUFSIZ
+<b><a name="line127">127  </a></b>	# define <b>BUFSIZ</b> _IO_BUFSIZ
+<b><a name="line128">128  </a></b>	#endif
+<b><a name="line129">129  </a></b>	
+<b><a name="line130">130  </a></b>	
+<b><a name="line131">131  </a></b>	/* End of file character.
+<b><a name="line132">132  </a></b>	   Some things throughout the library rely on this being -1.  */
+<b><a name="line133">133  </a></b>	#ifndef <a href="../libio.h/code.html#line62">EOF</a>
+<b><a name="line134">134  </a></b>	# define EOF (-1)
+<b><a name="line135">135  </a></b>	#endif
+<b><a name="line136">136  </a></b>	
+<b><a name="line137">137  </a></b>	
+<b><a name="line138">138  </a></b>	/* The possibilities for the third argument to `fseek'.
+<b><a name="line139">139  </a></b>	   These values should not be changed.  */
+<b><a name="line140">140  </a></b>	#define <b>SEEK_SET</b>	0	/* Seek from beginning of file.  */
+<b><a name="line141">141  </a></b>	#define <b>SEEK_CUR</b>	1	/* Seek from current position.  */
+<b><a name="line142">142  </a></b>	#define <b>SEEK_END</b>	2	/* Seek from end of file.  */
+<b><a name="line143">143  </a></b>	#ifdef <a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line144">144  </a></b>	# define <b>SEEK_DATA</b>	3	/* Seek to next data.  */
+<b><a name="line145">145  </a></b>	# define <b>SEEK_HOLE</b>	4	/* Seek to next hole.  */
+<b><a name="line146">146  </a></b>	#endif
+<b><a name="line147">147  </a></b>	
+<b><a name="line148">148  </a></b>	
+<b><a name="line149">149  </a></b>	#if defined <a href="../features.h/code.html#line317">__USE_MISC</a> || defined <a href="../features.h/code.html#line279">__USE_XOPEN</a>
+<b><a name="line150">150  </a></b>	/* Default path prefix for `tempnam' and `tmpnam'.  */
+<b><a name="line151">151  </a></b>	# define <b>P_tmpdir</b>	&quot;/tmp&quot;
+<b><a name="line152">152  </a></b>	#endif
+<b><a name="line153">153  </a></b>	
+<b><a name="line154">154  </a></b>	
+<b><a name="line155">155  </a></b>	/* Get the values:
+<b><a name="line156">156  </a></b>	   L_tmpnam	How long an array of chars must be to be passed to `tmpnam'.
+<b><a name="line157">157  </a></b>	   TMP_MAX	The minimum number of unique filenames generated by tmpnam
+<b><a name="line158">158  </a></b>			(and tempnam when it uses tmpnam's name space),
+<b><a name="line159">159  </a></b>			or tempnam (the two are separate).
+<b><a name="line160">160  </a></b>	   L_ctermid	How long an array to pass to `ctermid'.
+<b><a name="line161">161  </a></b>	   L_cuserid	How long an array to pass to `cuserid'.
+<b><a name="line162">162  </a></b>	   FOPEN_MAX	Minimum number of files that can be open at once.
+<b><a name="line163">163  </a></b>	   FILENAME_MAX	Maximum length of a filename.  */
+<b><a name="line164">164  </a></b>	#include &lt;bits/stdio_lim.h&gt;
+<b><a name="line165">165  </a></b>	
+<b><a name="line166">166  </a></b>	
+<b><a name="line167">167  </a></b>	/* Standard streams.  */
+<b><a name="line168">168  </a></b>	extern struct <a href="#line44">_IO_FILE</a> *stdin;		/* Standard input stream.  */
+<b><a name="line169">169  </a></b>	extern struct <a href="#line44">_IO_FILE</a> *stdout;		/* Standard output stream.  */
+<b><a name="line170">170  </a></b>	extern struct <a href="#line44">_IO_FILE</a> *stderr;		/* Standard error output stream.  */
+<b><a name="line171">171  </a></b>	/* C89/C99 say they're macros.  Make them happy.  */
+<b><a name="line172">172  </a></b>	#define <b>stdin</b> stdin
+<b><a name="line173">173  </a></b>	#define <b>stdout</b> stdout
+<b><a name="line174">174  </a></b>	#define <b>stderr</b> stderr
+<b><a name="line175">175  </a></b>	
+<b><a name="line176">176  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line177">177  </a></b>	/* Remove file FILENAME.  */
+<b><a name="line178">178  </a></b>	extern int remove (const char *__filename) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line179">179  </a></b>	/* Rename file OLD to NEW.  */
+<b><a name="line180">180  </a></b>	extern int rename (const char *__old, const char *__new) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line181">181  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line182">182  </a></b>	
+<b><a name="line183">183  </a></b>	#ifdef <a href="../features.h/code.html#line321">__USE_ATFILE</a>
+<b><a name="line184">184  </a></b>	/* Rename file OLD relative to OLDFD to NEW relative to NEWFD.  */
+<b><a name="line185">185  </a></b>	extern int renameat (int __oldfd, const char *__old, int __newfd,
+<b><a name="line186">186  </a></b>			     const char *__new) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line187">187  </a></b>	#endif
+<b><a name="line188">188  </a></b>	
+<b><a name="line189">189  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line190">190  </a></b>	/* Create a temporary file and open it read/write.
+<b><a name="line191">191  </a></b>	
+<b><a name="line192">192  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line193">193  </a></b>	   marked with __THROW.  */
+<b><a name="line194">194  </a></b>	#ifndef __USE_FILE_OFFSET64
+<b><a name="line195">195  </a></b>	extern <a href="#line48">FILE</a> *tmpfile (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line196">196  </a></b>	#else
+<b><a name="line197">197  </a></b>	# ifdef __REDIRECT
+<b><a name="line198">198  </a></b>	extern FILE *__REDIRECT (tmpfile, (void), tmpfile64) __wur;
+<b><a name="line199">199  </a></b>	# else
+<b><a name="line200">200  </a></b>	#  define tmpfile tmpfile64
+<b><a name="line201">201  </a></b>	# endif
+<b><a name="line202">202  </a></b>	#endif
+<b><a name="line203">203  </a></b>	
+<b><a name="line204">204  </a></b>	#ifdef <a href="../features.h/code.html#line309">__USE_LARGEFILE64</a>
+<b><a name="line205">205  </a></b>	extern <a href="#line48">FILE</a> *tmpfile64 (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line206">206  </a></b>	#endif
+<b><a name="line207">207  </a></b>	
+<b><a name="line208">208  </a></b>	/* Generate a temporary filename.  */
+<b><a name="line209">209  </a></b>	extern char *tmpnam (char *__s) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line210">210  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line211">211  </a></b>	
+<b><a name="line212">212  </a></b>	#ifdef <a href="../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line213">213  </a></b>	/* This is the reentrant variant of `tmpnam'.  The only difference is
+<b><a name="line214">214  </a></b>	   that it does not allow S to be NULL.  */
+<b><a name="line215">215  </a></b>	extern char *tmpnam_r (char *__s) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line216">216  </a></b>	#endif
+<b><a name="line217">217  </a></b>	
+<b><a name="line218">218  </a></b>	
+<b><a name="line219">219  </a></b>	#if defined <a href="../features.h/code.html#line317">__USE_MISC</a> || defined <a href="../features.h/code.html#line279">__USE_XOPEN</a>
+<b><a name="line220">220  </a></b>	/* Generate a unique temporary filename using up to five characters of PFX
+<b><a name="line221">221  </a></b>	   if it is not NULL.  The directory to put this file in is searched for
+<b><a name="line222">222  </a></b>	   as follows: First the environment variable &quot;TMPDIR&quot; is checked.
+<b><a name="line223">223  </a></b>	   If it contains the name of a writable directory, that directory is used.
+<b><a name="line224">224  </a></b>	   If not and if DIR is not NULL, that value is checked.  If that fails,
+<b><a name="line225">225  </a></b>	   P_tmpdir is tried and finally &quot;/tmp&quot;.  The storage for the filename
+<b><a name="line226">226  </a></b>	   is allocated by `malloc'.  */
+<b><a name="line227">227  </a></b>	extern char *tempnam (const char *__dir, const char *__pfx)
+<b><a name="line228">228  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line211">__attribute_malloc__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line229">229  </a></b>	#endif
+<b><a name="line230">230  </a></b>	
+<b><a name="line231">231  </a></b>	
+<b><a name="line232">232  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line233">233  </a></b>	/* Close STREAM.
+<b><a name="line234">234  </a></b>	
+<b><a name="line235">235  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line236">236  </a></b>	   marked with __THROW.  */
+<b><a name="line237">237  </a></b>	extern int fclose (<a href="#line48">FILE</a> *__stream);
+<b><a name="line238">238  </a></b>	/* Flush STREAM, or all streams if STREAM is NULL.
+<b><a name="line239">239  </a></b>	
+<b><a name="line240">240  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line241">241  </a></b>	   marked with __THROW.  */
+<b><a name="line242">242  </a></b>	extern int fflush (<a href="#line48">FILE</a> *__stream);
+<b><a name="line243">243  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line244">244  </a></b>	
+<b><a name="line245">245  </a></b>	#ifdef <a href="../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line246">246  </a></b>	/* Faster versions when locking is not required.
+<b><a name="line247">247  </a></b>	
+<b><a name="line248">248  </a></b>	   This function is not part of POSIX and therefore no official
+<b><a name="line249">249  </a></b>	   cancellation point.  But due to similarity with an POSIX interface
+<b><a name="line250">250  </a></b>	   or due to the implementation it is a cancellation point and
+<b><a name="line251">251  </a></b>	   therefore not marked with __THROW.  */
+<b><a name="line252">252  </a></b>	extern int fflush_unlocked (<a href="#line48">FILE</a> *__stream);
+<b><a name="line253">253  </a></b>	#endif
+<b><a name="line254">254  </a></b>	
+<b><a name="line255">255  </a></b>	#ifdef <a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line256">256  </a></b>	/* Close all streams.
+<b><a name="line257">257  </a></b>	
+<b><a name="line258">258  </a></b>	   This function is not part of POSIX and therefore no official
+<b><a name="line259">259  </a></b>	   cancellation point.  But due to similarity with an POSIX interface
+<b><a name="line260">260  </a></b>	   or due to the implementation it is a cancellation point and
+<b><a name="line261">261  </a></b>	   therefore not marked with __THROW.  */
+<b><a name="line262">262  </a></b>	extern int fcloseall (void);
+<b><a name="line263">263  </a></b>	#endif
+<b><a name="line264">264  </a></b>	
+<b><a name="line265">265  </a></b>	
+<b><a name="line266">266  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line267">267  </a></b>	#ifndef __USE_FILE_OFFSET64
+<b><a name="line268">268  </a></b>	/* Open a file and create a new stream for it.
+<b><a name="line269">269  </a></b>	
+<b><a name="line270">270  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line271">271  </a></b>	   marked with __THROW.  */
+<b><a name="line272">272  </a></b>	extern <a href="#line48">FILE</a> *fopen (const char *__restrict __filename,
+<b><a name="line273">273  </a></b>			    const char *__restrict __modes) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line274">274  </a></b>	/* Open a file, replacing an existing stream with it.
+<b><a name="line275">275  </a></b>	
+<b><a name="line276">276  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line277">277  </a></b>	   marked with __THROW.  */
+<b><a name="line278">278  </a></b>	extern <a href="#line48">FILE</a> *freopen (const char *__restrict __filename,
+<b><a name="line279">279  </a></b>			      const char *__restrict __modes,
+<b><a name="line280">280  </a></b>			      <a href="#line48">FILE</a> *__restrict __stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line281">281  </a></b>	#else
+<b><a name="line282">282  </a></b>	# ifdef __REDIRECT
+<b><a name="line283">283  </a></b>	extern FILE *__REDIRECT (fopen, (const char *__restrict __filename,
+<b><a name="line284">284  </a></b>					 const char *__restrict __modes), fopen64)
+<b><a name="line285">285  </a></b>	  __wur;
+<b><a name="line286">286  </a></b>	extern FILE *__REDIRECT (freopen, (const char *__restrict __filename,
+<b><a name="line287">287  </a></b>					   const char *__restrict __modes,
+<b><a name="line288">288  </a></b>					   FILE *__restrict __stream), freopen64)
+<b><a name="line289">289  </a></b>	  __wur;
+<b><a name="line290">290  </a></b>	# else
+<b><a name="line291">291  </a></b>	#  define fopen fopen64
+<b><a name="line292">292  </a></b>	#  define freopen freopen64
+<b><a name="line293">293  </a></b>	# endif
+<b><a name="line294">294  </a></b>	#endif
+<b><a name="line295">295  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line296">296  </a></b>	#ifdef <a href="../features.h/code.html#line309">__USE_LARGEFILE64</a>
+<b><a name="line297">297  </a></b>	extern <a href="#line48">FILE</a> *fopen64 (const char *__restrict __filename,
+<b><a name="line298">298  </a></b>			      const char *__restrict __modes) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line299">299  </a></b>	extern <a href="#line48">FILE</a> *freopen64 (const char *__restrict __filename,
+<b><a name="line300">300  </a></b>				const char *__restrict __modes,
+<b><a name="line301">301  </a></b>				<a href="#line48">FILE</a> *__restrict __stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line302">302  </a></b>	#endif
+<b><a name="line303">303  </a></b>	
+<b><a name="line304">304  </a></b>	#ifdef	<a href="../features.h/code.html#line249">__USE_POSIX</a>
+<b><a name="line305">305  </a></b>	/* Create a new stream that refers to an existing system file descriptor.  */
+<b><a name="line306">306  </a></b>	extern <a href="#line48">FILE</a> *fdopen (int __fd, const char *__modes) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line307">307  </a></b>	#endif
+<b><a name="line308">308  </a></b>	
+<b><a name="line309">309  </a></b>	#ifdef	<a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line310">310  </a></b>	/* Create a new stream that refers to the given magic cookie,
+<b><a name="line311">311  </a></b>	   and uses the given functions for input and output.  */
+<b><a name="line312">312  </a></b>	extern <a href="#line48">FILE</a> *fopencookie (void *__restrict __magic_cookie,
+<b><a name="line313">313  </a></b>				  const char *__restrict __modes,
+<b><a name="line314">314  </a></b>				  <a href="../libio.h/code.html#line370">_IO_cookie_io_functions_t</a> __io_funcs) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line315">315  </a></b>	#endif
+<b><a name="line316">316  </a></b>	
+<b><a name="line317">317  </a></b>	#ifdef <a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line318">318  </a></b>	/* Create a new stream that refers to a memory buffer.  */
+<b><a name="line319">319  </a></b>	extern <a href="#line48">FILE</a> *fmemopen (void *__s, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __len, const char *__modes)
+<b><a name="line320">320  </a></b>	  <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line321">321  </a></b>	
+<b><a name="line322">322  </a></b>	/* Open a stream that writes into a malloc'd buffer that is expanded as
+<b><a name="line323">323  </a></b>	   necessary.  *BUFLOC and *SIZELOC are updated with the buffer's location
+<b><a name="line324">324  </a></b>	   and the number of characters written on fflush or fclose.  */
+<b><a name="line325">325  </a></b>	extern <a href="#line48">FILE</a> *open_memstream (char **__bufloc, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> *__sizeloc) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line326">326  </a></b>	#endif
+<b><a name="line327">327  </a></b>	
+<b><a name="line328">328  </a></b>	
+<b><a name="line329">329  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line330">330  </a></b>	/* If BUF is NULL, make STREAM unbuffered.
+<b><a name="line331">331  </a></b>	   Else make it use buffer BUF, of size BUFSIZ.  */
+<b><a name="line332">332  </a></b>	extern void setbuf (<a href="#line48">FILE</a> *__restrict __stream, char *__restrict __buf) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line333">333  </a></b>	/* Make STREAM use buffering mode MODE.
+<b><a name="line334">334  </a></b>	   If BUF is not NULL, use N bytes of it for buffering;
+<b><a name="line335">335  </a></b>	   else allocate an internal buffer N bytes long.  */
+<b><a name="line336">336  </a></b>	extern int setvbuf (<a href="#line48">FILE</a> *__restrict __stream, char *__restrict __buf,
+<b><a name="line337">337  </a></b>			    int __modes, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line338">338  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line339">339  </a></b>	
+<b><a name="line340">340  </a></b>	#ifdef	<a href="../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line341">341  </a></b>	/* If BUF is NULL, make STREAM unbuffered.
+<b><a name="line342">342  </a></b>	   Else make it use SIZE bytes of BUF for buffering.  */
+<b><a name="line343">343  </a></b>	extern void setbuffer (<a href="#line48">FILE</a> *__restrict __stream, char *__restrict __buf,
+<b><a name="line344">344  </a></b>			       <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __size) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line345">345  </a></b>	
+<b><a name="line346">346  </a></b>	/* Make STREAM line-buffered.  */
+<b><a name="line347">347  </a></b>	extern void setlinebuf (<a href="#line48">FILE</a> *__stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line348">348  </a></b>	#endif
+<b><a name="line349">349  </a></b>	
+<b><a name="line350">350  </a></b>	
+<b><a name="line351">351  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line352">352  </a></b>	/* Write formatted output to STREAM.
+<b><a name="line353">353  </a></b>	
+<b><a name="line354">354  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line355">355  </a></b>	   marked with __THROW.  */
+<b><a name="line356">356  </a></b>	extern int fprintf (<a href="#line48">FILE</a> *__restrict __stream,
+<b><a name="line357">357  </a></b>			    const char *__restrict __format, ...);
+<b><a name="line358">358  </a></b>	/* Write formatted output to stdout.
+<b><a name="line359">359  </a></b>	
+<b><a name="line360">360  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line361">361  </a></b>	   marked with __THROW.  */
+<b><a name="line362">362  </a></b>	extern int printf (const char *__restrict __format, ...);
+<b><a name="line363">363  </a></b>	/* Write formatted output to S.  */
+<b><a name="line364">364  </a></b>	extern int sprintf (char *__restrict __s,
+<b><a name="line365">365  </a></b>			    const char *__restrict __format, ...) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line61">__THROWNL</a>;
+<b><a name="line366">366  </a></b>	
+<b><a name="line367">367  </a></b>	/* Write formatted output to S from argument list ARG.
+<b><a name="line368">368  </a></b>	
+<b><a name="line369">369  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line370">370  </a></b>	   marked with __THROW.  */
+<b><a name="line371">371  </a></b>	extern int vfprintf (<a href="#line48">FILE</a> *__restrict __s, const char *__restrict __format,
+<b><a name="line372">372  </a></b>			     <a href="../_G_config.h/code.html#line46">_G_va_list</a> __arg);
+<b><a name="line373">373  </a></b>	/* Write formatted output to stdout from argument list ARG.
+<b><a name="line374">374  </a></b>	
+<b><a name="line375">375  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line376">376  </a></b>	   marked with __THROW.  */
+<b><a name="line377">377  </a></b>	extern int vprintf (const char *__restrict __format, <a href="../_G_config.h/code.html#line46">_G_va_list</a> __arg);
+<b><a name="line378">378  </a></b>	/* Write formatted output to S from argument list ARG.  */
+<b><a name="line379">379  </a></b>	extern int vsprintf (char *__restrict __s, const char *__restrict __format,
+<b><a name="line380">380  </a></b>			     <a href="../_G_config.h/code.html#line46">_G_va_list</a> __arg) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line61">__THROWNL</a>;
+<b><a name="line381">381  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line382">382  </a></b>	
+<b><a name="line383">383  </a></b>	#if defined <a href="../features.h/code.html#line295">__USE_ISOC99</a> || defined <a href="../features.h/code.html#line282">__USE_UNIX98</a>
+<b><a name="line384">384  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line125">__BEGIN_NAMESPACE_C99</a>
+<b><a name="line385">385  </a></b>	/* Maximum chars of output to write in MAXLEN.  */
+<b><a name="line386">386  </a></b>	extern int snprintf (char *__restrict __s, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __maxlen,
+<b><a name="line387">387  </a></b>			     const char *__restrict __format, ...)
+<b><a name="line388">388  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line61">__THROWNL</a> __attribute__ ((__format__ (__printf__, 3, 4)));
+<b><a name="line389">389  </a></b>	
+<b><a name="line390">390  </a></b>	extern int vsnprintf (char *__restrict __s, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __maxlen,
+<b><a name="line391">391  </a></b>			      const char *__restrict __format, <a href="../_G_config.h/code.html#line46">_G_va_list</a> __arg)
+<b><a name="line392">392  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line61">__THROWNL</a> __attribute__ ((__format__ (__printf__, 3, 0)));
+<b><a name="line393">393  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line126">__END_NAMESPACE_C99</a>
+<b><a name="line394">394  </a></b>	#endif
+<b><a name="line395">395  </a></b>	
+<b><a name="line396">396  </a></b>	#ifdef <a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line397">397  </a></b>	/* Write formatted output to a string dynamically allocated with `malloc'.
+<b><a name="line398">398  </a></b>	   Store the address of the string in *PTR.  */
+<b><a name="line399">399  </a></b>	extern int vasprintf (char **__restrict __ptr, const char *__restrict __f,
+<b><a name="line400">400  </a></b>			      <a href="../_G_config.h/code.html#line46">_G_va_list</a> __arg)
+<b><a name="line401">401  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line61">__THROWNL</a> __attribute__ ((__format__ (__printf__, 2, 0))) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line402">402  </a></b>	extern int __asprintf (char **__restrict __ptr,
+<b><a name="line403">403  </a></b>			       const char *__restrict __fmt, ...)
+<b><a name="line404">404  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line61">__THROWNL</a> __attribute__ ((__format__ (__printf__, 2, 3))) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line405">405  </a></b>	extern int asprintf (char **__restrict __ptr,
+<b><a name="line406">406  </a></b>			     const char *__restrict __fmt, ...)
+<b><a name="line407">407  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line61">__THROWNL</a> __attribute__ ((__format__ (__printf__, 2, 3))) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line408">408  </a></b>	#endif
+<b><a name="line409">409  </a></b>	
+<b><a name="line410">410  </a></b>	#ifdef <a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line411">411  </a></b>	/* Write formatted output to a file descriptor.  */
+<b><a name="line412">412  </a></b>	extern int vdprintf (int __fd, const char *__restrict __fmt,
+<b><a name="line413">413  </a></b>			     <a href="../_G_config.h/code.html#line46">_G_va_list</a> __arg)
+<b><a name="line414">414  </a></b>	     __attribute__ ((__format__ (__printf__, 2, 0)));
+<b><a name="line415">415  </a></b>	extern int dprintf (int __fd, const char *__restrict __fmt, ...)
+<b><a name="line416">416  </a></b>	     __attribute__ ((__format__ (__printf__, 2, 3)));
+<b><a name="line417">417  </a></b>	#endif
+<b><a name="line418">418  </a></b>	
+<b><a name="line419">419  </a></b>	
+<b><a name="line420">420  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line421">421  </a></b>	/* Read formatted input from STREAM.
+<b><a name="line422">422  </a></b>	
+<b><a name="line423">423  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line424">424  </a></b>	   marked with __THROW.  */
+<b><a name="line425">425  </a></b>	extern int fscanf (<a href="#line48">FILE</a> *__restrict __stream,
+<b><a name="line426">426  </a></b>			   const char *__restrict __format, ...) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line427">427  </a></b>	/* Read formatted input from stdin.
+<b><a name="line428">428  </a></b>	
+<b><a name="line429">429  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line430">430  </a></b>	   marked with __THROW.  */
+<b><a name="line431">431  </a></b>	extern int scanf (const char *__restrict __format, ...) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line432">432  </a></b>	/* Read formatted input from S.  */
+<b><a name="line433">433  </a></b>	extern int sscanf (const char *__restrict __s,
+<b><a name="line434">434  </a></b>			   const char *__restrict __format, ...) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line435">435  </a></b>	
+<b><a name="line436">436  </a></b>	#if defined <a href="../features.h/code.html#line295">__USE_ISOC99</a> &amp;&amp; !defined <a href="../features.h/code.html#line325">__USE_GNU</a> \
+<b><a name="line437">437  </a></b>	    &amp;&amp; (!defined __LDBL_COMPAT || !defined <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line177">__REDIRECT</a>) \
+<b><a name="line438">438  </a></b>	    &amp;&amp; (defined __STRICT_ANSI__ || defined <a href="../features.h/code.html#line265">__USE_XOPEN2K</a>)
+<b><a name="line439">439  </a></b>	# ifdef __REDIRECT
+<b><a name="line440">440  </a></b>	/* For strict ISO C99 or POSIX compliance disallow %as, %aS and %a[
+<b><a name="line441">441  </a></b>	   GNU extension which conflicts with valid %a followed by letter
+<b><a name="line442">442  </a></b>	   s, S or [.  */
+<b><a name="line443">443  </a></b>	extern int __REDIRECT (fscanf, (FILE *__restrict __stream,
+<b><a name="line444">444  </a></b>					const char *__restrict __format, ...),
+<b><a name="line445">445  </a></b>			       __isoc99_fscanf) __wur;
+<b><a name="line446">446  </a></b>	extern int __REDIRECT (scanf, (const char *__restrict __format, ...),
+<b><a name="line447">447  </a></b>			       __isoc99_scanf) __wur;
+<b><a name="line448">448  </a></b>	extern int __REDIRECT_NTH (sscanf, (const char *__restrict __s,
+<b><a name="line449">449  </a></b>					    const char *__restrict __format, ...),
+<b><a name="line450">450  </a></b>				   __isoc99_sscanf);
+<b><a name="line451">451  </a></b>	# else
+<b><a name="line452">452  </a></b>	extern int __isoc99_fscanf (FILE *__restrict __stream,
+<b><a name="line453">453  </a></b>				    const char *__restrict __format, ...) __wur;
+<b><a name="line454">454  </a></b>	extern int __isoc99_scanf (const char *__restrict __format, ...) __wur;
+<b><a name="line455">455  </a></b>	extern int __isoc99_sscanf (const char *__restrict __s,
+<b><a name="line456">456  </a></b>				    const char *__restrict __format, ...) __THROW;
+<b><a name="line457">457  </a></b>	#  define fscanf __isoc99_fscanf
+<b><a name="line458">458  </a></b>	#  define scanf __isoc99_scanf
+<b><a name="line459">459  </a></b>	#  define sscanf __isoc99_sscanf
+<b><a name="line460">460  </a></b>	# endif
+<b><a name="line461">461  </a></b>	#endif
+<b><a name="line462">462  </a></b>	
+<b><a name="line463">463  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line464">464  </a></b>	
+<b><a name="line465">465  </a></b>	#ifdef	<a href="../features.h/code.html#line295">__USE_ISOC99</a>
+<b><a name="line466">466  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line125">__BEGIN_NAMESPACE_C99</a>
+<b><a name="line467">467  </a></b>	/* Read formatted input from S into argument list ARG.
+<b><a name="line468">468  </a></b>	
+<b><a name="line469">469  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line470">470  </a></b>	   marked with __THROW.  */
+<b><a name="line471">471  </a></b>	extern int vfscanf (<a href="#line48">FILE</a> *__restrict __s, const char *__restrict __format,
+<b><a name="line472">472  </a></b>			    <a href="../_G_config.h/code.html#line46">_G_va_list</a> __arg)
+<b><a name="line473">473  </a></b>	     __attribute__ ((__format__ (__scanf__, 2, 0))) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line474">474  </a></b>	
+<b><a name="line475">475  </a></b>	/* Read formatted input from stdin into argument list ARG.
+<b><a name="line476">476  </a></b>	
+<b><a name="line477">477  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line478">478  </a></b>	   marked with __THROW.  */
+<b><a name="line479">479  </a></b>	extern int vscanf (const char *__restrict __format, <a href="../_G_config.h/code.html#line46">_G_va_list</a> __arg)
+<b><a name="line480">480  </a></b>	     __attribute__ ((__format__ (__scanf__, 1, 0))) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line481">481  </a></b>	
+<b><a name="line482">482  </a></b>	/* Read formatted input from S into argument list ARG.  */
+<b><a name="line483">483  </a></b>	extern int vsscanf (const char *__restrict __s,
+<b><a name="line484">484  </a></b>			    const char *__restrict __format, <a href="../_G_config.h/code.html#line46">_G_va_list</a> __arg)
+<b><a name="line485">485  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __attribute__ ((__format__ (__scanf__, 2, 0)));
+<b><a name="line486">486  </a></b>	
+<b><a name="line487">487  </a></b>	# if !defined <a href="../features.h/code.html#line325">__USE_GNU</a> \
+<b><a name="line488">488  </a></b>	     &amp;&amp; (!defined __LDBL_COMPAT || !defined <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line177">__REDIRECT</a>) \
+<b><a name="line489">489  </a></b>	     &amp;&amp; (defined __STRICT_ANSI__ || defined <a href="../features.h/code.html#line265">__USE_XOPEN2K</a>)
+<b><a name="line490">490  </a></b>	#  ifdef __REDIRECT
+<b><a name="line491">491  </a></b>	/* For strict ISO C99 or POSIX compliance disallow %as, %aS and %a[
+<b><a name="line492">492  </a></b>	   GNU extension which conflicts with valid %a followed by letter
+<b><a name="line493">493  </a></b>	   s, S or [.  */
+<b><a name="line494">494  </a></b>	extern int __REDIRECT (vfscanf,
+<b><a name="line495">495  </a></b>			       (FILE *__restrict __s,
+<b><a name="line496">496  </a></b>				const char *__restrict __format, _G_va_list __arg),
+<b><a name="line497">497  </a></b>			       __isoc99_vfscanf)
+<b><a name="line498">498  </a></b>	     __attribute__ ((__format__ (__scanf__, 2, 0))) __wur;
+<b><a name="line499">499  </a></b>	extern int __REDIRECT (vscanf, (const char *__restrict __format,
+<b><a name="line500">500  </a></b>					_G_va_list __arg), __isoc99_vscanf)
+<b><a name="line501">501  </a></b>	     __attribute__ ((__format__ (__scanf__, 1, 0))) __wur;
+<b><a name="line502">502  </a></b>	extern int __REDIRECT_NTH (vsscanf,
+<b><a name="line503">503  </a></b>				   (const char *__restrict __s,
+<b><a name="line504">504  </a></b>				    const char *__restrict __format,
+<b><a name="line505">505  </a></b>				    _G_va_list __arg), __isoc99_vsscanf)
+<b><a name="line506">506  </a></b>	     __attribute__ ((__format__ (__scanf__, 2, 0)));
+<b><a name="line507">507  </a></b>	#  else
+<b><a name="line508">508  </a></b>	extern int __isoc99_vfscanf (FILE *__restrict __s,
+<b><a name="line509">509  </a></b>				     const char *__restrict __format,
+<b><a name="line510">510  </a></b>				     _G_va_list __arg) __wur;
+<b><a name="line511">511  </a></b>	extern int __isoc99_vscanf (const char *__restrict __format,
+<b><a name="line512">512  </a></b>				    _G_va_list __arg) __wur;
+<b><a name="line513">513  </a></b>	extern int __isoc99_vsscanf (const char *__restrict __s,
+<b><a name="line514">514  </a></b>				     const char *__restrict __format,
+<b><a name="line515">515  </a></b>				     _G_va_list __arg) __THROW;
+<b><a name="line516">516  </a></b>	#   define vfscanf __isoc99_vfscanf
+<b><a name="line517">517  </a></b>	#   define vscanf __isoc99_vscanf
+<b><a name="line518">518  </a></b>	#   define vsscanf __isoc99_vsscanf
+<b><a name="line519">519  </a></b>	#  endif
+<b><a name="line520">520  </a></b>	# endif
+<b><a name="line521">521  </a></b>	
+<b><a name="line522">522  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line126">__END_NAMESPACE_C99</a>
+<b><a name="line523">523  </a></b>	#endif /* Use ISO C9x.  */
+<b><a name="line524">524  </a></b>	
+<b><a name="line525">525  </a></b>	
+<b><a name="line526">526  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line527">527  </a></b>	/* Read a character from STREAM.
+<b><a name="line528">528  </a></b>	
+<b><a name="line529">529  </a></b>	   These functions are possible cancellation points and therefore not
+<b><a name="line530">530  </a></b>	   marked with __THROW.  */
+<b><a name="line531">531  </a></b>	extern int fgetc (<a href="#line48">FILE</a> *__stream);
+<b><a name="line532">532  </a></b>	extern int getc (<a href="#line48">FILE</a> *__stream);
+<b><a name="line533">533  </a></b>	
+<b><a name="line534">534  </a></b>	/* Read a character from stdin.
+<b><a name="line535">535  </a></b>	
+<b><a name="line536">536  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line537">537  </a></b>	   marked with __THROW.  */
+<b><a name="line538">538  </a></b>	extern int getchar (void);
+<b><a name="line539">539  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line540">540  </a></b>	
+<b><a name="line541">541  </a></b>	/* The C standard explicitly says this is a macro, so we always do the
+<b><a name="line542">542  </a></b>	   optimization for it.  */
+<b><a name="line543">543  </a></b>	#define <b>getc</b>(_fp) _IO_getc (_fp)
+<b><a name="line544">544  </a></b>	
+<b><a name="line545">545  </a></b>	#ifdef <a href="../features.h/code.html#line249">__USE_POSIX</a>
+<b><a name="line546">546  </a></b>	/* These are defined in POSIX.1:1996.
+<b><a name="line547">547  </a></b>	
+<b><a name="line548">548  </a></b>	   These functions are possible cancellation points and therefore not
+<b><a name="line549">549  </a></b>	   marked with __THROW.  */
+<b><a name="line550">550  </a></b>	extern int getc_unlocked (<a href="#line48">FILE</a> *__stream);
+<b><a name="line551">551  </a></b>	extern int getchar_unlocked (void);
+<b><a name="line552">552  </a></b>	#endif /* Use POSIX.  */
+<b><a name="line553">553  </a></b>	
+<b><a name="line554">554  </a></b>	#ifdef <a href="../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line555">555  </a></b>	/* Faster version when locking is not necessary.
+<b><a name="line556">556  </a></b>	
+<b><a name="line557">557  </a></b>	   This function is not part of POSIX and therefore no official
+<b><a name="line558">558  </a></b>	   cancellation point.  But due to similarity with an POSIX interface
+<b><a name="line559">559  </a></b>	   or due to the implementation it is a cancellation point and
+<b><a name="line560">560  </a></b>	   therefore not marked with __THROW.  */
+<b><a name="line561">561  </a></b>	extern int fgetc_unlocked (<a href="#line48">FILE</a> *__stream);
+<b><a name="line562">562  </a></b>	#endif /* Use MISC.  */
+<b><a name="line563">563  </a></b>	
+<b><a name="line564">564  </a></b>	
+<b><a name="line565">565  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line566">566  </a></b>	/* Write a character to STREAM.
+<b><a name="line567">567  </a></b>	
+<b><a name="line568">568  </a></b>	   These functions are possible cancellation points and therefore not
+<b><a name="line569">569  </a></b>	   marked with __THROW.
+<b><a name="line570">570  </a></b>	
+<b><a name="line571">571  </a></b>	   These functions is a possible cancellation point and therefore not
+<b><a name="line572">572  </a></b>	   marked with __THROW.  */
+<b><a name="line573">573  </a></b>	extern int fputc (int __c, <a href="#line48">FILE</a> *__stream);
+<b><a name="line574">574  </a></b>	extern int putc (int __c, <a href="#line48">FILE</a> *__stream);
+<b><a name="line575">575  </a></b>	
+<b><a name="line576">576  </a></b>	/* Write a character to stdout.
+<b><a name="line577">577  </a></b>	
+<b><a name="line578">578  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line579">579  </a></b>	   marked with __THROW.  */
+<b><a name="line580">580  </a></b>	extern int putchar (int __c);
+<b><a name="line581">581  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line582">582  </a></b>	
+<b><a name="line583">583  </a></b>	/* The C standard explicitly says this can be a macro,
+<b><a name="line584">584  </a></b>	   so we always do the optimization for it.  */
+<b><a name="line585">585  </a></b>	#define <b>putc</b>(_ch, _fp) _IO_putc (_ch, _fp)
+<b><a name="line586">586  </a></b>	
+<b><a name="line587">587  </a></b>	#ifdef <a href="../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line588">588  </a></b>	/* Faster version when locking is not necessary.
+<b><a name="line589">589  </a></b>	
+<b><a name="line590">590  </a></b>	   This function is not part of POSIX and therefore no official
+<b><a name="line591">591  </a></b>	   cancellation point.  But due to similarity with an POSIX interface
+<b><a name="line592">592  </a></b>	   or due to the implementation it is a cancellation point and
+<b><a name="line593">593  </a></b>	   therefore not marked with __THROW.  */
+<b><a name="line594">594  </a></b>	extern int fputc_unlocked (int __c, <a href="#line48">FILE</a> *__stream);
+<b><a name="line595">595  </a></b>	#endif /* Use MISC.  */
+<b><a name="line596">596  </a></b>	
+<b><a name="line597">597  </a></b>	#ifdef <a href="../features.h/code.html#line249">__USE_POSIX</a>
+<b><a name="line598">598  </a></b>	/* These are defined in POSIX.1:1996.
+<b><a name="line599">599  </a></b>	
+<b><a name="line600">600  </a></b>	   These functions are possible cancellation points and therefore not
+<b><a name="line601">601  </a></b>	   marked with __THROW.  */
+<b><a name="line602">602  </a></b>	extern int putc_unlocked (int __c, <a href="#line48">FILE</a> *__stream);
+<b><a name="line603">603  </a></b>	extern int putchar_unlocked (int __c);
+<b><a name="line604">604  </a></b>	#endif /* Use POSIX.  */
+<b><a name="line605">605  </a></b>	
+<b><a name="line606">606  </a></b>	
+<b><a name="line607">607  </a></b>	#if defined <a href="../features.h/code.html#line317">__USE_MISC</a> \
+<b><a name="line608">608  </a></b>	    || (defined <a href="../features.h/code.html#line279">__USE_XOPEN</a> &amp;&amp; !defined <a href="../features.h/code.html#line265">__USE_XOPEN2K</a>)
+<b><a name="line609">609  </a></b>	/* Get a word (int) from STREAM.  */
+<b><a name="line610">610  </a></b>	extern int getw (<a href="#line48">FILE</a> *__stream);
+<b><a name="line611">611  </a></b>	
+<b><a name="line612">612  </a></b>	/* Write a word (int) to STREAM.  */
+<b><a name="line613">613  </a></b>	extern int putw (int __w, <a href="#line48">FILE</a> *__stream);
+<b><a name="line614">614  </a></b>	#endif
+<b><a name="line615">615  </a></b>	
+<b><a name="line616">616  </a></b>	
+<b><a name="line617">617  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line618">618  </a></b>	/* Get a newline-terminated string of finite length from STREAM.
+<b><a name="line619">619  </a></b>	
+<b><a name="line620">620  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line621">621  </a></b>	   marked with __THROW.  */
+<b><a name="line622">622  </a></b>	extern char *fgets (char *__restrict __s, int __n, <a href="#line48">FILE</a> *__restrict __stream)
+<b><a name="line623">623  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line624">624  </a></b>	
+<b><a name="line625">625  </a></b>	#if !defined <a href="../features.h/code.html#line194">__USE_ISOC11</a> \
+<b><a name="line626">626  </a></b>	    || (defined __cplusplus &amp;&amp; __cplusplus &lt;= 201103L)
+<b><a name="line627">627  </a></b>	/* Get a newline-terminated string from stdin, removing the newline.
+<b><a name="line628">628  </a></b>	   DO NOT USE THIS FUNCTION!!  There is no limit on how much it will read.
+<b><a name="line629">629  </a></b>	
+<b><a name="line630">630  </a></b>	   The function has been officially removed in ISO C11.  This opportunity
+<b><a name="line631">631  </a></b>	   is used to also remove it from the GNU feature list.  It is now only
+<b><a name="line632">632  </a></b>	   available when explicitly using an old ISO C, Unix, or POSIX standard.
+<b><a name="line633">633  </a></b>	   GCC defines _GNU_SOURCE when building C++ code and the function is still
+<b><a name="line634">634  </a></b>	   in C++11, so it is also available for C++.
+<b><a name="line635">635  </a></b>	
+<b><a name="line636">636  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line637">637  </a></b>	   marked with __THROW.  */
+<b><a name="line638">638  </a></b>	extern char *gets (char *__s) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line254">__attribute_deprecated__</a>;
+<b><a name="line639">639  </a></b>	#endif
+<b><a name="line640">640  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line641">641  </a></b>	
+<b><a name="line642">642  </a></b>	#ifdef <a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line643">643  </a></b>	/* This function does the same as `fgets' but does not lock the stream.
+<b><a name="line644">644  </a></b>	
+<b><a name="line645">645  </a></b>	   This function is not part of POSIX and therefore no official
+<b><a name="line646">646  </a></b>	   cancellation point.  But due to similarity with an POSIX interface
+<b><a name="line647">647  </a></b>	   or due to the implementation it is a cancellation point and
+<b><a name="line648">648  </a></b>	   therefore not marked with __THROW.  */
+<b><a name="line649">649  </a></b>	extern char *fgets_unlocked (char *__restrict __s, int __n,
+<b><a name="line650">650  </a></b>				     <a href="#line48">FILE</a> *__restrict __stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line651">651  </a></b>	#endif
+<b><a name="line652">652  </a></b>	
+<b><a name="line653">653  </a></b>	
+<b><a name="line654">654  </a></b>	#ifdef	<a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line655">655  </a></b>	/* Read up to (and including) a DELIMITER from STREAM into *LINEPTR
+<b><a name="line656">656  </a></b>	   (and null-terminate it). *LINEPTR is a pointer returned from malloc (or
+<b><a name="line657">657  </a></b>	   NULL), pointing to *N characters of space.  It is realloc'd as
+<b><a name="line658">658  </a></b>	   necessary.  Returns the number of characters read (not including the
+<b><a name="line659">659  </a></b>	   null terminator), or -1 on error or EOF.
+<b><a name="line660">660  </a></b>	
+<b><a name="line661">661  </a></b>	   These functions are not part of POSIX and therefore no official
+<b><a name="line662">662  </a></b>	   cancellation point.  But due to similarity with an POSIX interface
+<b><a name="line663">663  </a></b>	   or due to the implementation they are cancellation points and
+<b><a name="line664">664  </a></b>	   therefore not marked with __THROW.  */
+<b><a name="line665">665  </a></b>	extern <a href="../libio.h/code.html#line36">_IO_ssize_t</a> __getdelim (char **__restrict __lineptr,
+<b><a name="line666">666  </a></b>				       <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> *__restrict __n, int __delimiter,
+<b><a name="line667">667  </a></b>				       <a href="#line48">FILE</a> *__restrict __stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line668">668  </a></b>	extern <a href="../libio.h/code.html#line36">_IO_ssize_t</a> getdelim (char **__restrict __lineptr,
+<b><a name="line669">669  </a></b>				     <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> *__restrict __n, int __delimiter,
+<b><a name="line670">670  </a></b>				     <a href="#line48">FILE</a> *__restrict __stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line671">671  </a></b>	
+<b><a name="line672">672  </a></b>	/* Like `getdelim', but reads up to a newline.
+<b><a name="line673">673  </a></b>	
+<b><a name="line674">674  </a></b>	   This function is not part of POSIX and therefore no official
+<b><a name="line675">675  </a></b>	   cancellation point.  But due to similarity with an POSIX interface
+<b><a name="line676">676  </a></b>	   or due to the implementation it is a cancellation point and
+<b><a name="line677">677  </a></b>	   therefore not marked with __THROW.  */
+<b><a name="line678">678  </a></b>	extern <a href="../libio.h/code.html#line36">_IO_ssize_t</a> getline (char **__restrict __lineptr,
+<b><a name="line679">679  </a></b>				    <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> *__restrict __n,
+<b><a name="line680">680  </a></b>				    <a href="#line48">FILE</a> *__restrict __stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line681">681  </a></b>	#endif
+<b><a name="line682">682  </a></b>	
+<b><a name="line683">683  </a></b>	
+<b><a name="line684">684  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line685">685  </a></b>	/* Write a string to STREAM.
+<b><a name="line686">686  </a></b>	
+<b><a name="line687">687  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line688">688  </a></b>	   marked with __THROW.  */
+<b><a name="line689">689  </a></b>	extern int fputs (const char *__restrict __s, <a href="#line48">FILE</a> *__restrict __stream);
+<b><a name="line690">690  </a></b>	
+<b><a name="line691">691  </a></b>	/* Write a string, followed by a newline, to stdout.
+<b><a name="line692">692  </a></b>	
+<b><a name="line693">693  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line694">694  </a></b>	   marked with __THROW.  */
+<b><a name="line695">695  </a></b>	extern int puts (const char *__s);
+<b><a name="line696">696  </a></b>	
+<b><a name="line697">697  </a></b>	
+<b><a name="line698">698  </a></b>	/* Push a character back onto the input buffer of STREAM.
+<b><a name="line699">699  </a></b>	
+<b><a name="line700">700  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line701">701  </a></b>	   marked with __THROW.  */
+<b><a name="line702">702  </a></b>	extern int ungetc (int __c, <a href="#line48">FILE</a> *__stream);
+<b><a name="line703">703  </a></b>	
+<b><a name="line704">704  </a></b>	
+<b><a name="line705">705  </a></b>	/* Read chunks of generic data from STREAM.
+<b><a name="line706">706  </a></b>	
+<b><a name="line707">707  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line708">708  </a></b>	   marked with __THROW.  */
+<b><a name="line709">709  </a></b>	extern <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> fread (void *__restrict __ptr, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __size,
+<b><a name="line710">710  </a></b>			     <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n, <a href="#line48">FILE</a> *__restrict __stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line711">711  </a></b>	/* Write chunks of generic data to STREAM.
+<b><a name="line712">712  </a></b>	
+<b><a name="line713">713  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line714">714  </a></b>	   marked with __THROW.  */
+<b><a name="line715">715  </a></b>	extern <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> fwrite (const void *__restrict __ptr, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __size,
+<b><a name="line716">716  </a></b>			      <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n, <a href="#line48">FILE</a> *__restrict __s);
+<b><a name="line717">717  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line718">718  </a></b>	
+<b><a name="line719">719  </a></b>	#ifdef <a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line720">720  </a></b>	/* This function does the same as `fputs' but does not lock the stream.
+<b><a name="line721">721  </a></b>	
+<b><a name="line722">722  </a></b>	   This function is not part of POSIX and therefore no official
+<b><a name="line723">723  </a></b>	   cancellation point.  But due to similarity with an POSIX interface
+<b><a name="line724">724  </a></b>	   or due to the implementation it is a cancellation point and
+<b><a name="line725">725  </a></b>	   therefore not marked with __THROW.  */
+<b><a name="line726">726  </a></b>	extern int fputs_unlocked (const char *__restrict __s,
+<b><a name="line727">727  </a></b>				   <a href="#line48">FILE</a> *__restrict __stream);
+<b><a name="line728">728  </a></b>	#endif
+<b><a name="line729">729  </a></b>	
+<b><a name="line730">730  </a></b>	#ifdef <a href="../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line731">731  </a></b>	/* Faster versions when locking is not necessary.
+<b><a name="line732">732  </a></b>	
+<b><a name="line733">733  </a></b>	   These functions are not part of POSIX and therefore no official
+<b><a name="line734">734  </a></b>	   cancellation point.  But due to similarity with an POSIX interface
+<b><a name="line735">735  </a></b>	   or due to the implementation they are cancellation points and
+<b><a name="line736">736  </a></b>	   therefore not marked with __THROW.  */
+<b><a name="line737">737  </a></b>	extern <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> fread_unlocked (void *__restrict __ptr, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __size,
+<b><a name="line738">738  </a></b>				      <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n, <a href="#line48">FILE</a> *__restrict __stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line739">739  </a></b>	extern <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> fwrite_unlocked (const void *__restrict __ptr, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __size,
+<b><a name="line740">740  </a></b>				       <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n, <a href="#line48">FILE</a> *__restrict __stream);
+<b><a name="line741">741  </a></b>	#endif
+<b><a name="line742">742  </a></b>	
+<b><a name="line743">743  </a></b>	
+<b><a name="line744">744  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line745">745  </a></b>	/* Seek to a certain position on STREAM.
+<b><a name="line746">746  </a></b>	
+<b><a name="line747">747  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line748">748  </a></b>	   marked with __THROW.  */
+<b><a name="line749">749  </a></b>	extern int fseek (<a href="#line48">FILE</a> *__stream, long int __off, int __whence);
+<b><a name="line750">750  </a></b>	/* Return the current position of STREAM.
+<b><a name="line751">751  </a></b>	
+<b><a name="line752">752  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line753">753  </a></b>	   marked with __THROW.  */
+<b><a name="line754">754  </a></b>	extern long int ftell (<a href="#line48">FILE</a> *__stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line755">755  </a></b>	/* Rewind to the beginning of STREAM.
+<b><a name="line756">756  </a></b>	
+<b><a name="line757">757  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line758">758  </a></b>	   marked with __THROW.  */
+<b><a name="line759">759  </a></b>	extern void rewind (<a href="#line48">FILE</a> *__stream);
+<b><a name="line760">760  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line761">761  </a></b>	
+<b><a name="line762">762  </a></b>	/* The Single Unix Specification, Version 2, specifies an alternative,
+<b><a name="line763">763  </a></b>	   more adequate interface for the two functions above which deal with
+<b><a name="line764">764  </a></b>	   file offset.  `long int' is not the right type.  These definitions
+<b><a name="line765">765  </a></b>	   are originally defined in the Large File Support API.  */
+<b><a name="line766">766  </a></b>	
+<b><a name="line767">767  </a></b>	#if defined <a href="../features.h/code.html#line305">__USE_LARGEFILE</a> || defined <a href="../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line768">768  </a></b>	# ifndef __USE_FILE_OFFSET64
+<b><a name="line769">769  </a></b>	/* Seek to a certain position on STREAM.
+<b><a name="line770">770  </a></b>	
+<b><a name="line771">771  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line772">772  </a></b>	   marked with __THROW.  */
+<b><a name="line773">773  </a></b>	extern int fseeko (<a href="#line48">FILE</a> *__stream, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line131">__off_t</a> __off, int __whence);
+<b><a name="line774">774  </a></b>	/* Return the current position of STREAM.
+<b><a name="line775">775  </a></b>	
+<b><a name="line776">776  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line777">777  </a></b>	   marked with __THROW.  */
+<b><a name="line778">778  </a></b>	extern <a href="../x86_64-linux-gnu/bits/types.h/code.html#line131">__off_t</a> ftello (<a href="#line48">FILE</a> *__stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line779">779  </a></b>	# else
+<b><a name="line780">780  </a></b>	#  ifdef __REDIRECT
+<b><a name="line781">781  </a></b>	extern int __REDIRECT (fseeko,
+<b><a name="line782">782  </a></b>			       (FILE *__stream, __off64_t __off, int __whence),
+<b><a name="line783">783  </a></b>			       fseeko64);
+<b><a name="line784">784  </a></b>	extern __off64_t __REDIRECT (ftello, (FILE *__stream), ftello64);
+<b><a name="line785">785  </a></b>	#  else
+<b><a name="line786">786  </a></b>	#   define fseeko fseeko64
+<b><a name="line787">787  </a></b>	#   define ftello ftello64
+<b><a name="line788">788  </a></b>	#  endif
+<b><a name="line789">789  </a></b>	# endif
+<b><a name="line790">790  </a></b>	#endif
+<b><a name="line791">791  </a></b>	
+<b><a name="line792">792  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line793">793  </a></b>	#ifndef __USE_FILE_OFFSET64
+<b><a name="line794">794  </a></b>	/* Get STREAM's position.
+<b><a name="line795">795  </a></b>	
+<b><a name="line796">796  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line797">797  </a></b>	   marked with __THROW.  */
+<b><a name="line798">798  </a></b>	extern int fgetpos (<a href="#line48">FILE</a> *__restrict __stream, <a href="#line110">fpos_t</a> *__restrict __pos);
+<b><a name="line799">799  </a></b>	/* Set STREAM's position.
+<b><a name="line800">800  </a></b>	
+<b><a name="line801">801  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line802">802  </a></b>	   marked with __THROW.  */
+<b><a name="line803">803  </a></b>	extern int fsetpos (<a href="#line48">FILE</a> *__stream, const <a href="#line110">fpos_t</a> *__pos);
+<b><a name="line804">804  </a></b>	#else
+<b><a name="line805">805  </a></b>	# ifdef __REDIRECT
+<b><a name="line806">806  </a></b>	extern int __REDIRECT (fgetpos, (FILE *__restrict __stream,
+<b><a name="line807">807  </a></b>					 fpos_t *__restrict __pos), fgetpos64);
+<b><a name="line808">808  </a></b>	extern int __REDIRECT (fsetpos,
+<b><a name="line809">809  </a></b>			       (FILE *__stream, const fpos_t *__pos), fsetpos64);
+<b><a name="line810">810  </a></b>	# else
+<b><a name="line811">811  </a></b>	#  define fgetpos fgetpos64
+<b><a name="line812">812  </a></b>	#  define fsetpos fsetpos64
+<b><a name="line813">813  </a></b>	# endif
+<b><a name="line814">814  </a></b>	#endif
+<b><a name="line815">815  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line816">816  </a></b>	
+<b><a name="line817">817  </a></b>	#ifdef <a href="../features.h/code.html#line309">__USE_LARGEFILE64</a>
+<b><a name="line818">818  </a></b>	extern int fseeko64 (<a href="#line48">FILE</a> *__stream, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line132">__off64_t</a> __off, int __whence);
+<b><a name="line819">819  </a></b>	extern <a href="../x86_64-linux-gnu/bits/types.h/code.html#line132">__off64_t</a> ftello64 (<a href="#line48">FILE</a> *__stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line820">820  </a></b>	extern int fgetpos64 (<a href="#line48">FILE</a> *__restrict __stream, <a href="#line116">fpos64_t</a> *__restrict __pos);
+<b><a name="line821">821  </a></b>	extern int fsetpos64 (<a href="#line48">FILE</a> *__stream, const <a href="#line116">fpos64_t</a> *__pos);
+<b><a name="line822">822  </a></b>	#endif
+<b><a name="line823">823  </a></b>	
+<b><a name="line824">824  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line825">825  </a></b>	/* Clear the error and EOF indicators for STREAM.  */
+<b><a name="line826">826  </a></b>	extern void clearerr (<a href="#line48">FILE</a> *__stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line827">827  </a></b>	/* Return the EOF indicator for STREAM.  */
+<b><a name="line828">828  </a></b>	extern int feof (<a href="#line48">FILE</a> *__stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line829">829  </a></b>	/* Return the error indicator for STREAM.  */
+<b><a name="line830">830  </a></b>	extern int ferror (<a href="#line48">FILE</a> *__stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line831">831  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line832">832  </a></b>	
+<b><a name="line833">833  </a></b>	#ifdef <a href="../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line834">834  </a></b>	/* Faster versions when locking is not required.  */
+<b><a name="line835">835  </a></b>	extern void clearerr_unlocked (<a href="#line48">FILE</a> *__stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line836">836  </a></b>	extern int feof_unlocked (<a href="#line48">FILE</a> *__stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line837">837  </a></b>	extern int ferror_unlocked (<a href="#line48">FILE</a> *__stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line838">838  </a></b>	#endif
+<b><a name="line839">839  </a></b>	
+<b><a name="line840">840  </a></b>	
+<b><a name="line841">841  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line122">__BEGIN_NAMESPACE_STD</a>
+<b><a name="line842">842  </a></b>	/* Print a message describing the meaning of the value of errno.
+<b><a name="line843">843  </a></b>	
+<b><a name="line844">844  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line845">845  </a></b>	   marked with __THROW.  */
+<b><a name="line846">846  </a></b>	extern void perror (const char *__s);
+<b><a name="line847">847  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line123">__END_NAMESPACE_STD</a>
+<b><a name="line848">848  </a></b>	
+<b><a name="line849">849  </a></b>	/* Provide the declarations for `sys_errlist' and `sys_nerr' if they
+<b><a name="line850">850  </a></b>	   are available on this system.  Even if available, these variables
+<b><a name="line851">851  </a></b>	   should not be used directly.  The `strerror' function provides
+<b><a name="line852">852  </a></b>	   all the necessary functionality.  */
+<b><a name="line853">853  </a></b>	#include &lt;bits/sys_errlist.h&gt;
+<b><a name="line854">854  </a></b>	
+<b><a name="line855">855  </a></b>	
+<b><a name="line856">856  </a></b>	#ifdef	<a href="../features.h/code.html#line249">__USE_POSIX</a>
+<b><a name="line857">857  </a></b>	/* Return the system file descriptor for STREAM.  */
+<b><a name="line858">858  </a></b>	extern int fileno (<a href="#line48">FILE</a> *__stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line859">859  </a></b>	#endif /* Use POSIX.  */
+<b><a name="line860">860  </a></b>	
+<b><a name="line861">861  </a></b>	#ifdef <a href="../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line862">862  </a></b>	/* Faster version when locking is not required.  */
+<b><a name="line863">863  </a></b>	extern int fileno_unlocked (<a href="#line48">FILE</a> *__stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line864">864  </a></b>	#endif
+<b><a name="line865">865  </a></b>	
+<b><a name="line866">866  </a></b>	
+<b><a name="line867">867  </a></b>	#ifdef <a href="../features.h/code.html#line253">__USE_POSIX2</a>
+<b><a name="line868">868  </a></b>	/* Create a new stream connected to a pipe running the given command.
+<b><a name="line869">869  </a></b>	
+<b><a name="line870">870  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line871">871  </a></b>	   marked with __THROW.  */
+<b><a name="line872">872  </a></b>	extern <a href="#line48">FILE</a> *popen (const char *__command, const char *__modes) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line873">873  </a></b>	
+<b><a name="line874">874  </a></b>	/* Close a stream opened by popen and return the status of its child.
+<b><a name="line875">875  </a></b>	
+<b><a name="line876">876  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line877">877  </a></b>	   marked with __THROW.  */
+<b><a name="line878">878  </a></b>	extern int pclose (<a href="#line48">FILE</a> *__stream);
+<b><a name="line879">879  </a></b>	#endif
+<b><a name="line880">880  </a></b>	
+<b><a name="line881">881  </a></b>	
+<b><a name="line882">882  </a></b>	#ifdef	<a href="../features.h/code.html#line249">__USE_POSIX</a>
+<b><a name="line883">883  </a></b>	/* Return the name of the controlling terminal.  */
+<b><a name="line884">884  </a></b>	extern char *ctermid (char *__s) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line885">885  </a></b>	#endif /* Use POSIX.  */
+<b><a name="line886">886  </a></b>	
+<b><a name="line887">887  </a></b>	
+<b><a name="line888">888  </a></b>	#ifdef <a href="../features.h/code.html#line279">__USE_XOPEN</a>
+<b><a name="line889">889  </a></b>	/* Return the name of the current user.  */
+<b><a name="line890">890  </a></b>	extern char *cuserid (char *__s);
+<b><a name="line891">891  </a></b>	#endif /* Use X/Open, but not issue 6.  */
+<b><a name="line892">892  </a></b>	
+<b><a name="line893">893  </a></b>	
+<b><a name="line894">894  </a></b>	#ifdef	<a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line895">895  </a></b>	struct obstack;			/* See &lt;obstack.h&gt;.  */
+<b><a name="line896">896  </a></b>	
+<b><a name="line897">897  </a></b>	/* Write formatted output to an obstack.  */
+<b><a name="line898">898  </a></b>	extern int obstack_printf (struct <a href="#line895">obstack</a> *__restrict __obstack,
+<b><a name="line899">899  </a></b>				   const char *__restrict __format, ...)
+<b><a name="line900">900  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line61">__THROWNL</a> __attribute__ ((__format__ (__printf__, 2, 3)));
+<b><a name="line901">901  </a></b>	extern int obstack_vprintf (struct <a href="#line895">obstack</a> *__restrict __obstack,
+<b><a name="line902">902  </a></b>				    const char *__restrict __format,
+<b><a name="line903">903  </a></b>				    <a href="../_G_config.h/code.html#line46">_G_va_list</a> __args)
+<b><a name="line904">904  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line61">__THROWNL</a> __attribute__ ((__format__ (__printf__, 2, 0)));
+<b><a name="line905">905  </a></b>	#endif /* Use GNU.  */
+<b><a name="line906">906  </a></b>	
+<b><a name="line907">907  </a></b>	
+<b><a name="line908">908  </a></b>	#ifdef <a href="../features.h/code.html#line249">__USE_POSIX</a>
+<b><a name="line909">909  </a></b>	/* These are defined in POSIX.1:1996.  */
+<b><a name="line910">910  </a></b>	
+<b><a name="line911">911  </a></b>	/* Acquire ownership of STREAM.  */
+<b><a name="line912">912  </a></b>	extern void flockfile (<a href="#line48">FILE</a> *__stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line913">913  </a></b>	
+<b><a name="line914">914  </a></b>	/* Try to acquire ownership of STREAM but do not block if it is not
+<b><a name="line915">915  </a></b>	   possible.  */
+<b><a name="line916">916  </a></b>	extern int ftrylockfile (<a href="#line48">FILE</a> *__stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line917">917  </a></b>	
+<b><a name="line918">918  </a></b>	/* Relinquish the ownership granted for STREAM.  */
+<b><a name="line919">919  </a></b>	extern void funlockfile (<a href="#line48">FILE</a> *__stream) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line920">920  </a></b>	#endif /* POSIX */
+<b><a name="line921">921  </a></b>	
+<b><a name="line922">922  </a></b>	#if defined <a href="../features.h/code.html#line279">__USE_XOPEN</a> &amp;&amp; !defined <a href="../features.h/code.html#line265">__USE_XOPEN2K</a> &amp;&amp; !defined <a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line923">923  </a></b>	/* The X/Open standard requires some functions and variables to be
+<b><a name="line924">924  </a></b>	   declared here which do not belong into this header.  But we have to
+<b><a name="line925">925  </a></b>	   follow.  In GNU mode we don't do this nonsense.  */
+<b><a name="line926">926  </a></b>	# define __need_getopt
+<b><a name="line927">927  </a></b>	# include &lt;getopt.h&gt;
+<b><a name="line928">928  </a></b>	#endif	/* X/Open, but not issue 6 and not for GNU.  */
+<b><a name="line929">929  </a></b>	
+<b><a name="line930">930  </a></b>	/* If we are compiling with optimizing read this file.  It contains
+<b><a name="line931">931  </a></b>	   several optimizing inline functions and macros.  */
+<b><a name="line932">932  </a></b>	#ifdef __USE_EXTERN_INLINES
+<b><a name="line933">933  </a></b>	# include &lt;bits/stdio.h&gt;
+<b><a name="line934">934  </a></b>	#endif
+<b><a name="line935">935  </a></b>	#if <a href="../features.h/code.html#line340">__USE_FORTIFY_LEVEL</a> &gt; 0 &amp;&amp; defined <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line343">__fortify_function</a>
+<b><a name="line936">936  </a></b>	# include &lt;bits/stdio2.h&gt;
+<b><a name="line937">937  </a></b>	#endif
+<b><a name="line938">938  </a></b>	#ifdef __LDBL_COMPAT
+<b><a name="line939">939  </a></b>	# include &lt;bits/stdio-ldbl.h&gt;
+<b><a name="line940">940  </a></b>	#endif
+<b><a name="line941">941  </a></b>	
+<b><a name="line942">942  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line99">__END_DECLS</a>
+<b><a name="line943">943  </a></b>	
+<b><a name="line944">944  </a></b>	#endif /* &lt;stdio.h&gt; included.  */
+<b><a name="line945">945  </a></b>	
+<b><a name="line946">946  </a></b>	#endif /* !_STDIO_H */
+<b><a name="line947">947  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

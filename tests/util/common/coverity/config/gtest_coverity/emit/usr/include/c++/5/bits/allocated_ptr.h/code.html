@@ -1,0 +1,166 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/bits/allocated_ptr.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Guarded Allocation -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2014-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file bits/allocated_ptr.h
+<b><a name="line26">26   </a></b>	 *  This is an internal header file, included by other library headers.
+<b><a name="line27">27   </a></b>	 *  Do not attempt to use it directly. @headername{memory}
+<b><a name="line28">28   </a></b>	 */
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	#ifndef _ALLOCATED_PTR_H
+<b><a name="line31">31   </a></b>	#define <b>_ALLOCATED_PTR_H</b> 1
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	#if __cplusplus &lt; 201103L
+<b><a name="line34">34   </a></b>	# include &lt;bits/c++0xwarning.h&gt;
+<b><a name="line35">35   </a></b>	#else
+<b><a name="line36">36   </a></b>	# include &lt;type_traits&gt;
+<b><a name="line37">37   </a></b>	# include &lt;bits/ptr_traits.h&gt;
+<b><a name="line38">38   </a></b>	# include &lt;bits/alloc_traits.h&gt;
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line41">41   </a></b>	{
+<b><a name="line42">42   </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line43">43   </a></b>	
+<b><a name="line44">44   </a></b>	  /// Non-standard RAII type for managing pointers obtained from allocators.
+<b><a name="line45">45   </a></b>	  template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line46">46   </a></b>	    struct __allocated_ptr
+<b><a name="line47">47   </a></b>	    {
+<b><a name="line48">48   </a></b>	      using <b>pointer</b> = typename <a href="../alloc_traits.h/code.html#line83">allocator_traits</a>&lt;<a href="#line45">_Alloc</a>&gt;::<a href="../alloc_traits.h/code.html#line450">pointer</a>;
+<b><a name="line49">49   </a></b>	      using <b>value_type</b> = typename <a href="../alloc_traits.h/code.html#line83">allocator_traits</a>&lt;<a href="#line45">_Alloc</a>&gt;::<a href="../alloc_traits.h/code.html#line447">value_type</a>;
+<b><a name="line50">50   </a></b>	
+<b><a name="line51">51   </a></b>	      /// Take ownership of __ptr
+<b><a name="line52">52   </a></b>	      __allocated_ptr(<a href="#line45">_Alloc</a>&amp; <b>__a</b>, <a href="#line48">pointer</a> <b>__ptr</b>) noexcept
+<b><a name="line53">53   </a></b>	      : <a href="#line93">_M_alloc</a>(&amp;<a href="#line52">__a</a>), <a href="#line94">_M_ptr</a>(<a href="#line52">__ptr</a>)
+<b><a name="line54">54   </a></b>	      { }
+<b><a name="line55">55   </a></b>	
+<b><a name="line56">56   </a></b>	      /// Convert __ptr to allocator's pointer type and take ownership of it
+<b><a name="line57">57   </a></b>	      template&lt;typename <b>_Ptr</b>,
+<b><a name="line58">58   </a></b>		       typename <b>_Req</b> = <a href="../../type_traits/code.html#line2108">_Require</a>&lt;<a href="../../type_traits/code.html#line958">is_same</a>&lt;<a href="#line57">_Ptr</a>, <a href="#line49">value_type</a>*&gt;&gt;&gt;
+<b><a name="line59">59   </a></b>	      __allocated_ptr(<a href="#line45">_Alloc</a>&amp; __a, <a href="#line57">_Ptr</a> __ptr)
+<b><a name="line60">60   </a></b>	      : _M_alloc(&amp;__a), _M_ptr(pointer_traits&lt;pointer&gt;::pointer_to(*__ptr))
+<b><a name="line61">61   </a></b>	      { }
+<b><a name="line62">62   </a></b>	
+<b><a name="line63">63   </a></b>	      /// Transfer ownership of the owned pointer
+<b><a name="line64">64   </a></b>	      __allocated_ptr(<a href="#line46">__allocated_ptr</a>&amp;&amp; <b>__gd</b>) noexcept
+<b><a name="line65">65   </a></b>	      : <a href="#line93">_M_alloc</a>(<a href="#line64">__gd</a>.<a href="#line93">_M_alloc</a>), <a href="#line94">_M_ptr</a>(<a href="#line64">__gd</a>.<a href="#line94">_M_ptr</a>)
+<b><a name="line66">66   </a></b>	      { <a href="#line64">__gd</a>.<a href="#line94">_M_ptr</a> = nullptr; }
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	      /// Deallocate the owned pointer
+<b><a name="line69">69   </a></b>	      ~__allocated_ptr()
+<b><a name="line70">70   </a></b>	      {
+<b><a name="line71">71   </a></b>		if (<a href="#line94">_M_ptr</a> != nullptr)
+<b><a name="line72">72   </a></b>		  <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../alloc_traits.h/code.html#line83">allocator_traits</a>&lt;<a href="#line45">_Alloc</a>&gt;::<a href="../alloc_traits.h/code.html#line516">deallocate</a>(*<a href="#line93">_M_alloc</a>, <a href="#line94">_M_ptr</a>, 1);
+<b><a name="line73">73   </a></b>	      }
+<b><a name="line74">74   </a></b>	
+<b><a name="line75">75   </a></b>	      /// Release ownership of the owned pointer
+<b><a name="line76">76   </a></b>	      <a href="#line46">__allocated_ptr</a>&amp;
+<b><a name="line77">77   </a></b>	      operator=(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line200">nullptr_t</a>) noexcept
+<b><a name="line78">78   </a></b>	      {
+<b><a name="line79">79   </a></b>		<a href="#line94">_M_ptr</a> = nullptr;
+<b><a name="line80">80   </a></b>		return *this;
+<b><a name="line81">81   </a></b>	      }
+<b><a name="line82">82   </a></b>	
+<b><a name="line83">83   </a></b>	      /// Get the address that the owned pointer refers to.
+<b><a name="line84">84   </a></b>	      <a href="#line49">value_type</a>* get() { return <a href="#line87">_S_raw_ptr</a>(<a href="#line94">_M_ptr</a>); }
+<b><a name="line85">85   </a></b>	
+<b><a name="line86">86   </a></b>	    private:
+<b><a name="line87">87   </a></b>	      <a href="#line49">value_type</a>* _S_raw_ptr(<a href="#line49">value_type</a>* <b>__ptr</b>) { return __ptr; }
+<b><a name="line88">88   </a></b>	
+<b><a name="line89">89   </a></b>	      template&lt;typename <b>_Ptr</b>&gt;
+<b><a name="line90">90   </a></b>		auto _S_raw_ptr(<a href="#line89">_Ptr</a> __ptr) -&gt; decltype(<a href="#line87">_S_raw_ptr</a>(__ptr.operator-&gt;()))
+<b><a name="line91">91   </a></b>		{ return _S_raw_ptr(__ptr.operator-&gt;()); }
+<b><a name="line92">92   </a></b>	
+<b><a name="line93">93   </a></b>	      <a href="#line45">_Alloc</a>* <b>_M_alloc</b>;
+<b><a name="line94">94   </a></b>	      <a href="#line48">pointer</a> <b>_M_ptr</b>;
+<b><a name="line95">95   </a></b>	    };
+<b><a name="line96">96   </a></b>	
+<b><a name="line97">97   </a></b>	  /// Allocate space for a single object using __a
+<b><a name="line98">98   </a></b>	  template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line99">99   </a></b>	    <a href="#line46">__allocated_ptr</a>&lt;<a href="#line98">_Alloc</a>&gt;
+<b><a name="line100">100  </a></b>	    __allocate_guarded(<a href="#line98">_Alloc</a>&amp; <b>__a</b>)
+<b><a name="line101">101  </a></b>	    {
+<b><a name="line102">102  </a></b>	      return { <a href="#line100">__a</a>, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../alloc_traits.h/code.html#line83">allocator_traits</a>&lt;<a href="#line98">_Alloc</a>&gt;::<a href="../alloc_traits.h/code.html#line490">allocate</a>(<a href="#line100">__a</a>, 1) };
+<b><a name="line103">103  </a></b>	    }
+<b><a name="line104">104  </a></b>	
+<b><a name="line105">105  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line106">106  </a></b>	} // namespace std
+<b><a name="line107">107  </a></b>	
+<b><a name="line108">108  </a></b>	#endif
+<b><a name="line109">109  </a></b>	#endif
+<b><a name="line110">110  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

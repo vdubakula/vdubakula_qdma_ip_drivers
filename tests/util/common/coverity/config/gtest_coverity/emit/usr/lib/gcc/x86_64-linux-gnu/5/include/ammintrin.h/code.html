@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/lib/gcc/x86_64-linux-gnu/5/include/ammintrin.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 2007-2015 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	   This file is part of GCC.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   GCC is free software; you can redistribute it and/or modify
+<b><a name="line6">6    </a></b>	   it under the terms of the GNU General Public License as published by
+<b><a name="line7">7    </a></b>	   the Free Software Foundation; either version 3, or (at your option)
+<b><a name="line8">8    </a></b>	   any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   GCC is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line13">13   </a></b>	   GNU General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line16">16   </a></b>	   permissions described in the GCC Runtime Library Exception, version
+<b><a name="line17">17   </a></b>	   3.1, as published by the Free Software Foundation.
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	   You should have received a copy of the GNU General Public License and
+<b><a name="line20">20   </a></b>	   a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line21">21   </a></b>	   see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line22">22   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>	/* Implemented from the specification included in the AMD Programmers
+<b><a name="line25">25   </a></b>	   Manual Update, version 2.x */
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>	#ifndef _AMMINTRIN_H_INCLUDED
+<b><a name="line28">28   </a></b>	#define <b>_AMMINTRIN_H_INCLUDED</b>
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	/* We need definitions from the SSE3, SSE2 and SSE header files*/
+<b><a name="line31">31   </a></b>	#include &lt;pmmintrin.h&gt;
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	#ifndef __SSE4A__
+<b><a name="line34">34   </a></b>	#pragma GCC push_options
+<b><a name="line35">35   </a></b>	#pragma GCC target(&quot;sse4a&quot;)
+<b><a name="line36">36   </a></b>	#define <b>__DISABLE_SSE4A__</b>
+<b><a name="line37">37   </a></b>	#endif /* __SSE4A__ */
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	extern __inline void __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line40">40   </a></b>	<b>_mm_stream_sd</b> (double * <b>__P</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__Y</b>)
+<b><a name="line41">41   </a></b>	{
+<b><a name="line42">42   </a></b>	  <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1094">__builtin_ia32_movntsd</a> (<a href="#line40">__P</a>, (<a href="../emmintrin.h/code.html#line40">__v2df</a>) <a href="#line40">__Y</a>);
+<b><a name="line43">43   </a></b>	}
+<b><a name="line44">44   </a></b>	
+<b><a name="line45">45   </a></b>	extern __inline void __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line46">46   </a></b>	<b>_mm_stream_ss</b> (float * <b>__P</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__Y</b>)
+<b><a name="line47">47   </a></b>	{
+<b><a name="line48">48   </a></b>	  <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1095">__builtin_ia32_movntss</a> (<a href="#line46">__P</a>, (<a href="../xmmintrin.h/code.html#line72">__v4sf</a>) <a href="#line46">__Y</a>);
+<b><a name="line49">49   </a></b>	}
+<b><a name="line50">50   </a></b>	
+<b><a name="line51">51   </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line52">52   </a></b>	<b>_mm_extract_si64</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__Y</b>)
+<b><a name="line53">53   </a></b>	{
+<b><a name="line54">54   </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1096">__builtin_ia32_extrq</a> ((<a href="../emmintrin.h/code.html#line41">__v2di</a>) <a href="#line52">__X</a>, (<a href="../emmintrin.h/code.html#line47">__v16qi</a>) <a href="#line52">__Y</a>);
+<b><a name="line55">55   </a></b>	}
+<b><a name="line56">56   </a></b>	
+<b><a name="line57">57   </a></b>	#ifdef __OPTIMIZE__
+<b><a name="line58">58   </a></b>	extern __inline __m128i __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line59">59   </a></b>	_mm_extracti_si64 (__m128i __X, unsigned const int __I, unsigned const int __L)
+<b><a name="line60">60   </a></b>	{
+<b><a name="line61">61   </a></b>	  return (__m128i) __builtin_ia32_extrqi ((__v2di) __X, __I, __L);
+<b><a name="line62">62   </a></b>	}
+<b><a name="line63">63   </a></b>	#else
+<b><a name="line64">64   </a></b>	#define <b>_mm_extracti_si64</b>(X, I, L)					\
+<b><a name="line65">65   </a></b>	  ((__m128i) __builtin_ia32_extrqi ((__v2di)(__m128i)(X),		\
+<b><a name="line66">66   </a></b>					    (unsigned int)(I), (unsigned int)(L)))
+<b><a name="line67">67   </a></b>	#endif
+<b><a name="line68">68   </a></b>	
+<b><a name="line69">69   </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line70">70   </a></b>	<b>_mm_insert_si64</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__X</b>,<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__Y</b>)
+<b><a name="line71">71   </a></b>	{
+<b><a name="line72">72   </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1098">__builtin_ia32_insertq</a> ((<a href="../emmintrin.h/code.html#line41">__v2di</a>)<a href="#line70">__X</a>, (<a href="../emmintrin.h/code.html#line41">__v2di</a>)<a href="#line70">__Y</a>);
+<b><a name="line73">73   </a></b>	}
+<b><a name="line74">74   </a></b>	
+<b><a name="line75">75   </a></b>	#ifdef __OPTIMIZE__
+<b><a name="line76">76   </a></b>	extern __inline __m128i __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line77">77   </a></b>	_mm_inserti_si64(__m128i __X, __m128i __Y, unsigned const int __I, unsigned const int __L)
+<b><a name="line78">78   </a></b>	{
+<b><a name="line79">79   </a></b>	  return (__m128i) __builtin_ia32_insertqi ((__v2di)__X, (__v2di)__Y, __I, __L);
+<b><a name="line80">80   </a></b>	}
+<b><a name="line81">81   </a></b>	#else
+<b><a name="line82">82   </a></b>	#define <b>_mm_inserti_si64</b>(X, Y, I, L)					\
+<b><a name="line83">83   </a></b>	  ((__m128i) __builtin_ia32_insertqi ((__v2di)(__m128i)(X),		\
+<b><a name="line84">84   </a></b>					      (__v2di)(__m128i)(Y),		\
+<b><a name="line85">85   </a></b>					      (unsigned int)(I), (unsigned int)(L)))
+<b><a name="line86">86   </a></b>	#endif
+<b><a name="line87">87   </a></b>	
+<b><a name="line88">88   </a></b>	#ifdef <a href="#line36">__DISABLE_SSE4A__</a>
+<b><a name="line89">89   </a></b>	#undef <a href="#line36">__DISABLE_SSE4A__</a>
+<b><a name="line90">90   </a></b>	#pragma GCC pop_options
+<b><a name="line91">91   </a></b>	#endif /* __DISABLE_SSE4A__ */
+<b><a name="line92">92   </a></b>	
+<b><a name="line93">93   </a></b>	#endif /* _AMMINTRIN_H_INCLUDED */
+<b><a name="line94">94   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

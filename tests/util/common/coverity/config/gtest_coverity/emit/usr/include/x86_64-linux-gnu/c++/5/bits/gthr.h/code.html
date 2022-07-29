@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/c++/5/bits/gthr.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Threads compatibility routines for libgcc2.  */
+<b><a name="line2">2    </a></b>	/* Compile this one with gcc.  */
+<b><a name="line3">3    </a></b>	/* Copyright (C) 1997-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	This file is part of GCC.
+<b><a name="line6">6    </a></b>	
+<b><a name="line7">7    </a></b>	GCC is free software; you can redistribute it and/or modify it under
+<b><a name="line8">8    </a></b>	the terms of the GNU General Public License as published by the Free
+<b><a name="line9">9    </a></b>	Software Foundation; either version 3, or (at your option) any later
+<b><a name="line10">10   </a></b>	version.
+<b><a name="line11">11   </a></b>	
+<b><a name="line12">12   </a></b>	GCC is distributed in the hope that it will be useful, but WITHOUT ANY
+<b><a name="line13">13   </a></b>	WARRANTY; without even the implied warranty of MERCHANTABILITY or
+<b><a name="line14">14   </a></b>	FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+<b><a name="line15">15   </a></b>	for more details.
+<b><a name="line16">16   </a></b>	
+<b><a name="line17">17   </a></b>	Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line18">18   </a></b>	permissions described in the GCC Runtime Library Exception, version
+<b><a name="line19">19   </a></b>	3.1, as published by the Free Software Foundation.
+<b><a name="line20">20   </a></b>	
+<b><a name="line21">21   </a></b>	You should have received a copy of the GNU General Public License and
+<b><a name="line22">22   </a></b>	a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line23">23   </a></b>	see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line24">24   </a></b>	&lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line25">25   </a></b>	
+<b><a name="line26">26   </a></b>	#ifndef _GLIBCXX_GCC_GTHR_H
+<b><a name="line27">27   </a></b>	#define <b>_GLIBCXX_GCC_GTHR_H</b>
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	#ifndef _GLIBCXX_HIDE_EXPORTS
+<b><a name="line30">30   </a></b>	#pragma GCC visibility push(default)
+<b><a name="line31">31   </a></b>	#endif
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	/* If this file is compiled with threads support, it must
+<b><a name="line34">34   </a></b>	       #define __GTHREADS 1
+<b><a name="line35">35   </a></b>	   to indicate that threads support is present.  Also it has define
+<b><a name="line36">36   </a></b>	   function
+<b><a name="line37">37   </a></b>	     int __gthread_active_p ()
+<b><a name="line38">38   </a></b>	   that returns 1 if thread system is active, 0 if not.
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	   The threads interface must define the following types:
+<b><a name="line41">41   </a></b>	     __gthread_key_t
+<b><a name="line42">42   </a></b>	     __gthread_once_t
+<b><a name="line43">43   </a></b>	     __gthread_mutex_t
+<b><a name="line44">44   </a></b>	     __gthread_recursive_mutex_t
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	   The threads interface must define the following macros:
+<b><a name="line47">47   </a></b>	
+<b><a name="line48">48   </a></b>	     __GTHREAD_ONCE_INIT
+<b><a name="line49">49   </a></b>	     		to initialize __gthread_once_t
+<b><a name="line50">50   </a></b>	     __GTHREAD_MUTEX_INIT
+<b><a name="line51">51   </a></b>	     		to initialize __gthread_mutex_t to get a fast
+<b><a name="line52">52   </a></b>			non-recursive mutex.
+<b><a name="line53">53   </a></b>	     __GTHREAD_MUTEX_INIT_FUNCTION
+<b><a name="line54">54   </a></b>			to initialize __gthread_mutex_t to get a fast
+<b><a name="line55">55   </a></b>			non-recursive mutex.
+<b><a name="line56">56   </a></b>			Define this to a function which looks like this:
+<b><a name="line57">57   </a></b>			  void __GTHREAD_MUTEX_INIT_FUNCTION (__gthread_mutex_t *)
+<b><a name="line58">58   </a></b>	     		Some systems can't initialize a mutex without a
+<b><a name="line59">59   </a></b>			function call.  Don't define __GTHREAD_MUTEX_INIT in this case.
+<b><a name="line60">60   </a></b>	     __GTHREAD_RECURSIVE_MUTEX_INIT
+<b><a name="line61">61   </a></b>	     __GTHREAD_RECURSIVE_MUTEX_INIT_FUNCTION
+<b><a name="line62">62   </a></b>	     		as above, but for a recursive mutex.
+<b><a name="line63">63   </a></b>	
+<b><a name="line64">64   </a></b>	   The threads interface must define the following static functions:
+<b><a name="line65">65   </a></b>	
+<b><a name="line66">66   </a></b>	     int __gthread_once (__gthread_once_t *once, void (*func) ())
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	     int __gthread_key_create (__gthread_key_t *keyp, void (*dtor) (void *))
+<b><a name="line69">69   </a></b>	     int __gthread_key_delete (__gthread_key_t key)
+<b><a name="line70">70   </a></b>	
+<b><a name="line71">71   </a></b>	     void *__gthread_getspecific (__gthread_key_t key)
+<b><a name="line72">72   </a></b>	     int __gthread_setspecific (__gthread_key_t key, const void *ptr)
+<b><a name="line73">73   </a></b>	
+<b><a name="line74">74   </a></b>	     int __gthread_mutex_destroy (__gthread_mutex_t *mutex);
+<b><a name="line75">75   </a></b>	     int __gthread_recursive_mutex_destroy (__gthread_recursive_mutex_t *mutex);
+<b><a name="line76">76   </a></b>	
+<b><a name="line77">77   </a></b>	     int __gthread_mutex_lock (__gthread_mutex_t *mutex);
+<b><a name="line78">78   </a></b>	     int __gthread_mutex_trylock (__gthread_mutex_t *mutex);
+<b><a name="line79">79   </a></b>	     int __gthread_mutex_unlock (__gthread_mutex_t *mutex);
+<b><a name="line80">80   </a></b>	
+<b><a name="line81">81   </a></b>	     int __gthread_recursive_mutex_lock (__gthread_recursive_mutex_t *mutex);
+<b><a name="line82">82   </a></b>	     int __gthread_recursive_mutex_trylock (__gthread_recursive_mutex_t *mutex);
+<b><a name="line83">83   </a></b>	     int __gthread_recursive_mutex_unlock (__gthread_recursive_mutex_t *mutex);
+<b><a name="line84">84   </a></b>	
+<b><a name="line85">85   </a></b>	   The following are supported in POSIX threads only. They are required to
+<b><a name="line86">86   </a></b>	   fix a deadlock in static initialization inside libsupc++. The header file
+<b><a name="line87">87   </a></b>	   gthr-posix.h defines a symbol __GTHREAD_HAS_COND to signify that these extra
+<b><a name="line88">88   </a></b>	   features are supported.
+<b><a name="line89">89   </a></b>	
+<b><a name="line90">90   </a></b>	   Types:
+<b><a name="line91">91   </a></b>	     __gthread_cond_t
+<b><a name="line92">92   </a></b>	
+<b><a name="line93">93   </a></b>	   Macros:
+<b><a name="line94">94   </a></b>	     __GTHREAD_COND_INIT
+<b><a name="line95">95   </a></b>	     __GTHREAD_COND_INIT_FUNCTION
+<b><a name="line96">96   </a></b>	
+<b><a name="line97">97   </a></b>	   Interface:
+<b><a name="line98">98   </a></b>	     int __gthread_cond_broadcast (__gthread_cond_t *cond);
+<b><a name="line99">99   </a></b>	     int __gthread_cond_wait (__gthread_cond_t *cond, __gthread_mutex_t *mutex);
+<b><a name="line100">100  </a></b>	     int __gthread_cond_wait_recursive (__gthread_cond_t *cond,
+<b><a name="line101">101  </a></b>						__gthread_recursive_mutex_t *mutex);
+<b><a name="line102">102  </a></b>	
+<b><a name="line103">103  </a></b>	   All functions returning int should return zero on success or the error
+<b><a name="line104">104  </a></b>	   number.  If the operation is not supported, -1 is returned.
+<b><a name="line105">105  </a></b>	
+<b><a name="line106">106  </a></b>	   If the following are also defined, you should
+<b><a name="line107">107  </a></b>	     #define __GTHREADS_CXX0X 1
+<b><a name="line108">108  </a></b>	   to enable the c++0x thread library.
+<b><a name="line109">109  </a></b>	
+<b><a name="line110">110  </a></b>	   Types:
+<b><a name="line111">111  </a></b>	     __gthread_t
+<b><a name="line112">112  </a></b>	     __gthread_time_t
+<b><a name="line113">113  </a></b>	
+<b><a name="line114">114  </a></b>	   Interface:
+<b><a name="line115">115  </a></b>	     int __gthread_create (__gthread_t *thread, void *(*func) (void*),
+<b><a name="line116">116  </a></b>	                           void *args);
+<b><a name="line117">117  </a></b>	     int __gthread_join (__gthread_t thread, void **value_ptr);
+<b><a name="line118">118  </a></b>	     int __gthread_detach (__gthread_t thread);
+<b><a name="line119">119  </a></b>	     int __gthread_equal (__gthread_t t1, __gthread_t t2);
+<b><a name="line120">120  </a></b>	     __gthread_t __gthread_self (void);
+<b><a name="line121">121  </a></b>	     int __gthread_yield (void);
+<b><a name="line122">122  </a></b>	
+<b><a name="line123">123  </a></b>	     int __gthread_mutex_timedlock (__gthread_mutex_t *m,
+<b><a name="line124">124  </a></b>	                                    const __gthread_time_t *abs_timeout);
+<b><a name="line125">125  </a></b>	     int __gthread_recursive_mutex_timedlock (__gthread_recursive_mutex_t *m,
+<b><a name="line126">126  </a></b>	                                          const __gthread_time_t *abs_time);
+<b><a name="line127">127  </a></b>	
+<b><a name="line128">128  </a></b>	     int __gthread_cond_signal (__gthread_cond_t *cond);
+<b><a name="line129">129  </a></b>	     int __gthread_cond_timedwait (__gthread_cond_t *cond,
+<b><a name="line130">130  </a></b>	                                   __gthread_mutex_t *mutex,
+<b><a name="line131">131  </a></b>	                                   const __gthread_time_t *abs_timeout);
+<b><a name="line132">132  </a></b>	
+<b><a name="line133">133  </a></b>	*/
+<b><a name="line134">134  </a></b>	
+<b><a name="line135">135  </a></b>	#if <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line198">__GXX_WEAK__</a>
+<b><a name="line136">136  </a></b>	/* The pe-coff weak support isn't fully compatible to ELF's weak.
+<b><a name="line137">137  </a></b>	   For static libraries it might would work, but as we need to deal
+<b><a name="line138">138  </a></b>	   with shared versions too, we disable it for mingw-targets.  */
+<b><a name="line139">139  </a></b>	#ifdef __MINGW32__
+<b><a name="line140">140  </a></b>	#undef _GLIBCXX_GTHREAD_USE_WEAK
+<b><a name="line141">141  </a></b>	#define _GLIBCXX_GTHREAD_USE_WEAK 0
+<b><a name="line142">142  </a></b>	#endif
+<b><a name="line143">143  </a></b>	
+<b><a name="line144">144  </a></b>	#ifndef _GLIBCXX_GTHREAD_USE_WEAK
+<b><a name="line145">145  </a></b>	#define <b>_GLIBCXX_GTHREAD_USE_WEAK</b> 1
+<b><a name="line146">146  </a></b>	#endif
+<b><a name="line147">147  </a></b>	#endif
+<b><a name="line148">148  </a></b>	#include &lt;bits/gthr-default.h&gt;
+<b><a name="line149">149  </a></b>	
+<b><a name="line150">150  </a></b>	#ifndef _GLIBCXX_HIDE_EXPORTS
+<b><a name="line151">151  </a></b>	#pragma GCC visibility pop
+<b><a name="line152">152  </a></b>	#endif
+<b><a name="line153">153  </a></b>	
+<b><a name="line154">154  </a></b>	#endif /* ! _GLIBCXX_GCC_GTHR_H */
+<b><a name="line155">155  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

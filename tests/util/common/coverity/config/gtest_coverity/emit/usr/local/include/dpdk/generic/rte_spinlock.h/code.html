@@ -1,0 +1,354 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/generic/rte_spinlock.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2010-2014 Intel Corporation
+<b><a name="line3">3    </a></b>	 */
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	#ifndef _RTE_SPINLOCK_H_
+<b><a name="line6">6    </a></b>	#define <b>_RTE_SPINLOCK_H_</b>
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	/**
+<b><a name="line9">9    </a></b>	 * @file
+<b><a name="line10">10   </a></b>	 *
+<b><a name="line11">11   </a></b>	 * RTE Spinlocks
+<b><a name="line12">12   </a></b>	 *
+<b><a name="line13">13   </a></b>	 * This file defines an API for read-write locks, which are implemented
+<b><a name="line14">14   </a></b>	 * in an architecture-specific way. This kind of lock simply waits in
+<b><a name="line15">15   </a></b>	 * a loop repeatedly checking until the lock becomes available.
+<b><a name="line16">16   </a></b>	 *
+<b><a name="line17">17   </a></b>	 * All locks must be initialised before use, and only initialised once.
+<b><a name="line18">18   </a></b>	 *
+<b><a name="line19">19   </a></b>	 */
+<b><a name="line20">20   </a></b>	
+<b><a name="line21">21   </a></b>	#include &lt;rte_lcore.h&gt;
+<b><a name="line22">22   </a></b>	#ifdef RTE_FORCE_INTRINSICS
+<b><a name="line23">23   </a></b>	#include &lt;rte_common.h&gt;
+<b><a name="line24">24   </a></b>	#endif
+<b><a name="line25">25   </a></b>	#include &lt;rte_pause.h&gt;
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>	/**
+<b><a name="line28">28   </a></b>	 * The rte_spinlock_t type.
+<b><a name="line29">29   </a></b>	 */
+<b><a name="line30">30   </a></b>	typedef struct {
+<b><a name="line31">31   </a></b>		volatile int <b>locked</b>; /**&lt; lock status 0 = unlocked, 1 = locked */
+<b><a name="line32">32   </a></b>	} <b>rte_spinlock_t</b>;
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	/**
+<b><a name="line35">35   </a></b>	 * A static spinlock initializer.
+<b><a name="line36">36   </a></b>	 */
+<b><a name="line37">37   </a></b>	#define <b>RTE_SPINLOCK_INITIALIZER</b> { 0 }
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	/**
+<b><a name="line40">40   </a></b>	 * Initialize the spinlock to an unlocked state.
+<b><a name="line41">41   </a></b>	 *
+<b><a name="line42">42   </a></b>	 * @param sl
+<b><a name="line43">43   </a></b>	 *   A pointer to the spinlock.
+<b><a name="line44">44   </a></b>	 */
+<b><a name="line45">45   </a></b>	static inline void
+<b><a name="line46">46   </a></b>	<b>rte_spinlock_init</b>(<a href="#line32">rte_spinlock_t</a> *<b>sl</b>)
+<b><a name="line47">47   </a></b>	{
+<b><a name="line48">48   </a></b>		<a href="#line46">sl</a>-&gt;<a href="#line31">locked</a> = 0;
+<b><a name="line49">49   </a></b>	}
+<b><a name="line50">50   </a></b>	
+<b><a name="line51">51   </a></b>	/**
+<b><a name="line52">52   </a></b>	 * Take the spinlock.
+<b><a name="line53">53   </a></b>	 *
+<b><a name="line54">54   </a></b>	 * @param sl
+<b><a name="line55">55   </a></b>	 *   A pointer to the spinlock.
+<b><a name="line56">56   </a></b>	 */
+<b><a name="line57">57   </a></b>	static inline void
+<b><a name="line58">58   </a></b>	rte_spinlock_lock(<a href="#line32">rte_spinlock_t</a> *sl);
+<b><a name="line59">59   </a></b>	
+<b><a name="line60">60   </a></b>	#ifdef RTE_FORCE_INTRINSICS
+<b><a name="line61">61   </a></b>	static inline void
+<b><a name="line62">62   </a></b>	rte_spinlock_lock(rte_spinlock_t *sl)
+<b><a name="line63">63   </a></b>	{
+<b><a name="line64">64   </a></b>		while (__sync_lock_test_and_set(&amp;sl-&gt;locked, 1))
+<b><a name="line65">65   </a></b>			while(sl-&gt;locked)
+<b><a name="line66">66   </a></b>				rte_pause();
+<b><a name="line67">67   </a></b>	}
+<b><a name="line68">68   </a></b>	#endif
+<b><a name="line69">69   </a></b>	
+<b><a name="line70">70   </a></b>	/**
+<b><a name="line71">71   </a></b>	 * Release the spinlock.
+<b><a name="line72">72   </a></b>	 *
+<b><a name="line73">73   </a></b>	 * @param sl
+<b><a name="line74">74   </a></b>	 *   A pointer to the spinlock.
+<b><a name="line75">75   </a></b>	 */
+<b><a name="line76">76   </a></b>	static inline void
+<b><a name="line77">77   </a></b>	rte_spinlock_unlock (<a href="#line32">rte_spinlock_t</a> *sl);
+<b><a name="line78">78   </a></b>	
+<b><a name="line79">79   </a></b>	#ifdef RTE_FORCE_INTRINSICS
+<b><a name="line80">80   </a></b>	static inline void
+<b><a name="line81">81   </a></b>	rte_spinlock_unlock (rte_spinlock_t *sl)
+<b><a name="line82">82   </a></b>	{
+<b><a name="line83">83   </a></b>		__sync_lock_release(&amp;sl-&gt;locked);
+<b><a name="line84">84   </a></b>	}
+<b><a name="line85">85   </a></b>	#endif
+<b><a name="line86">86   </a></b>	
+<b><a name="line87">87   </a></b>	/**
+<b><a name="line88">88   </a></b>	 * Try to take the lock.
+<b><a name="line89">89   </a></b>	 *
+<b><a name="line90">90   </a></b>	 * @param sl
+<b><a name="line91">91   </a></b>	 *   A pointer to the spinlock.
+<b><a name="line92">92   </a></b>	 * @return
+<b><a name="line93">93   </a></b>	 *   1 if the lock is successfully taken; 0 otherwise.
+<b><a name="line94">94   </a></b>	 */
+<b><a name="line95">95   </a></b>	static inline int
+<b><a name="line96">96   </a></b>	rte_spinlock_trylock (<a href="#line32">rte_spinlock_t</a> *sl);
+<b><a name="line97">97   </a></b>	
+<b><a name="line98">98   </a></b>	#ifdef RTE_FORCE_INTRINSICS
+<b><a name="line99">99   </a></b>	static inline int
+<b><a name="line100">100  </a></b>	rte_spinlock_trylock (rte_spinlock_t *sl)
+<b><a name="line101">101  </a></b>	{
+<b><a name="line102">102  </a></b>		return __sync_lock_test_and_set(&amp;sl-&gt;locked,1) == 0;
+<b><a name="line103">103  </a></b>	}
+<b><a name="line104">104  </a></b>	#endif
+<b><a name="line105">105  </a></b>	
+<b><a name="line106">106  </a></b>	/**
+<b><a name="line107">107  </a></b>	 * Test if the lock is taken.
+<b><a name="line108">108  </a></b>	 *
+<b><a name="line109">109  </a></b>	 * @param sl
+<b><a name="line110">110  </a></b>	 *   A pointer to the spinlock.
+<b><a name="line111">111  </a></b>	 * @return
+<b><a name="line112">112  </a></b>	 *   1 if the lock is currently taken; 0 otherwise.
+<b><a name="line113">113  </a></b>	 */
+<b><a name="line114">114  </a></b>	static inline int <b>rte_spinlock_is_locked</b> (<a href="#line32">rte_spinlock_t</a> *<b>sl</b>)
+<b><a name="line115">115  </a></b>	{
+<b><a name="line116">116  </a></b>		return <a href="#line114">sl</a>-&gt;<a href="#line31">locked</a>;
+<b><a name="line117">117  </a></b>	}
+<b><a name="line118">118  </a></b>	
+<b><a name="line119">119  </a></b>	/**
+<b><a name="line120">120  </a></b>	 * Test if hardware transactional memory (lock elision) is supported
+<b><a name="line121">121  </a></b>	 *
+<b><a name="line122">122  </a></b>	 * @return
+<b><a name="line123">123  </a></b>	 *   1 if the hardware transactional memory is supported; 0 otherwise.
+<b><a name="line124">124  </a></b>	 */
+<b><a name="line125">125  </a></b>	static inline int rte_tm_supported(void);
+<b><a name="line126">126  </a></b>	
+<b><a name="line127">127  </a></b>	/**
+<b><a name="line128">128  </a></b>	 * Try to execute critical section in a hardware memory transaction,
+<b><a name="line129">129  </a></b>	 * if it fails or not available take the spinlock.
+<b><a name="line130">130  </a></b>	 *
+<b><a name="line131">131  </a></b>	 * NOTE: An attempt to perform a HW I/O operation inside a hardware memory
+<b><a name="line132">132  </a></b>	 * transaction always aborts the transaction since the CPU is not able to
+<b><a name="line133">133  </a></b>	 * roll-back should the transaction fail. Therefore, hardware transactional
+<b><a name="line134">134  </a></b>	 * locks are not advised to be used around rte_eth_rx_burst() and
+<b><a name="line135">135  </a></b>	 * rte_eth_tx_burst() calls.
+<b><a name="line136">136  </a></b>	 *
+<b><a name="line137">137  </a></b>	 * @param sl
+<b><a name="line138">138  </a></b>	 *   A pointer to the spinlock.
+<b><a name="line139">139  </a></b>	 */
+<b><a name="line140">140  </a></b>	static inline void
+<b><a name="line141">141  </a></b>	rte_spinlock_lock_tm(<a href="#line32">rte_spinlock_t</a> *sl);
+<b><a name="line142">142  </a></b>	
+<b><a name="line143">143  </a></b>	/**
+<b><a name="line144">144  </a></b>	 * Commit hardware memory transaction or release the spinlock if
+<b><a name="line145">145  </a></b>	 * the spinlock is used as a fall-back
+<b><a name="line146">146  </a></b>	 *
+<b><a name="line147">147  </a></b>	 * @param sl
+<b><a name="line148">148  </a></b>	 *   A pointer to the spinlock.
+<b><a name="line149">149  </a></b>	 */
+<b><a name="line150">150  </a></b>	static inline void
+<b><a name="line151">151  </a></b>	rte_spinlock_unlock_tm(<a href="#line32">rte_spinlock_t</a> *sl);
+<b><a name="line152">152  </a></b>	
+<b><a name="line153">153  </a></b>	/**
+<b><a name="line154">154  </a></b>	 * Try to execute critical section in a hardware memory transaction,
+<b><a name="line155">155  </a></b>	 * if it fails or not available try to take the lock.
+<b><a name="line156">156  </a></b>	 *
+<b><a name="line157">157  </a></b>	 * NOTE: An attempt to perform a HW I/O operation inside a hardware memory
+<b><a name="line158">158  </a></b>	 * transaction always aborts the transaction since the CPU is not able to
+<b><a name="line159">159  </a></b>	 * roll-back should the transaction fail. Therefore, hardware transactional
+<b><a name="line160">160  </a></b>	 * locks are not advised to be used around rte_eth_rx_burst() and
+<b><a name="line161">161  </a></b>	 * rte_eth_tx_burst() calls.
+<b><a name="line162">162  </a></b>	 *
+<b><a name="line163">163  </a></b>	 * @param sl
+<b><a name="line164">164  </a></b>	 *   A pointer to the spinlock.
+<b><a name="line165">165  </a></b>	 * @return
+<b><a name="line166">166  </a></b>	 *   1 if the hardware memory transaction is successfully started
+<b><a name="line167">167  </a></b>	 *   or lock is successfully taken; 0 otherwise.
+<b><a name="line168">168  </a></b>	 */
+<b><a name="line169">169  </a></b>	static inline int
+<b><a name="line170">170  </a></b>	rte_spinlock_trylock_tm(<a href="#line32">rte_spinlock_t</a> *sl);
+<b><a name="line171">171  </a></b>	
+<b><a name="line172">172  </a></b>	/**
+<b><a name="line173">173  </a></b>	 * The rte_spinlock_recursive_t type.
+<b><a name="line174">174  </a></b>	 */
+<b><a name="line175">175  </a></b>	typedef struct {
+<b><a name="line176">176  </a></b>		<a href="#line32">rte_spinlock_t</a> <b>sl</b>; /**&lt; the actual spinlock */
+<b><a name="line177">177  </a></b>		volatile int <b>user</b>; /**&lt; core id using lock, -1 for unused */
+<b><a name="line178">178  </a></b>		volatile int <b>count</b>; /**&lt; count of time this lock has been called */
+<b><a name="line179">179  </a></b>	} <b>rte_spinlock_recursive_t</b>;
+<b><a name="line180">180  </a></b>	
+<b><a name="line181">181  </a></b>	/**
+<b><a name="line182">182  </a></b>	 * A static recursive spinlock initializer.
+<b><a name="line183">183  </a></b>	 */
+<b><a name="line184">184  </a></b>	#define <b>RTE_SPINLOCK_RECURSIVE_INITIALIZER</b> {RTE_SPINLOCK_INITIALIZER, -1, 0}
+<b><a name="line185">185  </a></b>	
+<b><a name="line186">186  </a></b>	/**
+<b><a name="line187">187  </a></b>	 * Initialize the recursive spinlock to an unlocked state.
+<b><a name="line188">188  </a></b>	 *
+<b><a name="line189">189  </a></b>	 * @param slr
+<b><a name="line190">190  </a></b>	 *   A pointer to the recursive spinlock.
+<b><a name="line191">191  </a></b>	 */
+<b><a name="line192">192  </a></b>	static inline void <b>rte_spinlock_recursive_init</b>(<a href="#line179">rte_spinlock_recursive_t</a> *<b>slr</b>)
+<b><a name="line193">193  </a></b>	{
+<b><a name="line194">194  </a></b>		<a href="#line46">rte_spinlock_init</a>(&amp;<a href="#line192">slr</a>-&gt;<a href="#line176">sl</a>);
+<b><a name="line195">195  </a></b>		<a href="#line192">slr</a>-&gt;<a href="#line177">user</a> = -1;
+<b><a name="line196">196  </a></b>		<a href="#line192">slr</a>-&gt;<a href="#line178">count</a> = 0;
+<b><a name="line197">197  </a></b>	}
+<b><a name="line198">198  </a></b>	
+<b><a name="line199">199  </a></b>	/**
+<b><a name="line200">200  </a></b>	 * Take the recursive spinlock.
+<b><a name="line201">201  </a></b>	 *
+<b><a name="line202">202  </a></b>	 * @param slr
+<b><a name="line203">203  </a></b>	 *   A pointer to the recursive spinlock.
+<b><a name="line204">204  </a></b>	 */
+<b><a name="line205">205  </a></b>	static inline void <b>rte_spinlock_recursive_lock</b>(<a href="#line179">rte_spinlock_recursive_t</a> *<b>slr</b>)
+<b><a name="line206">206  </a></b>	{
+<b><a name="line207">207  </a></b>		int <b>id</b> = <a href="../../rte_eal.h/code.html#line485">rte_gettid</a>();
+<b><a name="line208">208  </a></b>	
+<b><a name="line209">209  </a></b>		if (<a href="#line205">slr</a>-&gt;<a href="#line177">user</a> != <a href="#line207">id</a>) {
+<b><a name="line210">210  </a></b>			<a href="#line58">rte_spinlock_lock</a>(&amp;<a href="#line205">slr</a>-&gt;<a href="#line176">sl</a>);
+<b><a name="line211">211  </a></b>			<a href="#line205">slr</a>-&gt;<a href="#line177">user</a> = <a href="#line207">id</a>;
+<b><a name="line212">212  </a></b>		}
+<b><a name="line213">213  </a></b>		<a href="#line205">slr</a>-&gt;<a href="#line178">count</a>++;
+<b><a name="line214">214  </a></b>	}
+<b><a name="line215">215  </a></b>	/**
+<b><a name="line216">216  </a></b>	 * Release the recursive spinlock.
+<b><a name="line217">217  </a></b>	 *
+<b><a name="line218">218  </a></b>	 * @param slr
+<b><a name="line219">219  </a></b>	 *   A pointer to the recursive spinlock.
+<b><a name="line220">220  </a></b>	 */
+<b><a name="line221">221  </a></b>	static inline void <b>rte_spinlock_recursive_unlock</b>(<a href="#line179">rte_spinlock_recursive_t</a> *<b>slr</b>)
+<b><a name="line222">222  </a></b>	{
+<b><a name="line223">223  </a></b>		if (--(<a href="#line221">slr</a>-&gt;<a href="#line178">count</a>) == 0) {
+<b><a name="line224">224  </a></b>			<a href="#line221">slr</a>-&gt;<a href="#line177">user</a> = -1;
+<b><a name="line225">225  </a></b>			<a href="#line77">rte_spinlock_unlock</a>(&amp;<a href="#line221">slr</a>-&gt;<a href="#line176">sl</a>);
+<b><a name="line226">226  </a></b>		}
+<b><a name="line227">227  </a></b>	
+<b><a name="line228">228  </a></b>	}
+<b><a name="line229">229  </a></b>	
+<b><a name="line230">230  </a></b>	/**
+<b><a name="line231">231  </a></b>	 * Try to take the recursive lock.
+<b><a name="line232">232  </a></b>	 *
+<b><a name="line233">233  </a></b>	 * @param slr
+<b><a name="line234">234  </a></b>	 *   A pointer to the recursive spinlock.
+<b><a name="line235">235  </a></b>	 * @return
+<b><a name="line236">236  </a></b>	 *   1 if the lock is successfully taken; 0 otherwise.
+<b><a name="line237">237  </a></b>	 */
+<b><a name="line238">238  </a></b>	static inline int <b>rte_spinlock_recursive_trylock</b>(<a href="#line179">rte_spinlock_recursive_t</a> *<b>slr</b>)
+<b><a name="line239">239  </a></b>	{
+<b><a name="line240">240  </a></b>		int <b>id</b> = <a href="../../rte_eal.h/code.html#line485">rte_gettid</a>();
+<b><a name="line241">241  </a></b>	
+<b><a name="line242">242  </a></b>		if (<a href="#line238">slr</a>-&gt;<a href="#line177">user</a> != <a href="#line240">id</a>) {
+<b><a name="line243">243  </a></b>			if (<a href="#line96">rte_spinlock_trylock</a>(&amp;<a href="#line238">slr</a>-&gt;<a href="#line176">sl</a>) == 0)
+<b><a name="line244">244  </a></b>				return 0;
+<b><a name="line245">245  </a></b>			<a href="#line238">slr</a>-&gt;<a href="#line177">user</a> = <a href="#line240">id</a>;
+<b><a name="line246">246  </a></b>		}
+<b><a name="line247">247  </a></b>		<a href="#line238">slr</a>-&gt;<a href="#line178">count</a>++;
+<b><a name="line248">248  </a></b>		return 1;
+<b><a name="line249">249  </a></b>	}
+<b><a name="line250">250  </a></b>	
+<b><a name="line251">251  </a></b>	
+<b><a name="line252">252  </a></b>	/**
+<b><a name="line253">253  </a></b>	 * Try to execute critical section in a hardware memory transaction,
+<b><a name="line254">254  </a></b>	 * if it fails or not available take the recursive spinlocks
+<b><a name="line255">255  </a></b>	 *
+<b><a name="line256">256  </a></b>	 * NOTE: An attempt to perform a HW I/O operation inside a hardware memory
+<b><a name="line257">257  </a></b>	 * transaction always aborts the transaction since the CPU is not able to
+<b><a name="line258">258  </a></b>	 * roll-back should the transaction fail. Therefore, hardware transactional
+<b><a name="line259">259  </a></b>	 * locks are not advised to be used around rte_eth_rx_burst() and
+<b><a name="line260">260  </a></b>	 * rte_eth_tx_burst() calls.
+<b><a name="line261">261  </a></b>	 *
+<b><a name="line262">262  </a></b>	 * @param slr
+<b><a name="line263">263  </a></b>	 *   A pointer to the recursive spinlock.
+<b><a name="line264">264  </a></b>	 */
+<b><a name="line265">265  </a></b>	static inline void rte_spinlock_recursive_lock_tm(
+<b><a name="line266">266  </a></b>		<a href="#line179">rte_spinlock_recursive_t</a> *slr);
+<b><a name="line267">267  </a></b>	
+<b><a name="line268">268  </a></b>	/**
+<b><a name="line269">269  </a></b>	 * Commit hardware memory transaction or release the recursive spinlock
+<b><a name="line270">270  </a></b>	 * if the recursive spinlock is used as a fall-back
+<b><a name="line271">271  </a></b>	 *
+<b><a name="line272">272  </a></b>	 * @param slr
+<b><a name="line273">273  </a></b>	 *   A pointer to the recursive spinlock.
+<b><a name="line274">274  </a></b>	 */
+<b><a name="line275">275  </a></b>	static inline void rte_spinlock_recursive_unlock_tm(
+<b><a name="line276">276  </a></b>		<a href="#line179">rte_spinlock_recursive_t</a> *slr);
+<b><a name="line277">277  </a></b>	
+<b><a name="line278">278  </a></b>	/**
+<b><a name="line279">279  </a></b>	 * Try to execute critical section in a hardware memory transaction,
+<b><a name="line280">280  </a></b>	 * if it fails or not available try to take the recursive lock
+<b><a name="line281">281  </a></b>	 *
+<b><a name="line282">282  </a></b>	 * NOTE: An attempt to perform a HW I/O operation inside a hardware memory
+<b><a name="line283">283  </a></b>	 * transaction always aborts the transaction since the CPU is not able to
+<b><a name="line284">284  </a></b>	 * roll-back should the transaction fail. Therefore, hardware transactional
+<b><a name="line285">285  </a></b>	 * locks are not advised to be used around rte_eth_rx_burst() and
+<b><a name="line286">286  </a></b>	 * rte_eth_tx_burst() calls.
+<b><a name="line287">287  </a></b>	 *
+<b><a name="line288">288  </a></b>	 * @param slr
+<b><a name="line289">289  </a></b>	 *   A pointer to the recursive spinlock.
+<b><a name="line290">290  </a></b>	 * @return
+<b><a name="line291">291  </a></b>	 *   1 if the hardware memory transaction is successfully started
+<b><a name="line292">292  </a></b>	 *   or lock is successfully taken; 0 otherwise.
+<b><a name="line293">293  </a></b>	 */
+<b><a name="line294">294  </a></b>	static inline int rte_spinlock_recursive_trylock_tm(
+<b><a name="line295">295  </a></b>		<a href="#line179">rte_spinlock_recursive_t</a> *slr);
+<b><a name="line296">296  </a></b>	
+<b><a name="line297">297  </a></b>	#endif /* _RTE_SPINLOCK_H_ */
+<b><a name="line298">298  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

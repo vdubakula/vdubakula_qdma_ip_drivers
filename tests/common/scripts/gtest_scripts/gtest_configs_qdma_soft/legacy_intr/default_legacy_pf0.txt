@@ -1,0 +1,12 @@
+name=default_legacy_pf0
+test_mask=0x20 #bit 0 - auto mode, 1 - poll mode, bit 2 - intr mode, bit 3 - aggr mode, bit 4 - mixed mode(PF0(auto) PF1(poll) PF2(direct) PF2(Indirect)), bit 5 - Legacy Intr
+repeat=1 #number of iterations
+filter=*MM003_tx_sizes*:*ST003_packet_sizes*-*dma_h2c_c2h*
+master_pf=0
+run_gtest=1
+pf_qmax_cfg_en=(1 1 1 1)
+pf_qmax=(1 0 0 0)
+pf_nvf=(0 0 0 0) #number of VFs in PF
+valid_drv=(linux dpdk windows)
+#necessary dummy line
+

@@ -1,0 +1,232 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/posix1_lim.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 1991-2016 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line5">5    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line6">6    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line7">7    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line10">10   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line11">11   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line12">12   </a></b>	   Lesser General Public License for more details.
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line15">15   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line16">16   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	/*
+<b><a name="line19">19   </a></b>	 *	POSIX Standard: 2.9.2 Minimum Values	Added to &lt;limits.h&gt;
+<b><a name="line20">20   </a></b>	 *
+<b><a name="line21">21   </a></b>	 *	Never include this file directly; use &lt;limits.h&gt; instead.
+<b><a name="line22">22   </a></b>	 */
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>	#ifndef	_BITS_POSIX1_LIM_H
+<b><a name="line25">25   </a></b>	#define	<b>_BITS_POSIX1_LIM_H</b>	1
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>	
+<b><a name="line28">28   </a></b>	/* These are the standard-mandated minimum values.  */
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	/* Minimum number of operations in one list I/O call.  */
+<b><a name="line31">31   </a></b>	#define <b>_POSIX_AIO_LISTIO_MAX</b>	2
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	/* Minimal number of outstanding asynchronous I/O operations.  */
+<b><a name="line34">34   </a></b>	#define <b>_POSIX_AIO_MAX</b>		1
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	/* Maximum length of arguments to `execve', including environment.  */
+<b><a name="line37">37   </a></b>	#define	<b>_POSIX_ARG_MAX</b>		4096
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	/* Maximum simultaneous processes per real user ID.  */
+<b><a name="line40">40   </a></b>	#ifdef <a href="../../../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line41">41   </a></b>	# define <b>_POSIX_CHILD_MAX</b>	25
+<b><a name="line42">42   </a></b>	#else
+<b><a name="line43">43   </a></b>	# define _POSIX_CHILD_MAX	6
+<b><a name="line44">44   </a></b>	#endif
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	/* Minimal number of timer expiration overruns.  */
+<b><a name="line47">47   </a></b>	#define <b>_POSIX_DELAYTIMER_MAX</b>	32
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	/* Maximum length of a host name (not including the terminating null)
+<b><a name="line50">50   </a></b>	   as returned from the GETHOSTNAME function.  */
+<b><a name="line51">51   </a></b>	#define <b>_POSIX_HOST_NAME_MAX</b>	255
+<b><a name="line52">52   </a></b>	
+<b><a name="line53">53   </a></b>	/* Maximum link count of a file.  */
+<b><a name="line54">54   </a></b>	#define	<b>_POSIX_LINK_MAX</b>		8
+<b><a name="line55">55   </a></b>	
+<b><a name="line56">56   </a></b>	/* Maximum length of login name.  */
+<b><a name="line57">57   </a></b>	#define	<b>_POSIX_LOGIN_NAME_MAX</b>	9
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	/* Number of bytes in a terminal canonical input queue.  */
+<b><a name="line60">60   </a></b>	#define	<b>_POSIX_MAX_CANON</b>	255
+<b><a name="line61">61   </a></b>	
+<b><a name="line62">62   </a></b>	/* Number of bytes for which space will be
+<b><a name="line63">63   </a></b>	   available in a terminal input queue.  */
+<b><a name="line64">64   </a></b>	#define	<b>_POSIX_MAX_INPUT</b>	255
+<b><a name="line65">65   </a></b>	
+<b><a name="line66">66   </a></b>	/* Maximum number of message queues open for a process.  */
+<b><a name="line67">67   </a></b>	#define <b>_POSIX_MQ_OPEN_MAX</b>	8
+<b><a name="line68">68   </a></b>	
+<b><a name="line69">69   </a></b>	/* Maximum number of supported message priorities.  */
+<b><a name="line70">70   </a></b>	#define <b>_POSIX_MQ_PRIO_MAX</b>	32
+<b><a name="line71">71   </a></b>	
+<b><a name="line72">72   </a></b>	/* Number of bytes in a filename.  */
+<b><a name="line73">73   </a></b>	#define	<b>_POSIX_NAME_MAX</b>		14
+<b><a name="line74">74   </a></b>	
+<b><a name="line75">75   </a></b>	/* Number of simultaneous supplementary group IDs per process.  */
+<b><a name="line76">76   </a></b>	#ifdef <a href="../../../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line77">77   </a></b>	# define <b>_POSIX_NGROUPS_MAX</b>	8
+<b><a name="line78">78   </a></b>	#else
+<b><a name="line79">79   </a></b>	# define _POSIX_NGROUPS_MAX	0
+<b><a name="line80">80   </a></b>	#endif
+<b><a name="line81">81   </a></b>	
+<b><a name="line82">82   </a></b>	/* Number of files one process can have open at once.  */
+<b><a name="line83">83   </a></b>	#ifdef <a href="../../../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line84">84   </a></b>	# define <b>_POSIX_OPEN_MAX</b>	20
+<b><a name="line85">85   </a></b>	#else
+<b><a name="line86">86   </a></b>	# define _POSIX_OPEN_MAX	16
+<b><a name="line87">87   </a></b>	#endif
+<b><a name="line88">88   </a></b>	
+<b><a name="line89">89   </a></b>	#if !defined <a href="../../../features.h/code.html#line265">__USE_XOPEN2K</a> || defined <a href="../../../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line90">90   </a></b>	/* Number of descriptors that a process may examine with `pselect' or
+<b><a name="line91">91   </a></b>	   `select'.  */
+<b><a name="line92">92   </a></b>	# define <b>_POSIX_FD_SETSIZE</b>	_POSIX_OPEN_MAX
+<b><a name="line93">93   </a></b>	#endif
+<b><a name="line94">94   </a></b>	
+<b><a name="line95">95   </a></b>	/* Number of bytes in a pathname.  */
+<b><a name="line96">96   </a></b>	#define	<b>_POSIX_PATH_MAX</b>		256
+<b><a name="line97">97   </a></b>	
+<b><a name="line98">98   </a></b>	/* Number of bytes than can be written atomically to a pipe.  */
+<b><a name="line99">99   </a></b>	#define	<b>_POSIX_PIPE_BUF</b>		512
+<b><a name="line100">100  </a></b>	
+<b><a name="line101">101  </a></b>	/* The number of repeated occurrences of a BRE permitted by the
+<b><a name="line102">102  </a></b>	   REGEXEC and REGCOMP functions when using the interval notation.  */
+<b><a name="line103">103  </a></b>	#define <b>_POSIX_RE_DUP_MAX</b>	255
+<b><a name="line104">104  </a></b>	
+<b><a name="line105">105  </a></b>	/* Minimal number of realtime signals reserved for the application.  */
+<b><a name="line106">106  </a></b>	#define <b>_POSIX_RTSIG_MAX</b>	8
+<b><a name="line107">107  </a></b>	
+<b><a name="line108">108  </a></b>	/* Number of semaphores a process can have.  */
+<b><a name="line109">109  </a></b>	#define <b>_POSIX_SEM_NSEMS_MAX</b>	256
+<b><a name="line110">110  </a></b>	
+<b><a name="line111">111  </a></b>	/* Maximal value of a semaphore.  */
+<b><a name="line112">112  </a></b>	#define <b>_POSIX_SEM_VALUE_MAX</b>	32767
+<b><a name="line113">113  </a></b>	
+<b><a name="line114">114  </a></b>	/* Number of pending realtime signals.  */
+<b><a name="line115">115  </a></b>	#define <b>_POSIX_SIGQUEUE_MAX</b>	32
+<b><a name="line116">116  </a></b>	
+<b><a name="line117">117  </a></b>	/* Largest value of a `ssize_t'.  */
+<b><a name="line118">118  </a></b>	#define	<b>_POSIX_SSIZE_MAX</b>	32767
+<b><a name="line119">119  </a></b>	
+<b><a name="line120">120  </a></b>	/* Number of streams a process can have open at once.  */
+<b><a name="line121">121  </a></b>	#define	<b>_POSIX_STREAM_MAX</b>	8
+<b><a name="line122">122  </a></b>	
+<b><a name="line123">123  </a></b>	/* The number of bytes in a symbolic link.  */
+<b><a name="line124">124  </a></b>	#define <b>_POSIX_SYMLINK_MAX</b>	255
+<b><a name="line125">125  </a></b>	
+<b><a name="line126">126  </a></b>	/* The number of symbolic links that can be traversed in the
+<b><a name="line127">127  </a></b>	   resolution of a pathname in the absence of a loop.  */
+<b><a name="line128">128  </a></b>	#define <b>_POSIX_SYMLOOP_MAX</b>	8
+<b><a name="line129">129  </a></b>	
+<b><a name="line130">130  </a></b>	/* Number of timer for a process.  */
+<b><a name="line131">131  </a></b>	#define <b>_POSIX_TIMER_MAX</b>	32
+<b><a name="line132">132  </a></b>	
+<b><a name="line133">133  </a></b>	/* Maximum number of characters in a tty name.  */
+<b><a name="line134">134  </a></b>	#define	<b>_POSIX_TTY_NAME_MAX</b>	9
+<b><a name="line135">135  </a></b>	
+<b><a name="line136">136  </a></b>	/* Maximum length of a timezone name (element of `tzname').  */
+<b><a name="line137">137  </a></b>	#ifdef <a href="../../../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line138">138  </a></b>	# define <b>_POSIX_TZNAME_MAX</b>	6
+<b><a name="line139">139  </a></b>	#else
+<b><a name="line140">140  </a></b>	# define _POSIX_TZNAME_MAX	3
+<b><a name="line141">141  </a></b>	#endif
+<b><a name="line142">142  </a></b>	
+<b><a name="line143">143  </a></b>	#if !defined <a href="../../../features.h/code.html#line265">__USE_XOPEN2K</a> || defined <a href="../../../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line144">144  </a></b>	/* Maximum number of connections that can be queued on a socket.  */
+<b><a name="line145">145  </a></b>	# define <b>_POSIX_QLIMIT</b>		1
+<b><a name="line146">146  </a></b>	
+<b><a name="line147">147  </a></b>	/* Maximum number of bytes that can be buffered on a socket for send
+<b><a name="line148">148  </a></b>	   or receive.  */
+<b><a name="line149">149  </a></b>	# define <b>_POSIX_HIWAT</b>		_POSIX_PIPE_BUF
+<b><a name="line150">150  </a></b>	
+<b><a name="line151">151  </a></b>	/* Maximum number of elements in an `iovec' array.  */
+<b><a name="line152">152  </a></b>	# define <b>_POSIX_UIO_MAXIOV</b>	16
+<b><a name="line153">153  </a></b>	#endif
+<b><a name="line154">154  </a></b>	
+<b><a name="line155">155  </a></b>	/* Maximum clock resolution in nanoseconds.  */
+<b><a name="line156">156  </a></b>	#define <b>_POSIX_CLOCKRES_MIN</b>	20000000
+<b><a name="line157">157  </a></b>	
+<b><a name="line158">158  </a></b>	
+<b><a name="line159">159  </a></b>	/* Get the implementation-specific values for the above.  */
+<b><a name="line160">160  </a></b>	#include &lt;bits/local_lim.h&gt;
+<b><a name="line161">161  </a></b>	
+<b><a name="line162">162  </a></b>	
+<b><a name="line163">163  </a></b>	#ifndef	SSIZE_MAX
+<b><a name="line164">164  </a></b>	# define <b>SSIZE_MAX</b>	LONG_MAX
+<b><a name="line165">165  </a></b>	#endif
+<b><a name="line166">166  </a></b>	
+<b><a name="line167">167  </a></b>	
+<b><a name="line168">168  </a></b>	/* This value is a guaranteed minimum maximum.
+<b><a name="line169">169  </a></b>	   The current maximum can be got from `sysconf'.  */
+<b><a name="line170">170  </a></b>	
+<b><a name="line171">171  </a></b>	#ifndef	<a href="../../../linux/limits.h/code.html#line6">NGROUPS_MAX</a>
+<b><a name="line172">172  </a></b>	# define NGROUPS_MAX	8
+<b><a name="line173">173  </a></b>	#endif
+<b><a name="line174">174  </a></b>	
+<b><a name="line175">175  </a></b>	#endif	/* bits/posix1_lim.h  */
+<b><a name="line176">176  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

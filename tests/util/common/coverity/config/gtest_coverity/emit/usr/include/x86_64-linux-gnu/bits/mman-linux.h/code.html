@@ -1,0 +1,170 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/mman-linux.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Definitions for POSIX memory map interface.  Linux generic version.
+<b><a name="line2">2    </a></b>	   Copyright (C) 2001-2016 Free Software Foundation, Inc.
+<b><a name="line3">3    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line6">6    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line7">7    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line8">8    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line13">13   </a></b>	   Lesser General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line16">16   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line17">17   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	#ifndef <a href="../../sys/mman.h/code.html#line20">_SYS_MMAN_H</a>
+<b><a name="line20">20   </a></b>	# error &quot;Never use &lt;bits/mman-linux.h&gt; directly; include &lt;sys/mman.h&gt; instead.&quot;
+<b><a name="line21">21   </a></b>	#endif
+<b><a name="line22">22   </a></b>	
+<b><a name="line23">23   </a></b>	/* The following definitions basically come from the kernel headers.
+<b><a name="line24">24   </a></b>	   But the kernel header is not namespace clean.
+<b><a name="line25">25   </a></b>	
+<b><a name="line26">26   </a></b>	   This file is also used by some non-Linux configurations of the
+<b><a name="line27">27   </a></b>	   GNU C Library, for other systems that use these same bit values.  */
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	/* Protections are chosen from these bits, OR'd together.  The
+<b><a name="line31">31   </a></b>	   implementation does not necessarily support PROT_EXEC or PROT_WRITE
+<b><a name="line32">32   </a></b>	   without PROT_READ.  The only guarantees are that no writing will be
+<b><a name="line33">33   </a></b>	   allowed without PROT_WRITE and no access will be allowed for PROT_NONE. */
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	#define <b>PROT_READ</b>	0x1		/* Page can be read.  */
+<b><a name="line36">36   </a></b>	#define <b>PROT_WRITE</b>	0x2		/* Page can be written.  */
+<b><a name="line37">37   </a></b>	#define <b>PROT_EXEC</b>	0x4		/* Page can be executed.  */
+<b><a name="line38">38   </a></b>	#define <b>PROT_NONE</b>	0x0		/* Page can not be accessed.  */
+<b><a name="line39">39   </a></b>	#define <b>PROT_GROWSDOWN</b>	0x01000000	/* Extend change to start of
+<b><a name="line40">40   </a></b>						   growsdown vma (mprotect only).  */
+<b><a name="line41">41   </a></b>	#define <b>PROT_GROWSUP</b>	0x02000000	/* Extend change to start of
+<b><a name="line42">42   </a></b>						   growsup vma (mprotect only).  */
+<b><a name="line43">43   </a></b>	
+<b><a name="line44">44   </a></b>	/* Sharing types (must choose one and only one of these).  */
+<b><a name="line45">45   </a></b>	#define <b>MAP_SHARED</b>	0x01		/* Share changes.  */
+<b><a name="line46">46   </a></b>	#define <b>MAP_PRIVATE</b>	0x02		/* Changes are private.  */
+<b><a name="line47">47   </a></b>	#ifdef <a href="../../../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line48">48   </a></b>	# define <b>MAP_TYPE</b>	0x0f		/* Mask for type of mapping.  */
+<b><a name="line49">49   </a></b>	#endif
+<b><a name="line50">50   </a></b>	
+<b><a name="line51">51   </a></b>	/* Other flags.  */
+<b><a name="line52">52   </a></b>	#define <b>MAP_FIXED</b>	0x10		/* Interpret addr exactly.  */
+<b><a name="line53">53   </a></b>	#ifdef <a href="../../../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line54">54   </a></b>	# define <b>MAP_FILE</b>	0
+<b><a name="line55">55   </a></b>	# ifdef __MAP_ANONYMOUS
+<b><a name="line56">56   </a></b>	#  define MAP_ANONYMOUS	__MAP_ANONYMOUS	/* Don't use a file.  */
+<b><a name="line57">57   </a></b>	# else
+<b><a name="line58">58   </a></b>	#  define <b>MAP_ANONYMOUS</b>	0x20		/* Don't use a file.  */
+<b><a name="line59">59   </a></b>	# endif
+<b><a name="line60">60   </a></b>	# define <b>MAP_ANON</b>	MAP_ANONYMOUS
+<b><a name="line61">61   </a></b>	/* When MAP_HUGETLB is set bits [26:31] encode the log2 of the huge page size.  */
+<b><a name="line62">62   </a></b>	# define <b>MAP_HUGE_SHIFT</b>	26
+<b><a name="line63">63   </a></b>	# define <b>MAP_HUGE_MASK</b>	0x3f
+<b><a name="line64">64   </a></b>	#endif
+<b><a name="line65">65   </a></b>	
+<b><a name="line66">66   </a></b>	/* Flags to `msync'.  */
+<b><a name="line67">67   </a></b>	#define <b>MS_ASYNC</b>	1		/* Sync memory asynchronously.  */
+<b><a name="line68">68   </a></b>	#define <b>MS_SYNC</b>		4		/* Synchronous memory sync.  */
+<b><a name="line69">69   </a></b>	#define <b>MS_INVALIDATE</b>	2		/* Invalidate the caches.  */
+<b><a name="line70">70   </a></b>	
+<b><a name="line71">71   </a></b>	/* Flags for `mremap'.  */
+<b><a name="line72">72   </a></b>	#ifdef <a href="../../../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line73">73   </a></b>	# define <b>MREMAP_MAYMOVE</b>	1
+<b><a name="line74">74   </a></b>	# define <b>MREMAP_FIXED</b>	2
+<b><a name="line75">75   </a></b>	#endif
+<b><a name="line76">76   </a></b>	
+<b><a name="line77">77   </a></b>	/* Advice to `madvise'.  */
+<b><a name="line78">78   </a></b>	#ifdef <a href="../../../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line79">79   </a></b>	# define <b>MADV_NORMAL</b>	  0	/* No further special treatment.  */
+<b><a name="line80">80   </a></b>	# define <b>MADV_RANDOM</b>	  1	/* Expect random page references.  */
+<b><a name="line81">81   </a></b>	# define <b>MADV_SEQUENTIAL</b>  2	/* Expect sequential page references.  */
+<b><a name="line82">82   </a></b>	# define <b>MADV_WILLNEED</b>	  3	/* Will need these pages.  */
+<b><a name="line83">83   </a></b>	# define <b>MADV_DONTNEED</b>	  4	/* Don't need these pages.  */
+<b><a name="line84">84   </a></b>	# define <b>MADV_REMOVE</b>	  9	/* Remove these pages and resources.  */
+<b><a name="line85">85   </a></b>	# define <b>MADV_DONTFORK</b>	  10	/* Do not inherit across fork.  */
+<b><a name="line86">86   </a></b>	# define <b>MADV_DOFORK</b>	  11	/* Do inherit across fork.  */
+<b><a name="line87">87   </a></b>	# define <b>MADV_MERGEABLE</b>	  12	/* KSM may merge identical pages.  */
+<b><a name="line88">88   </a></b>	# define <b>MADV_UNMERGEABLE</b> 13	/* KSM may not merge identical pages.  */
+<b><a name="line89">89   </a></b>	# define <b>MADV_HUGEPAGE</b>	  14	/* Worth backing with hugepages.  */
+<b><a name="line90">90   </a></b>	# define <b>MADV_NOHUGEPAGE</b>  15	/* Not worth backing with hugepages.  */
+<b><a name="line91">91   </a></b>	# define <b>MADV_DONTDUMP</b>	  16    /* Explicity exclude from the core dump,
+<b><a name="line92">92   </a></b>	                                   overrides the coredump filter bits.  */
+<b><a name="line93">93   </a></b>	# define <b>MADV_DODUMP</b>	  17	/* Clear the MADV_DONTDUMP flag.  */
+<b><a name="line94">94   </a></b>	# define <b>MADV_HWPOISON</b>	  100	/* Poison a page for testing.  */
+<b><a name="line95">95   </a></b>	#endif
+<b><a name="line96">96   </a></b>	
+<b><a name="line97">97   </a></b>	/* The POSIX people had to invent similar names for the same things.  */
+<b><a name="line98">98   </a></b>	#ifdef <a href="../../../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line99">99   </a></b>	# define <b>POSIX_MADV_NORMAL</b>	0 /* No further special treatment.  */
+<b><a name="line100">100  </a></b>	# define <b>POSIX_MADV_RANDOM</b>	1 /* Expect random page references.  */
+<b><a name="line101">101  </a></b>	# define <b>POSIX_MADV_SEQUENTIAL</b>	2 /* Expect sequential page references.  */
+<b><a name="line102">102  </a></b>	# define <b>POSIX_MADV_WILLNEED</b>	3 /* Will need these pages.  */
+<b><a name="line103">103  </a></b>	# define <b>POSIX_MADV_DONTNEED</b>	4 /* Don't need these pages.  */
+<b><a name="line104">104  </a></b>	#endif
+<b><a name="line105">105  </a></b>	
+<b><a name="line106">106  </a></b>	/* Flags for `mlockall'.  */
+<b><a name="line107">107  </a></b>	#ifndef MCL_CURRENT
+<b><a name="line108">108  </a></b>	# define <b>MCL_CURRENT</b>	1		/* Lock all currently mapped pages.  */
+<b><a name="line109">109  </a></b>	# define <b>MCL_FUTURE</b>	2		/* Lock all additions to address
+<b><a name="line110">110  </a></b>						   space.  */
+<b><a name="line111">111  </a></b>	# define <b>MCL_ONFAULT</b>	4		/* Lock all pages that are
+<b><a name="line112">112  </a></b>						   faulted in.  */
+<b><a name="line113">113  </a></b>	#endif
+<b><a name="line114">114  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

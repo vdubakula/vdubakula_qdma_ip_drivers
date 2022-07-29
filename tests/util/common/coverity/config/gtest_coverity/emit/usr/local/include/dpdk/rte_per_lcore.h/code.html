@@ -1,0 +1,107 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_per_lcore.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2010-2014 Intel Corporation
+<b><a name="line3">3    </a></b>	 */
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	#ifndef _RTE_PER_LCORE_H_
+<b><a name="line6">6    </a></b>	#define <b>_RTE_PER_LCORE_H_</b>
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	/**
+<b><a name="line9">9    </a></b>	 * @file
+<b><a name="line10">10   </a></b>	 *
+<b><a name="line11">11   </a></b>	 * Per-lcore variables in RTE
+<b><a name="line12">12   </a></b>	 *
+<b><a name="line13">13   </a></b>	 * This file defines an API for instantiating per-lcore &quot;global
+<b><a name="line14">14   </a></b>	 * variables&quot; that are environment-specific. Note that in all
+<b><a name="line15">15   </a></b>	 * environments, a &quot;shared variable&quot; is the default when you use a
+<b><a name="line16">16   </a></b>	 * global variable.
+<b><a name="line17">17   </a></b>	 *
+<b><a name="line18">18   </a></b>	 * Parts of this are execution environment specific.
+<b><a name="line19">19   </a></b>	 */
+<b><a name="line20">20   </a></b>	
+<b><a name="line21">21   </a></b>	#ifdef __cplusplus
+<b><a name="line22">22   </a></b>	extern &quot;C&quot; {
+<b><a name="line23">23   </a></b>	#endif
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	#include &lt;pthread.h&gt;
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>	/**
+<b><a name="line28">28   </a></b>	 * Macro to define a per lcore variable &quot;var&quot; of type &quot;type&quot;, don't
+<b><a name="line29">29   </a></b>	 * use keywords like &quot;static&quot; or &quot;volatile&quot; in type, just prefix the
+<b><a name="line30">30   </a></b>	 * whole macro.
+<b><a name="line31">31   </a></b>	 */
+<b><a name="line32">32   </a></b>	#define <b>RTE_DEFINE_PER_LCORE</b>(type, name)			\
+<b><a name="line33">33   </a></b>		__thread __typeof__(type) per_lcore_##name
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	/**
+<b><a name="line36">36   </a></b>	 * Macro to declare an extern per lcore variable &quot;var&quot; of type &quot;type&quot;
+<b><a name="line37">37   </a></b>	 */
+<b><a name="line38">38   </a></b>	#define <b>RTE_DECLARE_PER_LCORE</b>(type, name)			\
+<b><a name="line39">39   </a></b>		extern __thread __typeof__(type) per_lcore_##name
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	/**
+<b><a name="line42">42   </a></b>	 * Read/write the per-lcore variable value
+<b><a name="line43">43   </a></b>	 */
+<b><a name="line44">44   </a></b>	#define <b>RTE_PER_LCORE</b>(name) (per_lcore_##name)
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	#ifdef __cplusplus
+<b><a name="line47">47   </a></b>	}
+<b><a name="line48">48   </a></b>	#endif
+<b><a name="line49">49   </a></b>	
+<b><a name="line50">50   </a></b>	#endif /* _RTE_PER_LCORE_H_ */
+<b><a name="line51">51   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

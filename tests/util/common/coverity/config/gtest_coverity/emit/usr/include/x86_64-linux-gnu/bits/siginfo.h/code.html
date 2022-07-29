@@ -1,0 +1,417 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/siginfo.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* siginfo_t, sigevent and constants.  Linux x86-64 version.
+<b><a name="line2">2    </a></b>	   Copyright (C) 2012-2016 Free Software Foundation, Inc.
+<b><a name="line3">3    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line6">6    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line7">7    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line8">8    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line13">13   </a></b>	   Lesser General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line16">16   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line17">17   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	#if !defined <a href="../../../signal.h/code.html#line25">_SIGNAL_H</a> &amp;&amp; !defined <a href="../../sys/wait.h/code.html#line134">__need_siginfo_t</a> \
+<b><a name="line20">20   </a></b>	    &amp;&amp; !defined __need_sigevent_t
+<b><a name="line21">21   </a></b>	# error &quot;Never include this file directly.  Use &lt;signal.h&gt; instead&quot;
+<b><a name="line22">22   </a></b>	#endif
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>	#include &lt;bits/wordsize.h&gt;
+<b><a name="line25">25   </a></b>	
+<b><a name="line26">26   </a></b>	#if (!defined <a href="#line29">__have_sigval_t</a> \
+<b><a name="line27">27   </a></b>	     &amp;&amp; (defined <a href="../../../signal.h/code.html#line25">_SIGNAL_H</a> || defined <a href="../../sys/wait.h/code.html#line134">__need_siginfo_t</a> \
+<b><a name="line28">28   </a></b>		 || defined __need_sigevent_t))
+<b><a name="line29">29   </a></b>	# define <b>__have_sigval_t</b>	1
+<b><a name="line30">30   </a></b>	
+<b><a name="line31">31   </a></b>	/* Type for data associated with a signal.  */
+<b><a name="line32">32   </a></b>	typedef union <b>sigval</b>
+<b><a name="line33">33   </a></b>	  {
+<b><a name="line34">34   </a></b>	    int <b>sival_int</b>;
+<b><a name="line35">35   </a></b>	    void *<b>sival_ptr</b>;
+<b><a name="line36">36   </a></b>	  } <b>sigval_t</b>;
+<b><a name="line37">37   </a></b>	#endif
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	#if (!defined <a href="#line41">__have_siginfo_t</a> \
+<b><a name="line40">40   </a></b>	     &amp;&amp; (defined <a href="../../../signal.h/code.html#line25">_SIGNAL_H</a> || defined <a href="../../sys/wait.h/code.html#line134">__need_siginfo_t</a>))
+<b><a name="line41">41   </a></b>	# define <b>__have_siginfo_t</b>	1
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	# define <b>__SI_MAX_SIZE</b>     128
+<b><a name="line44">44   </a></b>	# if <a href="../wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line45">45   </a></b>	#  define <b>__SI_PAD_SIZE</b>     ((__SI_MAX_SIZE / sizeof (int)) - 4)
+<b><a name="line46">46   </a></b>	# else
+<b><a name="line47">47   </a></b>	#  define __SI_PAD_SIZE     ((__SI_MAX_SIZE / sizeof (int)) - 3)
+<b><a name="line48">48   </a></b>	# endif
+<b><a name="line49">49   </a></b>	
+<b><a name="line50">50   </a></b>	# if defined <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a> &amp;&amp; <a href="../wordsize.h/code.html#line4">__WORDSIZE</a> == 32
+<b><a name="line51">51   </a></b>	/* si_utime and si_stime must be 4 byte aligned for x32 to match the
+<b><a name="line52">52   </a></b>	   kernel.  We align siginfo_t to 8 bytes so that si_utime and si_stime
+<b><a name="line53">53   </a></b>	   are actually aligned to 8 bytes since their offsets are multiple of
+<b><a name="line54">54   </a></b>	   8 bytes.  */
+<b><a name="line55">55   </a></b>	typedef __clock_t __attribute__ ((__aligned__ (4))) __sigchld_clock_t;
+<b><a name="line56">56   </a></b>	#  define __SI_ALIGNMENT __attribute__ ((__aligned__ (8)))
+<b><a name="line57">57   </a></b>	# else
+<b><a name="line58">58   </a></b>	typedef <a href="../types.h/code.html#line135">__clock_t</a> <b>__sigchld_clock_t</b>;
+<b><a name="line59">59   </a></b>	#  define <b>__SI_ALIGNMENT</b>
+<b><a name="line60">60   </a></b>	# endif
+<b><a name="line61">61   </a></b>	
+<b><a name="line62">62   </a></b>	typedef struct
+<b><a name="line63">63   </a></b>	  {
+<b><a name="line64">64   </a></b>	    int <b>si_signo</b>;		/* Signal number.  */
+<b><a name="line65">65   </a></b>	    int <b>si_errno</b>;		/* If non-zero, an errno value associated with
+<b><a name="line66">66   </a></b>					   this signal, as defined in &lt;errno.h&gt;.  */
+<b><a name="line67">67   </a></b>	    int <b>si_code</b>;		/* Signal code.  */
+<b><a name="line68">68   </a></b>	
+<b><a name="line69">69   </a></b>	    union
+<b><a name="line70">70   </a></b>	      {
+<b><a name="line71">71   </a></b>		int <b>_pad</b>[<a href="#line45">__SI_PAD_SIZE</a>];
+<b><a name="line72">72   </a></b>	
+<b><a name="line73">73   </a></b>		 /* kill().  */
+<b><a name="line74">74   </a></b>		struct
+<b><a name="line75">75   </a></b>		  {
+<b><a name="line76">76   </a></b>		    <a href="../types.h/code.html#line133">__pid_t</a> <b>si_pid</b>;	/* Sending process ID.  */
+<b><a name="line77">77   </a></b>		    <a href="../types.h/code.html#line125">__uid_t</a> <b>si_uid</b>;	/* Real user ID of sending process.  */
+<b><a name="line78">78   </a></b>		  } <b>_kill</b>;
+<b><a name="line79">79   </a></b>	
+<b><a name="line80">80   </a></b>		/* POSIX.1b timers.  */
+<b><a name="line81">81   </a></b>		struct
+<b><a name="line82">82   </a></b>		  {
+<b><a name="line83">83   </a></b>		    int <b>si_tid</b>;		/* Timer ID.  */
+<b><a name="line84">84   </a></b>		    int <b>si_overrun</b>;	/* Overrun count.  */
+<b><a name="line85">85   </a></b>		    <a href="#line36">sigval_t</a> <b>si_sigval</b>;	/* Signal value.  */
+<b><a name="line86">86   </a></b>		  } <b>_timer</b>;
+<b><a name="line87">87   </a></b>	
+<b><a name="line88">88   </a></b>		/* POSIX.1b signals.  */
+<b><a name="line89">89   </a></b>		struct
+<b><a name="line90">90   </a></b>		  {
+<b><a name="line91">91   </a></b>		    <a href="../types.h/code.html#line133">__pid_t</a> <b>si_pid</b>;	/* Sending process ID.  */
+<b><a name="line92">92   </a></b>		    <a href="../types.h/code.html#line125">__uid_t</a> <b>si_uid</b>;	/* Real user ID of sending process.  */
+<b><a name="line93">93   </a></b>		    <a href="#line36">sigval_t</a> <b>si_sigval</b>;	/* Signal value.  */
+<b><a name="line94">94   </a></b>		  } <b>_rt</b>;
+<b><a name="line95">95   </a></b>	
+<b><a name="line96">96   </a></b>		/* SIGCHLD.  */
+<b><a name="line97">97   </a></b>		struct
+<b><a name="line98">98   </a></b>		  {
+<b><a name="line99">99   </a></b>		    <a href="../types.h/code.html#line133">__pid_t</a> <b>si_pid</b>;	/* Which child.  */
+<b><a name="line100">100  </a></b>		    <a href="../types.h/code.html#line125">__uid_t</a> <b>si_uid</b>;	/* Real user ID of sending process.  */
+<b><a name="line101">101  </a></b>		    int <b>si_status</b>;	/* Exit value or signal.  */
+<b><a name="line102">102  </a></b>		    <a href="#line58">__sigchld_clock_t</a> <b>si_utime</b>;
+<b><a name="line103">103  </a></b>		    <a href="#line58">__sigchld_clock_t</a> <b>si_stime</b>;
+<b><a name="line104">104  </a></b>		  } <b>_sigchld</b>;
+<b><a name="line105">105  </a></b>	
+<b><a name="line106">106  </a></b>		/* SIGILL, SIGFPE, SIGSEGV, SIGBUS.  */
+<b><a name="line107">107  </a></b>		struct
+<b><a name="line108">108  </a></b>		  {
+<b><a name="line109">109  </a></b>		    void *<b>si_addr</b>;	/* Faulting insn/memory ref.  */
+<b><a name="line110">110  </a></b>		    short int <b>si_addr_lsb</b>;	/* Valid LSB of the reported address.  */
+<b><a name="line111">111  </a></b>		    struct
+<b><a name="line112">112  </a></b>		      {
+<b><a name="line113">113  </a></b>			void *<b>_lower</b>;
+<b><a name="line114">114  </a></b>			void *<b>_upper</b>;
+<b><a name="line115">115  </a></b>		      } <b>si_addr_bnd</b>;
+<b><a name="line116">116  </a></b>		  } <b>_sigfault</b>;
+<b><a name="line117">117  </a></b>	
+<b><a name="line118">118  </a></b>		/* SIGPOLL.  */
+<b><a name="line119">119  </a></b>		struct
+<b><a name="line120">120  </a></b>		  {
+<b><a name="line121">121  </a></b>		    long int <b>si_band</b>;	/* Band event for SIGPOLL.  */
+<b><a name="line122">122  </a></b>		    int <b>si_fd</b>;
+<b><a name="line123">123  </a></b>		  } <b>_sigpoll</b>;
+<b><a name="line124">124  </a></b>	
+<b><a name="line125">125  </a></b>		/* SIGSYS.  */
+<b><a name="line126">126  </a></b>		struct
+<b><a name="line127">127  </a></b>		  {
+<b><a name="line128">128  </a></b>		    void *<b>_call_addr</b>;	/* Calling user insn.  */
+<b><a name="line129">129  </a></b>		    int <b>_syscall</b>;	/* Triggering system call number.  */
+<b><a name="line130">130  </a></b>		    unsigned int <b>_arch</b>; /* AUDIT_ARCH_* of syscall.  */
+<b><a name="line131">131  </a></b>		  } <b>_sigsys</b>;
+<b><a name="line132">132  </a></b>	      } <b>_sifields</b>;
+<b><a name="line133">133  </a></b>	  } <b>siginfo_t</b> <a href="#line59">__SI_ALIGNMENT</a>;
+<b><a name="line134">134  </a></b>	
+<b><a name="line135">135  </a></b>	
+<b><a name="line136">136  </a></b>	/* X/Open requires some more fields with fixed names.  */
+<b><a name="line137">137  </a></b>	# define <b>si_pid</b>		_sifields._kill.si_pid
+<b><a name="line138">138  </a></b>	# define <b>si_uid</b>		_sifields._kill.si_uid
+<b><a name="line139">139  </a></b>	# define <b>si_timerid</b>	_sifields._timer.si_tid
+<b><a name="line140">140  </a></b>	# define <b>si_overrun</b>	_sifields._timer.si_overrun
+<b><a name="line141">141  </a></b>	# define <b>si_status</b>	_sifields._sigchld.si_status
+<b><a name="line142">142  </a></b>	# define <b>si_utime</b>	_sifields._sigchld.si_utime
+<b><a name="line143">143  </a></b>	# define <b>si_stime</b>	_sifields._sigchld.si_stime
+<b><a name="line144">144  </a></b>	# define <b>si_value</b>	_sifields._rt.si_sigval
+<b><a name="line145">145  </a></b>	# define <b>si_int</b>		_sifields._rt.si_sigval.sival_int
+<b><a name="line146">146  </a></b>	# define <b>si_ptr</b>		_sifields._rt.si_sigval.sival_ptr
+<b><a name="line147">147  </a></b>	# define <b>si_addr</b>	_sifields._sigfault.si_addr
+<b><a name="line148">148  </a></b>	# define <b>si_addr_lsb</b>	_sifields._sigfault.si_addr_lsb
+<b><a name="line149">149  </a></b>	# define <b>si_lower</b>	_sifields._sigfault.si_addr_bnd._lower
+<b><a name="line150">150  </a></b>	# define <b>si_upper</b>	_sifields._sigfault.si_addr_bnd._upper
+<b><a name="line151">151  </a></b>	# define <b>si_band</b>	_sifields._sigpoll.si_band
+<b><a name="line152">152  </a></b>	# define <b>si_fd</b>		_sifields._sigpoll.si_fd
+<b><a name="line153">153  </a></b>	# define <b>si_call_addr</b> 	_sifields._sigsys._call_addr
+<b><a name="line154">154  </a></b>	# define <b>si_syscall</b>	_sifields._sigsys._syscall
+<b><a name="line155">155  </a></b>	# define <b>si_arch</b>	_sifields._sigsys._arch
+<b><a name="line156">156  </a></b>	
+<b><a name="line157">157  </a></b>	
+<b><a name="line158">158  </a></b>	/* Values for `si_code'.  Positive values are reserved for kernel-generated
+<b><a name="line159">159  </a></b>	   signals.  */
+<b><a name="line160">160  </a></b>	enum
+<b><a name="line161">161  </a></b>	{
+<b><a name="line162">162  </a></b>	  <b>SI_ASYNCNL</b> = -60,		/* Sent by asynch name lookup completion.  */
+<b><a name="line163">163  </a></b>	# define <b>SI_ASYNCNL</b>	SI_ASYNCNL
+<b><a name="line164">164  </a></b>	  <b>SI_TKILL</b> = -6,		/* Sent by tkill.  */
+<b><a name="line165">165  </a></b>	# define <b>SI_TKILL</b>	SI_TKILL
+<b><a name="line166">166  </a></b>	  <b>SI_SIGIO</b>,			/* Sent by queued SIGIO. */
+<b><a name="line167">167  </a></b>	# define <b>SI_SIGIO</b>	SI_SIGIO
+<b><a name="line168">168  </a></b>	  <b>SI_ASYNCIO</b>,			/* Sent by AIO completion.  */
+<b><a name="line169">169  </a></b>	# define <b>SI_ASYNCIO</b>	SI_ASYNCIO
+<b><a name="line170">170  </a></b>	  <b>SI_MESGQ</b>,			/* Sent by real time mesq state change.  */
+<b><a name="line171">171  </a></b>	# define <b>SI_MESGQ</b>	SI_MESGQ
+<b><a name="line172">172  </a></b>	  <b>SI_TIMER</b>,			/* Sent by timer expiration.  */
+<b><a name="line173">173  </a></b>	# define <b>SI_TIMER</b>	SI_TIMER
+<b><a name="line174">174  </a></b>	  <b>SI_QUEUE</b>,			/* Sent by sigqueue.  */
+<b><a name="line175">175  </a></b>	# define <b>SI_QUEUE</b>	SI_QUEUE
+<b><a name="line176">176  </a></b>	  <b>SI_USER</b>,			/* Sent by kill, sigsend.  */
+<b><a name="line177">177  </a></b>	# define <b>SI_USER</b>	SI_USER
+<b><a name="line178">178  </a></b>	  <b>SI_KERNEL</b> = 0x80		/* Send by kernel.  */
+<b><a name="line179">179  </a></b>	#define <b>SI_KERNEL</b>	SI_KERNEL
+<b><a name="line180">180  </a></b>	};
+<b><a name="line181">181  </a></b>	
+<b><a name="line182">182  </a></b>	
+<b><a name="line183">183  </a></b>	# if defined <a href="../../../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a> || defined <a href="../../../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line184">184  </a></b>	/* `si_code' values for SIGILL signal.  */
+<b><a name="line185">185  </a></b>	enum
+<b><a name="line186">186  </a></b>	{
+<b><a name="line187">187  </a></b>	  <b>ILL_ILLOPC</b> = 1,		/* Illegal opcode.  */
+<b><a name="line188">188  </a></b>	#  define <b>ILL_ILLOPC</b>	ILL_ILLOPC
+<b><a name="line189">189  </a></b>	  <b>ILL_ILLOPN</b>,			/* Illegal operand.  */
+<b><a name="line190">190  </a></b>	#  define <b>ILL_ILLOPN</b>	ILL_ILLOPN
+<b><a name="line191">191  </a></b>	  <b>ILL_ILLADR</b>,			/* Illegal addressing mode.  */
+<b><a name="line192">192  </a></b>	#  define <b>ILL_ILLADR</b>	ILL_ILLADR
+<b><a name="line193">193  </a></b>	  <b>ILL_ILLTRP</b>,			/* Illegal trap. */
+<b><a name="line194">194  </a></b>	#  define <b>ILL_ILLTRP</b>	ILL_ILLTRP
+<b><a name="line195">195  </a></b>	  <b>ILL_PRVOPC</b>,			/* Privileged opcode.  */
+<b><a name="line196">196  </a></b>	#  define <b>ILL_PRVOPC</b>	ILL_PRVOPC
+<b><a name="line197">197  </a></b>	  <b>ILL_PRVREG</b>,			/* Privileged register.  */
+<b><a name="line198">198  </a></b>	#  define <b>ILL_PRVREG</b>	ILL_PRVREG
+<b><a name="line199">199  </a></b>	  <b>ILL_COPROC</b>,			/* Coprocessor error.  */
+<b><a name="line200">200  </a></b>	#  define <b>ILL_COPROC</b>	ILL_COPROC
+<b><a name="line201">201  </a></b>	  <b>ILL_BADSTK</b>			/* Internal stack error.  */
+<b><a name="line202">202  </a></b>	#  define <b>ILL_BADSTK</b>	ILL_BADSTK
+<b><a name="line203">203  </a></b>	};
+<b><a name="line204">204  </a></b>	
+<b><a name="line205">205  </a></b>	/* `si_code' values for SIGFPE signal.  */
+<b><a name="line206">206  </a></b>	enum
+<b><a name="line207">207  </a></b>	{
+<b><a name="line208">208  </a></b>	  <b>FPE_INTDIV</b> = 1,		/* Integer divide by zero.  */
+<b><a name="line209">209  </a></b>	#  define <b>FPE_INTDIV</b>	FPE_INTDIV
+<b><a name="line210">210  </a></b>	  <b>FPE_INTOVF</b>,			/* Integer overflow.  */
+<b><a name="line211">211  </a></b>	#  define <b>FPE_INTOVF</b>	FPE_INTOVF
+<b><a name="line212">212  </a></b>	  <b>FPE_FLTDIV</b>,			/* Floating point divide by zero.  */
+<b><a name="line213">213  </a></b>	#  define <b>FPE_FLTDIV</b>	FPE_FLTDIV
+<b><a name="line214">214  </a></b>	  <b>FPE_FLTOVF</b>,			/* Floating point overflow.  */
+<b><a name="line215">215  </a></b>	#  define <b>FPE_FLTOVF</b>	FPE_FLTOVF
+<b><a name="line216">216  </a></b>	  <b>FPE_FLTUND</b>,			/* Floating point underflow.  */
+<b><a name="line217">217  </a></b>	#  define <b>FPE_FLTUND</b>	FPE_FLTUND
+<b><a name="line218">218  </a></b>	  <b>FPE_FLTRES</b>,			/* Floating point inexact result.  */
+<b><a name="line219">219  </a></b>	#  define <b>FPE_FLTRES</b>	FPE_FLTRES
+<b><a name="line220">220  </a></b>	  <b>FPE_FLTINV</b>,			/* Floating point invalid operation.  */
+<b><a name="line221">221  </a></b>	#  define <b>FPE_FLTINV</b>	FPE_FLTINV
+<b><a name="line222">222  </a></b>	  <b>FPE_FLTSUB</b>			/* Subscript out of range.  */
+<b><a name="line223">223  </a></b>	#  define <b>FPE_FLTSUB</b>	FPE_FLTSUB
+<b><a name="line224">224  </a></b>	};
+<b><a name="line225">225  </a></b>	
+<b><a name="line226">226  </a></b>	/* `si_code' values for SIGSEGV signal.  */
+<b><a name="line227">227  </a></b>	enum
+<b><a name="line228">228  </a></b>	{
+<b><a name="line229">229  </a></b>	  <b>SEGV_MAPERR</b> = 1,		/* Address not mapped to object.  */
+<b><a name="line230">230  </a></b>	#  define <b>SEGV_MAPERR</b>	SEGV_MAPERR
+<b><a name="line231">231  </a></b>	  <b>SEGV_ACCERR</b>			/* Invalid permissions for mapped object.  */
+<b><a name="line232">232  </a></b>	#  define <b>SEGV_ACCERR</b>	SEGV_ACCERR
+<b><a name="line233">233  </a></b>	};
+<b><a name="line234">234  </a></b>	
+<b><a name="line235">235  </a></b>	/* `si_code' values for SIGBUS signal.  */
+<b><a name="line236">236  </a></b>	enum
+<b><a name="line237">237  </a></b>	{
+<b><a name="line238">238  </a></b>	  <b>BUS_ADRALN</b> = 1,		/* Invalid address alignment.  */
+<b><a name="line239">239  </a></b>	#  define <b>BUS_ADRALN</b>	BUS_ADRALN
+<b><a name="line240">240  </a></b>	  <b>BUS_ADRERR</b>,			/* Non-existant physical address.  */
+<b><a name="line241">241  </a></b>	#  define <b>BUS_ADRERR</b>	BUS_ADRERR
+<b><a name="line242">242  </a></b>	  <b>BUS_OBJERR</b>,			/* Object specific hardware error.  */
+<b><a name="line243">243  </a></b>	#  define <b>BUS_OBJERR</b>	BUS_OBJERR
+<b><a name="line244">244  </a></b>	  <b>BUS_MCEERR_AR</b>,		/* Hardware memory error: action required.  */
+<b><a name="line245">245  </a></b>	#  define <b>BUS_MCEERR_AR</b>	BUS_MCEERR_AR
+<b><a name="line246">246  </a></b>	  <b>BUS_MCEERR_AO</b>			/* Hardware memory error: action optional.  */
+<b><a name="line247">247  </a></b>	#  define <b>BUS_MCEERR_AO</b>	BUS_MCEERR_AO
+<b><a name="line248">248  </a></b>	};
+<b><a name="line249">249  </a></b>	# endif
+<b><a name="line250">250  </a></b>	
+<b><a name="line251">251  </a></b>	# ifdef <a href="../../../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a>
+<b><a name="line252">252  </a></b>	/* `si_code' values for SIGTRAP signal.  */
+<b><a name="line253">253  </a></b>	enum
+<b><a name="line254">254  </a></b>	{
+<b><a name="line255">255  </a></b>	  <b>TRAP_BRKPT</b> = 1,		/* Process breakpoint.  */
+<b><a name="line256">256  </a></b>	#  define <b>TRAP_BRKPT</b>	TRAP_BRKPT
+<b><a name="line257">257  </a></b>	  <b>TRAP_TRACE</b>			/* Process trace trap.  */
+<b><a name="line258">258  </a></b>	#  define <b>TRAP_TRACE</b>	TRAP_TRACE
+<b><a name="line259">259  </a></b>	};
+<b><a name="line260">260  </a></b>	# endif
+<b><a name="line261">261  </a></b>	
+<b><a name="line262">262  </a></b>	# if defined <a href="../../../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a> || defined <a href="../../../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line263">263  </a></b>	/* `si_code' values for SIGCHLD signal.  */
+<b><a name="line264">264  </a></b>	enum
+<b><a name="line265">265  </a></b>	{
+<b><a name="line266">266  </a></b>	  <b>CLD_EXITED</b> = 1,		/* Child has exited.  */
+<b><a name="line267">267  </a></b>	#  define <b>CLD_EXITED</b>	CLD_EXITED
+<b><a name="line268">268  </a></b>	  <b>CLD_KILLED</b>,			/* Child was killed.  */
+<b><a name="line269">269  </a></b>	#  define <b>CLD_KILLED</b>	CLD_KILLED
+<b><a name="line270">270  </a></b>	  <b>CLD_DUMPED</b>,			/* Child terminated abnormally.  */
+<b><a name="line271">271  </a></b>	#  define <b>CLD_DUMPED</b>	CLD_DUMPED
+<b><a name="line272">272  </a></b>	  <b>CLD_TRAPPED</b>,			/* Traced child has trapped.  */
+<b><a name="line273">273  </a></b>	#  define <b>CLD_TRAPPED</b>	CLD_TRAPPED
+<b><a name="line274">274  </a></b>	  <b>CLD_STOPPED</b>,			/* Child has stopped.  */
+<b><a name="line275">275  </a></b>	#  define <b>CLD_STOPPED</b>	CLD_STOPPED
+<b><a name="line276">276  </a></b>	  <b>CLD_CONTINUED</b>			/* Stopped child has continued.  */
+<b><a name="line277">277  </a></b>	#  define <b>CLD_CONTINUED</b>	CLD_CONTINUED
+<b><a name="line278">278  </a></b>	};
+<b><a name="line279">279  </a></b>	
+<b><a name="line280">280  </a></b>	/* `si_code' values for SIGPOLL signal.  */
+<b><a name="line281">281  </a></b>	enum
+<b><a name="line282">282  </a></b>	{
+<b><a name="line283">283  </a></b>	  <b>POLL_IN</b> = 1,			/* Data input available.  */
+<b><a name="line284">284  </a></b>	#  define <b>POLL_IN</b>	POLL_IN
+<b><a name="line285">285  </a></b>	  <b>POLL_OUT</b>,			/* Output buffers available.  */
+<b><a name="line286">286  </a></b>	#  define <b>POLL_OUT</b>	POLL_OUT
+<b><a name="line287">287  </a></b>	  <b>POLL_MSG</b>,			/* Input message available.   */
+<b><a name="line288">288  </a></b>	#  define <b>POLL_MSG</b>	POLL_MSG
+<b><a name="line289">289  </a></b>	  <b>POLL_ERR</b>,			/* I/O error.  */
+<b><a name="line290">290  </a></b>	#  define <b>POLL_ERR</b>	POLL_ERR
+<b><a name="line291">291  </a></b>	  <b>POLL_PRI</b>,			/* High priority input available.  */
+<b><a name="line292">292  </a></b>	#  define <b>POLL_PRI</b>	POLL_PRI
+<b><a name="line293">293  </a></b>	  <b>POLL_HUP</b>			/* Device disconnected.  */
+<b><a name="line294">294  </a></b>	#  define <b>POLL_HUP</b>	POLL_HUP
+<b><a name="line295">295  </a></b>	};
+<b><a name="line296">296  </a></b>	# endif
+<b><a name="line297">297  </a></b>	
+<b><a name="line298">298  </a></b>	# undef __need_siginfo_t
+<b><a name="line299">299  </a></b>	#endif	/* !have siginfo_t &amp;&amp; (have _SIGNAL_H || need siginfo_t).  */
+<b><a name="line300">300  </a></b>	
+<b><a name="line301">301  </a></b>	
+<b><a name="line302">302  </a></b>	#if (defined <a href="../../../signal.h/code.html#line25">_SIGNAL_H</a> || defined __need_sigevent_t) \
+<b><a name="line303">303  </a></b>	    &amp;&amp; !defined <a href="#line304">__have_sigevent_t</a>
+<b><a name="line304">304  </a></b>	# define <b>__have_sigevent_t</b>	1
+<b><a name="line305">305  </a></b>	
+<b><a name="line306">306  </a></b>	/* Structure to transport application-defined values with signals.  */
+<b><a name="line307">307  </a></b>	# define <b>__SIGEV_MAX_SIZE</b>	64
+<b><a name="line308">308  </a></b>	# if <a href="../wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line309">309  </a></b>	#  define <b>__SIGEV_PAD_SIZE</b>	((__SIGEV_MAX_SIZE / sizeof (int)) - 4)
+<b><a name="line310">310  </a></b>	# else
+<b><a name="line311">311  </a></b>	#  define __SIGEV_PAD_SIZE	((__SIGEV_MAX_SIZE / sizeof (int)) - 3)
+<b><a name="line312">312  </a></b>	# endif
+<b><a name="line313">313  </a></b>	
+<b><a name="line314">314  </a></b>	/* Forward declaration.  */
+<b><a name="line315">315  </a></b>	# ifndef <a href="../pthreadtypes.h/code.html#line70">__have_pthread_attr_t</a>
+<b><a name="line316">316  </a></b>	typedef union pthread_attr_t pthread_attr_t;
+<b><a name="line317">317  </a></b>	#  define __have_pthread_attr_t	1
+<b><a name="line318">318  </a></b>	# endif
+<b><a name="line319">319  </a></b>	
+<b><a name="line320">320  </a></b>	typedef struct <b>sigevent</b>
+<b><a name="line321">321  </a></b>	  {
+<b><a name="line322">322  </a></b>	    <a href="#line36">sigval_t</a> <b>sigev_value</b>;
+<b><a name="line323">323  </a></b>	    int <b>sigev_signo</b>;
+<b><a name="line324">324  </a></b>	    int <b>sigev_notify</b>;
+<b><a name="line325">325  </a></b>	
+<b><a name="line326">326  </a></b>	    union
+<b><a name="line327">327  </a></b>	      {
+<b><a name="line328">328  </a></b>		int <b>_pad</b>[<a href="#line309">__SIGEV_PAD_SIZE</a>];
+<b><a name="line329">329  </a></b>	
+<b><a name="line330">330  </a></b>		/* When SIGEV_SIGNAL and SIGEV_THREAD_ID set, LWP ID of the
+<b><a name="line331">331  </a></b>		   thread to receive the signal.  */
+<b><a name="line332">332  </a></b>		<a href="../types.h/code.html#line133">__pid_t</a> <b>_tid</b>;
+<b><a name="line333">333  </a></b>	
+<b><a name="line334">334  </a></b>		struct
+<b><a name="line335">335  </a></b>		  {
+<b><a name="line336">336  </a></b>		    void (*<b>_function</b>) (<a href="#line36">sigval_t</a>);	/* Function to start.  */
+<b><a name="line337">337  </a></b>		    <a href="../pthreadtypes.h/code.html#line69">pthread_attr_t</a> *<b>_attribute</b>;		/* Thread attributes.  */
+<b><a name="line338">338  </a></b>		  } <b>_sigev_thread</b>;
+<b><a name="line339">339  </a></b>	      } <b>_sigev_un</b>;
+<b><a name="line340">340  </a></b>	  } <b>sigevent_t</b>;
+<b><a name="line341">341  </a></b>	
+<b><a name="line342">342  </a></b>	/* POSIX names to access some of the members.  */
+<b><a name="line343">343  </a></b>	# define <b>sigev_notify_function</b>   _sigev_un._sigev_thread._function
+<b><a name="line344">344  </a></b>	# define <b>sigev_notify_attributes</b> _sigev_un._sigev_thread._attribute
+<b><a name="line345">345  </a></b>	
+<b><a name="line346">346  </a></b>	/* `sigev_notify' values.  */
+<b><a name="line347">347  </a></b>	enum
+<b><a name="line348">348  </a></b>	{
+<b><a name="line349">349  </a></b>	  <b>SIGEV_SIGNAL</b> = 0,		/* Notify via signal.  */
+<b><a name="line350">350  </a></b>	# define <b>SIGEV_SIGNAL</b>	SIGEV_SIGNAL
+<b><a name="line351">351  </a></b>	  <b>SIGEV_NONE</b>,			/* Other notification: meaningless.  */
+<b><a name="line352">352  </a></b>	# define <b>SIGEV_NONE</b>	SIGEV_NONE
+<b><a name="line353">353  </a></b>	  <b>SIGEV_THREAD</b>,			/* Deliver via thread creation.  */
+<b><a name="line354">354  </a></b>	# define <b>SIGEV_THREAD</b>	SIGEV_THREAD
+<b><a name="line355">355  </a></b>	
+<b><a name="line356">356  </a></b>	  <b>SIGEV_THREAD_ID</b> = 4		/* Send signal to specific thread.  */
+<b><a name="line357">357  </a></b>	#define <b>SIGEV_THREAD_ID</b>	SIGEV_THREAD_ID
+<b><a name="line358">358  </a></b>	};
+<b><a name="line359">359  </a></b>	
+<b><a name="line360">360  </a></b>	#endif	/* have _SIGNAL_H.  */
+<b><a name="line361">361  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

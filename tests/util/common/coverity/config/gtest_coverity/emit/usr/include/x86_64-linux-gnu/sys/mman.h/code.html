@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/sys/mman.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Definitions for BSD-style memory management.
+<b><a name="line2">2    </a></b>	   Copyright (C) 1994-2016 Free Software Foundation, Inc.
+<b><a name="line3">3    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line6">6    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line7">7    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line8">8    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line13">13   </a></b>	   Lesser General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line16">16   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line17">17   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	#ifndef	_SYS_MMAN_H
+<b><a name="line20">20   </a></b>	#define	<b>_SYS_MMAN_H</b>	1
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	#include &lt;features.h&gt;
+<b><a name="line23">23   </a></b>	#include &lt;bits/types.h&gt;
+<b><a name="line24">24   </a></b>	#define <b>__need_size_t</b>
+<b><a name="line25">25   </a></b>	#include &lt;stddef.h&gt;
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>	#ifndef <a href="../types.h/code.html#line90">__off_t_defined</a>
+<b><a name="line28">28   </a></b>	# ifndef __USE_FILE_OFFSET64
+<b><a name="line29">29   </a></b>	typedef __off_t off_t;
+<b><a name="line30">30   </a></b>	# else
+<b><a name="line31">31   </a></b>	typedef __off64_t off_t;
+<b><a name="line32">32   </a></b>	# endif
+<b><a name="line33">33   </a></b>	# define __off_t_defined
+<b><a name="line34">34   </a></b>	#endif
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	#ifndef <a href="../types.h/code.html#line71">__mode_t_defined</a>
+<b><a name="line37">37   </a></b>	typedef __mode_t mode_t;
+<b><a name="line38">38   </a></b>	# define __mode_t_defined
+<b><a name="line39">39   </a></b>	#endif
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	#include &lt;bits/mman.h&gt;
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	/* Return value of `mmap' in case of an error.  */
+<b><a name="line44">44   </a></b>	#define <b>MAP_FAILED</b>	((void *) -1)
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	<a href="../cdefs.h/code.html#line98">__BEGIN_DECLS</a>
+<b><a name="line47">47   </a></b>	/* Map addresses starting near ADDR and extending for LEN bytes.  from
+<b><a name="line48">48   </a></b>	   OFFSET into the file FD describes according to PROT and FLAGS.  If ADDR
+<b><a name="line49">49   </a></b>	   is nonzero, it is the desired mapping address.  If the MAP_FIXED bit is
+<b><a name="line50">50   </a></b>	   set in FLAGS, the mapping will be at ADDR exactly (which must be
+<b><a name="line51">51   </a></b>	   page-aligned); otherwise the system chooses a convenient nearby address.
+<b><a name="line52">52   </a></b>	   The return value is the actual mapping address chosen or MAP_FAILED
+<b><a name="line53">53   </a></b>	   for errors (in which case `errno' is set).  A successful `mmap' call
+<b><a name="line54">54   </a></b>	   deallocates any previous mapping for the affected region.  */
+<b><a name="line55">55   </a></b>	
+<b><a name="line56">56   </a></b>	#ifndef __USE_FILE_OFFSET64
+<b><a name="line57">57   </a></b>	extern void *mmap (void *__addr, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __len, int __prot,
+<b><a name="line58">58   </a></b>			   int __flags, int __fd, <a href="../../bits/types.h/code.html#line131">__off_t</a> __offset) <a href="../cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line59">59   </a></b>	#else
+<b><a name="line60">60   </a></b>	# ifdef __REDIRECT_NTH
+<b><a name="line61">61   </a></b>	extern void * __REDIRECT_NTH (mmap,
+<b><a name="line62">62   </a></b>				      (void *__addr, size_t __len, int __prot,
+<b><a name="line63">63   </a></b>				       int __flags, int __fd, __off64_t __offset),
+<b><a name="line64">64   </a></b>				      mmap64);
+<b><a name="line65">65   </a></b>	# else
+<b><a name="line66">66   </a></b>	#  define mmap mmap64
+<b><a name="line67">67   </a></b>	# endif
+<b><a name="line68">68   </a></b>	#endif
+<b><a name="line69">69   </a></b>	#ifdef <a href="../../../features.h/code.html#line309">__USE_LARGEFILE64</a>
+<b><a name="line70">70   </a></b>	extern void *mmap64 (void *__addr, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __len, int __prot,
+<b><a name="line71">71   </a></b>			     int __flags, int __fd, <a href="../../bits/types.h/code.html#line132">__off64_t</a> __offset) <a href="../cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line72">72   </a></b>	#endif
+<b><a name="line73">73   </a></b>	
+<b><a name="line74">74   </a></b>	/* Deallocate any mapping for the region starting at ADDR and extending LEN
+<b><a name="line75">75   </a></b>	   bytes.  Returns 0 if successful, -1 for errors (and sets errno).  */
+<b><a name="line76">76   </a></b>	extern int munmap (void *__addr, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __len) <a href="../cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	/* Change the memory protection of the region starting at ADDR and
+<b><a name="line79">79   </a></b>	   extending LEN bytes to PROT.  Returns 0 if successful, -1 for errors
+<b><a name="line80">80   </a></b>	   (and sets errno).  */
+<b><a name="line81">81   </a></b>	extern int mprotect (void *__addr, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __len, int __prot) <a href="../cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line82">82   </a></b>	
+<b><a name="line83">83   </a></b>	/* Synchronize the region starting at ADDR and extending LEN bytes with the
+<b><a name="line84">84   </a></b>	   file it maps.  Filesystem operations on a file being mapped are
+<b><a name="line85">85   </a></b>	   unpredictable before this is done.  Flags are from the MS_* set.
+<b><a name="line86">86   </a></b>	
+<b><a name="line87">87   </a></b>	   This function is a cancellation point and therefore not marked with
+<b><a name="line88">88   </a></b>	   __THROW.  */
+<b><a name="line89">89   </a></b>	extern int msync (void *__addr, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __len, int __flags);
+<b><a name="line90">90   </a></b>	
+<b><a name="line91">91   </a></b>	#ifdef <a href="../../../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line92">92   </a></b>	/* Advise the system about particular usage patterns the program follows
+<b><a name="line93">93   </a></b>	   for the region starting at ADDR and extending LEN bytes.  */
+<b><a name="line94">94   </a></b>	extern int madvise (void *__addr, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __len, int __advice) <a href="../cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line95">95   </a></b>	#endif
+<b><a name="line96">96   </a></b>	#ifdef <a href="../../../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line97">97   </a></b>	/* This is the POSIX name for this function.  */
+<b><a name="line98">98   </a></b>	extern int posix_madvise (void *__addr, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __len, int __advice) <a href="../cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line99">99   </a></b>	#endif
+<b><a name="line100">100  </a></b>	
+<b><a name="line101">101  </a></b>	/* Guarantee all whole pages mapped by the range [ADDR,ADDR+LEN) to
+<b><a name="line102">102  </a></b>	   be memory resident.  */
+<b><a name="line103">103  </a></b>	extern int mlock (const void *__addr, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __len) <a href="../cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line104">104  </a></b>	
+<b><a name="line105">105  </a></b>	/* Unlock whole pages previously mapped by the range [ADDR,ADDR+LEN).  */
+<b><a name="line106">106  </a></b>	extern int munlock (const void *__addr, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __len) <a href="../cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line107">107  </a></b>	
+<b><a name="line108">108  </a></b>	/* Cause all currently mapped pages of the process to be memory resident
+<b><a name="line109">109  </a></b>	   until unlocked by a call to the `munlockall', until the process exits,
+<b><a name="line110">110  </a></b>	   or until the process calls `execve'.  */
+<b><a name="line111">111  </a></b>	extern int mlockall (int __flags) <a href="../cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line112">112  </a></b>	
+<b><a name="line113">113  </a></b>	/* All currently mapped pages of the process' address space become
+<b><a name="line114">114  </a></b>	   unlocked.  */
+<b><a name="line115">115  </a></b>	extern int munlockall (void) <a href="../cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line116">116  </a></b>	
+<b><a name="line117">117  </a></b>	#ifdef <a href="../../../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line118">118  </a></b>	/* mincore returns the memory residency status of the pages in the
+<b><a name="line119">119  </a></b>	   current process's address space specified by [start, start + len).
+<b><a name="line120">120  </a></b>	   The status is returned in a vector of bytes.  The least significant
+<b><a name="line121">121  </a></b>	   bit of each byte is 1 if the referenced page is in memory, otherwise
+<b><a name="line122">122  </a></b>	   it is zero.  */
+<b><a name="line123">123  </a></b>	extern int mincore (void *__start, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __len, unsigned char *__vec)
+<b><a name="line124">124  </a></b>	     <a href="../cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line125">125  </a></b>	#endif
+<b><a name="line126">126  </a></b>	
+<b><a name="line127">127  </a></b>	#ifdef <a href="../../../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line128">128  </a></b>	/* Remap pages mapped by the range [ADDR,ADDR+OLD_LEN) to new length
+<b><a name="line129">129  </a></b>	   NEW_LEN.  If MREMAP_MAYMOVE is set in FLAGS the returned address
+<b><a name="line130">130  </a></b>	   may differ from ADDR.  If MREMAP_FIXED is set in FLAGS the function
+<b><a name="line131">131  </a></b>	   takes another parameter which is a fixed address at which the block
+<b><a name="line132">132  </a></b>	   resides after a successful call.  */
+<b><a name="line133">133  </a></b>	extern void *mremap (void *__addr, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __old_len, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __new_len,
+<b><a name="line134">134  </a></b>			     int __flags, ...) <a href="../cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line135">135  </a></b>	
+<b><a name="line136">136  </a></b>	/* Remap arbitrary pages of a shared backing store within an existing
+<b><a name="line137">137  </a></b>	   VMA.  */
+<b><a name="line138">138  </a></b>	extern int remap_file_pages (void *__start, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __size, int __prot,
+<b><a name="line139">139  </a></b>				     <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __pgoff, int __flags) <a href="../cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line140">140  </a></b>	#endif
+<b><a name="line141">141  </a></b>	
+<b><a name="line142">142  </a></b>	
+<b><a name="line143">143  </a></b>	/* Open shared memory segment.  */
+<b><a name="line144">144  </a></b>	extern int shm_open (const char *__name, int __oflag, <a href="../types.h/code.html#line70">mode_t</a> __mode);
+<b><a name="line145">145  </a></b>	
+<b><a name="line146">146  </a></b>	/* Remove shared memory segment.  */
+<b><a name="line147">147  </a></b>	extern int shm_unlink (const char *__name);
+<b><a name="line148">148  </a></b>	
+<b><a name="line149">149  </a></b>	<a href="../cdefs.h/code.html#line99">__END_DECLS</a>
+<b><a name="line150">150  </a></b>	
+<b><a name="line151">151  </a></b>	#endif	/* sys/mman.h */
+<b><a name="line152">152  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/uio.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 1996-2016 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line5">5    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line6">6    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line7">7    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line10">10   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line11">11   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line12">12   </a></b>	   Lesser General Public License for more details.
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line15">15   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line16">16   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	#if !defined _SYS_UIO_H &amp;&amp; !defined <a href="../../../fcntl.h/code.html#line23">_FCNTL_H</a>
+<b><a name="line19">19   </a></b>	# error &quot;Never include &lt;bits/uio.h&gt; directly; use &lt;sys/uio.h&gt; instead.&quot;
+<b><a name="line20">20   </a></b>	#endif
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	#ifndef _BITS_UIO_H
+<b><a name="line23">23   </a></b>	#define <b>_BITS_UIO_H</b>	1
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	#include &lt;sys/types.h&gt;
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>	
+<b><a name="line28">28   </a></b>	/* We should normally use the Linux kernel header file to define this
+<b><a name="line29">29   </a></b>	   type and macros but this calls for trouble because of the header
+<b><a name="line30">30   </a></b>	   includes other kernel headers.  */
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	/* Size of object which can be written atomically.
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	   This macro has different values in different kernel versions.  The
+<b><a name="line35">35   </a></b>	   latest versions of the kernel use 1024 and this is good choice.  Since
+<b><a name="line36">36   </a></b>	   the C library implementation of readv/writev is able to emulate the
+<b><a name="line37">37   </a></b>	   functionality even if the currently running kernel does not support
+<b><a name="line38">38   </a></b>	   this large value the readv/writev call will not fail because of this.  */
+<b><a name="line39">39   </a></b>	#define <b>UIO_MAXIOV</b>	1024
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	
+<b><a name="line42">42   </a></b>	/* Structure for scatter/gather I/O.  */
+<b><a name="line43">43   </a></b>	struct <b>iovec</b>
+<b><a name="line44">44   </a></b>	  {
+<b><a name="line45">45   </a></b>	    void *<b>iov_base</b>;	/* Pointer to data.  */
+<b><a name="line46">46   </a></b>	    <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>iov_len</b>;	/* Length of data.  */
+<b><a name="line47">47   </a></b>	  };
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	#endif
+<b><a name="line50">50   </a></b>	
+<b><a name="line51">51   </a></b>	
+<b><a name="line52">52   </a></b>	#ifdef <a href="../../../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line53">53   </a></b>	# if defined _SYS_UIO_H &amp;&amp; !defined _BITS_UIO_H_FOR_SYS_UIO_H
+<b><a name="line54">54   </a></b>	#  define _BITS_UIO_H_FOR_SYS_UIO_H 1
+<b><a name="line55">55   </a></b>	
+<b><a name="line56">56   </a></b>	__BEGIN_DECLS
+<b><a name="line57">57   </a></b>	
+<b><a name="line58">58   </a></b>	/* Read from another process' address space.  */
+<b><a name="line59">59   </a></b>	extern ssize_t process_vm_readv (pid_t __pid, const struct iovec *__lvec,
+<b><a name="line60">60   </a></b>					 unsigned long int __liovcnt,
+<b><a name="line61">61   </a></b>					 const struct iovec *__rvec,
+<b><a name="line62">62   </a></b>					 unsigned long int __riovcnt,
+<b><a name="line63">63   </a></b>					 unsigned long int __flags)
+<b><a name="line64">64   </a></b>	  __THROW;
+<b><a name="line65">65   </a></b>	
+<b><a name="line66">66   </a></b>	/* Write to another process' address space.  */
+<b><a name="line67">67   </a></b>	extern ssize_t process_vm_writev (pid_t __pid, const struct iovec *__lvec,
+<b><a name="line68">68   </a></b>					  unsigned long int __liovcnt,
+<b><a name="line69">69   </a></b>					  const struct iovec *__rvec,
+<b><a name="line70">70   </a></b>					  unsigned long int __riovcnt,
+<b><a name="line71">71   </a></b>					  unsigned long int __flags)
+<b><a name="line72">72   </a></b>	  __THROW;
+<b><a name="line73">73   </a></b>	
+<b><a name="line74">74   </a></b>	__END_DECLS
+<b><a name="line75">75   </a></b>	
+<b><a name="line76">76   </a></b>	# endif
+<b><a name="line77">77   </a></b>	#endif
+<b><a name="line78">78   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

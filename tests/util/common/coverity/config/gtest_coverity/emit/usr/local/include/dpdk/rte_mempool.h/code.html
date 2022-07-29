@@ -1,0 +1,1757 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_mempool.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2010-2014 Intel Corporation.
+<b><a name="line3">3    </a></b>	 * Copyright(c) 2016 6WIND S.A.
+<b><a name="line4">4    </a></b>	 */
+<b><a name="line5">5    </a></b>	
+<b><a name="line6">6    </a></b>	#ifndef _RTE_MEMPOOL_H_
+<b><a name="line7">7    </a></b>	#define <b>_RTE_MEMPOOL_H_</b>
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	/**
+<b><a name="line10">10   </a></b>	 * @file
+<b><a name="line11">11   </a></b>	 * RTE Mempool.
+<b><a name="line12">12   </a></b>	 *
+<b><a name="line13">13   </a></b>	 * A memory pool is an allocator of fixed-size object. It is
+<b><a name="line14">14   </a></b>	 * identified by its name, and uses a ring to store free objects. It
+<b><a name="line15">15   </a></b>	 * provides some other optional services, like a per-core object
+<b><a name="line16">16   </a></b>	 * cache, and an alignment helper to ensure that objects are padded
+<b><a name="line17">17   </a></b>	 * to spread them equally on all RAM channels, ranks, and so on.
+<b><a name="line18">18   </a></b>	 *
+<b><a name="line19">19   </a></b>	 * Objects owned by a mempool should never be added in another
+<b><a name="line20">20   </a></b>	 * mempool. When an object is freed using rte_mempool_put() or
+<b><a name="line21">21   </a></b>	 * equivalent, the object data is not modified; the user can save some
+<b><a name="line22">22   </a></b>	 * meta-data in the object data and retrieve them when allocating a
+<b><a name="line23">23   </a></b>	 * new object.
+<b><a name="line24">24   </a></b>	 *
+<b><a name="line25">25   </a></b>	 * Note: the mempool implementation is not preemptible. An lcore must not be
+<b><a name="line26">26   </a></b>	 * interrupted by another task that uses the same mempool (because it uses a
+<b><a name="line27">27   </a></b>	 * ring which is not preemptible). Also, usual mempool functions like
+<b><a name="line28">28   </a></b>	 * rte_mempool_get() or rte_mempool_put() are designed to be called from an EAL
+<b><a name="line29">29   </a></b>	 * thread due to the internal per-lcore cache. Due to the lack of caching,
+<b><a name="line30">30   </a></b>	 * rte_mempool_get() or rte_mempool_put() performance will suffer when called
+<b><a name="line31">31   </a></b>	 * by non-EAL threads. Instead, non-EAL threads should call
+<b><a name="line32">32   </a></b>	 * rte_mempool_generic_get() or rte_mempool_generic_put() with a user cache
+<b><a name="line33">33   </a></b>	 * created with rte_mempool_cache_create().
+<b><a name="line34">34   </a></b>	 */
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	#include &lt;stdio.h&gt;
+<b><a name="line37">37   </a></b>	#include &lt;stdlib.h&gt;
+<b><a name="line38">38   </a></b>	#include &lt;stdint.h&gt;
+<b><a name="line39">39   </a></b>	#include &lt;errno.h&gt;
+<b><a name="line40">40   </a></b>	#include &lt;inttypes.h&gt;
+<b><a name="line41">41   </a></b>	#include &lt;sys/queue.h&gt;
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	#include &lt;rte_config.h&gt;
+<b><a name="line44">44   </a></b>	#include &lt;rte_spinlock.h&gt;
+<b><a name="line45">45   </a></b>	#include &lt;rte_log.h&gt;
+<b><a name="line46">46   </a></b>	#include &lt;rte_debug.h&gt;
+<b><a name="line47">47   </a></b>	#include &lt;rte_lcore.h&gt;
+<b><a name="line48">48   </a></b>	#include &lt;rte_memory.h&gt;
+<b><a name="line49">49   </a></b>	#include &lt;rte_branch_prediction.h&gt;
+<b><a name="line50">50   </a></b>	#include &lt;rte_ring.h&gt;
+<b><a name="line51">51   </a></b>	#include &lt;rte_memcpy.h&gt;
+<b><a name="line52">52   </a></b>	#include &lt;rte_common.h&gt;
+<b><a name="line53">53   </a></b>	
+<b><a name="line54">54   </a></b>	#ifdef __cplusplus
+<b><a name="line55">55   </a></b>	extern &quot;C&quot; {
+<b><a name="line56">56   </a></b>	#endif
+<b><a name="line57">57   </a></b>	
+<b><a name="line58">58   </a></b>	#define <b>RTE_MEMPOOL_HEADER_COOKIE1</b>  0xbadbadbadadd2e55ULL /**&lt; Header cookie. */
+<b><a name="line59">59   </a></b>	#define <b>RTE_MEMPOOL_HEADER_COOKIE2</b>  0xf2eef2eedadd2e55ULL /**&lt; Header cookie. */
+<b><a name="line60">60   </a></b>	#define <b>RTE_MEMPOOL_TRAILER_COOKIE</b>  0xadd2e55badbadbadULL /**&lt; Trailer cookie.*/
+<b><a name="line61">61   </a></b>	
+<b><a name="line62">62   </a></b>	#ifdef RTE_LIBRTE_MEMPOOL_DEBUG
+<b><a name="line63">63   </a></b>	/**
+<b><a name="line64">64   </a></b>	 * A structure that stores the mempool statistics (per-lcore).
+<b><a name="line65">65   </a></b>	 */
+<b><a name="line66">66   </a></b>	struct rte_mempool_debug_stats {
+<b><a name="line67">67   </a></b>		uint64_t put_bulk;         /**&lt; Number of puts. */
+<b><a name="line68">68   </a></b>		uint64_t put_objs;         /**&lt; Number of objects successfully put. */
+<b><a name="line69">69   </a></b>		uint64_t get_success_bulk; /**&lt; Successful allocation number. */
+<b><a name="line70">70   </a></b>		uint64_t get_success_objs; /**&lt; Objects successfully allocated. */
+<b><a name="line71">71   </a></b>		uint64_t get_fail_bulk;    /**&lt; Failed allocation number. */
+<b><a name="line72">72   </a></b>		uint64_t get_fail_objs;    /**&lt; Objects that failed to be allocated. */
+<b><a name="line73">73   </a></b>		/** Successful allocation number of contiguous blocks. */
+<b><a name="line74">74   </a></b>		uint64_t get_success_blks;
+<b><a name="line75">75   </a></b>		/** Failed allocation number of contiguous blocks. */
+<b><a name="line76">76   </a></b>		uint64_t get_fail_blks;
+<b><a name="line77">77   </a></b>	} __rte_cache_aligned;
+<b><a name="line78">78   </a></b>	#endif
+<b><a name="line79">79   </a></b>	
+<b><a name="line80">80   </a></b>	/**
+<b><a name="line81">81   </a></b>	 * A structure that stores a per-core object cache.
+<b><a name="line82">82   </a></b>	 */
+<b><a name="line83">83   </a></b>	struct <b>rte_mempool_cache</b> {
+<b><a name="line84">84   </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>size</b>;	      /**&lt; Size of the cache */
+<b><a name="line85">85   </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>flushthresh</b>; /**&lt; Threshold before we flush excess elements */
+<b><a name="line86">86   </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>len</b>;	      /**&lt; Current cache count */
+<b><a name="line87">87   </a></b>		/*
+<b><a name="line88">88   </a></b>		 * Cache is allocated to this size to allow it to overflow in certain
+<b><a name="line89">89   </a></b>		 * cases to avoid needless emptying of cache.
+<b><a name="line90">90   </a></b>		 */
+<b><a name="line91">91   </a></b>		void *<b>objs</b>[<a href="../rte_config.h/code.html#line399">RTE_MEMPOOL_CACHE_MAX_SIZE</a> * 3]; /**&lt; Cache objects */
+<b><a name="line92">92   </a></b>	} <a href="../rte_memory.h/code.html#line64">__rte_cache_aligned</a>;
+<b><a name="line93">93   </a></b>	
+<b><a name="line94">94   </a></b>	/**
+<b><a name="line95">95   </a></b>	 * A structure that stores the size of mempool elements.
+<b><a name="line96">96   </a></b>	 */
+<b><a name="line97">97   </a></b>	struct <b>rte_mempool_objsz</b> {
+<b><a name="line98">98   </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>elt_size</b>;     /**&lt; Size of an element. */
+<b><a name="line99">99   </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>header_size</b>;  /**&lt; Size of header (before elt). */
+<b><a name="line100">100  </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>trailer_size</b>; /**&lt; Size of trailer (after elt). */
+<b><a name="line101">101  </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>total_size</b>;
+<b><a name="line102">102  </a></b>		/**&lt; Total size of an object (header + elt + trailer). */
+<b><a name="line103">103  </a></b>	};
+<b><a name="line104">104  </a></b>	
+<b><a name="line105">105  </a></b>	/**&lt; Maximum length of a memory pool's name. */
+<b><a name="line106">106  </a></b>	#define <b>RTE_MEMPOOL_NAMESIZE</b> (RTE_RING_NAMESIZE - \
+<b><a name="line107">107  </a></b>				      sizeof(RTE_MEMPOOL_MZ_PREFIX) + 1)
+<b><a name="line108">108  </a></b>	#define <b>RTE_MEMPOOL_MZ_PREFIX</b> &quot;MP_&quot;
+<b><a name="line109">109  </a></b>	
+<b><a name="line110">110  </a></b>	/* &quot;MP_&lt;name&gt;&quot; */
+<b><a name="line111">111  </a></b>	#define	<b>RTE_MEMPOOL_MZ_FORMAT</b>	RTE_MEMPOOL_MZ_PREFIX &quot;%s&quot;
+<b><a name="line112">112  </a></b>	
+<b><a name="line113">113  </a></b>	#define	<b>MEMPOOL_PG_SHIFT_MAX</b>	(sizeof(uintptr_t) * CHAR_BIT - 1)
+<b><a name="line114">114  </a></b>	
+<b><a name="line115">115  </a></b>	/** Mempool over one chunk of physically continuous memory */
+<b><a name="line116">116  </a></b>	#define	<b>MEMPOOL_PG_NUM_DEFAULT</b>	1
+<b><a name="line117">117  </a></b>	
+<b><a name="line118">118  </a></b>	#ifndef RTE_MEMPOOL_ALIGN
+<b><a name="line119">119  </a></b>	#define <b>RTE_MEMPOOL_ALIGN</b>	RTE_CACHE_LINE_SIZE
+<b><a name="line120">120  </a></b>	#endif
+<b><a name="line121">121  </a></b>	
+<b><a name="line122">122  </a></b>	#define <b>RTE_MEMPOOL_ALIGN_MASK</b>	(RTE_MEMPOOL_ALIGN - 1)
+<b><a name="line123">123  </a></b>	
+<b><a name="line124">124  </a></b>	/**
+<b><a name="line125">125  </a></b>	 * Mempool object header structure
+<b><a name="line126">126  </a></b>	 *
+<b><a name="line127">127  </a></b>	 * Each object stored in mempools are prefixed by this header structure,
+<b><a name="line128">128  </a></b>	 * it allows to retrieve the mempool pointer from the object and to
+<b><a name="line129">129  </a></b>	 * iterate on all objects attached to a mempool. When debug is enabled,
+<b><a name="line130">130  </a></b>	 * a cookie is also added in this structure preventing corruptions and
+<b><a name="line131">131  </a></b>	 * double-frees.
+<b><a name="line132">132  </a></b>	 */
+<b><a name="line133">133  </a></b>	struct <b>rte_mempool_objhdr</b> {
+<b><a name="line134">134  </a></b>		<a href="../../../../include/x86_64-linux-gnu/sys/queue.h/code.html#line220">STAILQ_ENTRY</a>(rte_mempool_objhdr) <b>next</b>; /**&lt; Next in list. */
+<b><a name="line135">135  </a></b>		struct rte_mempool *<b>mp</b>;          /**&lt; The mempool owning the object. */
+<b><a name="line136">136  </a></b>		<a href="../rte_common.h/code.html#line37">RTE_STD_C11</a>
+<b><a name="line137">137  </a></b>		union {
+<b><a name="line138">138  </a></b>			<a href="../rte_memory.h/code.html#line80">rte_iova_t</a> <b>iova</b>;         /**&lt; IO address of the object. */
+<b><a name="line139">139  </a></b>			<a href="../rte_memory.h/code.html#line71">phys_addr_t</a> <b>physaddr</b>;    /**&lt; deprecated - Physical address of the object. */
+<b><a name="line140">140  </a></b>		};
+<b><a name="line141">141  </a></b>	#ifdef RTE_LIBRTE_MEMPOOL_DEBUG
+<b><a name="line142">142  </a></b>		uint64_t cookie;                 /**&lt; Debug cookie. */
+<b><a name="line143">143  </a></b>	#endif
+<b><a name="line144">144  </a></b>	};
+<b><a name="line145">145  </a></b>	
+<b><a name="line146">146  </a></b>	/**
+<b><a name="line147">147  </a></b>	 * A list of object headers type
+<b><a name="line148">148  </a></b>	 */
+<b><a name="line149">149  </a></b>	<a href="../../../../include/x86_64-linux-gnu/sys/queue.h/code.html#line211">STAILQ_HEAD</a>(rte_mempool_objhdr_list, rte_mempool_objhdr);
+<b><a name="line150">150  </a></b>	
+<b><a name="line151">151  </a></b>	#ifdef RTE_LIBRTE_MEMPOOL_DEBUG
+<b><a name="line152">152  </a></b>	
+<b><a name="line153">153  </a></b>	/**
+<b><a name="line154">154  </a></b>	 * Mempool object trailer structure
+<b><a name="line155">155  </a></b>	 *
+<b><a name="line156">156  </a></b>	 * In debug mode, each object stored in mempools are suffixed by this
+<b><a name="line157">157  </a></b>	 * trailer structure containing a cookie preventing memory corruptions.
+<b><a name="line158">158  </a></b>	 */
+<b><a name="line159">159  </a></b>	struct rte_mempool_objtlr {
+<b><a name="line160">160  </a></b>		uint64_t cookie;                 /**&lt; Debug cookie. */
+<b><a name="line161">161  </a></b>	};
+<b><a name="line162">162  </a></b>	
+<b><a name="line163">163  </a></b>	#endif
+<b><a name="line164">164  </a></b>	
+<b><a name="line165">165  </a></b>	/**
+<b><a name="line166">166  </a></b>	 * A list of memory where objects are stored
+<b><a name="line167">167  </a></b>	 */
+<b><a name="line168">168  </a></b>	<a href="../../../../include/x86_64-linux-gnu/sys/queue.h/code.html#line211">STAILQ_HEAD</a>(rte_mempool_memhdr_list, rte_mempool_memhdr);
+<b><a name="line169">169  </a></b>	
+<b><a name="line170">170  </a></b>	/**
+<b><a name="line171">171  </a></b>	 * Callback used to free a memory chunk
+<b><a name="line172">172  </a></b>	 */
+<b><a name="line173">173  </a></b>	typedef void (<b>rte_mempool_memchunk_free_cb_t</b>)(struct <a href="#line168">rte_mempool_memhdr</a> *memhdr,
+<b><a name="line174">174  </a></b>		void *opaque);
+<b><a name="line175">175  </a></b>	
+<b><a name="line176">176  </a></b>	/**
+<b><a name="line177">177  </a></b>	 * Mempool objects memory header structure
+<b><a name="line178">178  </a></b>	 *
+<b><a name="line179">179  </a></b>	 * The memory chunks where objects are stored. Each chunk is virtually
+<b><a name="line180">180  </a></b>	 * and physically contiguous.
+<b><a name="line181">181  </a></b>	 */
+<b><a name="line182">182  </a></b>	struct <b>rte_mempool_memhdr</b> {
+<b><a name="line183">183  </a></b>		<a href="../../../../include/x86_64-linux-gnu/sys/queue.h/code.html#line220">STAILQ_ENTRY</a>(rte_mempool_memhdr) <b>next</b>; /**&lt; Next in list. */
+<b><a name="line184">184  </a></b>		struct <a href="#line135">rte_mempool</a> *<b>mp</b>;  /**&lt; The mempool owning the chunk */
+<b><a name="line185">185  </a></b>		void *<b>addr</b>;              /**&lt; Virtual address of the chunk */
+<b><a name="line186">186  </a></b>		<a href="../rte_common.h/code.html#line37">RTE_STD_C11</a>
+<b><a name="line187">187  </a></b>		union {
+<b><a name="line188">188  </a></b>			<a href="../rte_memory.h/code.html#line80">rte_iova_t</a> <b>iova</b>;       /**&lt; IO address of the chunk */
+<b><a name="line189">189  </a></b>			<a href="../rte_memory.h/code.html#line71">phys_addr_t</a> <b>phys_addr</b>; /**&lt; Physical address of the chunk */
+<b><a name="line190">190  </a></b>		};
+<b><a name="line191">191  </a></b>		<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>len</b>;              /**&lt; length of the chunk */
+<b><a name="line192">192  </a></b>		<a href="#line173">rte_mempool_memchunk_free_cb_t</a> *<b>free_cb</b>; /**&lt; Free callback */
+<b><a name="line193">193  </a></b>		void *<b>opaque</b>;            /**&lt; Argument passed to the free callback */
+<b><a name="line194">194  </a></b>	};
+<b><a name="line195">195  </a></b>	
+<b><a name="line196">196  </a></b>	/**
+<b><a name="line197">197  </a></b>	 * @warning
+<b><a name="line198">198  </a></b>	 * @b EXPERIMENTAL: this API may change without prior notice.
+<b><a name="line199">199  </a></b>	 *
+<b><a name="line200">200  </a></b>	 * Additional information about the mempool
+<b><a name="line201">201  </a></b>	 *
+<b><a name="line202">202  </a></b>	 * The structure is cache-line aligned to avoid ABI breakages in
+<b><a name="line203">203  </a></b>	 * a number of cases when something small is added.
+<b><a name="line204">204  </a></b>	 */
+<b><a name="line205">205  </a></b>	struct <b>rte_mempool_info</b> {
+<b><a name="line206">206  </a></b>		/** Number of objects in the contiguous block */
+<b><a name="line207">207  </a></b>		unsigned int <b>contig_block_size</b>;
+<b><a name="line208">208  </a></b>	} <a href="../rte_memory.h/code.html#line64">__rte_cache_aligned</a>;
+<b><a name="line209">209  </a></b>	
+<b><a name="line210">210  </a></b>	/**
+<b><a name="line211">211  </a></b>	 * The RTE mempool structure.
+<b><a name="line212">212  </a></b>	 */
+<b><a name="line213">213  </a></b>	struct <b>rte_mempool</b> {
+<b><a name="line214">214  </a></b>		/*
+<b><a name="line215">215  </a></b>		 * Note: this field kept the RTE_MEMZONE_NAMESIZE size due to ABI
+<b><a name="line216">216  </a></b>		 * compatibility requirements, it could be changed to
+<b><a name="line217">217  </a></b>		 * RTE_MEMPOOL_NAMESIZE next time the ABI changes
+<b><a name="line218">218  </a></b>		 */
+<b><a name="line219">219  </a></b>		char <b>name</b>[<a href="../rte_memzone.h/code.html#line51">RTE_MEMZONE_NAMESIZE</a>]; /**&lt; Name of mempool. */
+<b><a name="line220">220  </a></b>		<a href="../rte_common.h/code.html#line37">RTE_STD_C11</a>
+<b><a name="line221">221  </a></b>		union {
+<b><a name="line222">222  </a></b>			void *<b>pool_data</b>;         /**&lt; Ring or pool to store objects. */
+<b><a name="line223">223  </a></b>			<a href="../../../../include/stdint.h/code.html#line55">uint64_t</a> <b>pool_id</b>;        /**&lt; External mempool identifier. */
+<b><a name="line224">224  </a></b>		};
+<b><a name="line225">225  </a></b>		void *<b>pool_config</b>;               /**&lt; optional args for ops alloc. */
+<b><a name="line226">226  </a></b>		const struct <a href="../rte_memzone.h/code.html#line49">rte_memzone</a> *<b>mz</b>;    /**&lt; Memzone where pool is alloc'd. */
+<b><a name="line227">227  </a></b>		unsigned int <b>flags</b>;              /**&lt; Flags of the mempool. */
+<b><a name="line228">228  </a></b>		int <b>socket_id</b>;                   /**&lt; Socket id passed at create. */
+<b><a name="line229">229  </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>size</b>;                   /**&lt; Max size of the mempool. */
+<b><a name="line230">230  </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>cache_size</b>;
+<b><a name="line231">231  </a></b>		/**&lt; Size of per-lcore default local cache. */
+<b><a name="line232">232  </a></b>	
+<b><a name="line233">233  </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>elt_size</b>;               /**&lt; Size of an element. */
+<b><a name="line234">234  </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>header_size</b>;            /**&lt; Size of header (before elt). */
+<b><a name="line235">235  </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>trailer_size</b>;           /**&lt; Size of trailer (after elt). */
+<b><a name="line236">236  </a></b>	
+<b><a name="line237">237  </a></b>		unsigned <b>private_data_size</b>;      /**&lt; Size of private data. */
+<b><a name="line238">238  </a></b>		/**
+<b><a name="line239">239  </a></b>		 * Index into rte_mempool_ops_table array of mempool ops
+<b><a name="line240">240  </a></b>		 * structs, which contain callback function pointers.
+<b><a name="line241">241  </a></b>		 * We're using an index here rather than pointers to the callbacks
+<b><a name="line242">242  </a></b>		 * to facilitate any secondary processes that may want to use
+<b><a name="line243">243  </a></b>		 * this mempool.
+<b><a name="line244">244  </a></b>		 */
+<b><a name="line245">245  </a></b>		<a href="../../../../include/stdint.h/code.html#line38">int32_t</a> <b>ops_index</b>;
+<b><a name="line246">246  </a></b>	
+<b><a name="line247">247  </a></b>		struct <a href="#line83">rte_mempool_cache</a> *<b>local_cache</b>; /**&lt; Per-lcore local cache */
+<b><a name="line248">248  </a></b>	
+<b><a name="line249">249  </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>populated_size</b>;         /**&lt; Number of populated objects. */
+<b><a name="line250">250  </a></b>		struct <a href="#line149">rte_mempool_objhdr_list</a> <b>elt_list</b>; /**&lt; List of objects in pool */
+<b><a name="line251">251  </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>nb_mem_chunks</b>;          /**&lt; Number of memory chunks */
+<b><a name="line252">252  </a></b>		struct <a href="#line168">rte_mempool_memhdr_list</a> <b>mem_list</b>; /**&lt; List of memory chunks */
+<b><a name="line253">253  </a></b>	
+<b><a name="line254">254  </a></b>	#ifdef RTE_LIBRTE_MEMPOOL_DEBUG
+<b><a name="line255">255  </a></b>		/** Per-lcore statistics. */
+<b><a name="line256">256  </a></b>		struct rte_mempool_debug_stats stats[RTE_MAX_LCORE];
+<b><a name="line257">257  </a></b>	#endif
+<b><a name="line258">258  </a></b>	}  <a href="../rte_memory.h/code.html#line64">__rte_cache_aligned</a>;
+<b><a name="line259">259  </a></b>	
+<b><a name="line260">260  </a></b>	#define <b>MEMPOOL_F_NO_SPREAD</b>      0x0001 /**&lt; Do not spread among memory channels. */
+<b><a name="line261">261  </a></b>	#define <b>MEMPOOL_F_NO_CACHE_ALIGN</b> 0x0002 /**&lt; Do not align objs on cache lines.*/
+<b><a name="line262">262  </a></b>	#define <b>MEMPOOL_F_SP_PUT</b>         0x0004 /**&lt; Default put is &quot;single-producer&quot;.*/
+<b><a name="line263">263  </a></b>	#define <b>MEMPOOL_F_SC_GET</b>         0x0008 /**&lt; Default get is &quot;single-consumer&quot;.*/
+<b><a name="line264">264  </a></b>	#define <b>MEMPOOL_F_POOL_CREATED</b>   0x0010 /**&lt; Internal: pool is created. */
+<b><a name="line265">265  </a></b>	#define <b>MEMPOOL_F_NO_IOVA_CONTIG</b> 0x0020 /**&lt; Don't need IOVA contiguous objs. */
+<b><a name="line266">266  </a></b>	#define <b>MEMPOOL_F_NO_PHYS_CONTIG</b> MEMPOOL_F_NO_IOVA_CONTIG /* deprecated */
+<b><a name="line267">267  </a></b>	
+<b><a name="line268">268  </a></b>	/**
+<b><a name="line269">269  </a></b>	 * @internal When debug is enabled, store some statistics.
+<b><a name="line270">270  </a></b>	 *
+<b><a name="line271">271  </a></b>	 * @param mp
+<b><a name="line272">272  </a></b>	 *   Pointer to the memory pool.
+<b><a name="line273">273  </a></b>	 * @param name
+<b><a name="line274">274  </a></b>	 *   Name of the statistics field to increment in the memory pool.
+<b><a name="line275">275  </a></b>	 * @param n
+<b><a name="line276">276  </a></b>	 *   Number to add to the object-oriented statistics.
+<b><a name="line277">277  </a></b>	 */
+<b><a name="line278">278  </a></b>	#ifdef RTE_LIBRTE_MEMPOOL_DEBUG
+<b><a name="line279">279  </a></b>	#define __MEMPOOL_STAT_ADD(mp, name, n) do {                    \
+<b><a name="line280">280  </a></b>			unsigned __lcore_id = rte_lcore_id();           \
+<b><a name="line281">281  </a></b>			if (__lcore_id &lt; RTE_MAX_LCORE) {               \
+<b><a name="line282">282  </a></b>				mp-&gt;stats[__lcore_id].name##_objs += n;	\
+<b><a name="line283">283  </a></b>				mp-&gt;stats[__lcore_id].name##_bulk += 1;	\
+<b><a name="line284">284  </a></b>			}                                               \
+<b><a name="line285">285  </a></b>		} while(0)
+<b><a name="line286">286  </a></b>	#define __MEMPOOL_CONTIG_BLOCKS_STAT_ADD(mp, name, n) do {                    \
+<b><a name="line287">287  </a></b>			unsigned int __lcore_id = rte_lcore_id();       \
+<b><a name="line288">288  </a></b>			if (__lcore_id &lt; RTE_MAX_LCORE) {               \
+<b><a name="line289">289  </a></b>				mp-&gt;stats[__lcore_id].name##_blks += n;	\
+<b><a name="line290">290  </a></b>				mp-&gt;stats[__lcore_id].name##_bulk += 1;	\
+<b><a name="line291">291  </a></b>			}                                               \
+<b><a name="line292">292  </a></b>		} while (0)
+<b><a name="line293">293  </a></b>	#else
+<b><a name="line294">294  </a></b>	#define <b>__MEMPOOL_STAT_ADD</b>(mp, name, n) do {} while(0)
+<b><a name="line295">295  </a></b>	#define <b>__MEMPOOL_CONTIG_BLOCKS_STAT_ADD</b>(mp, name, n) do {} while (0)
+<b><a name="line296">296  </a></b>	#endif
+<b><a name="line297">297  </a></b>	
+<b><a name="line298">298  </a></b>	/**
+<b><a name="line299">299  </a></b>	 * Calculate the size of the mempool header.
+<b><a name="line300">300  </a></b>	 *
+<b><a name="line301">301  </a></b>	 * @param mp
+<b><a name="line302">302  </a></b>	 *   Pointer to the memory pool.
+<b><a name="line303">303  </a></b>	 * @param cs
+<b><a name="line304">304  </a></b>	 *   Size of the per-lcore cache.
+<b><a name="line305">305  </a></b>	 */
+<b><a name="line306">306  </a></b>	#define <b>MEMPOOL_HEADER_SIZE</b>(mp, cs) \
+<b><a name="line307">307  </a></b>		(sizeof(*(mp)) + (((cs) == 0) ? 0 : \
+<b><a name="line308">308  </a></b>		(sizeof(struct rte_mempool_cache) * RTE_MAX_LCORE)))
+<b><a name="line309">309  </a></b>	
+<b><a name="line310">310  </a></b>	/* return the header of a mempool object (internal) */
+<b><a name="line311">311  </a></b>	static inline struct <a href="#line133">rte_mempool_objhdr</a> *<b>__mempool_get_header</b>(void *<b>obj</b>)
+<b><a name="line312">312  </a></b>	{
+<b><a name="line313">313  </a></b>		return (struct <a href="#line133">rte_mempool_objhdr</a> *)<a href="../rte_common.h/code.html#line163">RTE_PTR_SUB</a>(obj,
+<b><a name="line314">314  </a></b>			sizeof(struct rte_mempool_objhdr));
+<b><a name="line315">315  </a></b>	}
+<b><a name="line316">316  </a></b>	
+<b><a name="line317">317  </a></b>	/**
+<b><a name="line318">318  </a></b>	 * Return a pointer to the mempool owning this object.
+<b><a name="line319">319  </a></b>	 *
+<b><a name="line320">320  </a></b>	 * @param obj
+<b><a name="line321">321  </a></b>	 *   An object that is owned by a pool. If this is not the case,
+<b><a name="line322">322  </a></b>	 *   the behavior is undefined.
+<b><a name="line323">323  </a></b>	 * @return
+<b><a name="line324">324  </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line325">325  </a></b>	 */
+<b><a name="line326">326  </a></b>	static inline struct <a href="#line135">rte_mempool</a> *<b>rte_mempool_from_obj</b>(void *<b>obj</b>)
+<b><a name="line327">327  </a></b>	{
+<b><a name="line328">328  </a></b>		struct <a href="#line133">rte_mempool_objhdr</a> *<b>hdr</b> = <a href="#line311">__mempool_get_header</a>(<a href="#line326">obj</a>);
+<b><a name="line329">329  </a></b>		return <a href="#line328">hdr</a>-&gt;<a href="#line135">mp</a>;
+<b><a name="line330">330  </a></b>	}
+<b><a name="line331">331  </a></b>	
+<b><a name="line332">332  </a></b>	/* return the trailer of a mempool object (internal) */
+<b><a name="line333">333  </a></b>	static inline struct rte_mempool_objtlr *<b>__mempool_get_trailer</b>(void *<b>obj</b>)
+<b><a name="line334">334  </a></b>	{
+<b><a name="line335">335  </a></b>		struct <a href="#line135">rte_mempool</a> *<b>mp</b> = <a href="#line326">rte_mempool_from_obj</a>(<a href="#line333">obj</a>);
+<b><a name="line336">336  </a></b>		return (struct <a href="#line333">rte_mempool_objtlr</a> *)<a href="../rte_common.h/code.html#line158">RTE_PTR_ADD</a>(obj, mp-&gt;elt_size);
+<b><a name="line337">337  </a></b>	}
+<b><a name="line338">338  </a></b>	
+<b><a name="line339">339  </a></b>	/**
+<b><a name="line340">340  </a></b>	 * @internal Check and update cookies or panic.
+<b><a name="line341">341  </a></b>	 *
+<b><a name="line342">342  </a></b>	 * @param mp
+<b><a name="line343">343  </a></b>	 *   Pointer to the memory pool.
+<b><a name="line344">344  </a></b>	 * @param obj_table_const
+<b><a name="line345">345  </a></b>	 *   Pointer to a table of void * pointers (objects).
+<b><a name="line346">346  </a></b>	 * @param n
+<b><a name="line347">347  </a></b>	 *   Index of object in object table.
+<b><a name="line348">348  </a></b>	 * @param free
+<b><a name="line349">349  </a></b>	 *   - 0: object is supposed to be allocated, mark it as free
+<b><a name="line350">350  </a></b>	 *   - 1: object is supposed to be free, mark it as allocated
+<b><a name="line351">351  </a></b>	 *   - 2: just check that cookie is valid (free or allocated)
+<b><a name="line352">352  </a></b>	 */
+<b><a name="line353">353  </a></b>	void rte_mempool_check_cookies(const struct <a href="#line135">rte_mempool</a> *mp,
+<b><a name="line354">354  </a></b>		void * const *obj_table_const, unsigned n, int free);
+<b><a name="line355">355  </a></b>	
+<b><a name="line356">356  </a></b>	#ifdef RTE_LIBRTE_MEMPOOL_DEBUG
+<b><a name="line357">357  </a></b>	#define __mempool_check_cookies(mp, obj_table_const, n, free) \
+<b><a name="line358">358  </a></b>		rte_mempool_check_cookies(mp, obj_table_const, n, free)
+<b><a name="line359">359  </a></b>	#else
+<b><a name="line360">360  </a></b>	#define <b>__mempool_check_cookies</b>(mp, obj_table_const, n, free) do {} while(0)
+<b><a name="line361">361  </a></b>	#endif /* RTE_LIBRTE_MEMPOOL_DEBUG */
+<b><a name="line362">362  </a></b>	
+<b><a name="line363">363  </a></b>	/**
+<b><a name="line364">364  </a></b>	 * @warning
+<b><a name="line365">365  </a></b>	 * @b EXPERIMENTAL: this API may change without prior notice.
+<b><a name="line366">366  </a></b>	 *
+<b><a name="line367">367  </a></b>	 * @internal Check contiguous object blocks and update cookies or panic.
+<b><a name="line368">368  </a></b>	 *
+<b><a name="line369">369  </a></b>	 * @param mp
+<b><a name="line370">370  </a></b>	 *   Pointer to the memory pool.
+<b><a name="line371">371  </a></b>	 * @param first_obj_table_const
+<b><a name="line372">372  </a></b>	 *   Pointer to a table of void * pointers (first object of the contiguous
+<b><a name="line373">373  </a></b>	 *   object blocks).
+<b><a name="line374">374  </a></b>	 * @param n
+<b><a name="line375">375  </a></b>	 *   Number of contiguous object blocks.
+<b><a name="line376">376  </a></b>	 * @param free
+<b><a name="line377">377  </a></b>	 *   - 0: object is supposed to be allocated, mark it as free
+<b><a name="line378">378  </a></b>	 *   - 1: object is supposed to be free, mark it as allocated
+<b><a name="line379">379  </a></b>	 *   - 2: just check that cookie is valid (free or allocated)
+<b><a name="line380">380  </a></b>	 */
+<b><a name="line381">381  </a></b>	void rte_mempool_contig_blocks_check_cookies(const struct <a href="#line135">rte_mempool</a> *mp,
+<b><a name="line382">382  </a></b>		void * const *first_obj_table_const, unsigned int n, int free);
+<b><a name="line383">383  </a></b>	
+<b><a name="line384">384  </a></b>	#ifdef RTE_LIBRTE_MEMPOOL_DEBUG
+<b><a name="line385">385  </a></b>	#define __mempool_contig_blocks_check_cookies(mp, first_obj_table_const, n, \
+<b><a name="line386">386  </a></b>						      free) \
+<b><a name="line387">387  </a></b>		rte_mempool_contig_blocks_check_cookies(mp, first_obj_table_const, n, \
+<b><a name="line388">388  </a></b>							free)
+<b><a name="line389">389  </a></b>	#else
+<b><a name="line390">390  </a></b>	#define <b>__mempool_contig_blocks_check_cookies</b>(mp, first_obj_table_const, n, \
+<b><a name="line391">391  </a></b>						      free) \
+<b><a name="line392">392  </a></b>		do {} while (0)
+<b><a name="line393">393  </a></b>	#endif /* RTE_LIBRTE_MEMPOOL_DEBUG */
+<b><a name="line394">394  </a></b>	
+<b><a name="line395">395  </a></b>	#define <b>RTE_MEMPOOL_OPS_NAMESIZE</b> 32 /**&lt; Max length of ops struct name. */
+<b><a name="line396">396  </a></b>	
+<b><a name="line397">397  </a></b>	/**
+<b><a name="line398">398  </a></b>	 * Prototype for implementation specific data provisioning function.
+<b><a name="line399">399  </a></b>	 *
+<b><a name="line400">400  </a></b>	 * The function should provide the implementation specific memory for
+<b><a name="line401">401  </a></b>	 * use by the other mempool ops functions in a given mempool ops struct.
+<b><a name="line402">402  </a></b>	 * E.g. the default ops provides an instance of the rte_ring for this purpose.
+<b><a name="line403">403  </a></b>	 * it will most likely point to a different type of data structure, and
+<b><a name="line404">404  </a></b>	 * will be transparent to the application programmer.
+<b><a name="line405">405  </a></b>	 * This function should set mp-&gt;pool_data.
+<b><a name="line406">406  </a></b>	 */
+<b><a name="line407">407  </a></b>	typedef int (*<b>rte_mempool_alloc_t</b>)(struct <a href="#line135">rte_mempool</a> *mp);
+<b><a name="line408">408  </a></b>	
+<b><a name="line409">409  </a></b>	/**
+<b><a name="line410">410  </a></b>	 * Free the opaque private data pointed to by mp-&gt;pool_data pointer.
+<b><a name="line411">411  </a></b>	 */
+<b><a name="line412">412  </a></b>	typedef void (*<b>rte_mempool_free_t</b>)(struct <a href="#line135">rte_mempool</a> *mp);
+<b><a name="line413">413  </a></b>	
+<b><a name="line414">414  </a></b>	/**
+<b><a name="line415">415  </a></b>	 * Enqueue an object into the external pool.
+<b><a name="line416">416  </a></b>	 */
+<b><a name="line417">417  </a></b>	typedef int (*<b>rte_mempool_enqueue_t</b>)(struct <a href="#line135">rte_mempool</a> *mp,
+<b><a name="line418">418  </a></b>			void * const *obj_table, unsigned int n);
+<b><a name="line419">419  </a></b>	
+<b><a name="line420">420  </a></b>	/**
+<b><a name="line421">421  </a></b>	 * Dequeue an object from the external pool.
+<b><a name="line422">422  </a></b>	 */
+<b><a name="line423">423  </a></b>	typedef int (*<b>rte_mempool_dequeue_t</b>)(struct <a href="#line135">rte_mempool</a> *mp,
+<b><a name="line424">424  </a></b>			void **obj_table, unsigned int n);
+<b><a name="line425">425  </a></b>	
+<b><a name="line426">426  </a></b>	/**
+<b><a name="line427">427  </a></b>	 * @warning
+<b><a name="line428">428  </a></b>	 * @b EXPERIMENTAL: this API may change without prior notice.
+<b><a name="line429">429  </a></b>	 *
+<b><a name="line430">430  </a></b>	 * Dequeue a number of contiquous object blocks from the external pool.
+<b><a name="line431">431  </a></b>	 */
+<b><a name="line432">432  </a></b>	typedef int (*<b>rte_mempool_dequeue_contig_blocks_t</b>)(struct <a href="#line135">rte_mempool</a> *mp,
+<b><a name="line433">433  </a></b>			 void **first_obj_table, unsigned int n);
+<b><a name="line434">434  </a></b>	
+<b><a name="line435">435  </a></b>	/**
+<b><a name="line436">436  </a></b>	 * Return the number of available objects in the external pool.
+<b><a name="line437">437  </a></b>	 */
+<b><a name="line438">438  </a></b>	typedef unsigned (*<b>rte_mempool_get_count</b>)(const struct <a href="#line135">rte_mempool</a> *mp);
+<b><a name="line439">439  </a></b>	
+<b><a name="line440">440  </a></b>	/**
+<b><a name="line441">441  </a></b>	 * Calculate memory size required to store given number of objects.
+<b><a name="line442">442  </a></b>	 *
+<b><a name="line443">443  </a></b>	 * If mempool objects are not required to be IOVA-contiguous
+<b><a name="line444">444  </a></b>	 * (the flag MEMPOOL_F_NO_IOVA_CONTIG is set), min_chunk_size defines
+<b><a name="line445">445  </a></b>	 * virtually contiguous chunk size. Otherwise, if mempool objects must
+<b><a name="line446">446  </a></b>	 * be IOVA-contiguous (the flag MEMPOOL_F_NO_IOVA_CONTIG is clear),
+<b><a name="line447">447  </a></b>	 * min_chunk_size defines IOVA-contiguous chunk size.
+<b><a name="line448">448  </a></b>	 *
+<b><a name="line449">449  </a></b>	 * @param[in] mp
+<b><a name="line450">450  </a></b>	 *   Pointer to the memory pool.
+<b><a name="line451">451  </a></b>	 * @param[in] obj_num
+<b><a name="line452">452  </a></b>	 *   Number of objects.
+<b><a name="line453">453  </a></b>	 * @param[in] pg_shift
+<b><a name="line454">454  </a></b>	 *   LOG2 of the physical pages size. If set to 0, ignore page boundaries.
+<b><a name="line455">455  </a></b>	 * @param[out] min_chunk_size
+<b><a name="line456">456  </a></b>	 *   Location for minimum size of the memory chunk which may be used to
+<b><a name="line457">457  </a></b>	 *   store memory pool objects.
+<b><a name="line458">458  </a></b>	 * @param[out] align
+<b><a name="line459">459  </a></b>	 *   Location for required memory chunk alignment.
+<b><a name="line460">460  </a></b>	 * @return
+<b><a name="line461">461  </a></b>	 *   Required memory size aligned at page boundary.
+<b><a name="line462">462  </a></b>	 */
+<b><a name="line463">463  </a></b>	typedef <a href="../../../../include/x86_64-linux-gnu/sys/types.h/code.html#line109">ssize_t</a> (*<b>rte_mempool_calc_mem_size_t</b>)(const struct <a href="#line135">rte_mempool</a> *mp,
+<b><a name="line464">464  </a></b>			<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> obj_num,  <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> pg_shift,
+<b><a name="line465">465  </a></b>			<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> *min_chunk_size, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> *align);
+<b><a name="line466">466  </a></b>	
+<b><a name="line467">467  </a></b>	/**
+<b><a name="line468">468  </a></b>	 * Default way to calculate memory size required to store given number of
+<b><a name="line469">469  </a></b>	 * objects.
+<b><a name="line470">470  </a></b>	 *
+<b><a name="line471">471  </a></b>	 * If page boundaries may be ignored, it is just a product of total
+<b><a name="line472">472  </a></b>	 * object size including header and trailer and number of objects.
+<b><a name="line473">473  </a></b>	 * Otherwise, it is a number of pages required to store given number of
+<b><a name="line474">474  </a></b>	 * objects without crossing page boundary.
+<b><a name="line475">475  </a></b>	 *
+<b><a name="line476">476  </a></b>	 * Note that if object size is bigger than page size, then it assumes
+<b><a name="line477">477  </a></b>	 * that pages are grouped in subsets of physically continuous pages big
+<b><a name="line478">478  </a></b>	 * enough to store at least one object.
+<b><a name="line479">479  </a></b>	 *
+<b><a name="line480">480  </a></b>	 * Minimum size of memory chunk is a maximum of the page size and total
+<b><a name="line481">481  </a></b>	 * element size.
+<b><a name="line482">482  </a></b>	 *
+<b><a name="line483">483  </a></b>	 * Required memory chunk alignment is a maximum of page size and cache
+<b><a name="line484">484  </a></b>	 * line size.
+<b><a name="line485">485  </a></b>	 */
+<b><a name="line486">486  </a></b>	<a href="../../../../include/x86_64-linux-gnu/sys/types.h/code.html#line109">ssize_t</a> rte_mempool_op_calc_mem_size_default(const struct <a href="#line135">rte_mempool</a> *mp,
+<b><a name="line487">487  </a></b>			<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> obj_num, <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> pg_shift,
+<b><a name="line488">488  </a></b>			<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> *min_chunk_size, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> *align);
+<b><a name="line489">489  </a></b>	
+<b><a name="line490">490  </a></b>	/**
+<b><a name="line491">491  </a></b>	 * Function to be called for each populated object.
+<b><a name="line492">492  </a></b>	 *
+<b><a name="line493">493  </a></b>	 * @param[in] mp
+<b><a name="line494">494  </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line495">495  </a></b>	 * @param[in] opaque
+<b><a name="line496">496  </a></b>	 *   An opaque pointer passed to iterator.
+<b><a name="line497">497  </a></b>	 * @param[in] vaddr
+<b><a name="line498">498  </a></b>	 *   Object virtual address.
+<b><a name="line499">499  </a></b>	 * @param[in] iova
+<b><a name="line500">500  </a></b>	 *   Input/output virtual address of the object or RTE_BAD_IOVA.
+<b><a name="line501">501  </a></b>	 */
+<b><a name="line502">502  </a></b>	typedef void (<b>rte_mempool_populate_obj_cb_t</b>)(struct <a href="#line135">rte_mempool</a> *mp,
+<b><a name="line503">503  </a></b>			void *opaque, void *vaddr, <a href="../rte_memory.h/code.html#line80">rte_iova_t</a> iova);
+<b><a name="line504">504  </a></b>	
+<b><a name="line505">505  </a></b>	/**
+<b><a name="line506">506  </a></b>	 * Populate memory pool objects using provided memory chunk.
+<b><a name="line507">507  </a></b>	 *
+<b><a name="line508">508  </a></b>	 * Populated objects should be enqueued to the pool, e.g. using
+<b><a name="line509">509  </a></b>	 * rte_mempool_ops_enqueue_bulk().
+<b><a name="line510">510  </a></b>	 *
+<b><a name="line511">511  </a></b>	 * If the given IO address is unknown (iova = RTE_BAD_IOVA),
+<b><a name="line512">512  </a></b>	 * the chunk doesn't need to be physically contiguous (only virtually),
+<b><a name="line513">513  </a></b>	 * and allocated objects may span two pages.
+<b><a name="line514">514  </a></b>	 *
+<b><a name="line515">515  </a></b>	 * @param[in] mp
+<b><a name="line516">516  </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line517">517  </a></b>	 * @param[in] max_objs
+<b><a name="line518">518  </a></b>	 *   Maximum number of objects to be populated.
+<b><a name="line519">519  </a></b>	 * @param[in] vaddr
+<b><a name="line520">520  </a></b>	 *   The virtual address of memory that should be used to store objects.
+<b><a name="line521">521  </a></b>	 * @param[in] iova
+<b><a name="line522">522  </a></b>	 *   The IO address
+<b><a name="line523">523  </a></b>	 * @param[in] len
+<b><a name="line524">524  </a></b>	 *   The length of memory in bytes.
+<b><a name="line525">525  </a></b>	 * @param[in] obj_cb
+<b><a name="line526">526  </a></b>	 *   Callback function to be executed for each populated object.
+<b><a name="line527">527  </a></b>	 * @param[in] obj_cb_arg
+<b><a name="line528">528  </a></b>	 *   An opaque pointer passed to the callback function.
+<b><a name="line529">529  </a></b>	 * @return
+<b><a name="line530">530  </a></b>	 *   The number of objects added on success.
+<b><a name="line531">531  </a></b>	 *   On error, no objects are populated and a negative errno is returned.
+<b><a name="line532">532  </a></b>	 */
+<b><a name="line533">533  </a></b>	typedef int (*<b>rte_mempool_populate_t</b>)(struct <a href="#line135">rte_mempool</a> *mp,
+<b><a name="line534">534  </a></b>			unsigned int max_objs,
+<b><a name="line535">535  </a></b>			void *vaddr, <a href="../rte_memory.h/code.html#line80">rte_iova_t</a> iova, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> len,
+<b><a name="line536">536  </a></b>			<a href="#line502">rte_mempool_populate_obj_cb_t</a> *obj_cb, void *obj_cb_arg);
+<b><a name="line537">537  </a></b>	
+<b><a name="line538">538  </a></b>	/**
+<b><a name="line539">539  </a></b>	 * Default way to populate memory pool object using provided memory
+<b><a name="line540">540  </a></b>	 * chunk: just slice objects one by one.
+<b><a name="line541">541  </a></b>	 */
+<b><a name="line542">542  </a></b>	int rte_mempool_op_populate_default(struct <a href="#line135">rte_mempool</a> *mp,
+<b><a name="line543">543  </a></b>			unsigned int max_objs,
+<b><a name="line544">544  </a></b>			void *vaddr, <a href="../rte_memory.h/code.html#line80">rte_iova_t</a> iova, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> len,
+<b><a name="line545">545  </a></b>			<a href="#line502">rte_mempool_populate_obj_cb_t</a> *obj_cb, void *obj_cb_arg);
+<b><a name="line546">546  </a></b>	
+<b><a name="line547">547  </a></b>	/**
+<b><a name="line548">548  </a></b>	 * @warning
+<b><a name="line549">549  </a></b>	 * @b EXPERIMENTAL: this API may change without prior notice.
+<b><a name="line550">550  </a></b>	 *
+<b><a name="line551">551  </a></b>	 * Get some additional information about a mempool.
+<b><a name="line552">552  </a></b>	 */
+<b><a name="line553">553  </a></b>	typedef int (*<b>rte_mempool_get_info_t</b>)(const struct <a href="#line135">rte_mempool</a> *mp,
+<b><a name="line554">554  </a></b>			struct <a href="#line205">rte_mempool_info</a> *info);
+<b><a name="line555">555  </a></b>	
+<b><a name="line556">556  </a></b>	
+<b><a name="line557">557  </a></b>	/** Structure defining mempool operations structure */
+<b><a name="line558">558  </a></b>	struct <b>rte_mempool_ops</b> {
+<b><a name="line559">559  </a></b>		char <b>name</b>[<a href="#line395">RTE_MEMPOOL_OPS_NAMESIZE</a>]; /**&lt; Name of mempool ops struct. */
+<b><a name="line560">560  </a></b>		<a href="#line407">rte_mempool_alloc_t</a> <b>alloc</b>;       /**&lt; Allocate private data. */
+<b><a name="line561">561  </a></b>		<a href="#line412">rte_mempool_free_t</a> <b>free</b>;         /**&lt; Free the external pool. */
+<b><a name="line562">562  </a></b>		<a href="#line417">rte_mempool_enqueue_t</a> <b>enqueue</b>;   /**&lt; Enqueue an object. */
+<b><a name="line563">563  </a></b>		<a href="#line423">rte_mempool_dequeue_t</a> <b>dequeue</b>;   /**&lt; Dequeue an object. */
+<b><a name="line564">564  </a></b>		<a href="#line438">rte_mempool_get_count</a> <b>get_count</b>; /**&lt; Get qty of available objs. */
+<b><a name="line565">565  </a></b>		/**
+<b><a name="line566">566  </a></b>		 * Optional callback to calculate memory size required to
+<b><a name="line567">567  </a></b>		 * store specified number of objects.
+<b><a name="line568">568  </a></b>		 */
+<b><a name="line569">569  </a></b>		<a href="#line463">rte_mempool_calc_mem_size_t</a> <b>calc_mem_size</b>;
+<b><a name="line570">570  </a></b>		/**
+<b><a name="line571">571  </a></b>		 * Optional callback to populate mempool objects using
+<b><a name="line572">572  </a></b>		 * provided memory chunk.
+<b><a name="line573">573  </a></b>		 */
+<b><a name="line574">574  </a></b>		<a href="#line533">rte_mempool_populate_t</a> <b>populate</b>;
+<b><a name="line575">575  </a></b>		/**
+<b><a name="line576">576  </a></b>		 * Get mempool info
+<b><a name="line577">577  </a></b>		 */
+<b><a name="line578">578  </a></b>		<a href="#line553">rte_mempool_get_info_t</a> <b>get_info</b>;
+<b><a name="line579">579  </a></b>		/**
+<b><a name="line580">580  </a></b>		 * Dequeue a number of contiguous object blocks.
+<b><a name="line581">581  </a></b>		 */
+<b><a name="line582">582  </a></b>		<a href="#line432">rte_mempool_dequeue_contig_blocks_t</a> <b>dequeue_contig_blocks</b>;
+<b><a name="line583">583  </a></b>	} <a href="../rte_memory.h/code.html#line64">__rte_cache_aligned</a>;
+<b><a name="line584">584  </a></b>	
+<b><a name="line585">585  </a></b>	#define <b>RTE_MEMPOOL_MAX_OPS_IDX</b> 16  /**&lt; Max registered ops structs */
+<b><a name="line586">586  </a></b>	
+<b><a name="line587">587  </a></b>	/**
+<b><a name="line588">588  </a></b>	 * Structure storing the table of registered ops structs, each of which contain
+<b><a name="line589">589  </a></b>	 * the function pointers for the mempool ops functions.
+<b><a name="line590">590  </a></b>	 * Each process has its own storage for this ops struct array so that
+<b><a name="line591">591  </a></b>	 * the mempools can be shared across primary and secondary processes.
+<b><a name="line592">592  </a></b>	 * The indices used to access the array are valid across processes, whereas
+<b><a name="line593">593  </a></b>	 * any function pointers stored directly in the mempool struct would not be.
+<b><a name="line594">594  </a></b>	 * This results in us simply having &quot;ops_index&quot; in the mempool struct.
+<b><a name="line595">595  </a></b>	 */
+<b><a name="line596">596  </a></b>	struct <b>rte_mempool_ops_table</b> {
+<b><a name="line597">597  </a></b>		<a href="../generic/rte_spinlock.h/code.html#line32">rte_spinlock_t</a> <b>sl</b>;     /**&lt; Spinlock for add/delete. */
+<b><a name="line598">598  </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>num_ops</b>;      /**&lt; Number of used ops structs in the table. */
+<b><a name="line599">599  </a></b>		/**
+<b><a name="line600">600  </a></b>		 * Storage for all possible ops structs.
+<b><a name="line601">601  </a></b>		 */
+<b><a name="line602">602  </a></b>		struct <a href="#line558">rte_mempool_ops</a> <b>ops</b>[<a href="#line585">RTE_MEMPOOL_MAX_OPS_IDX</a>];
+<b><a name="line603">603  </a></b>	} <a href="../rte_memory.h/code.html#line64">__rte_cache_aligned</a>;
+<b><a name="line604">604  </a></b>	
+<b><a name="line605">605  </a></b>	/** Array of registered ops structs. */
+<b><a name="line606">606  </a></b>	extern struct <a href="#line596">rte_mempool_ops_table</a> rte_mempool_ops_table;
+<b><a name="line607">607  </a></b>	
+<b><a name="line608">608  </a></b>	/**
+<b><a name="line609">609  </a></b>	 * @internal Get the mempool ops struct from its index.
+<b><a name="line610">610  </a></b>	 *
+<b><a name="line611">611  </a></b>	 * @param ops_index
+<b><a name="line612">612  </a></b>	 *   The index of the ops struct in the ops struct table. It must be a valid
+<b><a name="line613">613  </a></b>	 *   index: (0 &lt;= idx &lt; num_ops).
+<b><a name="line614">614  </a></b>	 * @return
+<b><a name="line615">615  </a></b>	 *   The pointer to the ops struct in the table.
+<b><a name="line616">616  </a></b>	 */
+<b><a name="line617">617  </a></b>	static inline struct <a href="#line558">rte_mempool_ops</a> *
+<b><a name="line618">618  </a></b>	<b>rte_mempool_get_ops</b>(int <b>ops_index</b>)
+<b><a name="line619">619  </a></b>	{
+<b><a name="line620">620  </a></b>		<a href="../rte_debug.h/code.html#line58">RTE_VERIFY</a>((ops_index &gt;= 0) &amp;&amp; (ops_index &lt; RTE_MEMPOOL_MAX_OPS_IDX));
+<b><a name="line621">621  </a></b>	
+<b><a name="line622">622  </a></b>		return &amp;<a href="#line606">rte_mempool_ops_table</a>.<a href="#line602">ops</a>[<a href="#line618">ops_index</a>];
+<b><a name="line623">623  </a></b>	}
+<b><a name="line624">624  </a></b>	
+<b><a name="line625">625  </a></b>	/**
+<b><a name="line626">626  </a></b>	 * @internal Wrapper for mempool_ops alloc callback.
+<b><a name="line627">627  </a></b>	 *
+<b><a name="line628">628  </a></b>	 * @param mp
+<b><a name="line629">629  </a></b>	 *   Pointer to the memory pool.
+<b><a name="line630">630  </a></b>	 * @return
+<b><a name="line631">631  </a></b>	 *   - 0: Success; successfully allocated mempool pool_data.
+<b><a name="line632">632  </a></b>	 *   - &lt;0: Error; code of alloc function.
+<b><a name="line633">633  </a></b>	 */
+<b><a name="line634">634  </a></b>	int
+<b><a name="line635">635  </a></b>	rte_mempool_ops_alloc(struct <a href="#line135">rte_mempool</a> *mp);
+<b><a name="line636">636  </a></b>	
+<b><a name="line637">637  </a></b>	/**
+<b><a name="line638">638  </a></b>	 * @internal Wrapper for mempool_ops dequeue callback.
+<b><a name="line639">639  </a></b>	 *
+<b><a name="line640">640  </a></b>	 * @param mp
+<b><a name="line641">641  </a></b>	 *   Pointer to the memory pool.
+<b><a name="line642">642  </a></b>	 * @param obj_table
+<b><a name="line643">643  </a></b>	 *   Pointer to a table of void * pointers (objects).
+<b><a name="line644">644  </a></b>	 * @param n
+<b><a name="line645">645  </a></b>	 *   Number of objects to get.
+<b><a name="line646">646  </a></b>	 * @return
+<b><a name="line647">647  </a></b>	 *   - 0: Success; got n objects.
+<b><a name="line648">648  </a></b>	 *   - &lt;0: Error; code of dequeue function.
+<b><a name="line649">649  </a></b>	 */
+<b><a name="line650">650  </a></b>	static inline int
+<b><a name="line651">651  </a></b>	<b>rte_mempool_ops_dequeue_bulk</b>(struct <a href="#line135">rte_mempool</a> *<b>mp</b>,
+<b><a name="line652">652  </a></b>			void **<b>obj_table</b>, unsigned <b>n</b>)
+<b><a name="line653">653  </a></b>	{
+<b><a name="line654">654  </a></b>		struct <a href="#line558">rte_mempool_ops</a> *<b>ops</b>;
+<b><a name="line655">655  </a></b>	
+<b><a name="line656">656  </a></b>		<a href="#line654">ops</a> = <a href="#line618">rte_mempool_get_ops</a>(<a href="#line651">mp</a>-&gt;<a href="#line245">ops_index</a>);
+<b><a name="line657">657  </a></b>		return <a href="#line654">ops</a>-&gt;<a href="#line563">dequeue</a>(<a href="#line651">mp</a>, <a href="#line652">obj_table</a>, <a href="#line652">n</a>);
+<b><a name="line658">658  </a></b>	}
+<b><a name="line659">659  </a></b>	
+<b><a name="line660">660  </a></b>	/**
+<b><a name="line661">661  </a></b>	 * @internal Wrapper for mempool_ops dequeue_contig_blocks callback.
+<b><a name="line662">662  </a></b>	 *
+<b><a name="line663">663  </a></b>	 * @param[in] mp
+<b><a name="line664">664  </a></b>	 *   Pointer to the memory pool.
+<b><a name="line665">665  </a></b>	 * @param[out] first_obj_table
+<b><a name="line666">666  </a></b>	 *   Pointer to a table of void * pointers (first objects).
+<b><a name="line667">667  </a></b>	 * @param[in] n
+<b><a name="line668">668  </a></b>	 *   Number of blocks to get.
+<b><a name="line669">669  </a></b>	 * @return
+<b><a name="line670">670  </a></b>	 *   - 0: Success; got n objects.
+<b><a name="line671">671  </a></b>	 *   - &lt;0: Error; code of dequeue function.
+<b><a name="line672">672  </a></b>	 */
+<b><a name="line673">673  </a></b>	static inline int
+<b><a name="line674">674  </a></b>	<b>rte_mempool_ops_dequeue_contig_blocks</b>(struct <a href="#line135">rte_mempool</a> *<b>mp</b>,
+<b><a name="line675">675  </a></b>			void **<b>first_obj_table</b>, unsigned int <b>n</b>)
+<b><a name="line676">676  </a></b>	{
+<b><a name="line677">677  </a></b>		struct <a href="#line558">rte_mempool_ops</a> *<b>ops</b>;
+<b><a name="line678">678  </a></b>	
+<b><a name="line679">679  </a></b>		<a href="#line677">ops</a> = <a href="#line618">rte_mempool_get_ops</a>(<a href="#line674">mp</a>-&gt;<a href="#line245">ops_index</a>);
+<b><a name="line680">680  </a></b>		<a href="../rte_debug.h/code.html#line56">RTE_ASSERT</a>(ops-&gt;dequeue_contig_blocks != NULL);
+<b><a name="line681">681  </a></b>		return <a href="#line677">ops</a>-&gt;<a href="#line582">dequeue_contig_blocks</a>(<a href="#line674">mp</a>, <a href="#line675">first_obj_table</a>, <a href="#line675">n</a>);
+<b><a name="line682">682  </a></b>	}
+<b><a name="line683">683  </a></b>	
+<b><a name="line684">684  </a></b>	/**
+<b><a name="line685">685  </a></b>	 * @internal wrapper for mempool_ops enqueue callback.
+<b><a name="line686">686  </a></b>	 *
+<b><a name="line687">687  </a></b>	 * @param mp
+<b><a name="line688">688  </a></b>	 *   Pointer to the memory pool.
+<b><a name="line689">689  </a></b>	 * @param obj_table
+<b><a name="line690">690  </a></b>	 *   Pointer to a table of void * pointers (objects).
+<b><a name="line691">691  </a></b>	 * @param n
+<b><a name="line692">692  </a></b>	 *   Number of objects to put.
+<b><a name="line693">693  </a></b>	 * @return
+<b><a name="line694">694  </a></b>	 *   - 0: Success; n objects supplied.
+<b><a name="line695">695  </a></b>	 *   - &lt;0: Error; code of enqueue function.
+<b><a name="line696">696  </a></b>	 */
+<b><a name="line697">697  </a></b>	static inline int
+<b><a name="line698">698  </a></b>	<b>rte_mempool_ops_enqueue_bulk</b>(struct <a href="#line135">rte_mempool</a> *<b>mp</b>, void * const *<b>obj_table</b>,
+<b><a name="line699">699  </a></b>			unsigned <b>n</b>)
+<b><a name="line700">700  </a></b>	{
+<b><a name="line701">701  </a></b>		struct <a href="#line558">rte_mempool_ops</a> *<b>ops</b>;
+<b><a name="line702">702  </a></b>	
+<b><a name="line703">703  </a></b>		<a href="#line701">ops</a> = <a href="#line618">rte_mempool_get_ops</a>(<a href="#line698">mp</a>-&gt;<a href="#line245">ops_index</a>);
+<b><a name="line704">704  </a></b>		return <a href="#line701">ops</a>-&gt;<a href="#line562">enqueue</a>(<a href="#line698">mp</a>, <a href="#line698">obj_table</a>, <a href="#line699">n</a>);
+<b><a name="line705">705  </a></b>	}
+<b><a name="line706">706  </a></b>	
+<b><a name="line707">707  </a></b>	/**
+<b><a name="line708">708  </a></b>	 * @internal wrapper for mempool_ops get_count callback.
+<b><a name="line709">709  </a></b>	 *
+<b><a name="line710">710  </a></b>	 * @param mp
+<b><a name="line711">711  </a></b>	 *   Pointer to the memory pool.
+<b><a name="line712">712  </a></b>	 * @return
+<b><a name="line713">713  </a></b>	 *   The number of available objects in the external pool.
+<b><a name="line714">714  </a></b>	 */
+<b><a name="line715">715  </a></b>	unsigned
+<b><a name="line716">716  </a></b>	rte_mempool_ops_get_count(const struct <a href="#line135">rte_mempool</a> *mp);
+<b><a name="line717">717  </a></b>	
+<b><a name="line718">718  </a></b>	/**
+<b><a name="line719">719  </a></b>	 * @internal wrapper for mempool_ops calc_mem_size callback.
+<b><a name="line720">720  </a></b>	 * API to calculate size of memory required to store specified number of
+<b><a name="line721">721  </a></b>	 * object.
+<b><a name="line722">722  </a></b>	 *
+<b><a name="line723">723  </a></b>	 * @param[in] mp
+<b><a name="line724">724  </a></b>	 *   Pointer to the memory pool.
+<b><a name="line725">725  </a></b>	 * @param[in] obj_num
+<b><a name="line726">726  </a></b>	 *   Number of objects.
+<b><a name="line727">727  </a></b>	 * @param[in] pg_shift
+<b><a name="line728">728  </a></b>	 *   LOG2 of the physical pages size. If set to 0, ignore page boundaries.
+<b><a name="line729">729  </a></b>	 * @param[out] min_chunk_size
+<b><a name="line730">730  </a></b>	 *   Location for minimum size of the memory chunk which may be used to
+<b><a name="line731">731  </a></b>	 *   store memory pool objects.
+<b><a name="line732">732  </a></b>	 * @param[out] align
+<b><a name="line733">733  </a></b>	 *   Location for required memory chunk alignment.
+<b><a name="line734">734  </a></b>	 * @return
+<b><a name="line735">735  </a></b>	 *   Required memory size aligned at page boundary.
+<b><a name="line736">736  </a></b>	 */
+<b><a name="line737">737  </a></b>	<a href="../../../../include/x86_64-linux-gnu/sys/types.h/code.html#line109">ssize_t</a> rte_mempool_ops_calc_mem_size(const struct <a href="#line135">rte_mempool</a> *mp,
+<b><a name="line738">738  </a></b>					      <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> obj_num, <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> pg_shift,
+<b><a name="line739">739  </a></b>					      <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> *min_chunk_size, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> *align);
+<b><a name="line740">740  </a></b>	
+<b><a name="line741">741  </a></b>	/**
+<b><a name="line742">742  </a></b>	 * @internal wrapper for mempool_ops populate callback.
+<b><a name="line743">743  </a></b>	 *
+<b><a name="line744">744  </a></b>	 * Populate memory pool objects using provided memory chunk.
+<b><a name="line745">745  </a></b>	 *
+<b><a name="line746">746  </a></b>	 * @param[in] mp
+<b><a name="line747">747  </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line748">748  </a></b>	 * @param[in] max_objs
+<b><a name="line749">749  </a></b>	 *   Maximum number of objects to be populated.
+<b><a name="line750">750  </a></b>	 * @param[in] vaddr
+<b><a name="line751">751  </a></b>	 *   The virtual address of memory that should be used to store objects.
+<b><a name="line752">752  </a></b>	 * @param[in] iova
+<b><a name="line753">753  </a></b>	 *   The IO address
+<b><a name="line754">754  </a></b>	 * @param[in] len
+<b><a name="line755">755  </a></b>	 *   The length of memory in bytes.
+<b><a name="line756">756  </a></b>	 * @param[in] obj_cb
+<b><a name="line757">757  </a></b>	 *   Callback function to be executed for each populated object.
+<b><a name="line758">758  </a></b>	 * @param[in] obj_cb_arg
+<b><a name="line759">759  </a></b>	 *   An opaque pointer passed to the callback function.
+<b><a name="line760">760  </a></b>	 * @return
+<b><a name="line761">761  </a></b>	 *   The number of objects added on success.
+<b><a name="line762">762  </a></b>	 *   On error, no objects are populated and a negative errno is returned.
+<b><a name="line763">763  </a></b>	 */
+<b><a name="line764">764  </a></b>	int rte_mempool_ops_populate(struct <a href="#line135">rte_mempool</a> *mp, unsigned int max_objs,
+<b><a name="line765">765  </a></b>				     void *vaddr, <a href="../rte_memory.h/code.html#line80">rte_iova_t</a> iova, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> len,
+<b><a name="line766">766  </a></b>				     <a href="#line502">rte_mempool_populate_obj_cb_t</a> *obj_cb,
+<b><a name="line767">767  </a></b>				     void *obj_cb_arg);
+<b><a name="line768">768  </a></b>	
+<b><a name="line769">769  </a></b>	/**
+<b><a name="line770">770  </a></b>	 * @warning
+<b><a name="line771">771  </a></b>	 * @b EXPERIMENTAL: this API may change without prior notice.
+<b><a name="line772">772  </a></b>	 *
+<b><a name="line773">773  </a></b>	 * Wrapper for mempool_ops get_info callback.
+<b><a name="line774">774  </a></b>	 *
+<b><a name="line775">775  </a></b>	 * @param[in] mp
+<b><a name="line776">776  </a></b>	 *   Pointer to the memory pool.
+<b><a name="line777">777  </a></b>	 * @param[out] info
+<b><a name="line778">778  </a></b>	 *   Pointer to the rte_mempool_info structure
+<b><a name="line779">779  </a></b>	 * @return
+<b><a name="line780">780  </a></b>	 *   - 0: Success; The mempool driver supports retrieving supplementary
+<b><a name="line781">781  </a></b>	 *        mempool information
+<b><a name="line782">782  </a></b>	 *   - -ENOTSUP - doesn't support get_info ops (valid case).
+<b><a name="line783">783  </a></b>	 */
+<b><a name="line784">784  </a></b>	<a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line785">785  </a></b>	int rte_mempool_ops_get_info(const struct <a href="#line135">rte_mempool</a> *mp,
+<b><a name="line786">786  </a></b>				 struct <a href="#line205">rte_mempool_info</a> *info);
+<b><a name="line787">787  </a></b>	
+<b><a name="line788">788  </a></b>	/**
+<b><a name="line789">789  </a></b>	 * @internal wrapper for mempool_ops free callback.
+<b><a name="line790">790  </a></b>	 *
+<b><a name="line791">791  </a></b>	 * @param mp
+<b><a name="line792">792  </a></b>	 *   Pointer to the memory pool.
+<b><a name="line793">793  </a></b>	 */
+<b><a name="line794">794  </a></b>	void
+<b><a name="line795">795  </a></b>	rte_mempool_ops_free(struct <a href="#line135">rte_mempool</a> *mp);
+<b><a name="line796">796  </a></b>	
+<b><a name="line797">797  </a></b>	/**
+<b><a name="line798">798  </a></b>	 * Set the ops of a mempool.
+<b><a name="line799">799  </a></b>	 *
+<b><a name="line800">800  </a></b>	 * This can only be done on a mempool that is not populated, i.e. just after
+<b><a name="line801">801  </a></b>	 * a call to rte_mempool_create_empty().
+<b><a name="line802">802  </a></b>	 *
+<b><a name="line803">803  </a></b>	 * @param mp
+<b><a name="line804">804  </a></b>	 *   Pointer to the memory pool.
+<b><a name="line805">805  </a></b>	 * @param name
+<b><a name="line806">806  </a></b>	 *   Name of the ops structure to use for this mempool.
+<b><a name="line807">807  </a></b>	 * @param pool_config
+<b><a name="line808">808  </a></b>	 *   Opaque data that can be passed by the application to the ops functions.
+<b><a name="line809">809  </a></b>	 * @return
+<b><a name="line810">810  </a></b>	 *   - 0: Success; the mempool is now using the requested ops functions.
+<b><a name="line811">811  </a></b>	 *   - -EINVAL - Invalid ops struct name provided.
+<b><a name="line812">812  </a></b>	 *   - -EEXIST - mempool already has an ops struct assigned.
+<b><a name="line813">813  </a></b>	 */
+<b><a name="line814">814  </a></b>	int
+<b><a name="line815">815  </a></b>	rte_mempool_set_ops_byname(struct <a href="#line135">rte_mempool</a> *mp, const char *name,
+<b><a name="line816">816  </a></b>			void *pool_config);
+<b><a name="line817">817  </a></b>	
+<b><a name="line818">818  </a></b>	/**
+<b><a name="line819">819  </a></b>	 * Register mempool operations.
+<b><a name="line820">820  </a></b>	 *
+<b><a name="line821">821  </a></b>	 * @param ops
+<b><a name="line822">822  </a></b>	 *   Pointer to an ops structure to register.
+<b><a name="line823">823  </a></b>	 * @return
+<b><a name="line824">824  </a></b>	 *   - &gt;=0: Success; return the index of the ops struct in the table.
+<b><a name="line825">825  </a></b>	 *   - -EINVAL - some missing callbacks while registering ops struct.
+<b><a name="line826">826  </a></b>	 *   - -ENOSPC - the maximum number of ops structs has been reached.
+<b><a name="line827">827  </a></b>	 */
+<b><a name="line828">828  </a></b>	int rte_mempool_register_ops(const struct <a href="#line558">rte_mempool_ops</a> *ops);
+<b><a name="line829">829  </a></b>	
+<b><a name="line830">830  </a></b>	/**
+<b><a name="line831">831  </a></b>	 * Macro to statically register the ops of a mempool handler.
+<b><a name="line832">832  </a></b>	 * Note that the rte_mempool_register_ops fails silently here when
+<b><a name="line833">833  </a></b>	 * more than RTE_MEMPOOL_MAX_OPS_IDX is registered.
+<b><a name="line834">834  </a></b>	 */
+<b><a name="line835">835  </a></b>	#define <b>MEMPOOL_REGISTER_OPS</b>(ops)					\
+<b><a name="line836">836  </a></b>		void mp_hdlr_init_##ops(void);					\
+<b><a name="line837">837  </a></b>		void __attribute__((constructor, used)) mp_hdlr_init_##ops(void)\
+<b><a name="line838">838  </a></b>		{								\
+<b><a name="line839">839  </a></b>			rte_mempool_register_ops(&amp;ops);			\
+<b><a name="line840">840  </a></b>		}
+<b><a name="line841">841  </a></b>	
+<b><a name="line842">842  </a></b>	/**
+<b><a name="line843">843  </a></b>	 * An object callback function for mempool.
+<b><a name="line844">844  </a></b>	 *
+<b><a name="line845">845  </a></b>	 * Used by rte_mempool_create() and rte_mempool_obj_iter().
+<b><a name="line846">846  </a></b>	 */
+<b><a name="line847">847  </a></b>	typedef void (<b>rte_mempool_obj_cb_t</b>)(struct <a href="#line135">rte_mempool</a> *mp,
+<b><a name="line848">848  </a></b>			void *opaque, void *obj, unsigned obj_idx);
+<b><a name="line849">849  </a></b>	typedef <a href="#line847">rte_mempool_obj_cb_t</a> <b>rte_mempool_obj_ctor_t</b>; /* compat */
+<b><a name="line850">850  </a></b>	
+<b><a name="line851">851  </a></b>	/**
+<b><a name="line852">852  </a></b>	 * A memory callback function for mempool.
+<b><a name="line853">853  </a></b>	 *
+<b><a name="line854">854  </a></b>	 * Used by rte_mempool_mem_iter().
+<b><a name="line855">855  </a></b>	 */
+<b><a name="line856">856  </a></b>	typedef void (<b>rte_mempool_mem_cb_t</b>)(struct <a href="#line135">rte_mempool</a> *mp,
+<b><a name="line857">857  </a></b>			void *opaque, struct <a href="#line168">rte_mempool_memhdr</a> *memhdr,
+<b><a name="line858">858  </a></b>			unsigned mem_idx);
+<b><a name="line859">859  </a></b>	
+<b><a name="line860">860  </a></b>	/**
+<b><a name="line861">861  </a></b>	 * A mempool constructor callback function.
+<b><a name="line862">862  </a></b>	 *
+<b><a name="line863">863  </a></b>	 * Arguments are the mempool and the opaque pointer given by the user in
+<b><a name="line864">864  </a></b>	 * rte_mempool_create().
+<b><a name="line865">865  </a></b>	 */
+<b><a name="line866">866  </a></b>	typedef void (<b>rte_mempool_ctor_t</b>)(struct <a href="#line135">rte_mempool</a> *, void *);
+<b><a name="line867">867  </a></b>	
+<b><a name="line868">868  </a></b>	/**
+<b><a name="line869">869  </a></b>	 * Create a new mempool named *name* in memory.
+<b><a name="line870">870  </a></b>	 *
+<b><a name="line871">871  </a></b>	 * This function uses ``rte_memzone_reserve()`` to allocate memory. The
+<b><a name="line872">872  </a></b>	 * pool contains n elements of elt_size. Its size is set to n.
+<b><a name="line873">873  </a></b>	 *
+<b><a name="line874">874  </a></b>	 * @param name
+<b><a name="line875">875  </a></b>	 *   The name of the mempool.
+<b><a name="line876">876  </a></b>	 * @param n
+<b><a name="line877">877  </a></b>	 *   The number of elements in the mempool. The optimum size (in terms of
+<b><a name="line878">878  </a></b>	 *   memory usage) for a mempool is when n is a power of two minus one:
+<b><a name="line879">879  </a></b>	 *   n = (2^q - 1).
+<b><a name="line880">880  </a></b>	 * @param elt_size
+<b><a name="line881">881  </a></b>	 *   The size of each element.
+<b><a name="line882">882  </a></b>	 * @param cache_size
+<b><a name="line883">883  </a></b>	 *   If cache_size is non-zero, the rte_mempool library will try to
+<b><a name="line884">884  </a></b>	 *   limit the accesses to the common lockless pool, by maintaining a
+<b><a name="line885">885  </a></b>	 *   per-lcore object cache. This argument must be lower or equal to
+<b><a name="line886">886  </a></b>	 *   CONFIG_RTE_MEMPOOL_CACHE_MAX_SIZE and n / 1.5. It is advised to choose
+<b><a name="line887">887  </a></b>	 *   cache_size to have &quot;n modulo cache_size == 0&quot;: if this is
+<b><a name="line888">888  </a></b>	 *   not the case, some elements will always stay in the pool and will
+<b><a name="line889">889  </a></b>	 *   never be used. The access to the per-lcore table is of course
+<b><a name="line890">890  </a></b>	 *   faster than the multi-producer/consumer pool. The cache can be
+<b><a name="line891">891  </a></b>	 *   disabled if the cache_size argument is set to 0; it can be useful to
+<b><a name="line892">892  </a></b>	 *   avoid losing objects in cache.
+<b><a name="line893">893  </a></b>	 * @param private_data_size
+<b><a name="line894">894  </a></b>	 *   The size of the private data appended after the mempool
+<b><a name="line895">895  </a></b>	 *   structure. This is useful for storing some private data after the
+<b><a name="line896">896  </a></b>	 *   mempool structure, as is done for rte_mbuf_pool for example.
+<b><a name="line897">897  </a></b>	 * @param mp_init
+<b><a name="line898">898  </a></b>	 *   A function pointer that is called for initialization of the pool,
+<b><a name="line899">899  </a></b>	 *   before object initialization. The user can initialize the private
+<b><a name="line900">900  </a></b>	 *   data in this function if needed. This parameter can be NULL if
+<b><a name="line901">901  </a></b>	 *   not needed.
+<b><a name="line902">902  </a></b>	 * @param mp_init_arg
+<b><a name="line903">903  </a></b>	 *   An opaque pointer to data that can be used in the mempool
+<b><a name="line904">904  </a></b>	 *   constructor function.
+<b><a name="line905">905  </a></b>	 * @param obj_init
+<b><a name="line906">906  </a></b>	 *   A function pointer that is called for each object at
+<b><a name="line907">907  </a></b>	 *   initialization of the pool. The user can set some meta data in
+<b><a name="line908">908  </a></b>	 *   objects if needed. This parameter can be NULL if not needed.
+<b><a name="line909">909  </a></b>	 *   The obj_init() function takes the mempool pointer, the init_arg,
+<b><a name="line910">910  </a></b>	 *   the object pointer and the object number as parameters.
+<b><a name="line911">911  </a></b>	 * @param obj_init_arg
+<b><a name="line912">912  </a></b>	 *   An opaque pointer to data that can be used as an argument for
+<b><a name="line913">913  </a></b>	 *   each call to the object constructor function.
+<b><a name="line914">914  </a></b>	 * @param socket_id
+<b><a name="line915">915  </a></b>	 *   The *socket_id* argument is the socket identifier in the case of
+<b><a name="line916">916  </a></b>	 *   NUMA. The value can be *SOCKET_ID_ANY* if there is no NUMA
+<b><a name="line917">917  </a></b>	 *   constraint for the reserved zone.
+<b><a name="line918">918  </a></b>	 * @param flags
+<b><a name="line919">919  </a></b>	 *   The *flags* arguments is an OR of following flags:
+<b><a name="line920">920  </a></b>	 *   - MEMPOOL_F_NO_SPREAD: By default, objects addresses are spread
+<b><a name="line921">921  </a></b>	 *     between channels in RAM: the pool allocator will add padding
+<b><a name="line922">922  </a></b>	 *     between objects depending on the hardware configuration. See
+<b><a name="line923">923  </a></b>	 *     Memory alignment constraints for details. If this flag is set,
+<b><a name="line924">924  </a></b>	 *     the allocator will just align them to a cache line.
+<b><a name="line925">925  </a></b>	 *   - MEMPOOL_F_NO_CACHE_ALIGN: By default, the returned objects are
+<b><a name="line926">926  </a></b>	 *     cache-aligned. This flag removes this constraint, and no
+<b><a name="line927">927  </a></b>	 *     padding will be present between objects. This flag implies
+<b><a name="line928">928  </a></b>	 *     MEMPOOL_F_NO_SPREAD.
+<b><a name="line929">929  </a></b>	 *   - MEMPOOL_F_SP_PUT: If this flag is set, the default behavior
+<b><a name="line930">930  </a></b>	 *     when using rte_mempool_put() or rte_mempool_put_bulk() is
+<b><a name="line931">931  </a></b>	 *     &quot;single-producer&quot;. Otherwise, it is &quot;multi-producers&quot;.
+<b><a name="line932">932  </a></b>	 *   - MEMPOOL_F_SC_GET: If this flag is set, the default behavior
+<b><a name="line933">933  </a></b>	 *     when using rte_mempool_get() or rte_mempool_get_bulk() is
+<b><a name="line934">934  </a></b>	 *     &quot;single-consumer&quot;. Otherwise, it is &quot;multi-consumers&quot;.
+<b><a name="line935">935  </a></b>	 *   - MEMPOOL_F_NO_IOVA_CONTIG: If set, allocated objects won't
+<b><a name="line936">936  </a></b>	 *     necessarily be contiguous in IO memory.
+<b><a name="line937">937  </a></b>	 * @return
+<b><a name="line938">938  </a></b>	 *   The pointer to the new allocated mempool, on success. NULL on error
+<b><a name="line939">939  </a></b>	 *   with rte_errno set appropriately. Possible rte_errno values include:
+<b><a name="line940">940  </a></b>	 *    - E_RTE_NO_CONFIG - function could not get pointer to rte_config structure
+<b><a name="line941">941  </a></b>	 *    - E_RTE_SECONDARY - function was called from a secondary process instance
+<b><a name="line942">942  </a></b>	 *    - EINVAL - cache size provided is too large
+<b><a name="line943">943  </a></b>	 *    - ENOSPC - the maximum number of memzones has already been allocated
+<b><a name="line944">944  </a></b>	 *    - EEXIST - a memzone with the same name already exists
+<b><a name="line945">945  </a></b>	 *    - ENOMEM - no appropriate memory area found in which to create memzone
+<b><a name="line946">946  </a></b>	 */
+<b><a name="line947">947  </a></b>	struct <a href="#line135">rte_mempool</a> *
+<b><a name="line948">948  </a></b>	rte_mempool_create(const char *name, unsigned n, unsigned elt_size,
+<b><a name="line949">949  </a></b>			   unsigned cache_size, unsigned private_data_size,
+<b><a name="line950">950  </a></b>			   <a href="#line866">rte_mempool_ctor_t</a> *mp_init, void *mp_init_arg,
+<b><a name="line951">951  </a></b>			   <a href="#line847">rte_mempool_obj_cb_t</a> *obj_init, void *obj_init_arg,
+<b><a name="line952">952  </a></b>			   int socket_id, unsigned flags);
+<b><a name="line953">953  </a></b>	
+<b><a name="line954">954  </a></b>	/**
+<b><a name="line955">955  </a></b>	 * Create an empty mempool
+<b><a name="line956">956  </a></b>	 *
+<b><a name="line957">957  </a></b>	 * The mempool is allocated and initialized, but it is not populated: no
+<b><a name="line958">958  </a></b>	 * memory is allocated for the mempool elements. The user has to call
+<b><a name="line959">959  </a></b>	 * rte_mempool_populate_*() to add memory chunks to the pool. Once
+<b><a name="line960">960  </a></b>	 * populated, the user may also want to initialize each object with
+<b><a name="line961">961  </a></b>	 * rte_mempool_obj_iter().
+<b><a name="line962">962  </a></b>	 *
+<b><a name="line963">963  </a></b>	 * @param name
+<b><a name="line964">964  </a></b>	 *   The name of the mempool.
+<b><a name="line965">965  </a></b>	 * @param n
+<b><a name="line966">966  </a></b>	 *   The maximum number of elements that can be added in the mempool.
+<b><a name="line967">967  </a></b>	 *   The optimum size (in terms of memory usage) for a mempool is when n
+<b><a name="line968">968  </a></b>	 *   is a power of two minus one: n = (2^q - 1).
+<b><a name="line969">969  </a></b>	 * @param elt_size
+<b><a name="line970">970  </a></b>	 *   The size of each element.
+<b><a name="line971">971  </a></b>	 * @param cache_size
+<b><a name="line972">972  </a></b>	 *   Size of the cache. See rte_mempool_create() for details.
+<b><a name="line973">973  </a></b>	 * @param private_data_size
+<b><a name="line974">974  </a></b>	 *   The size of the private data appended after the mempool
+<b><a name="line975">975  </a></b>	 *   structure. This is useful for storing some private data after the
+<b><a name="line976">976  </a></b>	 *   mempool structure, as is done for rte_mbuf_pool for example.
+<b><a name="line977">977  </a></b>	 * @param socket_id
+<b><a name="line978">978  </a></b>	 *   The *socket_id* argument is the socket identifier in the case of
+<b><a name="line979">979  </a></b>	 *   NUMA. The value can be *SOCKET_ID_ANY* if there is no NUMA
+<b><a name="line980">980  </a></b>	 *   constraint for the reserved zone.
+<b><a name="line981">981  </a></b>	 * @param flags
+<b><a name="line982">982  </a></b>	 *   Flags controlling the behavior of the mempool. See
+<b><a name="line983">983  </a></b>	 *   rte_mempool_create() for details.
+<b><a name="line984">984  </a></b>	 * @return
+<b><a name="line985">985  </a></b>	 *   The pointer to the new allocated mempool, on success. NULL on error
+<b><a name="line986">986  </a></b>	 *   with rte_errno set appropriately. See rte_mempool_create() for details.
+<b><a name="line987">987  </a></b>	 */
+<b><a name="line988">988  </a></b>	struct <a href="#line135">rte_mempool</a> *
+<b><a name="line989">989  </a></b>	rte_mempool_create_empty(const char *name, unsigned n, unsigned elt_size,
+<b><a name="line990">990  </a></b>		unsigned cache_size, unsigned private_data_size,
+<b><a name="line991">991  </a></b>		int socket_id, unsigned flags);
+<b><a name="line992">992  </a></b>	/**
+<b><a name="line993">993  </a></b>	 * Free a mempool
+<b><a name="line994">994  </a></b>	 *
+<b><a name="line995">995  </a></b>	 * Unlink the mempool from global list, free the memory chunks, and all
+<b><a name="line996">996  </a></b>	 * memory referenced by the mempool. The objects must not be used by
+<b><a name="line997">997  </a></b>	 * other cores as they will be freed.
+<b><a name="line998">998  </a></b>	 *
+<b><a name="line999">999  </a></b>	 * @param mp
+<b><a name="line1000">1000 </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line1001">1001 </a></b>	 */
+<b><a name="line1002">1002 </a></b>	void
+<b><a name="line1003">1003 </a></b>	rte_mempool_free(struct <a href="#line135">rte_mempool</a> *mp);
+<b><a name="line1004">1004 </a></b>	
+<b><a name="line1005">1005 </a></b>	/**
+<b><a name="line1006">1006 </a></b>	 * Add physically contiguous memory for objects in the pool at init
+<b><a name="line1007">1007 </a></b>	 *
+<b><a name="line1008">1008 </a></b>	 * Add a virtually and physically contiguous memory chunk in the pool
+<b><a name="line1009">1009 </a></b>	 * where objects can be instantiated.
+<b><a name="line1010">1010 </a></b>	 *
+<b><a name="line1011">1011 </a></b>	 * If the given IO address is unknown (iova = RTE_BAD_IOVA),
+<b><a name="line1012">1012 </a></b>	 * the chunk doesn't need to be physically contiguous (only virtually),
+<b><a name="line1013">1013 </a></b>	 * and allocated objects may span two pages.
+<b><a name="line1014">1014 </a></b>	 *
+<b><a name="line1015">1015 </a></b>	 * @param mp
+<b><a name="line1016">1016 </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line1017">1017 </a></b>	 * @param vaddr
+<b><a name="line1018">1018 </a></b>	 *   The virtual address of memory that should be used to store objects.
+<b><a name="line1019">1019 </a></b>	 * @param iova
+<b><a name="line1020">1020 </a></b>	 *   The IO address
+<b><a name="line1021">1021 </a></b>	 * @param len
+<b><a name="line1022">1022 </a></b>	 *   The length of memory in bytes.
+<b><a name="line1023">1023 </a></b>	 * @param free_cb
+<b><a name="line1024">1024 </a></b>	 *   The callback used to free this chunk when destroying the mempool.
+<b><a name="line1025">1025 </a></b>	 * @param opaque
+<b><a name="line1026">1026 </a></b>	 *   An opaque argument passed to free_cb.
+<b><a name="line1027">1027 </a></b>	 * @return
+<b><a name="line1028">1028 </a></b>	 *   The number of objects added on success.
+<b><a name="line1029">1029 </a></b>	 *   On error, the chunk is not added in the memory list of the
+<b><a name="line1030">1030 </a></b>	 *   mempool and a negative errno is returned.
+<b><a name="line1031">1031 </a></b>	 */
+<b><a name="line1032">1032 </a></b>	int rte_mempool_populate_iova(struct <a href="#line135">rte_mempool</a> *mp, char *vaddr,
+<b><a name="line1033">1033 </a></b>		<a href="../rte_memory.h/code.html#line80">rte_iova_t</a> iova, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> len, <a href="#line173">rte_mempool_memchunk_free_cb_t</a> *free_cb,
+<b><a name="line1034">1034 </a></b>		void *opaque);
+<b><a name="line1035">1035 </a></b>	
+<b><a name="line1036">1036 </a></b>	/**
+<b><a name="line1037">1037 </a></b>	 * Add virtually contiguous memory for objects in the pool at init
+<b><a name="line1038">1038 </a></b>	 *
+<b><a name="line1039">1039 </a></b>	 * Add a virtually contiguous memory chunk in the pool where objects can
+<b><a name="line1040">1040 </a></b>	 * be instantiated.
+<b><a name="line1041">1041 </a></b>	 *
+<b><a name="line1042">1042 </a></b>	 * @param mp
+<b><a name="line1043">1043 </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line1044">1044 </a></b>	 * @param addr
+<b><a name="line1045">1045 </a></b>	 *   The virtual address of memory that should be used to store objects.
+<b><a name="line1046">1046 </a></b>	 *   Must be page-aligned.
+<b><a name="line1047">1047 </a></b>	 * @param len
+<b><a name="line1048">1048 </a></b>	 *   The length of memory in bytes. Must be page-aligned.
+<b><a name="line1049">1049 </a></b>	 * @param pg_sz
+<b><a name="line1050">1050 </a></b>	 *   The size of memory pages in this virtual area.
+<b><a name="line1051">1051 </a></b>	 * @param free_cb
+<b><a name="line1052">1052 </a></b>	 *   The callback used to free this chunk when destroying the mempool.
+<b><a name="line1053">1053 </a></b>	 * @param opaque
+<b><a name="line1054">1054 </a></b>	 *   An opaque argument passed to free_cb.
+<b><a name="line1055">1055 </a></b>	 * @return
+<b><a name="line1056">1056 </a></b>	 *   The number of objects added on success.
+<b><a name="line1057">1057 </a></b>	 *   On error, the chunk is not added in the memory list of the
+<b><a name="line1058">1058 </a></b>	 *   mempool and a negative errno is returned.
+<b><a name="line1059">1059 </a></b>	 */
+<b><a name="line1060">1060 </a></b>	int
+<b><a name="line1061">1061 </a></b>	rte_mempool_populate_virt(struct <a href="#line135">rte_mempool</a> *mp, char *addr,
+<b><a name="line1062">1062 </a></b>		<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> len, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> pg_sz, <a href="#line173">rte_mempool_memchunk_free_cb_t</a> *free_cb,
+<b><a name="line1063">1063 </a></b>		void *opaque);
+<b><a name="line1064">1064 </a></b>	
+<b><a name="line1065">1065 </a></b>	/**
+<b><a name="line1066">1066 </a></b>	 * Add memory for objects in the pool at init
+<b><a name="line1067">1067 </a></b>	 *
+<b><a name="line1068">1068 </a></b>	 * This is the default function used by rte_mempool_create() to populate
+<b><a name="line1069">1069 </a></b>	 * the mempool. It adds memory allocated using rte_memzone_reserve().
+<b><a name="line1070">1070 </a></b>	 *
+<b><a name="line1071">1071 </a></b>	 * @param mp
+<b><a name="line1072">1072 </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line1073">1073 </a></b>	 * @return
+<b><a name="line1074">1074 </a></b>	 *   The number of objects added on success.
+<b><a name="line1075">1075 </a></b>	 *   On error, the chunk is not added in the memory list of the
+<b><a name="line1076">1076 </a></b>	 *   mempool and a negative errno is returned.
+<b><a name="line1077">1077 </a></b>	 */
+<b><a name="line1078">1078 </a></b>	int rte_mempool_populate_default(struct <a href="#line135">rte_mempool</a> *mp);
+<b><a name="line1079">1079 </a></b>	
+<b><a name="line1080">1080 </a></b>	/**
+<b><a name="line1081">1081 </a></b>	 * Add memory from anonymous mapping for objects in the pool at init
+<b><a name="line1082">1082 </a></b>	 *
+<b><a name="line1083">1083 </a></b>	 * This function mmap an anonymous memory zone that is locked in
+<b><a name="line1084">1084 </a></b>	 * memory to store the objects of the mempool.
+<b><a name="line1085">1085 </a></b>	 *
+<b><a name="line1086">1086 </a></b>	 * @param mp
+<b><a name="line1087">1087 </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line1088">1088 </a></b>	 * @return
+<b><a name="line1089">1089 </a></b>	 *   The number of objects added on success.
+<b><a name="line1090">1090 </a></b>	 *   On error, the chunk is not added in the memory list of the
+<b><a name="line1091">1091 </a></b>	 *   mempool and a negative errno is returned.
+<b><a name="line1092">1092 </a></b>	 */
+<b><a name="line1093">1093 </a></b>	int rte_mempool_populate_anon(struct <a href="#line135">rte_mempool</a> *mp);
+<b><a name="line1094">1094 </a></b>	
+<b><a name="line1095">1095 </a></b>	/**
+<b><a name="line1096">1096 </a></b>	 * Call a function for each mempool element
+<b><a name="line1097">1097 </a></b>	 *
+<b><a name="line1098">1098 </a></b>	 * Iterate across all objects attached to a rte_mempool and call the
+<b><a name="line1099">1099 </a></b>	 * callback function on it.
+<b><a name="line1100">1100 </a></b>	 *
+<b><a name="line1101">1101 </a></b>	 * @param mp
+<b><a name="line1102">1102 </a></b>	 *   A pointer to an initialized mempool.
+<b><a name="line1103">1103 </a></b>	 * @param obj_cb
+<b><a name="line1104">1104 </a></b>	 *   A function pointer that is called for each object.
+<b><a name="line1105">1105 </a></b>	 * @param obj_cb_arg
+<b><a name="line1106">1106 </a></b>	 *   An opaque pointer passed to the callback function.
+<b><a name="line1107">1107 </a></b>	 * @return
+<b><a name="line1108">1108 </a></b>	 *   Number of objects iterated.
+<b><a name="line1109">1109 </a></b>	 */
+<b><a name="line1110">1110 </a></b>	<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> rte_mempool_obj_iter(struct <a href="#line135">rte_mempool</a> *mp,
+<b><a name="line1111">1111 </a></b>		<a href="#line847">rte_mempool_obj_cb_t</a> *obj_cb, void *obj_cb_arg);
+<b><a name="line1112">1112 </a></b>	
+<b><a name="line1113">1113 </a></b>	/**
+<b><a name="line1114">1114 </a></b>	 * Call a function for each mempool memory chunk
+<b><a name="line1115">1115 </a></b>	 *
+<b><a name="line1116">1116 </a></b>	 * Iterate across all memory chunks attached to a rte_mempool and call
+<b><a name="line1117">1117 </a></b>	 * the callback function on it.
+<b><a name="line1118">1118 </a></b>	 *
+<b><a name="line1119">1119 </a></b>	 * @param mp
+<b><a name="line1120">1120 </a></b>	 *   A pointer to an initialized mempool.
+<b><a name="line1121">1121 </a></b>	 * @param mem_cb
+<b><a name="line1122">1122 </a></b>	 *   A function pointer that is called for each memory chunk.
+<b><a name="line1123">1123 </a></b>	 * @param mem_cb_arg
+<b><a name="line1124">1124 </a></b>	 *   An opaque pointer passed to the callback function.
+<b><a name="line1125">1125 </a></b>	 * @return
+<b><a name="line1126">1126 </a></b>	 *   Number of memory chunks iterated.
+<b><a name="line1127">1127 </a></b>	 */
+<b><a name="line1128">1128 </a></b>	<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> rte_mempool_mem_iter(struct <a href="#line135">rte_mempool</a> *mp,
+<b><a name="line1129">1129 </a></b>		<a href="#line856">rte_mempool_mem_cb_t</a> *mem_cb, void *mem_cb_arg);
+<b><a name="line1130">1130 </a></b>	
+<b><a name="line1131">1131 </a></b>	/**
+<b><a name="line1132">1132 </a></b>	 * Dump the status of the mempool to a file.
+<b><a name="line1133">1133 </a></b>	 *
+<b><a name="line1134">1134 </a></b>	 * @param f
+<b><a name="line1135">1135 </a></b>	 *   A pointer to a file for output
+<b><a name="line1136">1136 </a></b>	 * @param mp
+<b><a name="line1137">1137 </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line1138">1138 </a></b>	 */
+<b><a name="line1139">1139 </a></b>	void rte_mempool_dump(<a href="../../../../include/stdio.h/code.html#line48">FILE</a> *f, struct <a href="#line135">rte_mempool</a> *mp);
+<b><a name="line1140">1140 </a></b>	
+<b><a name="line1141">1141 </a></b>	/**
+<b><a name="line1142">1142 </a></b>	 * Create a user-owned mempool cache.
+<b><a name="line1143">1143 </a></b>	 *
+<b><a name="line1144">1144 </a></b>	 * This can be used by non-EAL threads to enable caching when they
+<b><a name="line1145">1145 </a></b>	 * interact with a mempool.
+<b><a name="line1146">1146 </a></b>	 *
+<b><a name="line1147">1147 </a></b>	 * @param size
+<b><a name="line1148">1148 </a></b>	 *   The size of the mempool cache. See rte_mempool_create()'s cache_size
+<b><a name="line1149">1149 </a></b>	 *   parameter description for more information. The same limits and
+<b><a name="line1150">1150 </a></b>	 *   considerations apply here too.
+<b><a name="line1151">1151 </a></b>	 * @param socket_id
+<b><a name="line1152">1152 </a></b>	 *   The socket identifier in the case of NUMA. The value can be
+<b><a name="line1153">1153 </a></b>	 *   SOCKET_ID_ANY if there is no NUMA constraint for the reserved zone.
+<b><a name="line1154">1154 </a></b>	 */
+<b><a name="line1155">1155 </a></b>	struct <a href="#line83">rte_mempool_cache</a> *
+<b><a name="line1156">1156 </a></b>	rte_mempool_cache_create(<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> size, int socket_id);
+<b><a name="line1157">1157 </a></b>	
+<b><a name="line1158">1158 </a></b>	/**
+<b><a name="line1159">1159 </a></b>	 * Free a user-owned mempool cache.
+<b><a name="line1160">1160 </a></b>	 *
+<b><a name="line1161">1161 </a></b>	 * @param cache
+<b><a name="line1162">1162 </a></b>	 *   A pointer to the mempool cache.
+<b><a name="line1163">1163 </a></b>	 */
+<b><a name="line1164">1164 </a></b>	void
+<b><a name="line1165">1165 </a></b>	rte_mempool_cache_free(struct <a href="#line83">rte_mempool_cache</a> *cache);
+<b><a name="line1166">1166 </a></b>	
+<b><a name="line1167">1167 </a></b>	/**
+<b><a name="line1168">1168 </a></b>	 * Get a pointer to the per-lcore default mempool cache.
+<b><a name="line1169">1169 </a></b>	 *
+<b><a name="line1170">1170 </a></b>	 * @param mp
+<b><a name="line1171">1171 </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line1172">1172 </a></b>	 * @param lcore_id
+<b><a name="line1173">1173 </a></b>	 *   The logical core id.
+<b><a name="line1174">1174 </a></b>	 * @return
+<b><a name="line1175">1175 </a></b>	 *   A pointer to the mempool cache or NULL if disabled or non-EAL thread.
+<b><a name="line1176">1176 </a></b>	 */
+<b><a name="line1177">1177 </a></b>	static <a href="../rte_common.h/code.html#line146">__rte_always_inline</a> struct <a href="#line83">rte_mempool_cache</a> *
+<b><a name="line1178">1178 </a></b>	<b>rte_mempool_default_cache</b>(struct <a href="#line135">rte_mempool</a> *<b>mp</b>, unsigned <b>lcore_id</b>)
+<b><a name="line1179">1179 </a></b>	{
+<b><a name="line1180">1180 </a></b>		if (<a href="#line1178">mp</a>-&gt;<a href="#line230">cache_size</a> == 0)
+<b><a name="line1181">1181 </a></b>			return <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>;
+<b><a name="line1182">1182 </a></b>	
+<b><a name="line1183">1183 </a></b>		if (<a href="#line1178">lcore_id</a> &gt;= <a href="../rte_config.h/code.html#line24">RTE_MAX_LCORE</a>)
+<b><a name="line1184">1184 </a></b>			return <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>;
+<b><a name="line1185">1185 </a></b>	
+<b><a name="line1186">1186 </a></b>		return &amp;<a href="#line1178">mp</a>-&gt;<a href="#line247">local_cache</a>[<a href="#line1178">lcore_id</a>];
+<b><a name="line1187">1187 </a></b>	}
+<b><a name="line1188">1188 </a></b>	
+<b><a name="line1189">1189 </a></b>	/**
+<b><a name="line1190">1190 </a></b>	 * Flush a user-owned mempool cache to the specified mempool.
+<b><a name="line1191">1191 </a></b>	 *
+<b><a name="line1192">1192 </a></b>	 * @param cache
+<b><a name="line1193">1193 </a></b>	 *   A pointer to the mempool cache.
+<b><a name="line1194">1194 </a></b>	 * @param mp
+<b><a name="line1195">1195 </a></b>	 *   A pointer to the mempool.
+<b><a name="line1196">1196 </a></b>	 */
+<b><a name="line1197">1197 </a></b>	static <a href="../rte_common.h/code.html#line146">__rte_always_inline</a> void
+<b><a name="line1198">1198 </a></b>	<b>rte_mempool_cache_flush</b>(struct <a href="#line83">rte_mempool_cache</a> *<b>cache</b>,
+<b><a name="line1199">1199 </a></b>				struct <a href="#line135">rte_mempool</a> *<b>mp</b>)
+<b><a name="line1200">1200 </a></b>	{
+<b><a name="line1201">1201 </a></b>		if (<a href="#line1198">cache</a> == <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>)
+<b><a name="line1202">1202 </a></b>			<a href="#line1198">cache</a> = <a href="#line1178">rte_mempool_default_cache</a>(<a href="#line1199">mp</a>, <a href="../rte_lcore.h/code.html#line72">rte_lcore_id</a>());
+<b><a name="line1203">1203 </a></b>		if (<a href="#line1198">cache</a> == <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a> || <a href="#line1198">cache</a>-&gt;<a href="#line86">len</a> == 0)
+<b><a name="line1204">1204 </a></b>			return;
+<b><a name="line1205">1205 </a></b>		<a href="#line698">rte_mempool_ops_enqueue_bulk</a>(<a href="#line1199">mp</a>, <a href="#line1198">cache</a>-&gt;<a href="#line91">objs</a>, <a href="#line1198">cache</a>-&gt;<a href="#line86">len</a>);
+<b><a name="line1206">1206 </a></b>		<a href="#line1198">cache</a>-&gt;<a href="#line86">len</a> = 0;
+<b><a name="line1207">1207 </a></b>	}
+<b><a name="line1208">1208 </a></b>	
+<b><a name="line1209">1209 </a></b>	/**
+<b><a name="line1210">1210 </a></b>	 * @internal Put several objects back in the mempool; used internally.
+<b><a name="line1211">1211 </a></b>	 * @param mp
+<b><a name="line1212">1212 </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line1213">1213 </a></b>	 * @param obj_table
+<b><a name="line1214">1214 </a></b>	 *   A pointer to a table of void * pointers (objects).
+<b><a name="line1215">1215 </a></b>	 * @param n
+<b><a name="line1216">1216 </a></b>	 *   The number of objects to store back in the mempool, must be strictly
+<b><a name="line1217">1217 </a></b>	 *   positive.
+<b><a name="line1218">1218 </a></b>	 * @param cache
+<b><a name="line1219">1219 </a></b>	 *   A pointer to a mempool cache structure. May be NULL if not needed.
+<b><a name="line1220">1220 </a></b>	 */
+<b><a name="line1221">1221 </a></b>	static <a href="../rte_common.h/code.html#line146">__rte_always_inline</a> void
+<b><a name="line1222">1222 </a></b>	<b>__mempool_generic_put</b>(struct <a href="#line135">rte_mempool</a> *<b>mp</b>, void * const *<b>obj_table</b>,
+<b><a name="line1223">1223 </a></b>			      unsigned int <b>n</b>, struct <a href="#line83">rte_mempool_cache</a> *<b>cache</b>)
+<b><a name="line1224">1224 </a></b>	{
+<b><a name="line1225">1225 </a></b>		void **<b>cache_objs</b>;
+<b><a name="line1226">1226 </a></b>	
+<b><a name="line1227">1227 </a></b>		/* increment stat now, adding in mempool always success */
+<b><a name="line1228">1228 </a></b>		<a href="#line294">__MEMPOOL_STAT_ADD</a>(mp, put, n);
+<b><a name="line1229">1229 </a></b>	
+<b><a name="line1230">1230 </a></b>		/* No cache provided or if put would overflow mem allocated for cache */
+<b><a name="line1231">1231 </a></b>		if (<a href="../rte_branch_prediction.h/code.html#line38">unlikely</a>(cache == NULL || n &gt; RTE_MEMPOOL_CACHE_MAX_SIZE))
+<b><a name="line1232">1232 </a></b>			goto <a href="#__mempool_generic_put:ring_enqueue">ring_enqueue</a>;
+<b><a name="line1233">1233 </a></b>	
+<b><a name="line1234">1234 </a></b>		<a href="#line1225">cache_objs</a> = &amp;<a href="#line1223">cache</a>-&gt;<a href="#line91">objs</a>[<a href="#line1223">cache</a>-&gt;<a href="#line86">len</a>];
+<b><a name="line1235">1235 </a></b>	
+<b><a name="line1236">1236 </a></b>		/*
+<b><a name="line1237">1237 </a></b>		 * The cache follows the following algorithm
+<b><a name="line1238">1238 </a></b>		 *   1. Add the objects to the cache
+<b><a name="line1239">1239 </a></b>		 *   2. Anything greater than the cache min value (if it crosses the
+<b><a name="line1240">1240 </a></b>		 *   cache flush threshold) is flushed to the ring.
+<b><a name="line1241">1241 </a></b>		 */
+<b><a name="line1242">1242 </a></b>	
+<b><a name="line1243">1243 </a></b>		/* Add elements back into the cache */
+<b><a name="line1244">1244 </a></b>		<a href="../rte_memcpy.h/code.html#line41">rte_memcpy</a>(&amp;<a href="#line1225">cache_objs</a>[0], <a href="#line1222">obj_table</a>, sizeof(void *) * <a href="#line1223">n</a>);
+<b><a name="line1245">1245 </a></b>	
+<b><a name="line1246">1246 </a></b>		<a href="#line1223">cache</a>-&gt;<a href="#line86">len</a> += <a href="#line1223">n</a>;
+<b><a name="line1247">1247 </a></b>	
+<b><a name="line1248">1248 </a></b>		if (<a href="#line1223">cache</a>-&gt;<a href="#line86">len</a> &gt;= <a href="#line1223">cache</a>-&gt;<a href="#line85">flushthresh</a>) {
+<b><a name="line1249">1249 </a></b>			<a href="#line698">rte_mempool_ops_enqueue_bulk</a>(<a href="#line1222">mp</a>, &amp;<a href="#line1223">cache</a>-&gt;<a href="#line91">objs</a>[<a href="#line1223">cache</a>-&gt;<a href="#line84">size</a>],
+<b><a name="line1250">1250 </a></b>					<a href="#line1223">cache</a>-&gt;<a href="#line86">len</a> - <a href="#line1223">cache</a>-&gt;<a href="#line84">size</a>);
+<b><a name="line1251">1251 </a></b>			<a href="#line1223">cache</a>-&gt;<a href="#line86">len</a> = <a href="#line1223">cache</a>-&gt;<a href="#line84">size</a>;
+<b><a name="line1252">1252 </a></b>		}
+<b><a name="line1253">1253 </a></b>	
+<b><a name="line1254">1254 </a></b>		return;
+<b><a name="line1255">1255 </a></b>	
+<b><a name="line1256">1256 </a></b>	<a name="__mempool_generic_put:ring_enqueue">ring_enqueue</a>:
+<b><a name="line1257">1257 </a></b>	
+<b><a name="line1258">1258 </a></b>		/* push remaining objects in ring */
+<b><a name="line1259">1259 </a></b>	#ifdef RTE_LIBRTE_MEMPOOL_DEBUG
+<b><a name="line1260">1260 </a></b>		if (rte_mempool_ops_enqueue_bulk(mp, obj_table, n) &lt; 0)
+<b><a name="line1261">1261 </a></b>			rte_panic(&quot;cannot put objects in mempool\n&quot;);
+<b><a name="line1262">1262 </a></b>	#else
+<b><a name="line1263">1263 </a></b>		<a href="#line698">rte_mempool_ops_enqueue_bulk</a>(<a href="#line1222">mp</a>, <a href="#line1222">obj_table</a>, <a href="#line1223">n</a>);
+<b><a name="line1264">1264 </a></b>	#endif
+<b><a name="line1265">1265 </a></b>	}
+<b><a name="line1266">1266 </a></b>	
+<b><a name="line1267">1267 </a></b>	
+<b><a name="line1268">1268 </a></b>	/**
+<b><a name="line1269">1269 </a></b>	 * Put several objects back in the mempool.
+<b><a name="line1270">1270 </a></b>	 *
+<b><a name="line1271">1271 </a></b>	 * @param mp
+<b><a name="line1272">1272 </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line1273">1273 </a></b>	 * @param obj_table
+<b><a name="line1274">1274 </a></b>	 *   A pointer to a table of void * pointers (objects).
+<b><a name="line1275">1275 </a></b>	 * @param n
+<b><a name="line1276">1276 </a></b>	 *   The number of objects to add in the mempool from the obj_table.
+<b><a name="line1277">1277 </a></b>	 * @param cache
+<b><a name="line1278">1278 </a></b>	 *   A pointer to a mempool cache structure. May be NULL if not needed.
+<b><a name="line1279">1279 </a></b>	 */
+<b><a name="line1280">1280 </a></b>	static <a href="../rte_common.h/code.html#line146">__rte_always_inline</a> void
+<b><a name="line1281">1281 </a></b>	<b>rte_mempool_generic_put</b>(struct <a href="#line135">rte_mempool</a> *<b>mp</b>, void * const *<b>obj_table</b>,
+<b><a name="line1282">1282 </a></b>				unsigned int <b>n</b>, struct <a href="#line83">rte_mempool_cache</a> *<b>cache</b>)
+<b><a name="line1283">1283 </a></b>	{
+<b><a name="line1284">1284 </a></b>		<a href="#line360">__mempool_check_cookies</a>(mp, obj_table, n, 0);
+<b><a name="line1285">1285 </a></b>		<a href="#line1222">__mempool_generic_put</a>(<a href="#line1281">mp</a>, <a href="#line1281">obj_table</a>, <a href="#line1282">n</a>, <a href="#line1282">cache</a>);
+<b><a name="line1286">1286 </a></b>	}
+<b><a name="line1287">1287 </a></b>	
+<b><a name="line1288">1288 </a></b>	/**
+<b><a name="line1289">1289 </a></b>	 * Put several objects back in the mempool.
+<b><a name="line1290">1290 </a></b>	 *
+<b><a name="line1291">1291 </a></b>	 * This function calls the multi-producer or the single-producer
+<b><a name="line1292">1292 </a></b>	 * version depending on the default behavior that was specified at
+<b><a name="line1293">1293 </a></b>	 * mempool creation time (see flags).
+<b><a name="line1294">1294 </a></b>	 *
+<b><a name="line1295">1295 </a></b>	 * @param mp
+<b><a name="line1296">1296 </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line1297">1297 </a></b>	 * @param obj_table
+<b><a name="line1298">1298 </a></b>	 *   A pointer to a table of void * pointers (objects).
+<b><a name="line1299">1299 </a></b>	 * @param n
+<b><a name="line1300">1300 </a></b>	 *   The number of objects to add in the mempool from obj_table.
+<b><a name="line1301">1301 </a></b>	 */
+<b><a name="line1302">1302 </a></b>	static <a href="../rte_common.h/code.html#line146">__rte_always_inline</a> void
+<b><a name="line1303">1303 </a></b>	<b>rte_mempool_put_bulk</b>(struct <a href="#line135">rte_mempool</a> *<b>mp</b>, void * const *<b>obj_table</b>,
+<b><a name="line1304">1304 </a></b>			     unsigned int <b>n</b>)
+<b><a name="line1305">1305 </a></b>	{
+<b><a name="line1306">1306 </a></b>		struct <a href="#line83">rte_mempool_cache</a> *<b>cache</b>;
+<b><a name="line1307">1307 </a></b>		<a href="#line1306">cache</a> = <a href="#line1178">rte_mempool_default_cache</a>(<a href="#line1303">mp</a>, <a href="../rte_lcore.h/code.html#line72">rte_lcore_id</a>());
+<b><a name="line1308">1308 </a></b>		<a href="#line1281">rte_mempool_generic_put</a>(<a href="#line1303">mp</a>, <a href="#line1303">obj_table</a>, <a href="#line1304">n</a>, <a href="#line1306">cache</a>);
+<b><a name="line1309">1309 </a></b>	}
+<b><a name="line1310">1310 </a></b>	
+<b><a name="line1311">1311 </a></b>	/**
+<b><a name="line1312">1312 </a></b>	 * Put one object back in the mempool.
+<b><a name="line1313">1313 </a></b>	 *
+<b><a name="line1314">1314 </a></b>	 * This function calls the multi-producer or the single-producer
+<b><a name="line1315">1315 </a></b>	 * version depending on the default behavior that was specified at
+<b><a name="line1316">1316 </a></b>	 * mempool creation time (see flags).
+<b><a name="line1317">1317 </a></b>	 *
+<b><a name="line1318">1318 </a></b>	 * @param mp
+<b><a name="line1319">1319 </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line1320">1320 </a></b>	 * @param obj
+<b><a name="line1321">1321 </a></b>	 *   A pointer to the object to be added.
+<b><a name="line1322">1322 </a></b>	 */
+<b><a name="line1323">1323 </a></b>	static <a href="../rte_common.h/code.html#line146">__rte_always_inline</a> void
+<b><a name="line1324">1324 </a></b>	<b>rte_mempool_put</b>(struct <a href="#line135">rte_mempool</a> *<b>mp</b>, void *<b>obj</b>)
+<b><a name="line1325">1325 </a></b>	{
+<b><a name="line1326">1326 </a></b>		<a href="#line1303">rte_mempool_put_bulk</a>(<a href="#line1324">mp</a>, &amp;<a href="#line1324">obj</a>, 1);
+<b><a name="line1327">1327 </a></b>	}
+<b><a name="line1328">1328 </a></b>	
+<b><a name="line1329">1329 </a></b>	/**
+<b><a name="line1330">1330 </a></b>	 * @internal Get several objects from the mempool; used internally.
+<b><a name="line1331">1331 </a></b>	 * @param mp
+<b><a name="line1332">1332 </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line1333">1333 </a></b>	 * @param obj_table
+<b><a name="line1334">1334 </a></b>	 *   A pointer to a table of void * pointers (objects).
+<b><a name="line1335">1335 </a></b>	 * @param n
+<b><a name="line1336">1336 </a></b>	 *   The number of objects to get, must be strictly positive.
+<b><a name="line1337">1337 </a></b>	 * @param cache
+<b><a name="line1338">1338 </a></b>	 *   A pointer to a mempool cache structure. May be NULL if not needed.
+<b><a name="line1339">1339 </a></b>	 * @return
+<b><a name="line1340">1340 </a></b>	 *   - &gt;=0: Success; number of objects supplied.
+<b><a name="line1341">1341 </a></b>	 *   - &lt;0: Error; code of ring dequeue function.
+<b><a name="line1342">1342 </a></b>	 */
+<b><a name="line1343">1343 </a></b>	static <a href="../rte_common.h/code.html#line146">__rte_always_inline</a> int
+<b><a name="line1344">1344 </a></b>	<b>__mempool_generic_get</b>(struct <a href="#line135">rte_mempool</a> *<b>mp</b>, void **<b>obj_table</b>,
+<b><a name="line1345">1345 </a></b>			      unsigned int <b>n</b>, struct <a href="#line83">rte_mempool_cache</a> *<b>cache</b>)
+<b><a name="line1346">1346 </a></b>	{
+<b><a name="line1347">1347 </a></b>		int <b>ret</b>;
+<b><a name="line1348">1348 </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>index</b>, <b>len</b>;
+<b><a name="line1349">1349 </a></b>		void **<b>cache_objs</b>;
+<b><a name="line1350">1350 </a></b>	
+<b><a name="line1351">1351 </a></b>		/* No cache provided or cannot be satisfied from cache */
+<b><a name="line1352">1352 </a></b>		if (<a href="../rte_branch_prediction.h/code.html#line38">unlikely</a>(cache == NULL || n &gt;= cache-&gt;size))
+<b><a name="line1353">1353 </a></b>			goto <a href="#__mempool_generic_get:ring_dequeue">ring_dequeue</a>;
+<b><a name="line1354">1354 </a></b>	
+<b><a name="line1355">1355 </a></b>		<a href="#line1349">cache_objs</a> = <a href="#line1345">cache</a>-&gt;<a href="#line91">objs</a>;
+<b><a name="line1356">1356 </a></b>	
+<b><a name="line1357">1357 </a></b>		/* Can this be satisfied from the cache? */
+<b><a name="line1358">1358 </a></b>		if (<a href="#line1345">cache</a>-&gt;<a href="#line86">len</a> &lt; <a href="#line1345">n</a>) {
+<b><a name="line1359">1359 </a></b>			/* No. Backfill the cache first, and then fill from it */
+<b><a name="line1360">1360 </a></b>			<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>req</b> = <a href="#line1345">n</a> + (<a href="#line1345">cache</a>-&gt;<a href="#line84">size</a> - <a href="#line1345">cache</a>-&gt;<a href="#line86">len</a>);
+<b><a name="line1361">1361 </a></b>	
+<b><a name="line1362">1362 </a></b>			/* How many do we require i.e. number to fill the cache + the request */
+<b><a name="line1363">1363 </a></b>			<a href="#line1347">ret</a> = <a href="#line651">rte_mempool_ops_dequeue_bulk</a>(<a href="#line1344">mp</a>,
+<b><a name="line1364">1364 </a></b>				&amp;<a href="#line1345">cache</a>-&gt;<a href="#line91">objs</a>[<a href="#line1345">cache</a>-&gt;<a href="#line86">len</a>], <a href="#line1360">req</a>);
+<b><a name="line1365">1365 </a></b>			if (<a href="../rte_branch_prediction.h/code.html#line38">unlikely</a>(ret &lt; 0)) {
+<b><a name="line1366">1366 </a></b>				/*
+<b><a name="line1367">1367 </a></b>				 * In the offchance that we are buffer constrained,
+<b><a name="line1368">1368 </a></b>				 * where we are not able to allocate cache + n, go to
+<b><a name="line1369">1369 </a></b>				 * the ring directly. If that fails, we are truly out of
+<b><a name="line1370">1370 </a></b>				 * buffers.
+<b><a name="line1371">1371 </a></b>				 */
+<b><a name="line1372">1372 </a></b>				goto <a href="#__mempool_generic_get:ring_dequeue">ring_dequeue</a>;
+<b><a name="line1373">1373 </a></b>			}
+<b><a name="line1374">1374 </a></b>	
+<b><a name="line1375">1375 </a></b>			<a href="#line1345">cache</a>-&gt;<a href="#line86">len</a> += <a href="#line1360">req</a>;
+<b><a name="line1376">1376 </a></b>		}
+<b><a name="line1377">1377 </a></b>	
+<b><a name="line1378">1378 </a></b>		/* Now fill in the response ... */
+<b><a name="line1379">1379 </a></b>		for (<a href="#line1348">index</a> = 0, <a href="#line1348">len</a> = <a href="#line1345">cache</a>-&gt;<a href="#line86">len</a> - 1; <a href="#line1348">index</a> &lt; <a href="#line1345">n</a>; ++<a href="#line1348">index</a>, <a href="#line1348">len</a>--, <a href="#line1344">obj_table</a>++)
+<b><a name="line1380">1380 </a></b>			*<a href="#line1344">obj_table</a> = <a href="#line1349">cache_objs</a>[<a href="#line1348">len</a>];
+<b><a name="line1381">1381 </a></b>	
+<b><a name="line1382">1382 </a></b>		<a href="#line1345">cache</a>-&gt;<a href="#line86">len</a> -= <a href="#line1345">n</a>;
+<b><a name="line1383">1383 </a></b>	
+<b><a name="line1384">1384 </a></b>		<a href="#line294">__MEMPOOL_STAT_ADD</a>(mp, get_success, n);
+<b><a name="line1385">1385 </a></b>	
+<b><a name="line1386">1386 </a></b>		return 0;
+<b><a name="line1387">1387 </a></b>	
+<b><a name="line1388">1388 </a></b>	<a name="__mempool_generic_get:ring_dequeue">ring_dequeue</a>:
+<b><a name="line1389">1389 </a></b>	
+<b><a name="line1390">1390 </a></b>		/* get remaining objects from ring */
+<b><a name="line1391">1391 </a></b>		<a href="#line1347">ret</a> = <a href="#line651">rte_mempool_ops_dequeue_bulk</a>(<a href="#line1344">mp</a>, <a href="#line1344">obj_table</a>, <a href="#line1345">n</a>);
+<b><a name="line1392">1392 </a></b>	
+<b><a name="line1393">1393 </a></b>		if (<a href="#line1347">ret</a> &lt; 0)
+<b><a name="line1394">1394 </a></b>			<a href="#line294">__MEMPOOL_STAT_ADD</a>(mp, get_fail, n);
+<b><a name="line1395">1395 </a></b>		else
+<b><a name="line1396">1396 </a></b>			<a href="#line294">__MEMPOOL_STAT_ADD</a>(mp, get_success, n);
+<b><a name="line1397">1397 </a></b>	
+<b><a name="line1398">1398 </a></b>		return <a href="#line1347">ret</a>;
+<b><a name="line1399">1399 </a></b>	}
+<b><a name="line1400">1400 </a></b>	
+<b><a name="line1401">1401 </a></b>	/**
+<b><a name="line1402">1402 </a></b>	 * Get several objects from the mempool.
+<b><a name="line1403">1403 </a></b>	 *
+<b><a name="line1404">1404 </a></b>	 * If cache is enabled, objects will be retrieved first from cache,
+<b><a name="line1405">1405 </a></b>	 * subsequently from the common pool. Note that it can return -ENOENT when
+<b><a name="line1406">1406 </a></b>	 * the local cache and common pool are empty, even if cache from other
+<b><a name="line1407">1407 </a></b>	 * lcores are full.
+<b><a name="line1408">1408 </a></b>	 *
+<b><a name="line1409">1409 </a></b>	 * @param mp
+<b><a name="line1410">1410 </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line1411">1411 </a></b>	 * @param obj_table
+<b><a name="line1412">1412 </a></b>	 *   A pointer to a table of void * pointers (objects) that will be filled.
+<b><a name="line1413">1413 </a></b>	 * @param n
+<b><a name="line1414">1414 </a></b>	 *   The number of objects to get from mempool to obj_table.
+<b><a name="line1415">1415 </a></b>	 * @param cache
+<b><a name="line1416">1416 </a></b>	 *   A pointer to a mempool cache structure. May be NULL if not needed.
+<b><a name="line1417">1417 </a></b>	 * @return
+<b><a name="line1418">1418 </a></b>	 *   - 0: Success; objects taken.
+<b><a name="line1419">1419 </a></b>	 *   - -ENOENT: Not enough entries in the mempool; no object is retrieved.
+<b><a name="line1420">1420 </a></b>	 */
+<b><a name="line1421">1421 </a></b>	static <a href="../rte_common.h/code.html#line146">__rte_always_inline</a> int
+<b><a name="line1422">1422 </a></b>	<b>rte_mempool_generic_get</b>(struct <a href="#line135">rte_mempool</a> *<b>mp</b>, void **<b>obj_table</b>,
+<b><a name="line1423">1423 </a></b>				unsigned int <b>n</b>, struct <a href="#line83">rte_mempool_cache</a> *<b>cache</b>)
+<b><a name="line1424">1424 </a></b>	{
+<b><a name="line1425">1425 </a></b>		int <b>ret</b>;
+<b><a name="line1426">1426 </a></b>		<a href="#line1425">ret</a> = <a href="#line1344">__mempool_generic_get</a>(<a href="#line1422">mp</a>, <a href="#line1422">obj_table</a>, <a href="#line1423">n</a>, <a href="#line1423">cache</a>);
+<b><a name="line1427">1427 </a></b>		if (<a href="#line1425">ret</a> == 0)
+<b><a name="line1428">1428 </a></b>			<a href="#line360">__mempool_check_cookies</a>(mp, obj_table, n, 1);
+<b><a name="line1429">1429 </a></b>		return <a href="#line1425">ret</a>;
+<b><a name="line1430">1430 </a></b>	}
+<b><a name="line1431">1431 </a></b>	
+<b><a name="line1432">1432 </a></b>	/**
+<b><a name="line1433">1433 </a></b>	 * Get several objects from the mempool.
+<b><a name="line1434">1434 </a></b>	 *
+<b><a name="line1435">1435 </a></b>	 * This function calls the multi-consumers or the single-consumer
+<b><a name="line1436">1436 </a></b>	 * version, depending on the default behaviour that was specified at
+<b><a name="line1437">1437 </a></b>	 * mempool creation time (see flags).
+<b><a name="line1438">1438 </a></b>	 *
+<b><a name="line1439">1439 </a></b>	 * If cache is enabled, objects will be retrieved first from cache,
+<b><a name="line1440">1440 </a></b>	 * subsequently from the common pool. Note that it can return -ENOENT when
+<b><a name="line1441">1441 </a></b>	 * the local cache and common pool are empty, even if cache from other
+<b><a name="line1442">1442 </a></b>	 * lcores are full.
+<b><a name="line1443">1443 </a></b>	 *
+<b><a name="line1444">1444 </a></b>	 * @param mp
+<b><a name="line1445">1445 </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line1446">1446 </a></b>	 * @param obj_table
+<b><a name="line1447">1447 </a></b>	 *   A pointer to a table of void * pointers (objects) that will be filled.
+<b><a name="line1448">1448 </a></b>	 * @param n
+<b><a name="line1449">1449 </a></b>	 *   The number of objects to get from the mempool to obj_table.
+<b><a name="line1450">1450 </a></b>	 * @return
+<b><a name="line1451">1451 </a></b>	 *   - 0: Success; objects taken
+<b><a name="line1452">1452 </a></b>	 *   - -ENOENT: Not enough entries in the mempool; no object is retrieved.
+<b><a name="line1453">1453 </a></b>	 */
+<b><a name="line1454">1454 </a></b>	static <a href="../rte_common.h/code.html#line146">__rte_always_inline</a> int
+<b><a name="line1455">1455 </a></b>	<b>rte_mempool_get_bulk</b>(struct <a href="#line135">rte_mempool</a> *<b>mp</b>, void **<b>obj_table</b>, unsigned int <b>n</b>)
+<b><a name="line1456">1456 </a></b>	{
+<b><a name="line1457">1457 </a></b>		struct <a href="#line83">rte_mempool_cache</a> *<b>cache</b>;
+<b><a name="line1458">1458 </a></b>		<a href="#line1457">cache</a> = <a href="#line1178">rte_mempool_default_cache</a>(<a href="#line1455">mp</a>, <a href="../rte_lcore.h/code.html#line72">rte_lcore_id</a>());
+<b><a name="line1459">1459 </a></b>		return <a href="#line1422">rte_mempool_generic_get</a>(<a href="#line1455">mp</a>, <a href="#line1455">obj_table</a>, <a href="#line1455">n</a>, <a href="#line1457">cache</a>);
+<b><a name="line1460">1460 </a></b>	}
+<b><a name="line1461">1461 </a></b>	
+<b><a name="line1462">1462 </a></b>	/**
+<b><a name="line1463">1463 </a></b>	 * Get one object from the mempool.
+<b><a name="line1464">1464 </a></b>	 *
+<b><a name="line1465">1465 </a></b>	 * This function calls the multi-consumers or the single-consumer
+<b><a name="line1466">1466 </a></b>	 * version, depending on the default behavior that was specified at
+<b><a name="line1467">1467 </a></b>	 * mempool creation (see flags).
+<b><a name="line1468">1468 </a></b>	 *
+<b><a name="line1469">1469 </a></b>	 * If cache is enabled, objects will be retrieved first from cache,
+<b><a name="line1470">1470 </a></b>	 * subsequently from the common pool. Note that it can return -ENOENT when
+<b><a name="line1471">1471 </a></b>	 * the local cache and common pool are empty, even if cache from other
+<b><a name="line1472">1472 </a></b>	 * lcores are full.
+<b><a name="line1473">1473 </a></b>	 *
+<b><a name="line1474">1474 </a></b>	 * @param mp
+<b><a name="line1475">1475 </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line1476">1476 </a></b>	 * @param obj_p
+<b><a name="line1477">1477 </a></b>	 *   A pointer to a void * pointer (object) that will be filled.
+<b><a name="line1478">1478 </a></b>	 * @return
+<b><a name="line1479">1479 </a></b>	 *   - 0: Success; objects taken.
+<b><a name="line1480">1480 </a></b>	 *   - -ENOENT: Not enough entries in the mempool; no object is retrieved.
+<b><a name="line1481">1481 </a></b>	 */
+<b><a name="line1482">1482 </a></b>	static <a href="../rte_common.h/code.html#line146">__rte_always_inline</a> int
+<b><a name="line1483">1483 </a></b>	<b>rte_mempool_get</b>(struct <a href="#line135">rte_mempool</a> *<b>mp</b>, void **<b>obj_p</b>)
+<b><a name="line1484">1484 </a></b>	{
+<b><a name="line1485">1485 </a></b>		return <a href="#line1455">rte_mempool_get_bulk</a>(<a href="#line1483">mp</a>, <a href="#line1483">obj_p</a>, 1);
+<b><a name="line1486">1486 </a></b>	}
+<b><a name="line1487">1487 </a></b>	
+<b><a name="line1488">1488 </a></b>	/**
+<b><a name="line1489">1489 </a></b>	 * @warning
+<b><a name="line1490">1490 </a></b>	 * @b EXPERIMENTAL: this API may change without prior notice.
+<b><a name="line1491">1491 </a></b>	 *
+<b><a name="line1492">1492 </a></b>	 * Get a contiguous blocks of objects from the mempool.
+<b><a name="line1493">1493 </a></b>	 *
+<b><a name="line1494">1494 </a></b>	 * If cache is enabled, consider to flush it first, to reuse objects
+<b><a name="line1495">1495 </a></b>	 * as soon as possible.
+<b><a name="line1496">1496 </a></b>	 *
+<b><a name="line1497">1497 </a></b>	 * The application should check that the driver supports the operation
+<b><a name="line1498">1498 </a></b>	 * by calling rte_mempool_ops_get_info() and checking that `contig_block_size`
+<b><a name="line1499">1499 </a></b>	 * is not zero.
+<b><a name="line1500">1500 </a></b>	 *
+<b><a name="line1501">1501 </a></b>	 * @param mp
+<b><a name="line1502">1502 </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line1503">1503 </a></b>	 * @param first_obj_table
+<b><a name="line1504">1504 </a></b>	 *   A pointer to a pointer to the first object in each block.
+<b><a name="line1505">1505 </a></b>	 * @param n
+<b><a name="line1506">1506 </a></b>	 *   The number of blocks to get from mempool.
+<b><a name="line1507">1507 </a></b>	 * @return
+<b><a name="line1508">1508 </a></b>	 *   - 0: Success; blocks taken.
+<b><a name="line1509">1509 </a></b>	 *   - -ENOBUFS: Not enough entries in the mempool; no object is retrieved.
+<b><a name="line1510">1510 </a></b>	 *   - -EOPNOTSUPP: The mempool driver does not support block dequeue
+<b><a name="line1511">1511 </a></b>	 */
+<b><a name="line1512">1512 </a></b>	static <a href="../rte_common.h/code.html#line146">__rte_always_inline</a> int
+<b><a name="line1513">1513 </a></b>	<a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line1514">1514 </a></b>	<b>rte_mempool_get_contig_blocks</b>(struct <a href="#line135">rte_mempool</a> *<b>mp</b>,
+<b><a name="line1515">1515 </a></b>				      void **<b>first_obj_table</b>, unsigned int <b>n</b>)
+<b><a name="line1516">1516 </a></b>	{
+<b><a name="line1517">1517 </a></b>		int <b>ret</b>;
+<b><a name="line1518">1518 </a></b>	
+<b><a name="line1519">1519 </a></b>		<a href="#line1517">ret</a> = <a href="#line674">rte_mempool_ops_dequeue_contig_blocks</a>(<a href="#line1514">mp</a>, <a href="#line1515">first_obj_table</a>, <a href="#line1515">n</a>);
+<b><a name="line1520">1520 </a></b>		if (<a href="#line1517">ret</a> == 0) {
+<b><a name="line1521">1521 </a></b>			<a href="#line295">__MEMPOOL_CONTIG_BLOCKS_STAT_ADD</a>(mp, get_success, n);
+<b><a name="line1522">1522 </a></b>			<a href="#line390">__mempool_contig_blocks_check_cookies</a>(mp, first_obj_table, n,
+<b><a name="line1523">1523 </a></b>							      1);
+<b><a name="line1524">1524 </a></b>		} else {
+<b><a name="line1525">1525 </a></b>			<a href="#line295">__MEMPOOL_CONTIG_BLOCKS_STAT_ADD</a>(mp, get_fail, n);
+<b><a name="line1526">1526 </a></b>		}
+<b><a name="line1527">1527 </a></b>	
+<b><a name="line1528">1528 </a></b>		return <a href="#line1517">ret</a>;
+<b><a name="line1529">1529 </a></b>	}
+<b><a name="line1530">1530 </a></b>	
+<b><a name="line1531">1531 </a></b>	/**
+<b><a name="line1532">1532 </a></b>	 * Return the number of entries in the mempool.
+<b><a name="line1533">1533 </a></b>	 *
+<b><a name="line1534">1534 </a></b>	 * When cache is enabled, this function has to browse the length of
+<b><a name="line1535">1535 </a></b>	 * all lcores, so it should not be used in a data path, but only for
+<b><a name="line1536">1536 </a></b>	 * debug purposes. User-owned mempool caches are not accounted for.
+<b><a name="line1537">1537 </a></b>	 *
+<b><a name="line1538">1538 </a></b>	 * @param mp
+<b><a name="line1539">1539 </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line1540">1540 </a></b>	 * @return
+<b><a name="line1541">1541 </a></b>	 *   The number of entries in the mempool.
+<b><a name="line1542">1542 </a></b>	 */
+<b><a name="line1543">1543 </a></b>	unsigned int rte_mempool_avail_count(const struct <a href="#line135">rte_mempool</a> *mp);
+<b><a name="line1544">1544 </a></b>	
+<b><a name="line1545">1545 </a></b>	/**
+<b><a name="line1546">1546 </a></b>	 * Return the number of elements which have been allocated from the mempool
+<b><a name="line1547">1547 </a></b>	 *
+<b><a name="line1548">1548 </a></b>	 * When cache is enabled, this function has to browse the length of
+<b><a name="line1549">1549 </a></b>	 * all lcores, so it should not be used in a data path, but only for
+<b><a name="line1550">1550 </a></b>	 * debug purposes.
+<b><a name="line1551">1551 </a></b>	 *
+<b><a name="line1552">1552 </a></b>	 * @param mp
+<b><a name="line1553">1553 </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line1554">1554 </a></b>	 * @return
+<b><a name="line1555">1555 </a></b>	 *   The number of free entries in the mempool.
+<b><a name="line1556">1556 </a></b>	 */
+<b><a name="line1557">1557 </a></b>	unsigned int
+<b><a name="line1558">1558 </a></b>	rte_mempool_in_use_count(const struct <a href="#line135">rte_mempool</a> *mp);
+<b><a name="line1559">1559 </a></b>	
+<b><a name="line1560">1560 </a></b>	/**
+<b><a name="line1561">1561 </a></b>	 * Test if the mempool is full.
+<b><a name="line1562">1562 </a></b>	 *
+<b><a name="line1563">1563 </a></b>	 * When cache is enabled, this function has to browse the length of all
+<b><a name="line1564">1564 </a></b>	 * lcores, so it should not be used in a data path, but only for debug
+<b><a name="line1565">1565 </a></b>	 * purposes. User-owned mempool caches are not accounted for.
+<b><a name="line1566">1566 </a></b>	 *
+<b><a name="line1567">1567 </a></b>	 * @param mp
+<b><a name="line1568">1568 </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line1569">1569 </a></b>	 * @return
+<b><a name="line1570">1570 </a></b>	 *   - 1: The mempool is full.
+<b><a name="line1571">1571 </a></b>	 *   - 0: The mempool is not full.
+<b><a name="line1572">1572 </a></b>	 */
+<b><a name="line1573">1573 </a></b>	static inline int
+<b><a name="line1574">1574 </a></b>	<b>rte_mempool_full</b>(const struct <a href="#line135">rte_mempool</a> *<b>mp</b>)
+<b><a name="line1575">1575 </a></b>	{
+<b><a name="line1576">1576 </a></b>		return !!(<a href="#line1543">rte_mempool_avail_count</a>(<a href="#line1574">mp</a>) == <a href="#line1574">mp</a>-&gt;<a href="#line229">size</a>);
+<b><a name="line1577">1577 </a></b>	}
+<b><a name="line1578">1578 </a></b>	
+<b><a name="line1579">1579 </a></b>	/**
+<b><a name="line1580">1580 </a></b>	 * Test if the mempool is empty.
+<b><a name="line1581">1581 </a></b>	 *
+<b><a name="line1582">1582 </a></b>	 * When cache is enabled, this function has to browse the length of all
+<b><a name="line1583">1583 </a></b>	 * lcores, so it should not be used in a data path, but only for debug
+<b><a name="line1584">1584 </a></b>	 * purposes. User-owned mempool caches are not accounted for.
+<b><a name="line1585">1585 </a></b>	 *
+<b><a name="line1586">1586 </a></b>	 * @param mp
+<b><a name="line1587">1587 </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line1588">1588 </a></b>	 * @return
+<b><a name="line1589">1589 </a></b>	 *   - 1: The mempool is empty.
+<b><a name="line1590">1590 </a></b>	 *   - 0: The mempool is not empty.
+<b><a name="line1591">1591 </a></b>	 */
+<b><a name="line1592">1592 </a></b>	static inline int
+<b><a name="line1593">1593 </a></b>	<b>rte_mempool_empty</b>(const struct <a href="#line135">rte_mempool</a> *<b>mp</b>)
+<b><a name="line1594">1594 </a></b>	{
+<b><a name="line1595">1595 </a></b>		return !!(<a href="#line1543">rte_mempool_avail_count</a>(<a href="#line1593">mp</a>) == 0);
+<b><a name="line1596">1596 </a></b>	}
+<b><a name="line1597">1597 </a></b>	
+<b><a name="line1598">1598 </a></b>	/**
+<b><a name="line1599">1599 </a></b>	 * Return the IO address of elt, which is an element of the pool mp.
+<b><a name="line1600">1600 </a></b>	 *
+<b><a name="line1601">1601 </a></b>	 * @param elt
+<b><a name="line1602">1602 </a></b>	 *   A pointer (virtual address) to the element of the pool.
+<b><a name="line1603">1603 </a></b>	 * @return
+<b><a name="line1604">1604 </a></b>	 *   The IO address of the elt element.
+<b><a name="line1605">1605 </a></b>	 *   If the mempool was created with MEMPOOL_F_NO_IOVA_CONTIG, the
+<b><a name="line1606">1606 </a></b>	 *   returned value is RTE_BAD_IOVA.
+<b><a name="line1607">1607 </a></b>	 */
+<b><a name="line1608">1608 </a></b>	static inline <a href="../rte_memory.h/code.html#line80">rte_iova_t</a>
+<b><a name="line1609">1609 </a></b>	<b>rte_mempool_virt2iova</b>(const void *<b>elt</b>)
+<b><a name="line1610">1610 </a></b>	{
+<b><a name="line1611">1611 </a></b>		const struct <a href="#line133">rte_mempool_objhdr</a> *<b>hdr</b>;
+<b><a name="line1612">1612 </a></b>		<a href="#line1611">hdr</a> = (const struct <a href="#line133">rte_mempool_objhdr</a> *)<a href="../rte_common.h/code.html#line163">RTE_PTR_SUB</a>(elt,
+<b><a name="line1613">1613 </a></b>			sizeof(*hdr));
+<b><a name="line1614">1614 </a></b>		return <a href="#line1611">hdr</a>-&gt;<a href="#line138">iova</a>;
+<b><a name="line1615">1615 </a></b>	}
+<b><a name="line1616">1616 </a></b>	
+<b><a name="line1617">1617 </a></b>	/**
+<b><a name="line1618">1618 </a></b>	 * Check the consistency of mempool objects.
+<b><a name="line1619">1619 </a></b>	 *
+<b><a name="line1620">1620 </a></b>	 * Verify the coherency of fields in the mempool structure. Also check
+<b><a name="line1621">1621 </a></b>	 * that the cookies of mempool objects (even the ones that are not
+<b><a name="line1622">1622 </a></b>	 * present in pool) have a correct value. If not, a panic will occur.
+<b><a name="line1623">1623 </a></b>	 *
+<b><a name="line1624">1624 </a></b>	 * @param mp
+<b><a name="line1625">1625 </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line1626">1626 </a></b>	 */
+<b><a name="line1627">1627 </a></b>	void rte_mempool_audit(struct <a href="#line135">rte_mempool</a> *mp);
+<b><a name="line1628">1628 </a></b>	
+<b><a name="line1629">1629 </a></b>	/**
+<b><a name="line1630">1630 </a></b>	 * Return a pointer to the private data in an mempool structure.
+<b><a name="line1631">1631 </a></b>	 *
+<b><a name="line1632">1632 </a></b>	 * @param mp
+<b><a name="line1633">1633 </a></b>	 *   A pointer to the mempool structure.
+<b><a name="line1634">1634 </a></b>	 * @return
+<b><a name="line1635">1635 </a></b>	 *   A pointer to the private data.
+<b><a name="line1636">1636 </a></b>	 */
+<b><a name="line1637">1637 </a></b>	static inline void *<b>rte_mempool_get_priv</b>(struct <a href="#line135">rte_mempool</a> *<b>mp</b>)
+<b><a name="line1638">1638 </a></b>	{
+<b><a name="line1639">1639 </a></b>		return (char *)<a href="#line1637">mp</a> +
+<b><a name="line1640">1640 </a></b>			<a href="#line306">MEMPOOL_HEADER_SIZE</a>(mp, mp-&gt;cache_size);
+<b><a name="line1641">1641 </a></b>	}
+<b><a name="line1642">1642 </a></b>	
+<b><a name="line1643">1643 </a></b>	/**
+<b><a name="line1644">1644 </a></b>	 * Dump the status of all mempools on the console
+<b><a name="line1645">1645 </a></b>	 *
+<b><a name="line1646">1646 </a></b>	 * @param f
+<b><a name="line1647">1647 </a></b>	 *   A pointer to a file for output
+<b><a name="line1648">1648 </a></b>	 */
+<b><a name="line1649">1649 </a></b>	void rte_mempool_list_dump(<a href="../../../../include/stdio.h/code.html#line48">FILE</a> *f);
+<b><a name="line1650">1650 </a></b>	
+<b><a name="line1651">1651 </a></b>	/**
+<b><a name="line1652">1652 </a></b>	 * Search a mempool from its name
+<b><a name="line1653">1653 </a></b>	 *
+<b><a name="line1654">1654 </a></b>	 * @param name
+<b><a name="line1655">1655 </a></b>	 *   The name of the mempool.
+<b><a name="line1656">1656 </a></b>	 * @return
+<b><a name="line1657">1657 </a></b>	 *   The pointer to the mempool matching the name, or NULL if not found.
+<b><a name="line1658">1658 </a></b>	 *   NULL on error
+<b><a name="line1659">1659 </a></b>	 *   with rte_errno set appropriately. Possible rte_errno values include:
+<b><a name="line1660">1660 </a></b>	 *    - ENOENT - required entry not available to return.
+<b><a name="line1661">1661 </a></b>	 *
+<b><a name="line1662">1662 </a></b>	 */
+<b><a name="line1663">1663 </a></b>	struct <a href="#line135">rte_mempool</a> *rte_mempool_lookup(const char *name);
+<b><a name="line1664">1664 </a></b>	
+<b><a name="line1665">1665 </a></b>	/**
+<b><a name="line1666">1666 </a></b>	 * Get the header, trailer and total size of a mempool element.
+<b><a name="line1667">1667 </a></b>	 *
+<b><a name="line1668">1668 </a></b>	 * Given a desired size of the mempool element and mempool flags,
+<b><a name="line1669">1669 </a></b>	 * calculates header, trailer, body and total sizes of the mempool object.
+<b><a name="line1670">1670 </a></b>	 *
+<b><a name="line1671">1671 </a></b>	 * @param elt_size
+<b><a name="line1672">1672 </a></b>	 *   The size of each element, without header and trailer.
+<b><a name="line1673">1673 </a></b>	 * @param flags
+<b><a name="line1674">1674 </a></b>	 *   The flags used for the mempool creation.
+<b><a name="line1675">1675 </a></b>	 *   Consult rte_mempool_create() for more information about possible values.
+<b><a name="line1676">1676 </a></b>	 *   The size of each element.
+<b><a name="line1677">1677 </a></b>	 * @param sz
+<b><a name="line1678">1678 </a></b>	 *   The calculated detailed size the mempool object. May be NULL.
+<b><a name="line1679">1679 </a></b>	 * @return
+<b><a name="line1680">1680 </a></b>	 *   Total size of the mempool object.
+<b><a name="line1681">1681 </a></b>	 */
+<b><a name="line1682">1682 </a></b>	<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> rte_mempool_calc_obj_size(<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> elt_size, <a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> flags,
+<b><a name="line1683">1683 </a></b>		struct <a href="#line97">rte_mempool_objsz</a> *sz);
+<b><a name="line1684">1684 </a></b>	
+<b><a name="line1685">1685 </a></b>	/**
+<b><a name="line1686">1686 </a></b>	 * Walk list of all memory pools
+<b><a name="line1687">1687 </a></b>	 *
+<b><a name="line1688">1688 </a></b>	 * @param func
+<b><a name="line1689">1689 </a></b>	 *   Iterator function
+<b><a name="line1690">1690 </a></b>	 * @param arg
+<b><a name="line1691">1691 </a></b>	 *   Argument passed to iterator
+<b><a name="line1692">1692 </a></b>	 */
+<b><a name="line1693">1693 </a></b>	void rte_mempool_walk(void (*func)(struct <a href="#line135">rte_mempool</a> *, void *arg),
+<b><a name="line1694">1694 </a></b>			      void *arg);
+<b><a name="line1695">1695 </a></b>	
+<b><a name="line1696">1696 </a></b>	#ifdef __cplusplus
+<b><a name="line1697">1697 </a></b>	}
+<b><a name="line1698">1698 </a></b>	#endif
+<b><a name="line1699">1699 </a></b>	
+<b><a name="line1700">1700 </a></b>	#endif /* _RTE_MEMPOOL_H_ */
+<b><a name="line1701">1701 </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

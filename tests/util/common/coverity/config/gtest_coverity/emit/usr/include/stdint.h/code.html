@@ -1,0 +1,367 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/stdint.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 1997-2016 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line5">5    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line6">6    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line7">7    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line10">10   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line11">11   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line12">12   </a></b>	   Lesser General Public License for more details.
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line15">15   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line16">16   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	/*
+<b><a name="line19">19   </a></b>	 *	ISO C99: 7.18 Integer types &lt;stdint.h&gt;
+<b><a name="line20">20   </a></b>	 */
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	#ifndef _STDINT_H
+<b><a name="line23">23   </a></b>	#define <b>_STDINT_H</b>	1
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	#include &lt;features.h&gt;
+<b><a name="line26">26   </a></b>	#include &lt;bits/wchar.h&gt;
+<b><a name="line27">27   </a></b>	#include &lt;bits/wordsize.h&gt;
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	/* Exact integral types.  */
+<b><a name="line30">30   </a></b>	
+<b><a name="line31">31   </a></b>	/* Signed.  */
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	/* There is some amount of overlap with &lt;sys/types.h&gt; as known by inet code */
+<b><a name="line34">34   </a></b>	#ifndef <a href="../x86_64-linux-gnu/sys/types.h/code.html#line193">__int8_t_defined</a>
+<b><a name="line35">35   </a></b>	# define <b>__int8_t_defined</b>
+<b><a name="line36">36   </a></b>	typedef signed char		<b>int8_t</b>;
+<b><a name="line37">37   </a></b>	typedef short int		<b>int16_t</b>;
+<b><a name="line38">38   </a></b>	typedef int			<b>int32_t</b>;
+<b><a name="line39">39   </a></b>	# if <a href="../x86_64-linux-gnu/bits/wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line40">40   </a></b>	typedef long int		<b>int64_t</b>;
+<b><a name="line41">41   </a></b>	# else
+<b><a name="line42">42   </a></b>	__extension__
+<b><a name="line43">43   </a></b>	typedef long long int		int64_t;
+<b><a name="line44">44   </a></b>	# endif
+<b><a name="line45">45   </a></b>	#endif
+<b><a name="line46">46   </a></b>	
+<b><a name="line47">47   </a></b>	/* Unsigned.  */
+<b><a name="line48">48   </a></b>	typedef unsigned char		<b>uint8_t</b>;
+<b><a name="line49">49   </a></b>	typedef unsigned short int	<b>uint16_t</b>;
+<b><a name="line50">50   </a></b>	#ifndef __uint32_t_defined
+<b><a name="line51">51   </a></b>	typedef unsigned int		<b>uint32_t</b>;
+<b><a name="line52">52   </a></b>	# define <b>__uint32_t_defined</b>
+<b><a name="line53">53   </a></b>	#endif
+<b><a name="line54">54   </a></b>	#if <a href="../x86_64-linux-gnu/bits/wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line55">55   </a></b>	typedef unsigned long int	<b>uint64_t</b>;
+<b><a name="line56">56   </a></b>	#else
+<b><a name="line57">57   </a></b>	__extension__
+<b><a name="line58">58   </a></b>	typedef unsigned long long int	uint64_t;
+<b><a name="line59">59   </a></b>	#endif
+<b><a name="line60">60   </a></b>	
+<b><a name="line61">61   </a></b>	
+<b><a name="line62">62   </a></b>	/* Small types.  */
+<b><a name="line63">63   </a></b>	
+<b><a name="line64">64   </a></b>	/* Signed.  */
+<b><a name="line65">65   </a></b>	typedef signed char		<b>int_least8_t</b>;
+<b><a name="line66">66   </a></b>	typedef short int		<b>int_least16_t</b>;
+<b><a name="line67">67   </a></b>	typedef int			<b>int_least32_t</b>;
+<b><a name="line68">68   </a></b>	#if <a href="../x86_64-linux-gnu/bits/wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line69">69   </a></b>	typedef long int		<b>int_least64_t</b>;
+<b><a name="line70">70   </a></b>	#else
+<b><a name="line71">71   </a></b>	__extension__
+<b><a name="line72">72   </a></b>	typedef long long int		int_least64_t;
+<b><a name="line73">73   </a></b>	#endif
+<b><a name="line74">74   </a></b>	
+<b><a name="line75">75   </a></b>	/* Unsigned.  */
+<b><a name="line76">76   </a></b>	typedef unsigned char		<b>uint_least8_t</b>;
+<b><a name="line77">77   </a></b>	typedef unsigned short int	<b>uint_least16_t</b>;
+<b><a name="line78">78   </a></b>	typedef unsigned int		<b>uint_least32_t</b>;
+<b><a name="line79">79   </a></b>	#if <a href="../x86_64-linux-gnu/bits/wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line80">80   </a></b>	typedef unsigned long int	<b>uint_least64_t</b>;
+<b><a name="line81">81   </a></b>	#else
+<b><a name="line82">82   </a></b>	__extension__
+<b><a name="line83">83   </a></b>	typedef unsigned long long int	uint_least64_t;
+<b><a name="line84">84   </a></b>	#endif
+<b><a name="line85">85   </a></b>	
+<b><a name="line86">86   </a></b>	
+<b><a name="line87">87   </a></b>	/* Fast types.  */
+<b><a name="line88">88   </a></b>	
+<b><a name="line89">89   </a></b>	/* Signed.  */
+<b><a name="line90">90   </a></b>	typedef signed char		<b>int_fast8_t</b>;
+<b><a name="line91">91   </a></b>	#if <a href="../x86_64-linux-gnu/bits/wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line92">92   </a></b>	typedef long int		<b>int_fast16_t</b>;
+<b><a name="line93">93   </a></b>	typedef long int		<b>int_fast32_t</b>;
+<b><a name="line94">94   </a></b>	typedef long int		<b>int_fast64_t</b>;
+<b><a name="line95">95   </a></b>	#else
+<b><a name="line96">96   </a></b>	typedef int			int_fast16_t;
+<b><a name="line97">97   </a></b>	typedef int			int_fast32_t;
+<b><a name="line98">98   </a></b>	__extension__
+<b><a name="line99">99   </a></b>	typedef long long int		int_fast64_t;
+<b><a name="line100">100  </a></b>	#endif
+<b><a name="line101">101  </a></b>	
+<b><a name="line102">102  </a></b>	/* Unsigned.  */
+<b><a name="line103">103  </a></b>	typedef unsigned char		<b>uint_fast8_t</b>;
+<b><a name="line104">104  </a></b>	#if <a href="../x86_64-linux-gnu/bits/wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line105">105  </a></b>	typedef unsigned long int	<b>uint_fast16_t</b>;
+<b><a name="line106">106  </a></b>	typedef unsigned long int	<b>uint_fast32_t</b>;
+<b><a name="line107">107  </a></b>	typedef unsigned long int	<b>uint_fast64_t</b>;
+<b><a name="line108">108  </a></b>	#else
+<b><a name="line109">109  </a></b>	typedef unsigned int		uint_fast16_t;
+<b><a name="line110">110  </a></b>	typedef unsigned int		uint_fast32_t;
+<b><a name="line111">111  </a></b>	__extension__
+<b><a name="line112">112  </a></b>	typedef unsigned long long int	uint_fast64_t;
+<b><a name="line113">113  </a></b>	#endif
+<b><a name="line114">114  </a></b>	
+<b><a name="line115">115  </a></b>	
+<b><a name="line116">116  </a></b>	/* Types for `void *' pointers.  */
+<b><a name="line117">117  </a></b>	#if <a href="../x86_64-linux-gnu/bits/wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line118">118  </a></b>	# ifndef __intptr_t_defined
+<b><a name="line119">119  </a></b>	typedef long int		<b>intptr_t</b>;
+<b><a name="line120">120  </a></b>	#  define <b>__intptr_t_defined</b>
+<b><a name="line121">121  </a></b>	# endif
+<b><a name="line122">122  </a></b>	typedef unsigned long int	<b>uintptr_t</b>;
+<b><a name="line123">123  </a></b>	#else
+<b><a name="line124">124  </a></b>	# ifndef __intptr_t_defined
+<b><a name="line125">125  </a></b>	typedef int			intptr_t;
+<b><a name="line126">126  </a></b>	#  define __intptr_t_defined
+<b><a name="line127">127  </a></b>	# endif
+<b><a name="line128">128  </a></b>	typedef unsigned int		uintptr_t;
+<b><a name="line129">129  </a></b>	#endif
+<b><a name="line130">130  </a></b>	
+<b><a name="line131">131  </a></b>	
+<b><a name="line132">132  </a></b>	/* Largest integral types.  */
+<b><a name="line133">133  </a></b>	#if <a href="../x86_64-linux-gnu/bits/wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line134">134  </a></b>	typedef long int		<b>intmax_t</b>;
+<b><a name="line135">135  </a></b>	typedef unsigned long int	<b>uintmax_t</b>;
+<b><a name="line136">136  </a></b>	#else
+<b><a name="line137">137  </a></b>	__extension__
+<b><a name="line138">138  </a></b>	typedef long long int		intmax_t;
+<b><a name="line139">139  </a></b>	__extension__
+<b><a name="line140">140  </a></b>	typedef unsigned long long int	uintmax_t;
+<b><a name="line141">141  </a></b>	#endif
+<b><a name="line142">142  </a></b>	
+<b><a name="line143">143  </a></b>	
+<b><a name="line144">144  </a></b>	# if <a href="../x86_64-linux-gnu/bits/wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line145">145  </a></b>	#  define __INT64_C(c)	c ## L
+<b><a name="line146">146  </a></b>	#  define __UINT64_C(c)	c ## UL
+<b><a name="line147">147  </a></b>	# else
+<b><a name="line148">148  </a></b>	#  define __INT64_C(c)	c ## LL
+<b><a name="line149">149  </a></b>	#  define __UINT64_C(c)	c ## ULL
+<b><a name="line150">150  </a></b>	# endif
+<b><a name="line151">151  </a></b>	
+<b><a name="line152">152  </a></b>	/* Limits of integral types.  */
+<b><a name="line153">153  </a></b>	
+<b><a name="line154">154  </a></b>	/* Minimum of signed integral types.  */
+<b><a name="line155">155  </a></b>	# define <b>INT8_MIN</b>		(-128)
+<b><a name="line156">156  </a></b>	# define <b>INT16_MIN</b>		(-32767-1)
+<b><a name="line157">157  </a></b>	# define <b>INT32_MIN</b>		(-2147483647-1)
+<b><a name="line158">158  </a></b>	# define <b>INT64_MIN</b>		(-__INT64_C(9223372036854775807)-1)
+<b><a name="line159">159  </a></b>	/* Maximum of signed integral types.  */
+<b><a name="line160">160  </a></b>	# define <b>INT8_MAX</b>		(127)
+<b><a name="line161">161  </a></b>	# define <b>INT16_MAX</b>		(32767)
+<b><a name="line162">162  </a></b>	# define <b>INT32_MAX</b>		(2147483647)
+<b><a name="line163">163  </a></b>	# define <b>INT64_MAX</b>		(__INT64_C(9223372036854775807))
+<b><a name="line164">164  </a></b>	
+<b><a name="line165">165  </a></b>	/* Maximum of unsigned integral types.  */
+<b><a name="line166">166  </a></b>	# define <b>UINT8_MAX</b>		(255)
+<b><a name="line167">167  </a></b>	# define <b>UINT16_MAX</b>		(65535)
+<b><a name="line168">168  </a></b>	# define <b>UINT32_MAX</b>		(4294967295U)
+<b><a name="line169">169  </a></b>	# define <b>UINT64_MAX</b>		(__UINT64_C(18446744073709551615))
+<b><a name="line170">170  </a></b>	
+<b><a name="line171">171  </a></b>	
+<b><a name="line172">172  </a></b>	/* Minimum of signed integral types having a minimum size.  */
+<b><a name="line173">173  </a></b>	# define <b>INT_LEAST8_MIN</b>		(-128)
+<b><a name="line174">174  </a></b>	# define <b>INT_LEAST16_MIN</b>	(-32767-1)
+<b><a name="line175">175  </a></b>	# define <b>INT_LEAST32_MIN</b>	(-2147483647-1)
+<b><a name="line176">176  </a></b>	# define <b>INT_LEAST64_MIN</b>	(-__INT64_C(9223372036854775807)-1)
+<b><a name="line177">177  </a></b>	/* Maximum of signed integral types having a minimum size.  */
+<b><a name="line178">178  </a></b>	# define <b>INT_LEAST8_MAX</b>		(127)
+<b><a name="line179">179  </a></b>	# define <b>INT_LEAST16_MAX</b>	(32767)
+<b><a name="line180">180  </a></b>	# define <b>INT_LEAST32_MAX</b>	(2147483647)
+<b><a name="line181">181  </a></b>	# define <b>INT_LEAST64_MAX</b>	(__INT64_C(9223372036854775807))
+<b><a name="line182">182  </a></b>	
+<b><a name="line183">183  </a></b>	/* Maximum of unsigned integral types having a minimum size.  */
+<b><a name="line184">184  </a></b>	# define <b>UINT_LEAST8_MAX</b>	(255)
+<b><a name="line185">185  </a></b>	# define <b>UINT_LEAST16_MAX</b>	(65535)
+<b><a name="line186">186  </a></b>	# define <b>UINT_LEAST32_MAX</b>	(4294967295U)
+<b><a name="line187">187  </a></b>	# define <b>UINT_LEAST64_MAX</b>	(__UINT64_C(18446744073709551615))
+<b><a name="line188">188  </a></b>	
+<b><a name="line189">189  </a></b>	
+<b><a name="line190">190  </a></b>	/* Minimum of fast signed integral types having a minimum size.  */
+<b><a name="line191">191  </a></b>	# define <b>INT_FAST8_MIN</b>		(-128)
+<b><a name="line192">192  </a></b>	# if <a href="../x86_64-linux-gnu/bits/wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line193">193  </a></b>	#  define <b>INT_FAST16_MIN</b>	(-9223372036854775807L-1)
+<b><a name="line194">194  </a></b>	#  define <b>INT_FAST32_MIN</b>	(-9223372036854775807L-1)
+<b><a name="line195">195  </a></b>	# else
+<b><a name="line196">196  </a></b>	#  define INT_FAST16_MIN	(-2147483647-1)
+<b><a name="line197">197  </a></b>	#  define INT_FAST32_MIN	(-2147483647-1)
+<b><a name="line198">198  </a></b>	# endif
+<b><a name="line199">199  </a></b>	# define <b>INT_FAST64_MIN</b>		(-__INT64_C(9223372036854775807)-1)
+<b><a name="line200">200  </a></b>	/* Maximum of fast signed integral types having a minimum size.  */
+<b><a name="line201">201  </a></b>	# define <b>INT_FAST8_MAX</b>		(127)
+<b><a name="line202">202  </a></b>	# if <a href="../x86_64-linux-gnu/bits/wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line203">203  </a></b>	#  define <b>INT_FAST16_MAX</b>	(9223372036854775807L)
+<b><a name="line204">204  </a></b>	#  define <b>INT_FAST32_MAX</b>	(9223372036854775807L)
+<b><a name="line205">205  </a></b>	# else
+<b><a name="line206">206  </a></b>	#  define INT_FAST16_MAX	(2147483647)
+<b><a name="line207">207  </a></b>	#  define INT_FAST32_MAX	(2147483647)
+<b><a name="line208">208  </a></b>	# endif
+<b><a name="line209">209  </a></b>	# define <b>INT_FAST64_MAX</b>		(__INT64_C(9223372036854775807))
+<b><a name="line210">210  </a></b>	
+<b><a name="line211">211  </a></b>	/* Maximum of fast unsigned integral types having a minimum size.  */
+<b><a name="line212">212  </a></b>	# define <b>UINT_FAST8_MAX</b>		(255)
+<b><a name="line213">213  </a></b>	# if <a href="../x86_64-linux-gnu/bits/wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line214">214  </a></b>	#  define <b>UINT_FAST16_MAX</b>	(18446744073709551615UL)
+<b><a name="line215">215  </a></b>	#  define <b>UINT_FAST32_MAX</b>	(18446744073709551615UL)
+<b><a name="line216">216  </a></b>	# else
+<b><a name="line217">217  </a></b>	#  define UINT_FAST16_MAX	(4294967295U)
+<b><a name="line218">218  </a></b>	#  define UINT_FAST32_MAX	(4294967295U)
+<b><a name="line219">219  </a></b>	# endif
+<b><a name="line220">220  </a></b>	# define <b>UINT_FAST64_MAX</b>	(__UINT64_C(18446744073709551615))
+<b><a name="line221">221  </a></b>	
+<b><a name="line222">222  </a></b>	
+<b><a name="line223">223  </a></b>	/* Values to test for integral types holding `void *' pointer.  */
+<b><a name="line224">224  </a></b>	# if <a href="../x86_64-linux-gnu/bits/wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line225">225  </a></b>	#  define <b>INTPTR_MIN</b>		(-9223372036854775807L-1)
+<b><a name="line226">226  </a></b>	#  define <b>INTPTR_MAX</b>		(9223372036854775807L)
+<b><a name="line227">227  </a></b>	#  define <b>UINTPTR_MAX</b>		(18446744073709551615UL)
+<b><a name="line228">228  </a></b>	# else
+<b><a name="line229">229  </a></b>	#  define INTPTR_MIN		(-2147483647-1)
+<b><a name="line230">230  </a></b>	#  define INTPTR_MAX		(2147483647)
+<b><a name="line231">231  </a></b>	#  define UINTPTR_MAX		(4294967295U)
+<b><a name="line232">232  </a></b>	# endif
+<b><a name="line233">233  </a></b>	
+<b><a name="line234">234  </a></b>	
+<b><a name="line235">235  </a></b>	/* Minimum for largest signed integral type.  */
+<b><a name="line236">236  </a></b>	# define <b>INTMAX_MIN</b>		(-__INT64_C(9223372036854775807)-1)
+<b><a name="line237">237  </a></b>	/* Maximum for largest signed integral type.  */
+<b><a name="line238">238  </a></b>	# define <b>INTMAX_MAX</b>		(__INT64_C(9223372036854775807))
+<b><a name="line239">239  </a></b>	
+<b><a name="line240">240  </a></b>	/* Maximum for largest unsigned integral type.  */
+<b><a name="line241">241  </a></b>	# define <b>UINTMAX_MAX</b>		(__UINT64_C(18446744073709551615))
+<b><a name="line242">242  </a></b>	
+<b><a name="line243">243  </a></b>	
+<b><a name="line244">244  </a></b>	/* Limits of other integer types.  */
+<b><a name="line245">245  </a></b>	
+<b><a name="line246">246  </a></b>	/* Limits of `ptrdiff_t' type.  */
+<b><a name="line247">247  </a></b>	# if <a href="../x86_64-linux-gnu/bits/wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line248">248  </a></b>	#  define <b>PTRDIFF_MIN</b>		(-9223372036854775807L-1)
+<b><a name="line249">249  </a></b>	#  define <b>PTRDIFF_MAX</b>		(9223372036854775807L)
+<b><a name="line250">250  </a></b>	# else
+<b><a name="line251">251  </a></b>	#  define PTRDIFF_MIN		(-2147483647-1)
+<b><a name="line252">252  </a></b>	#  define PTRDIFF_MAX		(2147483647)
+<b><a name="line253">253  </a></b>	# endif
+<b><a name="line254">254  </a></b>	
+<b><a name="line255">255  </a></b>	/* Limits of `sig_atomic_t'.  */
+<b><a name="line256">256  </a></b>	# define <b>SIG_ATOMIC_MIN</b>		(-2147483647-1)
+<b><a name="line257">257  </a></b>	# define <b>SIG_ATOMIC_MAX</b>		(2147483647)
+<b><a name="line258">258  </a></b>	
+<b><a name="line259">259  </a></b>	/* Limit of `size_t' type.  */
+<b><a name="line260">260  </a></b>	# if <a href="../x86_64-linux-gnu/bits/wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line261">261  </a></b>	#  define <b>SIZE_MAX</b>		(18446744073709551615UL)
+<b><a name="line262">262  </a></b>	# else
+<b><a name="line263">263  </a></b>	#  ifdef __WORDSIZE32_SIZE_ULONG
+<b><a name="line264">264  </a></b>	#   define SIZE_MAX		(4294967295UL)
+<b><a name="line265">265  </a></b>	#  else
+<b><a name="line266">266  </a></b>	#   define SIZE_MAX		(4294967295U)
+<b><a name="line267">267  </a></b>	#  endif
+<b><a name="line268">268  </a></b>	# endif
+<b><a name="line269">269  </a></b>	
+<b><a name="line270">270  </a></b>	/* Limits of `wchar_t'.  */
+<b><a name="line271">271  </a></b>	# ifndef <a href="../wchar.h/code.html#line117">WCHAR_MIN</a>
+<b><a name="line272">272  </a></b>	/* These constants might also be defined in &lt;wchar.h&gt;.  */
+<b><a name="line273">273  </a></b>	#  define <b>WCHAR_MIN</b>		__WCHAR_MIN
+<b><a name="line274">274  </a></b>	#  define <b>WCHAR_MAX</b>		__WCHAR_MAX
+<b><a name="line275">275  </a></b>	# endif
+<b><a name="line276">276  </a></b>	
+<b><a name="line277">277  </a></b>	/* Limits of `wint_t'.  */
+<b><a name="line278">278  </a></b>	# define <b>WINT_MIN</b>		(0u)
+<b><a name="line279">279  </a></b>	# define <b>WINT_MAX</b>		(4294967295u)
+<b><a name="line280">280  </a></b>	
+<b><a name="line281">281  </a></b>	/* Signed.  */
+<b><a name="line282">282  </a></b>	# define <b>INT8_C</b>(c)	c
+<b><a name="line283">283  </a></b>	# define <b>INT16_C</b>(c)	c
+<b><a name="line284">284  </a></b>	# define <b>INT32_C</b>(c)	c
+<b><a name="line285">285  </a></b>	# if <a href="../x86_64-linux-gnu/bits/wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line286">286  </a></b>	#  define <b>INT64_C</b>(c)	c ## L
+<b><a name="line287">287  </a></b>	# else
+<b><a name="line288">288  </a></b>	#  define INT64_C(c)	c ## LL
+<b><a name="line289">289  </a></b>	# endif
+<b><a name="line290">290  </a></b>	
+<b><a name="line291">291  </a></b>	/* Unsigned.  */
+<b><a name="line292">292  </a></b>	# define <b>UINT8_C</b>(c)	c
+<b><a name="line293">293  </a></b>	# define <b>UINT16_C</b>(c)	c
+<b><a name="line294">294  </a></b>	# define <b>UINT32_C</b>(c)	c ## U
+<b><a name="line295">295  </a></b>	# if <a href="../x86_64-linux-gnu/bits/wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line296">296  </a></b>	#  define <b>UINT64_C</b>(c)	c ## UL
+<b><a name="line297">297  </a></b>	# else
+<b><a name="line298">298  </a></b>	#  define UINT64_C(c)	c ## ULL
+<b><a name="line299">299  </a></b>	# endif
+<b><a name="line300">300  </a></b>	
+<b><a name="line301">301  </a></b>	/* Maximal type.  */
+<b><a name="line302">302  </a></b>	# if <a href="../x86_64-linux-gnu/bits/wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line303">303  </a></b>	#  define <b>INTMAX_C</b>(c)	c ## L
+<b><a name="line304">304  </a></b>	#  define <b>UINTMAX_C</b>(c)	c ## UL
+<b><a name="line305">305  </a></b>	# else
+<b><a name="line306">306  </a></b>	#  define INTMAX_C(c)	c ## LL
+<b><a name="line307">307  </a></b>	#  define UINTMAX_C(c)	c ## ULL
+<b><a name="line308">308  </a></b>	# endif
+<b><a name="line309">309  </a></b>	
+<b><a name="line310">310  </a></b>	#endif /* stdint.h */
+<b><a name="line311">311  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

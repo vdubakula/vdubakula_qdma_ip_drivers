@@ -1,0 +1,788 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/gtest/internal/gtest-param-util.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Copyright 2008 Google Inc.
+<b><a name="line2">2    </a></b>	// All Rights Reserved.
+<b><a name="line3">3    </a></b>	//
+<b><a name="line4">4    </a></b>	// Redistribution and use in source and binary forms, with or without
+<b><a name="line5">5    </a></b>	// modification, are permitted provided that the following conditions are
+<b><a name="line6">6    </a></b>	// met:
+<b><a name="line7">7    </a></b>	//
+<b><a name="line8">8    </a></b>	//     * Redistributions of source code must retain the above copyright
+<b><a name="line9">9    </a></b>	// notice, this list of conditions and the following disclaimer.
+<b><a name="line10">10   </a></b>	//     * Redistributions in binary form must reproduce the above
+<b><a name="line11">11   </a></b>	// copyright notice, this list of conditions and the following disclaimer
+<b><a name="line12">12   </a></b>	// in the documentation and/or other materials provided with the
+<b><a name="line13">13   </a></b>	// distribution.
+<b><a name="line14">14   </a></b>	//     * Neither the name of Google Inc. nor the names of its
+<b><a name="line15">15   </a></b>	// contributors may be used to endorse or promote products derived from
+<b><a name="line16">16   </a></b>	// this software without specific prior written permission.
+<b><a name="line17">17   </a></b>	//
+<b><a name="line18">18   </a></b>	// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+<b><a name="line19">19   </a></b>	// &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+<b><a name="line20">20   </a></b>	// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+<b><a name="line21">21   </a></b>	// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+<b><a name="line22">22   </a></b>	// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+<b><a name="line23">23   </a></b>	// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+<b><a name="line24">24   </a></b>	// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+<b><a name="line25">25   </a></b>	// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+<b><a name="line26">26   </a></b>	// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+<b><a name="line27">27   </a></b>	// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+<b><a name="line28">28   </a></b>	// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+<b><a name="line29">29   </a></b>	//
+<b><a name="line30">30   </a></b>	// Author: vladl@google.com (Vlad Losev)
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	// Type and function utilities for implementing parameterized tests.
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	#ifndef GTEST_INCLUDE_GTEST_INTERNAL_GTEST_PARAM_UTIL_H_
+<b><a name="line35">35   </a></b>	#define <b>GTEST_INCLUDE_GTEST_INTERNAL_GTEST_PARAM_UTIL_H_</b>
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	#include &lt;ctype.h&gt;
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	#include &lt;iterator&gt;
+<b><a name="line40">40   </a></b>	#include &lt;set&gt;
+<b><a name="line41">41   </a></b>	#include &lt;utility&gt;
+<b><a name="line42">42   </a></b>	#include &lt;vector&gt;
+<b><a name="line43">43   </a></b>	
+<b><a name="line44">44   </a></b>	// scripts/fuse_gtest.py depends on gtest's own header being #included
+<b><a name="line45">45   </a></b>	// *unconditionally*.  Therefore these #includes cannot be moved
+<b><a name="line46">46   </a></b>	// inside #if GTEST_HAS_PARAM_TEST.
+<b><a name="line47">47   </a></b>	#include &quot;gtest/internal/gtest-internal.h&quot;
+<b><a name="line48">48   </a></b>	#include &quot;gtest/internal/gtest-linked_ptr.h&quot;
+<b><a name="line49">49   </a></b>	#include &quot;gtest/internal/gtest-port.h&quot;
+<b><a name="line50">50   </a></b>	#include &quot;gtest/gtest-printers.h&quot;
+<b><a name="line51">51   </a></b>	
+<b><a name="line52">52   </a></b>	#if <a href="../gtest-port.h/code.html#line800">GTEST_HAS_PARAM_TEST</a>
+<b><a name="line53">53   </a></b>	
+<b><a name="line54">54   </a></b>	namespace <a href="../gtest-port.h/code.html#line988">testing</a> {
+<b><a name="line55">55   </a></b>	
+<b><a name="line56">56   </a></b>	// Input to a parameterized test name generator, describing a test parameter.
+<b><a name="line57">57   </a></b>	// Consists of the parameter value and the integer parameter index.
+<b><a name="line58">58   </a></b>	template &lt;class <b>ParamType</b>&gt;
+<b><a name="line59">59   </a></b>	struct TestParamInfo {
+<b><a name="line60">60   </a></b>	  TestParamInfo(const <a href="#line504">ParamType</a>&amp; <b>a_param</b>, <a href="../../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>an_index</b>) :
+<b><a name="line61">61   </a></b>	    <a href="#line63">param</a>(<a href="#line60">a_param</a>),
+<b><a name="line62">62   </a></b>	    <a href="#line64">index</a>(<a href="#line60">an_index</a>) {}
+<b><a name="line63">63   </a></b>	  <a href="#line504">ParamType</a> <b>param</b>;
+<b><a name="line64">64   </a></b>	  <a href="../../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>index</b>;
+<b><a name="line65">65   </a></b>	};
+<b><a name="line66">66   </a></b>	
+<b><a name="line67">67   </a></b>	// A builtin parameterized test name generator which returns the result of
+<b><a name="line68">68   </a></b>	// testing::PrintToString.
+<b><a name="line69">69   </a></b>	struct <b>PrintToStringParamName</b> {
+<b><a name="line70">70   </a></b>	  template &lt;class <b>ParamType</b>&gt;
+<b><a name="line71">71   </a></b>	  <a href="../../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../../include/c++/5/bits/stringfwd.h/code.html#line74">string</a> <b>operator()</b>(const <a href="#line59">TestParamInfo</a>&lt;<a href="#line70">ParamType</a>&gt;&amp; info) const {
+<b><a name="line72">72   </a></b>	    return PrintToString(info.param);
+<b><a name="line73">73   </a></b>	  }
+<b><a name="line74">74   </a></b>	};
+<b><a name="line75">75   </a></b>	
+<b><a name="line76">76   </a></b>	namespace <a href="../gtest-port.h/code.html#line1003">internal</a> {
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	// INTERNAL IMPLEMENTATION - DO NOT USE IN USER CODE.
+<b><a name="line79">79   </a></b>	//
+<b><a name="line80">80   </a></b>	// Outputs a message explaining invalid registration of different
+<b><a name="line81">81   </a></b>	// fixture class for the same test case. This may happen when
+<b><a name="line82">82   </a></b>	// TEST_P macro is used to define two tests with the same name
+<b><a name="line83">83   </a></b>	// but in different namespaces.
+<b><a name="line84">84   </a></b>	<a href="../gtest-port.h/code.html#line930">GTEST_API_</a> void ReportInvalidTestCaseType(const char* test_case_name,
+<b><a name="line85">85   </a></b>	                                          <a href="../gtest-internal.h/code.html#line504">CodeLocation</a> code_location);
+<b><a name="line86">86   </a></b>	
+<b><a name="line87">87   </a></b>	template &lt;typename&gt; class ParamGeneratorInterface;
+<b><a name="line88">88   </a></b>	template &lt;typename&gt; class ParamGenerator;
+<b><a name="line89">89   </a></b>	
+<b><a name="line90">90   </a></b>	// Interface for iterating over elements provided by an implementation
+<b><a name="line91">91   </a></b>	// of ParamGeneratorInterface&lt;T&gt;.
+<b><a name="line92">92   </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line93">93   </a></b>	class <b>ParamIteratorInterface</b> {
+<b><a name="line94">94   </a></b>	 public:
+<b><a name="line95">95   </a></b>	  virtual ~ParamIteratorInterface() {}
+<b><a name="line96">96   </a></b>	  // A pointer to the base generator instance.
+<b><a name="line97">97   </a></b>	  // Used only for the purposes of iterator comparison
+<b><a name="line98">98   </a></b>	  // to make sure that two iterators belong to the same generator.
+<b><a name="line99">99   </a></b>	  virtual const <a href="#line166">ParamGeneratorInterface</a>&lt;<a href="#line92">T</a>&gt;* BaseGenerator() const = 0;
+<b><a name="line100">100  </a></b>	  // Advances iterator to point to the next element
+<b><a name="line101">101  </a></b>	  // provided by the generator. The caller is responsible
+<b><a name="line102">102  </a></b>	  // for not calling Advance() on an iterator equal to
+<b><a name="line103">103  </a></b>	  // BaseGenerator()-&gt;End().
+<b><a name="line104">104  </a></b>	  virtual void Advance() = 0;
+<b><a name="line105">105  </a></b>	  // Clones the iterator object. Used for implementing copy semantics
+<b><a name="line106">106  </a></b>	  // of ParamIterator&lt;T&gt;.
+<b><a name="line107">107  </a></b>	  virtual <a href="#line93">ParamIteratorInterface</a>* Clone() const = 0;
+<b><a name="line108">108  </a></b>	  // Dereferences the current iterator and provides (read-only) access
+<b><a name="line109">109  </a></b>	  // to the pointed value. It is the caller's responsibility not to call
+<b><a name="line110">110  </a></b>	  // Current() on an iterator equal to BaseGenerator()-&gt;End().
+<b><a name="line111">111  </a></b>	  // Used for implementing ParamGenerator&lt;T&gt;::operator*().
+<b><a name="line112">112  </a></b>	  virtual const <a href="#line92">T</a>* Current() const = 0;
+<b><a name="line113">113  </a></b>	  // Determines whether the given iterator and other point to the same
+<b><a name="line114">114  </a></b>	  // element in the sequence generated by the generator.
+<b><a name="line115">115  </a></b>	  // Used for implementing ParamGenerator&lt;T&gt;::operator==().
+<b><a name="line116">116  </a></b>	  virtual bool Equals(const <a href="#line93">ParamIteratorInterface</a>&amp; other) const = 0;
+<b><a name="line117">117  </a></b>	};
+<b><a name="line118">118  </a></b>	
+<b><a name="line119">119  </a></b>	// Class iterating over elements provided by an implementation of
+<b><a name="line120">120  </a></b>	// ParamGeneratorInterface&lt;T&gt;. It wraps ParamIteratorInterface&lt;T&gt;
+<b><a name="line121">121  </a></b>	// and implements the const forward iterator concept.
+<b><a name="line122">122  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line123">123  </a></b>	class ParamIterator {
+<b><a name="line124">124  </a></b>	 public:
+<b><a name="line125">125  </a></b>	  typedef <a href="#line122">T</a> <b>value_type</b>;
+<b><a name="line126">126  </a></b>	  typedef const <a href="#line122">T</a>&amp; <b>reference</b>;
+<b><a name="line127">127  </a></b>	  typedef <a href="../../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line149">ptrdiff_t</a> <b>difference_type</b>;
+<b><a name="line128">128  </a></b>	
+<b><a name="line129">129  </a></b>	  // ParamIterator assumes ownership of the impl_ pointer.
+<b><a name="line130">130  </a></b>	  ParamIterator(const <a href="#line123">ParamIterator</a>&amp; <b>other</b>) : <a href="#line160">impl_</a>(other.<a href="#line160">impl_</a><a href="../gtest-port.h/code.html#line1123">-&gt;</a><a href="#line107">Clone</a>()) {}
+<b><a name="line131">131  </a></b>	  <a href="#line123">ParamIterator</a>&amp; operator=(const <a href="#line123">ParamIterator</a>&amp; other) {
+<b><a name="line132">132  </a></b>	    if (this != &amp;other)
+<b><a name="line133">133  </a></b>	      impl_.reset(other.impl_-&gt;Clone());
+<b><a name="line134">134  </a></b>	    return *this;
+<b><a name="line135">135  </a></b>	  }
+<b><a name="line136">136  </a></b>	
+<b><a name="line137">137  </a></b>	  const <a href="#line122">T</a>&amp; operator*() const { return *<a href="#line160">impl_</a><a href="../gtest-port.h/code.html#line1123">-&gt;</a><a href="#line112">Current</a>(); }
+<b><a name="line138">138  </a></b>	  const <a href="#line122">T</a>* operator-&gt;() const { return impl_-&gt;Current(); }
+<b><a name="line139">139  </a></b>	  // Prefix version of operator++.
+<b><a name="line140">140  </a></b>	  <a href="#line123">ParamIterator</a>&amp; operator++() {
+<b><a name="line141">141  </a></b>	    <a href="#line160">impl_</a><a href="../gtest-port.h/code.html#line1123">-&gt;</a><a href="#line104">Advance</a>();
+<b><a name="line142">142  </a></b>	    return *this;
+<b><a name="line143">143  </a></b>	  }
+<b><a name="line144">144  </a></b>	  // Postfix version of operator++.
+<b><a name="line145">145  </a></b>	  <a href="#line123">ParamIterator</a> operator++(int /*unused*/) {
+<b><a name="line146">146  </a></b>	    ParamIteratorInterface&lt;T&gt;* clone = impl_-&gt;Clone();
+<b><a name="line147">147  </a></b>	    impl_-&gt;Advance();
+<b><a name="line148">148  </a></b>	    return ParamIterator(clone);
+<b><a name="line149">149  </a></b>	  }
+<b><a name="line150">150  </a></b>	  bool operator==(const <a href="#line123">ParamIterator</a>&amp; <b>other</b>) const {
+<b><a name="line151">151  </a></b>	    return <a href="#line160">impl_</a>.<a href="../gtest-port.h/code.html#line1124">get</a>() == <a href="#line150">other</a>.<a href="#line160">impl_</a>.<a href="../gtest-port.h/code.html#line1124">get</a>() || <a href="#line160">impl_</a><a href="../gtest-port.h/code.html#line1123">-&gt;</a><a href="#line116">Equals</a>(<a href="../gtest-port.h/code.html#line1122">*</a><a href="#line150">other</a>.<a href="#line160">impl_</a>);
+<b><a name="line152">152  </a></b>	  }
+<b><a name="line153">153  </a></b>	  bool operator!=(const <a href="#line123">ParamIterator</a>&amp; <b>other</b>) const {
+<b><a name="line154">154  </a></b>	    return !(*this <a href="#line150">==</a> <a href="#line153">other</a>);
+<b><a name="line155">155  </a></b>	  }
+<b><a name="line156">156  </a></b>	
+<b><a name="line157">157  </a></b>	 private:
+<b><a name="line158">158  </a></b>	  friend class <a href="#line183">ParamGenerator</a>&lt;<a href="#line122">T</a>&gt;;
+<b><a name="line159">159  </a></b>	  explicit ParamIterator(<a href="#line93">ParamIteratorInterface</a>&lt;<a href="#line122">T</a>&gt;* <b>impl</b>) : <a href="#line160">impl_</a>(impl) {}
+<b><a name="line160">160  </a></b>	  <a href="../gtest-port.h/code.html#line1115">scoped_ptr</a>&lt;<a href="#line93">ParamIteratorInterface</a>&lt;<a href="#line122">T</a>&gt; &gt; <b>impl_</b>;
+<b><a name="line161">161  </a></b>	};
+<b><a name="line162">162  </a></b>	
+<b><a name="line163">163  </a></b>	// ParamGeneratorInterface&lt;T&gt; is the binary interface to access generators
+<b><a name="line164">164  </a></b>	// defined in other translation units.
+<b><a name="line165">165  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line166">166  </a></b>	class <b>ParamGeneratorInterface</b> {
+<b><a name="line167">167  </a></b>	 public:
+<b><a name="line168">168  </a></b>	  typedef <a href="#line165">T</a> <b>ParamType</b>;
+<b><a name="line169">169  </a></b>	
+<b><a name="line170">170  </a></b>	  virtual ~ParamGeneratorInterface() {}
+<b><a name="line171">171  </a></b>	
+<b><a name="line172">172  </a></b>	  // Generator interface definition
+<b><a name="line173">173  </a></b>	  virtual <a href="#line93">ParamIteratorInterface</a>&lt;<a href="#line165">T</a>&gt;* Begin() const = 0;
+<b><a name="line174">174  </a></b>	  virtual <a href="#line93">ParamIteratorInterface</a>&lt;<a href="#line165">T</a>&gt;* End() const = 0;
+<b><a name="line175">175  </a></b>	};
+<b><a name="line176">176  </a></b>	
+<b><a name="line177">177  </a></b>	// Wraps ParamGeneratorInterface&lt;T&gt; and provides general generator syntax
+<b><a name="line178">178  </a></b>	// compatible with the STL Container concept.
+<b><a name="line179">179  </a></b>	// This class implements copy initialization semantics and the contained
+<b><a name="line180">180  </a></b>	// ParamGeneratorInterface&lt;T&gt; instance is shared among all copies
+<b><a name="line181">181  </a></b>	// of the original object. This is possible because that instance is immutable.
+<b><a name="line182">182  </a></b>	template&lt;typename <b>T</b>&gt;
+<b><a name="line183">183  </a></b>	class ParamGenerator {
+<b><a name="line184">184  </a></b>	 public:
+<b><a name="line185">185  </a></b>	  typedef <a href="#line123">ParamIterator</a>&lt;<a href="#line182">T</a>&gt; <b>iterator</b>;
+<b><a name="line186">186  </a></b>	
+<b><a name="line187">187  </a></b>	  explicit ParamGenerator(<a href="#line166">ParamGeneratorInterface</a>&lt;<a href="#line182">T</a>&gt;* <b>impl</b>) : <a href="#line199">impl_</a>(impl) {}
+<b><a name="line188">188  </a></b>	  ParamGenerator(const <a href="#line183">ParamGenerator</a>&amp; <b>other</b>) : <a href="#line199">impl_</a>(other.<a href="#line199">impl_</a>) {}
+<b><a name="line189">189  </a></b>	
+<b><a name="line190">190  </a></b>	  <a href="#line183">ParamGenerator</a>&amp; operator=(const <a href="#line183">ParamGenerator</a>&amp; other) {
+<b><a name="line191">191  </a></b>	    impl_ = other.impl_;
+<b><a name="line192">192  </a></b>	    return *this;
+<b><a name="line193">193  </a></b>	  }
+<b><a name="line194">194  </a></b>	
+<b><a name="line195">195  </a></b>	  <a href="#line185">iterator</a> begin() const { return <a href="#line185">iterator</a>(<a href="#line199">impl_</a><a href="../gtest-linked_ptr.h/code.html#line183">-&gt;</a><a href="#line173">Begin</a>()); }
+<b><a name="line196">196  </a></b>	  <a href="#line185">iterator</a> end() const { return <a href="#line185">iterator</a>(<a href="#line199">impl_</a><a href="../gtest-linked_ptr.h/code.html#line183">-&gt;</a><a href="#line174">End</a>()); }
+<b><a name="line197">197  </a></b>	
+<b><a name="line198">198  </a></b>	 private:
+<b><a name="line199">199  </a></b>	  <a href="../gtest-linked_ptr.h/code.html#line146">linked_ptr</a>&lt;const <a href="#line166">ParamGeneratorInterface</a>&lt;<a href="#line182">T</a>&gt; &gt; <b>impl_</b>;
+<b><a name="line200">200  </a></b>	};
+<b><a name="line201">201  </a></b>	
+<b><a name="line202">202  </a></b>	// Generates values from a range of two comparable values. Can be used to
+<b><a name="line203">203  </a></b>	// generate sequences of user-defined types that implement operator+() and
+<b><a name="line204">204  </a></b>	// operator&lt;().
+<b><a name="line205">205  </a></b>	// This class is used in the Range() function.
+<b><a name="line206">206  </a></b>	template &lt;typename <b>T</b>, typename <b>IncrementT</b>&gt;
+<b><a name="line207">207  </a></b>	class <b>RangeGenerator</b> : public <a href="#line87">ParamGeneratorInterface</a>&lt;<a href="#line206">T</a>&gt; {
+<b><a name="line208">208  </a></b>	 public:
+<b><a name="line209">209  </a></b>	  <b>RangeGenerator</b>(<a href="#line206">T</a> begin, <a href="#line206">T</a> end, <a href="#line206">IncrementT</a> step)
+<b><a name="line210">210  </a></b>	      : begin_(begin), end_(end),
+<b><a name="line211">211  </a></b>	        step_(step), end_index_(CalculateEndIndex(begin, end, step)) {}
+<b><a name="line212">212  </a></b>	  virtual <b>~RangeGenerator</b>() {}
+<b><a name="line213">213  </a></b>	
+<b><a name="line214">214  </a></b>	  virtual <a href="#line93">ParamIteratorInterface</a>&lt;<a href="#line206">T</a>&gt;* <b>Begin</b>() const {
+<b><a name="line215">215  </a></b>	    return new Iterator(this, begin_, 0, step_);
+<b><a name="line216">216  </a></b>	  }
+<b><a name="line217">217  </a></b>	  virtual <a href="#line93">ParamIteratorInterface</a>&lt;<a href="#line206">T</a>&gt;* <b>End</b>() const {
+<b><a name="line218">218  </a></b>	    return new Iterator(this, end_, end_index_, step_);
+<b><a name="line219">219  </a></b>	  }
+<b><a name="line220">220  </a></b>	
+<b><a name="line221">221  </a></b>	 private:
+<b><a name="line222">222  </a></b>	  class <b>Iterator</b> : public <a href="#line93">ParamIteratorInterface</a>&lt;<a href="#line206">T</a>&gt; {
+<b><a name="line223">223  </a></b>	   public:
+<b><a name="line224">224  </a></b>	    <b>Iterator</b>(const <a href="#line87">ParamGeneratorInterface</a>&lt;<a href="#line206">T</a>&gt;* base, <a href="#line206">T</a> value, int index,
+<b><a name="line225">225  </a></b>	             <a href="#line206">IncrementT</a> step)
+<b><a name="line226">226  </a></b>	        : base_(base), value_(value), index_(index), step_(step) {}
+<b><a name="line227">227  </a></b>	    virtual <b>~Iterator</b>() {}
+<b><a name="line228">228  </a></b>	
+<b><a name="line229">229  </a></b>	    virtual const <a href="#line87">ParamGeneratorInterface</a>&lt;<a href="#line206">T</a>&gt;* <b>BaseGenerator</b>() const {
+<b><a name="line230">230  </a></b>	      return base_;
+<b><a name="line231">231  </a></b>	    }
+<b><a name="line232">232  </a></b>	    virtual void <b>Advance</b>() {
+<b><a name="line233">233  </a></b>	      value_ = static_cast&lt;T&gt;(value_ + step_);
+<b><a name="line234">234  </a></b>	      index_++;
+<b><a name="line235">235  </a></b>	    }
+<b><a name="line236">236  </a></b>	    virtual <a href="#line93">ParamIteratorInterface</a>&lt;<a href="#line206">T</a>&gt;* <b>Clone</b>() const {
+<b><a name="line237">237  </a></b>	      return new Iterator(*this);
+<b><a name="line238">238  </a></b>	    }
+<b><a name="line239">239  </a></b>	    virtual const <a href="#line206">T</a>* <b>Current</b>() const { return &amp;value_; }
+<b><a name="line240">240  </a></b>	    virtual bool <b>Equals</b>(const <a href="#line93">ParamIteratorInterface</a>&lt;<a href="#line206">T</a>&gt;&amp; other) const {
+<b><a name="line241">241  </a></b>	      // Having the same base generator guarantees that the other
+<b><a name="line242">242  </a></b>	      // iterator is of the same type and we can downcast.
+<b><a name="line243">243  </a></b>	      <a href="../gtest-port.h/code.html#line1295">GTEST_CHECK_</a>(BaseGenerator() == other.BaseGenerator())
+<b><a name="line244">244  </a></b>	          &lt;&lt; &quot;The program attempted to compare iterators &quot;
+<b><a name="line245">245  </a></b>	          &lt;&lt; &quot;from different generators.&quot; &lt;&lt; std::endl;
+<b><a name="line246">246  </a></b>	      const int other_index =
+<b><a name="line247">247  </a></b>	          CheckedDowncastToActualType&lt;const Iterator&gt;(&amp;other)-&gt;index_;
+<b><a name="line248">248  </a></b>	      return index_ == other_index;
+<b><a name="line249">249  </a></b>	    }
+<b><a name="line250">250  </a></b>	
+<b><a name="line251">251  </a></b>	   private:
+<b><a name="line252">252  </a></b>	    <b>Iterator</b>(const <a href="#line222">Iterator</a>&amp; other)
+<b><a name="line253">253  </a></b>	        : ParamIteratorInterface&lt;T&gt;(),
+<b><a name="line254">254  </a></b>	          base_(other.base_), value_(other.value_), index_(other.index_),
+<b><a name="line255">255  </a></b>	          step_(other.step_) {}
+<b><a name="line256">256  </a></b>	
+<b><a name="line257">257  </a></b>	    // No implementation - assignment is unsupported.
+<b><a name="line258">258  </a></b>	    void operator=(const <a href="#line222">Iterator</a>&amp; other);
+<b><a name="line259">259  </a></b>	
+<b><a name="line260">260  </a></b>	    const <a href="#line87">ParamGeneratorInterface</a>&lt;<a href="#line206">T</a>&gt;* const <b>base_</b>;
+<b><a name="line261">261  </a></b>	    <a href="#line206">T</a> <b>value_</b>;
+<b><a name="line262">262  </a></b>	    int <b>index_</b>;
+<b><a name="line263">263  </a></b>	    const <a href="#line206">IncrementT</a> <b>step_</b>;
+<b><a name="line264">264  </a></b>	  };  // class RangeGenerator::Iterator
+<b><a name="line265">265  </a></b>	
+<b><a name="line266">266  </a></b>	  static int <b>CalculateEndIndex</b>(const <a href="#line206">T</a>&amp; begin,
+<b><a name="line267">267  </a></b>	                               const <a href="#line206">T</a>&amp; end,
+<b><a name="line268">268  </a></b>	                               const <a href="#line206">IncrementT</a>&amp; step) {
+<b><a name="line269">269  </a></b>	    int end_index = 0;
+<b><a name="line270">270  </a></b>	    for (T i = begin; i &lt; end; i = static_cast&lt;T&gt;(i + step))
+<b><a name="line271">271  </a></b>	      end_index++;
+<b><a name="line272">272  </a></b>	    return end_index;
+<b><a name="line273">273  </a></b>	  }
+<b><a name="line274">274  </a></b>	
+<b><a name="line275">275  </a></b>	  // No implementation - assignment is unsupported.
+<b><a name="line276">276  </a></b>	  void operator=(const <a href="#line207">RangeGenerator</a>&amp; other);
+<b><a name="line277">277  </a></b>	
+<b><a name="line278">278  </a></b>	  const <a href="#line206">T</a> <b>begin_</b>;
+<b><a name="line279">279  </a></b>	  const <a href="#line206">T</a> <b>end_</b>;
+<b><a name="line280">280  </a></b>	  const <a href="#line206">IncrementT</a> <b>step_</b>;
+<b><a name="line281">281  </a></b>	  // The index for the end() iterator. All the elements in the generated
+<b><a name="line282">282  </a></b>	  // sequence are indexed (0-based) to aid iterator comparison.
+<b><a name="line283">283  </a></b>	  const int <b>end_index_</b>;
+<b><a name="line284">284  </a></b>	};  // class RangeGenerator
+<b><a name="line285">285  </a></b>	
+<b><a name="line286">286  </a></b>	
+<b><a name="line287">287  </a></b>	// Generates values from a pair of STL-style iterators. Used in the
+<b><a name="line288">288  </a></b>	// ValuesIn() function. The elements are copied from the source range
+<b><a name="line289">289  </a></b>	// since the source can be located on the stack, and the generator
+<b><a name="line290">290  </a></b>	// is likely to persist beyond that stack frame.
+<b><a name="line291">291  </a></b>	template &lt;typename <b>T</b>&gt;
+<b><a name="line292">292  </a></b>	class ValuesInIteratorRangeGenerator : public <a href="#line166">ParamGeneratorInterface</a>&lt;<a href="#line291">T</a>&gt; {
+<b><a name="line293">293  </a></b>	 public:
+<b><a name="line294">294  </a></b>	  template &lt;typename <b>ForwardIterator</b>&gt;
+<b><a name="line295">295  </a></b>	  ValuesInIteratorRangeGenerator(<a href="#line294">ForwardIterator</a> <b>begin</b>, <a href="#line294">ForwardIterator</a> <b>end</b>)
+<b><a name="line296">296  </a></b>	      : <a href="#line369">container_</a>(<a href="#line295">begin</a>, <a href="#line295">end</a>) {}
+<b><a name="line297">297  </a></b>	  virtual ~ValuesInIteratorRangeGenerator() {}
+<b><a name="line298">298  </a></b>	
+<b><a name="line299">299  </a></b>	  virtual <a href="#line93">ParamIteratorInterface</a>&lt;<a href="#line291">T</a>&gt;* Begin() const {
+<b><a name="line300">300  </a></b>	    return <a href="../../../../../include/c++/5/new/code.html#line111">new</a> <a href="#line309">Iterator</a>(this, <a href="#line369">container_</a>.<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line556">begin</a>());
+<b><a name="line301">301  </a></b>	  }
+<b><a name="line302">302  </a></b>	  virtual <a href="#line93">ParamIteratorInterface</a>&lt;<a href="#line291">T</a>&gt;* End() const {
+<b><a name="line303">303  </a></b>	    return <a href="../../../../../include/c++/5/new/code.html#line111">new</a> <a href="#line309">Iterator</a>(this, <a href="#line369">container_</a>.<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line574">end</a>());
+<b><a name="line304">304  </a></b>	  }
+<b><a name="line305">305  </a></b>	
+<b><a name="line306">306  </a></b>	 private:
+<b><a name="line307">307  </a></b>	  typedef typename ::<a href="../../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="#line291">T</a>&gt; <b>ContainerType</b>;
+<b><a name="line308">308  </a></b>	
+<b><a name="line309">309  </a></b>	  class Iterator : public <a href="#line93">ParamIteratorInterface</a>&lt;<a href="#line291">T</a>&gt; {
+<b><a name="line310">310  </a></b>	   public:
+<b><a name="line311">311  </a></b>	    Iterator(const <a href="#line166">ParamGeneratorInterface</a>&lt;<a href="#line291">T</a>&gt;* <b>base</b>,
+<b><a name="line312">312  </a></b>	             typename <a href="#line307">ContainerType</a>::<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line233">const_iterator</a> <b>iterator</b>)
+<b><a name="line313">313  </a></b>	        : <a href="#line356">base_</a>(<a href="#line311">base</a>), <a href="#line357">iterator_</a>(<a href="#line312">iterator</a>) {}
+<b><a name="line314">314  </a></b>	    virtual ~Iterator() {}
+<b><a name="line315">315  </a></b>	
+<b><a name="line316">316  </a></b>	    virtual const <a href="#line166">ParamGeneratorInterface</a>&lt;<a href="#line291">T</a>&gt;* BaseGenerator() const {
+<b><a name="line317">317  </a></b>	      return <a href="#line356">base_</a>;
+<b><a name="line318">318  </a></b>	    }
+<b><a name="line319">319  </a></b>	    virtual void Advance() {
+<b><a name="line320">320  </a></b>	      <a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line761">++</a><a href="#line357">iterator_</a>;
+<b><a name="line321">321  </a></b>	      <a href="#line363">value_</a>.<a href="../gtest-port.h/code.html#line1132">reset</a>();
+<b><a name="line322">322  </a></b>	    }
+<b><a name="line323">323  </a></b>	    virtual <a href="#line93">ParamIteratorInterface</a>&lt;<a href="#line291">T</a>&gt;* Clone() const {
+<b><a name="line324">324  </a></b>	      return <a href="../../../../../include/c++/5/new/code.html#line111">new</a> <a href="#line309">Iterator</a>(*this);
+<b><a name="line325">325  </a></b>	    }
+<b><a name="line326">326  </a></b>	    // We need to use cached value referenced by iterator_ because *iterator_
+<b><a name="line327">327  </a></b>	    // can return a temporary object (and of type other then T), so just
+<b><a name="line328">328  </a></b>	    // having &quot;return &amp;*iterator_;&quot; doesn't work.
+<b><a name="line329">329  </a></b>	    // value_ is updated here and not in Advance() because Advance()
+<b><a name="line330">330  </a></b>	    // can advance iterator_ beyond the end of the range, and we cannot
+<b><a name="line331">331  </a></b>	    // detect that fact. The client code, on the other hand, is
+<b><a name="line332">332  </a></b>	    // responsible for not calling Current() on an out-of-range iterator.
+<b><a name="line333">333  </a></b>	    virtual const <a href="#line291">T</a>* Current() const {
+<b><a name="line334">334  </a></b>	      if (<a href="#line363">value_</a>.<a href="../gtest-port.h/code.html#line1124">get</a>() == <a href="../../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>)
+<b><a name="line335">335  </a></b>	        <a href="#line363">value_</a>.<a href="../gtest-port.h/code.html#line1132">reset</a>(<a href="../../../../../include/c++/5/new/code.html#line111">new</a> <a href="#line291">T</a>(<a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line753">*</a><a href="#line357">iterator_</a>));
+<b><a name="line336">336  </a></b>	      return <a href="#line363">value_</a>.<a href="../gtest-port.h/code.html#line1124">get</a>();
+<b><a name="line337">337  </a></b>	    }
+<b><a name="line338">338  </a></b>	    virtual bool Equals(const <a href="#line93">ParamIteratorInterface</a>&lt;<a href="#line291">T</a>&gt;&amp; <b>other</b>) const {
+<b><a name="line339">339  </a></b>	      // Having the same base generator guarantees that the other
+<b><a name="line340">340  </a></b>	      // iterator is of the same type and we can downcast.
+<b><a name="line341">341  </a></b>	      <a href="../gtest-port.h/code.html#line1295">GTEST_CHECK_</a>(BaseGenerator() == other.BaseGenerator())
+<b><a name="line342">342  </a></b>	          <a href="../../../../../include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;The program attempted to compare iterators &quot;
+<b><a name="line343">343  </a></b>	          <a href="../../../../../include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;from different generators.&quot; <a href="../../../../../include/c++/5/ostream/code.html#line108">&lt;&lt;</a> <a href="../../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../../include/c++/5/ostream/code.html#line590">endl</a>;
+<b><a name="line344">344  </a></b>	      return <a href="#line357">iterator_</a> <a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line827">==</a>
+<b><a name="line345">345  </a></b>	          <a href="../gtest-port.h/code.html#line1392">CheckedDowncastToActualType</a>&lt;const <a href="#line309">Iterator</a>&gt;(&amp;<a href="#line338">other</a>)-&gt;<a href="#line357">iterator_</a>;
+<b><a name="line346">346  </a></b>	    }
+<b><a name="line347">347  </a></b>	
+<b><a name="line348">348  </a></b>	   private:
+<b><a name="line349">349  </a></b>	    Iterator(const <a href="#line309">Iterator</a>&amp; <b>other</b>)
+<b><a name="line350">350  </a></b>	          // The explicit constructor call suppresses a false warning
+<b><a name="line351">351  </a></b>	          // emitted by gcc when supplied with the -Wextra option.
+<b><a name="line352">352  </a></b>	        : <a href="#line93">ParamIteratorInterface</a>&lt;<a href="#line291">T</a>&gt;(),
+<b><a name="line353">353  </a></b>	          <a href="#line356">base_</a>(<a href="#line349">other</a>.<a href="#line356">base_</a>),
+<b><a name="line354">354  </a></b>	          <a href="#line357">iterator_</a>(<a href="#line349">other</a>.<a href="#line357">iterator_</a>) {}
+<b><a name="line355">355  </a></b>	
+<b><a name="line356">356  </a></b>	    const <a href="#line166">ParamGeneratorInterface</a>&lt;<a href="#line291">T</a>&gt;* const <b>base_</b>;
+<b><a name="line357">357  </a></b>	    typename <a href="#line307">ContainerType</a>::<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line233">const_iterator</a> <b>iterator_</b>;
+<b><a name="line358">358  </a></b>	    // A cached value of *iterator_. We keep it here to allow access by
+<b><a name="line359">359  </a></b>	    // pointer in the wrapping iterator's operator-&gt;().
+<b><a name="line360">360  </a></b>	    // value_ needs to be mutable to be accessed in Current().
+<b><a name="line361">361  </a></b>	    // Use of scoped_ptr helps manage cached value's lifetime,
+<b><a name="line362">362  </a></b>	    // which is bound by the lifespan of the iterator itself.
+<b><a name="line363">363  </a></b>	    mutable <a href="../gtest-port.h/code.html#line1115">scoped_ptr</a>&lt;const <a href="#line291">T</a>&gt; <b>value_</b>;
+<b><a name="line364">364  </a></b>	  };  // class ValuesInIteratorRangeGenerator::Iterator
+<b><a name="line365">365  </a></b>	
+<b><a name="line366">366  </a></b>	  // No implementation - assignment is unsupported.
+<b><a name="line367">367  </a></b>	  void operator=(const <a href="#line292">ValuesInIteratorRangeGenerator</a>&amp; other);
+<b><a name="line368">368  </a></b>	
+<b><a name="line369">369  </a></b>	  const <a href="#line307">ContainerType</a> <b>container_</b>;
+<b><a name="line370">370  </a></b>	};  // class ValuesInIteratorRangeGenerator
+<b><a name="line371">371  </a></b>	
+<b><a name="line372">372  </a></b>	// INTERNAL IMPLEMENTATION - DO NOT USE IN USER CODE.
+<b><a name="line373">373  </a></b>	//
+<b><a name="line374">374  </a></b>	// Default parameterized test name generator, returns a string containing the
+<b><a name="line375">375  </a></b>	// integer test parameter index.
+<b><a name="line376">376  </a></b>	template &lt;class <b>ParamType</b>&gt;
+<b><a name="line377">377  </a></b>	<a href="../../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../../include/c++/5/bits/stringfwd.h/code.html#line74">string</a> DefaultParamName(const <a href="#line59">TestParamInfo</a>&lt;<a href="#line504">ParamType</a>&gt;&amp; <b>info</b>) {
+<b><a name="line378">378  </a></b>	  <a href="../gtest-port.h/code.html#line990">Message</a> <b>name_stream</b>;
+<b><a name="line379">379  </a></b>	  <a href="#line378">name_stream</a> <a href="../../gtest-message.h/code.html#line115">&lt;&lt;</a> <a href="#line377">info</a>.<a href="#line64">index</a>;
+<b><a name="line380">380  </a></b>	  return <a href="#line378">name_stream</a>.<a href="../../gtest-message.h/code.html#line196">GetString</a>();
+<b><a name="line381">381  </a></b>	}
+<b><a name="line382">382  </a></b>	
+<b><a name="line383">383  </a></b>	// INTERNAL IMPLEMENTATION - DO NOT USE IN USER CODE.
+<b><a name="line384">384  </a></b>	//
+<b><a name="line385">385  </a></b>	// Parameterized test name overload helpers, which help the
+<b><a name="line386">386  </a></b>	// INSTANTIATE_TEST_CASE_P macro choose between the default parameterized
+<b><a name="line387">387  </a></b>	// test name generator and user param name generator.
+<b><a name="line388">388  </a></b>	template &lt;class <b>ParamType</b>, class <b>ParamNameGenFunctor</b>&gt;
+<b><a name="line389">389  </a></b>	<a href="#line388">ParamNameGenFunctor</a> <b>GetParamNameGen</b>(<a href="#line388">ParamNameGenFunctor</a> func) {
+<b><a name="line390">390  </a></b>	  return func;
+<b><a name="line391">391  </a></b>	}
+<b><a name="line392">392  </a></b>	
+<b><a name="line393">393  </a></b>	template &lt;class <b>ParamType</b>&gt;
+<b><a name="line394">394  </a></b>	struct ParamNameGenFunc {
+<b><a name="line395">395  </a></b>	  typedef <a href="../../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../../include/c++/5/bits/stringfwd.h/code.html#line74">string</a> <b>Type</b>(const <a href="#line59">TestParamInfo</a>&lt;<a href="#line504">ParamType</a>&gt;&amp;);
+<b><a name="line396">396  </a></b>	};
+<b><a name="line397">397  </a></b>	
+<b><a name="line398">398  </a></b>	template &lt;class <b>ParamType</b>&gt;
+<b><a name="line399">399  </a></b>	typename <a href="#line394">ParamNameGenFunc</a>&lt;<a href="../../gtest.h/code.html#line1747">ParamType</a>&gt;::<a href="#line395">Type</a> *GetParamNameGen() {
+<b><a name="line400">400  </a></b>	  return <a href="#line377">DefaultParamName</a>;
+<b><a name="line401">401  </a></b>	}
+<b><a name="line402">402  </a></b>	
+<b><a name="line403">403  </a></b>	// INTERNAL IMPLEMENTATION - DO NOT USE IN USER CODE.
+<b><a name="line404">404  </a></b>	//
+<b><a name="line405">405  </a></b>	// Stores a parameter value and later creates tests parameterized with that
+<b><a name="line406">406  </a></b>	// value.
+<b><a name="line407">407  </a></b>	template &lt;class <b>TestClass</b>&gt;
+<b><a name="line408">408  </a></b>	class ParameterizedTestFactory : public <a href="../gtest-internal.h/code.html#line464">TestFactoryBase</a> {
+<b><a name="line409">409  </a></b>	 public:
+<b><a name="line410">410  </a></b>	  typedef typename <a href="#line407">TestClass</a>::<a href="../../gtest.h/code.html#line1747">ParamType</a> <b>ParamType</b>;
+<b><a name="line411">411  </a></b>	  explicit ParameterizedTestFactory(<a href="#line410">ParamType</a> <b>parameter</b>) :
+<b><a name="line412">412  </a></b>	      <a href="#line419">parameter_</a>(<a href="#line411">parameter</a>) {}
+<b><a name="line413">413  </a></b>	  virtual <a href="../gtest-internal.h/code.html#line88">Test</a>* CreateTest() {
+<b><a name="line414">414  </a></b>	    <a href="#line407">TestClass</a>::<a href="../../gtest.h/code.html#line1765">SetParam</a>(&amp;<a href="#line419">parameter_</a>);
+<b><a name="line415">415  </a></b>	    return <a href="../../../../../include/c++/5/new/code.html#line111">new</a> <a href="#line407">TestClass</a>();
+<b><a name="line416">416  </a></b>	  }
+<b><a name="line417">417  </a></b>	
+<b><a name="line418">418  </a></b>	 private:
+<b><a name="line419">419  </a></b>	  const <a href="#line410">ParamType</a> <b>parameter_</b>;
+<b><a name="line420">420  </a></b>	
+<b><a name="line421">421  </a></b>	  <a href="../gtest-port.h/code.html#line874">GTEST_DISALLOW_COPY_AND_ASSIGN_</a>(ParameterizedTestFactory);
+<b><a name="line422">422  </a></b>	};
+<b><a name="line423">423  </a></b>	
+<b><a name="line424">424  </a></b>	// INTERNAL IMPLEMENTATION - DO NOT USE IN USER CODE.
+<b><a name="line425">425  </a></b>	//
+<b><a name="line426">426  </a></b>	// TestMetaFactoryBase is a base class for meta-factories that create
+<b><a name="line427">427  </a></b>	// test factories for passing into MakeAndRegisterTestInfo function.
+<b><a name="line428">428  </a></b>	template &lt;class <b>ParamType</b>&gt;
+<b><a name="line429">429  </a></b>	class <b>TestMetaFactoryBase</b> {
+<b><a name="line430">430  </a></b>	 public:
+<b><a name="line431">431  </a></b>	  virtual ~TestMetaFactoryBase() {}
+<b><a name="line432">432  </a></b>	
+<b><a name="line433">433  </a></b>	  virtual <a href="../gtest-internal.h/code.html#line464">TestFactoryBase</a>* CreateTestFactory(<a href="#line504">ParamType</a> parameter) = 0;
+<b><a name="line434">434  </a></b>	};
+<b><a name="line435">435  </a></b>	
+<b><a name="line436">436  </a></b>	// INTERNAL IMPLEMENTATION - DO NOT USE IN USER CODE.
+<b><a name="line437">437  </a></b>	//
+<b><a name="line438">438  </a></b>	// TestMetaFactory creates test factories for passing into
+<b><a name="line439">439  </a></b>	// MakeAndRegisterTestInfo function. Since MakeAndRegisterTestInfo receives
+<b><a name="line440">440  </a></b>	// ownership of test factory pointer, same factory object cannot be passed
+<b><a name="line441">441  </a></b>	// into that method twice. But ParameterizedTestCaseInfo is going to call
+<b><a name="line442">442  </a></b>	// it for each Test/Parameter value combination. Thus it needs meta factory
+<b><a name="line443">443  </a></b>	// creator class.
+<b><a name="line444">444  </a></b>	template &lt;class <b>TestCase</b>&gt;
+<b><a name="line445">445  </a></b>	class TestMetaFactory
+<b><a name="line446">446  </a></b>	    : public <a href="#line429">TestMetaFactoryBase</a>&lt;typename <a href="#line444">TestCase</a>::<a href="../../gtest.h/code.html#line1747">ParamType</a>&gt; {
+<b><a name="line447">447  </a></b>	 public:
+<b><a name="line448">448  </a></b>	  typedef typename <a href="#line444">TestCase</a>::<a href="../../gtest.h/code.html#line1747">ParamType</a> <b>ParamType</b>;
+<b><a name="line449">449  </a></b>	
+<b><a name="line450">450  </a></b>	  TestMetaFactory() {}
+<b><a name="line451">451  </a></b>	
+<b><a name="line452">452  </a></b>	  virtual <a href="../gtest-internal.h/code.html#line464">TestFactoryBase</a>* CreateTestFactory(<a href="#line448">ParamType</a> <b>parameter</b>) {
+<b><a name="line453">453  </a></b>	    return <a href="../../../../../include/c++/5/new/code.html#line111">new</a> <a href="#line408">ParameterizedTestFactory</a>&lt;<a href="#line444">TestCase</a>&gt;(<a href="#line452">parameter</a>);
+<b><a name="line454">454  </a></b>	  }
+<b><a name="line455">455  </a></b>	
+<b><a name="line456">456  </a></b>	 private:
+<b><a name="line457">457  </a></b>	  <a href="../gtest-port.h/code.html#line874">GTEST_DISALLOW_COPY_AND_ASSIGN_</a>(TestMetaFactory);
+<b><a name="line458">458  </a></b>	};
+<b><a name="line459">459  </a></b>	
+<b><a name="line460">460  </a></b>	// INTERNAL IMPLEMENTATION - DO NOT USE IN USER CODE.
+<b><a name="line461">461  </a></b>	//
+<b><a name="line462">462  </a></b>	// ParameterizedTestCaseInfoBase is a generic interface
+<b><a name="line463">463  </a></b>	// to ParameterizedTestCaseInfo classes. ParameterizedTestCaseInfoBase
+<b><a name="line464">464  </a></b>	// accumulates test information provided by TEST_P macro invocations
+<b><a name="line465">465  </a></b>	// and generators provided by INSTANTIATE_TEST_CASE_P macro invocations
+<b><a name="line466">466  </a></b>	// and uses that information to register all resulting test instances
+<b><a name="line467">467  </a></b>	// in RegisterTests method. The ParameterizeTestCaseRegistry class holds
+<b><a name="line468">468  </a></b>	// a collection of pointers to the ParameterizedTestCaseInfo objects
+<b><a name="line469">469  </a></b>	// and calls RegisterTests() on each of them when asked.
+<b><a name="line470">470  </a></b>	class <b>ParameterizedTestCaseInfoBase</b> {
+<b><a name="line471">471  </a></b>	 public:
+<b><a name="line472">472  </a></b>	  virtual <b>~ParameterizedTestCaseInfoBase</b>() {}
+<b><a name="line473">473  </a></b>	
+<b><a name="line474">474  </a></b>	  // Base part of test case name for display purposes.
+<b><a name="line475">475  </a></b>	  virtual const <a href="../gtest-port.h/code.html#line1097">string</a>&amp; GetTestCaseName() const = 0;
+<b><a name="line476">476  </a></b>	  // Test case id to verify identity.
+<b><a name="line477">477  </a></b>	  virtual <a href="../gtest-internal.h/code.html#line429">TypeId</a> GetTestCaseTypeId() const = 0;
+<b><a name="line478">478  </a></b>	  // UnitTest class invokes this method to register tests in this
+<b><a name="line479">479  </a></b>	  // test case right before running them in RUN_ALL_TESTS macro.
+<b><a name="line480">480  </a></b>	  // This method should not be called more then once on any single
+<b><a name="line481">481  </a></b>	  // instance of a ParameterizedTestCaseInfoBase derived class.
+<b><a name="line482">482  </a></b>	  virtual void RegisterTests() = 0;
+<b><a name="line483">483  </a></b>	
+<b><a name="line484">484  </a></b>	 protected:
+<b><a name="line485">485  </a></b>	  <b>ParameterizedTestCaseInfoBase</b>() {}
+<b><a name="line486">486  </a></b>	
+<b><a name="line487">487  </a></b>	 private:
+<b><a name="line488">488  </a></b>	  <a href="../gtest-port.h/code.html#line874">GTEST_DISALLOW_COPY_AND_ASSIGN_</a>(ParameterizedTestCaseInfoBase);
+<b><a name="line489">489  </a></b>	};
+<b><a name="line490">490  </a></b>	
+<b><a name="line491">491  </a></b>	// INTERNAL IMPLEMENTATION - DO NOT USE IN USER CODE.
+<b><a name="line492">492  </a></b>	//
+<b><a name="line493">493  </a></b>	// ParameterizedTestCaseInfo accumulates tests obtained from TEST_P
+<b><a name="line494">494  </a></b>	// macro invocations for a particular test case and generators
+<b><a name="line495">495  </a></b>	// obtained from INSTANTIATE_TEST_CASE_P macro invocations for that
+<b><a name="line496">496  </a></b>	// test case. It registers tests with all values generated by all
+<b><a name="line497">497  </a></b>	// generators when asked.
+<b><a name="line498">498  </a></b>	template &lt;class <b>TestCase</b>&gt;
+<b><a name="line499">499  </a></b>	class ParameterizedTestCaseInfo : public <a href="#line470">ParameterizedTestCaseInfoBase</a> {
+<b><a name="line500">500  </a></b>	 public:
+<b><a name="line501">501  </a></b>	  // ParamType and GeneratorCreationFunc are private types but are required
+<b><a name="line502">502  </a></b>	  // for declarations of public methods AddTestPattern() and
+<b><a name="line503">503  </a></b>	  // AddTestCaseInstantiation().
+<b><a name="line504">504  </a></b>	  typedef typename <a href="#line498">TestCase</a>::<a href="../../gtest.h/code.html#line1747">ParamType</a> <b>ParamType</b>;
+<b><a name="line505">505  </a></b>	  // A function that returns an instance of appropriate generator type.
+<b><a name="line506">506  </a></b>	  typedef <a href="#line183">ParamGenerator</a>&lt;<a href="#line504">ParamType</a>&gt;(<b>GeneratorCreationFunc</b>)();
+<b><a name="line507">507  </a></b>	  typedef typename <a href="#line394">ParamNameGenFunc</a>&lt;<a href="#line504">ParamType</a>&gt;::<a href="#line395">Type</a> <b>ParamNameGeneratorFunc</b>;
+<b><a name="line508">508  </a></b>	
+<b><a name="line509">509  </a></b>	  explicit ParameterizedTestCaseInfo(
+<b><a name="line510">510  </a></b>	      const char* <b>name</b>, <a href="../gtest-internal.h/code.html#line504">CodeLocation</a> <b>code_location</b>)
+<b><a name="line511">511  </a></b>	      : <a href="#line654">test_case_name_</a>(<a href="#line510">name</a>), <a href="#line655">code_location_</a>(<a href="#line510">code_location</a>) {}
+<b><a name="line512">512  </a></b>	
+<b><a name="line513">513  </a></b>	  // Test case base name for display purposes.
+<b><a name="line514">514  </a></b>	  virtual const <a href="../gtest-port.h/code.html#line1097">string</a>&amp; GetTestCaseName() const { return <a href="#line654">test_case_name_</a>; }
+<b><a name="line515">515  </a></b>	  // Test case id to verify identity.
+<b><a name="line516">516  </a></b>	  virtual <a href="../gtest-internal.h/code.html#line429">TypeId</a> GetTestCaseTypeId() const { return <a href="../gtest-internal.h/code.html#line447">GetTypeId</a>&lt;<a href="#line498">TestCase</a>&gt;(); }
+<b><a name="line517">517  </a></b>	  // TEST_P macro uses AddTestPattern() to record information
+<b><a name="line518">518  </a></b>	  // about a single test in a LocalTestInfo structure.
+<b><a name="line519">519  </a></b>	  // test_case_name is the base name of the test case (without invocation
+<b><a name="line520">520  </a></b>	  // prefix). test_base_name is the name of an individual test without
+<b><a name="line521">521  </a></b>	  // parameter index. For the test SequenceA/FooTest.DoBar/1 FooTest is
+<b><a name="line522">522  </a></b>	  // test case base name and DoBar is test base name.
+<b><a name="line523">523  </a></b>	  void AddTestPattern(const char* <b>test_case_name</b>,
+<b><a name="line524">524  </a></b>	                      const char* <b>test_base_name</b>,
+<b><a name="line525">525  </a></b>	                      <a href="#line429">TestMetaFactoryBase</a>&lt;<a href="#line504">ParamType</a>&gt;* <b>meta_factory</b>) {
+<b><a name="line526">526  </a></b>	    <a href="#line656">tests_</a>.<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line931">push_back</a>(<a href="../gtest-linked_ptr.h/code.html#line152">linked_ptr</a>&lt;<a href="#line604">TestInfo</a>&gt;(<a href="../../../../../include/c++/5/new/code.html#line111">new</a> <a href="#line604">TestInfo</a>(<a href="#line523">test_case_name</a>,
+<b><a name="line527">527  </a></b>	                                                       <a href="#line524">test_base_name</a>,
+<b><a name="line528">528  </a></b>	                                                       <a href="#line525">meta_factory</a>)));
+<b><a name="line529">529  </a></b>	  }
+<b><a name="line530">530  </a></b>	  // INSTANTIATE_TEST_CASE_P macro uses AddGenerator() to record information
+<b><a name="line531">531  </a></b>	  // about a generator.
+<b><a name="line532">532  </a></b>	  int AddTestCaseInstantiation(const <a href="../gtest-port.h/code.html#line1097">string</a>&amp; <b>instantiation_name</b>,
+<b><a name="line533">533  </a></b>	                               <a href="#line506">GeneratorCreationFunc</a>* <b>func</b>,
+<b><a name="line534">534  </a></b>	                               <a href="#line507">ParamNameGeneratorFunc</a>* <b>name_func</b>,
+<b><a name="line535">535  </a></b>	                               const char* <b>file</b>,
+<b><a name="line536">536  </a></b>	                               int <b>line</b>) {
+<b><a name="line537">537  </a></b>	    <a href="#line657">instantiations_</a>.<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line931">push_back</a>(
+<b><a name="line538">538  </a></b>	        <a href="#line621">InstantiationInfo</a>(<a href="#line532">instantiation_name</a>, <a href="#line533">func</a>, <a href="#line534">name_func</a>, <a href="#line535">file</a>, <a href="#line536">line</a>));
+<b><a name="line539">539  </a></b>	    return 0;  // Return value used only to run this method in namespace scope.
+<b><a name="line540">540  </a></b>	  }
+<b><a name="line541">541  </a></b>	  // UnitTest class invokes this method to register tests in this test case
+<b><a name="line542">542  </a></b>	  // test cases right before running tests in RUN_ALL_TESTS macro.
+<b><a name="line543">543  </a></b>	  // This method should not be called more then once on any single
+<b><a name="line544">544  </a></b>	  // instance of a ParameterizedTestCaseInfoBase derived class.
+<b><a name="line545">545  </a></b>	  // UnitTest has a guard to prevent from calling this method more then once.
+<b><a name="line546">546  </a></b>	  virtual void RegisterTests() {
+<b><a name="line547">547  </a></b>	    for (typename <a href="#line616">TestInfoContainer</a>::<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line231">iterator</a> <b>test_it</b> = <a href="#line656">tests_</a>.<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line547">begin</a>();
+<b><a name="line548">548  </a></b>	         <a href="#line547">test_it</a> <a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line841">!=</a> <a href="#line656">tests_</a>.<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line565">end</a>(); <a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line761">++</a><a href="#line547">test_it</a>) {
+<b><a name="line549">549  </a></b>	      <a href="../gtest-linked_ptr.h/code.html#line146">linked_ptr</a>&lt;<a href="#line604">TestInfo</a>&gt; <b>test_info</b> = <a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line753">*</a><a href="#line547">test_it</a>;
+<b><a name="line550">550  </a></b>	      for (typename <a href="#line638">InstantiationContainer</a>::<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line231">iterator</a> <b>gen_it</b> =
+<b><a name="line551">551  </a></b>	               <a href="#line657">instantiations_</a>.<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line547">begin</a>(); <a href="#line550">gen_it</a> <a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line841">!=</a> <a href="#line657">instantiations_</a>.<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line565">end</a>();
+<b><a name="line552">552  </a></b>	               <a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line761">++</a><a href="#line550">gen_it</a>) {
+<b><a name="line553">553  </a></b>	        const <a href="../gtest-port.h/code.html#line1097">string</a>&amp; <b>instantiation_name</b> = <a href="#line550">gen_it</a><a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line757">-&gt;</a><a href="#line632">name</a>;
+<b><a name="line554">554  </a></b>	        <a href="#line183">ParamGenerator</a>&lt;<a href="#line504">ParamType</a>&gt; <b>generator</b>((*<a href="#line550">gen_it</a><a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line757">-&gt;</a><a href="#line633">generator</a>)());
+<b><a name="line555">555  </a></b>	        <a href="#line507">ParamNameGeneratorFunc</a>* <b>name_func</b> = <a href="#line550">gen_it</a><a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line757">-&gt;</a><a href="#line634">name_func</a>;
+<b><a name="line556">556  </a></b>	        const char* <b>file</b> = <a href="#line550">gen_it</a><a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line757">-&gt;</a><a href="#line635">file</a>;
+<b><a name="line557">557  </a></b>	        int <b>line</b> = <a href="#line550">gen_it</a><a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line757">-&gt;</a><a href="#line636">line</a>;
+<b><a name="line558">558  </a></b>	
+<b><a name="line559">559  </a></b>	        <a href="../gtest-port.h/code.html#line1097">string</a> <b>test_case_name</b>;
+<b><a name="line560">560  </a></b>	        if ( !<a href="#line553">instantiation_name</a>.<a href="../../../../../include/c++/5/bits/basic_string.h/code.html#line816">empty</a>() )
+<b><a name="line561">561  </a></b>	          <a href="#line559">test_case_name</a> <a href="../../../../../include/c++/5/bits/basic_string.h/code.html#line587">=</a> <a href="#line553">instantiation_name</a> <a href="../../../../../include/c++/5/bits/basic_string.h/code.html#line4820">+</a> &quot;/&quot;;
+<b><a name="line562">562  </a></b>	        <a href="#line559">test_case_name</a> <a href="../../../../../include/c++/5/bits/basic_string.h/code.html#line941">+=</a> <a href="#line549">test_info</a><a href="../gtest-linked_ptr.h/code.html#line183">-&gt;</a><a href="#line612">test_case_base_name</a>;
+<b><a name="line563">563  </a></b>	
+<b><a name="line564">564  </a></b>	        <a href="../../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>i</b> = 0;
+<b><a name="line565">565  </a></b>	        <a href="../../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../../include/c++/5/bits/stl_set.h/code.html#line90">set</a>&lt;<a href="../../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../../include/c++/5/bits/stringfwd.h/code.html#line74">string</a>&gt; <b>test_param_names</b>;
+<b><a name="line566">566  </a></b>	        for (typename <a href="#line183">ParamGenerator</a>&lt;<a href="#line504">ParamType</a>&gt;::<a href="#line185">iterator</a> <b>param_it</b> =
+<b><a name="line567">567  </a></b>	                 <a href="#line554">generator</a>.<a href="#line195">begin</a>();
+<b><a name="line568">568  </a></b>	             <a href="#line566">param_it</a> <a href="#line153">!=</a> <a href="#line554">generator</a>.<a href="#line196">end</a>(); <a href="#line140">++</a><a href="#line566">param_it</a>, ++<a href="#line564">i</a>) {
+<b><a name="line569">569  </a></b>	          <a href="../gtest-port.h/code.html#line990">Message</a> <b>test_name_stream</b>;
+<b><a name="line570">570  </a></b>	
+<b><a name="line571">571  </a></b>	          <a href="../../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../../include/c++/5/bits/stringfwd.h/code.html#line74">string</a> <b>param_name</b> = <a href="#line555">name_func</a>(
+<b><a name="line572">572  </a></b>	              <a href="#line60">TestParamInfo</a>&lt;<a href="#line504">ParamType</a>&gt;(<a href="#line137">*</a><a href="#line566">param_it</a>, <a href="#line564">i</a>));
+<b><a name="line573">573  </a></b>	
+<b><a name="line574">574  </a></b>	          <a href="../gtest-port.h/code.html#line1295">GTEST_CHECK_</a>(IsValidParamName(param_name))
+<b><a name="line575">575  </a></b>	              <a href="../../../../../include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;Parameterized test name '&quot; <a href="../../../../../include/c++/5/bits/basic_string.h/code.html#line5172">&lt;&lt;</a> <a href="#line571">param_name</a>
+<b><a name="line576">576  </a></b>	              <a href="../../../../../include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;' is invalid, in &quot; <a href="../../../../../include/c++/5/ostream/code.html#line556">&lt;&lt;</a> <a href="#line556">file</a>
+<b><a name="line577">577  </a></b>	              <a href="../../../../../include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot; line &quot; <a href="../../../../../include/c++/5/ostream/code.html#line189">&lt;&lt;</a> <a href="#line557">line</a> <a href="../../../../../include/c++/5/ostream/code.html#line108">&lt;&lt;</a> <a href="../../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../../include/c++/5/ostream/code.html#line590">endl</a>;
+<b><a name="line578">578  </a></b>	
+<b><a name="line579">579  </a></b>	          <a href="../gtest-port.h/code.html#line1295">GTEST_CHECK_</a>(test_param_names.count(param_name) == 0)
+<b><a name="line580">580  </a></b>	              <a href="../../../../../include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;Duplicate parameterized test name '&quot; <a href="../../../../../include/c++/5/bits/basic_string.h/code.html#line5172">&lt;&lt;</a> <a href="#line571">param_name</a>
+<b><a name="line581">581  </a></b>	              <a href="../../../../../include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;', in &quot; <a href="../../../../../include/c++/5/ostream/code.html#line556">&lt;&lt;</a> <a href="#line556">file</a> <a href="../../../../../include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot; line &quot; <a href="../../../../../include/c++/5/ostream/code.html#line189">&lt;&lt;</a> <a href="#line557">line</a> <a href="../../../../../include/c++/5/ostream/code.html#line108">&lt;&lt;</a> <a href="../../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../../include/c++/5/ostream/code.html#line590">endl</a>;
+<b><a name="line582">582  </a></b>	
+<b><a name="line583">583  </a></b>	          <a href="#line565">test_param_names</a>.<a href="../../../../../include/c++/5/bits/stl_set.h/code.html#line482">insert</a>(<a href="#line571">param_name</a>);
+<b><a name="line584">584  </a></b>	
+<b><a name="line585">585  </a></b>	          <a href="#line569">test_name_stream</a> <a href="../../gtest-message.h/code.html#line115">&lt;&lt;</a> <a href="#line549">test_info</a><a href="../gtest-linked_ptr.h/code.html#line183">-&gt;</a><a href="#line613">test_base_name</a> <a href="../../gtest-message.h/code.html#line115">&lt;&lt;</a> &quot;/&quot; <a href="../../gtest-message.h/code.html#line115">&lt;&lt;</a> <a href="#line571">param_name</a>;
+<b><a name="line586">586  </a></b>	          <a href="../gtest-internal.h/code.html#line529">MakeAndRegisterTestInfo</a>(
+<b><a name="line587">587  </a></b>	              <a href="#line559">test_case_name</a>.<a href="../../../../../include/c++/5/bits/basic_string.h/code.html#line1887">c_str</a>(),
+<b><a name="line588">588  </a></b>	              <a href="#line569">test_name_stream</a>.<a href="../../gtest-message.h/code.html#line196">GetString</a>().<a href="../../../../../include/c++/5/bits/basic_string.h/code.html#line1887">c_str</a>(),
+<b><a name="line589">589  </a></b>	              <a href="../../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>,  // No type parameter.
+<b><a name="line590">590  </a></b>	              <a href="../../gtest-printers.h/code.html#line980">PrintToString</a>(<a href="#line137">*</a><a href="#line566">param_it</a>).<a href="../../../../../include/c++/5/bits/basic_string.h/code.html#line1887">c_str</a>(),
+<b><a name="line591">591  </a></b>	              <a href="#line655">code_location_</a>,
+<b><a name="line592">592  </a></b>	              <a href="#line516">GetTestCaseTypeId</a>(),
+<b><a name="line593">593  </a></b>	              <a href="#line498">TestCase</a>::<a href="../../gtest.h/code.html#line389">SetUpTestCase</a>,
+<b><a name="line594">594  </a></b>	              <a href="#line498">TestCase</a>::<a href="../../gtest.h/code.html#line397">TearDownTestCase</a>,
+<b><a name="line595">595  </a></b>	              <a href="#line549">test_info</a><a href="../gtest-linked_ptr.h/code.html#line183">-&gt;</a><a href="#line614">test_meta_factory</a><a href="../gtest-port.h/code.html#line1123">-&gt;</a><a href="#line433">CreateTestFactory</a>(<a href="#line137">*</a><a href="#line566">param_it</a>));
+<b><a name="line596">596  </a></b>	        }  // for param_it
+<b><a name="line597">597  </a></b>	      }  // for gen_it
+<b><a name="line598">598  </a></b>	    }  // for test_it
+<b><a name="line599">599  </a></b>	  }  // RegisterTests
+<b><a name="line600">600  </a></b>	
+<b><a name="line601">601  </a></b>	 private:
+<b><a name="line602">602  </a></b>	  // LocalTestInfo structure keeps information about a single test registered
+<b><a name="line603">603  </a></b>	  // with TEST_P macro.
+<b><a name="line604">604  </a></b>	  struct TestInfo {
+<b><a name="line605">605  </a></b>	    TestInfo(const char* <b>a_test_case_base_name</b>,
+<b><a name="line606">606  </a></b>	             const char* <b>a_test_base_name</b>,
+<b><a name="line607">607  </a></b>	             <a href="#line429">TestMetaFactoryBase</a>&lt;<a href="#line504">ParamType</a>&gt;* <b>a_test_meta_factory</b>) :
+<b><a name="line608">608  </a></b>	        <a href="#line612">test_case_base_name</a>(<a href="#line605">a_test_case_base_name</a>),
+<b><a name="line609">609  </a></b>	        <a href="#line613">test_base_name</a>(<a href="#line606">a_test_base_name</a>),
+<b><a name="line610">610  </a></b>	        <a href="#line614">test_meta_factory</a>(<a href="#line607">a_test_meta_factory</a>) {}
+<b><a name="line611">611  </a></b>	
+<b><a name="line612">612  </a></b>	    const <a href="../gtest-port.h/code.html#line1097">string</a> <b>test_case_base_name</b>;
+<b><a name="line613">613  </a></b>	    const <a href="../gtest-port.h/code.html#line1097">string</a> <b>test_base_name</b>;
+<b><a name="line614">614  </a></b>	    const <a href="../gtest-port.h/code.html#line1115">scoped_ptr</a>&lt;<a href="#line429">TestMetaFactoryBase</a>&lt;<a href="#line504">ParamType</a>&gt; &gt; <b>test_meta_factory</b>;
+<b><a name="line615">615  </a></b>	  };
+<b><a name="line616">616  </a></b>	  typedef ::<a href="../../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="../gtest-linked_ptr.h/code.html#line146">linked_ptr</a>&lt;<a href="#line604">TestInfo</a>&gt; &gt; <b>TestInfoContainer</b>;
+<b><a name="line617">617  </a></b>	  // Records data received from INSTANTIATE_TEST_CASE_P macros:
+<b><a name="line618">618  </a></b>	  //  &lt;Instantiation name, Sequence generator creation function,
+<b><a name="line619">619  </a></b>	  //     Name generator function, Source file, Source line&gt;
+<b><a name="line620">620  </a></b>	  struct <b>InstantiationInfo</b> {
+<b><a name="line621">621  </a></b>	      InstantiationInfo(const <a href="../../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../../include/c++/5/bits/stringfwd.h/code.html#line74">string</a> &amp;<b>name_in</b>,
+<b><a name="line622">622  </a></b>	                        <a href="#line506">GeneratorCreationFunc</a>* <b>generator_in</b>,
+<b><a name="line623">623  </a></b>	                        <a href="#line507">ParamNameGeneratorFunc</a>* <b>name_func_in</b>,
+<b><a name="line624">624  </a></b>	                        const char* <b>file_in</b>,
+<b><a name="line625">625  </a></b>	                        int <b>line_in</b>)
+<b><a name="line626">626  </a></b>	          : <a href="#line632">name</a>(<a href="#line621">name_in</a>),
+<b><a name="line627">627  </a></b>	            <a href="#line633">generator</a>(<a href="#line622">generator_in</a>),
+<b><a name="line628">628  </a></b>	            <a href="#line634">name_func</a>(<a href="#line623">name_func_in</a>),
+<b><a name="line629">629  </a></b>	            <a href="#line635">file</a>(<a href="#line624">file_in</a>),
+<b><a name="line630">630  </a></b>	            <a href="#line636">line</a>(<a href="#line625">line_in</a>) {}
+<b><a name="line631">631  </a></b>	
+<b><a name="line632">632  </a></b>	      <a href="../../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../../include/c++/5/bits/stringfwd.h/code.html#line74">string</a> <b>name</b>;
+<b><a name="line633">633  </a></b>	      <a href="#line506">GeneratorCreationFunc</a>* <b>generator</b>;
+<b><a name="line634">634  </a></b>	      <a href="#line507">ParamNameGeneratorFunc</a>* <b>name_func</b>;
+<b><a name="line635">635  </a></b>	      const char* <b>file</b>;
+<b><a name="line636">636  </a></b>	      int <b>line</b>;
+<b><a name="line637">637  </a></b>	  };
+<b><a name="line638">638  </a></b>	  typedef ::<a href="../../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="#line620">InstantiationInfo</a>&gt; <b>InstantiationContainer</b>;
+<b><a name="line639">639  </a></b>	
+<b><a name="line640">640  </a></b>	  static bool IsValidParamName(const <a href="../../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../../include/c++/5/bits/stringfwd.h/code.html#line74">string</a>&amp; <b>name</b>) {
+<b><a name="line641">641  </a></b>	    // Check for empty string
+<b><a name="line642">642  </a></b>	    if (<a href="#line640">name</a>.<a href="../../../../../include/c++/5/bits/basic_string.h/code.html#line816">empty</a>())
+<b><a name="line643">643  </a></b>	      return false;
+<b><a name="line644">644  </a></b>	
+<b><a name="line645">645  </a></b>	    // Check for invalid characters
+<b><a name="line646">646  </a></b>	    for (<a href="../../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../../include/c++/5/bits/stringfwd.h/code.html#line74">string</a>::<a href="../../../../../include/c++/5/bits/basic_string.h/code.html#line82">size_type</a> <b>index</b> = 0; index &lt; <a href="#line640">name</a>.<a href="../../../../../include/c++/5/bits/basic_string.h/code.html#line715">size</a>(); ++index) {
+<b><a name="line647">647  </a></b>	      if (!<a href="../../../../../include/ctype.h/code.html#line110">isalnum</a>(<a href="#line640">name</a>[<a href="#line646">index</a>]) &amp;&amp; <a href="#line640">name</a>[<a href="#line646">index</a>] != '_')
+<b><a name="line648">648  </a></b>	        return false;
+<b><a name="line649">649  </a></b>	    }
+<b><a name="line650">650  </a></b>	
+<b><a name="line651">651  </a></b>	    return true;
+<b><a name="line652">652  </a></b>	  }
+<b><a name="line653">653  </a></b>	
+<b><a name="line654">654  </a></b>	  const <a href="../gtest-port.h/code.html#line1097">string</a> <b>test_case_name_</b>;
+<b><a name="line655">655  </a></b>	  <a href="../gtest-internal.h/code.html#line504">CodeLocation</a> <b>code_location_</b>;
+<b><a name="line656">656  </a></b>	  <a href="#line616">TestInfoContainer</a> <b>tests_</b>;
+<b><a name="line657">657  </a></b>	  <a href="#line638">InstantiationContainer</a> <b>instantiations_</b>;
+<b><a name="line658">658  </a></b>	
+<b><a name="line659">659  </a></b>	  <a href="../gtest-port.h/code.html#line874">GTEST_DISALLOW_COPY_AND_ASSIGN_</a>(ParameterizedTestCaseInfo);
+<b><a name="line660">660  </a></b>	};  // class ParameterizedTestCaseInfo
+<b><a name="line661">661  </a></b>	
+<b><a name="line662">662  </a></b>	// INTERNAL IMPLEMENTATION - DO NOT USE IN USER CODE.
+<b><a name="line663">663  </a></b>	//
+<b><a name="line664">664  </a></b>	// ParameterizedTestCaseRegistry contains a map of ParameterizedTestCaseInfoBase
+<b><a name="line665">665  </a></b>	// classes accessed by test case names. TEST_P and INSTANTIATE_TEST_CASE_P
+<b><a name="line666">666  </a></b>	// macros use it to locate their corresponding ParameterizedTestCaseInfo
+<b><a name="line667">667  </a></b>	// descriptors.
+<b><a name="line668">668  </a></b>	class <b>ParameterizedTestCaseRegistry</b> {
+<b><a name="line669">669  </a></b>	 public:
+<b><a name="line670">670  </a></b>	  <b>ParameterizedTestCaseRegistry</b>() {}
+<b><a name="line671">671  </a></b>	  <b>~ParameterizedTestCaseRegistry</b>() {
+<b><a name="line672">672  </a></b>	    for (<a href="#line719">TestCaseInfoContainer</a>::<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line231">iterator</a> <b>it</b> = <a href="#line721">test_case_infos_</a>.<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line547">begin</a>();
+<b><a name="line673">673  </a></b>	         <a href="#line672">it</a> <a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line841">!=</a> <a href="#line721">test_case_infos_</a>.<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line565">end</a>(); <a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line761">++</a><a href="#line672">it</a>) {
+<b><a name="line674">674  </a></b>	      <a href="../../../../../include/c++/5/new/code.html#line115">delete</a> <a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line753">*</a><a href="#line672">it</a>;
+<b><a name="line675">675  </a></b>	    }
+<b><a name="line676">676  </a></b>	  }
+<b><a name="line677">677  </a></b>	
+<b><a name="line678">678  </a></b>	  // Looks up or creates and returns a structure containing information about
+<b><a name="line679">679  </a></b>	  // tests and instantiations of a particular test case.
+<b><a name="line680">680  </a></b>	  template &lt;class <b>TestCase</b>&gt;
+<b><a name="line681">681  </a></b>	  <a href="#line499">ParameterizedTestCaseInfo</a>&lt;<a href="#line680">TestCase</a>&gt;* GetTestCasePatternHolder(
+<b><a name="line682">682  </a></b>	      const char* <b>test_case_name</b>,
+<b><a name="line683">683  </a></b>	      <a href="../gtest-internal.h/code.html#line504">CodeLocation</a> <b>code_location</b>) {
+<b><a name="line684">684  </a></b>	    <a href="#line499">ParameterizedTestCaseInfo</a>&lt;<a href="#line680">TestCase</a>&gt;* <b>typed_test_info</b> = <a href="../../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>;
+<b><a name="line685">685  </a></b>	    for (<a href="#line719">TestCaseInfoContainer</a>::<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line231">iterator</a> <b>it</b> = <a href="#line721">test_case_infos_</a>.<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line547">begin</a>();
+<b><a name="line686">686  </a></b>	         <a href="#line685">it</a> <a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line841">!=</a> <a href="#line721">test_case_infos_</a>.<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line565">end</a>(); <a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line761">++</a><a href="#line685">it</a>) {
+<b><a name="line687">687  </a></b>	      if ((<a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line753">*</a><a href="#line685">it</a>)-&gt;<a href="#line475">GetTestCaseName</a>() <a href="../../../../../include/c++/5/bits/basic_string.h/code.html#line4937">==</a> <a href="#line682">test_case_name</a>) {
+<b><a name="line688">688  </a></b>	        if ((<a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line753">*</a><a href="#line685">it</a>)-&gt;<a href="#line477">GetTestCaseTypeId</a>() != <a href="../gtest-internal.h/code.html#line447">GetTypeId</a>&lt;<a href="#line680">TestCase</a>&gt;()) {
+<b><a name="line689">689  </a></b>	          // Complain about incorrect usage of Google Test facilities
+<b><a name="line690">690  </a></b>	          // and terminate the program since we cannot guaranty correct
+<b><a name="line691">691  </a></b>	          // test case setup and tear-down in this case.
+<b><a name="line692">692  </a></b>	          <a href="#line84">ReportInvalidTestCaseType</a>(<a href="#line682">test_case_name</a>, <a href="#line683">code_location</a>);
+<b><a name="line693">693  </a></b>	          <a href="../gtest-port.h/code.html#line2297">posix</a>::<a href="../gtest-port.h/code.html#line2410">Abort</a>();
+<b><a name="line694">694  </a></b>	        } else {
+<b><a name="line695">695  </a></b>	          // At this point we are sure that the object we found is of the same
+<b><a name="line696">696  </a></b>	          // type we are looking for, so we downcast it to that type
+<b><a name="line697">697  </a></b>	          // without further checks.
+<b><a name="line698">698  </a></b>	          <a href="#line684">typed_test_info</a> = <a href="../gtest-port.h/code.html#line1392">CheckedDowncastToActualType</a>&lt;
+<b><a name="line699">699  </a></b>	              <a href="#line499">ParameterizedTestCaseInfo</a>&lt;<a href="#line680">TestCase</a>&gt; &gt;(<a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line753">*</a><a href="#line685">it</a>);
+<b><a name="line700">700  </a></b>	        }
+<b><a name="line701">701  </a></b>	        break;
+<b><a name="line702">702  </a></b>	      }
+<b><a name="line703">703  </a></b>	    }
+<b><a name="line704">704  </a></b>	    if (<a href="#line684">typed_test_info</a> == <a href="../../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>) {
+<b><a name="line705">705  </a></b>	      <a href="#line684">typed_test_info</a> = <a href="../../../../../include/c++/5/new/code.html#line111">new</a> <a href="#line499">ParameterizedTestCaseInfo</a>&lt;<a href="#line680">TestCase</a>&gt;(
+<b><a name="line706">706  </a></b>	          <a href="#line682">test_case_name</a>, <a href="#line683">code_location</a>);
+<b><a name="line707">707  </a></b>	      <a href="#line721">test_case_infos_</a>.<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line931">push_back</a>(<a href="#line684">typed_test_info</a>);
+<b><a name="line708">708  </a></b>	    }
+<b><a name="line709">709  </a></b>	    return <a href="#line684">typed_test_info</a>;
+<b><a name="line710">710  </a></b>	  }
+<b><a name="line711">711  </a></b>	  void <b>RegisterTests</b>() {
+<b><a name="line712">712  </a></b>	    for (<a href="#line719">TestCaseInfoContainer</a>::<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line231">iterator</a> <b>it</b> = <a href="#line721">test_case_infos_</a>.<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line547">begin</a>();
+<b><a name="line713">713  </a></b>	         <a href="#line712">it</a> <a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line841">!=</a> <a href="#line721">test_case_infos_</a>.<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line565">end</a>(); <a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line761">++</a><a href="#line712">it</a>) {
+<b><a name="line714">714  </a></b>	      (<a href="../../../../../include/c++/5/bits/stl_iterator.h/code.html#line753">*</a><a href="#line712">it</a>)-&gt;<a href="#line482">RegisterTests</a>();
+<b><a name="line715">715  </a></b>	    }
+<b><a name="line716">716  </a></b>	  }
+<b><a name="line717">717  </a></b>	
+<b><a name="line718">718  </a></b>	 private:
+<b><a name="line719">719  </a></b>	  typedef ::<a href="../../../../../include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../../../include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="#line470">ParameterizedTestCaseInfoBase</a>*&gt; <b>TestCaseInfoContainer</b>;
+<b><a name="line720">720  </a></b>	
+<b><a name="line721">721  </a></b>	  <a href="#line719">TestCaseInfoContainer</a> <b>test_case_infos_</b>;
+<b><a name="line722">722  </a></b>	
+<b><a name="line723">723  </a></b>	  <a href="../gtest-port.h/code.html#line874">GTEST_DISALLOW_COPY_AND_ASSIGN_</a>(ParameterizedTestCaseRegistry);
+<b><a name="line724">724  </a></b>	};
+<b><a name="line725">725  </a></b>	
+<b><a name="line726">726  </a></b>	}  // namespace internal
+<b><a name="line727">727  </a></b>	}  // namespace testing
+<b><a name="line728">728  </a></b>	
+<b><a name="line729">729  </a></b>	#endif  //  GTEST_HAS_PARAM_TEST
+<b><a name="line730">730  </a></b>	
+<b><a name="line731">731  </a></b>	#endif  // GTEST_INCLUDE_GTEST_INTERNAL_GTEST_PARAM_UTIL_H_
+<b><a name="line732">732  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

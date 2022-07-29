@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/bits/atomic_lockfree_defines.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// -*- C++ -*- header.
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2008-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file bits/atomic_lockfree_defines.h
+<b><a name="line26">26   </a></b>	 *  This is an internal header file, included by other library headers.
+<b><a name="line27">27   </a></b>	 *  Do not attempt to use it directly. @headername{atomic}
+<b><a name="line28">28   </a></b>	 */
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	#ifndef _GLIBCXX_ATOMIC_LOCK_FREE_H
+<b><a name="line31">31   </a></b>	#define <b>_GLIBCXX_ATOMIC_LOCK_FREE_H</b> 1
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	#pragma GCC system_header
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	/**
+<b><a name="line36">36   </a></b>	 * @addtogroup atomics
+<b><a name="line37">37   </a></b>	 * @{
+<b><a name="line38">38   </a></b>	 */
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	/**
+<b><a name="line41">41   </a></b>	 * Lock-free property.
+<b><a name="line42">42   </a></b>	 *
+<b><a name="line43">43   </a></b>	 * 0 indicates that the types are never lock-free.
+<b><a name="line44">44   </a></b>	 * 1 indicates that the types are sometimes lock-free.
+<b><a name="line45">45   </a></b>	 * 2 indicates that the types are always lock-free.
+<b><a name="line46">46   </a></b>	 */
+<b><a name="line47">47   </a></b>	
+<b><a name="line48">48   </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line49">49   </a></b>	#define <b>ATOMIC_BOOL_LOCK_FREE</b>		__GCC_ATOMIC_BOOL_LOCK_FREE
+<b><a name="line50">50   </a></b>	#define <b>ATOMIC_CHAR_LOCK_FREE</b>		__GCC_ATOMIC_CHAR_LOCK_FREE
+<b><a name="line51">51   </a></b>	#define <b>ATOMIC_WCHAR_T_LOCK_FREE</b>	__GCC_ATOMIC_WCHAR_T_LOCK_FREE
+<b><a name="line52">52   </a></b>	#define <b>ATOMIC_CHAR16_T_LOCK_FREE</b>	__GCC_ATOMIC_CHAR16_T_LOCK_FREE
+<b><a name="line53">53   </a></b>	#define <b>ATOMIC_CHAR32_T_LOCK_FREE</b>	__GCC_ATOMIC_CHAR32_T_LOCK_FREE
+<b><a name="line54">54   </a></b>	#define <b>ATOMIC_SHORT_LOCK_FREE</b>		__GCC_ATOMIC_SHORT_LOCK_FREE
+<b><a name="line55">55   </a></b>	#define <b>ATOMIC_INT_LOCK_FREE</b>		__GCC_ATOMIC_INT_LOCK_FREE
+<b><a name="line56">56   </a></b>	#define <b>ATOMIC_LONG_LOCK_FREE</b>		__GCC_ATOMIC_LONG_LOCK_FREE
+<b><a name="line57">57   </a></b>	#define <b>ATOMIC_LLONG_LOCK_FREE</b>		__GCC_ATOMIC_LLONG_LOCK_FREE
+<b><a name="line58">58   </a></b>	#define <b>ATOMIC_POINTER_LOCK_FREE</b>	__GCC_ATOMIC_POINTER_LOCK_FREE
+<b><a name="line59">59   </a></b>	#endif
+<b><a name="line60">60   </a></b>	
+<b><a name="line61">61   </a></b>	// @} group atomics
+<b><a name="line62">62   </a></b>	
+<b><a name="line63">63   </a></b>	#endif
+<b><a name="line64">64   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

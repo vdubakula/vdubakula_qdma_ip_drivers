@@ -1,0 +1,118 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_common/qdma_queue_abs.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	#ifndef SRC_QDMA_QDMA_QUEUE_H_
+<b><a name="line2">2    </a></b>	#define <b>SRC_QDMA_QDMA_QUEUE_H_</b>
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	#include &lt;cstddef&gt;
+<b><a name="line5">5    </a></b>	#include &lt;cstdint&gt;
+<b><a name="line6">6    </a></b>	#include &lt;string&gt;
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	enum <b>mode</b> {
+<b><a name="line10">10   </a></b>		<b>ST_C2H_SW_DESC_SIZE_8B</b>,
+<b><a name="line11">11   </a></b>		<b>ST_C2H_SW_DESC_SIZE_16B</b>,
+<b><a name="line12">12   </a></b>		<b>ST_C2H_SW_DESC_SIZE_32B</b>,
+<b><a name="line13">13   </a></b>		<b>ST_C2H_SW_DESC_SIZE_64B</b>
+<b><a name="line14">14   </a></b>	};
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	
+<b><a name="line17">17   </a></b>	namespace <b>qdma</b> {
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	class <a href="../../qdma_dpdk/qdma_device.h/code.html#line22">instance</a>;
+<b><a name="line20">20   </a></b>	
+<b><a name="line21">21   </a></b>	class <b>queue</b> {
+<b><a name="line22">22   </a></b>	public:
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>	    enum class <b>mode</b> {
+<b><a name="line25">25   </a></b>	        <b>memory_mapped</b>,
+<b><a name="line26">26   </a></b>	        <b>streaming</b>,
+<b><a name="line27">27   </a></b>	    };
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	    enum class <b>direction</b> {
+<b><a name="line30">30   </a></b>	        <b>host_to_card</b>,
+<b><a name="line31">31   </a></b>	        <b>card_to_host</b>,
+<b><a name="line32">32   </a></b>	        <b>both</b>,
+<b><a name="line33">33   </a></b>	        <b>cmpt</b>
+<b><a name="line34">34   </a></b>	    };
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	    enum class <b>c2h_wrb_intr_trigmode</b> {
+<b><a name="line37">37   </a></b>	        <b>disable</b>,
+<b><a name="line38">38   </a></b>	        <b>every</b>,
+<b><a name="line39">39   </a></b>	        <b>usr_cnt</b>,
+<b><a name="line40">40   </a></b>	        <b>usr</b>,
+<b><a name="line41">41   </a></b>	        <b>usr_tmr</b>,
+<b><a name="line42">42   </a></b>			<b>cntr_tmr</b>
+<b><a name="line43">43   </a></b>	    };
+<b><a name="line44">44   </a></b>	
+<b><a name="line45">45   </a></b>	    virtual <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> write(void* buffer, <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> size, long device_offset = 0, bool throw_err = true) =0;
+<b><a name="line46">46   </a></b>	    virtual <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> read(void* buffer, <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> size, long device_offset = 0, bool throw_err = true) =0;
+<b><a name="line47">47   </a></b>	
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	public:
+<b><a name="line50">50   </a></b>	    <a href="#line19">instance</a>* <b>m_drv</b>;
+<b><a name="line51">51   </a></b>	    <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>m_dev_id</b> = 0;
+<b><a name="line52">52   </a></b>	    <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>m_qid</b> = 0;
+<b><a name="line53">53   </a></b>	    <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>m_buff_sz</b> = 4096;
+<b><a name="line54">54   </a></b>	    <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>m_burst_size</b> = 32;
+<b><a name="line55">55   </a></b>	    <a href="#line29">direction</a> <b>m_dir</b>;
+<b><a name="line56">56   </a></b>	};
+<b><a name="line57">57   </a></b>	
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	} // namespace qdma
+<b><a name="line60">60   </a></b>	
+<b><a name="line61">61   </a></b>	#endif /* SRC_QDMA_QDMA_QUEUE_H_ */
+<b><a name="line62">62   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

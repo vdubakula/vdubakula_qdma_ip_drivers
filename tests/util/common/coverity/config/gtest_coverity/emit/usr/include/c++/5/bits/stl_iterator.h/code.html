@@ -1,0 +1,1239 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/bits/stl_iterator.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Iterators -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2001-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/*
+<b><a name="line26">26   </a></b>	 *
+<b><a name="line27">27   </a></b>	 * Copyright (c) 1994
+<b><a name="line28">28   </a></b>	 * Hewlett-Packard Company
+<b><a name="line29">29   </a></b>	 *
+<b><a name="line30">30   </a></b>	 * Permission to use, copy, modify, distribute and sell this software
+<b><a name="line31">31   </a></b>	 * and its documentation for any purpose is hereby granted without fee,
+<b><a name="line32">32   </a></b>	 * provided that the above copyright notice appear in all copies and
+<b><a name="line33">33   </a></b>	 * that both that copyright notice and this permission notice appear
+<b><a name="line34">34   </a></b>	 * in supporting documentation.  Hewlett-Packard Company makes no
+<b><a name="line35">35   </a></b>	 * representations about the suitability of this software for any
+<b><a name="line36">36   </a></b>	 * purpose.  It is provided &quot;as is&quot; without express or implied warranty.
+<b><a name="line37">37   </a></b>	 *
+<b><a name="line38">38   </a></b>	 *
+<b><a name="line39">39   </a></b>	 * Copyright (c) 1996-1998
+<b><a name="line40">40   </a></b>	 * Silicon Graphics Computer Systems, Inc.
+<b><a name="line41">41   </a></b>	 *
+<b><a name="line42">42   </a></b>	 * Permission to use, copy, modify, distribute and sell this software
+<b><a name="line43">43   </a></b>	 * and its documentation for any purpose is hereby granted without fee,
+<b><a name="line44">44   </a></b>	 * provided that the above copyright notice appear in all copies and
+<b><a name="line45">45   </a></b>	 * that both that copyright notice and this permission notice appear
+<b><a name="line46">46   </a></b>	 * in supporting documentation.  Silicon Graphics makes no
+<b><a name="line47">47   </a></b>	 * representations about the suitability of this software for any
+<b><a name="line48">48   </a></b>	 * purpose.  It is provided &quot;as is&quot; without express or implied warranty.
+<b><a name="line49">49   </a></b>	 */
+<b><a name="line50">50   </a></b>	
+<b><a name="line51">51   </a></b>	/** @file bits/stl_iterator.h
+<b><a name="line52">52   </a></b>	 *  This is an internal header file, included by other library headers.
+<b><a name="line53">53   </a></b>	 *  Do not attempt to use it directly. @headername{iterator}
+<b><a name="line54">54   </a></b>	 *
+<b><a name="line55">55   </a></b>	 *  This file implements reverse_iterator, back_insert_iterator,
+<b><a name="line56">56   </a></b>	 *  front_insert_iterator, insert_iterator, __normal_iterator, and their
+<b><a name="line57">57   </a></b>	 *  supporting functions and overloaded operators.
+<b><a name="line58">58   </a></b>	 */
+<b><a name="line59">59   </a></b>	
+<b><a name="line60">60   </a></b>	#ifndef _STL_ITERATOR_H
+<b><a name="line61">61   </a></b>	#define <b>_STL_ITERATOR_H</b> 1
+<b><a name="line62">62   </a></b>	
+<b><a name="line63">63   </a></b>	#include &lt;bits/cpp_type_traits.h&gt;
+<b><a name="line64">64   </a></b>	#include &lt;ext/type_traits.h&gt;
+<b><a name="line65">65   </a></b>	#include &lt;bits/move.h&gt;
+<b><a name="line66">66   </a></b>	#include &lt;bits/ptr_traits.h&gt;
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line69">69   </a></b>	{
+<b><a name="line70">70   </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line71">71   </a></b>	
+<b><a name="line72">72   </a></b>	  /**
+<b><a name="line73">73   </a></b>	   * @addtogroup iterators
+<b><a name="line74">74   </a></b>	   * @{
+<b><a name="line75">75   </a></b>	   */
+<b><a name="line76">76   </a></b>	
+<b><a name="line77">77   </a></b>	  // 24.4.1 Reverse iterators
+<b><a name="line78">78   </a></b>	  /**
+<b><a name="line79">79   </a></b>	   *  Bidirectional and random access iterators have corresponding reverse
+<b><a name="line80">80   </a></b>	   *  %iterator adaptors that iterate through the data structure in the
+<b><a name="line81">81   </a></b>	   *  opposite direction.  They have the same signatures as the corresponding
+<b><a name="line82">82   </a></b>	   *  iterators.  The fundamental relation between a reverse %iterator and its
+<b><a name="line83">83   </a></b>	   *  corresponding %iterator @c i is established by the identity:
+<b><a name="line84">84   </a></b>	   *  @code
+<b><a name="line85">85   </a></b>	   *      &amp;*(reverse_iterator(i)) == &amp;*(i - 1)
+<b><a name="line86">86   </a></b>	   *  @endcode
+<b><a name="line87">87   </a></b>	   *
+<b><a name="line88">88   </a></b>	   *  &lt;em&gt;This mapping is dictated by the fact that while there is always a
+<b><a name="line89">89   </a></b>	   *  pointer past the end of an array, there might not be a valid pointer
+<b><a name="line90">90   </a></b>	   *  before the beginning of an array.&lt;/em&gt; [24.4.1]/1,2
+<b><a name="line91">91   </a></b>	   *
+<b><a name="line92">92   </a></b>	   *  Reverse iterators can be tricky and surprising at first.  Their
+<b><a name="line93">93   </a></b>	   *  semantics make sense, however, and the trickiness is a side effect of
+<b><a name="line94">94   </a></b>	   *  the requirement that the iterators must be safe.
+<b><a name="line95">95   </a></b>	  */
+<b><a name="line96">96   </a></b>	  template&lt;typename <b>_Iterator</b>&gt;
+<b><a name="line97">97   </a></b>	    class reverse_iterator
+<b><a name="line98">98   </a></b>	    : public <a href="../stl_iterator_base_types.h/code.html#line118">iterator</a>&lt;typename <a href="../stl_iterator_base_types.h/code.html#line162">iterator_traits</a>&lt;<a href="#line96">_Iterator</a>&gt;::iterator_category,
+<b><a name="line99">99   </a></b>			      typename <a href="../stl_iterator_base_types.h/code.html#line162">iterator_traits</a>&lt;<a href="#line96">_Iterator</a>&gt;::value_type,
+<b><a name="line100">100  </a></b>			      typename <a href="../stl_iterator_base_types.h/code.html#line162">iterator_traits</a>&lt;<a href="#line96">_Iterator</a>&gt;::difference_type,
+<b><a name="line101">101  </a></b>			      typename <a href="../stl_iterator_base_types.h/code.html#line162">iterator_traits</a>&lt;<a href="#line96">_Iterator</a>&gt;::pointer,
+<b><a name="line102">102  </a></b>	                      typename <a href="../stl_iterator_base_types.h/code.html#line162">iterator_traits</a>&lt;<a href="#line96">_Iterator</a>&gt;::reference&gt;
+<b><a name="line103">103  </a></b>	    {
+<b><a name="line104">104  </a></b>	    protected:
+<b><a name="line105">105  </a></b>	      <a href="#line96">_Iterator</a> <b>current</b>;
+<b><a name="line106">106  </a></b>	
+<b><a name="line107">107  </a></b>	      typedef <a href="../stl_iterator_base_types.h/code.html#line162">iterator_traits</a>&lt;<a href="#line96">_Iterator</a>&gt;		<b>__traits_type</b>;
+<b><a name="line108">108  </a></b>	
+<b><a name="line109">109  </a></b>	    public:
+<b><a name="line110">110  </a></b>	      typedef <a href="#line96">_Iterator</a>					<b>iterator_type</b>;
+<b><a name="line111">111  </a></b>	      typedef typename <a href="#line107">__traits_type</a>::difference_type	<b>difference_type</b>;
+<b><a name="line112">112  </a></b>	      typedef typename <a href="#line107">__traits_type</a>::pointer		<b>pointer</b>;
+<b><a name="line113">113  </a></b>	      typedef typename <a href="#line107">__traits_type</a>::reference		<b>reference</b>;
+<b><a name="line114">114  </a></b>	
+<b><a name="line115">115  </a></b>	      /**
+<b><a name="line116">116  </a></b>	       *  The default constructor value-initializes member @p current.
+<b><a name="line117">117  </a></b>	       *  If it is a pointer, that means it is zero-initialized.
+<b><a name="line118">118  </a></b>	      */
+<b><a name="line119">119  </a></b>	      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line120">120  </a></b>	      // 235 No specification of default ctor for reverse_iterator
+<b><a name="line121">121  </a></b>	      <b>reverse_iterator</b>() : current() { }
+<b><a name="line122">122  </a></b>	
+<b><a name="line123">123  </a></b>	      /**
+<b><a name="line124">124  </a></b>	       *  This %iterator will move in the opposite direction that @p x does.
+<b><a name="line125">125  </a></b>	      */
+<b><a name="line126">126  </a></b>	      explicit
+<b><a name="line127">127  </a></b>	      <b>reverse_iterator</b>(<a href="#line110">iterator_type</a> __x) : current(__x) { }
+<b><a name="line128">128  </a></b>	
+<b><a name="line129">129  </a></b>	      /**
+<b><a name="line130">130  </a></b>	       *  The copy constructor is normal.
+<b><a name="line131">131  </a></b>	      */
+<b><a name="line132">132  </a></b>	      <b>reverse_iterator</b>(const <a href="#line97">reverse_iterator</a>&amp; __x)
+<b><a name="line133">133  </a></b>	      : current(__x.current) { }
+<b><a name="line134">134  </a></b>	
+<b><a name="line135">135  </a></b>	      /**
+<b><a name="line136">136  </a></b>	       *  A %reverse_iterator across other types can be copied if the
+<b><a name="line137">137  </a></b>	       *  underlying %iterator can be converted to the type of @c current.
+<b><a name="line138">138  </a></b>	      */
+<b><a name="line139">139  </a></b>	      template&lt;typename <b>_Iter</b>&gt;
+<b><a name="line140">140  </a></b>	        <b>reverse_iterator</b>(const <a href="#line97">reverse_iterator</a>&lt;<a href="#line139">_Iter</a>&gt;&amp; __x)
+<b><a name="line141">141  </a></b>		: current(__x.base()) { }
+<b><a name="line142">142  </a></b>	
+<b><a name="line143">143  </a></b>	      /**
+<b><a name="line144">144  </a></b>	       *  @return  @c current, the %iterator used for underlying work.
+<b><a name="line145">145  </a></b>	      */
+<b><a name="line146">146  </a></b>	      <a href="#line110">iterator_type</a>
+<b><a name="line147">147  </a></b>	      <b>base</b>() const
+<b><a name="line148">148  </a></b>	      { return current; }
+<b><a name="line149">149  </a></b>	
+<b><a name="line150">150  </a></b>	      /**
+<b><a name="line151">151  </a></b>	       *  @return  A reference to the value at @c --current
+<b><a name="line152">152  </a></b>	       *
+<b><a name="line153">153  </a></b>	       *  This requires that @c --current is dereferenceable.
+<b><a name="line154">154  </a></b>	       *
+<b><a name="line155">155  </a></b>	       *  @warning This implementation requires that for an iterator of the
+<b><a name="line156">156  </a></b>	       *           underlying iterator type, @c x, a reference obtained by
+<b><a name="line157">157  </a></b>	       *           @c *x remains valid after @c x has been modified or
+<b><a name="line158">158  </a></b>	       *           destroyed. This is a bug: http://gcc.gnu.org/PR51823
+<b><a name="line159">159  </a></b>	      */
+<b><a name="line160">160  </a></b>	      <a href="#line113">reference</a>
+<b><a name="line161">161  </a></b>	      <b>operator*</b>() const
+<b><a name="line162">162  </a></b>	      {
+<b><a name="line163">163  </a></b>		_Iterator __tmp = current;
+<b><a name="line164">164  </a></b>		return *--__tmp;
+<b><a name="line165">165  </a></b>	      }
+<b><a name="line166">166  </a></b>	
+<b><a name="line167">167  </a></b>	      /**
+<b><a name="line168">168  </a></b>	       *  @return  A pointer to the value at @c --current
+<b><a name="line169">169  </a></b>	       *
+<b><a name="line170">170  </a></b>	       *  This requires that @c --current is dereferenceable.
+<b><a name="line171">171  </a></b>	      */
+<b><a name="line172">172  </a></b>	      <a href="#line112">pointer</a>
+<b><a name="line173">173  </a></b>	      <b>operator-&gt;</b>() const
+<b><a name="line174">174  </a></b>	      { return &amp;(operator*()); }
+<b><a name="line175">175  </a></b>	
+<b><a name="line176">176  </a></b>	      /**
+<b><a name="line177">177  </a></b>	       *  @return  @c *this
+<b><a name="line178">178  </a></b>	       *
+<b><a name="line179">179  </a></b>	       *  Decrements the underlying iterator.
+<b><a name="line180">180  </a></b>	      */
+<b><a name="line181">181  </a></b>	      <a href="#line97">reverse_iterator</a>&amp;
+<b><a name="line182">182  </a></b>	      <b>operator++</b>()
+<b><a name="line183">183  </a></b>	      {
+<b><a name="line184">184  </a></b>		--current;
+<b><a name="line185">185  </a></b>		return *this;
+<b><a name="line186">186  </a></b>	      }
+<b><a name="line187">187  </a></b>	
+<b><a name="line188">188  </a></b>	      /**
+<b><a name="line189">189  </a></b>	       *  @return  The original value of @c *this
+<b><a name="line190">190  </a></b>	       *
+<b><a name="line191">191  </a></b>	       *  Decrements the underlying iterator.
+<b><a name="line192">192  </a></b>	      */
+<b><a name="line193">193  </a></b>	      <a href="#line97">reverse_iterator</a>
+<b><a name="line194">194  </a></b>	      <b>operator++</b>(int)
+<b><a name="line195">195  </a></b>	      {
+<b><a name="line196">196  </a></b>		reverse_iterator __tmp = *this;
+<b><a name="line197">197  </a></b>		--current;
+<b><a name="line198">198  </a></b>		return __tmp;
+<b><a name="line199">199  </a></b>	      }
+<b><a name="line200">200  </a></b>	
+<b><a name="line201">201  </a></b>	      /**
+<b><a name="line202">202  </a></b>	       *  @return  @c *this
+<b><a name="line203">203  </a></b>	       *
+<b><a name="line204">204  </a></b>	       *  Increments the underlying iterator.
+<b><a name="line205">205  </a></b>	      */
+<b><a name="line206">206  </a></b>	      <a href="#line97">reverse_iterator</a>&amp;
+<b><a name="line207">207  </a></b>	      <b>operator--</b>()
+<b><a name="line208">208  </a></b>	      {
+<b><a name="line209">209  </a></b>		++current;
+<b><a name="line210">210  </a></b>		return *this;
+<b><a name="line211">211  </a></b>	      }
+<b><a name="line212">212  </a></b>	
+<b><a name="line213">213  </a></b>	      /**
+<b><a name="line214">214  </a></b>	       *  @return  A reverse_iterator with the previous value of @c *this
+<b><a name="line215">215  </a></b>	       *
+<b><a name="line216">216  </a></b>	       *  Increments the underlying iterator.
+<b><a name="line217">217  </a></b>	      */
+<b><a name="line218">218  </a></b>	      <a href="#line97">reverse_iterator</a>
+<b><a name="line219">219  </a></b>	      <b>operator--</b>(int)
+<b><a name="line220">220  </a></b>	      {
+<b><a name="line221">221  </a></b>		reverse_iterator __tmp = *this;
+<b><a name="line222">222  </a></b>		++current;
+<b><a name="line223">223  </a></b>		return __tmp;
+<b><a name="line224">224  </a></b>	      }
+<b><a name="line225">225  </a></b>	
+<b><a name="line226">226  </a></b>	      /**
+<b><a name="line227">227  </a></b>	       *  @return  A reverse_iterator that refers to @c current - @a __n
+<b><a name="line228">228  </a></b>	       *
+<b><a name="line229">229  </a></b>	       *  The underlying iterator must be a Random Access Iterator.
+<b><a name="line230">230  </a></b>	      */
+<b><a name="line231">231  </a></b>	      <a href="#line97">reverse_iterator</a>
+<b><a name="line232">232  </a></b>	      <b>operator+</b>(<a href="#line111">difference_type</a> __n) const
+<b><a name="line233">233  </a></b>	      { return reverse_iterator(current - __n); }
+<b><a name="line234">234  </a></b>	
+<b><a name="line235">235  </a></b>	      /**
+<b><a name="line236">236  </a></b>	       *  @return  *this
+<b><a name="line237">237  </a></b>	       *
+<b><a name="line238">238  </a></b>	       *  Moves the underlying iterator backwards @a __n steps.
+<b><a name="line239">239  </a></b>	       *  The underlying iterator must be a Random Access Iterator.
+<b><a name="line240">240  </a></b>	      */
+<b><a name="line241">241  </a></b>	      <a href="#line97">reverse_iterator</a>&amp;
+<b><a name="line242">242  </a></b>	      <b>operator+=</b>(<a href="#line111">difference_type</a> __n)
+<b><a name="line243">243  </a></b>	      {
+<b><a name="line244">244  </a></b>		current -= __n;
+<b><a name="line245">245  </a></b>		return *this;
+<b><a name="line246">246  </a></b>	      }
+<b><a name="line247">247  </a></b>	
+<b><a name="line248">248  </a></b>	      /**
+<b><a name="line249">249  </a></b>	       *  @return  A reverse_iterator that refers to @c current - @a __n
+<b><a name="line250">250  </a></b>	       *
+<b><a name="line251">251  </a></b>	       *  The underlying iterator must be a Random Access Iterator.
+<b><a name="line252">252  </a></b>	      */
+<b><a name="line253">253  </a></b>	      <a href="#line97">reverse_iterator</a>
+<b><a name="line254">254  </a></b>	      <b>operator-</b>(<a href="#line111">difference_type</a> __n) const
+<b><a name="line255">255  </a></b>	      { return reverse_iterator(current + __n); }
+<b><a name="line256">256  </a></b>	
+<b><a name="line257">257  </a></b>	      /**
+<b><a name="line258">258  </a></b>	       *  @return  *this
+<b><a name="line259">259  </a></b>	       *
+<b><a name="line260">260  </a></b>	       *  Moves the underlying iterator forwards @a __n steps.
+<b><a name="line261">261  </a></b>	       *  The underlying iterator must be a Random Access Iterator.
+<b><a name="line262">262  </a></b>	      */
+<b><a name="line263">263  </a></b>	      <a href="#line97">reverse_iterator</a>&amp;
+<b><a name="line264">264  </a></b>	      <b>operator-=</b>(<a href="#line111">difference_type</a> __n)
+<b><a name="line265">265  </a></b>	      {
+<b><a name="line266">266  </a></b>		current += __n;
+<b><a name="line267">267  </a></b>		return *this;
+<b><a name="line268">268  </a></b>	      }
+<b><a name="line269">269  </a></b>	
+<b><a name="line270">270  </a></b>	      /**
+<b><a name="line271">271  </a></b>	       *  @return  The value at @c current - @a __n - 1
+<b><a name="line272">272  </a></b>	       *
+<b><a name="line273">273  </a></b>	       *  The underlying iterator must be a Random Access Iterator.
+<b><a name="line274">274  </a></b>	      */
+<b><a name="line275">275  </a></b>	      <a href="#line113">reference</a>
+<b><a name="line276">276  </a></b>	      <b>operator[]</b>(<a href="#line111">difference_type</a> __n) const
+<b><a name="line277">277  </a></b>	      { return *(*this + __n); }
+<b><a name="line278">278  </a></b>	    };
+<b><a name="line279">279  </a></b>	
+<b><a name="line280">280  </a></b>	  //@{
+<b><a name="line281">281  </a></b>	  /**
+<b><a name="line282">282  </a></b>	   *  @param  __x  A %reverse_iterator.
+<b><a name="line283">283  </a></b>	   *  @param  __y  A %reverse_iterator.
+<b><a name="line284">284  </a></b>	   *  @return  A simple bool.
+<b><a name="line285">285  </a></b>	   *
+<b><a name="line286">286  </a></b>	   *  Reverse iterators forward many operations to their underlying base()
+<b><a name="line287">287  </a></b>	   *  iterators.  Others are implemented in terms of one another.
+<b><a name="line288">288  </a></b>	   *
+<b><a name="line289">289  </a></b>	  */
+<b><a name="line290">290  </a></b>	  template&lt;typename <b>_Iterator</b>&gt;
+<b><a name="line291">291  </a></b>	    inline bool
+<b><a name="line292">292  </a></b>	    <b>operator==</b>(const <a href="#line97">reverse_iterator</a>&lt;<a href="#line290">_Iterator</a>&gt;&amp; __x,
+<b><a name="line293">293  </a></b>		       const <a href="#line97">reverse_iterator</a>&lt;<a href="#line290">_Iterator</a>&gt;&amp; __y)
+<b><a name="line294">294  </a></b>	    { return __x.base() == __y.base(); }
+<b><a name="line295">295  </a></b>	
+<b><a name="line296">296  </a></b>	  template&lt;typename <b>_Iterator</b>&gt;
+<b><a name="line297">297  </a></b>	    inline bool
+<b><a name="line298">298  </a></b>	    <b>operator&lt;</b>(const <a href="#line97">reverse_iterator</a>&lt;<a href="#line296">_Iterator</a>&gt;&amp; __x,
+<b><a name="line299">299  </a></b>		      const <a href="#line97">reverse_iterator</a>&lt;<a href="#line296">_Iterator</a>&gt;&amp; __y)
+<b><a name="line300">300  </a></b>	    { return __y.base() &lt; __x.base(); }
+<b><a name="line301">301  </a></b>	
+<b><a name="line302">302  </a></b>	  template&lt;typename <b>_Iterator</b>&gt;
+<b><a name="line303">303  </a></b>	    inline bool
+<b><a name="line304">304  </a></b>	    <b>operator!=</b>(const <a href="#line97">reverse_iterator</a>&lt;<a href="#line302">_Iterator</a>&gt;&amp; __x,
+<b><a name="line305">305  </a></b>		       const <a href="#line97">reverse_iterator</a>&lt;<a href="#line302">_Iterator</a>&gt;&amp; __y)
+<b><a name="line306">306  </a></b>	    { return !(__x == __y); }
+<b><a name="line307">307  </a></b>	
+<b><a name="line308">308  </a></b>	  template&lt;typename <b>_Iterator</b>&gt;
+<b><a name="line309">309  </a></b>	    inline bool
+<b><a name="line310">310  </a></b>	    <b>operator&gt;</b>(const <a href="#line97">reverse_iterator</a>&lt;<a href="#line308">_Iterator</a>&gt;&amp; __x,
+<b><a name="line311">311  </a></b>		      const <a href="#line97">reverse_iterator</a>&lt;<a href="#line308">_Iterator</a>&gt;&amp; __y)
+<b><a name="line312">312  </a></b>	    { return __y &lt; __x; }
+<b><a name="line313">313  </a></b>	
+<b><a name="line314">314  </a></b>	  template&lt;typename <b>_Iterator</b>&gt;
+<b><a name="line315">315  </a></b>	    inline bool
+<b><a name="line316">316  </a></b>	    <b>operator&lt;=</b>(const <a href="#line97">reverse_iterator</a>&lt;<a href="#line314">_Iterator</a>&gt;&amp; __x,
+<b><a name="line317">317  </a></b>		       const <a href="#line97">reverse_iterator</a>&lt;<a href="#line314">_Iterator</a>&gt;&amp; __y)
+<b><a name="line318">318  </a></b>	    { return !(__y &lt; __x); }
+<b><a name="line319">319  </a></b>	
+<b><a name="line320">320  </a></b>	  template&lt;typename <b>_Iterator</b>&gt;
+<b><a name="line321">321  </a></b>	    inline bool
+<b><a name="line322">322  </a></b>	    <b>operator&gt;=</b>(const <a href="#line97">reverse_iterator</a>&lt;<a href="#line320">_Iterator</a>&gt;&amp; __x,
+<b><a name="line323">323  </a></b>		       const <a href="#line97">reverse_iterator</a>&lt;<a href="#line320">_Iterator</a>&gt;&amp; __y)
+<b><a name="line324">324  </a></b>	    { return !(__x &lt; __y); }
+<b><a name="line325">325  </a></b>	
+<b><a name="line326">326  </a></b>	  template&lt;typename <b>_Iterator</b>&gt;
+<b><a name="line327">327  </a></b>	    inline typename <a href="#line97">reverse_iterator</a>&lt;<a href="#line326">_Iterator</a>&gt;::difference_type
+<b><a name="line328">328  </a></b>	    <b>operator-</b>(const <a href="#line97">reverse_iterator</a>&lt;<a href="#line326">_Iterator</a>&gt;&amp; __x,
+<b><a name="line329">329  </a></b>		      const <a href="#line97">reverse_iterator</a>&lt;<a href="#line326">_Iterator</a>&gt;&amp; __y)
+<b><a name="line330">330  </a></b>	    { return __y.base() - __x.base(); }
+<b><a name="line331">331  </a></b>	
+<b><a name="line332">332  </a></b>	  template&lt;typename <b>_Iterator</b>&gt;
+<b><a name="line333">333  </a></b>	    inline <a href="#line97">reverse_iterator</a>&lt;<a href="#line332">_Iterator</a>&gt;
+<b><a name="line334">334  </a></b>	    <b>operator+</b>(typename <a href="#line97">reverse_iterator</a>&lt;<a href="#line332">_Iterator</a>&gt;::difference_type __n,
+<b><a name="line335">335  </a></b>		      const <a href="#line97">reverse_iterator</a>&lt;<a href="#line332">_Iterator</a>&gt;&amp; __x)
+<b><a name="line336">336  </a></b>	    { return reverse_iterator&lt;_Iterator&gt;(__x.base() - __n); }
+<b><a name="line337">337  </a></b>	
+<b><a name="line338">338  </a></b>	  // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line339">339  </a></b>	  // DR 280. Comparison of reverse_iterator to const reverse_iterator.
+<b><a name="line340">340  </a></b>	  template&lt;typename <b>_IteratorL</b>, typename <b>_IteratorR</b>&gt;
+<b><a name="line341">341  </a></b>	    inline bool
+<b><a name="line342">342  </a></b>	    <b>operator==</b>(const <a href="#line97">reverse_iterator</a>&lt;<a href="#line340">_IteratorL</a>&gt;&amp; __x,
+<b><a name="line343">343  </a></b>		       const <a href="#line97">reverse_iterator</a>&lt;<a href="#line340">_IteratorR</a>&gt;&amp; __y)
+<b><a name="line344">344  </a></b>	    { return __x.base() == __y.base(); }
+<b><a name="line345">345  </a></b>	
+<b><a name="line346">346  </a></b>	  template&lt;typename <b>_IteratorL</b>, typename <b>_IteratorR</b>&gt;
+<b><a name="line347">347  </a></b>	    inline bool
+<b><a name="line348">348  </a></b>	    <b>operator&lt;</b>(const <a href="#line97">reverse_iterator</a>&lt;<a href="#line346">_IteratorL</a>&gt;&amp; __x,
+<b><a name="line349">349  </a></b>		      const <a href="#line97">reverse_iterator</a>&lt;<a href="#line346">_IteratorR</a>&gt;&amp; __y)
+<b><a name="line350">350  </a></b>	    { return __y.base() &lt; __x.base(); }
+<b><a name="line351">351  </a></b>	
+<b><a name="line352">352  </a></b>	  template&lt;typename <b>_IteratorL</b>, typename <b>_IteratorR</b>&gt;
+<b><a name="line353">353  </a></b>	    inline bool
+<b><a name="line354">354  </a></b>	    <b>operator!=</b>(const <a href="#line97">reverse_iterator</a>&lt;<a href="#line352">_IteratorL</a>&gt;&amp; __x,
+<b><a name="line355">355  </a></b>		       const <a href="#line97">reverse_iterator</a>&lt;<a href="#line352">_IteratorR</a>&gt;&amp; __y)
+<b><a name="line356">356  </a></b>	    { return !(__x == __y); }
+<b><a name="line357">357  </a></b>	
+<b><a name="line358">358  </a></b>	  template&lt;typename <b>_IteratorL</b>, typename <b>_IteratorR</b>&gt;
+<b><a name="line359">359  </a></b>	    inline bool
+<b><a name="line360">360  </a></b>	    <b>operator&gt;</b>(const <a href="#line97">reverse_iterator</a>&lt;<a href="#line358">_IteratorL</a>&gt;&amp; __x,
+<b><a name="line361">361  </a></b>		      const <a href="#line97">reverse_iterator</a>&lt;<a href="#line358">_IteratorR</a>&gt;&amp; __y)
+<b><a name="line362">362  </a></b>	    { return __y &lt; __x; }
+<b><a name="line363">363  </a></b>	
+<b><a name="line364">364  </a></b>	  template&lt;typename <b>_IteratorL</b>, typename <b>_IteratorR</b>&gt;
+<b><a name="line365">365  </a></b>	    inline bool
+<b><a name="line366">366  </a></b>	    <b>operator&lt;=</b>(const <a href="#line97">reverse_iterator</a>&lt;<a href="#line364">_IteratorL</a>&gt;&amp; __x,
+<b><a name="line367">367  </a></b>		       const <a href="#line97">reverse_iterator</a>&lt;<a href="#line364">_IteratorR</a>&gt;&amp; __y)
+<b><a name="line368">368  </a></b>	    { return !(__y &lt; __x); }
+<b><a name="line369">369  </a></b>	
+<b><a name="line370">370  </a></b>	  template&lt;typename <b>_IteratorL</b>, typename <b>_IteratorR</b>&gt;
+<b><a name="line371">371  </a></b>	    inline bool
+<b><a name="line372">372  </a></b>	    <b>operator&gt;=</b>(const <a href="#line97">reverse_iterator</a>&lt;<a href="#line370">_IteratorL</a>&gt;&amp; __x,
+<b><a name="line373">373  </a></b>		       const <a href="#line97">reverse_iterator</a>&lt;<a href="#line370">_IteratorR</a>&gt;&amp; __y)
+<b><a name="line374">374  </a></b>	    { return !(__x &lt; __y); }
+<b><a name="line375">375  </a></b>	
+<b><a name="line376">376  </a></b>	  template&lt;typename <b>_IteratorL</b>, typename <b>_IteratorR</b>&gt;
+<b><a name="line377">377  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line378">378  </a></b>	    // DR 685.
+<b><a name="line379">379  </a></b>	    inline auto
+<b><a name="line380">380  </a></b>	    <b>operator-</b>(const <a href="#line97">reverse_iterator</a>&lt;<a href="#line376">_IteratorL</a>&gt;&amp; __x,
+<b><a name="line381">381  </a></b>		      const <a href="#line97">reverse_iterator</a>&lt;<a href="#line376">_IteratorR</a>&gt;&amp; __y)
+<b><a name="line382">382  </a></b>	    -&gt; decltype(__y.base() - __x.base())
+<b><a name="line383">383  </a></b>	#else
+<b><a name="line384">384  </a></b>	    inline typename reverse_iterator&lt;_IteratorL&gt;::difference_type
+<b><a name="line385">385  </a></b>	    operator-(const reverse_iterator&lt;_IteratorL&gt;&amp; __x,
+<b><a name="line386">386  </a></b>		      const reverse_iterator&lt;_IteratorR&gt;&amp; __y)
+<b><a name="line387">387  </a></b>	#endif
+<b><a name="line388">388  </a></b>	    { return __y.base() - __x.base(); }
+<b><a name="line389">389  </a></b>	  //@}
+<b><a name="line390">390  </a></b>	
+<b><a name="line391">391  </a></b>	#if __cplusplus &gt; 201103L
+<b><a name="line392">392  </a></b>	#define __cpp_lib_make_reverse_iterator 201402
+<b><a name="line393">393  </a></b>	
+<b><a name="line394">394  </a></b>	  // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line395">395  </a></b>	  // DR 2285. make_reverse_iterator
+<b><a name="line396">396  </a></b>	  /// Generator function for reverse_iterator.
+<b><a name="line397">397  </a></b>	  template&lt;typename _Iterator&gt;
+<b><a name="line398">398  </a></b>	    inline reverse_iterator&lt;_Iterator&gt;
+<b><a name="line399">399  </a></b>	    make_reverse_iterator(_Iterator __i)
+<b><a name="line400">400  </a></b>	    { return reverse_iterator&lt;_Iterator&gt;(__i); }
+<b><a name="line401">401  </a></b>	#endif
+<b><a name="line402">402  </a></b>	
+<b><a name="line403">403  </a></b>	  // 24.4.2.2.1 back_insert_iterator
+<b><a name="line404">404  </a></b>	  /**
+<b><a name="line405">405  </a></b>	   *  @brief  Turns assignment into insertion.
+<b><a name="line406">406  </a></b>	   *
+<b><a name="line407">407  </a></b>	   *  These are output iterators, constructed from a container-of-T.
+<b><a name="line408">408  </a></b>	   *  Assigning a T to the iterator appends it to the container using
+<b><a name="line409">409  </a></b>	   *  push_back.
+<b><a name="line410">410  </a></b>	   *
+<b><a name="line411">411  </a></b>	   *  Tip:  Using the back_inserter function to create these iterators can
+<b><a name="line412">412  </a></b>	   *  save typing.
+<b><a name="line413">413  </a></b>	  */
+<b><a name="line414">414  </a></b>	  template&lt;typename <b>_Container</b>&gt;
+<b><a name="line415">415  </a></b>	    class back_insert_iterator
+<b><a name="line416">416  </a></b>	    : public <a href="../stl_iterator_base_types.h/code.html#line118">iterator</a>&lt;<a href="../stl_iterator_base_types.h/code.html#line92">output_iterator_tag</a>, void, void, void, void&gt;
+<b><a name="line417">417  </a></b>	    {
+<b><a name="line418">418  </a></b>	    protected:
+<b><a name="line419">419  </a></b>	      <a href="#line414">_Container</a>* <b>container</b>;
+<b><a name="line420">420  </a></b>	
+<b><a name="line421">421  </a></b>	    public:
+<b><a name="line422">422  </a></b>	      /// A nested typedef for the type of whatever container you used.
+<b><a name="line423">423  </a></b>	      typedef <a href="#line414">_Container</a>          <b>container_type</b>;
+<b><a name="line424">424  </a></b>	
+<b><a name="line425">425  </a></b>	      /// The only way to create this %iterator is with a container.
+<b><a name="line426">426  </a></b>	      explicit
+<b><a name="line427">427  </a></b>	      back_insert_iterator(<a href="#line414">_Container</a>&amp; <b>__x</b>) : <a href="#line419">container</a>(&amp;__x) { }
+<b><a name="line428">428  </a></b>	
+<b><a name="line429">429  </a></b>	      /**
+<b><a name="line430">430  </a></b>	       *  @param  __value  An instance of whatever type
+<b><a name="line431">431  </a></b>	       *                 container_type::const_reference is; presumably a
+<b><a name="line432">432  </a></b>	       *                 reference-to-const T for container&lt;T&gt;.
+<b><a name="line433">433  </a></b>	       *  @return  This %iterator, for chained operations.
+<b><a name="line434">434  </a></b>	       *
+<b><a name="line435">435  </a></b>	       *  This kind of %iterator doesn't really have a @a position in the
+<b><a name="line436">436  </a></b>	       *  container (you can think of the position as being permanently at
+<b><a name="line437">437  </a></b>	       *  the end, if you like).  Assigning a value to the %iterator will
+<b><a name="line438">438  </a></b>	       *  always append the value to the end of the container.
+<b><a name="line439">439  </a></b>	      */
+<b><a name="line440">440  </a></b>	#if __cplusplus &lt; 201103L
+<b><a name="line441">441  </a></b>	      back_insert_iterator&amp;
+<b><a name="line442">442  </a></b>	      operator=(typename _Container::const_reference __value)
+<b><a name="line443">443  </a></b>	      {
+<b><a name="line444">444  </a></b>		container-&gt;push_back(__value);
+<b><a name="line445">445  </a></b>		return *this;
+<b><a name="line446">446  </a></b>	      }
+<b><a name="line447">447  </a></b>	#else
+<b><a name="line448">448  </a></b>	      <a href="#line415">back_insert_iterator</a>&amp;
+<b><a name="line449">449  </a></b>	      operator=(const typename <a href="#line414">_Container</a>::<a href="../stl_vector.h/code.html#line226">value_type</a>&amp; __value)
+<b><a name="line450">450  </a></b>	      {
+<b><a name="line451">451  </a></b>		container-&gt;push_back(__value);
+<b><a name="line452">452  </a></b>		return *this;
+<b><a name="line453">453  </a></b>	      }
+<b><a name="line454">454  </a></b>	
+<b><a name="line455">455  </a></b>	      <a href="#line415">back_insert_iterator</a>&amp;
+<b><a name="line456">456  </a></b>	      operator=(typename <a href="#line414">_Container</a>::<a href="../stl_vector.h/code.html#line226">value_type</a>&amp;&amp; <b>__value</b>)
+<b><a name="line457">457  </a></b>	      {
+<b><a name="line458">458  </a></b>		<a href="#line419">container</a>-&gt;<a href="../stl_vector.h/code.html#line931">push_back</a>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../move.h/code.html#line101">move</a>(<a href="#line456">__value</a>));
+<b><a name="line459">459  </a></b>		return *this;
+<b><a name="line460">460  </a></b>	      }
+<b><a name="line461">461  </a></b>	#endif
+<b><a name="line462">462  </a></b>	
+<b><a name="line463">463  </a></b>	      /// Simply returns *this.
+<b><a name="line464">464  </a></b>	      <a href="#line415">back_insert_iterator</a>&amp;
+<b><a name="line465">465  </a></b>	      operator*()
+<b><a name="line466">466  </a></b>	      { return *this; }
+<b><a name="line467">467  </a></b>	
+<b><a name="line468">468  </a></b>	      /// Simply returns *this.  (This %iterator does not @a move.)
+<b><a name="line469">469  </a></b>	      <a href="#line415">back_insert_iterator</a>&amp;
+<b><a name="line470">470  </a></b>	      operator++()
+<b><a name="line471">471  </a></b>	      { return *this; }
+<b><a name="line472">472  </a></b>	
+<b><a name="line473">473  </a></b>	      /// Simply returns *this.  (This %iterator does not @a move.)
+<b><a name="line474">474  </a></b>	      <a href="#line415">back_insert_iterator</a>
+<b><a name="line475">475  </a></b>	      operator++(int)
+<b><a name="line476">476  </a></b>	      { return *this; }
+<b><a name="line477">477  </a></b>	    };
+<b><a name="line478">478  </a></b>	
+<b><a name="line479">479  </a></b>	  /**
+<b><a name="line480">480  </a></b>	   *  @param  __x  A container of arbitrary type.
+<b><a name="line481">481  </a></b>	   *  @return  An instance of back_insert_iterator working on @p __x.
+<b><a name="line482">482  </a></b>	   *
+<b><a name="line483">483  </a></b>	   *  This wrapper function helps in creating back_insert_iterator instances.
+<b><a name="line484">484  </a></b>	   *  Typing the name of the %iterator requires knowing the precise full
+<b><a name="line485">485  </a></b>	   *  type of the container, which can be tedious and impedes generic
+<b><a name="line486">486  </a></b>	   *  programming.  Using this function lets you take advantage of automatic
+<b><a name="line487">487  </a></b>	   *  template parameter deduction, making the compiler match the correct
+<b><a name="line488">488  </a></b>	   *  types for you.
+<b><a name="line489">489  </a></b>	  */
+<b><a name="line490">490  </a></b>	  template&lt;typename <b>_Container</b>&gt;
+<b><a name="line491">491  </a></b>	    inline <a href="#line415">back_insert_iterator</a>&lt;<a href="#line490">_Container</a>&gt;
+<b><a name="line492">492  </a></b>	    back_inserter(<a href="#line490">_Container</a>&amp; <b>__x</b>)
+<b><a name="line493">493  </a></b>	    { return <a href="#line415">back_insert_iterator</a>&lt;<a href="#line490">_Container</a>&gt;(<a href="#line492">__x</a>); }
+<b><a name="line494">494  </a></b>	
+<b><a name="line495">495  </a></b>	  /**
+<b><a name="line496">496  </a></b>	   *  @brief  Turns assignment into insertion.
+<b><a name="line497">497  </a></b>	   *
+<b><a name="line498">498  </a></b>	   *  These are output iterators, constructed from a container-of-T.
+<b><a name="line499">499  </a></b>	   *  Assigning a T to the iterator prepends it to the container using
+<b><a name="line500">500  </a></b>	   *  push_front.
+<b><a name="line501">501  </a></b>	   *
+<b><a name="line502">502  </a></b>	   *  Tip:  Using the front_inserter function to create these iterators can
+<b><a name="line503">503  </a></b>	   *  save typing.
+<b><a name="line504">504  </a></b>	  */
+<b><a name="line505">505  </a></b>	  template&lt;typename <b>_Container</b>&gt;
+<b><a name="line506">506  </a></b>	    class <b>front_insert_iterator</b>
+<b><a name="line507">507  </a></b>	    : public <a href="../stl_iterator_base_types.h/code.html#line118">iterator</a>&lt;<a href="../stl_iterator_base_types.h/code.html#line92">output_iterator_tag</a>, void, void, void, void&gt;
+<b><a name="line508">508  </a></b>	    {
+<b><a name="line509">509  </a></b>	    protected:
+<b><a name="line510">510  </a></b>	      <a href="#line505">_Container</a>* <b>container</b>;
+<b><a name="line511">511  </a></b>	
+<b><a name="line512">512  </a></b>	    public:
+<b><a name="line513">513  </a></b>	      /// A nested typedef for the type of whatever container you used.
+<b><a name="line514">514  </a></b>	      typedef <a href="#line505">_Container</a>          <b>container_type</b>;
+<b><a name="line515">515  </a></b>	
+<b><a name="line516">516  </a></b>	      /// The only way to create this %iterator is with a container.
+<b><a name="line517">517  </a></b>	      explicit <b>front_insert_iterator</b>(<a href="#line505">_Container</a>&amp; __x) : container(&amp;__x) { }
+<b><a name="line518">518  </a></b>	
+<b><a name="line519">519  </a></b>	      /**
+<b><a name="line520">520  </a></b>	       *  @param  __value  An instance of whatever type
+<b><a name="line521">521  </a></b>	       *                 container_type::const_reference is; presumably a
+<b><a name="line522">522  </a></b>	       *                 reference-to-const T for container&lt;T&gt;.
+<b><a name="line523">523  </a></b>	       *  @return  This %iterator, for chained operations.
+<b><a name="line524">524  </a></b>	       *
+<b><a name="line525">525  </a></b>	       *  This kind of %iterator doesn't really have a @a position in the
+<b><a name="line526">526  </a></b>	       *  container (you can think of the position as being permanently at
+<b><a name="line527">527  </a></b>	       *  the front, if you like).  Assigning a value to the %iterator will
+<b><a name="line528">528  </a></b>	       *  always prepend the value to the front of the container.
+<b><a name="line529">529  </a></b>	      */
+<b><a name="line530">530  </a></b>	#if __cplusplus &lt; 201103L
+<b><a name="line531">531  </a></b>	      front_insert_iterator&amp;
+<b><a name="line532">532  </a></b>	      operator=(typename _Container::const_reference __value)
+<b><a name="line533">533  </a></b>	      {
+<b><a name="line534">534  </a></b>		container-&gt;push_front(__value);
+<b><a name="line535">535  </a></b>		return *this;
+<b><a name="line536">536  </a></b>	      }
+<b><a name="line537">537  </a></b>	#else
+<b><a name="line538">538  </a></b>	      <a href="#line506">front_insert_iterator</a>&amp;
+<b><a name="line539">539  </a></b>	      <b>operator=</b>(const typename <a href="#line505">_Container</a>::value_type&amp; __value)
+<b><a name="line540">540  </a></b>	      {
+<b><a name="line541">541  </a></b>		container-&gt;push_front(__value);
+<b><a name="line542">542  </a></b>		return *this;
+<b><a name="line543">543  </a></b>	      }
+<b><a name="line544">544  </a></b>	
+<b><a name="line545">545  </a></b>	      <a href="#line506">front_insert_iterator</a>&amp;
+<b><a name="line546">546  </a></b>	      <b>operator=</b>(typename <a href="#line505">_Container</a>::value_type&amp;&amp; __value)
+<b><a name="line547">547  </a></b>	      {
+<b><a name="line548">548  </a></b>		container-&gt;push_front(std::move(__value));
+<b><a name="line549">549  </a></b>		return *this;
+<b><a name="line550">550  </a></b>	      }
+<b><a name="line551">551  </a></b>	#endif
+<b><a name="line552">552  </a></b>	
+<b><a name="line553">553  </a></b>	      /// Simply returns *this.
+<b><a name="line554">554  </a></b>	      <a href="#line506">front_insert_iterator</a>&amp;
+<b><a name="line555">555  </a></b>	      <b>operator*</b>()
+<b><a name="line556">556  </a></b>	      { return *this; }
+<b><a name="line557">557  </a></b>	
+<b><a name="line558">558  </a></b>	      /// Simply returns *this.  (This %iterator does not @a move.)
+<b><a name="line559">559  </a></b>	      <a href="#line506">front_insert_iterator</a>&amp;
+<b><a name="line560">560  </a></b>	      <b>operator++</b>()
+<b><a name="line561">561  </a></b>	      { return *this; }
+<b><a name="line562">562  </a></b>	
+<b><a name="line563">563  </a></b>	      /// Simply returns *this.  (This %iterator does not @a move.)
+<b><a name="line564">564  </a></b>	      <a href="#line506">front_insert_iterator</a>
+<b><a name="line565">565  </a></b>	      <b>operator++</b>(int)
+<b><a name="line566">566  </a></b>	      { return *this; }
+<b><a name="line567">567  </a></b>	    };
+<b><a name="line568">568  </a></b>	
+<b><a name="line569">569  </a></b>	  /**
+<b><a name="line570">570  </a></b>	   *  @param  __x  A container of arbitrary type.
+<b><a name="line571">571  </a></b>	   *  @return  An instance of front_insert_iterator working on @p x.
+<b><a name="line572">572  </a></b>	   *
+<b><a name="line573">573  </a></b>	   *  This wrapper function helps in creating front_insert_iterator instances.
+<b><a name="line574">574  </a></b>	   *  Typing the name of the %iterator requires knowing the precise full
+<b><a name="line575">575  </a></b>	   *  type of the container, which can be tedious and impedes generic
+<b><a name="line576">576  </a></b>	   *  programming.  Using this function lets you take advantage of automatic
+<b><a name="line577">577  </a></b>	   *  template parameter deduction, making the compiler match the correct
+<b><a name="line578">578  </a></b>	   *  types for you.
+<b><a name="line579">579  </a></b>	  */
+<b><a name="line580">580  </a></b>	  template&lt;typename <b>_Container</b>&gt;
+<b><a name="line581">581  </a></b>	    inline <a href="#line506">front_insert_iterator</a>&lt;<a href="#line580">_Container</a>&gt;
+<b><a name="line582">582  </a></b>	    <b>front_inserter</b>(<a href="#line580">_Container</a>&amp; __x)
+<b><a name="line583">583  </a></b>	    { return front_insert_iterator&lt;_Container&gt;(__x); }
+<b><a name="line584">584  </a></b>	
+<b><a name="line585">585  </a></b>	  /**
+<b><a name="line586">586  </a></b>	   *  @brief  Turns assignment into insertion.
+<b><a name="line587">587  </a></b>	   *
+<b><a name="line588">588  </a></b>	   *  These are output iterators, constructed from a container-of-T.
+<b><a name="line589">589  </a></b>	   *  Assigning a T to the iterator inserts it in the container at the
+<b><a name="line590">590  </a></b>	   *  %iterator's position, rather than overwriting the value at that
+<b><a name="line591">591  </a></b>	   *  position.
+<b><a name="line592">592  </a></b>	   *
+<b><a name="line593">593  </a></b>	   *  (Sequences will actually insert a @e copy of the value before the
+<b><a name="line594">594  </a></b>	   *  %iterator's position.)
+<b><a name="line595">595  </a></b>	   *
+<b><a name="line596">596  </a></b>	   *  Tip:  Using the inserter function to create these iterators can
+<b><a name="line597">597  </a></b>	   *  save typing.
+<b><a name="line598">598  </a></b>	  */
+<b><a name="line599">599  </a></b>	  template&lt;typename <b>_Container</b>&gt;
+<b><a name="line600">600  </a></b>	    class <b>insert_iterator</b>
+<b><a name="line601">601  </a></b>	    : public <a href="../stl_iterator_base_types.h/code.html#line118">iterator</a>&lt;<a href="../stl_iterator_base_types.h/code.html#line92">output_iterator_tag</a>, void, void, void, void&gt;
+<b><a name="line602">602  </a></b>	    {
+<b><a name="line603">603  </a></b>	    protected:
+<b><a name="line604">604  </a></b>	      <a href="#line599">_Container</a>* <b>container</b>;
+<b><a name="line605">605  </a></b>	      typename <a href="#line599">_Container</a>::iterator <b>iter</b>;
+<b><a name="line606">606  </a></b>	
+<b><a name="line607">607  </a></b>	    public:
+<b><a name="line608">608  </a></b>	      /// A nested typedef for the type of whatever container you used.
+<b><a name="line609">609  </a></b>	      typedef <a href="#line599">_Container</a>          <b>container_type</b>;
+<b><a name="line610">610  </a></b>	
+<b><a name="line611">611  </a></b>	      /**
+<b><a name="line612">612  </a></b>	       *  The only way to create this %iterator is with a container and an
+<b><a name="line613">613  </a></b>	       *  initial position (a normal %iterator into the container).
+<b><a name="line614">614  </a></b>	      */
+<b><a name="line615">615  </a></b>	      <b>insert_iterator</b>(<a href="#line599">_Container</a>&amp; __x, typename <a href="#line599">_Container</a>::iterator __i)
+<b><a name="line616">616  </a></b>	      : container(&amp;__x), iter(__i) {}
+<b><a name="line617">617  </a></b>	
+<b><a name="line618">618  </a></b>	      /**
+<b><a name="line619">619  </a></b>	       *  @param  __value  An instance of whatever type
+<b><a name="line620">620  </a></b>	       *                 container_type::const_reference is; presumably a
+<b><a name="line621">621  </a></b>	       *                 reference-to-const T for container&lt;T&gt;.
+<b><a name="line622">622  </a></b>	       *  @return  This %iterator, for chained operations.
+<b><a name="line623">623  </a></b>	       *
+<b><a name="line624">624  </a></b>	       *  This kind of %iterator maintains its own position in the
+<b><a name="line625">625  </a></b>	       *  container.  Assigning a value to the %iterator will insert the
+<b><a name="line626">626  </a></b>	       *  value into the container at the place before the %iterator.
+<b><a name="line627">627  </a></b>	       *
+<b><a name="line628">628  </a></b>	       *  The position is maintained such that subsequent assignments will
+<b><a name="line629">629  </a></b>	       *  insert values immediately after one another.  For example,
+<b><a name="line630">630  </a></b>	       *  @code
+<b><a name="line631">631  </a></b>	       *     // vector v contains A and Z
+<b><a name="line632">632  </a></b>	       *
+<b><a name="line633">633  </a></b>	       *     insert_iterator i (v, ++v.begin());
+<b><a name="line634">634  </a></b>	       *     i = 1;
+<b><a name="line635">635  </a></b>	       *     i = 2;
+<b><a name="line636">636  </a></b>	       *     i = 3;
+<b><a name="line637">637  </a></b>	       *
+<b><a name="line638">638  </a></b>	       *     // vector v contains A, 1, 2, 3, and Z
+<b><a name="line639">639  </a></b>	       *  @endcode
+<b><a name="line640">640  </a></b>	      */
+<b><a name="line641">641  </a></b>	#if __cplusplus &lt; 201103L
+<b><a name="line642">642  </a></b>	      insert_iterator&amp;
+<b><a name="line643">643  </a></b>	      operator=(typename _Container::const_reference __value)
+<b><a name="line644">644  </a></b>	      {
+<b><a name="line645">645  </a></b>		iter = container-&gt;insert(iter, __value);
+<b><a name="line646">646  </a></b>		++iter;
+<b><a name="line647">647  </a></b>		return *this;
+<b><a name="line648">648  </a></b>	      }
+<b><a name="line649">649  </a></b>	#else
+<b><a name="line650">650  </a></b>	      <a href="#line600">insert_iterator</a>&amp;
+<b><a name="line651">651  </a></b>	      <b>operator=</b>(const typename <a href="#line599">_Container</a>::value_type&amp; __value)
+<b><a name="line652">652  </a></b>	      {
+<b><a name="line653">653  </a></b>		iter = container-&gt;insert(iter, __value);
+<b><a name="line654">654  </a></b>		++iter;
+<b><a name="line655">655  </a></b>		return *this;
+<b><a name="line656">656  </a></b>	      }
+<b><a name="line657">657  </a></b>	
+<b><a name="line658">658  </a></b>	      <a href="#line600">insert_iterator</a>&amp;
+<b><a name="line659">659  </a></b>	      <b>operator=</b>(typename <a href="#line599">_Container</a>::value_type&amp;&amp; __value)
+<b><a name="line660">660  </a></b>	      {
+<b><a name="line661">661  </a></b>		iter = container-&gt;insert(iter, std::move(__value));
+<b><a name="line662">662  </a></b>		++iter;
+<b><a name="line663">663  </a></b>		return *this;
+<b><a name="line664">664  </a></b>	      }
+<b><a name="line665">665  </a></b>	#endif
+<b><a name="line666">666  </a></b>	
+<b><a name="line667">667  </a></b>	      /// Simply returns *this.
+<b><a name="line668">668  </a></b>	      <a href="#line600">insert_iterator</a>&amp;
+<b><a name="line669">669  </a></b>	      <b>operator*</b>()
+<b><a name="line670">670  </a></b>	      { return *this; }
+<b><a name="line671">671  </a></b>	
+<b><a name="line672">672  </a></b>	      /// Simply returns *this.  (This %iterator does not @a move.)
+<b><a name="line673">673  </a></b>	      <a href="#line600">insert_iterator</a>&amp;
+<b><a name="line674">674  </a></b>	      <b>operator++</b>()
+<b><a name="line675">675  </a></b>	      { return *this; }
+<b><a name="line676">676  </a></b>	
+<b><a name="line677">677  </a></b>	      /// Simply returns *this.  (This %iterator does not @a move.)
+<b><a name="line678">678  </a></b>	      <a href="#line600">insert_iterator</a>&amp;
+<b><a name="line679">679  </a></b>	      <b>operator++</b>(int)
+<b><a name="line680">680  </a></b>	      { return *this; }
+<b><a name="line681">681  </a></b>	    };
+<b><a name="line682">682  </a></b>	
+<b><a name="line683">683  </a></b>	  /**
+<b><a name="line684">684  </a></b>	   *  @param __x  A container of arbitrary type.
+<b><a name="line685">685  </a></b>	   *  @return  An instance of insert_iterator working on @p __x.
+<b><a name="line686">686  </a></b>	   *
+<b><a name="line687">687  </a></b>	   *  This wrapper function helps in creating insert_iterator instances.
+<b><a name="line688">688  </a></b>	   *  Typing the name of the %iterator requires knowing the precise full
+<b><a name="line689">689  </a></b>	   *  type of the container, which can be tedious and impedes generic
+<b><a name="line690">690  </a></b>	   *  programming.  Using this function lets you take advantage of automatic
+<b><a name="line691">691  </a></b>	   *  template parameter deduction, making the compiler match the correct
+<b><a name="line692">692  </a></b>	   *  types for you.
+<b><a name="line693">693  </a></b>	  */
+<b><a name="line694">694  </a></b>	  template&lt;typename <b>_Container</b>, typename <b>_Iterator</b>&gt;
+<b><a name="line695">695  </a></b>	    inline <a href="#line600">insert_iterator</a>&lt;<a href="#line694">_Container</a>&gt;
+<b><a name="line696">696  </a></b>	    <b>inserter</b>(<a href="#line694">_Container</a>&amp; __x, <a href="#line694">_Iterator</a> __i)
+<b><a name="line697">697  </a></b>	    {
+<b><a name="line698">698  </a></b>	      return insert_iterator&lt;_Container&gt;(__x,
+<b><a name="line699">699  </a></b>						 typename _Container::iterator(__i));
+<b><a name="line700">700  </a></b>	    }
+<b><a name="line701">701  </a></b>	
+<b><a name="line702">702  </a></b>	  // @} group iterators
+<b><a name="line703">703  </a></b>	
+<b><a name="line704">704  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line705">705  </a></b>	} // namespace
+<b><a name="line706">706  </a></b>	
+<b><a name="line707">707  </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line708">708  </a></b>	{
+<b><a name="line709">709  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line710">710  </a></b>	
+<b><a name="line711">711  </a></b>	  // This iterator adapter is @a normal in the sense that it does not
+<b><a name="line712">712  </a></b>	  // change the semantics of any of the operators of its iterator
+<b><a name="line713">713  </a></b>	  // parameter.  Its primary purpose is to convert an iterator that is
+<b><a name="line714">714  </a></b>	  // not a class, e.g. a pointer, into an iterator that is a class.
+<b><a name="line715">715  </a></b>	  // The _Container parameter exists solely so that different containers
+<b><a name="line716">716  </a></b>	  // using this template can instantiate different types, even if the
+<b><a name="line717">717  </a></b>	  // _Iterator parameter is the same.
+<b><a name="line718">718  </a></b>	  using <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../stl_iterator_base_types.h/code.html#line162">iterator_traits</a>;
+<b><a name="line719">719  </a></b>	  using <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../stl_iterator_base_types.h/code.html#line118">iterator</a>;
+<b><a name="line720">720  </a></b>	  template&lt;typename <b>_Iterator</b>, typename <b>_Container</b>&gt;
+<b><a name="line721">721  </a></b>	    class __normal_iterator
+<b><a name="line722">722  </a></b>	    {
+<b><a name="line723">723  </a></b>	    protected:
+<b><a name="line724">724  </a></b>	      <a href="#line720">_Iterator</a> <b>_M_current</b>;
+<b><a name="line725">725  </a></b>	
+<b><a name="line726">726  </a></b>	      typedef <a href="../stl_iterator_base_types.h/code.html#line162">iterator_traits</a>&lt;<a href="#line720">_Iterator</a>&gt;		<b>__traits_type</b>;
+<b><a name="line727">727  </a></b>	
+<b><a name="line728">728  </a></b>	    public:
+<b><a name="line729">729  </a></b>	      typedef <a href="#line720">_Iterator</a>					<b>iterator_type</b>;
+<b><a name="line730">730  </a></b>	      typedef typename <a href="#line726">__traits_type</a>::<a href="../stl_iterator_base_types.h/code.html#line180">iterator_category</a> <b>iterator_category</b>;
+<b><a name="line731">731  </a></b>	      typedef typename <a href="#line726">__traits_type</a>::<a href="../stl_iterator_base_types.h/code.html#line181">value_type</a>  	<b>value_type</b>;
+<b><a name="line732">732  </a></b>	      typedef typename <a href="#line726">__traits_type</a>::<a href="../stl_iterator_base_types.h/code.html#line182">difference_type</a> 	<b>difference_type</b>;
+<b><a name="line733">733  </a></b>	      typedef typename <a href="#line726">__traits_type</a>::<a href="../stl_iterator_base_types.h/code.html#line184">reference</a> 	<b>reference</b>;
+<b><a name="line734">734  </a></b>	      typedef typename <a href="#line726">__traits_type</a>::<a href="../stl_iterator_base_types.h/code.html#line183">pointer</a>   	<b>pointer</b>;
+<b><a name="line735">735  </a></b>	
+<b><a name="line736">736  </a></b>	      <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line98">_GLIBCXX_CONSTEXPR</a> __normal_iterator() <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line737">737  </a></b>	      : _M_current(_Iterator()) { }
+<b><a name="line738">738  </a></b>	
+<b><a name="line739">739  </a></b>	      explicit
+<b><a name="line740">740  </a></b>	      __normal_iterator(const <a href="#line720">_Iterator</a>&amp; <b>__i</b>) <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line741">741  </a></b>	      : <a href="#line724">_M_current</a>(<a href="#line740">__i</a>) { }
+<b><a name="line742">742  </a></b>	
+<b><a name="line743">743  </a></b>	      // Allow iterator to const_iterator conversion
+<b><a name="line744">744  </a></b>	      template&lt;typename <b>_Iter</b>&gt;
+<b><a name="line745">745  </a></b>	        __normal_iterator(const <a href="#line721">__normal_iterator</a>&lt;<a href="#line744">_Iter</a>,
+<b><a name="line746">746  </a></b>				  typename <a href="../../ext/type_traits.h/code.html#line43">__enable_if</a>&lt;
+<b><a name="line747">747  </a></b>	      	       (<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../cpp_type_traits.h/code.html#line104">__are_same</a>&lt;<a href="#line744">_Iter</a>, typename <a href="#line720">_Container</a>::<a href="../stl_vector.h/code.html#line227">pointer</a>&gt;::<a href="../cpp_type_traits.h/code.html#line113">__value</a>),
+<b><a name="line748">748  </a></b>			      <a href="#line720">_Container</a>&gt;::<a href="../../ext/type_traits.h/code.html#line48">__type</a>&gt;&amp; <b>__i</b>) <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line749">749  </a></b>	        : <a href="#line724">_M_current</a>(<a href="#line748">__i</a>.<a href="#line805">base</a>()) { }
+<b><a name="line750">750  </a></b>	
+<b><a name="line751">751  </a></b>	      // Forward iterator requirements
+<b><a name="line752">752  </a></b>	      <a href="#line733">reference</a>
+<b><a name="line753">753  </a></b>	      operator*() const <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line754">754  </a></b>	      { return *<a href="#line724">_M_current</a>; }
+<b><a name="line755">755  </a></b>	
+<b><a name="line756">756  </a></b>	      <a href="#line734">pointer</a>
+<b><a name="line757">757  </a></b>	      operator-&gt;() const <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line758">758  </a></b>	      { return <a href="#line724">_M_current</a>; }
+<b><a name="line759">759  </a></b>	
+<b><a name="line760">760  </a></b>	      <a href="#line721">__normal_iterator</a>&amp;
+<b><a name="line761">761  </a></b>	      operator++() <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line762">762  </a></b>	      {
+<b><a name="line763">763  </a></b>		++<a href="#line724">_M_current</a>;
+<b><a name="line764">764  </a></b>		return *this;
+<b><a name="line765">765  </a></b>	      }
+<b><a name="line766">766  </a></b>	
+<b><a name="line767">767  </a></b>	      <a href="#line721">__normal_iterator</a>
+<b><a name="line768">768  </a></b>	      operator++(int) <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line769">769  </a></b>	      { return <a href="#line740">__normal_iterator</a>(<a href="#line724">_M_current</a>++); }
+<b><a name="line770">770  </a></b>	
+<b><a name="line771">771  </a></b>	      // Bidirectional iterator requirements
+<b><a name="line772">772  </a></b>	      <a href="#line721">__normal_iterator</a>&amp;
+<b><a name="line773">773  </a></b>	      operator--() <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line774">774  </a></b>	      {
+<b><a name="line775">775  </a></b>		--<a href="#line724">_M_current</a>;
+<b><a name="line776">776  </a></b>		return *this;
+<b><a name="line777">777  </a></b>	      }
+<b><a name="line778">778  </a></b>	
+<b><a name="line779">779  </a></b>	      <a href="#line721">__normal_iterator</a>
+<b><a name="line780">780  </a></b>	      operator--(int) <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line781">781  </a></b>	      { return __normal_iterator(_M_current--); }
+<b><a name="line782">782  </a></b>	
+<b><a name="line783">783  </a></b>	      // Random access iterator requirements
+<b><a name="line784">784  </a></b>	      <a href="#line733">reference</a>
+<b><a name="line785">785  </a></b>	      operator[](<a href="#line732">difference_type</a> __n) const <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line786">786  </a></b>	      { return _M_current[__n]; }
+<b><a name="line787">787  </a></b>	
+<b><a name="line788">788  </a></b>	      <a href="#line721">__normal_iterator</a>&amp;
+<b><a name="line789">789  </a></b>	      operator+=(<a href="#line732">difference_type</a> <b>__n</b>) <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line790">790  </a></b>	      { <a href="#line724">_M_current</a> += <a href="#line789">__n</a>; return *this; }
+<b><a name="line791">791  </a></b>	
+<b><a name="line792">792  </a></b>	      <a href="#line721">__normal_iterator</a>
+<b><a name="line793">793  </a></b>	      operator+(<a href="#line732">difference_type</a> <b>__n</b>) const <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line794">794  </a></b>	      { return <a href="#line740">__normal_iterator</a>(<a href="#line724">_M_current</a> + <a href="#line793">__n</a>); }
+<b><a name="line795">795  </a></b>	
+<b><a name="line796">796  </a></b>	      <a href="#line721">__normal_iterator</a>&amp;
+<b><a name="line797">797  </a></b>	      operator-=(<a href="#line732">difference_type</a> __n) <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line798">798  </a></b>	      { _M_current -= __n; return *this; }
+<b><a name="line799">799  </a></b>	
+<b><a name="line800">800  </a></b>	      <a href="#line721">__normal_iterator</a>
+<b><a name="line801">801  </a></b>	      operator-(<a href="#line732">difference_type</a> <b>__n</b>) const <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line802">802  </a></b>	      { return <a href="#line740">__normal_iterator</a>(<a href="#line724">_M_current</a> - <a href="#line801">__n</a>); }
+<b><a name="line803">803  </a></b>	
+<b><a name="line804">804  </a></b>	      const <a href="#line720">_Iterator</a>&amp;
+<b><a name="line805">805  </a></b>	      base() const <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line806">806  </a></b>	      { return <a href="#line724">_M_current</a>; }
+<b><a name="line807">807  </a></b>	    };
+<b><a name="line808">808  </a></b>	
+<b><a name="line809">809  </a></b>	  // Note: In what follows, the left- and right-hand-side iterators are
+<b><a name="line810">810  </a></b>	  // allowed to vary in types (conceptually in cv-qualification) so that
+<b><a name="line811">811  </a></b>	  // comparison between cv-qualified and non-cv-qualified iterators be
+<b><a name="line812">812  </a></b>	  // valid.  However, the greedy and unfriendly operators in std::rel_ops
+<b><a name="line813">813  </a></b>	  // will make overload resolution ambiguous (when in scope) if we don't
+<b><a name="line814">814  </a></b>	  // provide overloads whose operands are of the same type.  Can someone
+<b><a name="line815">815  </a></b>	  // remind me what generic programming is about? -- Gaby
+<b><a name="line816">816  </a></b>	
+<b><a name="line817">817  </a></b>	  // Forward iterator requirements
+<b><a name="line818">818  </a></b>	  template&lt;typename <b>_IteratorL</b>, typename <b>_IteratorR</b>, typename <b>_Container</b>&gt;
+<b><a name="line819">819  </a></b>	    inline bool
+<b><a name="line820">820  </a></b>	    <b>operator==</b>(const <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line818">_IteratorL</a>, <a href="#line818">_Container</a>&gt;&amp; __lhs,
+<b><a name="line821">821  </a></b>		       const <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line818">_IteratorR</a>, <a href="#line818">_Container</a>&gt;&amp; __rhs)
+<b><a name="line822">822  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line823">823  </a></b>	    { return __lhs.base() == __rhs.base(); }
+<b><a name="line824">824  </a></b>	
+<b><a name="line825">825  </a></b>	  template&lt;typename <b>_Iterator</b>, typename <b>_Container</b>&gt;
+<b><a name="line826">826  </a></b>	    inline bool
+<b><a name="line827">827  </a></b>	    operator==(const <a href="#line721">__normal_iterator</a>&lt;<a href="#line825">_Iterator</a>, <a href="#line825">_Container</a>&gt;&amp; <b>__lhs</b>,
+<b><a name="line828">828  </a></b>		       const <a href="#line721">__normal_iterator</a>&lt;<a href="#line825">_Iterator</a>, <a href="#line825">_Container</a>&gt;&amp; <b>__rhs</b>)
+<b><a name="line829">829  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line830">830  </a></b>	    { return <a href="#line827">__lhs</a>.<a href="#line805">base</a>() == <a href="#line828">__rhs</a>.<a href="#line805">base</a>(); }
+<b><a name="line831">831  </a></b>	
+<b><a name="line832">832  </a></b>	  template&lt;typename <b>_IteratorL</b>, typename <b>_IteratorR</b>, typename <b>_Container</b>&gt;
+<b><a name="line833">833  </a></b>	    inline bool
+<b><a name="line834">834  </a></b>	    <b>operator!=</b>(const <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line832">_IteratorL</a>, <a href="#line832">_Container</a>&gt;&amp; __lhs,
+<b><a name="line835">835  </a></b>		       const <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line832">_IteratorR</a>, <a href="#line832">_Container</a>&gt;&amp; __rhs)
+<b><a name="line836">836  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line837">837  </a></b>	    { return __lhs.base() != __rhs.base(); }
+<b><a name="line838">838  </a></b>	
+<b><a name="line839">839  </a></b>	  template&lt;typename <b>_Iterator</b>, typename <b>_Container</b>&gt;
+<b><a name="line840">840  </a></b>	    inline bool
+<b><a name="line841">841  </a></b>	    operator!=(const <a href="#line721">__normal_iterator</a>&lt;<a href="#line839">_Iterator</a>, <a href="#line839">_Container</a>&gt;&amp; <b>__lhs</b>,
+<b><a name="line842">842  </a></b>		       const <a href="#line721">__normal_iterator</a>&lt;<a href="#line839">_Iterator</a>, <a href="#line839">_Container</a>&gt;&amp; <b>__rhs</b>)
+<b><a name="line843">843  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line844">844  </a></b>	    { return <a href="#line841">__lhs</a>.<a href="#line805">base</a>() != <a href="#line842">__rhs</a>.<a href="#line805">base</a>(); }
+<b><a name="line845">845  </a></b>	
+<b><a name="line846">846  </a></b>	  // Random access iterator requirements
+<b><a name="line847">847  </a></b>	  template&lt;typename <b>_IteratorL</b>, typename <b>_IteratorR</b>, typename <b>_Container</b>&gt;
+<b><a name="line848">848  </a></b>	    inline bool
+<b><a name="line849">849  </a></b>	    <b>operator&lt;</b>(const <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line847">_IteratorL</a>, <a href="#line847">_Container</a>&gt;&amp; __lhs,
+<b><a name="line850">850  </a></b>		      const <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line847">_IteratorR</a>, <a href="#line847">_Container</a>&gt;&amp; __rhs)
+<b><a name="line851">851  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line852">852  </a></b>	    { return __lhs.base() &lt; __rhs.base(); }
+<b><a name="line853">853  </a></b>	
+<b><a name="line854">854  </a></b>	  template&lt;typename <b>_Iterator</b>, typename <b>_Container</b>&gt;
+<b><a name="line855">855  </a></b>	    inline bool
+<b><a name="line856">856  </a></b>	    <b>operator&lt;</b>(const <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line854">_Iterator</a>, <a href="#line854">_Container</a>&gt;&amp; __lhs,
+<b><a name="line857">857  </a></b>		      const <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line854">_Iterator</a>, <a href="#line854">_Container</a>&gt;&amp; __rhs)
+<b><a name="line858">858  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line859">859  </a></b>	    { return __lhs.base() &lt; __rhs.base(); }
+<b><a name="line860">860  </a></b>	
+<b><a name="line861">861  </a></b>	  template&lt;typename <b>_IteratorL</b>, typename <b>_IteratorR</b>, typename <b>_Container</b>&gt;
+<b><a name="line862">862  </a></b>	    inline bool
+<b><a name="line863">863  </a></b>	    <b>operator&gt;</b>(const <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line861">_IteratorL</a>, <a href="#line861">_Container</a>&gt;&amp; __lhs,
+<b><a name="line864">864  </a></b>		      const <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line861">_IteratorR</a>, <a href="#line861">_Container</a>&gt;&amp; __rhs)
+<b><a name="line865">865  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line866">866  </a></b>	    { return __lhs.base() &gt; __rhs.base(); }
+<b><a name="line867">867  </a></b>	
+<b><a name="line868">868  </a></b>	  template&lt;typename <b>_Iterator</b>, typename <b>_Container</b>&gt;
+<b><a name="line869">869  </a></b>	    inline bool
+<b><a name="line870">870  </a></b>	    <b>operator&gt;</b>(const <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line868">_Iterator</a>, <a href="#line868">_Container</a>&gt;&amp; __lhs,
+<b><a name="line871">871  </a></b>		      const <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line868">_Iterator</a>, <a href="#line868">_Container</a>&gt;&amp; __rhs)
+<b><a name="line872">872  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line873">873  </a></b>	    { return __lhs.base() &gt; __rhs.base(); }
+<b><a name="line874">874  </a></b>	
+<b><a name="line875">875  </a></b>	  template&lt;typename <b>_IteratorL</b>, typename <b>_IteratorR</b>, typename <b>_Container</b>&gt;
+<b><a name="line876">876  </a></b>	    inline bool
+<b><a name="line877">877  </a></b>	    <b>operator&lt;=</b>(const <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line875">_IteratorL</a>, <a href="#line875">_Container</a>&gt;&amp; __lhs,
+<b><a name="line878">878  </a></b>		       const <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line875">_IteratorR</a>, <a href="#line875">_Container</a>&gt;&amp; __rhs)
+<b><a name="line879">879  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line880">880  </a></b>	    { return __lhs.base() &lt;= __rhs.base(); }
+<b><a name="line881">881  </a></b>	
+<b><a name="line882">882  </a></b>	  template&lt;typename <b>_Iterator</b>, typename <b>_Container</b>&gt;
+<b><a name="line883">883  </a></b>	    inline bool
+<b><a name="line884">884  </a></b>	    <b>operator&lt;=</b>(const <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line882">_Iterator</a>, <a href="#line882">_Container</a>&gt;&amp; __lhs,
+<b><a name="line885">885  </a></b>		       const <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line882">_Iterator</a>, <a href="#line882">_Container</a>&gt;&amp; __rhs)
+<b><a name="line886">886  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line887">887  </a></b>	    { return __lhs.base() &lt;= __rhs.base(); }
+<b><a name="line888">888  </a></b>	
+<b><a name="line889">889  </a></b>	  template&lt;typename <b>_IteratorL</b>, typename <b>_IteratorR</b>, typename <b>_Container</b>&gt;
+<b><a name="line890">890  </a></b>	    inline bool
+<b><a name="line891">891  </a></b>	    <b>operator&gt;=</b>(const <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line889">_IteratorL</a>, <a href="#line889">_Container</a>&gt;&amp; __lhs,
+<b><a name="line892">892  </a></b>		       const <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line889">_IteratorR</a>, <a href="#line889">_Container</a>&gt;&amp; __rhs)
+<b><a name="line893">893  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line894">894  </a></b>	    { return __lhs.base() &gt;= __rhs.base(); }
+<b><a name="line895">895  </a></b>	
+<b><a name="line896">896  </a></b>	  template&lt;typename <b>_Iterator</b>, typename <b>_Container</b>&gt;
+<b><a name="line897">897  </a></b>	    inline bool
+<b><a name="line898">898  </a></b>	    <b>operator&gt;=</b>(const <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line896">_Iterator</a>, <a href="#line896">_Container</a>&gt;&amp; __lhs,
+<b><a name="line899">899  </a></b>		       const <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line896">_Iterator</a>, <a href="#line896">_Container</a>&gt;&amp; __rhs)
+<b><a name="line900">900  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line901">901  </a></b>	    { return __lhs.base() &gt;= __rhs.base(); }
+<b><a name="line902">902  </a></b>	
+<b><a name="line903">903  </a></b>	  // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line904">904  </a></b>	  // According to the resolution of DR179 not only the various comparison
+<b><a name="line905">905  </a></b>	  // operators but also operator- must accept mixed iterator/const_iterator
+<b><a name="line906">906  </a></b>	  // parameters.
+<b><a name="line907">907  </a></b>	  template&lt;typename <b>_IteratorL</b>, typename <b>_IteratorR</b>, typename <b>_Container</b>&gt;
+<b><a name="line908">908  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line909">909  </a></b>	    // DR 685.
+<b><a name="line910">910  </a></b>	    inline auto
+<b><a name="line911">911  </a></b>	    operator-(const <a href="#line721">__normal_iterator</a>&lt;<a href="#line907">_IteratorL</a>, <a href="#line907">_Container</a>&gt;&amp; <b>__lhs</b>,
+<b><a name="line912">912  </a></b>		      const <a href="#line721">__normal_iterator</a>&lt;<a href="#line907">_IteratorR</a>, <a href="#line907">_Container</a>&gt;&amp; <b>__rhs</b>) noexcept
+<b><a name="line913">913  </a></b>	    -&gt; decltype(__lhs.<a href="#line805">base</a>() - __rhs.<a href="#line805">base</a>())
+<b><a name="line914">914  </a></b>	#else
+<b><a name="line915">915  </a></b>	    inline typename __normal_iterator&lt;_IteratorL, _Container&gt;::difference_type
+<b><a name="line916">916  </a></b>	    operator-(const __normal_iterator&lt;_IteratorL, _Container&gt;&amp; __lhs,
+<b><a name="line917">917  </a></b>		      const __normal_iterator&lt;_IteratorR, _Container&gt;&amp; __rhs)
+<b><a name="line918">918  </a></b>	#endif
+<b><a name="line919">919  </a></b>	    { return <a href="#line911">__lhs</a>.<a href="#line805">base</a>() - <a href="#line912">__rhs</a>.<a href="#line805">base</a>(); }
+<b><a name="line920">920  </a></b>	
+<b><a name="line921">921  </a></b>	  template&lt;typename <b>_Iterator</b>, typename <b>_Container</b>&gt;
+<b><a name="line922">922  </a></b>	    inline typename <a href="#line721">__normal_iterator</a>&lt;<a href="#line921">_Iterator</a>, <a href="#line921">_Container</a>&gt;::<a href="#line732">difference_type</a>
+<b><a name="line923">923  </a></b>	    operator-(const <a href="#line721">__normal_iterator</a>&lt;<a href="#line921">_Iterator</a>, <a href="#line921">_Container</a>&gt;&amp; <b>__lhs</b>,
+<b><a name="line924">924  </a></b>		      const <a href="#line721">__normal_iterator</a>&lt;<a href="#line921">_Iterator</a>, <a href="#line921">_Container</a>&gt;&amp; <b>__rhs</b>)
+<b><a name="line925">925  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line926">926  </a></b>	    { return <a href="#line923">__lhs</a>.<a href="#line805">base</a>() - <a href="#line924">__rhs</a>.<a href="#line805">base</a>(); }
+<b><a name="line927">927  </a></b>	
+<b><a name="line928">928  </a></b>	  template&lt;typename <b>_Iterator</b>, typename <b>_Container</b>&gt;
+<b><a name="line929">929  </a></b>	    inline <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line928">_Iterator</a>, <a href="#line928">_Container</a>&gt;
+<b><a name="line930">930  </a></b>	    <b>operator+</b>(typename <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line928">_Iterator</a>, <a href="#line928">_Container</a>&gt;::difference_type
+<b><a name="line931">931  </a></b>		      __n, const <a href="../cpp_type_traits.h/code.html#line73">__normal_iterator</a>&lt;<a href="#line928">_Iterator</a>, <a href="#line928">_Container</a>&gt;&amp; __i)
+<b><a name="line932">932  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line933">933  </a></b>	    { return __normal_iterator&lt;_Iterator, _Container&gt;(__i.base() + __n); }
+<b><a name="line934">934  </a></b>	
+<b><a name="line935">935  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line936">936  </a></b>	} // namespace
+<b><a name="line937">937  </a></b>	
+<b><a name="line938">938  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line939">939  </a></b>	
+<b><a name="line940">940  </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line941">941  </a></b>	{
+<b><a name="line942">942  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line943">943  </a></b>	
+<b><a name="line944">944  </a></b>	  /**
+<b><a name="line945">945  </a></b>	   * @addtogroup iterators
+<b><a name="line946">946  </a></b>	   * @{
+<b><a name="line947">947  </a></b>	   */
+<b><a name="line948">948  </a></b>	
+<b><a name="line949">949  </a></b>	  // 24.4.3  Move iterators
+<b><a name="line950">950  </a></b>	  /**
+<b><a name="line951">951  </a></b>	   *  Class template move_iterator is an iterator adapter with the same
+<b><a name="line952">952  </a></b>	   *  behavior as the underlying iterator except that its dereference
+<b><a name="line953">953  </a></b>	   *  operator implicitly converts the value returned by the underlying
+<b><a name="line954">954  </a></b>	   *  iterator's dereference operator to an rvalue reference.  Some
+<b><a name="line955">955  </a></b>	   *  generic algorithms can be called with move iterators to replace
+<b><a name="line956">956  </a></b>	   *  copying with moving.
+<b><a name="line957">957  </a></b>	   */
+<b><a name="line958">958  </a></b>	  template&lt;typename <b>_Iterator</b>&gt;
+<b><a name="line959">959  </a></b>	    class move_iterator
+<b><a name="line960">960  </a></b>	    {
+<b><a name="line961">961  </a></b>	    protected:
+<b><a name="line962">962  </a></b>	      <a href="#line958">_Iterator</a> <b>_M_current</b>;
+<b><a name="line963">963  </a></b>	
+<b><a name="line964">964  </a></b>	      typedef <a href="../stl_iterator_base_types.h/code.html#line162">iterator_traits</a>&lt;<a href="#line958">_Iterator</a>&gt;		<b>__traits_type</b>;
+<b><a name="line965">965  </a></b>	      typedef typename <a href="#line964">__traits_type</a>::<a href="../stl_iterator_base_types.h/code.html#line184">reference</a>		<b>__base_ref</b>;
+<b><a name="line966">966  </a></b>	
+<b><a name="line967">967  </a></b>	    public:
+<b><a name="line968">968  </a></b>	      typedef <a href="#line958">_Iterator</a>					<b>iterator_type</b>;
+<b><a name="line969">969  </a></b>	      typedef typename <a href="#line964">__traits_type</a>::<a href="../stl_iterator_base_types.h/code.html#line180">iterator_category</a> <b>iterator_category</b>;
+<b><a name="line970">970  </a></b>	      typedef typename <a href="#line964">__traits_type</a>::<a href="../stl_iterator_base_types.h/code.html#line181">value_type</a>  	<b>value_type</b>;
+<b><a name="line971">971  </a></b>	      typedef typename <a href="#line964">__traits_type</a>::<a href="../stl_iterator_base_types.h/code.html#line182">difference_type</a>	<b>difference_type</b>;
+<b><a name="line972">972  </a></b>	      // NB: DR 680.
+<b><a name="line973">973  </a></b>	      typedef <a href="#line958">_Iterator</a>					<b>pointer</b>;
+<b><a name="line974">974  </a></b>	      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line975">975  </a></b>	      // 2106. move_iterator wrapping iterators returning prvalues
+<b><a name="line976">976  </a></b>	      typedef typename <a href="../../type_traits/code.html#line2113">conditional</a>&lt;<a href="../../type_traits/code.html#line544">is_reference</a>&lt;<a href="#line965">__base_ref</a>&gt;::<a href="../../type_traits/code.html#line71">value</a>,
+<b><a name="line977">977  </a></b>				 typename <a href="../../type_traits/code.html#line1575">remove_reference</a>&lt;<a href="#line965">__base_ref</a>&gt;::<a href="../../type_traits/code.html#line1580">type</a>&amp;&amp;,
+<b><a name="line978">978  </a></b>				 <a href="#line965">__base_ref</a>&gt;::<a href="../../type_traits/code.html#line2114">type</a>		<b>reference</b>;
+<b><a name="line979">979  </a></b>	
+<b><a name="line980">980  </a></b>	      move_iterator()
+<b><a name="line981">981  </a></b>	      : _M_current() { }
+<b><a name="line982">982  </a></b>	
+<b><a name="line983">983  </a></b>	      explicit
+<b><a name="line984">984  </a></b>	      move_iterator(<a href="#line968">iterator_type</a> <b>__i</b>)
+<b><a name="line985">985  </a></b>	      : <a href="#line962">_M_current</a>(<a href="#line984">__i</a>) { }
+<b><a name="line986">986  </a></b>	
+<b><a name="line987">987  </a></b>	      template&lt;typename <b>_Iter</b>&gt;
+<b><a name="line988">988  </a></b>		move_iterator(const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line987">_Iter</a>&gt;&amp; __i)
+<b><a name="line989">989  </a></b>		: _M_current(__i.base()) { }
+<b><a name="line990">990  </a></b>	
+<b><a name="line991">991  </a></b>	      <a href="#line968">iterator_type</a>
+<b><a name="line992">992  </a></b>	      base() const
+<b><a name="line993">993  </a></b>	      { return <a href="#line962">_M_current</a>; }
+<b><a name="line994">994  </a></b>	
+<b><a name="line995">995  </a></b>	      <a href="#line978">reference</a>
+<b><a name="line996">996  </a></b>	      operator*() const
+<b><a name="line997">997  </a></b>	      { return static_cast&lt;<a href="#line978">reference</a>&gt;(*<a href="#line962">_M_current</a>); }
+<b><a name="line998">998  </a></b>	
+<b><a name="line999">999  </a></b>	      <a href="#line973">pointer</a>
+<b><a name="line1000">1000 </a></b>	      operator-&gt;() const
+<b><a name="line1001">1001 </a></b>	      { return _M_current; }
+<b><a name="line1002">1002 </a></b>	
+<b><a name="line1003">1003 </a></b>	      <a href="#line959">move_iterator</a>&amp;
+<b><a name="line1004">1004 </a></b>	      operator++()
+<b><a name="line1005">1005 </a></b>	      {
+<b><a name="line1006">1006 </a></b>		++<a href="#line962">_M_current</a>;
+<b><a name="line1007">1007 </a></b>		return *this;
+<b><a name="line1008">1008 </a></b>	      }
+<b><a name="line1009">1009 </a></b>	
+<b><a name="line1010">1010 </a></b>	      <a href="#line959">move_iterator</a>
+<b><a name="line1011">1011 </a></b>	      operator++(int)
+<b><a name="line1012">1012 </a></b>	      {
+<b><a name="line1013">1013 </a></b>		move_iterator __tmp = *this;
+<b><a name="line1014">1014 </a></b>		++_M_current;
+<b><a name="line1015">1015 </a></b>		return __tmp;
+<b><a name="line1016">1016 </a></b>	      }
+<b><a name="line1017">1017 </a></b>	
+<b><a name="line1018">1018 </a></b>	      <a href="#line959">move_iterator</a>&amp;
+<b><a name="line1019">1019 </a></b>	      operator--()
+<b><a name="line1020">1020 </a></b>	      {
+<b><a name="line1021">1021 </a></b>		--_M_current;
+<b><a name="line1022">1022 </a></b>		return *this;
+<b><a name="line1023">1023 </a></b>	      }
+<b><a name="line1024">1024 </a></b>	
+<b><a name="line1025">1025 </a></b>	      <a href="#line959">move_iterator</a>
+<b><a name="line1026">1026 </a></b>	      operator--(int)
+<b><a name="line1027">1027 </a></b>	      {
+<b><a name="line1028">1028 </a></b>		move_iterator __tmp = *this;
+<b><a name="line1029">1029 </a></b>		--_M_current;
+<b><a name="line1030">1030 </a></b>		return __tmp;
+<b><a name="line1031">1031 </a></b>	      }
+<b><a name="line1032">1032 </a></b>	
+<b><a name="line1033">1033 </a></b>	      <a href="#line959">move_iterator</a>
+<b><a name="line1034">1034 </a></b>	      operator+(<a href="#line971">difference_type</a> __n) const
+<b><a name="line1035">1035 </a></b>	      { return move_iterator(_M_current + __n); }
+<b><a name="line1036">1036 </a></b>	
+<b><a name="line1037">1037 </a></b>	      <a href="#line959">move_iterator</a>&amp;
+<b><a name="line1038">1038 </a></b>	      operator+=(<a href="#line971">difference_type</a> __n)
+<b><a name="line1039">1039 </a></b>	      {
+<b><a name="line1040">1040 </a></b>		_M_current += __n;
+<b><a name="line1041">1041 </a></b>		return *this;
+<b><a name="line1042">1042 </a></b>	      }
+<b><a name="line1043">1043 </a></b>	
+<b><a name="line1044">1044 </a></b>	      <a href="#line959">move_iterator</a>
+<b><a name="line1045">1045 </a></b>	      operator-(<a href="#line971">difference_type</a> __n) const
+<b><a name="line1046">1046 </a></b>	      { return move_iterator(_M_current - __n); }
+<b><a name="line1047">1047 </a></b>	    
+<b><a name="line1048">1048 </a></b>	      <a href="#line959">move_iterator</a>&amp;
+<b><a name="line1049">1049 </a></b>	      operator-=(<a href="#line971">difference_type</a> __n)
+<b><a name="line1050">1050 </a></b>	      { 
+<b><a name="line1051">1051 </a></b>		_M_current -= __n;
+<b><a name="line1052">1052 </a></b>		return *this;
+<b><a name="line1053">1053 </a></b>	      }
+<b><a name="line1054">1054 </a></b>	
+<b><a name="line1055">1055 </a></b>	      <a href="#line978">reference</a>
+<b><a name="line1056">1056 </a></b>	      operator[](<a href="#line971">difference_type</a> __n) const
+<b><a name="line1057">1057 </a></b>	      { return std::move(_M_current[__n]); }
+<b><a name="line1058">1058 </a></b>	    };
+<b><a name="line1059">1059 </a></b>	
+<b><a name="line1060">1060 </a></b>	  // Note: See __normal_iterator operators note from Gaby to understand
+<b><a name="line1061">1061 </a></b>	  // why there are always 2 versions for most of the move_iterator
+<b><a name="line1062">1062 </a></b>	  // operators.
+<b><a name="line1063">1063 </a></b>	  template&lt;typename <b>_IteratorL</b>, typename <b>_IteratorR</b>&gt;
+<b><a name="line1064">1064 </a></b>	    inline bool
+<b><a name="line1065">1065 </a></b>	    <b>operator==</b>(const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1063">_IteratorL</a>&gt;&amp; __x,
+<b><a name="line1066">1066 </a></b>		       const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1063">_IteratorR</a>&gt;&amp; __y)
+<b><a name="line1067">1067 </a></b>	    { return __x.base() == __y.base(); }
+<b><a name="line1068">1068 </a></b>	
+<b><a name="line1069">1069 </a></b>	  template&lt;typename <b>_Iterator</b>&gt;
+<b><a name="line1070">1070 </a></b>	    inline bool
+<b><a name="line1071">1071 </a></b>	    operator==(const <a href="#line959">move_iterator</a>&lt;<a href="#line1069">_Iterator</a>&gt;&amp; <b>__x</b>,
+<b><a name="line1072">1072 </a></b>		       const <a href="#line959">move_iterator</a>&lt;<a href="#line1069">_Iterator</a>&gt;&amp; <b>__y</b>)
+<b><a name="line1073">1073 </a></b>	    { return <a href="#line1071">__x</a>.<a href="#line992">base</a>() == <a href="#line1072">__y</a>.<a href="#line992">base</a>(); }
+<b><a name="line1074">1074 </a></b>	
+<b><a name="line1075">1075 </a></b>	  template&lt;typename <b>_IteratorL</b>, typename <b>_IteratorR</b>&gt;
+<b><a name="line1076">1076 </a></b>	    inline bool
+<b><a name="line1077">1077 </a></b>	    <b>operator!=</b>(const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1075">_IteratorL</a>&gt;&amp; __x,
+<b><a name="line1078">1078 </a></b>		       const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1075">_IteratorR</a>&gt;&amp; __y)
+<b><a name="line1079">1079 </a></b>	    { return !(__x == __y); }
+<b><a name="line1080">1080 </a></b>	
+<b><a name="line1081">1081 </a></b>	  template&lt;typename <b>_Iterator</b>&gt;
+<b><a name="line1082">1082 </a></b>	    inline bool
+<b><a name="line1083">1083 </a></b>	    operator!=(const <a href="#line959">move_iterator</a>&lt;<a href="#line1081">_Iterator</a>&gt;&amp; <b>__x</b>,
+<b><a name="line1084">1084 </a></b>		       const <a href="#line959">move_iterator</a>&lt;<a href="#line1081">_Iterator</a>&gt;&amp; <b>__y</b>)
+<b><a name="line1085">1085 </a></b>	    { return !(<a href="#line1083">__x</a> <a href="#line1071">==</a> <a href="#line1084">__y</a>); }
+<b><a name="line1086">1086 </a></b>	
+<b><a name="line1087">1087 </a></b>	  template&lt;typename <b>_IteratorL</b>, typename <b>_IteratorR</b>&gt;
+<b><a name="line1088">1088 </a></b>	    inline bool
+<b><a name="line1089">1089 </a></b>	    <b>operator&lt;</b>(const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1087">_IteratorL</a>&gt;&amp; __x,
+<b><a name="line1090">1090 </a></b>		      const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1087">_IteratorR</a>&gt;&amp; __y)
+<b><a name="line1091">1091 </a></b>	    { return __x.base() &lt; __y.base(); }
+<b><a name="line1092">1092 </a></b>	
+<b><a name="line1093">1093 </a></b>	  template&lt;typename <b>_Iterator</b>&gt;
+<b><a name="line1094">1094 </a></b>	    inline bool
+<b><a name="line1095">1095 </a></b>	    <b>operator&lt;</b>(const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1093">_Iterator</a>&gt;&amp; __x,
+<b><a name="line1096">1096 </a></b>		      const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1093">_Iterator</a>&gt;&amp; __y)
+<b><a name="line1097">1097 </a></b>	    { return __x.base() &lt; __y.base(); }
+<b><a name="line1098">1098 </a></b>	
+<b><a name="line1099">1099 </a></b>	  template&lt;typename <b>_IteratorL</b>, typename <b>_IteratorR</b>&gt;
+<b><a name="line1100">1100 </a></b>	    inline bool
+<b><a name="line1101">1101 </a></b>	    <b>operator&lt;=</b>(const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1099">_IteratorL</a>&gt;&amp; __x,
+<b><a name="line1102">1102 </a></b>		       const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1099">_IteratorR</a>&gt;&amp; __y)
+<b><a name="line1103">1103 </a></b>	    { return !(__y &lt; __x); }
+<b><a name="line1104">1104 </a></b>	
+<b><a name="line1105">1105 </a></b>	  template&lt;typename <b>_Iterator</b>&gt;
+<b><a name="line1106">1106 </a></b>	    inline bool
+<b><a name="line1107">1107 </a></b>	    <b>operator&lt;=</b>(const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1105">_Iterator</a>&gt;&amp; __x,
+<b><a name="line1108">1108 </a></b>		       const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1105">_Iterator</a>&gt;&amp; __y)
+<b><a name="line1109">1109 </a></b>	    { return !(__y &lt; __x); }
+<b><a name="line1110">1110 </a></b>	
+<b><a name="line1111">1111 </a></b>	  template&lt;typename <b>_IteratorL</b>, typename <b>_IteratorR</b>&gt;
+<b><a name="line1112">1112 </a></b>	    inline bool
+<b><a name="line1113">1113 </a></b>	    <b>operator&gt;</b>(const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1111">_IteratorL</a>&gt;&amp; __x,
+<b><a name="line1114">1114 </a></b>		      const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1111">_IteratorR</a>&gt;&amp; __y)
+<b><a name="line1115">1115 </a></b>	    { return __y &lt; __x; }
+<b><a name="line1116">1116 </a></b>	
+<b><a name="line1117">1117 </a></b>	  template&lt;typename <b>_Iterator</b>&gt;
+<b><a name="line1118">1118 </a></b>	    inline bool
+<b><a name="line1119">1119 </a></b>	    <b>operator&gt;</b>(const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1117">_Iterator</a>&gt;&amp; __x,
+<b><a name="line1120">1120 </a></b>		      const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1117">_Iterator</a>&gt;&amp; __y)
+<b><a name="line1121">1121 </a></b>	    { return __y &lt; __x; }
+<b><a name="line1122">1122 </a></b>	
+<b><a name="line1123">1123 </a></b>	  template&lt;typename <b>_IteratorL</b>, typename <b>_IteratorR</b>&gt;
+<b><a name="line1124">1124 </a></b>	    inline bool
+<b><a name="line1125">1125 </a></b>	    <b>operator&gt;=</b>(const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1123">_IteratorL</a>&gt;&amp; __x,
+<b><a name="line1126">1126 </a></b>		       const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1123">_IteratorR</a>&gt;&amp; __y)
+<b><a name="line1127">1127 </a></b>	    { return !(__x &lt; __y); }
+<b><a name="line1128">1128 </a></b>	
+<b><a name="line1129">1129 </a></b>	  template&lt;typename <b>_Iterator</b>&gt;
+<b><a name="line1130">1130 </a></b>	    inline bool
+<b><a name="line1131">1131 </a></b>	    <b>operator&gt;=</b>(const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1129">_Iterator</a>&gt;&amp; __x,
+<b><a name="line1132">1132 </a></b>		       const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1129">_Iterator</a>&gt;&amp; __y)
+<b><a name="line1133">1133 </a></b>	    { return !(__x &lt; __y); }
+<b><a name="line1134">1134 </a></b>	
+<b><a name="line1135">1135 </a></b>	  // DR 685.
+<b><a name="line1136">1136 </a></b>	  template&lt;typename <b>_IteratorL</b>, typename <b>_IteratorR</b>&gt;
+<b><a name="line1137">1137 </a></b>	    inline auto
+<b><a name="line1138">1138 </a></b>	    <b>operator-</b>(const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1136">_IteratorL</a>&gt;&amp; __x,
+<b><a name="line1139">1139 </a></b>		      const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1136">_IteratorR</a>&gt;&amp; __y)
+<b><a name="line1140">1140 </a></b>	    -&gt; decltype(__x.base() - __y.base())
+<b><a name="line1141">1141 </a></b>	    { return __x.base() - __y.base(); }
+<b><a name="line1142">1142 </a></b>	
+<b><a name="line1143">1143 </a></b>	  template&lt;typename <b>_Iterator</b>&gt;
+<b><a name="line1144">1144 </a></b>	    inline auto
+<b><a name="line1145">1145 </a></b>	    <b>operator-</b>(const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1143">_Iterator</a>&gt;&amp; __x,
+<b><a name="line1146">1146 </a></b>		      const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1143">_Iterator</a>&gt;&amp; __y)
+<b><a name="line1147">1147 </a></b>	    -&gt; decltype(__x.base() - __y.base())
+<b><a name="line1148">1148 </a></b>	    { return __x.base() - __y.base(); }
+<b><a name="line1149">1149 </a></b>	
+<b><a name="line1150">1150 </a></b>	  template&lt;typename <b>_Iterator</b>&gt;
+<b><a name="line1151">1151 </a></b>	    inline <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1150">_Iterator</a>&gt;
+<b><a name="line1152">1152 </a></b>	    <b>operator+</b>(typename <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1150">_Iterator</a>&gt;::difference_type __n,
+<b><a name="line1153">1153 </a></b>		      const <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1150">_Iterator</a>&gt;&amp; __x)
+<b><a name="line1154">1154 </a></b>	    { return __x + __n; }
+<b><a name="line1155">1155 </a></b>	
+<b><a name="line1156">1156 </a></b>	  template&lt;typename <b>_Iterator</b>&gt;
+<b><a name="line1157">1157 </a></b>	    inline <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1156">_Iterator</a>&gt;
+<b><a name="line1158">1158 </a></b>	    <b>make_move_iterator</b>(<a href="#line1156">_Iterator</a> __i)
+<b><a name="line1159">1159 </a></b>	    { return move_iterator&lt;_Iterator&gt;(__i); }
+<b><a name="line1160">1160 </a></b>	
+<b><a name="line1161">1161 </a></b>	  template&lt;typename <b>_Iterator</b>, typename <b>_ReturnType</b>
+<b><a name="line1162">1162 </a></b>	    = typename <a href="../../type_traits/code.html#line98">conditional</a>&lt;<a href="../move.h/code.html#line106">__move_if_noexcept_cond</a>
+<b><a name="line1163">1163 </a></b>	      &lt;typename <a href="../stl_iterator_base_types.h/code.html#line162">iterator_traits</a>&lt;<a href="#line1161">_Iterator</a>&gt;::value_type&gt;::value,
+<b><a name="line1164">1164 </a></b>	                <a href="#line1161">_Iterator</a>, <a href="../cpp_type_traits.h/code.html#line433">move_iterator</a>&lt;<a href="#line1161">_Iterator</a>&gt;&gt;::type&gt;
+<b><a name="line1165">1165 </a></b>	    inline <a href="#line1161">_ReturnType</a>
+<b><a name="line1166">1166 </a></b>	    __make_move_if_noexcept_iterator(<a href="#line1161">_Iterator</a> <b>__i</b>)
+<b><a name="line1167">1167 </a></b>	    { return <a href="#line1161">_ReturnType</a>(<a href="#line1166">__i</a>); }
+<b><a name="line1168">1168 </a></b>	
+<b><a name="line1169">1169 </a></b>	  // @} group iterators
+<b><a name="line1170">1170 </a></b>	
+<b><a name="line1171">1171 </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line1172">1172 </a></b>	} // namespace
+<b><a name="line1173">1173 </a></b>	
+<b><a name="line1174">1174 </a></b>	#define <b>_GLIBCXX_MAKE_MOVE_ITERATOR</b>(_Iter) std::make_move_iterator(_Iter)
+<b><a name="line1175">1175 </a></b>	#define <b>_GLIBCXX_MAKE_MOVE_IF_NOEXCEPT_ITERATOR</b>(_Iter) \
+<b><a name="line1176">1176 </a></b>	  std::__make_move_if_noexcept_iterator(_Iter)
+<b><a name="line1177">1177 </a></b>	#else
+<b><a name="line1178">1178 </a></b>	#define _GLIBCXX_MAKE_MOVE_ITERATOR(_Iter) (_Iter)
+<b><a name="line1179">1179 </a></b>	#define _GLIBCXX_MAKE_MOVE_IF_NOEXCEPT_ITERATOR(_Iter) (_Iter)
+<b><a name="line1180">1180 </a></b>	#endif // C++11
+<b><a name="line1181">1181 </a></b>	
+<b><a name="line1182">1182 </a></b>	#endif
+<b><a name="line1183">1183 </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

@@ -1,0 +1,11 @@
+mode=mm #mode
+dir=bi #dir
+pf_range=0:0 #no spaces
+q_range=0:3 #no spaces
+flags= #no spaces
+wb_acc=1
+max_bram=262144
+runtime=60
+ioengine=sync
+num_threads=1
+#please leave this comment here

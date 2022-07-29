@@ -1,0 +1,387 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/bits/shared_ptr_atomic.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// shared_ptr atomic access -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2014-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file bits/shared_ptr_atomic.h
+<b><a name="line26">26   </a></b>	 *  This is an internal header file, included by other library headers.
+<b><a name="line27">27   </a></b>	 *  Do not attempt to use it directly. @headername{memory}
+<b><a name="line28">28   </a></b>	 */
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	#ifndef _SHARED_PTR_ATOMIC_H
+<b><a name="line31">31   </a></b>	#define <b>_SHARED_PTR_ATOMIC_H</b> 1
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	#include &lt;bits/atomic_base.h&gt;
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line36">36   </a></b>	{
+<b><a name="line37">37   </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	  /**
+<b><a name="line40">40   </a></b>	   * @addtogroup pointer_abstractions
+<b><a name="line41">41   </a></b>	   * @{
+<b><a name="line42">42   </a></b>	   */
+<b><a name="line43">43   </a></b>	
+<b><a name="line44">44   </a></b>	  struct <b>_Sp_locker</b>
+<b><a name="line45">45   </a></b>	  {
+<b><a name="line46">46   </a></b>	    <b>_Sp_locker</b>(const <a href="#line44">_Sp_locker</a>&amp;) = delete;
+<b><a name="line47">47   </a></b>	    <a href="#line44">_Sp_locker</a>&amp; <b>operator=</b>(const <a href="#line44">_Sp_locker</a>&amp;) = delete;
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	#ifdef <a href="../../../../x86_64-linux-gnu/c++/5/bits/gthr-default.h/code.html#line32">__GTHREADS</a>
+<b><a name="line50">50   </a></b>	    explicit
+<b><a name="line51">51   </a></b>	    _Sp_locker(const void*) noexcept;
+<b><a name="line52">52   </a></b>	    _Sp_locker(const void*, const void*) noexcept;
+<b><a name="line53">53   </a></b>	    ~_Sp_locker();
+<b><a name="line54">54   </a></b>	
+<b><a name="line55">55   </a></b>	  private:
+<b><a name="line56">56   </a></b>	    unsigned char <b>_M_key1</b>;
+<b><a name="line57">57   </a></b>	    unsigned char <b>_M_key2</b>;
+<b><a name="line58">58   </a></b>	#else
+<b><a name="line59">59   </a></b>	    explicit _Sp_locker(const void*, const void* = nullptr) { }
+<b><a name="line60">60   </a></b>	#endif
+<b><a name="line61">61   </a></b>	  };
+<b><a name="line62">62   </a></b>	
+<b><a name="line63">63   </a></b>	  /**
+<b><a name="line64">64   </a></b>	   *  @brief  Report whether shared_ptr atomic operations are lock-free.
+<b><a name="line65">65   </a></b>	   *  @param  __p A non-null pointer to a shared_ptr object.
+<b><a name="line66">66   </a></b>	   *  @return True if atomic access to @c *__p is lock-free, false otherwise.
+<b><a name="line67">67   </a></b>	   *  @{
+<b><a name="line68">68   </a></b>	  */
+<b><a name="line69">69   </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line70">70   </a></b>	    inline bool
+<b><a name="line71">71   </a></b>	    <b>atomic_is_lock_free</b>(const <a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line69">_Tp</a>, <a href="#line69">_Lp</a>&gt;* __p)
+<b><a name="line72">72   </a></b>	    {
+<b><a name="line73">73   </a></b>	#ifdef <a href="../../../../x86_64-linux-gnu/c++/5/bits/gthr-default.h/code.html#line32">__GTHREADS</a>
+<b><a name="line74">74   </a></b>	      return __gthread_active_p() == 0;
+<b><a name="line75">75   </a></b>	#else
+<b><a name="line76">76   </a></b>	      return true;
+<b><a name="line77">77   </a></b>	#endif
+<b><a name="line78">78   </a></b>	    }
+<b><a name="line79">79   </a></b>	
+<b><a name="line80">80   </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line81">81   </a></b>	    inline bool
+<b><a name="line82">82   </a></b>	    <b>atomic_is_lock_free</b>(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line80">_Tp</a>&gt;* __p)
+<b><a name="line83">83   </a></b>	    { return std::atomic_is_lock_free&lt;_Tp, __default_lock_policy&gt;(__p); }
+<b><a name="line84">84   </a></b>	
+<b><a name="line85">85   </a></b>	  // @}
+<b><a name="line86">86   </a></b>	
+<b><a name="line87">87   </a></b>	  /**
+<b><a name="line88">88   </a></b>	   *  @brief  Atomic load for shared_ptr objects.
+<b><a name="line89">89   </a></b>	   *  @param  __p A non-null pointer to a shared_ptr object.
+<b><a name="line90">90   </a></b>	   *  @return @c *__p
+<b><a name="line91">91   </a></b>	   *
+<b><a name="line92">92   </a></b>	   *  The memory order shall not be @c memory_order_release or
+<b><a name="line93">93   </a></b>	   *  @c memory_order_acq_rel.
+<b><a name="line94">94   </a></b>	   *  @{
+<b><a name="line95">95   </a></b>	  */
+<b><a name="line96">96   </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line97">97   </a></b>	    inline <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line96">_Tp</a>&gt;
+<b><a name="line98">98   </a></b>	    <b>atomic_load_explicit</b>(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line96">_Tp</a>&gt;* __p, <a href="../atomic_base.h/code.html#line63">memory_order</a>)
+<b><a name="line99">99   </a></b>	    {
+<b><a name="line100">100  </a></b>	      _Sp_locker __lock{__p};
+<b><a name="line101">101  </a></b>	      return *__p;
+<b><a name="line102">102  </a></b>	    }
+<b><a name="line103">103  </a></b>	
+<b><a name="line104">104  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line105">105  </a></b>	    inline <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line104">_Tp</a>&gt;
+<b><a name="line106">106  </a></b>	    <b>atomic_load</b>(const <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line104">_Tp</a>&gt;* __p)
+<b><a name="line107">107  </a></b>	    { return std::atomic_load_explicit(__p, memory_order_seq_cst); }
+<b><a name="line108">108  </a></b>	
+<b><a name="line109">109  </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line110">110  </a></b>	    inline <a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line109">_Tp</a>, <a href="#line109">_Lp</a>&gt;
+<b><a name="line111">111  </a></b>	    <b>atomic_load_explicit</b>(const <a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line109">_Tp</a>, <a href="#line109">_Lp</a>&gt;* __p, <a href="../atomic_base.h/code.html#line63">memory_order</a>)
+<b><a name="line112">112  </a></b>	    {
+<b><a name="line113">113  </a></b>	      _Sp_locker __lock{__p};
+<b><a name="line114">114  </a></b>	      return *__p;
+<b><a name="line115">115  </a></b>	    }
+<b><a name="line116">116  </a></b>	
+<b><a name="line117">117  </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line118">118  </a></b>	    inline <a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line117">_Tp</a>, <a href="#line117">_Lp</a>&gt;
+<b><a name="line119">119  </a></b>	    <b>atomic_load</b>(const <a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line117">_Tp</a>, <a href="#line117">_Lp</a>&gt;* __p)
+<b><a name="line120">120  </a></b>	    { return std::atomic_load_explicit(__p, memory_order_seq_cst); }
+<b><a name="line121">121  </a></b>	  // @}
+<b><a name="line122">122  </a></b>	
+<b><a name="line123">123  </a></b>	  /**
+<b><a name="line124">124  </a></b>	   *  @brief  Atomic store for shared_ptr objects.
+<b><a name="line125">125  </a></b>	   *  @param  __p A non-null pointer to a shared_ptr object.
+<b><a name="line126">126  </a></b>	   *  @param  __r The value to store.
+<b><a name="line127">127  </a></b>	   *
+<b><a name="line128">128  </a></b>	   *  The memory order shall not be @c memory_order_acquire or
+<b><a name="line129">129  </a></b>	   *  @c memory_order_acq_rel.
+<b><a name="line130">130  </a></b>	   *  @{
+<b><a name="line131">131  </a></b>	  */
+<b><a name="line132">132  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line133">133  </a></b>	    inline void
+<b><a name="line134">134  </a></b>	    <b>atomic_store_explicit</b>(<a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line132">_Tp</a>&gt;* __p, <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line132">_Tp</a>&gt; __r,
+<b><a name="line135">135  </a></b>				  <a href="../atomic_base.h/code.html#line63">memory_order</a>)
+<b><a name="line136">136  </a></b>	    {
+<b><a name="line137">137  </a></b>	      _Sp_locker __lock{__p};
+<b><a name="line138">138  </a></b>	      __p-&gt;swap(__r); // use swap so that **__p not destroyed while lock held
+<b><a name="line139">139  </a></b>	    }
+<b><a name="line140">140  </a></b>	
+<b><a name="line141">141  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line142">142  </a></b>	    inline void
+<b><a name="line143">143  </a></b>	    <b>atomic_store</b>(<a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line141">_Tp</a>&gt;* __p, <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line141">_Tp</a>&gt; __r)
+<b><a name="line144">144  </a></b>	    { std::atomic_store_explicit(__p, std::move(__r), memory_order_seq_cst); }
+<b><a name="line145">145  </a></b>	
+<b><a name="line146">146  </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line147">147  </a></b>	    inline void
+<b><a name="line148">148  </a></b>	    <b>atomic_store_explicit</b>(<a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line146">_Tp</a>, <a href="#line146">_Lp</a>&gt;* __p,
+<b><a name="line149">149  </a></b>				  <a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line146">_Tp</a>, <a href="#line146">_Lp</a>&gt; __r,
+<b><a name="line150">150  </a></b>				  <a href="../atomic_base.h/code.html#line63">memory_order</a>)
+<b><a name="line151">151  </a></b>	    {
+<b><a name="line152">152  </a></b>	      _Sp_locker __lock{__p};
+<b><a name="line153">153  </a></b>	      __p-&gt;swap(__r); // use swap so that **__p not destroyed while lock held
+<b><a name="line154">154  </a></b>	    }
+<b><a name="line155">155  </a></b>	
+<b><a name="line156">156  </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line157">157  </a></b>	    inline void
+<b><a name="line158">158  </a></b>	    <b>atomic_store</b>(<a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line156">_Tp</a>, <a href="#line156">_Lp</a>&gt;* __p, <a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line156">_Tp</a>, <a href="#line156">_Lp</a>&gt; __r)
+<b><a name="line159">159  </a></b>	    { std::atomic_store_explicit(__p, std::move(__r), memory_order_seq_cst); }
+<b><a name="line160">160  </a></b>	  // @}
+<b><a name="line161">161  </a></b>	
+<b><a name="line162">162  </a></b>	  /**
+<b><a name="line163">163  </a></b>	   *  @brief  Atomic exchange for shared_ptr objects.
+<b><a name="line164">164  </a></b>	   *  @param  __p A non-null pointer to a shared_ptr object.
+<b><a name="line165">165  </a></b>	   *  @param  __r New value to store in @c *__p.
+<b><a name="line166">166  </a></b>	   *  @return The original value of @c *__p
+<b><a name="line167">167  </a></b>	   *  @{
+<b><a name="line168">168  </a></b>	  */
+<b><a name="line169">169  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line170">170  </a></b>	    inline <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line169">_Tp</a>&gt;
+<b><a name="line171">171  </a></b>	    <b>atomic_exchange_explicit</b>(<a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line169">_Tp</a>&gt;* __p, <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line169">_Tp</a>&gt; __r,
+<b><a name="line172">172  </a></b>				     <a href="../atomic_base.h/code.html#line63">memory_order</a>)
+<b><a name="line173">173  </a></b>	    {
+<b><a name="line174">174  </a></b>	      _Sp_locker __lock{__p};
+<b><a name="line175">175  </a></b>	      __p-&gt;swap(__r);
+<b><a name="line176">176  </a></b>	      return __r;
+<b><a name="line177">177  </a></b>	    }
+<b><a name="line178">178  </a></b>	
+<b><a name="line179">179  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line180">180  </a></b>	    inline <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line179">_Tp</a>&gt;
+<b><a name="line181">181  </a></b>	    <b>atomic_exchange</b>(<a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line179">_Tp</a>&gt;* __p, <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line179">_Tp</a>&gt; __r)
+<b><a name="line182">182  </a></b>	    {
+<b><a name="line183">183  </a></b>	      return std::atomic_exchange_explicit(__p, std::move(__r),
+<b><a name="line184">184  </a></b>						   memory_order_seq_cst);
+<b><a name="line185">185  </a></b>	    }
+<b><a name="line186">186  </a></b>	
+<b><a name="line187">187  </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line188">188  </a></b>	    inline <a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line187">_Tp</a>, <a href="#line187">_Lp</a>&gt;
+<b><a name="line189">189  </a></b>	    <b>atomic_exchange_explicit</b>(<a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line187">_Tp</a>, <a href="#line187">_Lp</a>&gt;* __p,
+<b><a name="line190">190  </a></b>				     <a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line187">_Tp</a>, <a href="#line187">_Lp</a>&gt; __r,
+<b><a name="line191">191  </a></b>				     <a href="../atomic_base.h/code.html#line63">memory_order</a>)
+<b><a name="line192">192  </a></b>	    {
+<b><a name="line193">193  </a></b>	      _Sp_locker __lock{__p};
+<b><a name="line194">194  </a></b>	      __p-&gt;swap(__r);
+<b><a name="line195">195  </a></b>	      return __r;
+<b><a name="line196">196  </a></b>	    }
+<b><a name="line197">197  </a></b>	
+<b><a name="line198">198  </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line199">199  </a></b>	    inline <a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line198">_Tp</a>, <a href="#line198">_Lp</a>&gt;
+<b><a name="line200">200  </a></b>	    <b>atomic_exchange</b>(<a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line198">_Tp</a>, <a href="#line198">_Lp</a>&gt;* __p, <a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line198">_Tp</a>, <a href="#line198">_Lp</a>&gt; __r)
+<b><a name="line201">201  </a></b>	    {
+<b><a name="line202">202  </a></b>	      return std::atomic_exchange_explicit(__p, std::move(__r),
+<b><a name="line203">203  </a></b>						   memory_order_seq_cst);
+<b><a name="line204">204  </a></b>	    }
+<b><a name="line205">205  </a></b>	  // @}
+<b><a name="line206">206  </a></b>	
+<b><a name="line207">207  </a></b>	  /**
+<b><a name="line208">208  </a></b>	   *  @brief  Atomic compare-and-swap for shared_ptr objects.
+<b><a name="line209">209  </a></b>	   *  @param  __p A non-null pointer to a shared_ptr object.
+<b><a name="line210">210  </a></b>	   *  @param  __v A non-null pointer to a shared_ptr object.
+<b><a name="line211">211  </a></b>	   *  @param  __w A non-null pointer to a shared_ptr object.
+<b><a name="line212">212  </a></b>	   *  @return True if @c *__p was equivalent to @c *__v, false otherwise.
+<b><a name="line213">213  </a></b>	   *
+<b><a name="line214">214  </a></b>	   *  The memory order for failure shall not be @c memory_order_release or
+<b><a name="line215">215  </a></b>	   *  @c memory_order_acq_rel, or stronger than the memory order for success.
+<b><a name="line216">216  </a></b>	   *  @{
+<b><a name="line217">217  </a></b>	  */
+<b><a name="line218">218  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line219">219  </a></b>	    bool
+<b><a name="line220">220  </a></b>	    <b>atomic_compare_exchange_strong_explicit</b>(<a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line218">_Tp</a>&gt;* __p,
+<b><a name="line221">221  </a></b>						    <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line218">_Tp</a>&gt;* __v,
+<b><a name="line222">222  </a></b>						    <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line218">_Tp</a>&gt; __w,
+<b><a name="line223">223  </a></b>						    <a href="../atomic_base.h/code.html#line63">memory_order</a>,
+<b><a name="line224">224  </a></b>						    <a href="../atomic_base.h/code.html#line63">memory_order</a>)
+<b><a name="line225">225  </a></b>	    {
+<b><a name="line226">226  </a></b>	      shared_ptr&lt;_Tp&gt; __x; // goes out of scope after __lock
+<b><a name="line227">227  </a></b>	      _Sp_locker __lock{__p, __v};
+<b><a name="line228">228  </a></b>	      owner_less&lt;shared_ptr&lt;_Tp&gt;&gt; __less;
+<b><a name="line229">229  </a></b>	      if (*__p == *__v &amp;&amp; !__less(*__p, *__v) &amp;&amp; !__less(*__v, *__p))
+<b><a name="line230">230  </a></b>		{
+<b><a name="line231">231  </a></b>		  __x = std::move(*__p);
+<b><a name="line232">232  </a></b>		  *__p = std::move(__w);
+<b><a name="line233">233  </a></b>		  return true;
+<b><a name="line234">234  </a></b>		}
+<b><a name="line235">235  </a></b>	      __x = std::move(*__v);
+<b><a name="line236">236  </a></b>	      *__v = *__p;
+<b><a name="line237">237  </a></b>	      return false;
+<b><a name="line238">238  </a></b>	    }
+<b><a name="line239">239  </a></b>	
+<b><a name="line240">240  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line241">241  </a></b>	    inline bool
+<b><a name="line242">242  </a></b>	    <b>atomic_compare_exchange_strong</b>(<a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line240">_Tp</a>&gt;* __p, <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line240">_Tp</a>&gt;* __v,
+<b><a name="line243">243  </a></b>					 <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line240">_Tp</a>&gt; __w)
+<b><a name="line244">244  </a></b>	    {
+<b><a name="line245">245  </a></b>	      return std::atomic_compare_exchange_strong_explicit(__p, __v,
+<b><a name="line246">246  </a></b>		  std::move(__w), memory_order_seq_cst, memory_order_seq_cst);
+<b><a name="line247">247  </a></b>	    }
+<b><a name="line248">248  </a></b>	
+<b><a name="line249">249  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line250">250  </a></b>	    inline bool
+<b><a name="line251">251  </a></b>	    <b>atomic_compare_exchange_weak_explicit</b>(<a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line249">_Tp</a>&gt;* __p,
+<b><a name="line252">252  </a></b>						  <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line249">_Tp</a>&gt;* __v,
+<b><a name="line253">253  </a></b>						  <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line249">_Tp</a>&gt; __w,
+<b><a name="line254">254  </a></b>						  <a href="../atomic_base.h/code.html#line63">memory_order</a> __success,
+<b><a name="line255">255  </a></b>						  <a href="../atomic_base.h/code.html#line63">memory_order</a> __failure)
+<b><a name="line256">256  </a></b>	    {
+<b><a name="line257">257  </a></b>	      return std::atomic_compare_exchange_strong_explicit(__p, __v,
+<b><a name="line258">258  </a></b>		  std::move(__w), __success, __failure);
+<b><a name="line259">259  </a></b>	    }
+<b><a name="line260">260  </a></b>	
+<b><a name="line261">261  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line262">262  </a></b>	    inline bool
+<b><a name="line263">263  </a></b>	    <b>atomic_compare_exchange_weak</b>(<a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line261">_Tp</a>&gt;* __p, <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line261">_Tp</a>&gt;* __v,
+<b><a name="line264">264  </a></b>					 <a href="../shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line261">_Tp</a>&gt; __w)
+<b><a name="line265">265  </a></b>	    {
+<b><a name="line266">266  </a></b>	      return std::atomic_compare_exchange_weak_explicit(__p, __v,
+<b><a name="line267">267  </a></b>		  std::move(__w), memory_order_seq_cst, memory_order_seq_cst);
+<b><a name="line268">268  </a></b>	    }
+<b><a name="line269">269  </a></b>	
+<b><a name="line270">270  </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line271">271  </a></b>	    bool
+<b><a name="line272">272  </a></b>	    <b>atomic_compare_exchange_strong_explicit</b>(<a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line270">_Tp</a>, <a href="#line270">_Lp</a>&gt;* __p,
+<b><a name="line273">273  </a></b>						    <a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line270">_Tp</a>, <a href="#line270">_Lp</a>&gt;* __v,
+<b><a name="line274">274  </a></b>						    <a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line270">_Tp</a>, <a href="#line270">_Lp</a>&gt; __w,
+<b><a name="line275">275  </a></b>						    <a href="../atomic_base.h/code.html#line63">memory_order</a>,
+<b><a name="line276">276  </a></b>						    <a href="../atomic_base.h/code.html#line63">memory_order</a>)
+<b><a name="line277">277  </a></b>	    {
+<b><a name="line278">278  </a></b>	      __shared_ptr&lt;_Tp, _Lp&gt; __x; // goes out of scope after __lock
+<b><a name="line279">279  </a></b>	      _Sp_locker __lock{__p, __v};
+<b><a name="line280">280  </a></b>	      owner_less&lt;__shared_ptr&lt;_Tp, _Lp&gt;&gt; __less;
+<b><a name="line281">281  </a></b>	      if (*__p == *__v &amp;&amp; !__less(*__p, *__v) &amp;&amp; !__less(*__v, *__p))
+<b><a name="line282">282  </a></b>		{
+<b><a name="line283">283  </a></b>		  __x = std::move(*__p);
+<b><a name="line284">284  </a></b>		  *__p = std::move(__w);
+<b><a name="line285">285  </a></b>		  return true;
+<b><a name="line286">286  </a></b>		}
+<b><a name="line287">287  </a></b>	      __x = std::move(*__v);
+<b><a name="line288">288  </a></b>	      *__v = *__p;
+<b><a name="line289">289  </a></b>	      return false;
+<b><a name="line290">290  </a></b>	    }
+<b><a name="line291">291  </a></b>	
+<b><a name="line292">292  </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line293">293  </a></b>	    inline bool
+<b><a name="line294">294  </a></b>	    <b>atomic_compare_exchange_strong</b>(<a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line292">_Tp</a>, <a href="#line292">_Lp</a>&gt;* __p,
+<b><a name="line295">295  </a></b>					   <a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line292">_Tp</a>, <a href="#line292">_Lp</a>&gt;* __v,
+<b><a name="line296">296  </a></b>					   <a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line292">_Tp</a>, <a href="#line292">_Lp</a>&gt; __w)
+<b><a name="line297">297  </a></b>	    {
+<b><a name="line298">298  </a></b>	      return std::atomic_compare_exchange_strong_explicit(__p, __v,
+<b><a name="line299">299  </a></b>		  std::move(__w), memory_order_seq_cst, memory_order_seq_cst);
+<b><a name="line300">300  </a></b>	    }
+<b><a name="line301">301  </a></b>	
+<b><a name="line302">302  </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line303">303  </a></b>	    inline bool
+<b><a name="line304">304  </a></b>	    <b>atomic_compare_exchange_weak_explicit</b>(<a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line302">_Tp</a>, <a href="#line302">_Lp</a>&gt;* __p,
+<b><a name="line305">305  </a></b>						  <a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line302">_Tp</a>, <a href="#line302">_Lp</a>&gt;* __v,
+<b><a name="line306">306  </a></b>						  <a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line302">_Tp</a>, <a href="#line302">_Lp</a>&gt; __w,
+<b><a name="line307">307  </a></b>						  <a href="../atomic_base.h/code.html#line63">memory_order</a> __success,
+<b><a name="line308">308  </a></b>						  <a href="../atomic_base.h/code.html#line63">memory_order</a> __failure)
+<b><a name="line309">309  </a></b>	    {
+<b><a name="line310">310  </a></b>	      return std::atomic_compare_exchange_strong_explicit(__p, __v,
+<b><a name="line311">311  </a></b>		  std::move(__w), __success, __failure);
+<b><a name="line312">312  </a></b>	    }
+<b><a name="line313">313  </a></b>	
+<b><a name="line314">314  </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line315">315  </a></b>	    inline bool
+<b><a name="line316">316  </a></b>	    <b>atomic_compare_exchange_weak</b>(<a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line314">_Tp</a>, <a href="#line314">_Lp</a>&gt;* __p,
+<b><a name="line317">317  </a></b>					 <a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line314">_Tp</a>, <a href="#line314">_Lp</a>&gt;* __v,
+<b><a name="line318">318  </a></b>					 <a href="../shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line314">_Tp</a>, <a href="#line314">_Lp</a>&gt; __w)
+<b><a name="line319">319  </a></b>	    {
+<b><a name="line320">320  </a></b>	      return std::atomic_compare_exchange_weak_explicit(__p, __v,
+<b><a name="line321">321  </a></b>		  std::move(__w), memory_order_seq_cst, memory_order_seq_cst);
+<b><a name="line322">322  </a></b>	    }
+<b><a name="line323">323  </a></b>	  // @}
+<b><a name="line324">324  </a></b>	
+<b><a name="line325">325  </a></b>	  // @} group pointer_abstractions
+<b><a name="line326">326  </a></b>	
+<b><a name="line327">327  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line328">328  </a></b>	} // namespace
+<b><a name="line329">329  </a></b>	
+<b><a name="line330">330  </a></b>	#endif // _SHARED_PTR_ATOMIC_H
+<b><a name="line331">331  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

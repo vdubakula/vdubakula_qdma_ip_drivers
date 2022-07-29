@@ -1,0 +1,491 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/inttypes.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 1997-2016 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line5">5    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line6">6    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line7">7    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line10">10   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line11">11   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line12">12   </a></b>	   Lesser General Public License for more details.
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line15">15   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line16">16   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	/*
+<b><a name="line19">19   </a></b>	 *	ISO C99: 7.8 Format conversion of integer types	&lt;inttypes.h&gt;
+<b><a name="line20">20   </a></b>	 */
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	#ifndef _INTTYPES_H
+<b><a name="line23">23   </a></b>	#define <b>_INTTYPES_H</b>	1
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	#include &lt;features.h&gt;
+<b><a name="line26">26   </a></b>	/* Get the type definitions.  */
+<b><a name="line27">27   </a></b>	#include &lt;stdint.h&gt;
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	/* Get a definition for wchar_t.  But we must not define wchar_t itself.  */
+<b><a name="line30">30   </a></b>	#ifndef ____gwchar_t_defined
+<b><a name="line31">31   </a></b>	# ifdef __cplusplus
+<b><a name="line32">32   </a></b>	#  define <b>__gwchar_t</b> wchar_t
+<b><a name="line33">33   </a></b>	# elif defined __WCHAR_TYPE__
+<b><a name="line34">34   </a></b>	typedef __WCHAR_TYPE__ __gwchar_t;
+<b><a name="line35">35   </a></b>	# else
+<b><a name="line36">36   </a></b>	#  define __need_wchar_t
+<b><a name="line37">37   </a></b>	#  include &lt;stddef.h&gt;
+<b><a name="line38">38   </a></b>	typedef wchar_t __gwchar_t;
+<b><a name="line39">39   </a></b>	# endif
+<b><a name="line40">40   </a></b>	# define <b>____gwchar_t_defined</b>	1
+<b><a name="line41">41   </a></b>	#endif
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	# if <a href="../x86_64-linux-gnu/bits/wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line44">44   </a></b>	#  define <b>__PRI64_PREFIX</b>	&quot;l&quot;
+<b><a name="line45">45   </a></b>	#  define <b>__PRIPTR_PREFIX</b>	&quot;l&quot;
+<b><a name="line46">46   </a></b>	# else
+<b><a name="line47">47   </a></b>	#  define __PRI64_PREFIX	&quot;ll&quot;
+<b><a name="line48">48   </a></b>	#  define __PRIPTR_PREFIX
+<b><a name="line49">49   </a></b>	# endif
+<b><a name="line50">50   </a></b>	
+<b><a name="line51">51   </a></b>	/* Macros for printing format specifiers.  */
+<b><a name="line52">52   </a></b>	
+<b><a name="line53">53   </a></b>	/* Decimal notation.  */
+<b><a name="line54">54   </a></b>	# define <b>PRId8</b>		&quot;d&quot;
+<b><a name="line55">55   </a></b>	# define <b>PRId16</b>		&quot;d&quot;
+<b><a name="line56">56   </a></b>	# define <b>PRId32</b>		&quot;d&quot;
+<b><a name="line57">57   </a></b>	# define <b>PRId64</b>		__PRI64_PREFIX &quot;d&quot;
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	# define <b>PRIdLEAST8</b>	&quot;d&quot;
+<b><a name="line60">60   </a></b>	# define <b>PRIdLEAST16</b>	&quot;d&quot;
+<b><a name="line61">61   </a></b>	# define <b>PRIdLEAST32</b>	&quot;d&quot;
+<b><a name="line62">62   </a></b>	# define <b>PRIdLEAST64</b>	__PRI64_PREFIX &quot;d&quot;
+<b><a name="line63">63   </a></b>	
+<b><a name="line64">64   </a></b>	# define <b>PRIdFAST8</b>	&quot;d&quot;
+<b><a name="line65">65   </a></b>	# define <b>PRIdFAST16</b>	__PRIPTR_PREFIX &quot;d&quot;
+<b><a name="line66">66   </a></b>	# define <b>PRIdFAST32</b>	__PRIPTR_PREFIX &quot;d&quot;
+<b><a name="line67">67   </a></b>	# define <b>PRIdFAST64</b>	__PRI64_PREFIX &quot;d&quot;
+<b><a name="line68">68   </a></b>	
+<b><a name="line69">69   </a></b>	
+<b><a name="line70">70   </a></b>	# define <b>PRIi8</b>		&quot;i&quot;
+<b><a name="line71">71   </a></b>	# define <b>PRIi16</b>		&quot;i&quot;
+<b><a name="line72">72   </a></b>	# define <b>PRIi32</b>		&quot;i&quot;
+<b><a name="line73">73   </a></b>	# define <b>PRIi64</b>		__PRI64_PREFIX &quot;i&quot;
+<b><a name="line74">74   </a></b>	
+<b><a name="line75">75   </a></b>	# define <b>PRIiLEAST8</b>	&quot;i&quot;
+<b><a name="line76">76   </a></b>	# define <b>PRIiLEAST16</b>	&quot;i&quot;
+<b><a name="line77">77   </a></b>	# define <b>PRIiLEAST32</b>	&quot;i&quot;
+<b><a name="line78">78   </a></b>	# define <b>PRIiLEAST64</b>	__PRI64_PREFIX &quot;i&quot;
+<b><a name="line79">79   </a></b>	
+<b><a name="line80">80   </a></b>	# define <b>PRIiFAST8</b>	&quot;i&quot;
+<b><a name="line81">81   </a></b>	# define <b>PRIiFAST16</b>	__PRIPTR_PREFIX &quot;i&quot;
+<b><a name="line82">82   </a></b>	# define <b>PRIiFAST32</b>	__PRIPTR_PREFIX &quot;i&quot;
+<b><a name="line83">83   </a></b>	# define <b>PRIiFAST64</b>	__PRI64_PREFIX &quot;i&quot;
+<b><a name="line84">84   </a></b>	
+<b><a name="line85">85   </a></b>	/* Octal notation.  */
+<b><a name="line86">86   </a></b>	# define <b>PRIo8</b>		&quot;o&quot;
+<b><a name="line87">87   </a></b>	# define <b>PRIo16</b>		&quot;o&quot;
+<b><a name="line88">88   </a></b>	# define <b>PRIo32</b>		&quot;o&quot;
+<b><a name="line89">89   </a></b>	# define <b>PRIo64</b>		__PRI64_PREFIX &quot;o&quot;
+<b><a name="line90">90   </a></b>	
+<b><a name="line91">91   </a></b>	# define <b>PRIoLEAST8</b>	&quot;o&quot;
+<b><a name="line92">92   </a></b>	# define <b>PRIoLEAST16</b>	&quot;o&quot;
+<b><a name="line93">93   </a></b>	# define <b>PRIoLEAST32</b>	&quot;o&quot;
+<b><a name="line94">94   </a></b>	# define <b>PRIoLEAST64</b>	__PRI64_PREFIX &quot;o&quot;
+<b><a name="line95">95   </a></b>	
+<b><a name="line96">96   </a></b>	# define <b>PRIoFAST8</b>	&quot;o&quot;
+<b><a name="line97">97   </a></b>	# define <b>PRIoFAST16</b>	__PRIPTR_PREFIX &quot;o&quot;
+<b><a name="line98">98   </a></b>	# define <b>PRIoFAST32</b>	__PRIPTR_PREFIX &quot;o&quot;
+<b><a name="line99">99   </a></b>	# define <b>PRIoFAST64</b>	__PRI64_PREFIX &quot;o&quot;
+<b><a name="line100">100  </a></b>	
+<b><a name="line101">101  </a></b>	/* Unsigned integers.  */
+<b><a name="line102">102  </a></b>	# define <b>PRIu8</b>		&quot;u&quot;
+<b><a name="line103">103  </a></b>	# define <b>PRIu16</b>		&quot;u&quot;
+<b><a name="line104">104  </a></b>	# define <b>PRIu32</b>		&quot;u&quot;
+<b><a name="line105">105  </a></b>	# define <b>PRIu64</b>		__PRI64_PREFIX &quot;u&quot;
+<b><a name="line106">106  </a></b>	
+<b><a name="line107">107  </a></b>	# define <b>PRIuLEAST8</b>	&quot;u&quot;
+<b><a name="line108">108  </a></b>	# define <b>PRIuLEAST16</b>	&quot;u&quot;
+<b><a name="line109">109  </a></b>	# define <b>PRIuLEAST32</b>	&quot;u&quot;
+<b><a name="line110">110  </a></b>	# define <b>PRIuLEAST64</b>	__PRI64_PREFIX &quot;u&quot;
+<b><a name="line111">111  </a></b>	
+<b><a name="line112">112  </a></b>	# define <b>PRIuFAST8</b>	&quot;u&quot;
+<b><a name="line113">113  </a></b>	# define <b>PRIuFAST16</b>	__PRIPTR_PREFIX &quot;u&quot;
+<b><a name="line114">114  </a></b>	# define <b>PRIuFAST32</b>	__PRIPTR_PREFIX &quot;u&quot;
+<b><a name="line115">115  </a></b>	# define <b>PRIuFAST64</b>	__PRI64_PREFIX &quot;u&quot;
+<b><a name="line116">116  </a></b>	
+<b><a name="line117">117  </a></b>	/* lowercase hexadecimal notation.  */
+<b><a name="line118">118  </a></b>	# define <b>PRIx8</b>		&quot;x&quot;
+<b><a name="line119">119  </a></b>	# define <b>PRIx16</b>		&quot;x&quot;
+<b><a name="line120">120  </a></b>	# define <b>PRIx32</b>		&quot;x&quot;
+<b><a name="line121">121  </a></b>	# define <b>PRIx64</b>		__PRI64_PREFIX &quot;x&quot;
+<b><a name="line122">122  </a></b>	
+<b><a name="line123">123  </a></b>	# define <b>PRIxLEAST8</b>	&quot;x&quot;
+<b><a name="line124">124  </a></b>	# define <b>PRIxLEAST16</b>	&quot;x&quot;
+<b><a name="line125">125  </a></b>	# define <b>PRIxLEAST32</b>	&quot;x&quot;
+<b><a name="line126">126  </a></b>	# define <b>PRIxLEAST64</b>	__PRI64_PREFIX &quot;x&quot;
+<b><a name="line127">127  </a></b>	
+<b><a name="line128">128  </a></b>	# define <b>PRIxFAST8</b>	&quot;x&quot;
+<b><a name="line129">129  </a></b>	# define <b>PRIxFAST16</b>	__PRIPTR_PREFIX &quot;x&quot;
+<b><a name="line130">130  </a></b>	# define <b>PRIxFAST32</b>	__PRIPTR_PREFIX &quot;x&quot;
+<b><a name="line131">131  </a></b>	# define <b>PRIxFAST64</b>	__PRI64_PREFIX &quot;x&quot;
+<b><a name="line132">132  </a></b>	
+<b><a name="line133">133  </a></b>	/* UPPERCASE hexadecimal notation.  */
+<b><a name="line134">134  </a></b>	# define <b>PRIX8</b>		&quot;X&quot;
+<b><a name="line135">135  </a></b>	# define <b>PRIX16</b>		&quot;X&quot;
+<b><a name="line136">136  </a></b>	# define <b>PRIX32</b>		&quot;X&quot;
+<b><a name="line137">137  </a></b>	# define <b>PRIX64</b>		__PRI64_PREFIX &quot;X&quot;
+<b><a name="line138">138  </a></b>	
+<b><a name="line139">139  </a></b>	# define <b>PRIXLEAST8</b>	&quot;X&quot;
+<b><a name="line140">140  </a></b>	# define <b>PRIXLEAST16</b>	&quot;X&quot;
+<b><a name="line141">141  </a></b>	# define <b>PRIXLEAST32</b>	&quot;X&quot;
+<b><a name="line142">142  </a></b>	# define <b>PRIXLEAST64</b>	__PRI64_PREFIX &quot;X&quot;
+<b><a name="line143">143  </a></b>	
+<b><a name="line144">144  </a></b>	# define <b>PRIXFAST8</b>	&quot;X&quot;
+<b><a name="line145">145  </a></b>	# define <b>PRIXFAST16</b>	__PRIPTR_PREFIX &quot;X&quot;
+<b><a name="line146">146  </a></b>	# define <b>PRIXFAST32</b>	__PRIPTR_PREFIX &quot;X&quot;
+<b><a name="line147">147  </a></b>	# define <b>PRIXFAST64</b>	__PRI64_PREFIX &quot;X&quot;
+<b><a name="line148">148  </a></b>	
+<b><a name="line149">149  </a></b>	
+<b><a name="line150">150  </a></b>	/* Macros for printing `intmax_t' and `uintmax_t'.  */
+<b><a name="line151">151  </a></b>	# define <b>PRIdMAX</b>	__PRI64_PREFIX &quot;d&quot;
+<b><a name="line152">152  </a></b>	# define <b>PRIiMAX</b>	__PRI64_PREFIX &quot;i&quot;
+<b><a name="line153">153  </a></b>	# define <b>PRIoMAX</b>	__PRI64_PREFIX &quot;o&quot;
+<b><a name="line154">154  </a></b>	# define <b>PRIuMAX</b>	__PRI64_PREFIX &quot;u&quot;
+<b><a name="line155">155  </a></b>	# define <b>PRIxMAX</b>	__PRI64_PREFIX &quot;x&quot;
+<b><a name="line156">156  </a></b>	# define <b>PRIXMAX</b>	__PRI64_PREFIX &quot;X&quot;
+<b><a name="line157">157  </a></b>	
+<b><a name="line158">158  </a></b>	
+<b><a name="line159">159  </a></b>	/* Macros for printing `intptr_t' and `uintptr_t'.  */
+<b><a name="line160">160  </a></b>	# define <b>PRIdPTR</b>	__PRIPTR_PREFIX &quot;d&quot;
+<b><a name="line161">161  </a></b>	# define <b>PRIiPTR</b>	__PRIPTR_PREFIX &quot;i&quot;
+<b><a name="line162">162  </a></b>	# define <b>PRIoPTR</b>	__PRIPTR_PREFIX &quot;o&quot;
+<b><a name="line163">163  </a></b>	# define <b>PRIuPTR</b>	__PRIPTR_PREFIX &quot;u&quot;
+<b><a name="line164">164  </a></b>	# define <b>PRIxPTR</b>	__PRIPTR_PREFIX &quot;x&quot;
+<b><a name="line165">165  </a></b>	# define <b>PRIXPTR</b>	__PRIPTR_PREFIX &quot;X&quot;
+<b><a name="line166">166  </a></b>	
+<b><a name="line167">167  </a></b>	
+<b><a name="line168">168  </a></b>	/* Macros for scanning format specifiers.  */
+<b><a name="line169">169  </a></b>	
+<b><a name="line170">170  </a></b>	/* Signed decimal notation.  */
+<b><a name="line171">171  </a></b>	# define <b>SCNd8</b>		&quot;hhd&quot;
+<b><a name="line172">172  </a></b>	# define <b>SCNd16</b>		&quot;hd&quot;
+<b><a name="line173">173  </a></b>	# define <b>SCNd32</b>		&quot;d&quot;
+<b><a name="line174">174  </a></b>	# define <b>SCNd64</b>		__PRI64_PREFIX &quot;d&quot;
+<b><a name="line175">175  </a></b>	
+<b><a name="line176">176  </a></b>	# define <b>SCNdLEAST8</b>	&quot;hhd&quot;
+<b><a name="line177">177  </a></b>	# define <b>SCNdLEAST16</b>	&quot;hd&quot;
+<b><a name="line178">178  </a></b>	# define <b>SCNdLEAST32</b>	&quot;d&quot;
+<b><a name="line179">179  </a></b>	# define <b>SCNdLEAST64</b>	__PRI64_PREFIX &quot;d&quot;
+<b><a name="line180">180  </a></b>	
+<b><a name="line181">181  </a></b>	# define <b>SCNdFAST8</b>	&quot;hhd&quot;
+<b><a name="line182">182  </a></b>	# define <b>SCNdFAST16</b>	__PRIPTR_PREFIX &quot;d&quot;
+<b><a name="line183">183  </a></b>	# define <b>SCNdFAST32</b>	__PRIPTR_PREFIX &quot;d&quot;
+<b><a name="line184">184  </a></b>	# define <b>SCNdFAST64</b>	__PRI64_PREFIX &quot;d&quot;
+<b><a name="line185">185  </a></b>	
+<b><a name="line186">186  </a></b>	/* Signed decimal notation.  */
+<b><a name="line187">187  </a></b>	# define <b>SCNi8</b>		&quot;hhi&quot;
+<b><a name="line188">188  </a></b>	# define <b>SCNi16</b>		&quot;hi&quot;
+<b><a name="line189">189  </a></b>	# define <b>SCNi32</b>		&quot;i&quot;
+<b><a name="line190">190  </a></b>	# define <b>SCNi64</b>		__PRI64_PREFIX &quot;i&quot;
+<b><a name="line191">191  </a></b>	
+<b><a name="line192">192  </a></b>	# define <b>SCNiLEAST8</b>	&quot;hhi&quot;
+<b><a name="line193">193  </a></b>	# define <b>SCNiLEAST16</b>	&quot;hi&quot;
+<b><a name="line194">194  </a></b>	# define <b>SCNiLEAST32</b>	&quot;i&quot;
+<b><a name="line195">195  </a></b>	# define <b>SCNiLEAST64</b>	__PRI64_PREFIX &quot;i&quot;
+<b><a name="line196">196  </a></b>	
+<b><a name="line197">197  </a></b>	# define <b>SCNiFAST8</b>	&quot;hhi&quot;
+<b><a name="line198">198  </a></b>	# define <b>SCNiFAST16</b>	__PRIPTR_PREFIX &quot;i&quot;
+<b><a name="line199">199  </a></b>	# define <b>SCNiFAST32</b>	__PRIPTR_PREFIX &quot;i&quot;
+<b><a name="line200">200  </a></b>	# define <b>SCNiFAST64</b>	__PRI64_PREFIX &quot;i&quot;
+<b><a name="line201">201  </a></b>	
+<b><a name="line202">202  </a></b>	/* Unsigned decimal notation.  */
+<b><a name="line203">203  </a></b>	# define <b>SCNu8</b>		&quot;hhu&quot;
+<b><a name="line204">204  </a></b>	# define <b>SCNu16</b>		&quot;hu&quot;
+<b><a name="line205">205  </a></b>	# define <b>SCNu32</b>		&quot;u&quot;
+<b><a name="line206">206  </a></b>	# define <b>SCNu64</b>		__PRI64_PREFIX &quot;u&quot;
+<b><a name="line207">207  </a></b>	
+<b><a name="line208">208  </a></b>	# define <b>SCNuLEAST8</b>	&quot;hhu&quot;
+<b><a name="line209">209  </a></b>	# define <b>SCNuLEAST16</b>	&quot;hu&quot;
+<b><a name="line210">210  </a></b>	# define <b>SCNuLEAST32</b>	&quot;u&quot;
+<b><a name="line211">211  </a></b>	# define <b>SCNuLEAST64</b>	__PRI64_PREFIX &quot;u&quot;
+<b><a name="line212">212  </a></b>	
+<b><a name="line213">213  </a></b>	# define <b>SCNuFAST8</b>	&quot;hhu&quot;
+<b><a name="line214">214  </a></b>	# define <b>SCNuFAST16</b>	__PRIPTR_PREFIX &quot;u&quot;
+<b><a name="line215">215  </a></b>	# define <b>SCNuFAST32</b>	__PRIPTR_PREFIX &quot;u&quot;
+<b><a name="line216">216  </a></b>	# define <b>SCNuFAST64</b>	__PRI64_PREFIX &quot;u&quot;
+<b><a name="line217">217  </a></b>	
+<b><a name="line218">218  </a></b>	/* Octal notation.  */
+<b><a name="line219">219  </a></b>	# define <b>SCNo8</b>		&quot;hho&quot;
+<b><a name="line220">220  </a></b>	# define <b>SCNo16</b>		&quot;ho&quot;
+<b><a name="line221">221  </a></b>	# define <b>SCNo32</b>		&quot;o&quot;
+<b><a name="line222">222  </a></b>	# define <b>SCNo64</b>		__PRI64_PREFIX &quot;o&quot;
+<b><a name="line223">223  </a></b>	
+<b><a name="line224">224  </a></b>	# define <b>SCNoLEAST8</b>	&quot;hho&quot;
+<b><a name="line225">225  </a></b>	# define <b>SCNoLEAST16</b>	&quot;ho&quot;
+<b><a name="line226">226  </a></b>	# define <b>SCNoLEAST32</b>	&quot;o&quot;
+<b><a name="line227">227  </a></b>	# define <b>SCNoLEAST64</b>	__PRI64_PREFIX &quot;o&quot;
+<b><a name="line228">228  </a></b>	
+<b><a name="line229">229  </a></b>	# define <b>SCNoFAST8</b>	&quot;hho&quot;
+<b><a name="line230">230  </a></b>	# define <b>SCNoFAST16</b>	__PRIPTR_PREFIX &quot;o&quot;
+<b><a name="line231">231  </a></b>	# define <b>SCNoFAST32</b>	__PRIPTR_PREFIX &quot;o&quot;
+<b><a name="line232">232  </a></b>	# define <b>SCNoFAST64</b>	__PRI64_PREFIX &quot;o&quot;
+<b><a name="line233">233  </a></b>	
+<b><a name="line234">234  </a></b>	/* Hexadecimal notation.  */
+<b><a name="line235">235  </a></b>	# define <b>SCNx8</b>		&quot;hhx&quot;
+<b><a name="line236">236  </a></b>	# define <b>SCNx16</b>		&quot;hx&quot;
+<b><a name="line237">237  </a></b>	# define <b>SCNx32</b>		&quot;x&quot;
+<b><a name="line238">238  </a></b>	# define <b>SCNx64</b>		__PRI64_PREFIX &quot;x&quot;
+<b><a name="line239">239  </a></b>	
+<b><a name="line240">240  </a></b>	# define <b>SCNxLEAST8</b>	&quot;hhx&quot;
+<b><a name="line241">241  </a></b>	# define <b>SCNxLEAST16</b>	&quot;hx&quot;
+<b><a name="line242">242  </a></b>	# define <b>SCNxLEAST32</b>	&quot;x&quot;
+<b><a name="line243">243  </a></b>	# define <b>SCNxLEAST64</b>	__PRI64_PREFIX &quot;x&quot;
+<b><a name="line244">244  </a></b>	
+<b><a name="line245">245  </a></b>	# define <b>SCNxFAST8</b>	&quot;hhx&quot;
+<b><a name="line246">246  </a></b>	# define <b>SCNxFAST16</b>	__PRIPTR_PREFIX &quot;x&quot;
+<b><a name="line247">247  </a></b>	# define <b>SCNxFAST32</b>	__PRIPTR_PREFIX &quot;x&quot;
+<b><a name="line248">248  </a></b>	# define <b>SCNxFAST64</b>	__PRI64_PREFIX &quot;x&quot;
+<b><a name="line249">249  </a></b>	
+<b><a name="line250">250  </a></b>	
+<b><a name="line251">251  </a></b>	/* Macros for scanning `intmax_t' and `uintmax_t'.  */
+<b><a name="line252">252  </a></b>	# define <b>SCNdMAX</b>	__PRI64_PREFIX &quot;d&quot;
+<b><a name="line253">253  </a></b>	# define <b>SCNiMAX</b>	__PRI64_PREFIX &quot;i&quot;
+<b><a name="line254">254  </a></b>	# define <b>SCNoMAX</b>	__PRI64_PREFIX &quot;o&quot;
+<b><a name="line255">255  </a></b>	# define <b>SCNuMAX</b>	__PRI64_PREFIX &quot;u&quot;
+<b><a name="line256">256  </a></b>	# define <b>SCNxMAX</b>	__PRI64_PREFIX &quot;x&quot;
+<b><a name="line257">257  </a></b>	
+<b><a name="line258">258  </a></b>	/* Macros for scaning `intptr_t' and `uintptr_t'.  */
+<b><a name="line259">259  </a></b>	# define <b>SCNdPTR</b>	__PRIPTR_PREFIX &quot;d&quot;
+<b><a name="line260">260  </a></b>	# define <b>SCNiPTR</b>	__PRIPTR_PREFIX &quot;i&quot;
+<b><a name="line261">261  </a></b>	# define <b>SCNoPTR</b>	__PRIPTR_PREFIX &quot;o&quot;
+<b><a name="line262">262  </a></b>	# define <b>SCNuPTR</b>	__PRIPTR_PREFIX &quot;u&quot;
+<b><a name="line263">263  </a></b>	# define <b>SCNxPTR</b>	__PRIPTR_PREFIX &quot;x&quot;
+<b><a name="line264">264  </a></b>	
+<b><a name="line265">265  </a></b>	
+<b><a name="line266">266  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line98">__BEGIN_DECLS</a>
+<b><a name="line267">267  </a></b>	
+<b><a name="line268">268  </a></b>	#if <a href="../x86_64-linux-gnu/bits/wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line269">269  </a></b>	
+<b><a name="line270">270  </a></b>	/* We have to define the `uintmax_t' type using `ldiv_t'.  */
+<b><a name="line271">271  </a></b>	typedef struct
+<b><a name="line272">272  </a></b>	  {
+<b><a name="line273">273  </a></b>	    long int <b>quot</b>;		/* Quotient.  */
+<b><a name="line274">274  </a></b>	    long int <b>rem</b>;		/* Remainder.  */
+<b><a name="line275">275  </a></b>	  } <b>imaxdiv_t</b>;
+<b><a name="line276">276  </a></b>	
+<b><a name="line277">277  </a></b>	#else
+<b><a name="line278">278  </a></b>	
+<b><a name="line279">279  </a></b>	/* We have to define the `uintmax_t' type using `lldiv_t'.  */
+<b><a name="line280">280  </a></b>	typedef struct
+<b><a name="line281">281  </a></b>	  {
+<b><a name="line282">282  </a></b>	    __extension__ long long int quot;	/* Quotient.  */
+<b><a name="line283">283  </a></b>	    __extension__ long long int rem;	/* Remainder.  */
+<b><a name="line284">284  </a></b>	  } imaxdiv_t;
+<b><a name="line285">285  </a></b>	
+<b><a name="line286">286  </a></b>	#endif
+<b><a name="line287">287  </a></b>	
+<b><a name="line288">288  </a></b>	
+<b><a name="line289">289  </a></b>	/* Compute absolute value of N.  */
+<b><a name="line290">290  </a></b>	extern <a href="../stdint.h/code.html#line134">intmax_t</a> imaxabs (<a href="../stdint.h/code.html#line134">intmax_t</a> __n) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __attribute__ ((__const__));
+<b><a name="line291">291  </a></b>	
+<b><a name="line292">292  </a></b>	/* Return the `imaxdiv_t' representation of the value of NUMER over DENOM. */
+<b><a name="line293">293  </a></b>	extern <a href="#line275">imaxdiv_t</a> imaxdiv (<a href="../stdint.h/code.html#line134">intmax_t</a> __numer, <a href="../stdint.h/code.html#line134">intmax_t</a> __denom)
+<b><a name="line294">294  </a></b>	      <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __attribute__ ((__const__));
+<b><a name="line295">295  </a></b>	
+<b><a name="line296">296  </a></b>	/* Like `strtol' but convert to `intmax_t'.  */
+<b><a name="line297">297  </a></b>	extern <a href="../stdint.h/code.html#line134">intmax_t</a> strtoimax (const char *__restrict __nptr,
+<b><a name="line298">298  </a></b>				   char **__restrict __endptr, int __base) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line299">299  </a></b>	
+<b><a name="line300">300  </a></b>	/* Like `strtoul' but convert to `uintmax_t'.  */
+<b><a name="line301">301  </a></b>	extern <a href="../stdint.h/code.html#line135">uintmax_t</a> strtoumax (const char *__restrict __nptr,
+<b><a name="line302">302  </a></b>				    char ** __restrict __endptr, int __base) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line303">303  </a></b>	
+<b><a name="line304">304  </a></b>	/* Like `wcstol' but convert to `intmax_t'.  */
+<b><a name="line305">305  </a></b>	extern <a href="../stdint.h/code.html#line134">intmax_t</a> wcstoimax (const <a href="#line32">__gwchar_t</a> *__restrict __nptr,
+<b><a name="line306">306  </a></b>				   <a href="#line32">__gwchar_t</a> **__restrict __endptr, int __base)
+<b><a name="line307">307  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line308">308  </a></b>	
+<b><a name="line309">309  </a></b>	/* Like `wcstoul' but convert to `uintmax_t'.  */
+<b><a name="line310">310  </a></b>	extern <a href="../stdint.h/code.html#line135">uintmax_t</a> wcstoumax (const <a href="#line32">__gwchar_t</a> *__restrict __nptr,
+<b><a name="line311">311  </a></b>				    <a href="#line32">__gwchar_t</a> ** __restrict __endptr, int __base)
+<b><a name="line312">312  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line313">313  </a></b>	
+<b><a name="line314">314  </a></b>	#ifdef __USE_EXTERN_INLINES
+<b><a name="line315">315  </a></b>	
+<b><a name="line316">316  </a></b>	# if __WORDSIZE == 64
+<b><a name="line317">317  </a></b>	
+<b><a name="line318">318  </a></b>	extern long int __strtol_internal (const char *__restrict __nptr,
+<b><a name="line319">319  </a></b>					   char **__restrict __endptr,
+<b><a name="line320">320  </a></b>					   int __base, int __group)
+<b><a name="line321">321  </a></b>	  __THROW __nonnull ((1)) __wur;
+<b><a name="line322">322  </a></b>	/* Like `strtol' but convert to `intmax_t'.  */
+<b><a name="line323">323  </a></b>	__extern_inline intmax_t
+<b><a name="line324">324  </a></b>	__NTH (strtoimax (const char *__restrict nptr, char **__restrict endptr,
+<b><a name="line325">325  </a></b>			  int base))
+<b><a name="line326">326  </a></b>	{
+<b><a name="line327">327  </a></b>	  return __strtol_internal (nptr, endptr, base, 0);
+<b><a name="line328">328  </a></b>	}
+<b><a name="line329">329  </a></b>	
+<b><a name="line330">330  </a></b>	extern unsigned long int __strtoul_internal (const char *__restrict __nptr,
+<b><a name="line331">331  </a></b>						     char ** __restrict __endptr,
+<b><a name="line332">332  </a></b>						     int __base, int __group)
+<b><a name="line333">333  </a></b>	  __THROW __nonnull ((1)) __wur;
+<b><a name="line334">334  </a></b>	/* Like `strtoul' but convert to `uintmax_t'.  */
+<b><a name="line335">335  </a></b>	__extern_inline uintmax_t
+<b><a name="line336">336  </a></b>	__NTH (strtoumax (const char *__restrict nptr, char **__restrict endptr,
+<b><a name="line337">337  </a></b>			  int base))
+<b><a name="line338">338  </a></b>	{
+<b><a name="line339">339  </a></b>	  return __strtoul_internal (nptr, endptr, base, 0);
+<b><a name="line340">340  </a></b>	}
+<b><a name="line341">341  </a></b>	
+<b><a name="line342">342  </a></b>	extern long int __wcstol_internal (const __gwchar_t * __restrict __nptr,
+<b><a name="line343">343  </a></b>					   __gwchar_t **__restrict __endptr,
+<b><a name="line344">344  </a></b>					   int __base, int __group)
+<b><a name="line345">345  </a></b>	  __THROW __nonnull ((1)) __wur;
+<b><a name="line346">346  </a></b>	/* Like `wcstol' but convert to `intmax_t'.  */
+<b><a name="line347">347  </a></b>	__extern_inline intmax_t
+<b><a name="line348">348  </a></b>	__NTH (wcstoimax (const __gwchar_t *__restrict nptr,
+<b><a name="line349">349  </a></b>			  __gwchar_t **__restrict endptr, int base))
+<b><a name="line350">350  </a></b>	{
+<b><a name="line351">351  </a></b>	  return __wcstol_internal (nptr, endptr, base, 0);
+<b><a name="line352">352  </a></b>	}
+<b><a name="line353">353  </a></b>	
+<b><a name="line354">354  </a></b>	extern unsigned long int __wcstoul_internal (const __gwchar_t *
+<b><a name="line355">355  </a></b>						     __restrict __nptr,
+<b><a name="line356">356  </a></b>						     __gwchar_t **
+<b><a name="line357">357  </a></b>						     __restrict __endptr,
+<b><a name="line358">358  </a></b>						     int __base, int __group)
+<b><a name="line359">359  </a></b>	  __THROW __nonnull ((1)) __wur;
+<b><a name="line360">360  </a></b>	/* Like `wcstoul' but convert to `uintmax_t'.  */
+<b><a name="line361">361  </a></b>	__extern_inline uintmax_t
+<b><a name="line362">362  </a></b>	__NTH (wcstoumax (const __gwchar_t *__restrict nptr,
+<b><a name="line363">363  </a></b>			  __gwchar_t **__restrict endptr, int base))
+<b><a name="line364">364  </a></b>	{
+<b><a name="line365">365  </a></b>	  return __wcstoul_internal (nptr, endptr, base, 0);
+<b><a name="line366">366  </a></b>	}
+<b><a name="line367">367  </a></b>	
+<b><a name="line368">368  </a></b>	# else /* __WORDSIZE == 32 */
+<b><a name="line369">369  </a></b>	
+<b><a name="line370">370  </a></b>	__extension__
+<b><a name="line371">371  </a></b>	extern long long int __strtoll_internal (const char *__restrict __nptr,
+<b><a name="line372">372  </a></b>						 char **__restrict __endptr,
+<b><a name="line373">373  </a></b>						 int __base, int __group)
+<b><a name="line374">374  </a></b>	  __THROW __nonnull ((1)) __wur;
+<b><a name="line375">375  </a></b>	/* Like `strtol' but convert to `intmax_t'.  */
+<b><a name="line376">376  </a></b>	__extern_inline intmax_t
+<b><a name="line377">377  </a></b>	__NTH (strtoimax (const char *__restrict nptr, char **__restrict endptr,
+<b><a name="line378">378  </a></b>			  int base))
+<b><a name="line379">379  </a></b>	{
+<b><a name="line380">380  </a></b>	  return __strtoll_internal (nptr, endptr, base, 0);
+<b><a name="line381">381  </a></b>	}
+<b><a name="line382">382  </a></b>	
+<b><a name="line383">383  </a></b>	__extension__
+<b><a name="line384">384  </a></b>	extern unsigned long long int __strtoull_internal (const char *
+<b><a name="line385">385  </a></b>							   __restrict __nptr,
+<b><a name="line386">386  </a></b>							   char **
+<b><a name="line387">387  </a></b>							   __restrict __endptr,
+<b><a name="line388">388  </a></b>							   int __base,
+<b><a name="line389">389  </a></b>							   int __group)
+<b><a name="line390">390  </a></b>	  __THROW __nonnull ((1)) __wur;
+<b><a name="line391">391  </a></b>	/* Like `strtoul' but convert to `uintmax_t'.  */
+<b><a name="line392">392  </a></b>	__extern_inline uintmax_t
+<b><a name="line393">393  </a></b>	__NTH (strtoumax (const char *__restrict nptr, char **__restrict endptr,
+<b><a name="line394">394  </a></b>			  int base))
+<b><a name="line395">395  </a></b>	{
+<b><a name="line396">396  </a></b>	  return __strtoull_internal (nptr, endptr, base, 0);
+<b><a name="line397">397  </a></b>	}
+<b><a name="line398">398  </a></b>	
+<b><a name="line399">399  </a></b>	__extension__
+<b><a name="line400">400  </a></b>	extern long long int __wcstoll_internal (const __gwchar_t *__restrict __nptr,
+<b><a name="line401">401  </a></b>						 __gwchar_t **__restrict __endptr,
+<b><a name="line402">402  </a></b>						 int __base, int __group)
+<b><a name="line403">403  </a></b>	  __THROW __nonnull ((1)) __wur;
+<b><a name="line404">404  </a></b>	/* Like `wcstol' but convert to `intmax_t'.  */
+<b><a name="line405">405  </a></b>	__extern_inline intmax_t
+<b><a name="line406">406  </a></b>	__NTH (wcstoimax (const __gwchar_t *__restrict nptr,
+<b><a name="line407">407  </a></b>			  __gwchar_t **__restrict endptr, int base))
+<b><a name="line408">408  </a></b>	{
+<b><a name="line409">409  </a></b>	  return __wcstoll_internal (nptr, endptr, base, 0);
+<b><a name="line410">410  </a></b>	}
+<b><a name="line411">411  </a></b>	
+<b><a name="line412">412  </a></b>	
+<b><a name="line413">413  </a></b>	__extension__
+<b><a name="line414">414  </a></b>	extern unsigned long long int __wcstoull_internal (const __gwchar_t *
+<b><a name="line415">415  </a></b>							   __restrict __nptr,
+<b><a name="line416">416  </a></b>							   __gwchar_t **
+<b><a name="line417">417  </a></b>							   __restrict __endptr,
+<b><a name="line418">418  </a></b>							   int __base,
+<b><a name="line419">419  </a></b>							   int __group)
+<b><a name="line420">420  </a></b>	  __THROW __nonnull ((1)) __wur;
+<b><a name="line421">421  </a></b>	/* Like `wcstoul' but convert to `uintmax_t'.  */
+<b><a name="line422">422  </a></b>	__extern_inline uintmax_t
+<b><a name="line423">423  </a></b>	__NTH (wcstoumax (const __gwchar_t *__restrict nptr,
+<b><a name="line424">424  </a></b>			  __gwchar_t **__restrict endptr, int base))
+<b><a name="line425">425  </a></b>	{
+<b><a name="line426">426  </a></b>	  return __wcstoull_internal (nptr, endptr, base, 0);
+<b><a name="line427">427  </a></b>	}
+<b><a name="line428">428  </a></b>	
+<b><a name="line429">429  </a></b>	# endif	/* __WORDSIZE == 32	*/
+<b><a name="line430">430  </a></b>	#endif	/* Use extern inlines.  */
+<b><a name="line431">431  </a></b>	
+<b><a name="line432">432  </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line99">__END_DECLS</a>
+<b><a name="line433">433  </a></b>	
+<b><a name="line434">434  </a></b>	#endif /* inttypes.h */
+<b><a name="line435">435  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

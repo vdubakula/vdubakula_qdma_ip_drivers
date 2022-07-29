@@ -1,0 +1,208 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/c++/5/bits/messages_members.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// std::messages implementation details, GNU version -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2001-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file bits/messages_members.h
+<b><a name="line26">26   </a></b>	 *  This is an internal header file, included by other library headers.
+<b><a name="line27">27   </a></b>	 *  Do not attempt to use it directly. @headername{locale}
+<b><a name="line28">28   </a></b>	 */
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	//
+<b><a name="line31">31   </a></b>	// ISO C++ 14882: 22.2.7.1.2  messages functions
+<b><a name="line32">32   </a></b>	//
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	// Written by Benjamin Kosnik &lt;bkoz@redhat.com&gt;
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	#include &lt;libintl.h&gt;
+<b><a name="line37">37   </a></b>	
+<b><a name="line38">38   </a></b>	namespace <a href="../c++config.h/code.html#line194">std</a> <a href="../c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line39">39   </a></b>	{
+<b><a name="line40">40   </a></b>	<a href="../c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line41">41   </a></b>	
+<b><a name="line42">42   </a></b>	  // Non-virtual member functions.
+<b><a name="line43">43   </a></b>	  template&lt;typename <b>_CharT</b>&gt;
+<b><a name="line44">44   </a></b>	    <a href="../../../../../c++/5/bits/localefwd.h/code.html#line198">messages</a>&lt;<a href="#line43">_CharT</a>&gt;::<b>messages</b>(<a href="../c++config.h/code.html#line196">size_t</a> __refs)
+<b><a name="line45">45   </a></b>	    : facet(__refs), _M_c_locale_messages(_S_get_c_locale()),
+<b><a name="line46">46   </a></b>	      _M_name_messages(_S_get_c_name())
+<b><a name="line47">47   </a></b>	    { }
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	  template&lt;typename <b>_CharT</b>&gt;
+<b><a name="line50">50   </a></b>	    <a href="../../../../../c++/5/bits/localefwd.h/code.html#line198">messages</a>&lt;<a href="#line49">_CharT</a>&gt;::<b>messages</b>(<a href="../c++locale.h/code.html#line62">__c_locale</a> __cloc, const char* __s,
+<b><a name="line51">51   </a></b>				       <a href="../c++config.h/code.html#line196">size_t</a> __refs)
+<b><a name="line52">52   </a></b>	    : facet(__refs), _M_c_locale_messages(0), _M_name_messages(0)
+<b><a name="line53">53   </a></b>	    {
+<b><a name="line54">54   </a></b>	      if (__builtin_strcmp(__s, _S_get_c_name()) != 0)
+<b><a name="line55">55   </a></b>		{
+<b><a name="line56">56   </a></b>		  const size_t __len = __builtin_strlen(__s) + 1;
+<b><a name="line57">57   </a></b>		  char* __tmp = new char[__len];
+<b><a name="line58">58   </a></b>		  <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line344">__builtin_memcpy</a>(__tmp, __s, __len);
+<b><a name="line59">59   </a></b>		  _M_name_messages = __tmp;
+<b><a name="line60">60   </a></b>		}
+<b><a name="line61">61   </a></b>	      else
+<b><a name="line62">62   </a></b>		_M_name_messages = _S_get_c_name();
+<b><a name="line63">63   </a></b>	
+<b><a name="line64">64   </a></b>	      // Last to avoid leaking memory if new throws.
+<b><a name="line65">65   </a></b>	      _M_c_locale_messages = _S_clone_c_locale(__cloc);
+<b><a name="line66">66   </a></b>	    }
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	  template&lt;typename <b>_CharT</b>&gt;
+<b><a name="line69">69   </a></b>	    typename <a href="../../../../../c++/5/bits/localefwd.h/code.html#line198">messages</a>&lt;<a href="#line68">_CharT</a>&gt;::<a href="../../../../../c++/5/bits/locale_facets_nonio.h/code.html#line1770">catalog</a>
+<b><a name="line70">70   </a></b>	    <a href="../../../../../c++/5/bits/localefwd.h/code.html#line198">messages</a>&lt;<a href="#line68">_CharT</a>&gt;::<b>open</b>(const <a href="../../../../../c++/5/bits/stringfwd.h/code.html#line71">basic_string</a>&lt;char&gt;&amp; __s, const <a href="../../../../../c++/5/bits/localefwd.h/code.html#line55">locale</a>&amp; __loc,
+<b><a name="line71">71   </a></b>				   const char* __dir) const
+<b><a name="line72">72   </a></b>	    {
+<b><a name="line73">73   </a></b>	      bindtextdomain(__s.c_str(), __dir);
+<b><a name="line74">74   </a></b>	      return this-&gt;do_open(__s, __loc);
+<b><a name="line75">75   </a></b>	    }
+<b><a name="line76">76   </a></b>	
+<b><a name="line77">77   </a></b>	  // Virtual member functions.
+<b><a name="line78">78   </a></b>	  template&lt;typename <b>_CharT</b>&gt;
+<b><a name="line79">79   </a></b>	    <a href="../../../../../c++/5/bits/localefwd.h/code.html#line198">messages</a>&lt;<a href="#line78">_CharT</a>&gt;::<b>~messages</b>()
+<b><a name="line80">80   </a></b>	    {
+<b><a name="line81">81   </a></b>	      if (_M_name_messages != _S_get_c_name())
+<b><a name="line82">82   </a></b>		delete [] _M_name_messages;
+<b><a name="line83">83   </a></b>	      _S_destroy_c_locale(_M_c_locale_messages);
+<b><a name="line84">84   </a></b>	    }
+<b><a name="line85">85   </a></b>	
+<b><a name="line86">86   </a></b>	  template&lt;typename <b>_CharT</b>&gt;
+<b><a name="line87">87   </a></b>	    typename <a href="../../../../../c++/5/bits/localefwd.h/code.html#line198">messages</a>&lt;<a href="#line86">_CharT</a>&gt;::<a href="../../../../../c++/5/bits/locale_facets_nonio.h/code.html#line1770">catalog</a>
+<b><a name="line88">88   </a></b>	    <a href="../../../../../c++/5/bits/localefwd.h/code.html#line198">messages</a>&lt;<a href="#line86">_CharT</a>&gt;::<b>do_open</b>(const <a href="../../../../../c++/5/bits/stringfwd.h/code.html#line71">basic_string</a>&lt;char&gt;&amp; __s,
+<b><a name="line89">89   </a></b>				      const <a href="../../../../../c++/5/bits/localefwd.h/code.html#line55">locale</a>&amp;) const
+<b><a name="line90">90   </a></b>	    {
+<b><a name="line91">91   </a></b>	      // No error checking is done, assume the catalog exists and can
+<b><a name="line92">92   </a></b>	      // be used.
+<b><a name="line93">93   </a></b>	      textdomain(__s.c_str());
+<b><a name="line94">94   </a></b>	      return 0;
+<b><a name="line95">95   </a></b>	    }
+<b><a name="line96">96   </a></b>	
+<b><a name="line97">97   </a></b>	  template&lt;typename <b>_CharT</b>&gt;
+<b><a name="line98">98   </a></b>	    void
+<b><a name="line99">99   </a></b>	    <a href="../../../../../c++/5/bits/localefwd.h/code.html#line198">messages</a>&lt;<a href="#line97">_CharT</a>&gt;::<b>do_close</b>(<a href="../../../../../c++/5/bits/locale_facets_nonio.h/code.html#line1770">catalog</a>) const
+<b><a name="line100">100  </a></b>	    { }
+<b><a name="line101">101  </a></b>	
+<b><a name="line102">102  </a></b>	  // messages_byname
+<b><a name="line103">103  </a></b>	  template&lt;typename <b>_CharT</b>&gt;
+<b><a name="line104">104  </a></b>	    <a href="../../../../../c++/5/bits/localefwd.h/code.html#line200">messages_byname</a>&lt;<a href="#line103">_CharT</a>&gt;::<b>messages_byname</b>(const char* __s, <a href="../c++config.h/code.html#line196">size_t</a> __refs)
+<b><a name="line105">105  </a></b>	    : messages&lt;_CharT&gt;(__refs)
+<b><a name="line106">106  </a></b>	    {
+<b><a name="line107">107  </a></b>	      if (this-&gt;_M_name_messages != locale::facet::_S_get_c_name())
+<b><a name="line108">108  </a></b>		{
+<b><a name="line109">109  </a></b>		  delete [] this-&gt;_M_name_messages;
+<b><a name="line110">110  </a></b>		  if (__builtin_strcmp(__s, locale::facet::_S_get_c_name()) != 0)
+<b><a name="line111">111  </a></b>		    {
+<b><a name="line112">112  </a></b>		      const size_t __len = __builtin_strlen(__s) + 1;
+<b><a name="line113">113  </a></b>		      char* __tmp = new char[__len];
+<b><a name="line114">114  </a></b>		      <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line344">__builtin_memcpy</a>(__tmp, __s, __len);
+<b><a name="line115">115  </a></b>		      this-&gt;_M_name_messages = __tmp;
+<b><a name="line116">116  </a></b>		    }
+<b><a name="line117">117  </a></b>		  else
+<b><a name="line118">118  </a></b>		    this-&gt;_M_name_messages = locale::facet::_S_get_c_name();
+<b><a name="line119">119  </a></b>		}
+<b><a name="line120">120  </a></b>	
+<b><a name="line121">121  </a></b>	      if (__builtin_strcmp(__s, &quot;C&quot;) != 0
+<b><a name="line122">122  </a></b>		  &amp;&amp; __builtin_strcmp(__s, &quot;POSIX&quot;) != 0)
+<b><a name="line123">123  </a></b>		{
+<b><a name="line124">124  </a></b>		  this-&gt;_S_destroy_c_locale(this-&gt;_M_c_locale_messages);
+<b><a name="line125">125  </a></b>		  this-&gt;_S_create_c_locale(this-&gt;_M_c_locale_messages, __s);
+<b><a name="line126">126  </a></b>		}
+<b><a name="line127">127  </a></b>	    }
+<b><a name="line128">128  </a></b>	
+<b><a name="line129">129  </a></b>	   //Specializations.
+<b><a name="line130">130  </a></b>	  template&lt;&gt;
+<b><a name="line131">131  </a></b>	    typename <a href="../../../../../c++/5/bits/locale_facets_nonio.h/code.html#line1797">messages</a>&lt;char&gt;::<a href="../../../../../c++/5/bits/locale_facets_nonio.h/code.html#line1770">catalog</a>
+<b><a name="line132">132  </a></b>	    <a href="../../../../../c++/5/bits/localefwd.h/code.html#line198">messages</a>&lt;char&gt;::<a href="../../../../../c++/5/bits/locale_facets_nonio.h/code.html#line1919">do_open</a>(const <a href="../../../../../c++/5/bits/stringfwd.h/code.html#line71">basic_string</a>&lt;char&gt;&amp;,
+<b><a name="line133">133  </a></b>				    const <a href="../../../../../c++/5/bits/localefwd.h/code.html#line55">locale</a>&amp;) const;
+<b><a name="line134">134  </a></b>	
+<b><a name="line135">135  </a></b>	  template&lt;&gt;
+<b><a name="line136">136  </a></b>	    void
+<b><a name="line137">137  </a></b>	    <a href="../../../../../c++/5/bits/localefwd.h/code.html#line198">messages</a>&lt;char&gt;::<a href="../../../../../c++/5/bits/locale_facets_nonio.h/code.html#line1946">do_close</a>(<a href="../../../../../c++/5/bits/locale_facets_nonio.h/code.html#line1770">catalog</a>) const;
+<b><a name="line138">138  </a></b>	
+<b><a name="line139">139  </a></b>	#ifdef <a href="../c++config.h/code.html#line1432">_GLIBCXX_USE_WCHAR_T</a>
+<b><a name="line140">140  </a></b>	  template&lt;&gt;
+<b><a name="line141">141  </a></b>	    typename <a href="../../../../../c++/5/bits/locale_facets_nonio.h/code.html#line1797">messages</a>&lt;wchar_t&gt;::<a href="../../../../../c++/5/bits/locale_facets_nonio.h/code.html#line1770">catalog</a>
+<b><a name="line142">142  </a></b>	    <a href="../../../../../c++/5/bits/localefwd.h/code.html#line198">messages</a>&lt;wchar_t&gt;::<a href="../../../../../c++/5/bits/locale_facets_nonio.h/code.html#line1919">do_open</a>(const <a href="../../../../../c++/5/bits/stringfwd.h/code.html#line71">basic_string</a>&lt;char&gt;&amp;,
+<b><a name="line143">143  </a></b>				       const <a href="../../../../../c++/5/bits/localefwd.h/code.html#line55">locale</a>&amp;) const;
+<b><a name="line144">144  </a></b>	
+<b><a name="line145">145  </a></b>	  template&lt;&gt;
+<b><a name="line146">146  </a></b>	    void
+<b><a name="line147">147  </a></b>	    <a href="../../../../../c++/5/bits/localefwd.h/code.html#line198">messages</a>&lt;wchar_t&gt;::<a href="../../../../../c++/5/bits/locale_facets_nonio.h/code.html#line1946">do_close</a>(<a href="../../../../../c++/5/bits/locale_facets_nonio.h/code.html#line1770">catalog</a>) const;
+<b><a name="line148">148  </a></b>	#endif
+<b><a name="line149">149  </a></b>	
+<b><a name="line150">150  </a></b>	<a href="../c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line151">151  </a></b>	} // namespace
+<b><a name="line152">152  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

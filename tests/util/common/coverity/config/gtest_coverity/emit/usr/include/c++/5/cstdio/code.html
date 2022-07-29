@@ -1,0 +1,251 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/cstdio</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// -*- C++ -*- forwarding header.
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 1997-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file include/cstdio
+<b><a name="line26">26   </a></b>	 *  This is a Standard C++ Library file.  You should @c \#include this file
+<b><a name="line27">27   </a></b>	 *  in your programs, rather than any of the @a *.h implementation files.
+<b><a name="line28">28   </a></b>	 *
+<b><a name="line29">29   </a></b>	 *  This is the C++ version of the Standard C Library header @c stdio.h,
+<b><a name="line30">30   </a></b>	 *  and its contents are (mostly) the same as that header, but are all
+<b><a name="line31">31   </a></b>	 *  contained in the namespace @c std (except for names which are defined
+<b><a name="line32">32   </a></b>	 *  as macros in C).
+<b><a name="line33">33   </a></b>	 */
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	//
+<b><a name="line36">36   </a></b>	// ISO C++ 14882: 27.8.2  C Library files
+<b><a name="line37">37   </a></b>	//
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	#pragma GCC system_header
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	#include &lt;bits/c++config.h&gt;
+<b><a name="line42">42   </a></b>	#include &lt;stdio.h&gt;
+<b><a name="line43">43   </a></b>	
+<b><a name="line44">44   </a></b>	#ifndef <a href="#line45">_GLIBCXX_CSTDIO</a>
+<b><a name="line45">45   </a></b>	#define <b>_GLIBCXX_CSTDIO</b> 1
+<b><a name="line46">46   </a></b>	
+<b><a name="line47">47   </a></b>	#ifndef <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line706">_GLIBCXX_HAVE_GETS</a>
+<b><a name="line48">48   </a></b>	extern &quot;C&quot; char* gets (char* __s) __attribute__((__deprecated__));
+<b><a name="line49">49   </a></b>	#endif
+<b><a name="line50">50   </a></b>	
+<b><a name="line51">51   </a></b>	// Get rid of those macros defined in &lt;stdio.h&gt; in lieu of real functions.
+<b><a name="line52">52   </a></b>	#undef clearerr
+<b><a name="line53">53   </a></b>	#undef fclose
+<b><a name="line54">54   </a></b>	#undef feof
+<b><a name="line55">55   </a></b>	#undef ferror
+<b><a name="line56">56   </a></b>	#undef fflush
+<b><a name="line57">57   </a></b>	#undef fgetc
+<b><a name="line58">58   </a></b>	#undef fgetpos
+<b><a name="line59">59   </a></b>	#undef fgets
+<b><a name="line60">60   </a></b>	#undef fopen
+<b><a name="line61">61   </a></b>	#undef fprintf
+<b><a name="line62">62   </a></b>	#undef fputc
+<b><a name="line63">63   </a></b>	#undef fputs
+<b><a name="line64">64   </a></b>	#undef fread
+<b><a name="line65">65   </a></b>	#undef freopen
+<b><a name="line66">66   </a></b>	#undef fscanf
+<b><a name="line67">67   </a></b>	#undef fseek
+<b><a name="line68">68   </a></b>	#undef fsetpos
+<b><a name="line69">69   </a></b>	#undef ftell
+<b><a name="line70">70   </a></b>	#undef fwrite
+<b><a name="line71">71   </a></b>	#undef <a href="../../../stdio.h/code.html#line543">getc</a>
+<b><a name="line72">72   </a></b>	#undef getchar
+<b><a name="line73">73   </a></b>	#if __cplusplus &lt;= 201103L
+<b><a name="line74">74   </a></b>	# undef gets
+<b><a name="line75">75   </a></b>	#endif
+<b><a name="line76">76   </a></b>	#undef perror
+<b><a name="line77">77   </a></b>	#undef printf
+<b><a name="line78">78   </a></b>	#undef <a href="../../../stdio.h/code.html#line585">putc</a>
+<b><a name="line79">79   </a></b>	#undef putchar
+<b><a name="line80">80   </a></b>	#undef puts
+<b><a name="line81">81   </a></b>	#undef remove
+<b><a name="line82">82   </a></b>	#undef rename
+<b><a name="line83">83   </a></b>	#undef rewind
+<b><a name="line84">84   </a></b>	#undef scanf
+<b><a name="line85">85   </a></b>	#undef setbuf
+<b><a name="line86">86   </a></b>	#undef setvbuf
+<b><a name="line87">87   </a></b>	#undef sprintf
+<b><a name="line88">88   </a></b>	#undef sscanf
+<b><a name="line89">89   </a></b>	#undef tmpfile
+<b><a name="line90">90   </a></b>	#undef tmpnam
+<b><a name="line91">91   </a></b>	#undef ungetc
+<b><a name="line92">92   </a></b>	#undef vfprintf
+<b><a name="line93">93   </a></b>	#undef vprintf
+<b><a name="line94">94   </a></b>	#undef vsprintf
+<b><a name="line95">95   </a></b>	
+<b><a name="line96">96   </a></b>	namespace <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>
+<b><a name="line97">97   </a></b>	{
+<b><a name="line98">98   </a></b>	  using ::<a href="../../../stdio.h/code.html#line48">FILE</a>;
+<b><a name="line99">99   </a></b>	  using ::<a href="../../../stdio.h/code.html#line110">fpos_t</a>;
+<b><a name="line100">100  </a></b>	
+<b><a name="line101">101  </a></b>	  using ::<a href="../../../stdio.h/code.html#line826">clearerr</a>;
+<b><a name="line102">102  </a></b>	  using ::<a href="../../../stdio.h/code.html#line237">fclose</a>;
+<b><a name="line103">103  </a></b>	  using ::<a href="../../../stdio.h/code.html#line828">feof</a>;
+<b><a name="line104">104  </a></b>	  using ::<a href="../../../stdio.h/code.html#line830">ferror</a>;
+<b><a name="line105">105  </a></b>	  using ::<a href="../../../stdio.h/code.html#line242">fflush</a>;
+<b><a name="line106">106  </a></b>	  using ::<a href="../../../stdio.h/code.html#line531">fgetc</a>;
+<b><a name="line107">107  </a></b>	  using ::<a href="../../../stdio.h/code.html#line798">fgetpos</a>;
+<b><a name="line108">108  </a></b>	  using ::<a href="../../../stdio.h/code.html#line622">fgets</a>;
+<b><a name="line109">109  </a></b>	  using ::<a href="../../../stdio.h/code.html#line272">fopen</a>;
+<b><a name="line110">110  </a></b>	  using ::<a href="../../../stdio.h/code.html#line356">fprintf</a>;
+<b><a name="line111">111  </a></b>	  using ::<a href="../../../stdio.h/code.html#line573">fputc</a>;
+<b><a name="line112">112  </a></b>	  using ::<a href="../../../stdio.h/code.html#line689">fputs</a>;
+<b><a name="line113">113  </a></b>	  using ::<a href="../../../stdio.h/code.html#line709">fread</a>;
+<b><a name="line114">114  </a></b>	  using ::<a href="../../../stdio.h/code.html#line278">freopen</a>;
+<b><a name="line115">115  </a></b>	  using ::<a href="../../../stdio.h/code.html#line425">fscanf</a>;
+<b><a name="line116">116  </a></b>	  using ::<a href="../../../stdio.h/code.html#line749">fseek</a>;
+<b><a name="line117">117  </a></b>	  using ::<a href="../../../stdio.h/code.html#line803">fsetpos</a>;
+<b><a name="line118">118  </a></b>	  using ::<a href="../../../stdio.h/code.html#line754">ftell</a>;
+<b><a name="line119">119  </a></b>	  using ::<a href="../../../stdio.h/code.html#line715">fwrite</a>;
+<b><a name="line120">120  </a></b>	  using ::<a href="../../../stdio.h/code.html#line532">getc</a>;
+<b><a name="line121">121  </a></b>	  using ::<a href="../../../stdio.h/code.html#line538">getchar</a>;
+<b><a name="line122">122  </a></b>	#if __cplusplus &lt;= 201103L
+<b><a name="line123">123  </a></b>	  // LWG 2249
+<b><a name="line124">124  </a></b>	  using ::<a href="../../../stdio.h/code.html#line638">gets</a>;
+<b><a name="line125">125  </a></b>	#endif
+<b><a name="line126">126  </a></b>	  using ::<a href="../../../stdio.h/code.html#line846">perror</a>;
+<b><a name="line127">127  </a></b>	  using ::<a href="../../../stdio.h/code.html#line362">printf</a>;
+<b><a name="line128">128  </a></b>	  using ::<a href="../../../stdio.h/code.html#line574">putc</a>;
+<b><a name="line129">129  </a></b>	  using ::<a href="../../../stdio.h/code.html#line580">putchar</a>;
+<b><a name="line130">130  </a></b>	  using ::<a href="../../../stdio.h/code.html#line695">puts</a>;
+<b><a name="line131">131  </a></b>	  using ::<a href="../../../stdio.h/code.html#line178">remove</a>;
+<b><a name="line132">132  </a></b>	  using ::<a href="../../../stdio.h/code.html#line180">rename</a>;
+<b><a name="line133">133  </a></b>	  using ::<a href="../../../stdio.h/code.html#line759">rewind</a>;
+<b><a name="line134">134  </a></b>	  using ::<a href="../../../stdio.h/code.html#line431">scanf</a>;
+<b><a name="line135">135  </a></b>	  using ::<a href="../../../stdio.h/code.html#line332">setbuf</a>;
+<b><a name="line136">136  </a></b>	  using ::<a href="../../../stdio.h/code.html#line336">setvbuf</a>;
+<b><a name="line137">137  </a></b>	  using ::<a href="../../../stdio.h/code.html#line364">sprintf</a>;
+<b><a name="line138">138  </a></b>	  using ::<a href="../../../stdio.h/code.html#line433">sscanf</a>;
+<b><a name="line139">139  </a></b>	  using ::<a href="../../../stdio.h/code.html#line195">tmpfile</a>;
+<b><a name="line140">140  </a></b>	#if <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1425">_GLIBCXX_USE_TMPNAM</a>
+<b><a name="line141">141  </a></b>	  using ::<a href="../../../stdio.h/code.html#line209">tmpnam</a>;
+<b><a name="line142">142  </a></b>	#endif
+<b><a name="line143">143  </a></b>	  using ::<a href="../../../stdio.h/code.html#line702">ungetc</a>;
+<b><a name="line144">144  </a></b>	  using ::<a href="../../../stdio.h/code.html#line371">vfprintf</a>;
+<b><a name="line145">145  </a></b>	  using ::<a href="../../../stdio.h/code.html#line377">vprintf</a>;
+<b><a name="line146">146  </a></b>	  using ::<a href="../../../stdio.h/code.html#line379">vsprintf</a>;
+<b><a name="line147">147  </a></b>	} // namespace
+<b><a name="line148">148  </a></b>	
+<b><a name="line149">149  </a></b>	#if <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1309">_GLIBCXX_USE_C99</a>
+<b><a name="line150">150  </a></b>	
+<b><a name="line151">151  </a></b>	#undef snprintf
+<b><a name="line152">152  </a></b>	#undef vfscanf
+<b><a name="line153">153  </a></b>	#undef vscanf
+<b><a name="line154">154  </a></b>	#undef vsnprintf
+<b><a name="line155">155  </a></b>	#undef vsscanf
+<b><a name="line156">156  </a></b>	
+<b><a name="line157">157  </a></b>	namespace <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>
+<b><a name="line158">158  </a></b>	{
+<b><a name="line159">159  </a></b>	#if _GLIBCXX_USE_C99_CHECK || _GLIBCXX_USE_C99_DYNAMIC
+<b><a name="line160">160  </a></b>	  extern &quot;C&quot; int
+<b><a name="line161">161  </a></b>	  (snprintf)(char * __restrict, std::size_t, const char * __restrict, ...)
+<b><a name="line162">162  </a></b>	  throw ();
+<b><a name="line163">163  </a></b>	  extern &quot;C&quot; int
+<b><a name="line164">164  </a></b>	  (vfscanf)(FILE * __restrict, const char * __restrict, __gnuc_va_list);
+<b><a name="line165">165  </a></b>	  extern &quot;C&quot; int (vscanf)(const char * __restrict, __gnuc_va_list);
+<b><a name="line166">166  </a></b>	  extern &quot;C&quot; int
+<b><a name="line167">167  </a></b>	  (vsnprintf)(char * __restrict, std::size_t, const char * __restrict,
+<b><a name="line168">168  </a></b>		      __gnuc_va_list) throw ();
+<b><a name="line169">169  </a></b>	  extern &quot;C&quot; int
+<b><a name="line170">170  </a></b>	  (vsscanf)(const char * __restrict, const char * __restrict, __gnuc_va_list)
+<b><a name="line171">171  </a></b>	  throw ();
+<b><a name="line172">172  </a></b>	#endif
+<b><a name="line173">173  </a></b>	
+<b><a name="line174">174  </a></b>	#if !_GLIBCXX_USE_C99_DYNAMIC
+<b><a name="line175">175  </a></b>	  using ::<a href="../../../stdio.h/code.html#line386">snprintf</a>;
+<b><a name="line176">176  </a></b>	  using ::<a href="../../../stdio.h/code.html#line471">vfscanf</a>;
+<b><a name="line177">177  </a></b>	  using ::<a href="../../../stdio.h/code.html#line479">vscanf</a>;
+<b><a name="line178">178  </a></b>	  using ::<a href="../../../stdio.h/code.html#line390">vsnprintf</a>;
+<b><a name="line179">179  </a></b>	  using ::<a href="../../../stdio.h/code.html#line483">vsscanf</a>;
+<b><a name="line180">180  </a></b>	#endif
+<b><a name="line181">181  </a></b>	} // namespace __gnu_cxx
+<b><a name="line182">182  </a></b>	
+<b><a name="line183">183  </a></b>	namespace <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>
+<b><a name="line184">184  </a></b>	{
+<b><a name="line185">185  </a></b>	  using ::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../../stdio.h/code.html#line386">snprintf</a>;
+<b><a name="line186">186  </a></b>	  using ::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../../stdio.h/code.html#line471">vfscanf</a>;
+<b><a name="line187">187  </a></b>	  using ::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../../stdio.h/code.html#line479">vscanf</a>;
+<b><a name="line188">188  </a></b>	  using ::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../../stdio.h/code.html#line390">vsnprintf</a>;
+<b><a name="line189">189  </a></b>	  using ::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../../stdio.h/code.html#line483">vsscanf</a>;
+<b><a name="line190">190  </a></b>	} // namespace std
+<b><a name="line191">191  </a></b>	
+<b><a name="line192">192  </a></b>	#endif // _GLIBCXX_USE_C99
+<b><a name="line193">193  </a></b>	
+<b><a name="line194">194  </a></b>	#endif
+<b><a name="line195">195  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

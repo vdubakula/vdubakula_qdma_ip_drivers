@@ -1,0 +1,150 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/gtest/internal/gtest-port-arch.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Copyright 2015, Google Inc.
+<b><a name="line2">2    </a></b>	// All rights reserved.
+<b><a name="line3">3    </a></b>	//
+<b><a name="line4">4    </a></b>	// Redistribution and use in source and binary forms, with or without
+<b><a name="line5">5    </a></b>	// modification, are permitted provided that the following conditions are
+<b><a name="line6">6    </a></b>	// met:
+<b><a name="line7">7    </a></b>	//
+<b><a name="line8">8    </a></b>	//     * Redistributions of source code must retain the above copyright
+<b><a name="line9">9    </a></b>	// notice, this list of conditions and the following disclaimer.
+<b><a name="line10">10   </a></b>	//     * Redistributions in binary form must reproduce the above
+<b><a name="line11">11   </a></b>	// copyright notice, this list of conditions and the following disclaimer
+<b><a name="line12">12   </a></b>	// in the documentation and/or other materials provided with the
+<b><a name="line13">13   </a></b>	// distribution.
+<b><a name="line14">14   </a></b>	//     * Neither the name of Google Inc. nor the names of its
+<b><a name="line15">15   </a></b>	// contributors may be used to endorse or promote products derived from
+<b><a name="line16">16   </a></b>	// this software without specific prior written permission.
+<b><a name="line17">17   </a></b>	//
+<b><a name="line18">18   </a></b>	// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+<b><a name="line19">19   </a></b>	// &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+<b><a name="line20">20   </a></b>	// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+<b><a name="line21">21   </a></b>	// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+<b><a name="line22">22   </a></b>	// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+<b><a name="line23">23   </a></b>	// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+<b><a name="line24">24   </a></b>	// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+<b><a name="line25">25   </a></b>	// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+<b><a name="line26">26   </a></b>	// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+<b><a name="line27">27   </a></b>	// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+<b><a name="line28">28   </a></b>	// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+<b><a name="line29">29   </a></b>	//
+<b><a name="line30">30   </a></b>	// The Google C++ Testing Framework (Google Test)
+<b><a name="line31">31   </a></b>	//
+<b><a name="line32">32   </a></b>	// This header file defines the GTEST_OS_* macro.
+<b><a name="line33">33   </a></b>	// It is separate from gtest-port.h so that custom/gtest-port.h can include it.
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	#ifndef GTEST_INCLUDE_GTEST_INTERNAL_GTEST_PORT_ARCH_H_
+<b><a name="line36">36   </a></b>	#define <b>GTEST_INCLUDE_GTEST_INTERNAL_GTEST_PORT_ARCH_H_</b>
+<b><a name="line37">37   </a></b>	
+<b><a name="line38">38   </a></b>	// Determines the platform on which Google Test is compiled.
+<b><a name="line39">39   </a></b>	#ifdef __CYGWIN__
+<b><a name="line40">40   </a></b>	# define GTEST_OS_CYGWIN 1
+<b><a name="line41">41   </a></b>	#elif defined __SYMBIAN32__
+<b><a name="line42">42   </a></b>	# define GTEST_OS_SYMBIAN 1
+<b><a name="line43">43   </a></b>	#elif defined _WIN32
+<b><a name="line44">44   </a></b>	# define GTEST_OS_WINDOWS 1
+<b><a name="line45">45   </a></b>	# ifdef _WIN32_WCE
+<b><a name="line46">46   </a></b>	#  define GTEST_OS_WINDOWS_MOBILE 1
+<b><a name="line47">47   </a></b>	# elif defined(__MINGW__) || defined(__MINGW32__)
+<b><a name="line48">48   </a></b>	#  define GTEST_OS_WINDOWS_MINGW 1
+<b><a name="line49">49   </a></b>	# elif defined(WINAPI_FAMILY)
+<b><a name="line50">50   </a></b>	#  include &lt;winapifamily.h&gt;
+<b><a name="line51">51   </a></b>	#  if WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_DESKTOP)
+<b><a name="line52">52   </a></b>	#   define GTEST_OS_WINDOWS_DESKTOP 1
+<b><a name="line53">53   </a></b>	#  elif WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_PHONE_APP)
+<b><a name="line54">54   </a></b>	#   define GTEST_OS_WINDOWS_PHONE 1
+<b><a name="line55">55   </a></b>	#  elif WINAPI_FAMILY_PARTITION(WINAPI_PARTITION_APP)
+<b><a name="line56">56   </a></b>	#   define GTEST_OS_WINDOWS_RT 1
+<b><a name="line57">57   </a></b>	#  else
+<b><a name="line58">58   </a></b>	    // WINAPI_FAMILY defined but no known partition matched.
+<b><a name="line59">59   </a></b>	    // Default to desktop.
+<b><a name="line60">60   </a></b>	#   define GTEST_OS_WINDOWS_DESKTOP 1
+<b><a name="line61">61   </a></b>	#  endif
+<b><a name="line62">62   </a></b>	# else
+<b><a name="line63">63   </a></b>	#  define GTEST_OS_WINDOWS_DESKTOP 1
+<b><a name="line64">64   </a></b>	# endif  // _WIN32_WCE
+<b><a name="line65">65   </a></b>	#elif defined __APPLE__
+<b><a name="line66">66   </a></b>	# define GTEST_OS_MAC 1
+<b><a name="line67">67   </a></b>	# if TARGET_OS_IPHONE
+<b><a name="line68">68   </a></b>	#  define GTEST_OS_IOS 1
+<b><a name="line69">69   </a></b>	# endif
+<b><a name="line70">70   </a></b>	#elif defined __FreeBSD__
+<b><a name="line71">71   </a></b>	# define GTEST_OS_FREEBSD 1
+<b><a name="line72">72   </a></b>	#elif defined <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line159">__linux__</a>
+<b><a name="line73">73   </a></b>	# define <b>GTEST_OS_LINUX</b> 1
+<b><a name="line74">74   </a></b>	# if defined __ANDROID__
+<b><a name="line75">75   </a></b>	#  define GTEST_OS_LINUX_ANDROID 1
+<b><a name="line76">76   </a></b>	# endif
+<b><a name="line77">77   </a></b>	#elif defined __MVS__
+<b><a name="line78">78   </a></b>	# define GTEST_OS_ZOS 1
+<b><a name="line79">79   </a></b>	#elif defined(__sun) &amp;&amp; defined(__SVR4)
+<b><a name="line80">80   </a></b>	# define GTEST_OS_SOLARIS 1
+<b><a name="line81">81   </a></b>	#elif defined(_AIX)
+<b><a name="line82">82   </a></b>	# define GTEST_OS_AIX 1
+<b><a name="line83">83   </a></b>	#elif defined(__hpux)
+<b><a name="line84">84   </a></b>	# define GTEST_OS_HPUX 1
+<b><a name="line85">85   </a></b>	#elif defined __native_client__
+<b><a name="line86">86   </a></b>	# define GTEST_OS_NACL 1
+<b><a name="line87">87   </a></b>	#elif defined __OpenBSD__
+<b><a name="line88">88   </a></b>	# define GTEST_OS_OPENBSD 1
+<b><a name="line89">89   </a></b>	#elif defined __QNX__
+<b><a name="line90">90   </a></b>	# define GTEST_OS_QNX 1
+<b><a name="line91">91   </a></b>	#endif  // __CYGWIN__
+<b><a name="line92">92   </a></b>	
+<b><a name="line93">93   </a></b>	#endif  // GTEST_INCLUDE_GTEST_INTERNAL_GTEST_PORT_ARCH_H_
+<b><a name="line94">94   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

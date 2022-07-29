@@ -1,0 +1,267 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/stat.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 1999-2016 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line5">5    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line6">6    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line7">7    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line10">10   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line11">11   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line12">12   </a></b>	   Lesser General Public License for more details.
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line15">15   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line16">16   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	#if !defined <a href="../../sys/stat.h/code.html#line23">_SYS_STAT_H</a> &amp;&amp; !defined <a href="../../../fcntl.h/code.html#line23">_FCNTL_H</a>
+<b><a name="line19">19   </a></b>	# error &quot;Never include &lt;bits/stat.h&gt; directly; use &lt;sys/stat.h&gt; instead.&quot;
+<b><a name="line20">20   </a></b>	#endif
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	#ifndef <a href="#line23">_BITS_STAT_H</a>
+<b><a name="line23">23   </a></b>	#define <b>_BITS_STAT_H</b>	1
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/* Versions of the `struct stat' data structure.  */
+<b><a name="line26">26   </a></b>	#ifndef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a>
+<b><a name="line27">27   </a></b>	# define _STAT_VER_LINUX_OLD	1
+<b><a name="line28">28   </a></b>	# define _STAT_VER_KERNEL	1
+<b><a name="line29">29   </a></b>	# define _STAT_VER_SVR4		2
+<b><a name="line30">30   </a></b>	# define _STAT_VER_LINUX	3
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	/* i386 versions of the `xmknod' interface.  */
+<b><a name="line33">33   </a></b>	# define _MKNOD_VER_LINUX	1
+<b><a name="line34">34   </a></b>	# define _MKNOD_VER_SVR4	2
+<b><a name="line35">35   </a></b>	# define _MKNOD_VER		_MKNOD_VER_LINUX /* The bits defined below.  */
+<b><a name="line36">36   </a></b>	#else
+<b><a name="line37">37   </a></b>	# define <b>_STAT_VER_KERNEL</b>	0
+<b><a name="line38">38   </a></b>	# define <b>_STAT_VER_LINUX</b>	1
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	/* x86-64 versions of the `xmknod' interface.  */
+<b><a name="line41">41   </a></b>	# define <b>_MKNOD_VER_LINUX</b>	0
+<b><a name="line42">42   </a></b>	#endif
+<b><a name="line43">43   </a></b>	
+<b><a name="line44">44   </a></b>	#define <b>_STAT_VER</b>		_STAT_VER_LINUX
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	struct <b>stat</b>
+<b><a name="line47">47   </a></b>	  {
+<b><a name="line48">48   </a></b>	    <a href="../types.h/code.html#line124">__dev_t</a> <b>st_dev</b>;		/* Device.  */
+<b><a name="line49">49   </a></b>	#ifndef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a>
+<b><a name="line50">50   </a></b>	    unsigned short int __pad1;
+<b><a name="line51">51   </a></b>	#endif
+<b><a name="line52">52   </a></b>	#if defined <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a> || !defined __USE_FILE_OFFSET64
+<b><a name="line53">53   </a></b>	    <a href="../types.h/code.html#line127">__ino_t</a> <b>st_ino</b>;		/* File serial number.	*/
+<b><a name="line54">54   </a></b>	#else
+<b><a name="line55">55   </a></b>	    __ino_t __st_ino;			/* 32bit file serial number.	*/
+<b><a name="line56">56   </a></b>	#endif
+<b><a name="line57">57   </a></b>	#ifndef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a>
+<b><a name="line58">58   </a></b>	    __mode_t st_mode;			/* File mode.  */
+<b><a name="line59">59   </a></b>	    __nlink_t st_nlink;			/* Link count.  */
+<b><a name="line60">60   </a></b>	#else
+<b><a name="line61">61   </a></b>	    <a href="../types.h/code.html#line130">__nlink_t</a> <b>st_nlink</b>;		/* Link count.  */
+<b><a name="line62">62   </a></b>	    <a href="../types.h/code.html#line129">__mode_t</a> <b>st_mode</b>;		/* File mode.  */
+<b><a name="line63">63   </a></b>	#endif
+<b><a name="line64">64   </a></b>	    <a href="../types.h/code.html#line125">__uid_t</a> <b>st_uid</b>;		/* User ID of the file's owner.	*/
+<b><a name="line65">65   </a></b>	    <a href="../types.h/code.html#line126">__gid_t</a> <b>st_gid</b>;		/* Group ID of the file's group.*/
+<b><a name="line66">66   </a></b>	#ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a>
+<b><a name="line67">67   </a></b>	    int <b>__pad0</b>;
+<b><a name="line68">68   </a></b>	#endif
+<b><a name="line69">69   </a></b>	    <a href="../types.h/code.html#line124">__dev_t</a> <b>st_rdev</b>;		/* Device number, if device.  */
+<b><a name="line70">70   </a></b>	#ifndef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a>
+<b><a name="line71">71   </a></b>	    unsigned short int __pad2;
+<b><a name="line72">72   </a></b>	#endif
+<b><a name="line73">73   </a></b>	#if defined <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a> || !defined __USE_FILE_OFFSET64
+<b><a name="line74">74   </a></b>	    <a href="../types.h/code.html#line131">__off_t</a> <b>st_size</b>;			/* Size of file, in bytes.  */
+<b><a name="line75">75   </a></b>	#else
+<b><a name="line76">76   </a></b>	    __off64_t st_size;			/* Size of file, in bytes.  */
+<b><a name="line77">77   </a></b>	#endif
+<b><a name="line78">78   </a></b>	    <a href="../types.h/code.html#line153">__blksize_t</a> <b>st_blksize</b>;	/* Optimal block size for I/O.  */
+<b><a name="line79">79   </a></b>	#if defined <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a>  || !defined __USE_FILE_OFFSET64
+<b><a name="line80">80   </a></b>	    <a href="../types.h/code.html#line158">__blkcnt_t</a> <b>st_blocks</b>;		/* Number 512-byte blocks allocated. */
+<b><a name="line81">81   </a></b>	#else
+<b><a name="line82">82   </a></b>	    __blkcnt64_t st_blocks;		/* Number 512-byte blocks allocated. */
+<b><a name="line83">83   </a></b>	#endif
+<b><a name="line84">84   </a></b>	#ifdef <a href="../../../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line85">85   </a></b>	    /* Nanosecond resolution timestamps are stored in a format
+<b><a name="line86">86   </a></b>	       equivalent to 'struct timespec'.  This is the type used
+<b><a name="line87">87   </a></b>	       whenever possible but the Unix namespace rules do not allow the
+<b><a name="line88">88   </a></b>	       identifier 'timespec' to appear in the &lt;sys/stat.h&gt; header.
+<b><a name="line89">89   </a></b>	       Therefore we have to handle the use of this header in strictly
+<b><a name="line90">90   </a></b>	       standard-compliant sources special.  */
+<b><a name="line91">91   </a></b>	    struct <a href="../../../time.h/code.html#line120">timespec</a> <b>st_atim</b>;		/* Time of last access.  */
+<b><a name="line92">92   </a></b>	    struct <a href="../../../time.h/code.html#line120">timespec</a> <b>st_mtim</b>;		/* Time of last modification.  */
+<b><a name="line93">93   </a></b>	    struct <a href="../../../time.h/code.html#line120">timespec</a> <b>st_ctim</b>;		/* Time of last status change.  */
+<b><a name="line94">94   </a></b>	# define <b>st_atime</b> st_atim.tv_sec	/* Backward compatibility.  */
+<b><a name="line95">95   </a></b>	# define <b>st_mtime</b> st_mtim.tv_sec
+<b><a name="line96">96   </a></b>	# define <b>st_ctime</b> st_ctim.tv_sec
+<b><a name="line97">97   </a></b>	#else
+<b><a name="line98">98   </a></b>	    __time_t st_atime;			/* Time of last access.  */
+<b><a name="line99">99   </a></b>	    __syscall_ulong_t st_atimensec;	/* Nscecs of last access.  */
+<b><a name="line100">100  </a></b>	    __time_t st_mtime;			/* Time of last modification.  */
+<b><a name="line101">101  </a></b>	    __syscall_ulong_t st_mtimensec;	/* Nsecs of last modification.  */
+<b><a name="line102">102  </a></b>	    __time_t st_ctime;			/* Time of last status change.  */
+<b><a name="line103">103  </a></b>	    __syscall_ulong_t st_ctimensec;	/* Nsecs of last status change.  */
+<b><a name="line104">104  </a></b>	#endif
+<b><a name="line105">105  </a></b>	#ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a>
+<b><a name="line106">106  </a></b>	    <a href="../types.h/code.html#line175">__syscall_slong_t</a> <b>__glibc_reserved</b>[3];
+<b><a name="line107">107  </a></b>	#else
+<b><a name="line108">108  </a></b>	# ifndef __USE_FILE_OFFSET64
+<b><a name="line109">109  </a></b>	    unsigned long int __glibc_reserved4;
+<b><a name="line110">110  </a></b>	    unsigned long int __glibc_reserved5;
+<b><a name="line111">111  </a></b>	# else
+<b><a name="line112">112  </a></b>	    __ino64_t st_ino;			/* File serial number.	*/
+<b><a name="line113">113  </a></b>	# endif
+<b><a name="line114">114  </a></b>	#endif
+<b><a name="line115">115  </a></b>	  };
+<b><a name="line116">116  </a></b>	
+<b><a name="line117">117  </a></b>	#ifdef <a href="../../../features.h/code.html#line309">__USE_LARGEFILE64</a>
+<b><a name="line118">118  </a></b>	/* Note stat64 has the same shape as stat for x86-64.  */
+<b><a name="line119">119  </a></b>	struct <b>stat64</b>
+<b><a name="line120">120  </a></b>	  {
+<b><a name="line121">121  </a></b>	    <a href="../types.h/code.html#line124">__dev_t</a> <b>st_dev</b>;		/* Device.  */
+<b><a name="line122">122  </a></b>	# ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a>
+<b><a name="line123">123  </a></b>	    <a href="../types.h/code.html#line128">__ino64_t</a> <b>st_ino</b>;		/* File serial number.  */
+<b><a name="line124">124  </a></b>	    <a href="../types.h/code.html#line130">__nlink_t</a> <b>st_nlink</b>;		/* Link count.  */
+<b><a name="line125">125  </a></b>	    <a href="../types.h/code.html#line129">__mode_t</a> <b>st_mode</b>;		/* File mode.  */
+<b><a name="line126">126  </a></b>	# else
+<b><a name="line127">127  </a></b>	    unsigned int __pad1;
+<b><a name="line128">128  </a></b>	    __ino_t __st_ino;			/* 32bit file serial number.	*/
+<b><a name="line129">129  </a></b>	    __mode_t st_mode;			/* File mode.  */
+<b><a name="line130">130  </a></b>	    __nlink_t st_nlink;			/* Link count.  */
+<b><a name="line131">131  </a></b>	# endif
+<b><a name="line132">132  </a></b>	    <a href="../types.h/code.html#line125">__uid_t</a> <b>st_uid</b>;		/* User ID of the file's owner.	*/
+<b><a name="line133">133  </a></b>	    <a href="../types.h/code.html#line126">__gid_t</a> <b>st_gid</b>;		/* Group ID of the file's group.*/
+<b><a name="line134">134  </a></b>	# ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a>
+<b><a name="line135">135  </a></b>	    int <b>__pad0</b>;
+<b><a name="line136">136  </a></b>	    <a href="../types.h/code.html#line124">__dev_t</a> <b>st_rdev</b>;		/* Device number, if device.  */
+<b><a name="line137">137  </a></b>	    <a href="../types.h/code.html#line131">__off_t</a> <b>st_size</b>;		/* Size of file, in bytes.  */
+<b><a name="line138">138  </a></b>	# else
+<b><a name="line139">139  </a></b>	    __dev_t st_rdev;			/* Device number, if device.  */
+<b><a name="line140">140  </a></b>	    unsigned int __pad2;
+<b><a name="line141">141  </a></b>	    __off64_t st_size;			/* Size of file, in bytes.  */
+<b><a name="line142">142  </a></b>	# endif
+<b><a name="line143">143  </a></b>	    <a href="../types.h/code.html#line153">__blksize_t</a> <b>st_blksize</b>;	/* Optimal block size for I/O.  */
+<b><a name="line144">144  </a></b>	    <a href="../types.h/code.html#line159">__blkcnt64_t</a> <b>st_blocks</b>;	/* Nr. 512-byte blocks allocated.  */
+<b><a name="line145">145  </a></b>	# ifdef <a href="../../../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line146">146  </a></b>	    /* Nanosecond resolution timestamps are stored in a format
+<b><a name="line147">147  </a></b>	       equivalent to 'struct timespec'.  This is the type used
+<b><a name="line148">148  </a></b>	       whenever possible but the Unix namespace rules do not allow the
+<b><a name="line149">149  </a></b>	       identifier 'timespec' to appear in the &lt;sys/stat.h&gt; header.
+<b><a name="line150">150  </a></b>	       Therefore we have to handle the use of this header in strictly
+<b><a name="line151">151  </a></b>	       standard-compliant sources special.  */
+<b><a name="line152">152  </a></b>	    struct <a href="../../../time.h/code.html#line120">timespec</a> <b>st_atim</b>;		/* Time of last access.  */
+<b><a name="line153">153  </a></b>	    struct <a href="../../../time.h/code.html#line120">timespec</a> <b>st_mtim</b>;		/* Time of last modification.  */
+<b><a name="line154">154  </a></b>	    struct <a href="../../../time.h/code.html#line120">timespec</a> <b>st_ctim</b>;		/* Time of last status change.  */
+<b><a name="line155">155  </a></b>	# else
+<b><a name="line156">156  </a></b>	    __time_t st_atime;			/* Time of last access.  */
+<b><a name="line157">157  </a></b>	    __syscall_ulong_t st_atimensec;	/* Nscecs of last access.  */
+<b><a name="line158">158  </a></b>	    __time_t st_mtime;			/* Time of last modification.  */
+<b><a name="line159">159  </a></b>	    __syscall_ulong_t st_mtimensec;	/* Nsecs of last modification.  */
+<b><a name="line160">160  </a></b>	    __time_t st_ctime;			/* Time of last status change.  */
+<b><a name="line161">161  </a></b>	    __syscall_ulong_t st_ctimensec;	/* Nsecs of last status change.  */
+<b><a name="line162">162  </a></b>	# endif
+<b><a name="line163">163  </a></b>	# ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a>
+<b><a name="line164">164  </a></b>	    <a href="../types.h/code.html#line175">__syscall_slong_t</a> <b>__glibc_reserved</b>[3];
+<b><a name="line165">165  </a></b>	# else
+<b><a name="line166">166  </a></b>	    __ino64_t st_ino;			/* File serial number.		*/
+<b><a name="line167">167  </a></b>	# endif
+<b><a name="line168">168  </a></b>	  };
+<b><a name="line169">169  </a></b>	#endif
+<b><a name="line170">170  </a></b>	
+<b><a name="line171">171  </a></b>	/* Tell code we have these members.  */
+<b><a name="line172">172  </a></b>	#define	<b>_STATBUF_ST_BLKSIZE</b>
+<b><a name="line173">173  </a></b>	#define <b>_STATBUF_ST_RDEV</b>
+<b><a name="line174">174  </a></b>	/* Nanosecond resolution time values are supported.  */
+<b><a name="line175">175  </a></b>	#define <b>_STATBUF_ST_NSEC</b>
+<b><a name="line176">176  </a></b>	
+<b><a name="line177">177  </a></b>	/* Encoding of the file mode.  */
+<b><a name="line178">178  </a></b>	
+<b><a name="line179">179  </a></b>	#define	<b>__S_IFMT</b>	0170000	/* These bits determine file type.  */
+<b><a name="line180">180  </a></b>	
+<b><a name="line181">181  </a></b>	/* File types.  */
+<b><a name="line182">182  </a></b>	#define	<b>__S_IFDIR</b>	0040000	/* Directory.  */
+<b><a name="line183">183  </a></b>	#define	<b>__S_IFCHR</b>	0020000	/* Character device.  */
+<b><a name="line184">184  </a></b>	#define	<b>__S_IFBLK</b>	0060000	/* Block device.  */
+<b><a name="line185">185  </a></b>	#define	<b>__S_IFREG</b>	0100000	/* Regular file.  */
+<b><a name="line186">186  </a></b>	#define	<b>__S_IFIFO</b>	0010000	/* FIFO.  */
+<b><a name="line187">187  </a></b>	#define	<b>__S_IFLNK</b>	0120000	/* Symbolic link.  */
+<b><a name="line188">188  </a></b>	#define	<b>__S_IFSOCK</b>	0140000	/* Socket.  */
+<b><a name="line189">189  </a></b>	
+<b><a name="line190">190  </a></b>	/* POSIX.1b objects.  Note that these macros always evaluate to zero.  But
+<b><a name="line191">191  </a></b>	   they do it by enforcing the correct use of the macros.  */
+<b><a name="line192">192  </a></b>	#define <b>__S_TYPEISMQ</b>(buf)  ((buf)-&gt;st_mode - (buf)-&gt;st_mode)
+<b><a name="line193">193  </a></b>	#define <b>__S_TYPEISSEM</b>(buf) ((buf)-&gt;st_mode - (buf)-&gt;st_mode)
+<b><a name="line194">194  </a></b>	#define <b>__S_TYPEISSHM</b>(buf) ((buf)-&gt;st_mode - (buf)-&gt;st_mode)
+<b><a name="line195">195  </a></b>	
+<b><a name="line196">196  </a></b>	/* Protection bits.  */
+<b><a name="line197">197  </a></b>	
+<b><a name="line198">198  </a></b>	#define	<b>__S_ISUID</b>	04000	/* Set user ID on execution.  */
+<b><a name="line199">199  </a></b>	#define	<b>__S_ISGID</b>	02000	/* Set group ID on execution.  */
+<b><a name="line200">200  </a></b>	#define	<b>__S_ISVTX</b>	01000	/* Save swapped text after use (sticky).  */
+<b><a name="line201">201  </a></b>	#define	<b>__S_IREAD</b>	0400	/* Read by owner.  */
+<b><a name="line202">202  </a></b>	#define	<b>__S_IWRITE</b>	0200	/* Write by owner.  */
+<b><a name="line203">203  </a></b>	#define	<b>__S_IEXEC</b>	0100	/* Execute by owner.  */
+<b><a name="line204">204  </a></b>	
+<b><a name="line205">205  </a></b>	#ifdef <a href="../../../features.h/code.html#line321">__USE_ATFILE</a>
+<b><a name="line206">206  </a></b>	# define <b>UTIME_NOW</b>	((1l &lt;&lt; 30) - 1l)
+<b><a name="line207">207  </a></b>	# define <b>UTIME_OMIT</b>	((1l &lt;&lt; 30) - 2l)
+<b><a name="line208">208  </a></b>	#endif
+<b><a name="line209">209  </a></b>	
+<b><a name="line210">210  </a></b>	#endif	/* bits/stat.h */
+<b><a name="line211">211  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

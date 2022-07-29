@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_dpdk/qdma_device.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/*
+<b><a name="line2">2    </a></b>	 * qdma_device.hpp
+<b><a name="line3">3    </a></b>	 *
+<b><a name="line4">4    </a></b>	 *  Created on: Jan 22, 2018
+<b><a name="line5">5    </a></b>	 *      Author: alexande
+<b><a name="line6">6    </a></b>	 */
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	#ifndef QDMA_TEST_SRC_QDMA_DEVICE_HPP_
+<b><a name="line9">9    </a></b>	#define <b>QDMA_TEST_SRC_QDMA_DEVICE_HPP_</b>
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	#include &lt;cstddef&gt;
+<b><a name="line12">12   </a></b>	#include &lt;vector&gt;
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	#include &quot;xlnx_pci.h&quot;
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	extern int config_max_queues;
+<b><a name="line17">17   </a></b>	namespace <b>qdma</b> {
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// ==================== forward declarations ======================================================
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	class instance;
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>	// ==================== constants =================================================================
+<b><a name="line25">25   </a></b>	
+<b><a name="line26">26   </a></b>	static constexpr <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>qdma_id_mask</b> = 0xfff00000;
+<b><a name="line27">27   </a></b>	static constexpr <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>qdma_id</b> = 0x1fd00000;
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	// ==================== declarations ===============================================================
+<b><a name="line30">30   </a></b>	
+<b><a name="line31">31   </a></b>	class <b>device</b> {
+<b><a name="line32">32   </a></b>	public:
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	    struct <b>info</b> {
+<b><a name="line35">35   </a></b>	        <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>id</b>;
+<b><a name="line36">36   </a></b>	        int <b>dma_bar_idx</b> = 0;
+<b><a name="line37">37   </a></b>	        int <b>user_bar_idx</b> = 0;
+<b><a name="line38">38   </a></b>	        int <b>bypass_bar_idx</b> = 0;
+<b><a name="line39">39   </a></b>	        int <b>max_num_queues</b> = <a href="../../../../include/qdma_dpdk.h/code.html#line90">QDMA_MAX_QUEUES</a>;
+<b><a name="line40">40   </a></b>	        struct <a href="../../../../include/qdma_dpdk.h/code.html#line166">rte_pmd_qdma_dev_attributes</a> <b>dev_cap</b>;
+<b><a name="line41">41   </a></b>	    };
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	    device(<a href="../../qdma_common/qdma_queue_abs.h/code.html#line19">instance</a>&amp; drv, const <a href="#line34">info</a>&amp; details);
+<b><a name="line44">44   </a></b>	
+<b><a name="line45">45   </a></b>	    <a href="../../../xlnx/xlnx_dpdk/xlnx_pci.h/code.html#line60">pcie_bar</a>* <b>dma_bar</b> = nullptr;
+<b><a name="line46">46   </a></b>	    <a href="../../../xlnx/xlnx_dpdk/xlnx_pci.h/code.html#line60">pcie_bar</a>* <b>user_bar</b> = nullptr;
+<b><a name="line47">47   </a></b>	    <a href="../../../xlnx/xlnx_dpdk/xlnx_pci.h/code.html#line60">pcie_bar</a>* <b>bypass_bar</b> = nullptr;
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	    <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>m_id</b>;
+<b><a name="line50">50   </a></b>	    unsigned <b>max_num_queues</b> = 0;
+<b><a name="line51">51   </a></b>	    const unsigned <b>max_num_queues_vf</b> = 64; // TODO
+<b><a name="line52">52   </a></b>	    struct <a href="../../../../include/qdma_dpdk.h/code.html#line166">rte_pmd_qdma_dev_attributes</a> <b>dev_cap</b>;
+<b><a name="line53">53   </a></b>	    <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>dev_id</b> = 0;
+<b><a name="line54">54   </a></b>	
+<b><a name="line55">55   </a></b>	private:
+<b><a name="line56">56   </a></b>	    <a href="../../qdma_common/qdma_queue_abs.h/code.html#line19">instance</a>&amp; <b>m_drv</b>;
+<b><a name="line57">57   </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="../../../xlnx/xlnx_dpdk/xlnx_pci.h/code.html#line60">pcie_bar</a>&gt; <b>m_pcie_bars</b>;
+<b><a name="line58">58   </a></b>	};
+<b><a name="line59">59   </a></b>	
+<b><a name="line60">60   </a></b>	} // namespace qdma
+<b><a name="line61">61   </a></b>	
+<b><a name="line62">62   </a></b>	#endif /* QDMA_TEST_SRC_QDMA_DEVICE_HPP_ */
+<b><a name="line63">63   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

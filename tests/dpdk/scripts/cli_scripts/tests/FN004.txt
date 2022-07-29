@@ -1,0 +1,20 @@
+port_init 0 1024 1024 1024 4096
+reg_write  0 2 0x08 0x1
+dma_to_device 0 1024 datafile_16bit_pattern.bin 0 262144 0
+dma_from_device 0 1024 FN004_port0_qcount1024_size262144.bin 0 262144 0
+port_close 0
+port_init 1 1024 1024 1024 4096
+reg_write  1 2 0x08 0x1
+dma_to_device 1 1024 datafile_16bit_pattern.bin 0 262144 0
+dma_from_device 1 1024 FN004_port1_qcount1024_size262144.bin 0 262144 0
+port_close 1
+port_init 2 1024 1024 1024 4096
+reg_write  2 2 0x08 0x1
+dma_to_device 2 1024 datafile_16bit_pattern.bin 0 262144 0
+dma_from_device 2 1024 FN004_port2_qcount1024_size262144.bin 0 262144 0
+port_close 2
+port_init 3 1024 1024 1024 4096
+reg_write  3 2 0x08 0x1
+dma_to_device 3 1024 datafile_16bit_pattern.bin 0 262144 0
+dma_from_device 3 1024 FN004_port3_qcount1024_size262144.bin 0 262144 0
+port_close 3

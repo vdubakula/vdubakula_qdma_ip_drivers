@@ -1,0 +1,223 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/exception</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Exception Handling support header for -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 1995-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of GCC.
+<b><a name="line6">6    </a></b>	//
+<b><a name="line7">7    </a></b>	// GCC is free software; you can redistribute it and/or modify
+<b><a name="line8">8    </a></b>	// it under the terms of the GNU General Public License as published by
+<b><a name="line9">9    </a></b>	// the Free Software Foundation; either version 3, or (at your option)
+<b><a name="line10">10   </a></b>	// any later version.
+<b><a name="line11">11   </a></b>	//
+<b><a name="line12">12   </a></b>	// GCC is distributed in the hope that it will be useful,
+<b><a name="line13">13   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line14">14   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line15">15   </a></b>	// GNU General Public License for more details.
+<b><a name="line16">16   </a></b>	//
+<b><a name="line17">17   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line18">18   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line19">19   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line20">20   </a></b>	
+<b><a name="line21">21   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line22">22   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line23">23   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line24">24   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line25">25   </a></b>	
+<b><a name="line26">26   </a></b>	/** @file exception
+<b><a name="line27">27   </a></b>	 *  This is a Standard C++ Library header.
+<b><a name="line28">28   </a></b>	 */
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	#ifndef __EXCEPTION__
+<b><a name="line31">31   </a></b>	#define <b>__EXCEPTION__</b>
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	#pragma GCC system_header
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	#pragma GCC visibility push(default)
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	#include &lt;bits/c++config.h&gt;
+<b><a name="line38">38   </a></b>	#include &lt;bits/atomic_lockfree_defines.h&gt;
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	extern &quot;C++&quot; {
+<b><a name="line41">41   </a></b>	
+<b><a name="line42">42   </a></b>	namespace <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>
+<b><a name="line43">43   </a></b>	{
+<b><a name="line44">44   </a></b>	  /**
+<b><a name="line45">45   </a></b>	   * @defgroup exceptions Exceptions
+<b><a name="line46">46   </a></b>	   * @ingroup diagnostics
+<b><a name="line47">47   </a></b>	   *
+<b><a name="line48">48   </a></b>	   * Classes and functions for reporting errors via exception classes.
+<b><a name="line49">49   </a></b>	   * @{
+<b><a name="line50">50   </a></b>	   */
+<b><a name="line51">51   </a></b>	
+<b><a name="line52">52   </a></b>	  /**
+<b><a name="line53">53   </a></b>	   *  @brief Base class for all library exceptions.
+<b><a name="line54">54   </a></b>	   *
+<b><a name="line55">55   </a></b>	   *  This is the base class for all exceptions thrown by the standard
+<b><a name="line56">56   </a></b>	   *  library, and by certain language expressions.  You are free to derive
+<b><a name="line57">57   </a></b>	   *  your own %exception classes, or use a different hierarchy, or to
+<b><a name="line58">58   </a></b>	   *  throw non-class data (e.g., fundamental types).
+<b><a name="line59">59   </a></b>	   */
+<b><a name="line60">60   </a></b>	  class <b>exception</b>
+<b><a name="line61">61   </a></b>	  {
+<b><a name="line62">62   </a></b>	  public:
+<b><a name="line63">63   </a></b>	    <b>exception</b>() <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line118">_GLIBCXX_USE_NOEXCEPT</a> { }
+<b><a name="line64">64   </a></b>	    virtual ~exception() <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line118">_GLIBCXX_USE_NOEXCEPT</a>;
+<b><a name="line65">65   </a></b>	
+<b><a name="line66">66   </a></b>	    /** Returns a C-style character string describing the general cause
+<b><a name="line67">67   </a></b>	     *  of the current error.  */
+<b><a name="line68">68   </a></b>	    virtual const char* what() const <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line118">_GLIBCXX_USE_NOEXCEPT</a>;
+<b><a name="line69">69   </a></b>	  };
+<b><a name="line70">70   </a></b>	
+<b><a name="line71">71   </a></b>	  /** If an %exception is thrown which is not listed in a function's
+<b><a name="line72">72   </a></b>	   *  %exception specification, one of these may be thrown.  */
+<b><a name="line73">73   </a></b>	  class <b>bad_exception</b> : public <a href="#line60">exception</a>
+<b><a name="line74">74   </a></b>	  {
+<b><a name="line75">75   </a></b>	  public:
+<b><a name="line76">76   </a></b>	    <b>bad_exception</b>() <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line118">_GLIBCXX_USE_NOEXCEPT</a> { }
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	    // This declaration is not useless:
+<b><a name="line79">79   </a></b>	    // http://gcc.gnu.org/onlinedocs/gcc-3.0.2/gcc_6.html#SEC118
+<b><a name="line80">80   </a></b>	    virtual ~bad_exception() <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line118">_GLIBCXX_USE_NOEXCEPT</a>;
+<b><a name="line81">81   </a></b>	
+<b><a name="line82">82   </a></b>	    // See comment in eh_exception.cc.
+<b><a name="line83">83   </a></b>	    virtual const char* what() const <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line118">_GLIBCXX_USE_NOEXCEPT</a>;
+<b><a name="line84">84   </a></b>	  };
+<b><a name="line85">85   </a></b>	
+<b><a name="line86">86   </a></b>	  /// If you write a replacement %terminate handler, it must be of this type.
+<b><a name="line87">87   </a></b>	  typedef void (*<b>terminate_handler</b>) ();
+<b><a name="line88">88   </a></b>	
+<b><a name="line89">89   </a></b>	  /// If you write a replacement %unexpected handler, it must be of this type.
+<b><a name="line90">90   </a></b>	  typedef void (*<b>unexpected_handler</b>) ();
+<b><a name="line91">91   </a></b>	
+<b><a name="line92">92   </a></b>	  /// Takes a new handler function as an argument, returns the old function.
+<b><a name="line93">93   </a></b>	  <a href="#line87">terminate_handler</a> set_terminate(<a href="#line87">terminate_handler</a>) <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line118">_GLIBCXX_USE_NOEXCEPT</a>;
+<b><a name="line94">94   </a></b>	
+<b><a name="line95">95   </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line96">96   </a></b>	  /// Return the current terminate handler.
+<b><a name="line97">97   </a></b>	  <a href="#line87">terminate_handler</a> get_terminate() noexcept;
+<b><a name="line98">98   </a></b>	#endif
+<b><a name="line99">99   </a></b>	
+<b><a name="line100">100  </a></b>	  /** The runtime will call this function if %exception handling must be
+<b><a name="line101">101  </a></b>	   *  abandoned for any reason.  It can also be called by the user.  */
+<b><a name="line102">102  </a></b>	  void terminate() <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line118">_GLIBCXX_USE_NOEXCEPT</a> __attribute__ ((__noreturn__));
+<b><a name="line103">103  </a></b>	
+<b><a name="line104">104  </a></b>	  /// Takes a new handler function as an argument, returns the old function.
+<b><a name="line105">105  </a></b>	  <a href="#line90">unexpected_handler</a> set_unexpected(<a href="#line90">unexpected_handler</a>) <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line118">_GLIBCXX_USE_NOEXCEPT</a>;
+<b><a name="line106">106  </a></b>	
+<b><a name="line107">107  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line108">108  </a></b>	  /// Return the current unexpected handler.
+<b><a name="line109">109  </a></b>	  <a href="#line90">unexpected_handler</a> get_unexpected() noexcept;
+<b><a name="line110">110  </a></b>	#endif
+<b><a name="line111">111  </a></b>	
+<b><a name="line112">112  </a></b>	  /** The runtime will call this function if an %exception is thrown which
+<b><a name="line113">113  </a></b>	   *  violates the function's %exception specification.  */
+<b><a name="line114">114  </a></b>	  void unexpected() __attribute__ ((__noreturn__));
+<b><a name="line115">115  </a></b>	
+<b><a name="line116">116  </a></b>	  /** [18.6.4]/1:  'Returns true after completing evaluation of a
+<b><a name="line117">117  </a></b>	   *  throw-expression until either completing initialization of the
+<b><a name="line118">118  </a></b>	   *  exception-declaration in the matching handler or entering @c unexpected()
+<b><a name="line119">119  </a></b>	   *  due to the throw; or after entering @c terminate() for any reason
+<b><a name="line120">120  </a></b>	   *  other than an explicit call to @c terminate().  [Note: This includes
+<b><a name="line121">121  </a></b>	   *  stack unwinding [15.2].  end note]'
+<b><a name="line122">122  </a></b>	   *
+<b><a name="line123">123  </a></b>	   *  2: 'When @c uncaught_exception() is true, throwing an
+<b><a name="line124">124  </a></b>	   *  %exception can result in a call of @c terminate()
+<b><a name="line125">125  </a></b>	   *  (15.5.1).'
+<b><a name="line126">126  </a></b>	   */
+<b><a name="line127">127  </a></b>	  bool uncaught_exception() <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line118">_GLIBCXX_USE_NOEXCEPT</a> __attribute__ ((__pure__));
+<b><a name="line128">128  </a></b>	
+<b><a name="line129">129  </a></b>	  // @} group exceptions
+<b><a name="line130">130  </a></b>	} // namespace std
+<b><a name="line131">131  </a></b>	
+<b><a name="line132">132  </a></b>	namespace <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>
+<b><a name="line133">133  </a></b>	{
+<b><a name="line134">134  </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line135">135  </a></b>	
+<b><a name="line136">136  </a></b>	  /**
+<b><a name="line137">137  </a></b>	   *  @brief A replacement for the standard terminate_handler which
+<b><a name="line138">138  </a></b>	   *  prints more information about the terminating exception (if any)
+<b><a name="line139">139  </a></b>	   *  on stderr.
+<b><a name="line140">140  </a></b>	   *
+<b><a name="line141">141  </a></b>	   *  @ingroup exceptions
+<b><a name="line142">142  </a></b>	   *
+<b><a name="line143">143  </a></b>	   *  Call
+<b><a name="line144">144  </a></b>	   *   @code
+<b><a name="line145">145  </a></b>	   *     std::set_terminate(__gnu_cxx::__verbose_terminate_handler)
+<b><a name="line146">146  </a></b>	   *   @endcode
+<b><a name="line147">147  </a></b>	   *  to use.  For more info, see
+<b><a name="line148">148  </a></b>	   *  http://gcc.gnu.org/onlinedocs/libstdc++/manual/bk01pt02ch06s02.html
+<b><a name="line149">149  </a></b>	   *
+<b><a name="line150">150  </a></b>	   *  In 3.4 and later, this is on by default.
+<b><a name="line151">151  </a></b>	   */
+<b><a name="line152">152  </a></b>	  void __verbose_terminate_handler();
+<b><a name="line153">153  </a></b>	
+<b><a name="line154">154  </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line155">155  </a></b>	} // namespace
+<b><a name="line156">156  </a></b>	
+<b><a name="line157">157  </a></b>	} // extern &quot;C++&quot;
+<b><a name="line158">158  </a></b>	
+<b><a name="line159">159  </a></b>	#pragma GCC visibility pop
+<b><a name="line160">160  </a></b>	
+<b><a name="line161">161  </a></b>	#if (__cplusplus &gt;= 201103L) &amp;&amp; (<a href="../bits/atomic_lockfree_defines.h/code.html#line55">ATOMIC_INT_LOCK_FREE</a> &gt; 1)
+<b><a name="line162">162  </a></b>	#include &lt;bits/exception_ptr.h&gt;
+<b><a name="line163">163  </a></b>	#include &lt;bits/nested_exception.h&gt;
+<b><a name="line164">164  </a></b>	#endif
+<b><a name="line165">165  </a></b>	
+<b><a name="line166">166  </a></b>	#endif
+<b><a name="line167">167  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

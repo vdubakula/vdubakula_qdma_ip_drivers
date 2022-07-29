@@ -1,0 +1,1239 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/tuple</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// &lt;tuple&gt; -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2007-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file include/tuple
+<b><a name="line26">26   </a></b>	 *  This is a Standard C++ Library header.
+<b><a name="line27">27   </a></b>	 */
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	#ifndef _GLIBCXX_TUPLE
+<b><a name="line30">30   </a></b>	#define <b>_GLIBCXX_TUPLE</b> 1
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	#pragma GCC system_header
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	#if __cplusplus &lt; 201103L
+<b><a name="line35">35   </a></b>	# include &lt;bits/c++0x_warning.h&gt;
+<b><a name="line36">36   </a></b>	#else
+<b><a name="line37">37   </a></b>	
+<b><a name="line38">38   </a></b>	#include &lt;utility&gt;
+<b><a name="line39">39   </a></b>	#include &lt;array&gt;
+<b><a name="line40">40   </a></b>	#include &lt;bits/uses_allocator.h&gt;
+<b><a name="line41">41   </a></b>	
+<b><a name="line42">42   </a></b>	namespace <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line43">43   </a></b>	{
+<b><a name="line44">44   </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	  /**
+<b><a name="line47">47   </a></b>	   *  @addtogroup utilities
+<b><a name="line48">48   </a></b>	   *  @{
+<b><a name="line49">49   </a></b>	   */
+<b><a name="line50">50   </a></b>	
+<b><a name="line51">51   </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>_Idx</b>, typename <b>_Head</b>, bool <b>_IsEmptyNotFinal</b>&gt;
+<b><a name="line52">52   </a></b>	    struct _Head_base;
+<b><a name="line53">53   </a></b>	
+<b><a name="line54">54   </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>_Idx</b>, typename <b>_Head</b>&gt;
+<b><a name="line55">55   </a></b>	    struct <b>_Head_base</b>&lt;<a href="#line54">_Idx</a>, <a href="#line54">_Head</a>, true&gt;
+<b><a name="line56">56   </a></b>	    : public <a href="#line54">_Head</a>
+<b><a name="line57">57   </a></b>	    {
+<b><a name="line58">58   </a></b>	      constexpr _Head_base()
+<b><a name="line59">59   </a></b>	      : _Head() { }
+<b><a name="line60">60   </a></b>	
+<b><a name="line61">61   </a></b>	      constexpr _Head_base(const <a href="#line54">_Head</a>&amp; <b>__h</b>)
+<b><a name="line62">62   </a></b>	      : <a href="#line54">_Head</a>(<a href="#line61">__h</a>) { }
+<b><a name="line63">63   </a></b>	
+<b><a name="line64">64   </a></b>	      constexpr <b>_Head_base</b>(const <a href="#line52">_Head_base</a>&amp;) = default;
+<b><a name="line65">65   </a></b>	      constexpr <b>_Head_base</b>(<a href="#line52">_Head_base</a>&amp;&amp;) = default;
+<b><a name="line66">66   </a></b>	
+<b><a name="line67">67   </a></b>	      template&lt;typename <b>_UHead</b>&gt;
+<b><a name="line68">68   </a></b>	        constexpr _Head_base(<a href="#line67">_UHead</a>&amp;&amp; <b>__h</b>)
+<b><a name="line69">69   </a></b>		: <a href="#line54">_Head</a>(<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/move.h/code.html#line76">forward</a>&lt;<a href="#line67">_UHead</a>&gt;(<a href="#line68">__h</a>)) { }
+<b><a name="line70">70   </a></b>	
+<b><a name="line71">71   </a></b>	      _Head_base(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a>, <a href="../bits/uses_allocator.h/code.html#line61">__uses_alloc0</a>)
+<b><a name="line72">72   </a></b>	      : _Head() { }
+<b><a name="line73">73   </a></b>	
+<b><a name="line74">74   </a></b>	      template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line75">75   </a></b>		_Head_base(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a>, <a href="../bits/uses_allocator.h/code.html#line67">__uses_alloc1</a>&lt;<a href="#line74">_Alloc</a>&gt; __a)
+<b><a name="line76">76   </a></b>		: _Head(allocator_arg, *__a._M_a) { }
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	      template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line79">79   </a></b>		_Head_base(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a>, <a href="../bits/uses_allocator.h/code.html#line70">__uses_alloc2</a>&lt;<a href="#line78">_Alloc</a>&gt; __a)
+<b><a name="line80">80   </a></b>		: _Head(*__a._M_a) { }
+<b><a name="line81">81   </a></b>	
+<b><a name="line82">82   </a></b>	      template&lt;typename <b>_UHead</b>&gt;
+<b><a name="line83">83   </a></b>		_Head_base(<a href="../bits/uses_allocator.h/code.html#line61">__uses_alloc0</a>, <a href="#line82">_UHead</a>&amp;&amp; __uhead)
+<b><a name="line84">84   </a></b>		: _Head(std::forward&lt;_UHead&gt;(__uhead)) { }
+<b><a name="line85">85   </a></b>	
+<b><a name="line86">86   </a></b>	      template&lt;typename <b>_Alloc</b>, typename <b>_UHead</b>&gt;
+<b><a name="line87">87   </a></b>		_Head_base(<a href="../bits/uses_allocator.h/code.html#line67">__uses_alloc1</a>&lt;<a href="#line86">_Alloc</a>&gt; __a, <a href="#line86">_UHead</a>&amp;&amp; __uhead)
+<b><a name="line88">88   </a></b>		: _Head(allocator_arg, *__a._M_a, std::forward&lt;_UHead&gt;(__uhead)) { }
+<b><a name="line89">89   </a></b>	
+<b><a name="line90">90   </a></b>	      template&lt;typename <b>_Alloc</b>, typename <b>_UHead</b>&gt;
+<b><a name="line91">91   </a></b>		_Head_base(<a href="../bits/uses_allocator.h/code.html#line70">__uses_alloc2</a>&lt;<a href="#line90">_Alloc</a>&gt; __a, <a href="#line90">_UHead</a>&amp;&amp; __uhead)
+<b><a name="line92">92   </a></b>		: _Head(std::forward&lt;_UHead&gt;(__uhead), *__a._M_a) { }
+<b><a name="line93">93   </a></b>	
+<b><a name="line94">94   </a></b>	      static constexpr <a href="#line54">_Head</a>&amp;
+<b><a name="line95">95   </a></b>	      _M_head(<a href="#line52">_Head_base</a>&amp; <b>__b</b>) noexcept { return __b; }
+<b><a name="line96">96   </a></b>	
+<b><a name="line97">97   </a></b>	      static constexpr const <a href="#line54">_Head</a>&amp;
+<b><a name="line98">98   </a></b>	      _M_head(const <a href="#line52">_Head_base</a>&amp; __b) noexcept { return __b; }
+<b><a name="line99">99   </a></b>	    };
+<b><a name="line100">100  </a></b>	
+<b><a name="line101">101  </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>_Idx</b>, typename <b>_Head</b>&gt;
+<b><a name="line102">102  </a></b>	    struct <b>_Head_base</b>&lt;<a href="#line101">_Idx</a>, <a href="#line101">_Head</a>, false&gt;
+<b><a name="line103">103  </a></b>	    {
+<b><a name="line104">104  </a></b>	      constexpr _Head_base()
+<b><a name="line105">105  </a></b>	      : _M_head_impl() { }
+<b><a name="line106">106  </a></b>	
+<b><a name="line107">107  </a></b>	      constexpr _Head_base(const <a href="#line101">_Head</a>&amp; <b>__h</b>)
+<b><a name="line108">108  </a></b>	      : <a href="#line147">_M_head_impl</a>(<a href="#line107">__h</a>) { }
+<b><a name="line109">109  </a></b>	
+<b><a name="line110">110  </a></b>	      constexpr <b>_Head_base</b>(const <a href="#line52">_Head_base</a>&amp;) = default;
+<b><a name="line111">111  </a></b>	      constexpr <b>_Head_base</b>(<a href="#line52">_Head_base</a>&amp;&amp;) = default;
+<b><a name="line112">112  </a></b>	
+<b><a name="line113">113  </a></b>	      template&lt;typename <b>_UHead</b>&gt;
+<b><a name="line114">114  </a></b>	        constexpr _Head_base(<a href="#line113">_UHead</a>&amp;&amp; <b>__h</b>)
+<b><a name="line115">115  </a></b>		: <a href="#line147">_M_head_impl</a>(<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/move.h/code.html#line76">forward</a>&lt;<a href="#line113">_UHead</a>&gt;(<a href="#line114">__h</a>)) { }
+<b><a name="line116">116  </a></b>	
+<b><a name="line117">117  </a></b>	      _Head_base(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a>, <a href="../bits/uses_allocator.h/code.html#line61">__uses_alloc0</a>)
+<b><a name="line118">118  </a></b>	      : _M_head_impl() { }
+<b><a name="line119">119  </a></b>	
+<b><a name="line120">120  </a></b>	      template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line121">121  </a></b>		_Head_base(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a>, <a href="../bits/uses_allocator.h/code.html#line67">__uses_alloc1</a>&lt;<a href="#line120">_Alloc</a>&gt; __a)
+<b><a name="line122">122  </a></b>		: _M_head_impl(allocator_arg, *__a._M_a) { }
+<b><a name="line123">123  </a></b>	
+<b><a name="line124">124  </a></b>	      template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line125">125  </a></b>		_Head_base(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a>, <a href="../bits/uses_allocator.h/code.html#line70">__uses_alloc2</a>&lt;<a href="#line124">_Alloc</a>&gt; __a)
+<b><a name="line126">126  </a></b>		: _M_head_impl(*__a._M_a) { }
+<b><a name="line127">127  </a></b>	
+<b><a name="line128">128  </a></b>	      template&lt;typename <b>_UHead</b>&gt;
+<b><a name="line129">129  </a></b>		_Head_base(<a href="../bits/uses_allocator.h/code.html#line61">__uses_alloc0</a>, <a href="#line128">_UHead</a>&amp;&amp; __uhead)
+<b><a name="line130">130  </a></b>		: _M_head_impl(std::forward&lt;_UHead&gt;(__uhead)) { }
+<b><a name="line131">131  </a></b>	
+<b><a name="line132">132  </a></b>	      template&lt;typename <b>_Alloc</b>, typename <b>_UHead</b>&gt;
+<b><a name="line133">133  </a></b>		_Head_base(<a href="../bits/uses_allocator.h/code.html#line67">__uses_alloc1</a>&lt;<a href="#line132">_Alloc</a>&gt; __a, <a href="#line132">_UHead</a>&amp;&amp; __uhead)
+<b><a name="line134">134  </a></b>		: _M_head_impl(allocator_arg, *__a._M_a, std::forward&lt;_UHead&gt;(__uhead))
+<b><a name="line135">135  </a></b>		{ }
+<b><a name="line136">136  </a></b>	
+<b><a name="line137">137  </a></b>	      template&lt;typename <b>_Alloc</b>, typename <b>_UHead</b>&gt;
+<b><a name="line138">138  </a></b>		_Head_base(<a href="../bits/uses_allocator.h/code.html#line70">__uses_alloc2</a>&lt;<a href="#line137">_Alloc</a>&gt; __a, <a href="#line137">_UHead</a>&amp;&amp; __uhead)
+<b><a name="line139">139  </a></b>		: _M_head_impl(std::forward&lt;_UHead&gt;(__uhead), *__a._M_a) { }
+<b><a name="line140">140  </a></b>	
+<b><a name="line141">141  </a></b>	      static constexpr <a href="#line101">_Head</a>&amp;
+<b><a name="line142">142  </a></b>	      _M_head(<a href="#line52">_Head_base</a>&amp; <b>__b</b>) noexcept { return __b.<a href="#line147">_M_head_impl</a>; }
+<b><a name="line143">143  </a></b>	
+<b><a name="line144">144  </a></b>	      static constexpr const <a href="#line101">_Head</a>&amp;
+<b><a name="line145">145  </a></b>	      _M_head(const <a href="#line52">_Head_base</a>&amp; __b) noexcept { return __b._M_head_impl; }
+<b><a name="line146">146  </a></b>	
+<b><a name="line147">147  </a></b>	      <a href="#line101">_Head</a> <b>_M_head_impl</b>;
+<b><a name="line148">148  </a></b>	    };
+<b><a name="line149">149  </a></b>	
+<b><a name="line150">150  </a></b>	  /**
+<b><a name="line151">151  </a></b>	   * Contains the actual implementation of the @c tuple template, stored
+<b><a name="line152">152  </a></b>	   * as a recursive inheritance hierarchy from the first element (most
+<b><a name="line153">153  </a></b>	   * derived class) to the last (least derived class). The @c Idx
+<b><a name="line154">154  </a></b>	   * parameter gives the 0-based index of the element stored at this
+<b><a name="line155">155  </a></b>	   * point in the hierarchy; we use it to implement a constant-time
+<b><a name="line156">156  </a></b>	   * get() operation.
+<b><a name="line157">157  </a></b>	   */
+<b><a name="line158">158  </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>_Idx</b>, typename... <b>_Elements</b>&gt;
+<b><a name="line159">159  </a></b>	    struct _Tuple_impl; 
+<b><a name="line160">160  </a></b>	
+<b><a name="line161">161  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line162">162  </a></b>	    struct __is_empty_non_tuple : <a href="../type_traits/code.html#line668">is_empty</a>&lt;<a href="#line161">_Tp</a>&gt; { };
+<b><a name="line163">163  </a></b>	
+<b><a name="line164">164  </a></b>	  // Using EBO for elements that are tuples causes ambiguous base errors.
+<b><a name="line165">165  </a></b>	  template&lt;typename <b>_El0</b>, typename... <b>_El</b>&gt;
+<b><a name="line166">166  </a></b>	    struct <b>__is_empty_non_tuple</b>&lt;<a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line165">_El0</a>, <a href="#line165">_El</a>...&gt;&gt; : <a href="../type_traits/code.html#line90">false_type</a> { };
+<b><a name="line167">167  </a></b>	
+<b><a name="line168">168  </a></b>	  // Use the Empty Base-class Optimization for empty, non-final types.
+<b><a name="line169">169  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line170">170  </a></b>	    using __empty_not_final
+<b><a name="line171">171  </a></b>	    = typename <a href="../type_traits/code.html#line2113">conditional</a>&lt;__is_final(<a href="#line169">_Tp</a>), <a href="../type_traits/code.html#line90">false_type</a>,
+<b><a name="line172">172  </a></b>				   <a href="#line162">__is_empty_non_tuple</a>&lt;<a href="#line169">_Tp</a>&gt;&gt;::<a href="../type_traits/code.html#line2119">type</a>;
+<b><a name="line173">173  </a></b>	
+<b><a name="line174">174  </a></b>	  /**
+<b><a name="line175">175  </a></b>	   * Recursive tuple implementation. Here we store the @c Head element
+<b><a name="line176">176  </a></b>	   * and derive from a @c Tuple_impl containing the remaining elements
+<b><a name="line177">177  </a></b>	   * (which contains the @c Tail).
+<b><a name="line178">178  </a></b>	   */
+<b><a name="line179">179  </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>_Idx</b>, typename <b>_Head</b>, typename... <b>_Tail</b>&gt;
+<b><a name="line180">180  </a></b>	    struct <b>_Tuple_impl</b>&lt;<a href="#line179">_Idx</a>, <a href="#line179">_Head</a>, <a href="#line179">_Tail</a>...&gt;
+<b><a name="line181">181  </a></b>	    : public <a href="#line159">_Tuple_impl</a>&lt;<a href="#line179">_Idx</a> + 1, <a href="#line179">_Tail</a>...&gt;,
+<b><a name="line182">182  </a></b>	      private <a href="#line52">_Head_base</a>&lt;<a href="#line179">_Idx</a>, <a href="#line179">_Head</a>, <a href="#line170">__empty_not_final</a>&lt;<a href="#line179">_Head</a>&gt;::<a href="../type_traits/code.html#line71">value</a>&gt;
+<b><a name="line183">183  </a></b>	    {
+<b><a name="line184">184  </a></b>	      template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>, typename...&gt; friend class <a href="#line159">_Tuple_impl</a>;
+<b><a name="line185">185  </a></b>	
+<b><a name="line186">186  </a></b>	      typedef <a href="#line159">_Tuple_impl</a>&lt;<a href="#line179">_Idx</a> + 1, <a href="#line179">_Tail</a>...&gt; <b>_Inherited</b>;
+<b><a name="line187">187  </a></b>	      typedef <a href="#line52">_Head_base</a>&lt;<a href="#line179">_Idx</a>, <a href="#line179">_Head</a>, <a href="#line170">__empty_not_final</a>&lt;<a href="#line179">_Head</a>&gt;::<a href="../type_traits/code.html#line71">value</a>&gt; <b>_Base</b>;
+<b><a name="line188">188  </a></b>	
+<b><a name="line189">189  </a></b>	      static constexpr <a href="#line179">_Head</a>&amp;  
+<b><a name="line190">190  </a></b>	      _M_head(<a href="#line159">_Tuple_impl</a>&amp; <b>__t</b>) noexcept { return <a href="#line187">_Base</a>::<a href="#line95">_M_head</a>(__t); }
+<b><a name="line191">191  </a></b>	
+<b><a name="line192">192  </a></b>	      static constexpr const <a href="#line179">_Head</a>&amp;
+<b><a name="line193">193  </a></b>	      _M_head(const <a href="#line159">_Tuple_impl</a>&amp; __t) noexcept { return _Base::_M_head(__t); }
+<b><a name="line194">194  </a></b>	
+<b><a name="line195">195  </a></b>	      static constexpr <a href="#line186">_Inherited</a>&amp;
+<b><a name="line196">196  </a></b>	      _M_tail(<a href="#line159">_Tuple_impl</a>&amp; <b>__t</b>) noexcept { return __t; }
+<b><a name="line197">197  </a></b>	
+<b><a name="line198">198  </a></b>	      static constexpr const <a href="#line186">_Inherited</a>&amp;
+<b><a name="line199">199  </a></b>	      _M_tail(const <a href="#line159">_Tuple_impl</a>&amp; __t) noexcept { return __t; }
+<b><a name="line200">200  </a></b>	
+<b><a name="line201">201  </a></b>	      constexpr _Tuple_impl()
+<b><a name="line202">202  </a></b>	      : _Inherited(), _Base() { }
+<b><a name="line203">203  </a></b>	
+<b><a name="line204">204  </a></b>	      explicit 
+<b><a name="line205">205  </a></b>	      constexpr _Tuple_impl(const <a href="#line179">_Head</a>&amp; __head, const <a href="#line179">_Tail</a>&amp;... __tail)
+<b><a name="line206">206  </a></b>	      : _Inherited(__tail...), _Base(__head) { }
+<b><a name="line207">207  </a></b>	
+<b><a name="line208">208  </a></b>	      template&lt;typename <b>_UHead</b>, typename... <b>_UTail</b>, typename = typename
+<b><a name="line209">209  </a></b>	               <a href="../type_traits/code.html#line2099">enable_if</a>&lt;sizeof...(<a href="#line179">_Tail</a>) == sizeof...(<a href="#line208">_UTail</a>)&gt;::type&gt; 
+<b><a name="line210">210  </a></b>	        explicit
+<b><a name="line211">211  </a></b>	        constexpr _Tuple_impl(<a href="#line208">_UHead</a>&amp;&amp; <b>__head</b>, <a href="#line208">_UTail</a>&amp;&amp;... <b>__tail</b>)
+<b><a name="line212">212  </a></b>		: <a href="#line186">_Inherited</a>(<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/move.h/code.html#line76">forward</a>&lt;<a href="#line208">_UTail</a>&gt;(<a href="#line211">__tail</a>)...),
+<b><a name="line213">213  </a></b>		  <a href="#line187">_Base</a>(<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/move.h/code.html#line76">forward</a>&lt;<a href="#line208">_UHead</a>&gt;(<a href="#line211">__head</a>)) { }
+<b><a name="line214">214  </a></b>	
+<b><a name="line215">215  </a></b>	      constexpr <b>_Tuple_impl</b>(const <a href="#line159">_Tuple_impl</a>&amp;) = default;
+<b><a name="line216">216  </a></b>	
+<b><a name="line217">217  </a></b>	      constexpr
+<b><a name="line218">218  </a></b>	      _Tuple_impl(<a href="#line159">_Tuple_impl</a>&amp;&amp; <b>__in</b>)
+<b><a name="line219">219  </a></b>	      noexcept(<a href="../type_traits/code.html#line124">__and_</a>&lt;<a href="../type_traits/code.html#line1211">is_nothrow_move_constructible</a>&lt;<a href="#line179">_Head</a>&gt;,
+<b><a name="line220">220  </a></b>		              <a href="../type_traits/code.html#line1211">is_nothrow_move_constructible</a>&lt;<a href="#line186">_Inherited</a>&gt;&gt;::<a href="../type_traits/code.html#line71">value</a>)
+<b><a name="line221">221  </a></b>	      : <a href="#line186">_Inherited</a>(<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/move.h/code.html#line101">move</a>(<a href="#line196">_M_tail</a>(<a href="#line218">__in</a>))), 
+<b><a name="line222">222  </a></b>		<a href="#line187">_Base</a>(<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/move.h/code.html#line76">forward</a>&lt;<a href="#line179">_Head</a>&gt;(<a href="#line190">_M_head</a>(<a href="#line218">__in</a>))) { }
+<b><a name="line223">223  </a></b>	
+<b><a name="line224">224  </a></b>	      template&lt;typename... <b>_UElements</b>&gt;
+<b><a name="line225">225  </a></b>	        constexpr _Tuple_impl(const <a href="#line159">_Tuple_impl</a>&lt;<a href="#line179">_Idx</a>, <a href="#line224">_UElements</a>...&gt;&amp; __in)
+<b><a name="line226">226  </a></b>		: _Inherited(_Tuple_impl&lt;_Idx, _UElements...&gt;::_M_tail(__in)),
+<b><a name="line227">227  </a></b>		  _Base(_Tuple_impl&lt;_Idx, _UElements...&gt;::_M_head(__in)) { }
+<b><a name="line228">228  </a></b>	
+<b><a name="line229">229  </a></b>	      template&lt;typename <b>_UHead</b>, typename... <b>_UTails</b>&gt;
+<b><a name="line230">230  </a></b>	        constexpr _Tuple_impl(<a href="#line159">_Tuple_impl</a>&lt;<a href="#line179">_Idx</a>, <a href="#line229">_UHead</a>, <a href="#line229">_UTails</a>...&gt;&amp;&amp; __in)
+<b><a name="line231">231  </a></b>		: _Inherited(std::move
+<b><a name="line232">232  </a></b>			     (_Tuple_impl&lt;_Idx, _UHead, _UTails...&gt;::_M_tail(__in))),
+<b><a name="line233">233  </a></b>		  _Base(std::forward&lt;_UHead&gt;
+<b><a name="line234">234  </a></b>			(_Tuple_impl&lt;_Idx, _UHead, _UTails...&gt;::_M_head(__in))) { }
+<b><a name="line235">235  </a></b>	
+<b><a name="line236">236  </a></b>	      template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line237">237  </a></b>		_Tuple_impl(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line236">_Alloc</a>&amp; __a)
+<b><a name="line238">238  </a></b>		: _Inherited(__tag, __a),
+<b><a name="line239">239  </a></b>	          _Base(__tag, __use_alloc&lt;_Head&gt;(__a)) { }
+<b><a name="line240">240  </a></b>	
+<b><a name="line241">241  </a></b>	      template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line242">242  </a></b>		_Tuple_impl(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line241">_Alloc</a>&amp; __a,
+<b><a name="line243">243  </a></b>			    const <a href="#line179">_Head</a>&amp; __head, const <a href="#line179">_Tail</a>&amp;... __tail)
+<b><a name="line244">244  </a></b>		: _Inherited(__tag, __a, __tail...),
+<b><a name="line245">245  </a></b>	          _Base(__use_alloc&lt;_Head, _Alloc, _Head&gt;(__a), __head) { }
+<b><a name="line246">246  </a></b>	
+<b><a name="line247">247  </a></b>	      template&lt;typename <b>_Alloc</b>, typename <b>_UHead</b>, typename... <b>_UTail</b>,
+<b><a name="line248">248  </a></b>	               typename = typename <a href="../type_traits/code.html#line2099">enable_if</a>&lt;sizeof...(<a href="#line179">_Tail</a>)
+<b><a name="line249">249  </a></b>						     == sizeof...(<a href="#line247">_UTail</a>)&gt;::type&gt;
+<b><a name="line250">250  </a></b>		_Tuple_impl(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line247">_Alloc</a>&amp; __a,
+<b><a name="line251">251  </a></b>		            <a href="#line247">_UHead</a>&amp;&amp; __head, <a href="#line247">_UTail</a>&amp;&amp;... __tail)
+<b><a name="line252">252  </a></b>		: _Inherited(__tag, __a, std::forward&lt;_UTail&gt;(__tail)...),
+<b><a name="line253">253  </a></b>	          _Base(__use_alloc&lt;_Head, _Alloc, _UHead&gt;(__a),
+<b><a name="line254">254  </a></b>		        std::forward&lt;_UHead&gt;(__head)) { }
+<b><a name="line255">255  </a></b>	
+<b><a name="line256">256  </a></b>	      template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line257">257  </a></b>	        _Tuple_impl(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line256">_Alloc</a>&amp; __a,
+<b><a name="line258">258  </a></b>		            const <a href="#line159">_Tuple_impl</a>&amp; __in)
+<b><a name="line259">259  </a></b>		: _Inherited(__tag, __a, _M_tail(__in)), 
+<b><a name="line260">260  </a></b>	          _Base(__use_alloc&lt;_Head, _Alloc, _Head&gt;(__a), _M_head(__in)) { }
+<b><a name="line261">261  </a></b>	
+<b><a name="line262">262  </a></b>	      template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line263">263  </a></b>		_Tuple_impl(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line262">_Alloc</a>&amp; __a,
+<b><a name="line264">264  </a></b>		            <a href="#line159">_Tuple_impl</a>&amp;&amp; __in)
+<b><a name="line265">265  </a></b>		: _Inherited(__tag, __a, std::move(_M_tail(__in))), 
+<b><a name="line266">266  </a></b>		  _Base(__use_alloc&lt;_Head, _Alloc, _Head&gt;(__a),
+<b><a name="line267">267  </a></b>		        std::forward&lt;_Head&gt;(_M_head(__in))) { }
+<b><a name="line268">268  </a></b>	
+<b><a name="line269">269  </a></b>	      template&lt;typename <b>_Alloc</b>, typename... <b>_UElements</b>&gt;
+<b><a name="line270">270  </a></b>		_Tuple_impl(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line269">_Alloc</a>&amp; __a,
+<b><a name="line271">271  </a></b>		            const <a href="#line159">_Tuple_impl</a>&lt;<a href="#line179">_Idx</a>, <a href="#line269">_UElements</a>...&gt;&amp; __in)
+<b><a name="line272">272  </a></b>		: _Inherited(__tag, __a,
+<b><a name="line273">273  </a></b>			     _Tuple_impl&lt;_Idx, _UElements...&gt;::_M_tail(__in)),
+<b><a name="line274">274  </a></b>		  _Base(__use_alloc&lt;_Head, _Alloc, _Head&gt;(__a),
+<b><a name="line275">275  </a></b>			_Tuple_impl&lt;_Idx, _UElements...&gt;::_M_head(__in)) { }
+<b><a name="line276">276  </a></b>	
+<b><a name="line277">277  </a></b>	      template&lt;typename <b>_Alloc</b>, typename <b>_UHead</b>, typename... <b>_UTails</b>&gt;
+<b><a name="line278">278  </a></b>		_Tuple_impl(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line277">_Alloc</a>&amp; __a,
+<b><a name="line279">279  </a></b>		            <a href="#line159">_Tuple_impl</a>&lt;<a href="#line179">_Idx</a>, <a href="#line277">_UHead</a>, <a href="#line277">_UTails</a>...&gt;&amp;&amp; __in)
+<b><a name="line280">280  </a></b>		: _Inherited(__tag, __a, std::move
+<b><a name="line281">281  </a></b>			     (_Tuple_impl&lt;_Idx, _UHead, _UTails...&gt;::_M_tail(__in))),
+<b><a name="line282">282  </a></b>		  _Base(__use_alloc&lt;_Head, _Alloc, _UHead&gt;(__a),
+<b><a name="line283">283  </a></b>	                std::forward&lt;_UHead&gt;
+<b><a name="line284">284  </a></b>			(_Tuple_impl&lt;_Idx, _UHead, _UTails...&gt;::_M_head(__in))) { }
+<b><a name="line285">285  </a></b>	
+<b><a name="line286">286  </a></b>	      <a href="#line159">_Tuple_impl</a>&amp;
+<b><a name="line287">287  </a></b>	      operator=(const <a href="#line159">_Tuple_impl</a>&amp; __in)
+<b><a name="line288">288  </a></b>	      {
+<b><a name="line289">289  </a></b>		_M_head(*this) = _M_head(__in);
+<b><a name="line290">290  </a></b>		_M_tail(*this) = _M_tail(__in);
+<b><a name="line291">291  </a></b>		return *this;
+<b><a name="line292">292  </a></b>	      }
+<b><a name="line293">293  </a></b>	
+<b><a name="line294">294  </a></b>	      <a href="#line159">_Tuple_impl</a>&amp;
+<b><a name="line295">295  </a></b>	      operator=(<a href="#line159">_Tuple_impl</a>&amp;&amp; __in)
+<b><a name="line296">296  </a></b>	      noexcept(<a href="../type_traits/code.html#line124">__and_</a>&lt;<a href="../type_traits/code.html#line1317">is_nothrow_move_assignable</a>&lt;<a href="#line179">_Head</a>&gt;,
+<b><a name="line297">297  </a></b>		              <a href="../type_traits/code.html#line1317">is_nothrow_move_assignable</a>&lt;<a href="#line186">_Inherited</a>&gt;&gt;::value)
+<b><a name="line298">298  </a></b>	      {
+<b><a name="line299">299  </a></b>		_M_head(*this) = std::forward&lt;_Head&gt;(_M_head(__in));
+<b><a name="line300">300  </a></b>		_M_tail(*this) = std::move(_M_tail(__in));
+<b><a name="line301">301  </a></b>		return *this;
+<b><a name="line302">302  </a></b>	      }
+<b><a name="line303">303  </a></b>	
+<b><a name="line304">304  </a></b>	      template&lt;typename... <b>_UElements</b>&gt;
+<b><a name="line305">305  </a></b>	        <a href="#line159">_Tuple_impl</a>&amp;
+<b><a name="line306">306  </a></b>	        operator=(const <a href="#line159">_Tuple_impl</a>&lt;<a href="#line179">_Idx</a>, <a href="#line304">_UElements</a>...&gt;&amp; __in)
+<b><a name="line307">307  </a></b>	        {
+<b><a name="line308">308  </a></b>		  _M_head(*this) = _Tuple_impl&lt;_Idx, _UElements...&gt;::_M_head(__in);
+<b><a name="line309">309  </a></b>		  _M_tail(*this) = _Tuple_impl&lt;_Idx, _UElements...&gt;::_M_tail(__in);
+<b><a name="line310">310  </a></b>		  return *this;
+<b><a name="line311">311  </a></b>		}
+<b><a name="line312">312  </a></b>	
+<b><a name="line313">313  </a></b>	      template&lt;typename <b>_UHead</b>, typename... <b>_UTails</b>&gt;
+<b><a name="line314">314  </a></b>	        <a href="#line159">_Tuple_impl</a>&amp;
+<b><a name="line315">315  </a></b>	        operator=(<a href="#line159">_Tuple_impl</a>&lt;<a href="#line179">_Idx</a>, <a href="#line313">_UHead</a>, <a href="#line313">_UTails</a>...&gt;&amp;&amp; __in)
+<b><a name="line316">316  </a></b>	        {
+<b><a name="line317">317  </a></b>		  _M_head(*this) = std::forward&lt;_UHead&gt;
+<b><a name="line318">318  </a></b>		    (_Tuple_impl&lt;_Idx, _UHead, _UTails...&gt;::_M_head(__in));
+<b><a name="line319">319  </a></b>		  _M_tail(*this) = std::move
+<b><a name="line320">320  </a></b>		    (_Tuple_impl&lt;_Idx, _UHead, _UTails...&gt;::_M_tail(__in));
+<b><a name="line321">321  </a></b>		  return *this;
+<b><a name="line322">322  </a></b>		}
+<b><a name="line323">323  </a></b>	
+<b><a name="line324">324  </a></b>	    protected:
+<b><a name="line325">325  </a></b>	      void
+<b><a name="line326">326  </a></b>	      _M_swap(<a href="#line159">_Tuple_impl</a>&amp; __in)
+<b><a name="line327">327  </a></b>	      noexcept(noexcept(swap(<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::declval&lt;<a href="#line179">_Head</a>&amp;&gt;(),
+<b><a name="line328">328  </a></b>				     <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::declval&lt;<a href="#line179">_Head</a>&amp;&gt;()))
+<b><a name="line329">329  </a></b>		       &amp;&amp; noexcept(_M_tail(__in)._M_swap(_M_tail(__in))))
+<b><a name="line330">330  </a></b>	      {
+<b><a name="line331">331  </a></b>		using std::swap;
+<b><a name="line332">332  </a></b>		swap(_M_head(*this), _M_head(__in));
+<b><a name="line333">333  </a></b>		_Inherited::_M_swap(_M_tail(__in));
+<b><a name="line334">334  </a></b>	      }
+<b><a name="line335">335  </a></b>	    };
+<b><a name="line336">336  </a></b>	
+<b><a name="line337">337  </a></b>	  // Basis case of inheritance recursion.
+<b><a name="line338">338  </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>_Idx</b>, typename <b>_Head</b>&gt;
+<b><a name="line339">339  </a></b>	    struct <b>_Tuple_impl</b>&lt;<a href="#line338">_Idx</a>, <a href="#line338">_Head</a>&gt;
+<b><a name="line340">340  </a></b>	    : private <a href="#line52">_Head_base</a>&lt;<a href="#line338">_Idx</a>, <a href="#line338">_Head</a>, <a href="#line170">__empty_not_final</a>&lt;<a href="#line338">_Head</a>&gt;::<a href="../type_traits/code.html#line71">value</a>&gt;
+<b><a name="line341">341  </a></b>	    {
+<b><a name="line342">342  </a></b>	      template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>, typename...&gt; friend class <a href="#line159">_Tuple_impl</a>;
+<b><a name="line343">343  </a></b>	
+<b><a name="line344">344  </a></b>	      typedef <a href="#line52">_Head_base</a>&lt;<a href="#line338">_Idx</a>, <a href="#line338">_Head</a>, <a href="#line170">__empty_not_final</a>&lt;<a href="#line338">_Head</a>&gt;::<a href="../type_traits/code.html#line71">value</a>&gt; <b>_Base</b>;
+<b><a name="line345">345  </a></b>	
+<b><a name="line346">346  </a></b>	      static constexpr <a href="#line338">_Head</a>&amp;
+<b><a name="line347">347  </a></b>	      _M_head(<a href="#line159">_Tuple_impl</a>&amp; <b>__t</b>) noexcept { return <a href="#line344">_Base</a>::<a href="#line142">_M_head</a>(__t); }
+<b><a name="line348">348  </a></b>	
+<b><a name="line349">349  </a></b>	      static constexpr const <a href="#line338">_Head</a>&amp;
+<b><a name="line350">350  </a></b>	      _M_head(const <a href="#line159">_Tuple_impl</a>&amp; __t) noexcept { return _Base::_M_head(__t); }
+<b><a name="line351">351  </a></b>	
+<b><a name="line352">352  </a></b>	      constexpr _Tuple_impl()
+<b><a name="line353">353  </a></b>	      : _Base() { }
+<b><a name="line354">354  </a></b>	
+<b><a name="line355">355  </a></b>	      explicit
+<b><a name="line356">356  </a></b>	      constexpr _Tuple_impl(const <a href="#line338">_Head</a>&amp; __head)
+<b><a name="line357">357  </a></b>	      : _Base(__head) { }
+<b><a name="line358">358  </a></b>	
+<b><a name="line359">359  </a></b>	      template&lt;typename <b>_UHead</b>&gt;
+<b><a name="line360">360  </a></b>	        explicit
+<b><a name="line361">361  </a></b>	        constexpr _Tuple_impl(<a href="#line359">_UHead</a>&amp;&amp; <b>__head</b>)
+<b><a name="line362">362  </a></b>		: <a href="#line344">_Base</a>(<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/move.h/code.html#line76">forward</a>&lt;<a href="#line359">_UHead</a>&gt;(<a href="#line361">__head</a>)) { }
+<b><a name="line363">363  </a></b>	
+<b><a name="line364">364  </a></b>	      constexpr <b>_Tuple_impl</b>(const <a href="#line159">_Tuple_impl</a>&amp;) = default;
+<b><a name="line365">365  </a></b>	
+<b><a name="line366">366  </a></b>	      constexpr
+<b><a name="line367">367  </a></b>	      _Tuple_impl(<a href="#line159">_Tuple_impl</a>&amp;&amp; <b>__in</b>)
+<b><a name="line368">368  </a></b>	      noexcept(<a href="../type_traits/code.html#line1211">is_nothrow_move_constructible</a>&lt;<a href="#line338">_Head</a>&gt;::<a href="../type_traits/code.html#line71">value</a>)
+<b><a name="line369">369  </a></b>	      : <a href="#line344">_Base</a>(<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/move.h/code.html#line76">forward</a>&lt;<a href="#line338">_Head</a>&gt;(<a href="#line347">_M_head</a>(<a href="#line367">__in</a>))) { }
+<b><a name="line370">370  </a></b>	
+<b><a name="line371">371  </a></b>	      template&lt;typename <b>_UHead</b>&gt;
+<b><a name="line372">372  </a></b>	        constexpr _Tuple_impl(const <a href="#line159">_Tuple_impl</a>&lt;<a href="#line338">_Idx</a>, <a href="#line371">_UHead</a>&gt;&amp; __in)
+<b><a name="line373">373  </a></b>		: _Base(_Tuple_impl&lt;_Idx, _UHead&gt;::_M_head(__in)) { }
+<b><a name="line374">374  </a></b>	
+<b><a name="line375">375  </a></b>	      template&lt;typename <b>_UHead</b>&gt;
+<b><a name="line376">376  </a></b>	        constexpr _Tuple_impl(<a href="#line159">_Tuple_impl</a>&lt;<a href="#line338">_Idx</a>, <a href="#line375">_UHead</a>&gt;&amp;&amp; __in)
+<b><a name="line377">377  </a></b>		: _Base(std::forward&lt;_UHead&gt;(_Tuple_impl&lt;_Idx, _UHead&gt;::_M_head(__in)))
+<b><a name="line378">378  </a></b>		{ }
+<b><a name="line379">379  </a></b>	
+<b><a name="line380">380  </a></b>	      template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line381">381  </a></b>		_Tuple_impl(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line380">_Alloc</a>&amp; __a)
+<b><a name="line382">382  </a></b>		: _Base(__tag, __use_alloc&lt;_Head&gt;(__a)) { }
+<b><a name="line383">383  </a></b>	
+<b><a name="line384">384  </a></b>	      template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line385">385  </a></b>		_Tuple_impl(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line384">_Alloc</a>&amp; __a,
+<b><a name="line386">386  </a></b>			    const <a href="#line338">_Head</a>&amp; __head)
+<b><a name="line387">387  </a></b>		: _Base(__use_alloc&lt;_Head, _Alloc, _Head&gt;(__a), __head) { }
+<b><a name="line388">388  </a></b>	
+<b><a name="line389">389  </a></b>	      template&lt;typename <b>_Alloc</b>, typename <b>_UHead</b>&gt;
+<b><a name="line390">390  </a></b>		_Tuple_impl(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line389">_Alloc</a>&amp; __a,
+<b><a name="line391">391  </a></b>		            <a href="#line389">_UHead</a>&amp;&amp; __head)
+<b><a name="line392">392  </a></b>		: _Base(__use_alloc&lt;_Head, _Alloc, _UHead&gt;(__a),
+<b><a name="line393">393  </a></b>		        std::forward&lt;_UHead&gt;(__head)) { }
+<b><a name="line394">394  </a></b>	
+<b><a name="line395">395  </a></b>	      template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line396">396  </a></b>	        _Tuple_impl(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line395">_Alloc</a>&amp; __a,
+<b><a name="line397">397  </a></b>		            const <a href="#line159">_Tuple_impl</a>&amp; __in)
+<b><a name="line398">398  </a></b>		: _Base(__use_alloc&lt;_Head, _Alloc, _Head&gt;(__a), _M_head(__in)) { }
+<b><a name="line399">399  </a></b>	
+<b><a name="line400">400  </a></b>	      template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line401">401  </a></b>		_Tuple_impl(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line400">_Alloc</a>&amp; __a,
+<b><a name="line402">402  </a></b>		            <a href="#line159">_Tuple_impl</a>&amp;&amp; __in)
+<b><a name="line403">403  </a></b>		: _Base(__use_alloc&lt;_Head, _Alloc, _Head&gt;(__a),
+<b><a name="line404">404  </a></b>		        std::forward&lt;_Head&gt;(_M_head(__in))) { }
+<b><a name="line405">405  </a></b>	
+<b><a name="line406">406  </a></b>	      template&lt;typename <b>_Alloc</b>, typename <b>_UHead</b>&gt;
+<b><a name="line407">407  </a></b>		_Tuple_impl(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line406">_Alloc</a>&amp; __a,
+<b><a name="line408">408  </a></b>		            const <a href="#line159">_Tuple_impl</a>&lt;<a href="#line338">_Idx</a>, <a href="#line406">_UHead</a>&gt;&amp; __in)
+<b><a name="line409">409  </a></b>		: _Base(__use_alloc&lt;_Head, _Alloc, _Head&gt;(__a),
+<b><a name="line410">410  </a></b>			_Tuple_impl&lt;_Idx, _UHead&gt;::_M_head(__in)) { }
+<b><a name="line411">411  </a></b>	
+<b><a name="line412">412  </a></b>	      template&lt;typename <b>_Alloc</b>, typename <b>_UHead</b>&gt;
+<b><a name="line413">413  </a></b>		_Tuple_impl(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line412">_Alloc</a>&amp; __a,
+<b><a name="line414">414  </a></b>		            <a href="#line159">_Tuple_impl</a>&lt;<a href="#line338">_Idx</a>, <a href="#line412">_UHead</a>&gt;&amp;&amp; __in)
+<b><a name="line415">415  </a></b>		: _Base(__use_alloc&lt;_Head, _Alloc, _UHead&gt;(__a),
+<b><a name="line416">416  </a></b>	                std::forward&lt;_UHead&gt;(_Tuple_impl&lt;_Idx, _UHead&gt;::_M_head(__in)))
+<b><a name="line417">417  </a></b>		{ }
+<b><a name="line418">418  </a></b>	
+<b><a name="line419">419  </a></b>	      <a href="#line159">_Tuple_impl</a>&amp;
+<b><a name="line420">420  </a></b>	      operator=(const <a href="#line159">_Tuple_impl</a>&amp; __in)
+<b><a name="line421">421  </a></b>	      {
+<b><a name="line422">422  </a></b>		_M_head(*this) = _M_head(__in);
+<b><a name="line423">423  </a></b>		return *this;
+<b><a name="line424">424  </a></b>	      }
+<b><a name="line425">425  </a></b>	
+<b><a name="line426">426  </a></b>	      <a href="#line159">_Tuple_impl</a>&amp;
+<b><a name="line427">427  </a></b>	      operator=(<a href="#line159">_Tuple_impl</a>&amp;&amp; __in)
+<b><a name="line428">428  </a></b>	      noexcept(<a href="../type_traits/code.html#line1317">is_nothrow_move_assignable</a>&lt;<a href="#line338">_Head</a>&gt;::value)
+<b><a name="line429">429  </a></b>	      {
+<b><a name="line430">430  </a></b>		_M_head(*this) = std::forward&lt;_Head&gt;(_M_head(__in));
+<b><a name="line431">431  </a></b>		return *this;
+<b><a name="line432">432  </a></b>	      }
+<b><a name="line433">433  </a></b>	
+<b><a name="line434">434  </a></b>	      template&lt;typename <b>_UHead</b>&gt;
+<b><a name="line435">435  </a></b>	        <a href="#line159">_Tuple_impl</a>&amp;
+<b><a name="line436">436  </a></b>	        operator=(const <a href="#line159">_Tuple_impl</a>&lt;<a href="#line338">_Idx</a>, <a href="#line434">_UHead</a>&gt;&amp; __in)
+<b><a name="line437">437  </a></b>	        {
+<b><a name="line438">438  </a></b>		  _M_head(*this) = _Tuple_impl&lt;_Idx, _UHead&gt;::_M_head(__in);
+<b><a name="line439">439  </a></b>		  return *this;
+<b><a name="line440">440  </a></b>		}
+<b><a name="line441">441  </a></b>	
+<b><a name="line442">442  </a></b>	      template&lt;typename <b>_UHead</b>&gt;
+<b><a name="line443">443  </a></b>	        <a href="#line159">_Tuple_impl</a>&amp;
+<b><a name="line444">444  </a></b>	        operator=(<a href="#line159">_Tuple_impl</a>&lt;<a href="#line338">_Idx</a>, <a href="#line442">_UHead</a>&gt;&amp;&amp; __in)
+<b><a name="line445">445  </a></b>	        {
+<b><a name="line446">446  </a></b>		  _M_head(*this)
+<b><a name="line447">447  </a></b>		    = std::forward&lt;_UHead&gt;(_Tuple_impl&lt;_Idx, _UHead&gt;::_M_head(__in));
+<b><a name="line448">448  </a></b>		  return *this;
+<b><a name="line449">449  </a></b>		}
+<b><a name="line450">450  </a></b>	
+<b><a name="line451">451  </a></b>	    protected:
+<b><a name="line452">452  </a></b>	      void
+<b><a name="line453">453  </a></b>	      _M_swap(<a href="#line159">_Tuple_impl</a>&amp; __in)
+<b><a name="line454">454  </a></b>	      noexcept(noexcept(swap(<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::declval&lt;<a href="#line338">_Head</a>&amp;&gt;(), <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::declval&lt;<a href="#line338">_Head</a>&amp;&gt;())))
+<b><a name="line455">455  </a></b>	      {
+<b><a name="line456">456  </a></b>		using std::swap;
+<b><a name="line457">457  </a></b>		swap(_M_head(*this), _M_head(__in));
+<b><a name="line458">458  </a></b>	      }
+<b><a name="line459">459  </a></b>	    };
+<b><a name="line460">460  </a></b>	
+<b><a name="line461">461  </a></b>	  /// Primary class template, tuple
+<b><a name="line462">462  </a></b>	  template&lt;typename... <b>_Elements</b>&gt; 
+<b><a name="line463">463  </a></b>	    class tuple : public <a href="#line218">_Tuple_impl</a>&lt;0, <a href="#line462">_Elements</a>...&gt;
+<b><a name="line464">464  </a></b>	    {
+<b><a name="line465">465  </a></b>	      typedef <a href="#line159">_Tuple_impl</a>&lt;0, <a href="#line462">_Elements</a>...&gt; <b>_Inherited</b>;
+<b><a name="line466">466  </a></b>	
+<b><a name="line467">467  </a></b>	    public:
+<b><a name="line468">468  </a></b>	      constexpr tuple()
+<b><a name="line469">469  </a></b>	      : _Inherited() { }
+<b><a name="line470">470  </a></b>	
+<b><a name="line471">471  </a></b>	      explicit
+<b><a name="line472">472  </a></b>	      constexpr tuple(const <a href="#line462">_Elements</a>&amp;... __elements)
+<b><a name="line473">473  </a></b>	      : _Inherited(__elements...) { }
+<b><a name="line474">474  </a></b>	
+<b><a name="line475">475  </a></b>	      template&lt;typename... <b>_UElements</b>, typename = typename
+<b><a name="line476">476  </a></b>	        <a href="../type_traits/code.html#line2099">enable_if</a>&lt;<a href="../type_traits/code.html#line124">__and_</a>&lt;<a href="../type_traits/code.html#line1491">is_convertible</a>&lt;<a href="#line475">_UElements</a>,
+<b><a name="line477">477  </a></b>						<a href="#line462">_Elements</a>&gt;...&gt;::value&gt;::type&gt;
+<b><a name="line478">478  </a></b>		explicit
+<b><a name="line479">479  </a></b>	        constexpr tuple(<a href="#line475">_UElements</a>&amp;&amp;... <b>__elements</b>)
+<b><a name="line480">480  </a></b>		: <a href="#line465">_Inherited</a>(<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/move.h/code.html#line76">forward</a>&lt;<a href="#line475">_UElements</a>&gt;(<a href="#line479">__elements</a>)...) {	}
+<b><a name="line481">481  </a></b>	
+<b><a name="line482">482  </a></b>	      constexpr <b>tuple</b>(const <a href="#line463">tuple</a>&amp;) = default;
+<b><a name="line483">483  </a></b>	
+<b><a name="line484">484  </a></b>	      constexpr <b>tuple</b>(<a href="#line463">tuple</a>&amp;&amp;) = default; 
+<b><a name="line485">485  </a></b>	
+<b><a name="line486">486  </a></b>	      template&lt;typename... <b>_UElements</b>, typename = typename
+<b><a name="line487">487  </a></b>	        <a href="../type_traits/code.html#line2099">enable_if</a>&lt;<a href="../type_traits/code.html#line124">__and_</a>&lt;<a href="../type_traits/code.html#line1491">is_convertible</a>&lt;const <a href="#line486">_UElements</a>&amp;,
+<b><a name="line488">488  </a></b>						<a href="#line462">_Elements</a>&gt;...&gt;::value&gt;::type&gt;
+<b><a name="line489">489  </a></b>	        constexpr tuple(const <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line486">_UElements</a>...&gt;&amp; __in)
+<b><a name="line490">490  </a></b>	        : _Inherited(static_cast&lt;const _Tuple_impl&lt;0, _UElements...&gt;&amp;&gt;(__in))
+<b><a name="line491">491  </a></b>	        { }
+<b><a name="line492">492  </a></b>	
+<b><a name="line493">493  </a></b>	      template&lt;typename... <b>_UElements</b>, typename = typename
+<b><a name="line494">494  </a></b>	        <a href="../type_traits/code.html#line2099">enable_if</a>&lt;<a href="../type_traits/code.html#line124">__and_</a>&lt;<a href="../type_traits/code.html#line1491">is_convertible</a>&lt;<a href="#line493">_UElements</a>,
+<b><a name="line495">495  </a></b>						<a href="#line462">_Elements</a>&gt;...&gt;::value&gt;::type&gt;
+<b><a name="line496">496  </a></b>	        constexpr tuple(<a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line493">_UElements</a>...&gt;&amp;&amp; __in)
+<b><a name="line497">497  </a></b>	        : _Inherited(static_cast&lt;_Tuple_impl&lt;0, _UElements...&gt;&amp;&amp;&gt;(__in)) { }
+<b><a name="line498">498  </a></b>	
+<b><a name="line499">499  </a></b>	      // Allocator-extended constructors.
+<b><a name="line500">500  </a></b>	
+<b><a name="line501">501  </a></b>	      template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line502">502  </a></b>		tuple(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line501">_Alloc</a>&amp; __a)
+<b><a name="line503">503  </a></b>		: _Inherited(__tag, __a) { }
+<b><a name="line504">504  </a></b>	
+<b><a name="line505">505  </a></b>	      template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line506">506  </a></b>		tuple(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line505">_Alloc</a>&amp; __a,
+<b><a name="line507">507  </a></b>		      const <a href="#line462">_Elements</a>&amp;... __elements)
+<b><a name="line508">508  </a></b>		: _Inherited(__tag, __a, __elements...) { }
+<b><a name="line509">509  </a></b>	
+<b><a name="line510">510  </a></b>	      template&lt;typename <b>_Alloc</b>, typename... <b>_UElements</b>, typename = typename
+<b><a name="line511">511  </a></b>		       <a href="../type_traits/code.html#line2099">enable_if</a>&lt;sizeof...(<a href="#line510">_UElements</a>)
+<b><a name="line512">512  </a></b>				 == sizeof...(<a href="#line462">_Elements</a>)&gt;::type&gt;
+<b><a name="line513">513  </a></b>		tuple(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line510">_Alloc</a>&amp; __a,
+<b><a name="line514">514  </a></b>		      <a href="#line510">_UElements</a>&amp;&amp;... __elements)
+<b><a name="line515">515  </a></b>		: _Inherited(__tag, __a, std::forward&lt;_UElements&gt;(__elements)...)
+<b><a name="line516">516  </a></b>	       	{ }
+<b><a name="line517">517  </a></b>	
+<b><a name="line518">518  </a></b>	      template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line519">519  </a></b>		tuple(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line518">_Alloc</a>&amp; __a, const <a href="#line463">tuple</a>&amp; __in)
+<b><a name="line520">520  </a></b>		: _Inherited(__tag, __a, static_cast&lt;const _Inherited&amp;&gt;(__in)) { }
+<b><a name="line521">521  </a></b>	
+<b><a name="line522">522  </a></b>	      template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line523">523  </a></b>		tuple(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line522">_Alloc</a>&amp; __a, <a href="#line463">tuple</a>&amp;&amp; __in)
+<b><a name="line524">524  </a></b>		: _Inherited(__tag, __a, static_cast&lt;_Inherited&amp;&amp;&gt;(__in)) { }
+<b><a name="line525">525  </a></b>	
+<b><a name="line526">526  </a></b>	      template&lt;typename <b>_Alloc</b>, typename... <b>_UElements</b>, typename = typename
+<b><a name="line527">527  </a></b>		       <a href="../type_traits/code.html#line2099">enable_if</a>&lt;sizeof...(<a href="#line526">_UElements</a>)
+<b><a name="line528">528  </a></b>				 == sizeof...(<a href="#line462">_Elements</a>)&gt;::type&gt;
+<b><a name="line529">529  </a></b>		tuple(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line526">_Alloc</a>&amp; __a,
+<b><a name="line530">530  </a></b>		      const <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line526">_UElements</a>...&gt;&amp; __in)
+<b><a name="line531">531  </a></b>		: _Inherited(__tag, __a,
+<b><a name="line532">532  </a></b>		             static_cast&lt;const _Tuple_impl&lt;0, _UElements...&gt;&amp;&gt;(__in))
+<b><a name="line533">533  </a></b>		{ }
+<b><a name="line534">534  </a></b>	
+<b><a name="line535">535  </a></b>	      template&lt;typename <b>_Alloc</b>, typename... <b>_UElements</b>, typename = typename
+<b><a name="line536">536  </a></b>		       <a href="../type_traits/code.html#line2099">enable_if</a>&lt;sizeof...(<a href="#line535">_UElements</a>)
+<b><a name="line537">537  </a></b>				 == sizeof...(<a href="#line462">_Elements</a>)&gt;::type&gt;
+<b><a name="line538">538  </a></b>		tuple(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line535">_Alloc</a>&amp; __a,
+<b><a name="line539">539  </a></b>		      <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line535">_UElements</a>...&gt;&amp;&amp; __in)
+<b><a name="line540">540  </a></b>		: _Inherited(__tag, __a,
+<b><a name="line541">541  </a></b>		             static_cast&lt;_Tuple_impl&lt;0, _UElements...&gt;&amp;&amp;&gt;(__in))
+<b><a name="line542">542  </a></b>		{ }
+<b><a name="line543">543  </a></b>	
+<b><a name="line544">544  </a></b>	      <a href="#line463">tuple</a>&amp;
+<b><a name="line545">545  </a></b>	      operator=(const <a href="#line463">tuple</a>&amp; __in)
+<b><a name="line546">546  </a></b>	      {
+<b><a name="line547">547  </a></b>		static_cast&lt;_Inherited&amp;&gt;(*this) = __in;
+<b><a name="line548">548  </a></b>		return *this;
+<b><a name="line549">549  </a></b>	      }
+<b><a name="line550">550  </a></b>	
+<b><a name="line551">551  </a></b>	      <a href="#line463">tuple</a>&amp;
+<b><a name="line552">552  </a></b>	      operator=(<a href="#line463">tuple</a>&amp;&amp; __in)
+<b><a name="line553">553  </a></b>	      noexcept(<a href="../type_traits/code.html#line1317">is_nothrow_move_assignable</a>&lt;<a href="#line465">_Inherited</a>&gt;::value)
+<b><a name="line554">554  </a></b>	      {
+<b><a name="line555">555  </a></b>		static_cast&lt;_Inherited&amp;&gt;(*this) = std::move(__in);
+<b><a name="line556">556  </a></b>		return *this;
+<b><a name="line557">557  </a></b>	      }
+<b><a name="line558">558  </a></b>	
+<b><a name="line559">559  </a></b>	      template&lt;typename... <b>_UElements</b>, typename = typename
+<b><a name="line560">560  </a></b>		       <a href="../type_traits/code.html#line2099">enable_if</a>&lt;sizeof...(<a href="#line559">_UElements</a>)
+<b><a name="line561">561  </a></b>				 == sizeof...(<a href="#line462">_Elements</a>)&gt;::type&gt;
+<b><a name="line562">562  </a></b>	        <a href="#line463">tuple</a>&amp;
+<b><a name="line563">563  </a></b>	        operator=(const <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line559">_UElements</a>...&gt;&amp; __in)
+<b><a name="line564">564  </a></b>	        {
+<b><a name="line565">565  </a></b>		  static_cast&lt;_Inherited&amp;&gt;(*this) = __in;
+<b><a name="line566">566  </a></b>		  return *this;
+<b><a name="line567">567  </a></b>		}
+<b><a name="line568">568  </a></b>	
+<b><a name="line569">569  </a></b>	      template&lt;typename... <b>_UElements</b>, typename = typename
+<b><a name="line570">570  </a></b>		       <a href="../type_traits/code.html#line2099">enable_if</a>&lt;sizeof...(<a href="#line569">_UElements</a>)
+<b><a name="line571">571  </a></b>				 == sizeof...(<a href="#line462">_Elements</a>)&gt;::type&gt;
+<b><a name="line572">572  </a></b>	        <a href="#line463">tuple</a>&amp;
+<b><a name="line573">573  </a></b>	        operator=(<a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line569">_UElements</a>...&gt;&amp;&amp; __in)
+<b><a name="line574">574  </a></b>	        {
+<b><a name="line575">575  </a></b>		  static_cast&lt;_Inherited&amp;&gt;(*this) = std::move(__in);
+<b><a name="line576">576  </a></b>		  return *this;
+<b><a name="line577">577  </a></b>		}
+<b><a name="line578">578  </a></b>	
+<b><a name="line579">579  </a></b>	      void
+<b><a name="line580">580  </a></b>	      swap(<a href="#line463">tuple</a>&amp; __in)
+<b><a name="line581">581  </a></b>	      noexcept(noexcept(__in._M_swap(__in)))
+<b><a name="line582">582  </a></b>	      { _Inherited::_M_swap(__in); }
+<b><a name="line583">583  </a></b>	    };
+<b><a name="line584">584  </a></b>	
+<b><a name="line585">585  </a></b>	  // Explicit specialization, zero-element tuple.
+<b><a name="line586">586  </a></b>	  template&lt;&gt;  
+<b><a name="line587">587  </a></b>	    class <b>tuple</b>&lt;&gt;
+<b><a name="line588">588  </a></b>	    {
+<b><a name="line589">589  </a></b>	    public:
+<b><a name="line590">590  </a></b>	      void <b>swap</b>(<a href="#line463">tuple</a>&amp;) noexcept { /* no-op */ }
+<b><a name="line591">591  </a></b>	    };
+<b><a name="line592">592  </a></b>	
+<b><a name="line593">593  </a></b>	  /// Partial specialization, 2-element tuple.
+<b><a name="line594">594  </a></b>	  /// Includes construction and assignment from a pair.
+<b><a name="line595">595  </a></b>	  template&lt;typename <b>_T1</b>, typename <b>_T2</b>&gt;
+<b><a name="line596">596  </a></b>	    class <b>tuple</b>&lt;<a href="#line595">_T1</a>, <a href="#line595">_T2</a>&gt; : public <a href="#line218">_Tuple_impl</a>&lt;0, <a href="#line595">_T1</a>, <a href="#line595">_T2</a>&gt;
+<b><a name="line597">597  </a></b>	    {
+<b><a name="line598">598  </a></b>	      typedef <a href="#line159">_Tuple_impl</a>&lt;0, <a href="#line595">_T1</a>, <a href="#line595">_T2</a>&gt; <b>_Inherited</b>;
+<b><a name="line599">599  </a></b>	
+<b><a name="line600">600  </a></b>	    public:
+<b><a name="line601">601  </a></b>	      constexpr tuple()
+<b><a name="line602">602  </a></b>	      : _Inherited() { }
+<b><a name="line603">603  </a></b>	
+<b><a name="line604">604  </a></b>	      explicit
+<b><a name="line605">605  </a></b>	      constexpr tuple(const <a href="#line595">_T1</a>&amp; __a1, const <a href="#line595">_T2</a>&amp; __a2)
+<b><a name="line606">606  </a></b>	      : _Inherited(__a1, __a2) { }
+<b><a name="line607">607  </a></b>	
+<b><a name="line608">608  </a></b>	      template&lt;typename <b>_U1</b>, typename <b>_U2</b>, typename = typename
+<b><a name="line609">609  </a></b>		       <a href="../type_traits/code.html#line2099">enable_if</a>&lt;<a href="../type_traits/code.html#line124">__and_</a>&lt;<a href="../type_traits/code.html#line1491">is_convertible</a>&lt;<a href="#line608">_U1</a>, <a href="#line595">_T1</a>&gt;,
+<b><a name="line610">610  </a></b>					<a href="../type_traits/code.html#line1491">is_convertible</a>&lt;<a href="#line608">_U2</a>, <a href="#line595">_T2</a>&gt;&gt;::value&gt;::type&gt;
+<b><a name="line611">611  </a></b>	        explicit
+<b><a name="line612">612  </a></b>	        constexpr tuple(<a href="#line608">_U1</a>&amp;&amp; <b>__a1</b>, <a href="#line608">_U2</a>&amp;&amp; <b>__a2</b>)
+<b><a name="line613">613  </a></b>		: <a href="#line598">_Inherited</a>(<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/move.h/code.html#line76">forward</a>&lt;<a href="#line608">_U1</a>&gt;(<a href="#line612">__a1</a>), <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/move.h/code.html#line76">forward</a>&lt;<a href="#line608">_U2</a>&gt;(<a href="#line612">__a2</a>)) { }
+<b><a name="line614">614  </a></b>	
+<b><a name="line615">615  </a></b>	      constexpr <b>tuple</b>(const <a href="#line463">tuple</a>&amp;) = default;
+<b><a name="line616">616  </a></b>	
+<b><a name="line617">617  </a></b>	      constexpr <b>tuple</b>(<a href="#line463">tuple</a>&amp;&amp;) = default;
+<b><a name="line618">618  </a></b>	
+<b><a name="line619">619  </a></b>	      template&lt;typename <b>_U1</b>, typename <b>_U2</b>, typename = typename
+<b><a name="line620">620  </a></b>		<a href="../type_traits/code.html#line2099">enable_if</a>&lt;<a href="../type_traits/code.html#line124">__and_</a>&lt;<a href="../type_traits/code.html#line1491">is_convertible</a>&lt;const <a href="#line619">_U1</a>&amp;, <a href="#line595">_T1</a>&gt;,
+<b><a name="line621">621  </a></b>				 <a href="../type_traits/code.html#line1491">is_convertible</a>&lt;const <a href="#line619">_U2</a>&amp;, <a href="#line595">_T2</a>&gt;&gt;::value&gt;::type&gt;
+<b><a name="line622">622  </a></b>	        constexpr tuple(const <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line619">_U1</a>, <a href="#line619">_U2</a>&gt;&amp; __in)
+<b><a name="line623">623  </a></b>		: _Inherited(static_cast&lt;const _Tuple_impl&lt;0, _U1, _U2&gt;&amp;&gt;(__in)) { }
+<b><a name="line624">624  </a></b>	
+<b><a name="line625">625  </a></b>	      template&lt;typename <b>_U1</b>, typename <b>_U2</b>, typename = typename
+<b><a name="line626">626  </a></b>		       <a href="../type_traits/code.html#line2099">enable_if</a>&lt;<a href="../type_traits/code.html#line124">__and_</a>&lt;<a href="../type_traits/code.html#line1491">is_convertible</a>&lt;<a href="#line625">_U1</a>, <a href="#line595">_T1</a>&gt;,
+<b><a name="line627">627  </a></b>					<a href="../type_traits/code.html#line1491">is_convertible</a>&lt;<a href="#line625">_U2</a>, <a href="#line595">_T2</a>&gt;&gt;::value&gt;::type&gt;
+<b><a name="line628">628  </a></b>	        constexpr tuple(<a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line625">_U1</a>, <a href="#line625">_U2</a>&gt;&amp;&amp; __in)
+<b><a name="line629">629  </a></b>		: _Inherited(static_cast&lt;_Tuple_impl&lt;0, _U1, _U2&gt;&amp;&amp;&gt;(__in)) { }
+<b><a name="line630">630  </a></b>	
+<b><a name="line631">631  </a></b>	      template&lt;typename <b>_U1</b>, typename <b>_U2</b>, typename = typename
+<b><a name="line632">632  </a></b>		<a href="../type_traits/code.html#line2099">enable_if</a>&lt;<a href="../type_traits/code.html#line124">__and_</a>&lt;<a href="../type_traits/code.html#line1491">is_convertible</a>&lt;const <a href="#line631">_U1</a>&amp;, <a href="#line595">_T1</a>&gt;,
+<b><a name="line633">633  </a></b>				 <a href="../type_traits/code.html#line1491">is_convertible</a>&lt;const <a href="#line631">_U2</a>&amp;, <a href="#line595">_T2</a>&gt;&gt;::value&gt;::type&gt;
+<b><a name="line634">634  </a></b>	        constexpr tuple(const <a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line631">_U1</a>, <a href="#line631">_U2</a>&gt;&amp; __in)
+<b><a name="line635">635  </a></b>		: _Inherited(__in.first, __in.second) { }
+<b><a name="line636">636  </a></b>	
+<b><a name="line637">637  </a></b>	      template&lt;typename <b>_U1</b>, typename <b>_U2</b>, typename = typename
+<b><a name="line638">638  </a></b>		       <a href="../type_traits/code.html#line2099">enable_if</a>&lt;<a href="../type_traits/code.html#line124">__and_</a>&lt;<a href="../type_traits/code.html#line1491">is_convertible</a>&lt;<a href="#line637">_U1</a>, <a href="#line595">_T1</a>&gt;,
+<b><a name="line639">639  </a></b>					<a href="../type_traits/code.html#line1491">is_convertible</a>&lt;<a href="#line637">_U2</a>, <a href="#line595">_T2</a>&gt;&gt;::value&gt;::type&gt;
+<b><a name="line640">640  </a></b>	        constexpr tuple(<a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line637">_U1</a>, <a href="#line637">_U2</a>&gt;&amp;&amp; __in)
+<b><a name="line641">641  </a></b>		: _Inherited(std::forward&lt;_U1&gt;(__in.first),
+<b><a name="line642">642  </a></b>			     std::forward&lt;_U2&gt;(__in.second)) { }
+<b><a name="line643">643  </a></b>	
+<b><a name="line644">644  </a></b>	      // Allocator-extended constructors.
+<b><a name="line645">645  </a></b>	
+<b><a name="line646">646  </a></b>	      template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line647">647  </a></b>		tuple(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line646">_Alloc</a>&amp; __a)
+<b><a name="line648">648  </a></b>		: _Inherited(__tag, __a) { }
+<b><a name="line649">649  </a></b>	
+<b><a name="line650">650  </a></b>	      template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line651">651  </a></b>		tuple(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line650">_Alloc</a>&amp; __a,
+<b><a name="line652">652  </a></b>		      const <a href="#line595">_T1</a>&amp; __a1, const <a href="#line595">_T2</a>&amp; __a2)
+<b><a name="line653">653  </a></b>		: _Inherited(__tag, __a, __a1, __a2) { }
+<b><a name="line654">654  </a></b>	
+<b><a name="line655">655  </a></b>	      template&lt;typename <b>_Alloc</b>, typename <b>_U1</b>, typename <b>_U2</b>&gt;
+<b><a name="line656">656  </a></b>		tuple(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line655">_Alloc</a>&amp; __a, <a href="#line655">_U1</a>&amp;&amp; __a1, <a href="#line655">_U2</a>&amp;&amp; __a2)
+<b><a name="line657">657  </a></b>		: _Inherited(__tag, __a, std::forward&lt;_U1&gt;(__a1),
+<b><a name="line658">658  </a></b>		             std::forward&lt;_U2&gt;(__a2)) { }
+<b><a name="line659">659  </a></b>	
+<b><a name="line660">660  </a></b>	      template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line661">661  </a></b>		tuple(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line660">_Alloc</a>&amp; __a, const <a href="#line463">tuple</a>&amp; __in)
+<b><a name="line662">662  </a></b>		: _Inherited(__tag, __a, static_cast&lt;const _Inherited&amp;&gt;(__in)) { }
+<b><a name="line663">663  </a></b>	
+<b><a name="line664">664  </a></b>	      template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line665">665  </a></b>		tuple(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line664">_Alloc</a>&amp; __a, <a href="#line463">tuple</a>&amp;&amp; __in)
+<b><a name="line666">666  </a></b>		: _Inherited(__tag, __a, static_cast&lt;_Inherited&amp;&amp;&gt;(__in)) { }
+<b><a name="line667">667  </a></b>	
+<b><a name="line668">668  </a></b>	      template&lt;typename <b>_Alloc</b>, typename <b>_U1</b>, typename <b>_U2</b>&gt;
+<b><a name="line669">669  </a></b>		tuple(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line668">_Alloc</a>&amp; __a,
+<b><a name="line670">670  </a></b>		      const <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line668">_U1</a>, <a href="#line668">_U2</a>&gt;&amp; __in)
+<b><a name="line671">671  </a></b>		: _Inherited(__tag, __a,
+<b><a name="line672">672  </a></b>		             static_cast&lt;const _Tuple_impl&lt;0, _U1, _U2&gt;&amp;&gt;(__in))
+<b><a name="line673">673  </a></b>		{ }
+<b><a name="line674">674  </a></b>	
+<b><a name="line675">675  </a></b>	      template&lt;typename <b>_Alloc</b>, typename <b>_U1</b>, typename <b>_U2</b>&gt;
+<b><a name="line676">676  </a></b>		tuple(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line675">_Alloc</a>&amp; __a, <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line675">_U1</a>, <a href="#line675">_U2</a>&gt;&amp;&amp; __in)
+<b><a name="line677">677  </a></b>		: _Inherited(__tag, __a, static_cast&lt;_Tuple_impl&lt;0, _U1, _U2&gt;&amp;&amp;&gt;(__in))
+<b><a name="line678">678  </a></b>		{ }
+<b><a name="line679">679  </a></b>	
+<b><a name="line680">680  </a></b>	      template&lt;typename <b>_Alloc</b>, typename <b>_U1</b>, typename <b>_U2</b>&gt;
+<b><a name="line681">681  </a></b>	        tuple(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line680">_Alloc</a>&amp; __a,
+<b><a name="line682">682  </a></b>		      const <a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line680">_U1</a>, <a href="#line680">_U2</a>&gt;&amp; __in)
+<b><a name="line683">683  </a></b>		: _Inherited(__tag, __a, __in.first, __in.second) { }
+<b><a name="line684">684  </a></b>	
+<b><a name="line685">685  </a></b>	      template&lt;typename <b>_Alloc</b>, typename <b>_U1</b>, typename <b>_U2</b>&gt;
+<b><a name="line686">686  </a></b>	        tuple(<a href="../bits/uses_allocator.h/code.html#line39">allocator_arg_t</a> __tag, const <a href="#line685">_Alloc</a>&amp; __a, <a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line685">_U1</a>, <a href="#line685">_U2</a>&gt;&amp;&amp; __in)
+<b><a name="line687">687  </a></b>		: _Inherited(__tag, __a, std::forward&lt;_U1&gt;(__in.first),
+<b><a name="line688">688  </a></b>			     std::forward&lt;_U2&gt;(__in.second)) { }
+<b><a name="line689">689  </a></b>	
+<b><a name="line690">690  </a></b>	      <a href="#line463">tuple</a>&amp;
+<b><a name="line691">691  </a></b>	      operator=(const <a href="#line463">tuple</a>&amp; __in)
+<b><a name="line692">692  </a></b>	      {
+<b><a name="line693">693  </a></b>		static_cast&lt;_Inherited&amp;&gt;(*this) = __in;
+<b><a name="line694">694  </a></b>		return *this;
+<b><a name="line695">695  </a></b>	      }
+<b><a name="line696">696  </a></b>	
+<b><a name="line697">697  </a></b>	      <a href="#line463">tuple</a>&amp;
+<b><a name="line698">698  </a></b>	      operator=(<a href="#line463">tuple</a>&amp;&amp; __in)
+<b><a name="line699">699  </a></b>	      noexcept(<a href="../type_traits/code.html#line1317">is_nothrow_move_assignable</a>&lt;<a href="#line598">_Inherited</a>&gt;::value)
+<b><a name="line700">700  </a></b>	      {
+<b><a name="line701">701  </a></b>		static_cast&lt;_Inherited&amp;&gt;(*this) = std::move(__in);
+<b><a name="line702">702  </a></b>		return *this;
+<b><a name="line703">703  </a></b>	      }
+<b><a name="line704">704  </a></b>	
+<b><a name="line705">705  </a></b>	      template&lt;typename <b>_U1</b>, typename <b>_U2</b>&gt;
+<b><a name="line706">706  </a></b>	        <a href="#line463">tuple</a>&amp;
+<b><a name="line707">707  </a></b>	        operator=(const <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line705">_U1</a>, <a href="#line705">_U2</a>&gt;&amp; __in)
+<b><a name="line708">708  </a></b>	        {
+<b><a name="line709">709  </a></b>		  static_cast&lt;_Inherited&amp;&gt;(*this) = __in;
+<b><a name="line710">710  </a></b>		  return *this;
+<b><a name="line711">711  </a></b>		}
+<b><a name="line712">712  </a></b>	
+<b><a name="line713">713  </a></b>	      template&lt;typename <b>_U1</b>, typename <b>_U2</b>&gt;
+<b><a name="line714">714  </a></b>	        <a href="#line463">tuple</a>&amp;
+<b><a name="line715">715  </a></b>	        operator=(<a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line713">_U1</a>, <a href="#line713">_U2</a>&gt;&amp;&amp; __in)
+<b><a name="line716">716  </a></b>	        {
+<b><a name="line717">717  </a></b>		  static_cast&lt;_Inherited&amp;&gt;(*this) = std::move(__in);
+<b><a name="line718">718  </a></b>		  return *this;
+<b><a name="line719">719  </a></b>		}
+<b><a name="line720">720  </a></b>	
+<b><a name="line721">721  </a></b>	      template&lt;typename <b>_U1</b>, typename <b>_U2</b>&gt;
+<b><a name="line722">722  </a></b>	        <a href="#line463">tuple</a>&amp;
+<b><a name="line723">723  </a></b>	        operator=(const <a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line721">_U1</a>, <a href="#line721">_U2</a>&gt;&amp; __in)
+<b><a name="line724">724  </a></b>	        {
+<b><a name="line725">725  </a></b>		  this-&gt;_M_head(*this) = __in.first;
+<b><a name="line726">726  </a></b>		  this-&gt;_M_tail(*this)._M_head(*this) = __in.second;
+<b><a name="line727">727  </a></b>		  return *this;
+<b><a name="line728">728  </a></b>		}
+<b><a name="line729">729  </a></b>	
+<b><a name="line730">730  </a></b>	      template&lt;typename <b>_U1</b>, typename <b>_U2</b>&gt;
+<b><a name="line731">731  </a></b>	        <a href="#line463">tuple</a>&amp;
+<b><a name="line732">732  </a></b>	        operator=(<a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line730">_U1</a>, <a href="#line730">_U2</a>&gt;&amp;&amp; __in)
+<b><a name="line733">733  </a></b>	        {
+<b><a name="line734">734  </a></b>		  this-&gt;_M_head(*this) = std::forward&lt;_U1&gt;(__in.first);
+<b><a name="line735">735  </a></b>		  this-&gt;_M_tail(*this)._M_head(*this) = std::forward&lt;_U2&gt;(__in.second);
+<b><a name="line736">736  </a></b>		  return *this;
+<b><a name="line737">737  </a></b>		}
+<b><a name="line738">738  </a></b>	
+<b><a name="line739">739  </a></b>	      void
+<b><a name="line740">740  </a></b>	      swap(<a href="#line463">tuple</a>&amp; __in)
+<b><a name="line741">741  </a></b>	      noexcept(noexcept(__in._M_swap(__in)))
+<b><a name="line742">742  </a></b>	      { _Inherited::_M_swap(__in); }
+<b><a name="line743">743  </a></b>	    };
+<b><a name="line744">744  </a></b>	
+<b><a name="line745">745  </a></b>	
+<b><a name="line746">746  </a></b>	  /// Gives the type of the ith element of a given tuple type.
+<b><a name="line747">747  </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>__i</b>, typename <b>_Tp</b>&gt;
+<b><a name="line748">748  </a></b>	    struct <a href="../utility/code.html#line85">tuple_element</a>;
+<b><a name="line749">749  </a></b>	
+<b><a name="line750">750  </a></b>	  /**
+<b><a name="line751">751  </a></b>	   * Recursive case for tuple_element: strip off the first element in
+<b><a name="line752">752  </a></b>	   * the tuple and retrieve the (i-1)th element of the remaining tuple.
+<b><a name="line753">753  </a></b>	   */
+<b><a name="line754">754  </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>__i</b>, typename <b>_Head</b>, typename... <b>_Tail</b>&gt;
+<b><a name="line755">755  </a></b>	    struct <b>tuple_element</b>&lt;<a href="#line754">__i</a>, <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line754">_Head</a>, <a href="#line754">_Tail</a>...&gt; &gt;
+<b><a name="line756">756  </a></b>	    : <a href="../utility/code.html#line85">tuple_element</a>&lt;<a href="#line754">__i</a> - 1, <a href="#line463">tuple</a>&lt;<a href="#line754">_Tail</a>...&gt; &gt; { };
+<b><a name="line757">757  </a></b>	
+<b><a name="line758">758  </a></b>	  /**
+<b><a name="line759">759  </a></b>	   * Basis case for tuple_element: The first element is the one we're seeking.
+<b><a name="line760">760  </a></b>	   */
+<b><a name="line761">761  </a></b>	  template&lt;typename <b>_Head</b>, typename... <b>_Tail</b>&gt;
+<b><a name="line762">762  </a></b>	    struct <b>tuple_element</b>&lt;0, <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line761">_Head</a>, <a href="#line761">_Tail</a>...&gt; &gt;
+<b><a name="line763">763  </a></b>	    {
+<b><a name="line764">764  </a></b>	      typedef <a href="#line761">_Head</a> <b>type</b>;
+<b><a name="line765">765  </a></b>	    };
+<b><a name="line766">766  </a></b>	
+<b><a name="line767">767  </a></b>	  // Duplicate of C++14's tuple_element_t for internal use in C++11 mode
+<b><a name="line768">768  </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>__i</b>, typename <b>_Tp</b>&gt;
+<b><a name="line769">769  </a></b>	    using __tuple_element_t = typename <a href="../utility/code.html#line85">tuple_element</a>&lt;<a href="#line768">__i</a>, <a href="#line768">_Tp</a>&gt;::<a href="#line764">type</a>;
+<b><a name="line770">770  </a></b>	
+<b><a name="line771">771  </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>__i</b>, typename <b>_Tp</b>&gt;
+<b><a name="line772">772  </a></b>	    struct <b>tuple_element</b>&lt;<a href="#line771">__i</a>, const <a href="#line771">_Tp</a>&gt;
+<b><a name="line773">773  </a></b>	    {
+<b><a name="line774">774  </a></b>	      typedef typename <a href="../type_traits/code.html#line1526">add_const</a>&lt;<a href="#line769">__tuple_element_t</a>&lt;<a href="#line771">__i</a>, <a href="#line771">_Tp</a>&gt;&gt;::type <b>type</b>;
+<b><a name="line775">775  </a></b>	    };
+<b><a name="line776">776  </a></b>	
+<b><a name="line777">777  </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>__i</b>, typename <b>_Tp</b>&gt;
+<b><a name="line778">778  </a></b>	    struct <b>tuple_element</b>&lt;<a href="#line777">__i</a>, volatile <a href="#line777">_Tp</a>&gt;
+<b><a name="line779">779  </a></b>	    {
+<b><a name="line780">780  </a></b>	      typedef typename <a href="../type_traits/code.html#line1531">add_volatile</a>&lt;<a href="#line769">__tuple_element_t</a>&lt;<a href="#line777">__i</a>, <a href="#line777">_Tp</a>&gt;&gt;::type <b>type</b>;
+<b><a name="line781">781  </a></b>	    };
+<b><a name="line782">782  </a></b>	
+<b><a name="line783">783  </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>__i</b>, typename <b>_Tp</b>&gt;
+<b><a name="line784">784  </a></b>	    struct <b>tuple_element</b>&lt;<a href="#line783">__i</a>, const volatile <a href="#line783">_Tp</a>&gt;
+<b><a name="line785">785  </a></b>	    {
+<b><a name="line786">786  </a></b>	      typedef typename <a href="../type_traits/code.html#line1536">add_cv</a>&lt;<a href="#line769">__tuple_element_t</a>&lt;<a href="#line783">__i</a>, <a href="#line783">_Tp</a>&gt;&gt;::type <b>type</b>;
+<b><a name="line787">787  </a></b>	    };
+<b><a name="line788">788  </a></b>	
+<b><a name="line789">789  </a></b>	#if __cplusplus &gt; 201103L
+<b><a name="line790">790  </a></b>	#define __cpp_lib_tuple_element_t 201402
+<b><a name="line791">791  </a></b>	
+<b><a name="line792">792  </a></b>	  template&lt;std::size_t __i, typename _Tp&gt;
+<b><a name="line793">793  </a></b>	    using tuple_element_t = typename tuple_element&lt;__i, _Tp&gt;::type;
+<b><a name="line794">794  </a></b>	#endif
+<b><a name="line795">795  </a></b>	
+<b><a name="line796">796  </a></b>	  /// Finds the size of a given tuple type.
+<b><a name="line797">797  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line798">798  </a></b>	    struct <a href="../utility/code.html#line82">tuple_size</a>;
+<b><a name="line799">799  </a></b>	
+<b><a name="line800">800  </a></b>	  // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line801">801  </a></b>	  // 2313. tuple_size should always derive from integral_constant&lt;size_t, N&gt;
+<b><a name="line802">802  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line803">803  </a></b>	    struct <b>tuple_size</b>&lt;const <a href="#line802">_Tp</a>&gt;
+<b><a name="line804">804  </a></b>	    : <a href="../type_traits/code.html#line69">integral_constant</a>&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>, <a href="../utility/code.html#line82">tuple_size</a>&lt;<a href="#line802">_Tp</a>&gt;::value&gt; { };
+<b><a name="line805">805  </a></b>	
+<b><a name="line806">806  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line807">807  </a></b>	    struct <b>tuple_size</b>&lt;volatile <a href="#line806">_Tp</a>&gt;
+<b><a name="line808">808  </a></b>	    : <a href="../type_traits/code.html#line69">integral_constant</a>&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>, <a href="../utility/code.html#line82">tuple_size</a>&lt;<a href="#line806">_Tp</a>&gt;::value&gt; { };
+<b><a name="line809">809  </a></b>	
+<b><a name="line810">810  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line811">811  </a></b>	    struct <b>tuple_size</b>&lt;const volatile <a href="#line810">_Tp</a>&gt;
+<b><a name="line812">812  </a></b>	    : <a href="../type_traits/code.html#line69">integral_constant</a>&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>, <a href="../utility/code.html#line82">tuple_size</a>&lt;<a href="#line810">_Tp</a>&gt;::value&gt; { };
+<b><a name="line813">813  </a></b>	
+<b><a name="line814">814  </a></b>	  /// class tuple_size
+<b><a name="line815">815  </a></b>	  template&lt;typename... <b>_Elements</b>&gt;
+<b><a name="line816">816  </a></b>	    struct <b>tuple_size</b>&lt;<a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line815">_Elements</a>...&gt;&gt;
+<b><a name="line817">817  </a></b>	    : public <a href="../type_traits/code.html#line69">integral_constant</a>&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>, sizeof...(<a href="#line815">_Elements</a>)&gt; { };
+<b><a name="line818">818  </a></b>	
+<b><a name="line819">819  </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>__i</b>, typename <b>_Head</b>, typename... <b>_Tail</b>&gt;
+<b><a name="line820">820  </a></b>	    constexpr <a href="#line819">_Head</a>&amp;
+<b><a name="line821">821  </a></b>	    __get_helper(<a href="#line159">_Tuple_impl</a>&lt;<a href="#line819">__i</a>, <a href="#line819">_Head</a>, <a href="#line819">_Tail</a>...&gt;&amp; <b>__t</b>) noexcept
+<b><a name="line822">822  </a></b>	    { return <a href="#line159">_Tuple_impl</a>&lt;<a href="#line819">__i</a>, <a href="#line819">_Head</a>, <a href="#line819">_Tail</a>...&gt;::<a href="#line190">_M_head</a>(<a href="#line821">__t</a>); }
+<b><a name="line823">823  </a></b>	
+<b><a name="line824">824  </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>__i</b>, typename <b>_Head</b>, typename... <b>_Tail</b>&gt;
+<b><a name="line825">825  </a></b>	    constexpr const <a href="#line824">_Head</a>&amp;
+<b><a name="line826">826  </a></b>	    <b>__get_helper</b>(const <a href="#line159">_Tuple_impl</a>&lt;<a href="#line824">__i</a>, <a href="#line824">_Head</a>, <a href="#line824">_Tail</a>...&gt;&amp; __t) noexcept
+<b><a name="line827">827  </a></b>	    { return _Tuple_impl&lt;__i, _Head, _Tail...&gt;::_M_head(__t); }
+<b><a name="line828">828  </a></b>	
+<b><a name="line829">829  </a></b>	  /// Return a reference to the ith element of a tuple.
+<b><a name="line830">830  </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>__i</b>, typename... <b>_Elements</b>&gt;
+<b><a name="line831">831  </a></b>	    constexpr <a href="#line769">__tuple_element_t</a>&lt;<a href="#line830">__i</a>, <a href="#line463">tuple</a>&lt;<a href="#line830">_Elements</a>...&gt;&gt;&amp;
+<b><a name="line832">832  </a></b>	    get(<a href="#line463">tuple</a>&lt;<a href="#line830">_Elements</a>...&gt;&amp; <b>__t</b>) noexcept
+<b><a name="line833">833  </a></b>	    { return <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="#line821">__get_helper</a>&lt;<a href="#line830">__i</a>&gt;(<a href="#line832">__t</a>); }
+<b><a name="line834">834  </a></b>	
+<b><a name="line835">835  </a></b>	  /// Return a const reference to the ith element of a const tuple.
+<b><a name="line836">836  </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>__i</b>, typename... <b>_Elements</b>&gt;
+<b><a name="line837">837  </a></b>	    constexpr const <a href="#line769">__tuple_element_t</a>&lt;<a href="#line836">__i</a>, <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line836">_Elements</a>...&gt;&gt;&amp;
+<b><a name="line838">838  </a></b>	    <b>get</b>(const <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line836">_Elements</a>...&gt;&amp; __t) noexcept
+<b><a name="line839">839  </a></b>	    { return std::__get_helper&lt;__i&gt;(__t); }
+<b><a name="line840">840  </a></b>	
+<b><a name="line841">841  </a></b>	  /// Return an rvalue reference to the ith element of a tuple rvalue.
+<b><a name="line842">842  </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>__i</b>, typename... <b>_Elements</b>&gt;
+<b><a name="line843">843  </a></b>	    constexpr <a href="#line769">__tuple_element_t</a>&lt;<a href="#line842">__i</a>, <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line842">_Elements</a>...&gt;&gt;&amp;&amp;
+<b><a name="line844">844  </a></b>	    <b>get</b>(<a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line842">_Elements</a>...&gt;&amp;&amp; __t) noexcept
+<b><a name="line845">845  </a></b>	    {
+<b><a name="line846">846  </a></b>	      typedef __tuple_element_t&lt;__i, tuple&lt;_Elements...&gt;&gt; __element_type;
+<b><a name="line847">847  </a></b>	      return std::forward&lt;__element_type&amp;&amp;&gt;(std::get&lt;__i&gt;(__t));
+<b><a name="line848">848  </a></b>	    }
+<b><a name="line849">849  </a></b>	
+<b><a name="line850">850  </a></b>	#if __cplusplus &gt; 201103L
+<b><a name="line851">851  </a></b>	
+<b><a name="line852">852  </a></b>	#define __cpp_lib_tuples_by_type 201304
+<b><a name="line853">853  </a></b>	
+<b><a name="line854">854  </a></b>	  template&lt;typename _Head, size_t __i, typename... _Tail&gt;
+<b><a name="line855">855  </a></b>	    constexpr _Head&amp;
+<b><a name="line856">856  </a></b>	    __get_helper2(_Tuple_impl&lt;__i, _Head, _Tail...&gt;&amp; __t) noexcept
+<b><a name="line857">857  </a></b>	    { return _Tuple_impl&lt;__i, _Head, _Tail...&gt;::_M_head(__t); }
+<b><a name="line858">858  </a></b>	
+<b><a name="line859">859  </a></b>	  template&lt;typename _Head, size_t __i, typename... _Tail&gt;
+<b><a name="line860">860  </a></b>	    constexpr const _Head&amp;
+<b><a name="line861">861  </a></b>	    __get_helper2(const _Tuple_impl&lt;__i, _Head, _Tail...&gt;&amp; __t) noexcept
+<b><a name="line862">862  </a></b>	    { return _Tuple_impl&lt;__i, _Head, _Tail...&gt;::_M_head(__t); }
+<b><a name="line863">863  </a></b>	
+<b><a name="line864">864  </a></b>	  /// Return a reference to the unique element of type _Tp of a tuple.
+<b><a name="line865">865  </a></b>	  template &lt;typename _Tp, typename... _Types&gt;
+<b><a name="line866">866  </a></b>	    constexpr _Tp&amp;
+<b><a name="line867">867  </a></b>	    get(tuple&lt;_Types...&gt;&amp; __t) noexcept
+<b><a name="line868">868  </a></b>	    { return std::__get_helper2&lt;_Tp&gt;(__t); }
+<b><a name="line869">869  </a></b>	
+<b><a name="line870">870  </a></b>	  /// Return a reference to the unique element of type _Tp of a tuple rvalue.
+<b><a name="line871">871  </a></b>	  template &lt;typename _Tp, typename... _Types&gt;
+<b><a name="line872">872  </a></b>	    constexpr _Tp&amp;&amp;
+<b><a name="line873">873  </a></b>	    get(tuple&lt;_Types...&gt;&amp;&amp; __t) noexcept
+<b><a name="line874">874  </a></b>	    { return std::forward&lt;_Tp&amp;&amp;&gt;(std::__get_helper2&lt;_Tp&gt;(__t)); }
+<b><a name="line875">875  </a></b>	
+<b><a name="line876">876  </a></b>	  /// Return a const reference to the unique element of type _Tp of a tuple.
+<b><a name="line877">877  </a></b>	  template &lt;typename _Tp, typename... _Types&gt;
+<b><a name="line878">878  </a></b>	    constexpr const _Tp&amp;
+<b><a name="line879">879  </a></b>	    get(const tuple&lt;_Types...&gt;&amp; __t) noexcept
+<b><a name="line880">880  </a></b>	    { return std::__get_helper2&lt;_Tp&gt;(__t); }
+<b><a name="line881">881  </a></b>	#endif
+<b><a name="line882">882  </a></b>	
+<b><a name="line883">883  </a></b>	  // This class performs the comparison operations on tuples
+<b><a name="line884">884  </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Up</b>, <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>__i</b>, <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>__size</b>&gt;
+<b><a name="line885">885  </a></b>	    struct <b>__tuple_compare</b>
+<b><a name="line886">886  </a></b>	    {
+<b><a name="line887">887  </a></b>	      static constexpr bool
+<b><a name="line888">888  </a></b>	      <b>__eq</b>(const <a href="#line884">_Tp</a>&amp; __t, const <a href="#line884">_Up</a>&amp; __u)
+<b><a name="line889">889  </a></b>	      {
+<b><a name="line890">890  </a></b>		return bool(std::get&lt;__i&gt;(__t) == std::get&lt;__i&gt;(__u))
+<b><a name="line891">891  </a></b>		  &amp;&amp; __tuple_compare&lt;_Tp, _Up, __i + 1, __size&gt;::__eq(__t, __u);
+<b><a name="line892">892  </a></b>	      }
+<b><a name="line893">893  </a></b>	   
+<b><a name="line894">894  </a></b>	      static constexpr bool
+<b><a name="line895">895  </a></b>	      <b>__less</b>(const <a href="#line884">_Tp</a>&amp; __t, const <a href="#line884">_Up</a>&amp; __u)
+<b><a name="line896">896  </a></b>	      {
+<b><a name="line897">897  </a></b>		return bool(std::get&lt;__i&gt;(__t) &lt; std::get&lt;__i&gt;(__u))
+<b><a name="line898">898  </a></b>		  || (!bool(std::get&lt;__i&gt;(__u) &lt; std::get&lt;__i&gt;(__t))
+<b><a name="line899">899  </a></b>		      &amp;&amp; __tuple_compare&lt;_Tp, _Up, __i + 1, __size&gt;::__less(__t, __u));
+<b><a name="line900">900  </a></b>	      }
+<b><a name="line901">901  </a></b>	    };
+<b><a name="line902">902  </a></b>	
+<b><a name="line903">903  </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Up</b>, <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>__size</b>&gt;
+<b><a name="line904">904  </a></b>	    struct <b>__tuple_compare</b>&lt;<a href="#line903">_Tp</a>, <a href="#line903">_Up</a>, <a href="#line903">__size</a>, <a href="#line903">__size</a>&gt;
+<b><a name="line905">905  </a></b>	    {
+<b><a name="line906">906  </a></b>	      static constexpr bool
+<b><a name="line907">907  </a></b>	      <b>__eq</b>(const <a href="#line903">_Tp</a>&amp;, const <a href="#line903">_Up</a>&amp;) { return true; }
+<b><a name="line908">908  </a></b>	   
+<b><a name="line909">909  </a></b>	      static constexpr bool
+<b><a name="line910">910  </a></b>	      <b>__less</b>(const <a href="#line903">_Tp</a>&amp;, const <a href="#line903">_Up</a>&amp;) { return false; }
+<b><a name="line911">911  </a></b>	    };
+<b><a name="line912">912  </a></b>	
+<b><a name="line913">913  </a></b>	  template&lt;typename... <b>_TElements</b>, typename... <b>_UElements</b>&gt;
+<b><a name="line914">914  </a></b>	    constexpr bool
+<b><a name="line915">915  </a></b>	    <b>operator==</b>(const <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line913">_TElements</a>...&gt;&amp; __t,
+<b><a name="line916">916  </a></b>		       const <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line913">_UElements</a>...&gt;&amp; __u)
+<b><a name="line917">917  </a></b>	    {
+<b><a name="line918">918  </a></b>	      static_assert(sizeof...(_TElements) == sizeof...(_UElements),
+<b><a name="line919">919  </a></b>		  &quot;tuple objects can only be compared if they have equal sizes.&quot;);
+<b><a name="line920">920  </a></b>	      using __compare = __tuple_compare&lt;tuple&lt;_TElements...&gt;,
+<b><a name="line921">921  </a></b>						tuple&lt;_UElements...&gt;,
+<b><a name="line922">922  </a></b>						0, sizeof...(_TElements)&gt;;
+<b><a name="line923">923  </a></b>	      return __compare::__eq(__t, __u);
+<b><a name="line924">924  </a></b>	    }
+<b><a name="line925">925  </a></b>	
+<b><a name="line926">926  </a></b>	  template&lt;typename... <b>_TElements</b>, typename... <b>_UElements</b>&gt;
+<b><a name="line927">927  </a></b>	    constexpr bool
+<b><a name="line928">928  </a></b>	    <b>operator&lt;</b>(const <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line926">_TElements</a>...&gt;&amp; __t,
+<b><a name="line929">929  </a></b>		      const <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line926">_UElements</a>...&gt;&amp; __u)
+<b><a name="line930">930  </a></b>	    {
+<b><a name="line931">931  </a></b>	      static_assert(sizeof...(_TElements) == sizeof...(_UElements),
+<b><a name="line932">932  </a></b>		  &quot;tuple objects can only be compared if they have equal sizes.&quot;);
+<b><a name="line933">933  </a></b>	      using __compare = __tuple_compare&lt;tuple&lt;_TElements...&gt;,
+<b><a name="line934">934  </a></b>						tuple&lt;_UElements...&gt;,
+<b><a name="line935">935  </a></b>						0, sizeof...(_TElements)&gt;;
+<b><a name="line936">936  </a></b>	      return __compare::__less(__t, __u);
+<b><a name="line937">937  </a></b>	    }
+<b><a name="line938">938  </a></b>	
+<b><a name="line939">939  </a></b>	  template&lt;typename... <b>_TElements</b>, typename... <b>_UElements</b>&gt;
+<b><a name="line940">940  </a></b>	    constexpr bool
+<b><a name="line941">941  </a></b>	    <b>operator!=</b>(const <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line939">_TElements</a>...&gt;&amp; __t,
+<b><a name="line942">942  </a></b>		       const <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line939">_UElements</a>...&gt;&amp; __u)
+<b><a name="line943">943  </a></b>	    { return !(__t == __u); }
+<b><a name="line944">944  </a></b>	
+<b><a name="line945">945  </a></b>	  template&lt;typename... <b>_TElements</b>, typename... <b>_UElements</b>&gt;
+<b><a name="line946">946  </a></b>	    constexpr bool
+<b><a name="line947">947  </a></b>	    <b>operator&gt;</b>(const <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line945">_TElements</a>...&gt;&amp; __t,
+<b><a name="line948">948  </a></b>		      const <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line945">_UElements</a>...&gt;&amp; __u)
+<b><a name="line949">949  </a></b>	    { return __u &lt; __t; }
+<b><a name="line950">950  </a></b>	
+<b><a name="line951">951  </a></b>	  template&lt;typename... <b>_TElements</b>, typename... <b>_UElements</b>&gt;
+<b><a name="line952">952  </a></b>	    constexpr bool
+<b><a name="line953">953  </a></b>	    <b>operator&lt;=</b>(const <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line951">_TElements</a>...&gt;&amp; __t,
+<b><a name="line954">954  </a></b>		       const <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line951">_UElements</a>...&gt;&amp; __u)
+<b><a name="line955">955  </a></b>	    { return !(__u &lt; __t); }
+<b><a name="line956">956  </a></b>	
+<b><a name="line957">957  </a></b>	  template&lt;typename... <b>_TElements</b>, typename... <b>_UElements</b>&gt;
+<b><a name="line958">958  </a></b>	    constexpr bool
+<b><a name="line959">959  </a></b>	    <b>operator&gt;=</b>(const <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line957">_TElements</a>...&gt;&amp; __t,
+<b><a name="line960">960  </a></b>		       const <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line957">_UElements</a>...&gt;&amp; __u)
+<b><a name="line961">961  </a></b>	    { return !(__t &lt; __u); }
+<b><a name="line962">962  </a></b>	
+<b><a name="line963">963  </a></b>	  // NB: DR 705.
+<b><a name="line964">964  </a></b>	  template&lt;typename... <b>_Elements</b>&gt;
+<b><a name="line965">965  </a></b>	    constexpr <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;typename <a href="../type_traits/code.html#line2089">__decay_and_strip</a>&lt;<a href="#line964">_Elements</a>&gt;::__type...&gt;
+<b><a name="line966">966  </a></b>	    <b>make_tuple</b>(<a href="#line964">_Elements</a>&amp;&amp;... __args)
+<b><a name="line967">967  </a></b>	    {
+<b><a name="line968">968  </a></b>	      typedef tuple&lt;typename __decay_and_strip&lt;_Elements&gt;::__type...&gt;
+<b><a name="line969">969  </a></b>		__result_type;
+<b><a name="line970">970  </a></b>	      return __result_type(std::forward&lt;_Elements&gt;(__args)...);
+<b><a name="line971">971  </a></b>	    }
+<b><a name="line972">972  </a></b>	
+<b><a name="line973">973  </a></b>	  template&lt;typename... <b>_Elements</b>&gt;
+<b><a name="line974">974  </a></b>	    <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line973">_Elements</a>&amp;&amp;...&gt;
+<b><a name="line975">975  </a></b>	    <b>forward_as_tuple</b>(<a href="#line973">_Elements</a>&amp;&amp;... __args) noexcept
+<b><a name="line976">976  </a></b>	    { return tuple&lt;_Elements&amp;&amp;...&gt;(std::forward&lt;_Elements&gt;(__args)...); }
+<b><a name="line977">977  </a></b>	
+<b><a name="line978">978  </a></b>	  template&lt;typename&gt;
+<b><a name="line979">979  </a></b>	    struct <b>__is_tuple_like_impl</b> : <a href="../type_traits/code.html#line90">false_type</a>
+<b><a name="line980">980  </a></b>	    { };
+<b><a name="line981">981  </a></b>	
+<b><a name="line982">982  </a></b>	  template&lt;typename... <b>_Tps</b>&gt;
+<b><a name="line983">983  </a></b>	    struct <b>__is_tuple_like_impl</b>&lt;<a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line982">_Tps</a>...&gt;&gt; : <a href="../type_traits/code.html#line87">true_type</a>
+<b><a name="line984">984  </a></b>	    { };
+<b><a name="line985">985  </a></b>	
+<b><a name="line986">986  </a></b>	  template&lt;typename <b>_T1</b>, typename <b>_T2</b>&gt;
+<b><a name="line987">987  </a></b>	    struct <b>__is_tuple_like_impl</b>&lt;<a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line986">_T1</a>, <a href="#line986">_T2</a>&gt;&gt; : <a href="../type_traits/code.html#line87">true_type</a>
+<b><a name="line988">988  </a></b>	    { };
+<b><a name="line989">989  </a></b>	
+<b><a name="line990">990  </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>_Nm</b>&gt;
+<b><a name="line991">991  </a></b>	    struct <b>__is_tuple_like_impl</b>&lt;<a href="../array/code.html#line89">array</a>&lt;<a href="#line990">_Tp</a>, <a href="#line990">_Nm</a>&gt;&gt; : <a href="../type_traits/code.html#line87">true_type</a>
+<b><a name="line992">992  </a></b>	    { };
+<b><a name="line993">993  </a></b>	
+<b><a name="line994">994  </a></b>	  // Internal type trait that allows us to sfinae-protect tuple_cat.
+<b><a name="line995">995  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line996">996  </a></b>	    struct <b>__is_tuple_like</b>
+<b><a name="line997">997  </a></b>	    : public <a href="#line979">__is_tuple_like_impl</a>&lt;typename <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../type_traits/code.html#line166">remove_cv</a>
+<b><a name="line998">998  </a></b>	            &lt;typename <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../type_traits/code.html#line964">remove_reference</a>&lt;<a href="#line995">_Tp</a>&gt;::type&gt;::type&gt;::type
+<b><a name="line999">999  </a></b>	    { };
+<b><a name="line1000">1000 </a></b>	
+<b><a name="line1001">1001 </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>, typename, typename, <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>&gt;
+<b><a name="line1002">1002 </a></b>	    struct __make_tuple_impl;
+<b><a name="line1003">1003 </a></b>	
+<b><a name="line1004">1004 </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>_Idx</b>, typename <b>_Tuple</b>, typename... <b>_Tp</b>, <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>_Nm</b>&gt;
+<b><a name="line1005">1005 </a></b>	    struct <b>__make_tuple_impl</b>&lt;<a href="#line1004">_Idx</a>, <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line1004">_Tp</a>...&gt;, <a href="#line1004">_Tuple</a>, <a href="#line1004">_Nm</a>&gt;
+<b><a name="line1006">1006 </a></b>	    : <a href="#line1002">__make_tuple_impl</a>&lt;<a href="#line1004">_Idx</a> + 1,
+<b><a name="line1007">1007 </a></b>				<a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line1004">_Tp</a>..., <a href="#line769">__tuple_element_t</a>&lt;<a href="#line1004">_Idx</a>, <a href="#line1004">_Tuple</a>&gt;&gt;,
+<b><a name="line1008">1008 </a></b>				<a href="#line1004">_Tuple</a>, <a href="#line1004">_Nm</a>&gt;
+<b><a name="line1009">1009 </a></b>	    { };
+<b><a name="line1010">1010 </a></b>	
+<b><a name="line1011">1011 </a></b>	  template&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>_Nm</b>, typename <b>_Tuple</b>, typename... <b>_Tp</b>&gt;
+<b><a name="line1012">1012 </a></b>	    struct <b>__make_tuple_impl</b>&lt;<a href="#line1011">_Nm</a>, <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line1011">_Tp</a>...&gt;, <a href="#line1011">_Tuple</a>, <a href="#line1011">_Nm</a>&gt;
+<b><a name="line1013">1013 </a></b>	    {
+<b><a name="line1014">1014 </a></b>	      typedef <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line1011">_Tp</a>...&gt; <b>__type</b>;
+<b><a name="line1015">1015 </a></b>	    };
+<b><a name="line1016">1016 </a></b>	
+<b><a name="line1017">1017 </a></b>	  template&lt;typename <b>_Tuple</b>&gt;
+<b><a name="line1018">1018 </a></b>	    struct <b>__do_make_tuple</b>
+<b><a name="line1019">1019 </a></b>	    : <a href="#line1002">__make_tuple_impl</a>&lt;0, <a href="#line463">tuple</a>&lt;&gt;, <a href="#line1017">_Tuple</a>, <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../utility/code.html#line82">tuple_size</a>&lt;<a href="#line1017">_Tuple</a>&gt;::value&gt;
+<b><a name="line1020">1020 </a></b>	    { };
+<b><a name="line1021">1021 </a></b>	
+<b><a name="line1022">1022 </a></b>	  // Returns the std::tuple equivalent of a tuple-like type.
+<b><a name="line1023">1023 </a></b>	  template&lt;typename <b>_Tuple</b>&gt;
+<b><a name="line1024">1024 </a></b>	    struct <b>__make_tuple</b>
+<b><a name="line1025">1025 </a></b>	    : public <a href="#line1018">__do_make_tuple</a>&lt;typename <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../type_traits/code.html#line166">remove_cv</a>
+<b><a name="line1026">1026 </a></b>	            &lt;typename <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../type_traits/code.html#line964">remove_reference</a>&lt;<a href="#line1023">_Tuple</a>&gt;::type&gt;::type&gt;
+<b><a name="line1027">1027 </a></b>	    { };
+<b><a name="line1028">1028 </a></b>	
+<b><a name="line1029">1029 </a></b>	  // Combines several std::tuple's into a single one.
+<b><a name="line1030">1030 </a></b>	  template&lt;typename...&gt;
+<b><a name="line1031">1031 </a></b>	    struct __combine_tuples;
+<b><a name="line1032">1032 </a></b>	
+<b><a name="line1033">1033 </a></b>	  template&lt;&gt;
+<b><a name="line1034">1034 </a></b>	    struct <b>__combine_tuples</b>&lt;&gt;
+<b><a name="line1035">1035 </a></b>	    {
+<b><a name="line1036">1036 </a></b>	      typedef <a href="#line463">tuple</a>&lt;&gt; <b>__type</b>;
+<b><a name="line1037">1037 </a></b>	    };
+<b><a name="line1038">1038 </a></b>	
+<b><a name="line1039">1039 </a></b>	  template&lt;typename... <b>_Ts</b>&gt;
+<b><a name="line1040">1040 </a></b>	    struct <b>__combine_tuples</b>&lt;<a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line1039">_Ts</a>...&gt;&gt;
+<b><a name="line1041">1041 </a></b>	    {
+<b><a name="line1042">1042 </a></b>	      typedef <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line1039">_Ts</a>...&gt; <b>__type</b>;
+<b><a name="line1043">1043 </a></b>	    };
+<b><a name="line1044">1044 </a></b>	
+<b><a name="line1045">1045 </a></b>	  template&lt;typename... <b>_T1s</b>, typename... <b>_T2s</b>, typename... <b>_Rem</b>&gt;
+<b><a name="line1046">1046 </a></b>	    struct <b>__combine_tuples</b>&lt;<a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line1045">_T1s</a>...&gt;, <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line1045">_T2s</a>...&gt;, <a href="#line1045">_Rem</a>...&gt;
+<b><a name="line1047">1047 </a></b>	    {
+<b><a name="line1048">1048 </a></b>	      typedef typename <a href="#line1031">__combine_tuples</a>&lt;<a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line1045">_T1s</a>..., <a href="#line1045">_T2s</a>...&gt;,
+<b><a name="line1049">1049 </a></b>						<a href="#line1045">_Rem</a>...&gt;::__type <b>__type</b>;
+<b><a name="line1050">1050 </a></b>	    };
+<b><a name="line1051">1051 </a></b>	
+<b><a name="line1052">1052 </a></b>	  // Computes the result type of tuple_cat given a set of tuple-like types.
+<b><a name="line1053">1053 </a></b>	  template&lt;typename... <b>_Tpls</b>&gt;
+<b><a name="line1054">1054 </a></b>	    struct <b>__tuple_cat_result</b>
+<b><a name="line1055">1055 </a></b>	    {
+<b><a name="line1056">1056 </a></b>	      typedef typename <a href="#line1031">__combine_tuples</a>
+<b><a name="line1057">1057 </a></b>	        &lt;typename <a href="#line1024">__make_tuple</a>&lt;<a href="#line1053">_Tpls</a>&gt;::__type...&gt;::__type <b>__type</b>;
+<b><a name="line1058">1058 </a></b>	    };
+<b><a name="line1059">1059 </a></b>	
+<b><a name="line1060">1060 </a></b>	  // Helper to determine the index set for the first tuple-like
+<b><a name="line1061">1061 </a></b>	  // type of a given set.
+<b><a name="line1062">1062 </a></b>	  template&lt;typename...&gt;
+<b><a name="line1063">1063 </a></b>	    struct __make_1st_indices;
+<b><a name="line1064">1064 </a></b>	
+<b><a name="line1065">1065 </a></b>	  template&lt;&gt;
+<b><a name="line1066">1066 </a></b>	    struct <b>__make_1st_indices</b>&lt;&gt;
+<b><a name="line1067">1067 </a></b>	    {
+<b><a name="line1068">1068 </a></b>	      typedef <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../utility/code.html#line206">_Index_tuple</a>&lt;&gt; <b>__type</b>;
+<b><a name="line1069">1069 </a></b>	    };
+<b><a name="line1070">1070 </a></b>	
+<b><a name="line1071">1071 </a></b>	  template&lt;typename <b>_Tp</b>, typename... <b>_Tpls</b>&gt;
+<b><a name="line1072">1072 </a></b>	    struct <b>__make_1st_indices</b>&lt;<a href="#line1071">_Tp</a>, <a href="#line1071">_Tpls</a>...&gt;
+<b><a name="line1073">1073 </a></b>	    {
+<b><a name="line1074">1074 </a></b>	      typedef typename <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../utility/code.html#line213">_Build_index_tuple</a>&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../utility/code.html#line82">tuple_size</a>&lt;
+<b><a name="line1075">1075 </a></b>		typename <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../type_traits/code.html#line964">remove_reference</a>&lt;<a href="#line1071">_Tp</a>&gt;::type&gt;::value&gt;::__type <b>__type</b>;
+<b><a name="line1076">1076 </a></b>	    };
+<b><a name="line1077">1077 </a></b>	
+<b><a name="line1078">1078 </a></b>	  // Performs the actual concatenation by step-wise expanding tuple-like
+<b><a name="line1079">1079 </a></b>	  // objects into the elements,  which are finally forwarded into the
+<b><a name="line1080">1080 </a></b>	  // result tuple.
+<b><a name="line1081">1081 </a></b>	  template&lt;typename <b>_Ret</b>, typename <b>_Indices</b>, typename... <b>_Tpls</b>&gt;
+<b><a name="line1082">1082 </a></b>	    struct __tuple_concater;
+<b><a name="line1083">1083 </a></b>	
+<b><a name="line1084">1084 </a></b>	  template&lt;typename <b>_Ret</b>, <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>... <b>_Is</b>, typename <b>_Tp</b>, typename... <b>_Tpls</b>&gt;
+<b><a name="line1085">1085 </a></b>	    struct <b>__tuple_concater</b>&lt;<a href="#line1084">_Ret</a>, <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../bits/stl_pair.h/code.html#line86">_Index_tuple</a>&lt;<a href="#line1084">_Is</a>...&gt;, <a href="#line1084">_Tp</a>, <a href="#line1084">_Tpls</a>...&gt;
+<b><a name="line1086">1086 </a></b>	    {
+<b><a name="line1087">1087 </a></b>	      template&lt;typename... <b>_Us</b>&gt;
+<b><a name="line1088">1088 </a></b>	        static constexpr <a href="#line1084">_Ret</a>
+<b><a name="line1089">1089 </a></b>	        <b>_S_do</b>(<a href="#line1084">_Tp</a>&amp;&amp; __tp, <a href="#line1084">_Tpls</a>&amp;&amp;... __tps, <a href="#line1087">_Us</a>&amp;&amp;... __us)
+<b><a name="line1090">1090 </a></b>	        {
+<b><a name="line1091">1091 </a></b>		  typedef typename __make_1st_indices&lt;_Tpls...&gt;::__type __idx;
+<b><a name="line1092">1092 </a></b>		  typedef __tuple_concater&lt;_Ret, __idx, _Tpls...&gt;      __next;
+<b><a name="line1093">1093 </a></b>		  return __next::_S_do(std::forward&lt;_Tpls&gt;(__tps)...,
+<b><a name="line1094">1094 </a></b>				       std::forward&lt;_Us&gt;(__us)...,
+<b><a name="line1095">1095 </a></b>				       std::get&lt;_Is&gt;(std::forward&lt;_Tp&gt;(__tp))...);
+<b><a name="line1096">1096 </a></b>		}
+<b><a name="line1097">1097 </a></b>	    };
+<b><a name="line1098">1098 </a></b>	
+<b><a name="line1099">1099 </a></b>	  template&lt;typename <b>_Ret</b>&gt;
+<b><a name="line1100">1100 </a></b>	    struct <b>__tuple_concater</b>&lt;<a href="#line1099">_Ret</a>, <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../utility/code.html#line206">_Index_tuple</a>&lt;&gt;&gt;
+<b><a name="line1101">1101 </a></b>	    {
+<b><a name="line1102">1102 </a></b>	      template&lt;typename... <b>_Us</b>&gt;
+<b><a name="line1103">1103 </a></b>		static constexpr <a href="#line1099">_Ret</a>
+<b><a name="line1104">1104 </a></b>		<b>_S_do</b>(<a href="#line1102">_Us</a>&amp;&amp;... __us)
+<b><a name="line1105">1105 </a></b>	        {
+<b><a name="line1106">1106 </a></b>		  return _Ret(std::forward&lt;_Us&gt;(__us)...);
+<b><a name="line1107">1107 </a></b>		}
+<b><a name="line1108">1108 </a></b>	    };
+<b><a name="line1109">1109 </a></b>	
+<b><a name="line1110">1110 </a></b>	  /// tuple_cat
+<b><a name="line1111">1111 </a></b>	  template&lt;typename... <b>_Tpls</b>, typename = typename
+<b><a name="line1112">1112 </a></b>	           <a href="../type_traits/code.html#line2099">enable_if</a>&lt;<a href="../type_traits/code.html#line124">__and_</a>&lt;<a href="#line996">__is_tuple_like</a>&lt;<a href="#line1111">_Tpls</a>&gt;...&gt;::value&gt;::type&gt;
+<b><a name="line1113">1113 </a></b>	    constexpr auto
+<b><a name="line1114">1114 </a></b>	    <b>tuple_cat</b>(<a href="#line1111">_Tpls</a>&amp;&amp;... __tpls)
+<b><a name="line1115">1115 </a></b>	    -&gt; typename <a href="#line1054">__tuple_cat_result</a>&lt;<a href="#line1111">_Tpls</a>...&gt;::__type
+<b><a name="line1116">1116 </a></b>	    {
+<b><a name="line1117">1117 </a></b>	      typedef typename __tuple_cat_result&lt;_Tpls...&gt;::__type __ret;
+<b><a name="line1118">1118 </a></b>	      typedef typename __make_1st_indices&lt;_Tpls...&gt;::__type __idx;
+<b><a name="line1119">1119 </a></b>	      typedef __tuple_concater&lt;__ret, __idx, _Tpls...&gt; __concater;
+<b><a name="line1120">1120 </a></b>	      return __concater::_S_do(std::forward&lt;_Tpls&gt;(__tpls)...);
+<b><a name="line1121">1121 </a></b>	    }
+<b><a name="line1122">1122 </a></b>	
+<b><a name="line1123">1123 </a></b>	  /// tie
+<b><a name="line1124">1124 </a></b>	  template&lt;typename... <b>_Elements</b>&gt;
+<b><a name="line1125">1125 </a></b>	    inline <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line1124">_Elements</a>&amp;...&gt;
+<b><a name="line1126">1126 </a></b>	    <b>tie</b>(<a href="#line1124">_Elements</a>&amp;... __args) noexcept
+<b><a name="line1127">1127 </a></b>	    { return tuple&lt;_Elements&amp;...&gt;(__args...); }
+<b><a name="line1128">1128 </a></b>	
+<b><a name="line1129">1129 </a></b>	  /// swap
+<b><a name="line1130">1130 </a></b>	  template&lt;typename... <b>_Elements</b>&gt;
+<b><a name="line1131">1131 </a></b>	    inline void 
+<b><a name="line1132">1132 </a></b>	    <b>swap</b>(<a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line1130">_Elements</a>...&gt;&amp; __x, <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line1130">_Elements</a>...&gt;&amp; __y)
+<b><a name="line1133">1133 </a></b>	    noexcept(noexcept(__x.swap(__y)))
+<b><a name="line1134">1134 </a></b>	    { __x.swap(__y); }
+<b><a name="line1135">1135 </a></b>	
+<b><a name="line1136">1136 </a></b>	  // A class (and instance) which can be used in 'tie' when an element
+<b><a name="line1137">1137 </a></b>	  // of a tuple is not required
+<b><a name="line1138">1138 </a></b>	  struct <b>_Swallow_assign</b>
+<b><a name="line1139">1139 </a></b>	  {
+<b><a name="line1140">1140 </a></b>	    template&lt;class <b>_Tp</b>&gt;
+<b><a name="line1141">1141 </a></b>	      const <a href="#line1138">_Swallow_assign</a>&amp;
+<b><a name="line1142">1142 </a></b>	      <b>operator=</b>(const <a href="#line1140">_Tp</a>&amp;) const
+<b><a name="line1143">1143 </a></b>	      { return *this; }
+<b><a name="line1144">1144 </a></b>	  };
+<b><a name="line1145">1145 </a></b>	
+<b><a name="line1146">1146 </a></b>	  const <a href="#line1138">_Swallow_assign</a> <b>ignore</b>{};
+<b><a name="line1147">1147 </a></b>	
+<b><a name="line1148">1148 </a></b>	  /// Partial specialization for tuples
+<b><a name="line1149">1149 </a></b>	  template&lt;typename... <b>_Types</b>, typename <b>_Alloc</b>&gt;
+<b><a name="line1150">1150 </a></b>	    struct <b>uses_allocator</b>&lt;<a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line1149">_Types</a>...&gt;, <a href="#line1149">_Alloc</a>&gt; : <a href="../type_traits/code.html#line87">true_type</a> { };
+<b><a name="line1151">1151 </a></b>	
+<b><a name="line1152">1152 </a></b>	  // See stl_pair.h...
+<b><a name="line1153">1153 </a></b>	  template&lt;class <b>_T1</b>, class <b>_T2</b>&gt;
+<b><a name="line1154">1154 </a></b>	    template&lt;typename... <b>_Args1</b>, typename... <b>_Args2</b>&gt;
+<b><a name="line1155">1155 </a></b>	      inline
+<b><a name="line1156">1156 </a></b>	      <a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line1153">_T1</a>, <a href="#line1153">_T2</a>&gt;::
+<b><a name="line1157">1157 </a></b>	      <b>pair</b>(<a href="../bits/stl_pair.h/code.html#line76">piecewise_construct_t</a>,
+<b><a name="line1158">1158 </a></b>		   <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line1154">_Args1</a>...&gt; __first, <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line1154">_Args2</a>...&gt; __second)
+<b><a name="line1159">1159 </a></b>	      : pair(__first, __second,
+<b><a name="line1160">1160 </a></b>		     typename _Build_index_tuple&lt;sizeof...(_Args1)&gt;::__type(),
+<b><a name="line1161">1161 </a></b>		     typename _Build_index_tuple&lt;sizeof...(_Args2)&gt;::__type())
+<b><a name="line1162">1162 </a></b>	      { }
+<b><a name="line1163">1163 </a></b>	
+<b><a name="line1164">1164 </a></b>	  template&lt;class <b>_T1</b>, class <b>_T2</b>&gt;
+<b><a name="line1165">1165 </a></b>	    template&lt;typename... <b>_Args1</b>, <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>... <b>_Indexes1</b>,
+<b><a name="line1166">1166 </a></b>	             typename... <b>_Args2</b>, <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>... <b>_Indexes2</b>&gt;
+<b><a name="line1167">1167 </a></b>	      inline
+<b><a name="line1168">1168 </a></b>	      <a href="../bits/stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line1164">_T1</a>, <a href="#line1164">_T2</a>&gt;::
+<b><a name="line1169">1169 </a></b>	      <b>pair</b>(<a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line1165">_Args1</a>...&gt;&amp; __tuple1, <a href="../bits/stl_pair.h/code.html#line83">tuple</a>&lt;<a href="#line1166">_Args2</a>...&gt;&amp; __tuple2,
+<b><a name="line1170">1170 </a></b>		   <a href="../bits/stl_pair.h/code.html#line86">_Index_tuple</a>&lt;<a href="#line1165">_Indexes1</a>...&gt;, <a href="../bits/stl_pair.h/code.html#line86">_Index_tuple</a>&lt;<a href="#line1166">_Indexes2</a>...&gt;)
+<b><a name="line1171">1171 </a></b>	      : first(std::forward&lt;_Args1&gt;(std::get&lt;_Indexes1&gt;(__tuple1))...),
+<b><a name="line1172">1172 </a></b>	        second(std::forward&lt;_Args2&gt;(std::get&lt;_Indexes2&gt;(__tuple2))...)
+<b><a name="line1173">1173 </a></b>	      { }
+<b><a name="line1174">1174 </a></b>	
+<b><a name="line1175">1175 </a></b>	  /// @}
+<b><a name="line1176">1176 </a></b>	
+<b><a name="line1177">1177 </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line1178">1178 </a></b>	} // namespace std
+<b><a name="line1179">1179 </a></b>	
+<b><a name="line1180">1180 </a></b>	#endif // C++11
+<b><a name="line1181">1181 </a></b>	
+<b><a name="line1182">1182 </a></b>	#endif // _GLIBCXX_TUPLE
+<b><a name="line1183">1183 </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

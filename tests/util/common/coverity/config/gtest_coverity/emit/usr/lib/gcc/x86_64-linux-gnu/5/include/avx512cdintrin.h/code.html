@@ -1,0 +1,241 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/lib/gcc/x86_64-linux-gnu/5/include/avx512cdintrin.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 2013-2015 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	   This file is part of GCC.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   GCC is free software; you can redistribute it and/or modify
+<b><a name="line6">6    </a></b>	   it under the terms of the GNU General Public License as published by
+<b><a name="line7">7    </a></b>	   the Free Software Foundation; either version 3, or (at your option)
+<b><a name="line8">8    </a></b>	   any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   GCC is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line13">13   </a></b>	   GNU General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line16">16   </a></b>	   permissions described in the GCC Runtime Library Exception, version
+<b><a name="line17">17   </a></b>	   3.1, as published by the Free Software Foundation.
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	   You should have received a copy of the GNU General Public License and
+<b><a name="line20">20   </a></b>	   a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line21">21   </a></b>	   see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line22">22   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>	#ifndef <a href="../immintrin.h/code.html#line25">_IMMINTRIN_H_INCLUDED</a>
+<b><a name="line25">25   </a></b>	#error &quot;Never use &lt;avx512cdintrin.h&gt; directly; include &lt;immintrin.h&gt; instead.&quot;
+<b><a name="line26">26   </a></b>	#endif
+<b><a name="line27">27   </a></b>	
+<b><a name="line28">28   </a></b>	#ifndef _AVX512CDINTRIN_H_INCLUDED
+<b><a name="line29">29   </a></b>	#define <b>_AVX512CDINTRIN_H_INCLUDED</b>
+<b><a name="line30">30   </a></b>	
+<b><a name="line31">31   </a></b>	#ifndef __AVX512CD__
+<b><a name="line32">32   </a></b>	#pragma GCC push_options
+<b><a name="line33">33   </a></b>	#pragma GCC target(&quot;avx512cd&quot;)
+<b><a name="line34">34   </a></b>	#define <b>__DISABLE_AVX512CD__</b>
+<b><a name="line35">35   </a></b>	#endif /* __AVX512CD__ */
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	/* Internal data types for implementing the intrinsics.  */
+<b><a name="line38">38   </a></b>	typedef long long <a href="../avx512fintrin.h/code.html#line40">__v8di</a> __attribute__ ((__vector_size__ (64)));
+<b><a name="line39">39   </a></b>	typedef int <a href="../avx512fintrin.h/code.html#line42">__v16si</a> __attribute__ ((__vector_size__ (64)));
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	/* The Intel API is flexible enough that we must allow aliasing with other
+<b><a name="line42">42   </a></b>	   vector types, and their scalar components.  */
+<b><a name="line43">43   </a></b>	typedef long long <a href="../avx512fintrin.h/code.html#line52">__m512i</a> __attribute__ ((__vector_size__ (64), __may_alias__));
+<b><a name="line44">44   </a></b>	typedef double <a href="../avx512fintrin.h/code.html#line53">__m512d</a> __attribute__ ((__vector_size__ (64), __may_alias__));
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	typedef unsigned char  <a href="../avx512fintrin.h/code.html#line55">__mmask8</a>;
+<b><a name="line47">47   </a></b>	typedef unsigned short <a href="../avx512fintrin.h/code.html#line56">__mmask16</a>;
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	extern __inline <a href="../avx512fintrin.h/code.html#line52">__m512i</a>
+<b><a name="line50">50   </a></b>	__attribute__ ((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line51">51   </a></b>	<b>_mm512_conflict_epi32</b> (<a href="../avx512fintrin.h/code.html#line52">__m512i</a> <b>__A</b>)
+<b><a name="line52">52   </a></b>	{
+<b><a name="line53">53   </a></b>	  return (<a href="../avx512fintrin.h/code.html#line52">__m512i</a>)
+<b><a name="line54">54   </a></b>		 <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line2283">__builtin_ia32_vpconflictsi_512_mask</a> ((<a href="../avx512fintrin.h/code.html#line42">__v16si</a>) <a href="#line51">__A</a>,
+<b><a name="line55">55   </a></b>						       (<a href="../avx512fintrin.h/code.html#line42">__v16si</a>) <a href="../avx512fintrin.h/code.html#line259">_mm512_setzero_si512</a> (),
+<b><a name="line56">56   </a></b>						       (<a href="../avx512fintrin.h/code.html#line56">__mmask16</a>) -1);
+<b><a name="line57">57   </a></b>	}
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	extern __inline <a href="../avx512fintrin.h/code.html#line52">__m512i</a>
+<b><a name="line60">60   </a></b>	__attribute__ ((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line61">61   </a></b>	<b>_mm512_mask_conflict_epi32</b> (<a href="../avx512fintrin.h/code.html#line52">__m512i</a> <b>__W</b>, <a href="../avx512fintrin.h/code.html#line56">__mmask16</a> <b>__U</b>, <a href="../avx512fintrin.h/code.html#line52">__m512i</a> <b>__A</b>)
+<b><a name="line62">62   </a></b>	{
+<b><a name="line63">63   </a></b>	  return (<a href="../avx512fintrin.h/code.html#line52">__m512i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line2283">__builtin_ia32_vpconflictsi_512_mask</a> ((<a href="../avx512fintrin.h/code.html#line42">__v16si</a>) <a href="#line61">__A</a>,
+<b><a name="line64">64   </a></b>								 (<a href="../avx512fintrin.h/code.html#line42">__v16si</a>) <a href="#line61">__W</a>,
+<b><a name="line65">65   </a></b>								 (<a href="../avx512fintrin.h/code.html#line56">__mmask16</a>) <a href="#line61">__U</a>);
+<b><a name="line66">66   </a></b>	}
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	extern __inline <a href="../avx512fintrin.h/code.html#line52">__m512i</a>
+<b><a name="line69">69   </a></b>	__attribute__ ((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line70">70   </a></b>	<b>_mm512_maskz_conflict_epi32</b> (<a href="../avx512fintrin.h/code.html#line56">__mmask16</a> <b>__U</b>, <a href="../avx512fintrin.h/code.html#line52">__m512i</a> <b>__A</b>)
+<b><a name="line71">71   </a></b>	{
+<b><a name="line72">72   </a></b>	  return (<a href="../avx512fintrin.h/code.html#line52">__m512i</a>)
+<b><a name="line73">73   </a></b>		 <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line2283">__builtin_ia32_vpconflictsi_512_mask</a> ((<a href="../avx512fintrin.h/code.html#line42">__v16si</a>) <a href="#line70">__A</a>,
+<b><a name="line74">74   </a></b>						       (<a href="../avx512fintrin.h/code.html#line42">__v16si</a>) <a href="../avx512fintrin.h/code.html#line259">_mm512_setzero_si512</a> (),
+<b><a name="line75">75   </a></b>						       (<a href="../avx512fintrin.h/code.html#line56">__mmask16</a>) <a href="#line70">__U</a>);
+<b><a name="line76">76   </a></b>	}
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	extern __inline <a href="../avx512fintrin.h/code.html#line52">__m512i</a>
+<b><a name="line79">79   </a></b>	__attribute__ ((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line80">80   </a></b>	<b>_mm512_conflict_epi64</b> (<a href="../avx512fintrin.h/code.html#line52">__m512i</a> <b>__A</b>)
+<b><a name="line81">81   </a></b>	{
+<b><a name="line82">82   </a></b>	  return (<a href="../avx512fintrin.h/code.html#line52">__m512i</a>)
+<b><a name="line83">83   </a></b>		 <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line2284">__builtin_ia32_vpconflictdi_512_mask</a> ((<a href="../avx512fintrin.h/code.html#line40">__v8di</a>) <a href="#line80">__A</a>,
+<b><a name="line84">84   </a></b>						       (<a href="../avx512fintrin.h/code.html#line40">__v8di</a>) <a href="../avx512fintrin.h/code.html#line259">_mm512_setzero_si512</a> (),
+<b><a name="line85">85   </a></b>						       (<a href="../avx512fintrin.h/code.html#line55">__mmask8</a>) -1);
+<b><a name="line86">86   </a></b>	}
+<b><a name="line87">87   </a></b>	
+<b><a name="line88">88   </a></b>	extern __inline <a href="../avx512fintrin.h/code.html#line52">__m512i</a>
+<b><a name="line89">89   </a></b>	__attribute__ ((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line90">90   </a></b>	<b>_mm512_mask_conflict_epi64</b> (<a href="../avx512fintrin.h/code.html#line52">__m512i</a> <b>__W</b>, <a href="../avx512fintrin.h/code.html#line55">__mmask8</a> <b>__U</b>, <a href="../avx512fintrin.h/code.html#line52">__m512i</a> <b>__A</b>)
+<b><a name="line91">91   </a></b>	{
+<b><a name="line92">92   </a></b>	  return (<a href="../avx512fintrin.h/code.html#line52">__m512i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line2284">__builtin_ia32_vpconflictdi_512_mask</a> ((<a href="../avx512fintrin.h/code.html#line40">__v8di</a>) <a href="#line90">__A</a>,
+<b><a name="line93">93   </a></b>								 (<a href="../avx512fintrin.h/code.html#line40">__v8di</a>) <a href="#line90">__W</a>,
+<b><a name="line94">94   </a></b>								 (<a href="../avx512fintrin.h/code.html#line55">__mmask8</a>) <a href="#line90">__U</a>);
+<b><a name="line95">95   </a></b>	}
+<b><a name="line96">96   </a></b>	
+<b><a name="line97">97   </a></b>	extern __inline <a href="../avx512fintrin.h/code.html#line52">__m512i</a>
+<b><a name="line98">98   </a></b>	__attribute__ ((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line99">99   </a></b>	<b>_mm512_maskz_conflict_epi64</b> (<a href="../avx512fintrin.h/code.html#line55">__mmask8</a> <b>__U</b>, <a href="../avx512fintrin.h/code.html#line52">__m512i</a> <b>__A</b>)
+<b><a name="line100">100  </a></b>	{
+<b><a name="line101">101  </a></b>	  return (<a href="../avx512fintrin.h/code.html#line52">__m512i</a>)
+<b><a name="line102">102  </a></b>		 <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line2284">__builtin_ia32_vpconflictdi_512_mask</a> ((<a href="../avx512fintrin.h/code.html#line40">__v8di</a>) <a href="#line99">__A</a>,
+<b><a name="line103">103  </a></b>						       (<a href="../avx512fintrin.h/code.html#line40">__v8di</a>) <a href="../avx512fintrin.h/code.html#line259">_mm512_setzero_si512</a> (),
+<b><a name="line104">104  </a></b>						       (<a href="../avx512fintrin.h/code.html#line55">__mmask8</a>) <a href="#line99">__U</a>);
+<b><a name="line105">105  </a></b>	}
+<b><a name="line106">106  </a></b>	
+<b><a name="line107">107  </a></b>	extern __inline <a href="../avx512fintrin.h/code.html#line52">__m512i</a>
+<b><a name="line108">108  </a></b>	__attribute__ ((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line109">109  </a></b>	<b>_mm512_lzcnt_epi64</b> (<a href="../avx512fintrin.h/code.html#line52">__m512i</a> <b>__A</b>)
+<b><a name="line110">110  </a></b>	{
+<b><a name="line111">111  </a></b>	  return (<a href="../avx512fintrin.h/code.html#line52">__m512i</a>)
+<b><a name="line112">112  </a></b>		 <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line2285">__builtin_ia32_vplzcntq_512_mask</a> ((<a href="../avx512fintrin.h/code.html#line40">__v8di</a>) <a href="#line109">__A</a>,
+<b><a name="line113">113  </a></b>						   (<a href="../avx512fintrin.h/code.html#line40">__v8di</a>) <a href="../avx512fintrin.h/code.html#line259">_mm512_setzero_si512</a> (),
+<b><a name="line114">114  </a></b>						   (<a href="../avx512fintrin.h/code.html#line55">__mmask8</a>) -1);
+<b><a name="line115">115  </a></b>	}
+<b><a name="line116">116  </a></b>	
+<b><a name="line117">117  </a></b>	extern __inline <a href="../avx512fintrin.h/code.html#line52">__m512i</a>
+<b><a name="line118">118  </a></b>	__attribute__ ((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line119">119  </a></b>	<b>_mm512_mask_lzcnt_epi64</b> (<a href="../avx512fintrin.h/code.html#line52">__m512i</a> <b>__W</b>, <a href="../avx512fintrin.h/code.html#line55">__mmask8</a> <b>__U</b>, <a href="../avx512fintrin.h/code.html#line52">__m512i</a> <b>__A</b>)
+<b><a name="line120">120  </a></b>	{
+<b><a name="line121">121  </a></b>	  return (<a href="../avx512fintrin.h/code.html#line52">__m512i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line2285">__builtin_ia32_vplzcntq_512_mask</a> ((<a href="../avx512fintrin.h/code.html#line40">__v8di</a>) <a href="#line119">__A</a>,
+<b><a name="line122">122  </a></b>							     (<a href="../avx512fintrin.h/code.html#line40">__v8di</a>) <a href="#line119">__W</a>,
+<b><a name="line123">123  </a></b>							     (<a href="../avx512fintrin.h/code.html#line55">__mmask8</a>) <a href="#line119">__U</a>);
+<b><a name="line124">124  </a></b>	}
+<b><a name="line125">125  </a></b>	
+<b><a name="line126">126  </a></b>	extern __inline <a href="../avx512fintrin.h/code.html#line52">__m512i</a>
+<b><a name="line127">127  </a></b>	__attribute__ ((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line128">128  </a></b>	<b>_mm512_maskz_lzcnt_epi64</b> (<a href="../avx512fintrin.h/code.html#line55">__mmask8</a> <b>__U</b>, <a href="../avx512fintrin.h/code.html#line52">__m512i</a> <b>__A</b>)
+<b><a name="line129">129  </a></b>	{
+<b><a name="line130">130  </a></b>	  return (<a href="../avx512fintrin.h/code.html#line52">__m512i</a>)
+<b><a name="line131">131  </a></b>		 <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line2285">__builtin_ia32_vplzcntq_512_mask</a> ((<a href="../avx512fintrin.h/code.html#line40">__v8di</a>) <a href="#line128">__A</a>,
+<b><a name="line132">132  </a></b>						   (<a href="../avx512fintrin.h/code.html#line40">__v8di</a>) <a href="../avx512fintrin.h/code.html#line259">_mm512_setzero_si512</a> (),
+<b><a name="line133">133  </a></b>						   (<a href="../avx512fintrin.h/code.html#line55">__mmask8</a>) <a href="#line128">__U</a>);
+<b><a name="line134">134  </a></b>	}
+<b><a name="line135">135  </a></b>	
+<b><a name="line136">136  </a></b>	extern __inline <a href="../avx512fintrin.h/code.html#line52">__m512i</a>
+<b><a name="line137">137  </a></b>	__attribute__ ((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line138">138  </a></b>	<b>_mm512_lzcnt_epi32</b> (<a href="../avx512fintrin.h/code.html#line52">__m512i</a> <b>__A</b>)
+<b><a name="line139">139  </a></b>	{
+<b><a name="line140">140  </a></b>	  return (<a href="../avx512fintrin.h/code.html#line52">__m512i</a>)
+<b><a name="line141">141  </a></b>		 <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line2286">__builtin_ia32_vplzcntd_512_mask</a> ((<a href="../avx512fintrin.h/code.html#line42">__v16si</a>) <a href="#line138">__A</a>,
+<b><a name="line142">142  </a></b>						   (<a href="../avx512fintrin.h/code.html#line42">__v16si</a>) <a href="../avx512fintrin.h/code.html#line259">_mm512_setzero_si512</a> (),
+<b><a name="line143">143  </a></b>						   (<a href="../avx512fintrin.h/code.html#line56">__mmask16</a>) -1);
+<b><a name="line144">144  </a></b>	}
+<b><a name="line145">145  </a></b>	
+<b><a name="line146">146  </a></b>	extern __inline <a href="../avx512fintrin.h/code.html#line52">__m512i</a>
+<b><a name="line147">147  </a></b>	__attribute__ ((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line148">148  </a></b>	<b>_mm512_mask_lzcnt_epi32</b> (<a href="../avx512fintrin.h/code.html#line52">__m512i</a> <b>__W</b>, <a href="../avx512fintrin.h/code.html#line56">__mmask16</a> <b>__U</b>, <a href="../avx512fintrin.h/code.html#line52">__m512i</a> <b>__A</b>)
+<b><a name="line149">149  </a></b>	{
+<b><a name="line150">150  </a></b>	  return (<a href="../avx512fintrin.h/code.html#line52">__m512i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line2286">__builtin_ia32_vplzcntd_512_mask</a> ((<a href="../avx512fintrin.h/code.html#line42">__v16si</a>) <a href="#line148">__A</a>,
+<b><a name="line151">151  </a></b>							     (<a href="../avx512fintrin.h/code.html#line42">__v16si</a>) <a href="#line148">__W</a>,
+<b><a name="line152">152  </a></b>							     (<a href="../avx512fintrin.h/code.html#line56">__mmask16</a>) <a href="#line148">__U</a>);
+<b><a name="line153">153  </a></b>	}
+<b><a name="line154">154  </a></b>	
+<b><a name="line155">155  </a></b>	extern __inline <a href="../avx512fintrin.h/code.html#line52">__m512i</a>
+<b><a name="line156">156  </a></b>	__attribute__ ((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line157">157  </a></b>	<b>_mm512_maskz_lzcnt_epi32</b> (<a href="../avx512fintrin.h/code.html#line56">__mmask16</a> <b>__U</b>, <a href="../avx512fintrin.h/code.html#line52">__m512i</a> <b>__A</b>)
+<b><a name="line158">158  </a></b>	{
+<b><a name="line159">159  </a></b>	  return (<a href="../avx512fintrin.h/code.html#line52">__m512i</a>)
+<b><a name="line160">160  </a></b>		 <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line2286">__builtin_ia32_vplzcntd_512_mask</a> ((<a href="../avx512fintrin.h/code.html#line42">__v16si</a>) <a href="#line157">__A</a>,
+<b><a name="line161">161  </a></b>						   (<a href="../avx512fintrin.h/code.html#line42">__v16si</a>) <a href="../avx512fintrin.h/code.html#line259">_mm512_setzero_si512</a> (),
+<b><a name="line162">162  </a></b>						   (<a href="../avx512fintrin.h/code.html#line56">__mmask16</a>) <a href="#line157">__U</a>);
+<b><a name="line163">163  </a></b>	}
+<b><a name="line164">164  </a></b>	
+<b><a name="line165">165  </a></b>	extern __inline <a href="../avx512fintrin.h/code.html#line52">__m512i</a>
+<b><a name="line166">166  </a></b>	__attribute__ ((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line167">167  </a></b>	<b>_mm512_broadcastmb_epi64</b> (<a href="../avx512fintrin.h/code.html#line55">__mmask8</a> <b>__A</b>)
+<b><a name="line168">168  </a></b>	{
+<b><a name="line169">169  </a></b>	  return (<a href="../avx512fintrin.h/code.html#line52">__m512i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line2287">__builtin_ia32_broadcastmb512</a> (<a href="#line167">__A</a>);
+<b><a name="line170">170  </a></b>	}
+<b><a name="line171">171  </a></b>	
+<b><a name="line172">172  </a></b>	extern __inline <a href="../avx512fintrin.h/code.html#line52">__m512i</a>
+<b><a name="line173">173  </a></b>	__attribute__ ((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line174">174  </a></b>	<b>_mm512_broadcastmw_epi32</b> (<a href="../avx512fintrin.h/code.html#line56">__mmask16</a> <b>__A</b>)
+<b><a name="line175">175  </a></b>	{
+<b><a name="line176">176  </a></b>	  return (<a href="../avx512fintrin.h/code.html#line52">__m512i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line2288">__builtin_ia32_broadcastmw512</a> (<a href="#line174">__A</a>);
+<b><a name="line177">177  </a></b>	}
+<b><a name="line178">178  </a></b>	
+<b><a name="line179">179  </a></b>	#ifdef <a href="#line34">__DISABLE_AVX512CD__</a>
+<b><a name="line180">180  </a></b>	#undef <a href="#line34">__DISABLE_AVX512CD__</a>
+<b><a name="line181">181  </a></b>	#pragma GCC pop_options
+<b><a name="line182">182  </a></b>	#endif /* __DISABLE_AVX512CD__ */
+<b><a name="line183">183  </a></b>	
+<b><a name="line184">184  </a></b>	#endif /* _AVX512CDINTRIN_H_INCLUDED */
+<b><a name="line185">185  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

@@ -1,0 +1,909 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/streambuf</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Stream buffer classes -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 1997-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file include/streambuf
+<b><a name="line26">26   </a></b>	 *  This is a Standard C++ Library header.
+<b><a name="line27">27   </a></b>	 */
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	//
+<b><a name="line30">30   </a></b>	// ISO C++ 14882: 27.5  Stream buffers
+<b><a name="line31">31   </a></b>	//
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	#ifndef _GLIBXX_STREAMBUF
+<b><a name="line34">34   </a></b>	#define <b>_GLIBXX_STREAMBUF</b> 1
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	#pragma GCC system_header
+<b><a name="line37">37   </a></b>	
+<b><a name="line38">38   </a></b>	#include &lt;bits/c++config.h&gt;
+<b><a name="line39">39   </a></b>	#include &lt;iosfwd&gt;
+<b><a name="line40">40   </a></b>	#include &lt;bits/localefwd.h&gt;
+<b><a name="line41">41   </a></b>	#include &lt;bits/ios_base.h&gt;
+<b><a name="line42">42   </a></b>	#include &lt;bits/cpp_type_traits.h&gt;
+<b><a name="line43">43   </a></b>	#include &lt;ext/type_traits.h&gt;
+<b><a name="line44">44   </a></b>	
+<b><a name="line45">45   </a></b>	namespace <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line46">46   </a></b>	{
+<b><a name="line47">47   </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line50">50   </a></b>	    <a href="../bits/postypes.h/code.html#line98">streamsize</a>
+<b><a name="line51">51   </a></b>	    __copy_streambufs_eof(<a href="../iosfwd/code.html#line80">basic_streambuf</a>&lt;<a href="#line49">_CharT</a>, <a href="#line49">_Traits</a>&gt;*,
+<b><a name="line52">52   </a></b>				  <a href="../iosfwd/code.html#line80">basic_streambuf</a>&lt;<a href="#line49">_CharT</a>, <a href="#line49">_Traits</a>&gt;*, bool&amp;);
+<b><a name="line53">53   </a></b>	
+<b><a name="line54">54   </a></b>	  /**
+<b><a name="line55">55   </a></b>	   *  @brief  The actual work of input and output (interface).
+<b><a name="line56">56   </a></b>	   *  @ingroup io
+<b><a name="line57">57   </a></b>	   *
+<b><a name="line58">58   </a></b>	   *  @tparam _CharT  Type of character stream.
+<b><a name="line59">59   </a></b>	   *  @tparam _Traits  Traits for character type, defaults to
+<b><a name="line60">60   </a></b>	   *                   char_traits&lt;_CharT&gt;.
+<b><a name="line61">61   </a></b>	   *
+<b><a name="line62">62   </a></b>	   *  This is a base class.  Derived stream buffers each control a
+<b><a name="line63">63   </a></b>	   *  pair of character sequences:  one for input, and one for output.
+<b><a name="line64">64   </a></b>	   *
+<b><a name="line65">65   </a></b>	   *  Section [27.5.1] of the standard describes the requirements and
+<b><a name="line66">66   </a></b>	   *  behavior of stream buffer classes.  That section (three paragraphs)
+<b><a name="line67">67   </a></b>	   *  is reproduced here, for simplicity and accuracy.
+<b><a name="line68">68   </a></b>	   *
+<b><a name="line69">69   </a></b>	   *  -# Stream buffers can impose various constraints on the sequences
+<b><a name="line70">70   </a></b>	   *     they control.  Some constraints are:
+<b><a name="line71">71   </a></b>	   *     - The controlled input sequence can be not readable.
+<b><a name="line72">72   </a></b>	   *     - The controlled output sequence can be not writable.
+<b><a name="line73">73   </a></b>	   *     - The controlled sequences can be associated with the contents of
+<b><a name="line74">74   </a></b>	   *       other representations for character sequences, such as external
+<b><a name="line75">75   </a></b>	   *       files.
+<b><a name="line76">76   </a></b>	   *     - The controlled sequences can support operations @e directly to or
+<b><a name="line77">77   </a></b>	   *       from associated sequences.
+<b><a name="line78">78   </a></b>	   *     - The controlled sequences can impose limitations on how the
+<b><a name="line79">79   </a></b>	   *       program can read characters from a sequence, write characters to
+<b><a name="line80">80   </a></b>	   *       a sequence, put characters back into an input sequence, or alter
+<b><a name="line81">81   </a></b>	   *       the stream position.
+<b><a name="line82">82   </a></b>	   *     .
+<b><a name="line83">83   </a></b>	   *  -# Each sequence is characterized by three pointers which, if non-null,
+<b><a name="line84">84   </a></b>	   *     all point into the same @c charT array object.  The array object
+<b><a name="line85">85   </a></b>	   *     represents, at any moment, a (sub)sequence of characters from the
+<b><a name="line86">86   </a></b>	   *     sequence.  Operations performed on a sequence alter the values
+<b><a name="line87">87   </a></b>	   *     stored in these pointers, perform reads and writes directly to or
+<b><a name="line88">88   </a></b>	   *     from associated sequences, and alter &lt;em&gt;the stream position&lt;/em&gt; and
+<b><a name="line89">89   </a></b>	   *     conversion state as needed to maintain this subsequence relationship.
+<b><a name="line90">90   </a></b>	   *     The three pointers are:
+<b><a name="line91">91   </a></b>	   *     - the &lt;em&gt;beginning pointer&lt;/em&gt;, or lowest element address in the
+<b><a name="line92">92   </a></b>	   *       array (called @e xbeg here);
+<b><a name="line93">93   </a></b>	   *     - the &lt;em&gt;next pointer&lt;/em&gt;, or next element address that is a
+<b><a name="line94">94   </a></b>	   *       current candidate for reading or writing (called @e xnext here);
+<b><a name="line95">95   </a></b>	   *     - the &lt;em&gt;end pointer&lt;/em&gt;, or first element address beyond the
+<b><a name="line96">96   </a></b>	   *       end of the array (called @e xend here).
+<b><a name="line97">97   </a></b>	   *     .
+<b><a name="line98">98   </a></b>	   *  -# The following semantic constraints shall always apply for any set
+<b><a name="line99">99   </a></b>	   *     of three pointers for a sequence, using the pointer names given
+<b><a name="line100">100  </a></b>	   *     immediately above:
+<b><a name="line101">101  </a></b>	   *     - If @e xnext is not a null pointer, then @e xbeg and @e xend shall
+<b><a name="line102">102  </a></b>	   *       also be non-null pointers into the same @c charT array, as
+<b><a name="line103">103  </a></b>	   *       described above; otherwise, @e xbeg and @e xend shall also be null.
+<b><a name="line104">104  </a></b>	   *     - If @e xnext is not a null pointer and @e xnext &lt; @e xend for an
+<b><a name="line105">105  </a></b>	   *       output sequence, then a &lt;em&gt;write position&lt;/em&gt; is available.
+<b><a name="line106">106  </a></b>	   *       In this case, @e *xnext shall be assignable as the next element
+<b><a name="line107">107  </a></b>	   *       to write (to put, or to store a character value, into the sequence).
+<b><a name="line108">108  </a></b>	   *     - If @e xnext is not a null pointer and @e xbeg &lt; @e xnext for an
+<b><a name="line109">109  </a></b>	   *       input sequence, then a &lt;em&gt;putback position&lt;/em&gt; is available.
+<b><a name="line110">110  </a></b>	   *       In this case, @e xnext[-1] shall have a defined value and is the
+<b><a name="line111">111  </a></b>	   *       next (preceding) element to store a character that is put back
+<b><a name="line112">112  </a></b>	   *       into the input sequence.
+<b><a name="line113">113  </a></b>	   *     - If @e xnext is not a null pointer and @e xnext&lt; @e xend for an
+<b><a name="line114">114  </a></b>	   *       input sequence, then a &lt;em&gt;read position&lt;/em&gt; is available.
+<b><a name="line115">115  </a></b>	   *       In this case, @e *xnext shall have a defined value and is the
+<b><a name="line116">116  </a></b>	   *       next element to read (to get, or to obtain a character value,
+<b><a name="line117">117  </a></b>	   *       from the sequence).
+<b><a name="line118">118  </a></b>	  */
+<b><a name="line119">119  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line120">120  </a></b>	    class <b>basic_streambuf</b>
+<b><a name="line121">121  </a></b>	    {
+<b><a name="line122">122  </a></b>	    public:
+<b><a name="line123">123  </a></b>	      //@{
+<b><a name="line124">124  </a></b>	      /**
+<b><a name="line125">125  </a></b>	       *  These are standard types.  They permit a standardized way of
+<b><a name="line126">126  </a></b>	       *  referring to names of (or names dependent on) the template
+<b><a name="line127">127  </a></b>	       *  parameters, which are specific to the implementation.
+<b><a name="line128">128  </a></b>	      */
+<b><a name="line129">129  </a></b>	      typedef <a href="#line119">_CharT</a> 					<b>char_type</b>;
+<b><a name="line130">130  </a></b>	      typedef <a href="#line119">_Traits</a> 					<b>traits_type</b>;
+<b><a name="line131">131  </a></b>	      typedef typename <a href="#line130">traits_type</a>::<a href="../bits/char_traits.h/code.html#line236">int_type</a> 		<b>int_type</b>;
+<b><a name="line132">132  </a></b>	      typedef typename <a href="#line130">traits_type</a>::<a href="../bits/char_traits.h/code.html#line237">pos_type</a> 		<b>pos_type</b>;
+<b><a name="line133">133  </a></b>	      typedef typename <a href="#line130">traits_type</a>::<a href="../bits/char_traits.h/code.html#line238">off_type</a> 		<b>off_type</b>;
+<b><a name="line134">134  </a></b>	      //@}
+<b><a name="line135">135  </a></b>	
+<b><a name="line136">136  </a></b>	      //@{
+<b><a name="line137">137  </a></b>	      /// This is a non-standard type.
+<b><a name="line138">138  </a></b>	      typedef <a href="../iosfwd/code.html#line80">basic_streambuf</a>&lt;<a href="#line129">char_type</a>, <a href="#line130">traits_type</a>&gt;  	<b>__streambuf_type</b>;
+<b><a name="line139">139  </a></b>	      //@}
+<b><a name="line140">140  </a></b>	
+<b><a name="line141">141  </a></b>	      friend class <a href="../iosfwd/code.html#line77">basic_ios</a>&lt;<a href="#line129">char_type</a>, <a href="#line130">traits_type</a>&gt;;
+<b><a name="line142">142  </a></b>	      friend class <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line129">char_type</a>, <a href="#line130">traits_type</a>&gt;;
+<b><a name="line143">143  </a></b>	      friend class <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line129">char_type</a>, <a href="#line130">traits_type</a>&gt;;
+<b><a name="line144">144  </a></b>	      friend class <a href="../iosfwd/code.html#line125">istreambuf_iterator</a>&lt;<a href="#line129">char_type</a>, <a href="#line130">traits_type</a>&gt;;
+<b><a name="line145">145  </a></b>	      friend class <a href="../iosfwd/code.html#line128">ostreambuf_iterator</a>&lt;<a href="#line129">char_type</a>, <a href="#line130">traits_type</a>&gt;;
+<b><a name="line146">146  </a></b>	
+<b><a name="line147">147  </a></b>	      friend <a href="../bits/postypes.h/code.html#line98">streamsize</a>
+<b><a name="line148">148  </a></b>	      <a href="#line51">__copy_streambufs_eof</a>&lt;&gt;(<a href="../iosfwd/code.html#line80">basic_streambuf</a>*, <a href="../iosfwd/code.html#line80">basic_streambuf</a>*, bool&amp;);
+<b><a name="line149">149  </a></b>	
+<b><a name="line150">150  </a></b>	      template&lt;bool <b>_IsMove</b>, typename <b>_CharT2</b>&gt;
+<b><a name="line151">151  </a></b>	        friend typename <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../ext/type_traits.h/code.html#line43">__enable_if</a>&lt;<a href="../bits/cpp_type_traits.h/code.html#line371">__is_char</a>&lt;<a href="#line150">_CharT2</a>&gt;::__value,
+<b><a name="line152">152  </a></b>						       <a href="#line150">_CharT2</a>*&gt;::__type
+<b><a name="line153">153  </a></b>	        __copy_move_a2(<a href="../iosfwd/code.html#line125">istreambuf_iterator</a>&lt;<a href="#line150">_CharT2</a>&gt;,
+<b><a name="line154">154  </a></b>			       <a href="../iosfwd/code.html#line125">istreambuf_iterator</a>&lt;<a href="#line150">_CharT2</a>&gt;, <a href="#line150">_CharT2</a>*);
+<b><a name="line155">155  </a></b>	
+<b><a name="line156">156  </a></b>	      template&lt;typename <b>_CharT2</b>&gt;
+<b><a name="line157">157  </a></b>	        friend typename <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../ext/type_traits.h/code.html#line43">__enable_if</a>&lt;<a href="../bits/cpp_type_traits.h/code.html#line371">__is_char</a>&lt;<a href="#line156">_CharT2</a>&gt;::__value,
+<b><a name="line158">158  </a></b>					  <a href="../iosfwd/code.html#line125">istreambuf_iterator</a>&lt;<a href="#line156">_CharT2</a>&gt; &gt;::__type
+<b><a name="line159">159  </a></b>	        find(<a href="../iosfwd/code.html#line125">istreambuf_iterator</a>&lt;<a href="#line156">_CharT2</a>&gt;, <a href="../iosfwd/code.html#line125">istreambuf_iterator</a>&lt;<a href="#line156">_CharT2</a>&gt;,
+<b><a name="line160">160  </a></b>		     const <a href="#line156">_CharT2</a>&amp;);
+<b><a name="line161">161  </a></b>	
+<b><a name="line162">162  </a></b>	      template&lt;typename <b>_CharT2</b>, typename <b>_Traits2</b>&gt;
+<b><a name="line163">163  </a></b>	        friend <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line162">_CharT2</a>, <a href="#line162">_Traits2</a>&gt;&amp;
+<b><a name="line164">164  </a></b>	        operator&gt;&gt;(<a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line162">_CharT2</a>, <a href="#line162">_Traits2</a>&gt;&amp;, <a href="#line162">_CharT2</a>*);
+<b><a name="line165">165  </a></b>	
+<b><a name="line166">166  </a></b>	      template&lt;typename <b>_CharT2</b>, typename <b>_Traits2</b>, typename <b>_Alloc</b>&gt;
+<b><a name="line167">167  </a></b>	        friend <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line166">_CharT2</a>, <a href="#line166">_Traits2</a>&gt;&amp;
+<b><a name="line168">168  </a></b>	        operator&gt;&gt;(<a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line166">_CharT2</a>, <a href="#line166">_Traits2</a>&gt;&amp;,
+<b><a name="line169">169  </a></b>			   <a href="../bits/stringfwd.h/code.html#line71">basic_string</a>&lt;<a href="#line166">_CharT2</a>, <a href="#line166">_Traits2</a>, <a href="#line166">_Alloc</a>&gt;&amp;);
+<b><a name="line170">170  </a></b>	
+<b><a name="line171">171  </a></b>	      template&lt;typename <b>_CharT2</b>, typename <b>_Traits2</b>, typename <b>_Alloc</b>&gt;
+<b><a name="line172">172  </a></b>	        friend <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line171">_CharT2</a>, <a href="#line171">_Traits2</a>&gt;&amp;
+<b><a name="line173">173  </a></b>	        getline(<a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line171">_CharT2</a>, <a href="#line171">_Traits2</a>&gt;&amp;,
+<b><a name="line174">174  </a></b>			<a href="../bits/stringfwd.h/code.html#line71">basic_string</a>&lt;<a href="#line171">_CharT2</a>, <a href="#line171">_Traits2</a>, <a href="#line171">_Alloc</a>&gt;&amp;, <a href="#line171">_CharT2</a>);
+<b><a name="line175">175  </a></b>	
+<b><a name="line176">176  </a></b>	    protected:
+<b><a name="line177">177  </a></b>	      /*
+<b><a name="line178">178  </a></b>	       *  This is based on _IO_FILE, just reordered to be more consistent,
+<b><a name="line179">179  </a></b>	       *  and is intended to be the most minimal abstraction for an
+<b><a name="line180">180  </a></b>	       *  internal buffer.
+<b><a name="line181">181  </a></b>	       *  -  get == input == read
+<b><a name="line182">182  </a></b>	       *  -  put == output == write
+<b><a name="line183">183  </a></b>	      */
+<b><a name="line184">184  </a></b>	      <a href="#line129">char_type</a>* 		<b>_M_in_beg</b>;     ///&lt; Start of get area.
+<b><a name="line185">185  </a></b>	      <a href="#line129">char_type</a>* 		<b>_M_in_cur</b>;     ///&lt; Current read area.
+<b><a name="line186">186  </a></b>	      <a href="#line129">char_type</a>* 		<b>_M_in_end</b>;     ///&lt; End of get area.
+<b><a name="line187">187  </a></b>	      <a href="#line129">char_type</a>* 		<b>_M_out_beg</b>;    ///&lt; Start of put area.
+<b><a name="line188">188  </a></b>	      <a href="#line129">char_type</a>* 		<b>_M_out_cur</b>;    ///&lt; Current put area.
+<b><a name="line189">189  </a></b>	      <a href="#line129">char_type</a>* 		<b>_M_out_end</b>;    ///&lt; End of put area.
+<b><a name="line190">190  </a></b>	
+<b><a name="line191">191  </a></b>	      /// Current locale setting.
+<b><a name="line192">192  </a></b>	      <a href="../bits/localefwd.h/code.html#line55">locale</a> 			<b>_M_buf_locale</b>;
+<b><a name="line193">193  </a></b>	
+<b><a name="line194">194  </a></b>	  public:
+<b><a name="line195">195  </a></b>	      /// Destructor deallocates no buffer space.
+<b><a name="line196">196  </a></b>	      virtual
+<b><a name="line197">197  </a></b>	      ~basic_streambuf()
+<b><a name="line198">198  </a></b>	      { }
+<b><a name="line199">199  </a></b>	
+<b><a name="line200">200  </a></b>	      // [27.5.2.2.1] locales
+<b><a name="line201">201  </a></b>	      /**
+<b><a name="line202">202  </a></b>	       *  @brief  Entry point for imbue().
+<b><a name="line203">203  </a></b>	       *  @param  __loc  The new locale.
+<b><a name="line204">204  </a></b>	       *  @return  The previous locale.
+<b><a name="line205">205  </a></b>	       *
+<b><a name="line206">206  </a></b>	       *  Calls the derived imbue(__loc).
+<b><a name="line207">207  </a></b>	      */
+<b><a name="line208">208  </a></b>	      <a href="../bits/localefwd.h/code.html#line55">locale</a>
+<b><a name="line209">209  </a></b>	      pubimbue(const <a href="../bits/localefwd.h/code.html#line55">locale</a>&amp; __loc)
+<b><a name="line210">210  </a></b>	      {
+<b><a name="line211">211  </a></b>		locale __tmp(this-&gt;getloc());
+<b><a name="line212">212  </a></b>		this-&gt;imbue(__loc);
+<b><a name="line213">213  </a></b>		_M_buf_locale = __loc;
+<b><a name="line214">214  </a></b>		return __tmp;
+<b><a name="line215">215  </a></b>	      }
+<b><a name="line216">216  </a></b>	
+<b><a name="line217">217  </a></b>	      /**
+<b><a name="line218">218  </a></b>	       *  @brief  Locale access.
+<b><a name="line219">219  </a></b>	       *  @return  The current locale in effect.
+<b><a name="line220">220  </a></b>	       *
+<b><a name="line221">221  </a></b>	       *  If pubimbue(loc) has been called, then the most recent @c loc
+<b><a name="line222">222  </a></b>	       *  is returned.  Otherwise the global locale in effect at the time
+<b><a name="line223">223  </a></b>	       *  of construction is returned.
+<b><a name="line224">224  </a></b>	      */
+<b><a name="line225">225  </a></b>	      <a href="../bits/localefwd.h/code.html#line55">locale</a>
+<b><a name="line226">226  </a></b>	      getloc() const
+<b><a name="line227">227  </a></b>	      { return _M_buf_locale; }
+<b><a name="line228">228  </a></b>	
+<b><a name="line229">229  </a></b>	      // [27.5.2.2.2] buffer management and positioning
+<b><a name="line230">230  </a></b>	      //@{
+<b><a name="line231">231  </a></b>	      /**
+<b><a name="line232">232  </a></b>	       *  @brief  Entry points for derived buffer functions.
+<b><a name="line233">233  </a></b>	       *
+<b><a name="line234">234  </a></b>	       *  The public versions of @c pubfoo dispatch to the protected
+<b><a name="line235">235  </a></b>	       *  derived @c foo member functions, passing the arguments (if any)
+<b><a name="line236">236  </a></b>	       *  and returning the result unchanged.
+<b><a name="line237">237  </a></b>	      */
+<b><a name="line238">238  </a></b>	      <a href="../iosfwd/code.html#line80">basic_streambuf</a>*
+<b><a name="line239">239  </a></b>	      pubsetbuf(<a href="#line129">char_type</a>* __s, <a href="../bits/postypes.h/code.html#line98">streamsize</a> __n)
+<b><a name="line240">240  </a></b>	      { return this-&gt;setbuf(__s, __n); }
+<b><a name="line241">241  </a></b>	
+<b><a name="line242">242  </a></b>	      /**
+<b><a name="line243">243  </a></b>	       *  @brief  Alters the stream position.
+<b><a name="line244">244  </a></b>	       *  @param  __off  Offset.
+<b><a name="line245">245  </a></b>	       *  @param  __way  Value for ios_base::seekdir.
+<b><a name="line246">246  </a></b>	       *  @param  __mode Value for ios_base::openmode.
+<b><a name="line247">247  </a></b>	       *
+<b><a name="line248">248  </a></b>	       *  Calls virtual seekoff function.
+<b><a name="line249">249  </a></b>	      */
+<b><a name="line250">250  </a></b>	      <a href="#line132">pos_type</a>
+<b><a name="line251">251  </a></b>	      pubseekoff(<a href="#line133">off_type</a> __off, <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line461">seekdir</a> __way,
+<b><a name="line252">252  </a></b>			 <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line429">openmode</a> __mode = <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line443">in</a> <a href="../bits/ios_base.h/code.html#line129">|</a> <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line446">out</a>)
+<b><a name="line253">253  </a></b>	      { return this-&gt;seekoff(__off, __way, __mode); }
+<b><a name="line254">254  </a></b>	
+<b><a name="line255">255  </a></b>	      /**
+<b><a name="line256">256  </a></b>	       *  @brief  Alters the stream position.
+<b><a name="line257">257  </a></b>	       *  @param  __sp  Position
+<b><a name="line258">258  </a></b>	       *  @param  __mode Value for ios_base::openmode.
+<b><a name="line259">259  </a></b>	       *
+<b><a name="line260">260  </a></b>	       *  Calls virtual seekpos function.
+<b><a name="line261">261  </a></b>	      */
+<b><a name="line262">262  </a></b>	      <a href="#line132">pos_type</a>
+<b><a name="line263">263  </a></b>	      pubseekpos(<a href="#line132">pos_type</a> __sp,
+<b><a name="line264">264  </a></b>			 <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line429">openmode</a> __mode = <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line443">in</a> <a href="../bits/ios_base.h/code.html#line129">|</a> <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line446">out</a>)
+<b><a name="line265">265  </a></b>	      { return this-&gt;seekpos(__sp, __mode); }
+<b><a name="line266">266  </a></b>	
+<b><a name="line267">267  </a></b>	      /**
+<b><a name="line268">268  </a></b>	       *  @brief  Calls virtual sync function.
+<b><a name="line269">269  </a></b>	      */
+<b><a name="line270">270  </a></b>	      int
+<b><a name="line271">271  </a></b>	      pubsync() { return this-&gt;sync(); }
+<b><a name="line272">272  </a></b>	      //@}
+<b><a name="line273">273  </a></b>	
+<b><a name="line274">274  </a></b>	      // [27.5.2.2.3] get area
+<b><a name="line275">275  </a></b>	      /**
+<b><a name="line276">276  </a></b>	       *  @brief  Looking ahead into the stream.
+<b><a name="line277">277  </a></b>	       *  @return  The number of characters available.
+<b><a name="line278">278  </a></b>	       *
+<b><a name="line279">279  </a></b>	       *  If a read position is available, returns the number of characters
+<b><a name="line280">280  </a></b>	       *  available for reading before the buffer must be refilled.
+<b><a name="line281">281  </a></b>	       *  Otherwise returns the derived @c showmanyc().
+<b><a name="line282">282  </a></b>	      */
+<b><a name="line283">283  </a></b>	      <a href="../bits/postypes.h/code.html#line98">streamsize</a>
+<b><a name="line284">284  </a></b>	      in_avail()
+<b><a name="line285">285  </a></b>	      {
+<b><a name="line286">286  </a></b>		const streamsize __ret = this-&gt;egptr() - this-&gt;gptr();
+<b><a name="line287">287  </a></b>		return __ret ? __ret : this-&gt;showmanyc();
+<b><a name="line288">288  </a></b>	      }
+<b><a name="line289">289  </a></b>	
+<b><a name="line290">290  </a></b>	      /**
+<b><a name="line291">291  </a></b>	       *  @brief  Getting the next character.
+<b><a name="line292">292  </a></b>	       *  @return  The next character, or eof.
+<b><a name="line293">293  </a></b>	       *
+<b><a name="line294">294  </a></b>	       *  Calls @c sbumpc(), and if that function returns
+<b><a name="line295">295  </a></b>	       *  @c traits::eof(), so does this function.  Otherwise, @c sgetc().
+<b><a name="line296">296  </a></b>	      */
+<b><a name="line297">297  </a></b>	      <a href="#line131">int_type</a>
+<b><a name="line298">298  </a></b>	      snextc()
+<b><a name="line299">299  </a></b>	      {
+<b><a name="line300">300  </a></b>		int_type __ret = traits_type::eof();
+<b><a name="line301">301  </a></b>		if (__builtin_expect(!traits_type::eq_int_type(this-&gt;sbumpc(),
+<b><a name="line302">302  </a></b>							       __ret), true))
+<b><a name="line303">303  </a></b>		  __ret = this-&gt;sgetc();
+<b><a name="line304">304  </a></b>		return __ret;
+<b><a name="line305">305  </a></b>	      }
+<b><a name="line306">306  </a></b>	
+<b><a name="line307">307  </a></b>	      /**
+<b><a name="line308">308  </a></b>	       *  @brief  Getting the next character.
+<b><a name="line309">309  </a></b>	       *  @return  The next character, or eof.
+<b><a name="line310">310  </a></b>	       *
+<b><a name="line311">311  </a></b>	       *  If the input read position is available, returns that character
+<b><a name="line312">312  </a></b>	       *  and increments the read pointer, otherwise calls and returns
+<b><a name="line313">313  </a></b>	       *  @c uflow().
+<b><a name="line314">314  </a></b>	      */
+<b><a name="line315">315  </a></b>	      <a href="#line131">int_type</a>
+<b><a name="line316">316  </a></b>	      sbumpc()
+<b><a name="line317">317  </a></b>	      {
+<b><a name="line318">318  </a></b>		int_type __ret;
+<b><a name="line319">319  </a></b>		if (__builtin_expect(this-&gt;gptr() &lt; this-&gt;egptr(), true))
+<b><a name="line320">320  </a></b>		  {
+<b><a name="line321">321  </a></b>		    __ret = traits_type::to_int_type(*this-&gt;gptr());
+<b><a name="line322">322  </a></b>		    this-&gt;gbump(1);
+<b><a name="line323">323  </a></b>		  }
+<b><a name="line324">324  </a></b>		else
+<b><a name="line325">325  </a></b>		  __ret = this-&gt;uflow();
+<b><a name="line326">326  </a></b>		return __ret;
+<b><a name="line327">327  </a></b>	      }
+<b><a name="line328">328  </a></b>	
+<b><a name="line329">329  </a></b>	      /**
+<b><a name="line330">330  </a></b>	       *  @brief  Getting the next character.
+<b><a name="line331">331  </a></b>	       *  @return  The next character, or eof.
+<b><a name="line332">332  </a></b>	       *
+<b><a name="line333">333  </a></b>	       *  If the input read position is available, returns that character,
+<b><a name="line334">334  </a></b>	       *  otherwise calls and returns @c underflow().  Does not move the
+<b><a name="line335">335  </a></b>	       *  read position after fetching the character.
+<b><a name="line336">336  </a></b>	      */
+<b><a name="line337">337  </a></b>	      <a href="#line131">int_type</a>
+<b><a name="line338">338  </a></b>	      sgetc()
+<b><a name="line339">339  </a></b>	      {
+<b><a name="line340">340  </a></b>		int_type __ret;
+<b><a name="line341">341  </a></b>		if (__builtin_expect(this-&gt;gptr() &lt; this-&gt;egptr(), true))
+<b><a name="line342">342  </a></b>		  __ret = traits_type::to_int_type(*this-&gt;gptr());
+<b><a name="line343">343  </a></b>		else
+<b><a name="line344">344  </a></b>		  __ret = this-&gt;underflow();
+<b><a name="line345">345  </a></b>		return __ret;
+<b><a name="line346">346  </a></b>	      }
+<b><a name="line347">347  </a></b>	
+<b><a name="line348">348  </a></b>	      /**
+<b><a name="line349">349  </a></b>	       *  @brief  Entry point for xsgetn.
+<b><a name="line350">350  </a></b>	       *  @param  __s  A buffer area.
+<b><a name="line351">351  </a></b>	       *  @param  __n  A count.
+<b><a name="line352">352  </a></b>	       *
+<b><a name="line353">353  </a></b>	       *  Returns xsgetn(__s,__n).  The effect is to fill @a __s[0] through
+<b><a name="line354">354  </a></b>	       *  @a __s[__n-1] with characters from the input sequence, if possible.
+<b><a name="line355">355  </a></b>	      */
+<b><a name="line356">356  </a></b>	      <a href="../bits/postypes.h/code.html#line98">streamsize</a>
+<b><a name="line357">357  </a></b>	      sgetn(<a href="#line129">char_type</a>* __s, <a href="../bits/postypes.h/code.html#line98">streamsize</a> __n)
+<b><a name="line358">358  </a></b>	      { return this-&gt;xsgetn(__s, __n); }
+<b><a name="line359">359  </a></b>	
+<b><a name="line360">360  </a></b>	      // [27.5.2.2.4] putback
+<b><a name="line361">361  </a></b>	      /**
+<b><a name="line362">362  </a></b>	       *  @brief  Pushing characters back into the input stream.
+<b><a name="line363">363  </a></b>	       *  @param  __c  The character to push back.
+<b><a name="line364">364  </a></b>	       *  @return  The previous character, if possible.
+<b><a name="line365">365  </a></b>	       *
+<b><a name="line366">366  </a></b>	       *  Similar to sungetc(), but @a __c is pushed onto the stream
+<b><a name="line367">367  </a></b>	       *  instead of &lt;em&gt;the previous character.&lt;/em&gt; If successful,
+<b><a name="line368">368  </a></b>	       *  the next character fetched from the input stream will be @a
+<b><a name="line369">369  </a></b>	       *  __c.
+<b><a name="line370">370  </a></b>	      */
+<b><a name="line371">371  </a></b>	      <a href="#line131">int_type</a>
+<b><a name="line372">372  </a></b>	      sputbackc(<a href="#line129">char_type</a> __c)
+<b><a name="line373">373  </a></b>	      {
+<b><a name="line374">374  </a></b>		int_type __ret;
+<b><a name="line375">375  </a></b>		const bool __testpos = this-&gt;eback() &lt; this-&gt;gptr();
+<b><a name="line376">376  </a></b>		if (__builtin_expect(!__testpos ||
+<b><a name="line377">377  </a></b>				     !traits_type::eq(__c, this-&gt;gptr()[-1]), false))
+<b><a name="line378">378  </a></b>		  __ret = this-&gt;pbackfail(traits_type::to_int_type(__c));
+<b><a name="line379">379  </a></b>		else
+<b><a name="line380">380  </a></b>		  {
+<b><a name="line381">381  </a></b>		    this-&gt;gbump(-1);
+<b><a name="line382">382  </a></b>		    __ret = traits_type::to_int_type(*this-&gt;gptr());
+<b><a name="line383">383  </a></b>		  }
+<b><a name="line384">384  </a></b>		return __ret;
+<b><a name="line385">385  </a></b>	      }
+<b><a name="line386">386  </a></b>	
+<b><a name="line387">387  </a></b>	      /**
+<b><a name="line388">388  </a></b>	       *  @brief  Moving backwards in the input stream.
+<b><a name="line389">389  </a></b>	       *  @return  The previous character, if possible.
+<b><a name="line390">390  </a></b>	       *
+<b><a name="line391">391  </a></b>	       *  If a putback position is available, this function decrements
+<b><a name="line392">392  </a></b>	       *  the input pointer and returns that character.  Otherwise,
+<b><a name="line393">393  </a></b>	       *  calls and returns pbackfail().  The effect is to @a unget
+<b><a name="line394">394  </a></b>	       *  the last character @a gotten.
+<b><a name="line395">395  </a></b>	      */
+<b><a name="line396">396  </a></b>	      <a href="#line131">int_type</a>
+<b><a name="line397">397  </a></b>	      sungetc()
+<b><a name="line398">398  </a></b>	      {
+<b><a name="line399">399  </a></b>		int_type __ret;
+<b><a name="line400">400  </a></b>		if (__builtin_expect(this-&gt;eback() &lt; this-&gt;gptr(), true))
+<b><a name="line401">401  </a></b>		  {
+<b><a name="line402">402  </a></b>		    this-&gt;gbump(-1);
+<b><a name="line403">403  </a></b>		    __ret = traits_type::to_int_type(*this-&gt;gptr());
+<b><a name="line404">404  </a></b>		  }
+<b><a name="line405">405  </a></b>		else
+<b><a name="line406">406  </a></b>		  __ret = this-&gt;pbackfail();
+<b><a name="line407">407  </a></b>		return __ret;
+<b><a name="line408">408  </a></b>	      }
+<b><a name="line409">409  </a></b>	
+<b><a name="line410">410  </a></b>	      // [27.5.2.2.5] put area
+<b><a name="line411">411  </a></b>	      /**
+<b><a name="line412">412  </a></b>	       *  @brief  Entry point for all single-character output functions.
+<b><a name="line413">413  </a></b>	       *  @param  __c  A character to output.
+<b><a name="line414">414  </a></b>	       *  @return  @a __c, if possible.
+<b><a name="line415">415  </a></b>	       *
+<b><a name="line416">416  </a></b>	       *  One of two public output functions.
+<b><a name="line417">417  </a></b>	       *
+<b><a name="line418">418  </a></b>	       *  If a write position is available for the output sequence (i.e.,
+<b><a name="line419">419  </a></b>	       *  the buffer is not full), stores @a __c in that position, increments
+<b><a name="line420">420  </a></b>	       *  the position, and returns @c traits::to_int_type(__c).  If a write
+<b><a name="line421">421  </a></b>	       *  position is not available, returns @c overflow(__c).
+<b><a name="line422">422  </a></b>	      */
+<b><a name="line423">423  </a></b>	      <a href="#line131">int_type</a>
+<b><a name="line424">424  </a></b>	      sputc(<a href="#line129">char_type</a> __c)
+<b><a name="line425">425  </a></b>	      {
+<b><a name="line426">426  </a></b>		int_type __ret;
+<b><a name="line427">427  </a></b>		if (__builtin_expect(this-&gt;pptr() &lt; this-&gt;epptr(), true))
+<b><a name="line428">428  </a></b>		  {
+<b><a name="line429">429  </a></b>		    *this-&gt;pptr() = __c;
+<b><a name="line430">430  </a></b>		    this-&gt;pbump(1);
+<b><a name="line431">431  </a></b>		    __ret = traits_type::to_int_type(__c);
+<b><a name="line432">432  </a></b>		  }
+<b><a name="line433">433  </a></b>		else
+<b><a name="line434">434  </a></b>		  __ret = this-&gt;overflow(traits_type::to_int_type(__c));
+<b><a name="line435">435  </a></b>		return __ret;
+<b><a name="line436">436  </a></b>	      }
+<b><a name="line437">437  </a></b>	
+<b><a name="line438">438  </a></b>	      /**
+<b><a name="line439">439  </a></b>	       *  @brief  Entry point for all single-character output functions.
+<b><a name="line440">440  </a></b>	       *  @param  __s  A buffer read area.
+<b><a name="line441">441  </a></b>	       *  @param  __n  A count.
+<b><a name="line442">442  </a></b>	       *
+<b><a name="line443">443  </a></b>	       *  One of two public output functions.
+<b><a name="line444">444  </a></b>	       *
+<b><a name="line445">445  </a></b>	       *
+<b><a name="line446">446  </a></b>	       *  Returns xsputn(__s,__n).  The effect is to write @a __s[0] through
+<b><a name="line447">447  </a></b>	       *  @a __s[__n-1] to the output sequence, if possible.
+<b><a name="line448">448  </a></b>	      */
+<b><a name="line449">449  </a></b>	      <a href="../bits/postypes.h/code.html#line98">streamsize</a>
+<b><a name="line450">450  </a></b>	      sputn(const <a href="#line129">char_type</a>* __s, <a href="../bits/postypes.h/code.html#line98">streamsize</a> __n)
+<b><a name="line451">451  </a></b>	      { return this-&gt;xsputn(__s, __n); }
+<b><a name="line452">452  </a></b>	
+<b><a name="line453">453  </a></b>	    protected:
+<b><a name="line454">454  </a></b>	      /**
+<b><a name="line455">455  </a></b>	       *  @brief  Base constructor.
+<b><a name="line456">456  </a></b>	       *
+<b><a name="line457">457  </a></b>	       *  Only called from derived constructors, and sets up all the
+<b><a name="line458">458  </a></b>	       *  buffer data to zero, including the pointers described in the
+<b><a name="line459">459  </a></b>	       *  basic_streambuf class description.  Note that, as a result,
+<b><a name="line460">460  </a></b>	       *  - the class starts with no read nor write positions available,
+<b><a name="line461">461  </a></b>	       *  - this is not an error
+<b><a name="line462">462  </a></b>	      */
+<b><a name="line463">463  </a></b>	      basic_streambuf()
+<b><a name="line464">464  </a></b>	      : <a href="#line184">_M_in_beg</a>(0), <a href="#line185">_M_in_cur</a>(0), <a href="#line186">_M_in_end</a>(0),
+<b><a name="line465">465  </a></b>	      <a href="#line187">_M_out_beg</a>(0), <a href="#line188">_M_out_cur</a>(0), <a href="#line189">_M_out_end</a>(0),
+<b><a name="line466">466  </a></b>	      <a href="#line192">_M_buf_locale</a>(<a href="../bits/locale_classes.h/code.html#line117">locale</a>())
+<b><a name="line467">467  </a></b>	      { }
+<b><a name="line468">468  </a></b>	
+<b><a name="line469">469  </a></b>	      // [27.5.2.3.1] get area access
+<b><a name="line470">470  </a></b>	      //@{
+<b><a name="line471">471  </a></b>	      /**
+<b><a name="line472">472  </a></b>	       *  @brief  Access to the get area.
+<b><a name="line473">473  </a></b>	       *
+<b><a name="line474">474  </a></b>	       *  These functions are only available to other protected functions,
+<b><a name="line475">475  </a></b>	       *  including derived classes.
+<b><a name="line476">476  </a></b>	       *
+<b><a name="line477">477  </a></b>	       *  - eback() returns the beginning pointer for the input sequence
+<b><a name="line478">478  </a></b>	       *  - gptr() returns the next pointer for the input sequence
+<b><a name="line479">479  </a></b>	       *  - egptr() returns the end pointer for the input sequence
+<b><a name="line480">480  </a></b>	      */
+<b><a name="line481">481  </a></b>	      <a href="#line129">char_type</a>*
+<b><a name="line482">482  </a></b>	      eback() const { return <a href="#line184">_M_in_beg</a>; }
+<b><a name="line483">483  </a></b>	
+<b><a name="line484">484  </a></b>	      <a href="#line129">char_type</a>*
+<b><a name="line485">485  </a></b>	      gptr()  const { return <a href="#line185">_M_in_cur</a>;  }
+<b><a name="line486">486  </a></b>	
+<b><a name="line487">487  </a></b>	      <a href="#line129">char_type</a>*
+<b><a name="line488">488  </a></b>	      egptr() const { return <a href="#line186">_M_in_end</a>; }
+<b><a name="line489">489  </a></b>	      //@}
+<b><a name="line490">490  </a></b>	
+<b><a name="line491">491  </a></b>	      /**
+<b><a name="line492">492  </a></b>	       *  @brief  Moving the read position.
+<b><a name="line493">493  </a></b>	       *  @param  __n  The delta by which to move.
+<b><a name="line494">494  </a></b>	       *
+<b><a name="line495">495  </a></b>	       *  This just advances the read position without returning any data.
+<b><a name="line496">496  </a></b>	      */
+<b><a name="line497">497  </a></b>	      void
+<b><a name="line498">498  </a></b>	      gbump(int <b>__n</b>) { <a href="#line185">_M_in_cur</a> += __n; }
+<b><a name="line499">499  </a></b>	
+<b><a name="line500">500  </a></b>	      /**
+<b><a name="line501">501  </a></b>	       *  @brief  Setting the three read area pointers.
+<b><a name="line502">502  </a></b>	       *  @param  __gbeg  A pointer.
+<b><a name="line503">503  </a></b>	       *  @param  __gnext  A pointer.
+<b><a name="line504">504  </a></b>	       *  @param  __gend  A pointer.
+<b><a name="line505">505  </a></b>	       *  @post  @a __gbeg == @c eback(), @a __gnext == @c gptr(), and
+<b><a name="line506">506  </a></b>	       *         @a __gend == @c egptr()
+<b><a name="line507">507  </a></b>	      */
+<b><a name="line508">508  </a></b>	      void
+<b><a name="line509">509  </a></b>	      setg(<a href="#line129">char_type</a>* <b>__gbeg</b>, <a href="#line129">char_type</a>* <b>__gnext</b>, <a href="#line129">char_type</a>* <b>__gend</b>)
+<b><a name="line510">510  </a></b>	      {
+<b><a name="line511">511  </a></b>		<a href="#line184">_M_in_beg</a> = <a href="#line509">__gbeg</a>;
+<b><a name="line512">512  </a></b>		<a href="#line185">_M_in_cur</a> = <a href="#line509">__gnext</a>;
+<b><a name="line513">513  </a></b>		<a href="#line186">_M_in_end</a> = <a href="#line509">__gend</a>;
+<b><a name="line514">514  </a></b>	      }
+<b><a name="line515">515  </a></b>	
+<b><a name="line516">516  </a></b>	      // [27.5.2.3.2] put area access
+<b><a name="line517">517  </a></b>	      //@{
+<b><a name="line518">518  </a></b>	      /**
+<b><a name="line519">519  </a></b>	       *  @brief  Access to the put area.
+<b><a name="line520">520  </a></b>	       *
+<b><a name="line521">521  </a></b>	       *  These functions are only available to other protected functions,
+<b><a name="line522">522  </a></b>	       *  including derived classes.
+<b><a name="line523">523  </a></b>	       *
+<b><a name="line524">524  </a></b>	       *  - pbase() returns the beginning pointer for the output sequence
+<b><a name="line525">525  </a></b>	       *  - pptr() returns the next pointer for the output sequence
+<b><a name="line526">526  </a></b>	       *  - epptr() returns the end pointer for the output sequence
+<b><a name="line527">527  </a></b>	      */
+<b><a name="line528">528  </a></b>	      <a href="#line129">char_type</a>*
+<b><a name="line529">529  </a></b>	      pbase() const { return <a href="#line187">_M_out_beg</a>; }
+<b><a name="line530">530  </a></b>	
+<b><a name="line531">531  </a></b>	      <a href="#line129">char_type</a>*
+<b><a name="line532">532  </a></b>	      pptr() const { return <a href="#line188">_M_out_cur</a>; }
+<b><a name="line533">533  </a></b>	
+<b><a name="line534">534  </a></b>	      <a href="#line129">char_type</a>*
+<b><a name="line535">535  </a></b>	      epptr() const { return _M_out_end; }
+<b><a name="line536">536  </a></b>	      //@}
+<b><a name="line537">537  </a></b>	
+<b><a name="line538">538  </a></b>	      /**
+<b><a name="line539">539  </a></b>	       *  @brief  Moving the write position.
+<b><a name="line540">540  </a></b>	       *  @param  __n  The delta by which to move.
+<b><a name="line541">541  </a></b>	       *
+<b><a name="line542">542  </a></b>	       *  This just advances the write position without returning any data.
+<b><a name="line543">543  </a></b>	      */
+<b><a name="line544">544  </a></b>	      void
+<b><a name="line545">545  </a></b>	      pbump(int __n) { _M_out_cur += __n; }
+<b><a name="line546">546  </a></b>	
+<b><a name="line547">547  </a></b>	      /**
+<b><a name="line548">548  </a></b>	       *  @brief  Setting the three write area pointers.
+<b><a name="line549">549  </a></b>	       *  @param  __pbeg  A pointer.
+<b><a name="line550">550  </a></b>	       *  @param  __pend  A pointer.
+<b><a name="line551">551  </a></b>	       *  @post  @a __pbeg == @c pbase(), @a __pbeg == @c pptr(), and
+<b><a name="line552">552  </a></b>	       *         @a __pend == @c epptr()
+<b><a name="line553">553  </a></b>	      */
+<b><a name="line554">554  </a></b>	      void
+<b><a name="line555">555  </a></b>	      setp(<a href="#line129">char_type</a>* __pbeg, <a href="#line129">char_type</a>* __pend)
+<b><a name="line556">556  </a></b>	      {
+<b><a name="line557">557  </a></b>		_M_out_beg = _M_out_cur = __pbeg;
+<b><a name="line558">558  </a></b>		_M_out_end = __pend;
+<b><a name="line559">559  </a></b>	      }
+<b><a name="line560">560  </a></b>	
+<b><a name="line561">561  </a></b>	      // [27.5.2.4] virtual functions
+<b><a name="line562">562  </a></b>	      // [27.5.2.4.1] locales
+<b><a name="line563">563  </a></b>	      /**
+<b><a name="line564">564  </a></b>	       *  @brief  Changes translations.
+<b><a name="line565">565  </a></b>	       *  @param  __loc  A new locale.
+<b><a name="line566">566  </a></b>	       *
+<b><a name="line567">567  </a></b>	       *  Translations done during I/O which depend on the current
+<b><a name="line568">568  </a></b>	       *  locale are changed by this call.  The standard adds,
+<b><a name="line569">569  </a></b>	       *  &lt;em&gt;Between invocations of this function a class derived
+<b><a name="line570">570  </a></b>	       *  from streambuf can safely cache results of calls to locale
+<b><a name="line571">571  </a></b>	       *  functions and to members of facets so obtained.&lt;/em&gt;
+<b><a name="line572">572  </a></b>	       *
+<b><a name="line573">573  </a></b>	       *  @note  Base class version does nothing.
+<b><a name="line574">574  </a></b>	      */
+<b><a name="line575">575  </a></b>	      virtual void
+<b><a name="line576">576  </a></b>	      imbue(const <a href="../bits/localefwd.h/code.html#line55">locale</a>&amp; <b>__loc</b>)
+<b><a name="line577">577  </a></b>	      { }
+<b><a name="line578">578  </a></b>	
+<b><a name="line579">579  </a></b>	      // [27.5.2.4.2] buffer management and positioning
+<b><a name="line580">580  </a></b>	      /**
+<b><a name="line581">581  </a></b>	       *  @brief  Manipulates the buffer.
+<b><a name="line582">582  </a></b>	       *
+<b><a name="line583">583  </a></b>	       *  Each derived class provides its own appropriate behavior.  See
+<b><a name="line584">584  </a></b>	       *  the next-to-last paragraph of
+<b><a name="line585">585  </a></b>	       *  https://gcc.gnu.org/onlinedocs/libstdc++/manual/streambufs.html#io.streambuf.buffering
+<b><a name="line586">586  </a></b>	       *  for more on this function.
+<b><a name="line587">587  </a></b>	       *
+<b><a name="line588">588  </a></b>	       *  @note  Base class version does nothing, returns @c this.
+<b><a name="line589">589  </a></b>	      */
+<b><a name="line590">590  </a></b>	      virtual <a href="../iosfwd/code.html#line80">basic_streambuf</a>&lt;<a href="#line129">char_type</a>,<a href="#line119">_Traits</a>&gt;*
+<b><a name="line591">591  </a></b>	      setbuf(<a href="#line129">char_type</a>*, <a href="../bits/postypes.h/code.html#line98">streamsize</a>)
+<b><a name="line592">592  </a></b>	      {	return this; }
+<b><a name="line593">593  </a></b>	
+<b><a name="line594">594  </a></b>	      /**
+<b><a name="line595">595  </a></b>	       *  @brief  Alters the stream positions.
+<b><a name="line596">596  </a></b>	       *
+<b><a name="line597">597  </a></b>	       *  Each derived class provides its own appropriate behavior.
+<b><a name="line598">598  </a></b>	       *  @note  Base class version does nothing, returns a @c pos_type
+<b><a name="line599">599  </a></b>	       *         that represents an invalid stream position.
+<b><a name="line600">600  </a></b>	      */
+<b><a name="line601">601  </a></b>	      virtual <a href="#line132">pos_type</a>
+<b><a name="line602">602  </a></b>	      seekoff(<a href="#line133">off_type</a>, <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line461">seekdir</a>,
+<b><a name="line603">603  </a></b>		      <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line429">openmode</a> /*__mode*/ = <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line443">in</a> <a href="../bits/ios_base.h/code.html#line129">|</a> <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line446">out</a>)
+<b><a name="line604">604  </a></b>	      { return <a href="#line132">pos_type</a>(<a href="#line133">off_type</a>(-1)); }
+<b><a name="line605">605  </a></b>	
+<b><a name="line606">606  </a></b>	      /**
+<b><a name="line607">607  </a></b>	       *  @brief  Alters the stream positions.
+<b><a name="line608">608  </a></b>	       *
+<b><a name="line609">609  </a></b>	       *  Each derived class provides its own appropriate behavior.
+<b><a name="line610">610  </a></b>	       *  @note  Base class version does nothing, returns a @c pos_type
+<b><a name="line611">611  </a></b>	       *         that represents an invalid stream position.
+<b><a name="line612">612  </a></b>	      */
+<b><a name="line613">613  </a></b>	      virtual <a href="#line132">pos_type</a>
+<b><a name="line614">614  </a></b>	      seekpos(<a href="#line132">pos_type</a>,
+<b><a name="line615">615  </a></b>		      <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line429">openmode</a> /*__mode*/ = <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line443">in</a> <a href="../bits/ios_base.h/code.html#line129">|</a> <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line446">out</a>)
+<b><a name="line616">616  </a></b>	      { return <a href="#line132">pos_type</a>(<a href="#line133">off_type</a>(-1)); }
+<b><a name="line617">617  </a></b>	
+<b><a name="line618">618  </a></b>	      /**
+<b><a name="line619">619  </a></b>	       *  @brief  Synchronizes the buffer arrays with the controlled sequences.
+<b><a name="line620">620  </a></b>	       *  @return  -1 on failure.
+<b><a name="line621">621  </a></b>	       *
+<b><a name="line622">622  </a></b>	       *  Each derived class provides its own appropriate behavior,
+<b><a name="line623">623  </a></b>	       *  including the definition of @a failure.
+<b><a name="line624">624  </a></b>	       *  @note  Base class version does nothing, returns zero.
+<b><a name="line625">625  </a></b>	      */
+<b><a name="line626">626  </a></b>	      virtual int
+<b><a name="line627">627  </a></b>	      sync() { return 0; }
+<b><a name="line628">628  </a></b>	
+<b><a name="line629">629  </a></b>	      // [27.5.2.4.3] get area
+<b><a name="line630">630  </a></b>	      /**
+<b><a name="line631">631  </a></b>	       *  @brief  Investigating the data available.
+<b><a name="line632">632  </a></b>	       *  @return  An estimate of the number of characters available in the
+<b><a name="line633">633  </a></b>	       *           input sequence, or -1.
+<b><a name="line634">634  </a></b>	       *
+<b><a name="line635">635  </a></b>	       *  &lt;em&gt;If it returns a positive value, then successive calls to
+<b><a name="line636">636  </a></b>	       *  @c underflow() will not return @c traits::eof() until at
+<b><a name="line637">637  </a></b>	       *  least that number of characters have been supplied.  If @c
+<b><a name="line638">638  </a></b>	       *  showmanyc() returns -1, then calls to @c underflow() or @c
+<b><a name="line639">639  </a></b>	       *  uflow() will fail.&lt;/em&gt; [27.5.2.4.3]/1
+<b><a name="line640">640  </a></b>	       *
+<b><a name="line641">641  </a></b>	       *  @note  Base class version does nothing, returns zero.
+<b><a name="line642">642  </a></b>	       *  @note  The standard adds that &lt;em&gt;the intention is not only that the
+<b><a name="line643">643  </a></b>	       *         calls [to underflow or uflow] will not return @c eof() but
+<b><a name="line644">644  </a></b>	       *         that they will return immediately.&lt;/em&gt;
+<b><a name="line645">645  </a></b>	       *  @note  The standard adds that &lt;em&gt;the morphemes of @c showmanyc are
+<b><a name="line646">646  </a></b>	       *         @b es-how-many-see, not @b show-manic.&lt;/em&gt;
+<b><a name="line647">647  </a></b>	      */
+<b><a name="line648">648  </a></b>	      virtual <a href="../bits/postypes.h/code.html#line98">streamsize</a>
+<b><a name="line649">649  </a></b>	      showmanyc() { return 0; }
+<b><a name="line650">650  </a></b>	
+<b><a name="line651">651  </a></b>	      /**
+<b><a name="line652">652  </a></b>	       *  @brief  Multiple character extraction.
+<b><a name="line653">653  </a></b>	       *  @param  __s  A buffer area.
+<b><a name="line654">654  </a></b>	       *  @param  __n  Maximum number of characters to assign.
+<b><a name="line655">655  </a></b>	       *  @return  The number of characters assigned.
+<b><a name="line656">656  </a></b>	       *
+<b><a name="line657">657  </a></b>	       *  Fills @a __s[0] through @a __s[__n-1] with characters from the input
+<b><a name="line658">658  </a></b>	       *  sequence, as if by @c sbumpc().  Stops when either @a __n characters
+<b><a name="line659">659  </a></b>	       *  have been copied, or when @c traits::eof() would be copied.
+<b><a name="line660">660  </a></b>	       *
+<b><a name="line661">661  </a></b>	       *  It is expected that derived classes provide a more efficient
+<b><a name="line662">662  </a></b>	       *  implementation by overriding this definition.
+<b><a name="line663">663  </a></b>	      */
+<b><a name="line664">664  </a></b>	      virtual <a href="../bits/postypes.h/code.html#line98">streamsize</a>
+<b><a name="line665">665  </a></b>	      xsgetn(<a href="#line129">char_type</a>* __s, <a href="../bits/postypes.h/code.html#line98">streamsize</a> __n);
+<b><a name="line666">666  </a></b>	
+<b><a name="line667">667  </a></b>	      /**
+<b><a name="line668">668  </a></b>	       *  @brief  Fetches more data from the controlled sequence.
+<b><a name="line669">669  </a></b>	       *  @return  The first character from the &lt;em&gt;pending sequence&lt;/em&gt;.
+<b><a name="line670">670  </a></b>	       *
+<b><a name="line671">671  </a></b>	       *  Informally, this function is called when the input buffer is
+<b><a name="line672">672  </a></b>	       *  exhausted (or does not exist, as buffering need not actually be
+<b><a name="line673">673  </a></b>	       *  done).  If a buffer exists, it is @a refilled.  In either case, the
+<b><a name="line674">674  </a></b>	       *  next available character is returned, or @c traits::eof() to
+<b><a name="line675">675  </a></b>	       *  indicate a null pending sequence.
+<b><a name="line676">676  </a></b>	       *
+<b><a name="line677">677  </a></b>	       *  For a formal definition of the pending sequence, see a good text
+<b><a name="line678">678  </a></b>	       *  such as Langer &amp; Kreft, or [27.5.2.4.3]/7-14.
+<b><a name="line679">679  </a></b>	       *
+<b><a name="line680">680  </a></b>	       *  A functioning input streambuf can be created by overriding only
+<b><a name="line681">681  </a></b>	       *  this function (no buffer area will be used).  For an example, see
+<b><a name="line682">682  </a></b>	       *  https://gcc.gnu.org/onlinedocs/libstdc++/manual/streambufs.html
+<b><a name="line683">683  </a></b>	       *
+<b><a name="line684">684  </a></b>	       *  @note  Base class version does nothing, returns eof().
+<b><a name="line685">685  </a></b>	      */
+<b><a name="line686">686  </a></b>	      virtual <a href="#line131">int_type</a>
+<b><a name="line687">687  </a></b>	      underflow()
+<b><a name="line688">688  </a></b>	      { return <a href="#line130">traits_type</a>::<a href="../bits/char_traits.h/code.html#line316">eof</a>(); }
+<b><a name="line689">689  </a></b>	
+<b><a name="line690">690  </a></b>	      /**
+<b><a name="line691">691  </a></b>	       *  @brief  Fetches more data from the controlled sequence.
+<b><a name="line692">692  </a></b>	       *  @return  The first character from the &lt;em&gt;pending sequence&lt;/em&gt;.
+<b><a name="line693">693  </a></b>	       *
+<b><a name="line694">694  </a></b>	       *  Informally, this function does the same thing as @c underflow(),
+<b><a name="line695">695  </a></b>	       *  and in fact is required to call that function.  It also returns
+<b><a name="line696">696  </a></b>	       *  the new character, like @c underflow() does.  However, this
+<b><a name="line697">697  </a></b>	       *  function also moves the read position forward by one.
+<b><a name="line698">698  </a></b>	      */
+<b><a name="line699">699  </a></b>	      virtual <a href="#line131">int_type</a>
+<b><a name="line700">700  </a></b>	      uflow()
+<b><a name="line701">701  </a></b>	      {
+<b><a name="line702">702  </a></b>		<a href="#line131">int_type</a> <b>__ret</b> = <a href="#line130">traits_type</a>::<a href="../bits/char_traits.h/code.html#line316">eof</a>();
+<b><a name="line703">703  </a></b>		const bool <b>__testeof</b> = <a href="#line130">traits_type</a>::<a href="../bits/char_traits.h/code.html#line312">eq_int_type</a>(this-&gt;<a href="#line687">underflow</a>(),
+<b><a name="line704">704  </a></b>								<a href="#line702">__ret</a>);
+<b><a name="line705">705  </a></b>		if (!<a href="#line703">__testeof</a>)
+<b><a name="line706">706  </a></b>		  {
+<b><a name="line707">707  </a></b>		    <a href="#line702">__ret</a> = <a href="#line130">traits_type</a>::<a href="../bits/char_traits.h/code.html#line308">to_int_type</a>(*this-&gt;<a href="#line485">gptr</a>());
+<b><a name="line708">708  </a></b>		    this-&gt;<a href="#line498">gbump</a>(1);
+<b><a name="line709">709  </a></b>		  }
+<b><a name="line710">710  </a></b>		return <a href="#line702">__ret</a>;
+<b><a name="line711">711  </a></b>	      }
+<b><a name="line712">712  </a></b>	
+<b><a name="line713">713  </a></b>	      // [27.5.2.4.4] putback
+<b><a name="line714">714  </a></b>	      /**
+<b><a name="line715">715  </a></b>	       *  @brief  Tries to back up the input sequence.
+<b><a name="line716">716  </a></b>	       *  @param  __c  The character to be inserted back into the sequence.
+<b><a name="line717">717  </a></b>	       *  @return  eof() on failure, &lt;em&gt;some other value&lt;/em&gt; on success
+<b><a name="line718">718  </a></b>	       *  @post  The constraints of @c gptr(), @c eback(), and @c pptr()
+<b><a name="line719">719  </a></b>	       *         are the same as for @c underflow().
+<b><a name="line720">720  </a></b>	       *
+<b><a name="line721">721  </a></b>	       *  @note  Base class version does nothing, returns eof().
+<b><a name="line722">722  </a></b>	      */
+<b><a name="line723">723  </a></b>	      virtual <a href="#line131">int_type</a>
+<b><a name="line724">724  </a></b>	      pbackfail(<a href="#line131">int_type</a> <b>__c</b>  = <a href="#line130">traits_type</a>::eof())
+<b><a name="line725">725  </a></b>	      { return <a href="#line130">traits_type</a>::<a href="../bits/char_traits.h/code.html#line316">eof</a>(); }
+<b><a name="line726">726  </a></b>	
+<b><a name="line727">727  </a></b>	      // Put area:
+<b><a name="line728">728  </a></b>	      /**
+<b><a name="line729">729  </a></b>	       *  @brief  Multiple character insertion.
+<b><a name="line730">730  </a></b>	       *  @param  __s  A buffer area.
+<b><a name="line731">731  </a></b>	       *  @param  __n  Maximum number of characters to write.
+<b><a name="line732">732  </a></b>	       *  @return  The number of characters written.
+<b><a name="line733">733  </a></b>	       *
+<b><a name="line734">734  </a></b>	       *  Writes @a __s[0] through @a __s[__n-1] to the output sequence, as if
+<b><a name="line735">735  </a></b>	       *  by @c sputc().  Stops when either @a n characters have been
+<b><a name="line736">736  </a></b>	       *  copied, or when @c sputc() would return @c traits::eof().
+<b><a name="line737">737  </a></b>	       *
+<b><a name="line738">738  </a></b>	       *  It is expected that derived classes provide a more efficient
+<b><a name="line739">739  </a></b>	       *  implementation by overriding this definition.
+<b><a name="line740">740  </a></b>	      */
+<b><a name="line741">741  </a></b>	      virtual <a href="../bits/postypes.h/code.html#line98">streamsize</a>
+<b><a name="line742">742  </a></b>	      xsputn(const <a href="#line129">char_type</a>* __s, <a href="../bits/postypes.h/code.html#line98">streamsize</a> __n);
+<b><a name="line743">743  </a></b>	
+<b><a name="line744">744  </a></b>	      /**
+<b><a name="line745">745  </a></b>	       *  @brief  Consumes data from the buffer; writes to the
+<b><a name="line746">746  </a></b>	       *          controlled sequence.
+<b><a name="line747">747  </a></b>	       *  @param  __c  An additional character to consume.
+<b><a name="line748">748  </a></b>	       *  @return  eof() to indicate failure, something else (usually
+<b><a name="line749">749  </a></b>	       *           @a __c, or not_eof())
+<b><a name="line750">750  </a></b>	       *
+<b><a name="line751">751  </a></b>	       *  Informally, this function is called when the output buffer
+<b><a name="line752">752  </a></b>	       *  is full (or does not exist, as buffering need not actually
+<b><a name="line753">753  </a></b>	       *  be done).  If a buffer exists, it is @a consumed, with
+<b><a name="line754">754  </a></b>	       *  &lt;em&gt;some effect&lt;/em&gt; on the controlled sequence.
+<b><a name="line755">755  </a></b>	       *  (Typically, the buffer is written out to the sequence
+<b><a name="line756">756  </a></b>	       *  verbatim.)  In either case, the character @a c is also
+<b><a name="line757">757  </a></b>	       *  written out, if @a __c is not @c eof().
+<b><a name="line758">758  </a></b>	       *
+<b><a name="line759">759  </a></b>	       *  For a formal definition of this function, see a good text
+<b><a name="line760">760  </a></b>	       *  such as Langer &amp; Kreft, or [27.5.2.4.5]/3-7.
+<b><a name="line761">761  </a></b>	       *
+<b><a name="line762">762  </a></b>	       *  A functioning output streambuf can be created by overriding only
+<b><a name="line763">763  </a></b>	       *  this function (no buffer area will be used).
+<b><a name="line764">764  </a></b>	       *
+<b><a name="line765">765  </a></b>	       *  @note  Base class version does nothing, returns eof().
+<b><a name="line766">766  </a></b>	      */
+<b><a name="line767">767  </a></b>	      virtual <a href="#line131">int_type</a>
+<b><a name="line768">768  </a></b>	      overflow(<a href="#line131">int_type</a> <b>__c</b>  = <a href="#line130">traits_type</a>::eof())
+<b><a name="line769">769  </a></b>	      { return <a href="#line130">traits_type</a>::<a href="../bits/char_traits.h/code.html#line316">eof</a>(); }
+<b><a name="line770">770  </a></b>	
+<b><a name="line771">771  </a></b>	#if <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line78">_GLIBCXX_USE_DEPRECATED</a>
+<b><a name="line772">772  </a></b>	    // Annex D.6
+<b><a name="line773">773  </a></b>	    public:
+<b><a name="line774">774  </a></b>	      /**
+<b><a name="line775">775  </a></b>	       *  @brief  Tosses a character.
+<b><a name="line776">776  </a></b>	       *
+<b><a name="line777">777  </a></b>	       *  Advances the read pointer, ignoring the character that would have
+<b><a name="line778">778  </a></b>	       *  been read.
+<b><a name="line779">779  </a></b>	       *
+<b><a name="line780">780  </a></b>	       *  See http://gcc.gnu.org/ml/libstdc++/2002-05/msg00168.html
+<b><a name="line781">781  </a></b>	       */
+<b><a name="line782">782  </a></b>	      void
+<b><a name="line783">783  </a></b>	      stossc()
+<b><a name="line784">784  </a></b>	      {
+<b><a name="line785">785  </a></b>		if (this-&gt;gptr() &lt; this-&gt;egptr())
+<b><a name="line786">786  </a></b>		  this-&gt;gbump(1);
+<b><a name="line787">787  </a></b>		else
+<b><a name="line788">788  </a></b>		  this-&gt;uflow();
+<b><a name="line789">789  </a></b>	      }
+<b><a name="line790">790  </a></b>	#endif
+<b><a name="line791">791  </a></b>	
+<b><a name="line792">792  </a></b>	      // Also used by specializations for char and wchar_t in src.
+<b><a name="line793">793  </a></b>	      void
+<b><a name="line794">794  </a></b>	      __safe_gbump(<a href="../bits/postypes.h/code.html#line98">streamsize</a> __n) { _M_in_cur += __n; }
+<b><a name="line795">795  </a></b>	
+<b><a name="line796">796  </a></b>	      void
+<b><a name="line797">797  </a></b>	      __safe_pbump(<a href="../bits/postypes.h/code.html#line98">streamsize</a> __n) { _M_out_cur += __n; }
+<b><a name="line798">798  </a></b>	
+<b><a name="line799">799  </a></b>	#if __cplusplus &lt; 201103L
+<b><a name="line800">800  </a></b>	    private:
+<b><a name="line801">801  </a></b>	#else
+<b><a name="line802">802  </a></b>	    protected:
+<b><a name="line803">803  </a></b>	#endif
+<b><a name="line804">804  </a></b>	      basic_streambuf(const <a href="../iosfwd/code.html#line80">basic_streambuf</a>&amp;);
+<b><a name="line805">805  </a></b>	
+<b><a name="line806">806  </a></b>	      <a href="../iosfwd/code.html#line80">basic_streambuf</a>&amp;
+<b><a name="line807">807  </a></b>	      operator=(const <a href="../iosfwd/code.html#line80">basic_streambuf</a>&amp;);
+<b><a name="line808">808  </a></b>	
+<b><a name="line809">809  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line810">810  </a></b>	      void
+<b><a name="line811">811  </a></b>	      swap(<a href="../iosfwd/code.html#line80">basic_streambuf</a>&amp; __sb)
+<b><a name="line812">812  </a></b>	      {
+<b><a name="line813">813  </a></b>		std::swap(_M_in_beg, __sb._M_in_beg);
+<b><a name="line814">814  </a></b>		std::swap(_M_in_cur, __sb._M_in_cur);
+<b><a name="line815">815  </a></b>		std::swap(_M_in_end, __sb._M_in_end);
+<b><a name="line816">816  </a></b>		std::swap(_M_out_beg, __sb._M_out_beg);
+<b><a name="line817">817  </a></b>		std::swap(_M_out_cur, __sb._M_out_cur);
+<b><a name="line818">818  </a></b>		std::swap(_M_out_end, __sb._M_out_end);
+<b><a name="line819">819  </a></b>		std::swap(_M_buf_locale, __sb._M_buf_locale);
+<b><a name="line820">820  </a></b>	      }
+<b><a name="line821">821  </a></b>	#endif
+<b><a name="line822">822  </a></b>	    };
+<b><a name="line823">823  </a></b>	
+<b><a name="line824">824  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line825">825  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line826">826  </a></b>	    <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../iosfwd/code.html#line80">basic_streambuf</a>&lt;<a href="#line825">_CharT</a>, <a href="#line825">_Traits</a>&gt;::
+<b><a name="line827">827  </a></b>	    <b>basic_streambuf</b>(const <a href="../iosfwd/code.html#line80">basic_streambuf</a>&amp;) = default;
+<b><a name="line828">828  </a></b>	
+<b><a name="line829">829  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line830">830  </a></b>	    <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../iosfwd/code.html#line80">basic_streambuf</a>&lt;<a href="#line829">_CharT</a>, <a href="#line829">_Traits</a>&gt;&amp;
+<b><a name="line831">831  </a></b>	    <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../iosfwd/code.html#line80">basic_streambuf</a>&lt;<a href="#line829">_CharT</a>, <a href="#line829">_Traits</a>&gt;::
+<b><a name="line832">832  </a></b>	    <b>operator=</b>(const <a href="../iosfwd/code.html#line80">basic_streambuf</a>&amp;) = default;
+<b><a name="line833">833  </a></b>	#endif
+<b><a name="line834">834  </a></b>	
+<b><a name="line835">835  </a></b>	  // Explicit specialization declarations, defined in src/streambuf.cc.
+<b><a name="line836">836  </a></b>	  template&lt;&gt;
+<b><a name="line837">837  </a></b>	    <a href="../bits/postypes.h/code.html#line98">streamsize</a>
+<b><a name="line838">838  </a></b>	    <a href="#line51">__copy_streambufs_eof</a>(<a href="../iosfwd/code.html#line80">basic_streambuf</a>&lt;char&gt;* __sbin,
+<b><a name="line839">839  </a></b>				  <a href="../iosfwd/code.html#line80">basic_streambuf</a>&lt;char&gt;* __sbout, bool&amp; __ineof);
+<b><a name="line840">840  </a></b>	#ifdef <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1432">_GLIBCXX_USE_WCHAR_T</a>
+<b><a name="line841">841  </a></b>	  template&lt;&gt;
+<b><a name="line842">842  </a></b>	    <a href="../bits/postypes.h/code.html#line98">streamsize</a>
+<b><a name="line843">843  </a></b>	    <a href="#line51">__copy_streambufs_eof</a>(<a href="../iosfwd/code.html#line80">basic_streambuf</a>&lt;wchar_t&gt;* __sbin,
+<b><a name="line844">844  </a></b>				  <a href="../iosfwd/code.html#line80">basic_streambuf</a>&lt;wchar_t&gt;* __sbout, bool&amp; __ineof);
+<b><a name="line845">845  </a></b>	#endif
+<b><a name="line846">846  </a></b>	
+<b><a name="line847">847  </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line848">848  </a></b>	} // namespace
+<b><a name="line849">849  </a></b>	
+<b><a name="line850">850  </a></b>	#include &lt;bits/streambuf.tcc&gt;
+<b><a name="line851">851  </a></b>	
+<b><a name="line852">852  </a></b>	#endif /* _GLIBCXX_STREAMBUF */
+<b><a name="line853">853  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

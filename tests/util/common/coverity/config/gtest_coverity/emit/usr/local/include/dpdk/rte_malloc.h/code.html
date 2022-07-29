@@ -1,0 +1,579 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_malloc.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2010-2014 Intel Corporation
+<b><a name="line3">3    </a></b>	 */
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	#ifndef _RTE_MALLOC_H_
+<b><a name="line6">6    </a></b>	#define <b>_RTE_MALLOC_H_</b>
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	/**
+<b><a name="line9">9    </a></b>	 * @file
+<b><a name="line10">10   </a></b>	 * RTE Malloc. This library provides methods for dynamically allocating memory
+<b><a name="line11">11   </a></b>	 * from hugepages.
+<b><a name="line12">12   </a></b>	 */
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	#include &lt;stdio.h&gt;
+<b><a name="line15">15   </a></b>	#include &lt;stddef.h&gt;
+<b><a name="line16">16   </a></b>	#include &lt;rte_compat.h&gt;
+<b><a name="line17">17   </a></b>	#include &lt;rte_memory.h&gt;
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	#ifdef __cplusplus
+<b><a name="line20">20   </a></b>	extern &quot;C&quot; {
+<b><a name="line21">21   </a></b>	#endif
+<b><a name="line22">22   </a></b>	
+<b><a name="line23">23   </a></b>	/**
+<b><a name="line24">24   </a></b>	 *  Structure to hold heap statistics obtained from rte_malloc_get_socket_stats function.
+<b><a name="line25">25   </a></b>	 */
+<b><a name="line26">26   </a></b>	struct <b>rte_malloc_socket_stats</b> {
+<b><a name="line27">27   </a></b>		<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>heap_totalsz_bytes</b>; /**&lt; Total bytes on heap */
+<b><a name="line28">28   </a></b>		<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>heap_freesz_bytes</b>;  /**&lt; Total free bytes on heap */
+<b><a name="line29">29   </a></b>		<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>greatest_free_size</b>; /**&lt; Size in bytes of largest free block */
+<b><a name="line30">30   </a></b>		unsigned <b>free_count</b>;       /**&lt; Number of free elements on heap */
+<b><a name="line31">31   </a></b>		unsigned <b>alloc_count</b>;      /**&lt; Number of allocated elements on heap */
+<b><a name="line32">32   </a></b>		<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>heap_allocsz_bytes</b>; /**&lt; Total allocated bytes on heap */
+<b><a name="line33">33   </a></b>	};
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	/**
+<b><a name="line36">36   </a></b>	 * This function allocates memory from the huge-page area of memory. The memory
+<b><a name="line37">37   </a></b>	 * is not cleared. In NUMA systems, the memory allocated resides on the same
+<b><a name="line38">38   </a></b>	 * NUMA socket as the core that calls this function.
+<b><a name="line39">39   </a></b>	 *
+<b><a name="line40">40   </a></b>	 * @param type
+<b><a name="line41">41   </a></b>	 *   A string identifying the type of allocated objects (useful for debug
+<b><a name="line42">42   </a></b>	 *   purposes, such as identifying the cause of a memory leak). Can be NULL.
+<b><a name="line43">43   </a></b>	 * @param size
+<b><a name="line44">44   </a></b>	 *   Size (in bytes) to be allocated.
+<b><a name="line45">45   </a></b>	 * @param align
+<b><a name="line46">46   </a></b>	 *   If 0, the return is a pointer that is suitably aligned for any kind of
+<b><a name="line47">47   </a></b>	 *   variable (in the same manner as malloc()).
+<b><a name="line48">48   </a></b>	 *   Otherwise, the return is a pointer that is a multiple of *align*. In
+<b><a name="line49">49   </a></b>	 *   this case, it must be a power of two. (Minimum alignment is the
+<b><a name="line50">50   </a></b>	 *   cacheline size, i.e. 64-bytes)
+<b><a name="line51">51   </a></b>	 * @return
+<b><a name="line52">52   </a></b>	 *   - NULL on error. Not enough memory, or invalid arguments (size is 0,
+<b><a name="line53">53   </a></b>	 *     align is not a power of two).
+<b><a name="line54">54   </a></b>	 *   - Otherwise, the pointer to the allocated object.
+<b><a name="line55">55   </a></b>	 */
+<b><a name="line56">56   </a></b>	void *
+<b><a name="line57">57   </a></b>	rte_malloc(const char *type, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> size, unsigned align);
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	/**
+<b><a name="line60">60   </a></b>	 * Allocate zero'ed memory from the heap.
+<b><a name="line61">61   </a></b>	 *
+<b><a name="line62">62   </a></b>	 * Equivalent to rte_malloc() except that the memory zone is
+<b><a name="line63">63   </a></b>	 * initialised with zeros. In NUMA systems, the memory allocated resides on the
+<b><a name="line64">64   </a></b>	 * same NUMA socket as the core that calls this function.
+<b><a name="line65">65   </a></b>	 *
+<b><a name="line66">66   </a></b>	 * @param type
+<b><a name="line67">67   </a></b>	 *   A string identifying the type of allocated objects (useful for debug
+<b><a name="line68">68   </a></b>	 *   purposes, such as identifying the cause of a memory leak). Can be NULL.
+<b><a name="line69">69   </a></b>	 * @param size
+<b><a name="line70">70   </a></b>	 *   Size (in bytes) to be allocated.
+<b><a name="line71">71   </a></b>	 * @param align
+<b><a name="line72">72   </a></b>	 *   If 0, the return is a pointer that is suitably aligned for any kind of
+<b><a name="line73">73   </a></b>	 *   variable (in the same manner as malloc()).
+<b><a name="line74">74   </a></b>	 *   Otherwise, the return is a pointer that is a multiple of *align*. In
+<b><a name="line75">75   </a></b>	 *   this case, it must obviously be a power of two. (Minimum alignment is the
+<b><a name="line76">76   </a></b>	 *   cacheline size, i.e. 64-bytes)
+<b><a name="line77">77   </a></b>	 * @return
+<b><a name="line78">78   </a></b>	 *   - NULL on error. Not enough memory, or invalid arguments (size is 0,
+<b><a name="line79">79   </a></b>	 *     align is not a power of two).
+<b><a name="line80">80   </a></b>	 *   - Otherwise, the pointer to the allocated object.
+<b><a name="line81">81   </a></b>	 */
+<b><a name="line82">82   </a></b>	void *
+<b><a name="line83">83   </a></b>	rte_zmalloc(const char *type, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> size, unsigned align);
+<b><a name="line84">84   </a></b>	
+<b><a name="line85">85   </a></b>	/**
+<b><a name="line86">86   </a></b>	 * Replacement function for calloc(), using huge-page memory. Memory area is
+<b><a name="line87">87   </a></b>	 * initialised with zeros. In NUMA systems, the memory allocated resides on the
+<b><a name="line88">88   </a></b>	 * same NUMA socket as the core that calls this function.
+<b><a name="line89">89   </a></b>	 *
+<b><a name="line90">90   </a></b>	 * @param type
+<b><a name="line91">91   </a></b>	 *   A string identifying the type of allocated objects (useful for debug
+<b><a name="line92">92   </a></b>	 *   purposes, such as identifying the cause of a memory leak). Can be NULL.
+<b><a name="line93">93   </a></b>	 * @param num
+<b><a name="line94">94   </a></b>	 *   Number of elements to be allocated.
+<b><a name="line95">95   </a></b>	 * @param size
+<b><a name="line96">96   </a></b>	 *   Size (in bytes) of a single element.
+<b><a name="line97">97   </a></b>	 * @param align
+<b><a name="line98">98   </a></b>	 *   If 0, the return is a pointer that is suitably aligned for any kind of
+<b><a name="line99">99   </a></b>	 *   variable (in the same manner as malloc()).
+<b><a name="line100">100  </a></b>	 *   Otherwise, the return is a pointer that is a multiple of *align*. In
+<b><a name="line101">101  </a></b>	 *   this case, it must obviously be a power of two. (Minimum alignment is the
+<b><a name="line102">102  </a></b>	 *   cacheline size, i.e. 64-bytes)
+<b><a name="line103">103  </a></b>	 * @return
+<b><a name="line104">104  </a></b>	 *   - NULL on error. Not enough memory, or invalid arguments (size is 0,
+<b><a name="line105">105  </a></b>	 *     align is not a power of two).
+<b><a name="line106">106  </a></b>	 *   - Otherwise, the pointer to the allocated object.
+<b><a name="line107">107  </a></b>	 */
+<b><a name="line108">108  </a></b>	void *
+<b><a name="line109">109  </a></b>	rte_calloc(const char *type, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> num, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> size, unsigned align);
+<b><a name="line110">110  </a></b>	
+<b><a name="line111">111  </a></b>	/**
+<b><a name="line112">112  </a></b>	 * Replacement function for realloc(), using huge-page memory. Reserved area
+<b><a name="line113">113  </a></b>	 * memory is resized, preserving contents. In NUMA systems, the new area
+<b><a name="line114">114  </a></b>	 * resides on the same NUMA socket as the old area.
+<b><a name="line115">115  </a></b>	 *
+<b><a name="line116">116  </a></b>	 * @param ptr
+<b><a name="line117">117  </a></b>	 *   Pointer to already allocated memory
+<b><a name="line118">118  </a></b>	 * @param size
+<b><a name="line119">119  </a></b>	 *   Size (in bytes) of new area. If this is 0, memory is freed.
+<b><a name="line120">120  </a></b>	 * @param align
+<b><a name="line121">121  </a></b>	 *   If 0, the return is a pointer that is suitably aligned for any kind of
+<b><a name="line122">122  </a></b>	 *   variable (in the same manner as malloc()).
+<b><a name="line123">123  </a></b>	 *   Otherwise, the return is a pointer that is a multiple of *align*. In
+<b><a name="line124">124  </a></b>	 *   this case, it must obviously be a power of two. (Minimum alignment is the
+<b><a name="line125">125  </a></b>	 *   cacheline size, i.e. 64-bytes)
+<b><a name="line126">126  </a></b>	 * @return
+<b><a name="line127">127  </a></b>	 *   - NULL on error. Not enough memory, or invalid arguments (size is 0,
+<b><a name="line128">128  </a></b>	 *     align is not a power of two).
+<b><a name="line129">129  </a></b>	 *   - Otherwise, the pointer to the reallocated memory.
+<b><a name="line130">130  </a></b>	 */
+<b><a name="line131">131  </a></b>	void *
+<b><a name="line132">132  </a></b>	rte_realloc(void *ptr, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> size, unsigned align);
+<b><a name="line133">133  </a></b>	
+<b><a name="line134">134  </a></b>	/**
+<b><a name="line135">135  </a></b>	 * This function allocates memory from the huge-page area of memory. The memory
+<b><a name="line136">136  </a></b>	 * is not cleared.
+<b><a name="line137">137  </a></b>	 *
+<b><a name="line138">138  </a></b>	 * @param type
+<b><a name="line139">139  </a></b>	 *   A string identifying the type of allocated objects (useful for debug
+<b><a name="line140">140  </a></b>	 *   purposes, such as identifying the cause of a memory leak). Can be NULL.
+<b><a name="line141">141  </a></b>	 * @param size
+<b><a name="line142">142  </a></b>	 *   Size (in bytes) to be allocated.
+<b><a name="line143">143  </a></b>	 * @param align
+<b><a name="line144">144  </a></b>	 *   If 0, the return is a pointer that is suitably aligned for any kind of
+<b><a name="line145">145  </a></b>	 *   variable (in the same manner as malloc()).
+<b><a name="line146">146  </a></b>	 *   Otherwise, the return is a pointer that is a multiple of *align*. In
+<b><a name="line147">147  </a></b>	 *   this case, it must be a power of two. (Minimum alignment is the
+<b><a name="line148">148  </a></b>	 *   cacheline size, i.e. 64-bytes)
+<b><a name="line149">149  </a></b>	 * @param socket
+<b><a name="line150">150  </a></b>	 *   NUMA socket to allocate memory on. If SOCKET_ID_ANY is used, this function
+<b><a name="line151">151  </a></b>	 *   will behave the same as rte_malloc().
+<b><a name="line152">152  </a></b>	 * @return
+<b><a name="line153">153  </a></b>	 *   - NULL on error. Not enough memory, or invalid arguments (size is 0,
+<b><a name="line154">154  </a></b>	 *     align is not a power of two).
+<b><a name="line155">155  </a></b>	 *   - Otherwise, the pointer to the allocated object.
+<b><a name="line156">156  </a></b>	 */
+<b><a name="line157">157  </a></b>	void *
+<b><a name="line158">158  </a></b>	rte_malloc_socket(const char *type, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> size, unsigned align, int socket);
+<b><a name="line159">159  </a></b>	
+<b><a name="line160">160  </a></b>	/**
+<b><a name="line161">161  </a></b>	 * Allocate zero'ed memory from the heap.
+<b><a name="line162">162  </a></b>	 *
+<b><a name="line163">163  </a></b>	 * Equivalent to rte_malloc() except that the memory zone is
+<b><a name="line164">164  </a></b>	 * initialised with zeros.
+<b><a name="line165">165  </a></b>	 *
+<b><a name="line166">166  </a></b>	 * @param type
+<b><a name="line167">167  </a></b>	 *   A string identifying the type of allocated objects (useful for debug
+<b><a name="line168">168  </a></b>	 *   purposes, such as identifying the cause of a memory leak). Can be NULL.
+<b><a name="line169">169  </a></b>	 * @param size
+<b><a name="line170">170  </a></b>	 *   Size (in bytes) to be allocated.
+<b><a name="line171">171  </a></b>	 * @param align
+<b><a name="line172">172  </a></b>	 *   If 0, the return is a pointer that is suitably aligned for any kind of
+<b><a name="line173">173  </a></b>	 *   variable (in the same manner as malloc()).
+<b><a name="line174">174  </a></b>	 *   Otherwise, the return is a pointer that is a multiple of *align*. In
+<b><a name="line175">175  </a></b>	 *   this case, it must obviously be a power of two. (Minimum alignment is the
+<b><a name="line176">176  </a></b>	 *   cacheline size, i.e. 64-bytes)
+<b><a name="line177">177  </a></b>	 * @param socket
+<b><a name="line178">178  </a></b>	 *   NUMA socket to allocate memory on. If SOCKET_ID_ANY is used, this function
+<b><a name="line179">179  </a></b>	 *   will behave the same as rte_zmalloc().
+<b><a name="line180">180  </a></b>	 * @return
+<b><a name="line181">181  </a></b>	 *   - NULL on error. Not enough memory, or invalid arguments (size is 0,
+<b><a name="line182">182  </a></b>	 *     align is not a power of two).
+<b><a name="line183">183  </a></b>	 *   - Otherwise, the pointer to the allocated object.
+<b><a name="line184">184  </a></b>	 */
+<b><a name="line185">185  </a></b>	void *
+<b><a name="line186">186  </a></b>	rte_zmalloc_socket(const char *type, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> size, unsigned align, int socket);
+<b><a name="line187">187  </a></b>	
+<b><a name="line188">188  </a></b>	/**
+<b><a name="line189">189  </a></b>	 * Replacement function for calloc(), using huge-page memory. Memory area is
+<b><a name="line190">190  </a></b>	 * initialised with zeros.
+<b><a name="line191">191  </a></b>	 *
+<b><a name="line192">192  </a></b>	 * @param type
+<b><a name="line193">193  </a></b>	 *   A string identifying the type of allocated objects (useful for debug
+<b><a name="line194">194  </a></b>	 *   purposes, such as identifying the cause of a memory leak). Can be NULL.
+<b><a name="line195">195  </a></b>	 * @param num
+<b><a name="line196">196  </a></b>	 *   Number of elements to be allocated.
+<b><a name="line197">197  </a></b>	 * @param size
+<b><a name="line198">198  </a></b>	 *   Size (in bytes) of a single element.
+<b><a name="line199">199  </a></b>	 * @param align
+<b><a name="line200">200  </a></b>	 *   If 0, the return is a pointer that is suitably aligned for any kind of
+<b><a name="line201">201  </a></b>	 *   variable (in the same manner as malloc()).
+<b><a name="line202">202  </a></b>	 *   Otherwise, the return is a pointer that is a multiple of *align*. In
+<b><a name="line203">203  </a></b>	 *   this case, it must obviously be a power of two. (Minimum alignment is the
+<b><a name="line204">204  </a></b>	 *   cacheline size, i.e. 64-bytes)
+<b><a name="line205">205  </a></b>	 * @param socket
+<b><a name="line206">206  </a></b>	 *   NUMA socket to allocate memory on. If SOCKET_ID_ANY is used, this function
+<b><a name="line207">207  </a></b>	 *   will behave the same as rte_calloc().
+<b><a name="line208">208  </a></b>	 * @return
+<b><a name="line209">209  </a></b>	 *   - NULL on error. Not enough memory, or invalid arguments (size is 0,
+<b><a name="line210">210  </a></b>	 *     align is not a power of two).
+<b><a name="line211">211  </a></b>	 *   - Otherwise, the pointer to the allocated object.
+<b><a name="line212">212  </a></b>	 */
+<b><a name="line213">213  </a></b>	void *
+<b><a name="line214">214  </a></b>	rte_calloc_socket(const char *type, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> num, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> size, unsigned align, int socket);
+<b><a name="line215">215  </a></b>	
+<b><a name="line216">216  </a></b>	/**
+<b><a name="line217">217  </a></b>	 * Frees the memory space pointed to by the provided pointer.
+<b><a name="line218">218  </a></b>	 *
+<b><a name="line219">219  </a></b>	 * This pointer must have been returned by a previous call to
+<b><a name="line220">220  </a></b>	 * rte_malloc(), rte_zmalloc(), rte_calloc() or rte_realloc(). The behaviour of
+<b><a name="line221">221  </a></b>	 * rte_free() is undefined if the pointer does not match this requirement.
+<b><a name="line222">222  </a></b>	 *
+<b><a name="line223">223  </a></b>	 * If the pointer is NULL, the function does nothing.
+<b><a name="line224">224  </a></b>	 *
+<b><a name="line225">225  </a></b>	 * @param ptr
+<b><a name="line226">226  </a></b>	 *   The pointer to memory to be freed.
+<b><a name="line227">227  </a></b>	 */
+<b><a name="line228">228  </a></b>	void
+<b><a name="line229">229  </a></b>	rte_free(void *ptr);
+<b><a name="line230">230  </a></b>	
+<b><a name="line231">231  </a></b>	/**
+<b><a name="line232">232  </a></b>	 * If malloc debug is enabled, check a memory block for header
+<b><a name="line233">233  </a></b>	 * and trailer markers to indicate that all is well with the block.
+<b><a name="line234">234  </a></b>	 * If size is non-null, also return the size of the block.
+<b><a name="line235">235  </a></b>	 *
+<b><a name="line236">236  </a></b>	 * @param ptr
+<b><a name="line237">237  </a></b>	 *   pointer to the start of a data block, must have been returned
+<b><a name="line238">238  </a></b>	 *   by a previous call to rte_malloc(), rte_zmalloc(), rte_calloc()
+<b><a name="line239">239  </a></b>	 *   or rte_realloc()
+<b><a name="line240">240  </a></b>	 * @param size
+<b><a name="line241">241  </a></b>	 *   if non-null, and memory block pointer is valid, returns the size
+<b><a name="line242">242  </a></b>	 *   of the memory block
+<b><a name="line243">243  </a></b>	 * @return
+<b><a name="line244">244  </a></b>	 *   -1 on error, invalid pointer passed or header and trailer markers
+<b><a name="line245">245  </a></b>	 *   are missing or corrupted
+<b><a name="line246">246  </a></b>	 *   0 on success
+<b><a name="line247">247  </a></b>	 */
+<b><a name="line248">248  </a></b>	int
+<b><a name="line249">249  </a></b>	rte_malloc_validate(const void *ptr, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> *size);
+<b><a name="line250">250  </a></b>	
+<b><a name="line251">251  </a></b>	/**
+<b><a name="line252">252  </a></b>	 * Get heap statistics for the specified heap.
+<b><a name="line253">253  </a></b>	 *
+<b><a name="line254">254  </a></b>	 * @param socket
+<b><a name="line255">255  </a></b>	 *   An unsigned integer specifying the socket to get heap statistics for
+<b><a name="line256">256  </a></b>	 * @param socket_stats
+<b><a name="line257">257  </a></b>	 *   A structure which provides memory to store statistics
+<b><a name="line258">258  </a></b>	 * @return
+<b><a name="line259">259  </a></b>	 *   Null on error
+<b><a name="line260">260  </a></b>	 *   Pointer to structure storing statistics on success
+<b><a name="line261">261  </a></b>	 */
+<b><a name="line262">262  </a></b>	int
+<b><a name="line263">263  </a></b>	rte_malloc_get_socket_stats(int socket,
+<b><a name="line264">264  </a></b>			struct <a href="#line26">rte_malloc_socket_stats</a> *socket_stats);
+<b><a name="line265">265  </a></b>	
+<b><a name="line266">266  </a></b>	/**
+<b><a name="line267">267  </a></b>	 * Add memory chunk to a heap with specified name.
+<b><a name="line268">268  </a></b>	 *
+<b><a name="line269">269  </a></b>	 * @note Multiple memory chunks can be added to the same heap
+<b><a name="line270">270  </a></b>	 *
+<b><a name="line271">271  </a></b>	 * @note Before accessing this memory in other processes, it needs to be
+<b><a name="line272">272  </a></b>	 *   attached in each of those processes by calling
+<b><a name="line273">273  </a></b>	 *   ``rte_malloc_heap_memory_attach`` in each other process.
+<b><a name="line274">274  </a></b>	 *
+<b><a name="line275">275  </a></b>	 * @note Memory must be previously allocated for DPDK to be able to use it as a
+<b><a name="line276">276  </a></b>	 *   malloc heap. Failing to do so will result in undefined behavior, up to and
+<b><a name="line277">277  </a></b>	 *   including segmentation faults.
+<b><a name="line278">278  </a></b>	 *
+<b><a name="line279">279  </a></b>	 * @note Calling this function will erase any contents already present at the
+<b><a name="line280">280  </a></b>	 *   supplied memory address.
+<b><a name="line281">281  </a></b>	 *
+<b><a name="line282">282  </a></b>	 * @param heap_name
+<b><a name="line283">283  </a></b>	 *   Name of the heap to add memory chunk to
+<b><a name="line284">284  </a></b>	 * @param va_addr
+<b><a name="line285">285  </a></b>	 *   Start of virtual area to add to the heap
+<b><a name="line286">286  </a></b>	 * @param len
+<b><a name="line287">287  </a></b>	 *   Length of virtual area to add to the heap
+<b><a name="line288">288  </a></b>	 * @param iova_addrs
+<b><a name="line289">289  </a></b>	 *   Array of page IOVA addresses corresponding to each page in this memory
+<b><a name="line290">290  </a></b>	 *   area. Can be NULL, in which case page IOVA addresses will be set to
+<b><a name="line291">291  </a></b>	 *   RTE_BAD_IOVA.
+<b><a name="line292">292  </a></b>	 * @param n_pages
+<b><a name="line293">293  </a></b>	 *   Number of elements in the iova_addrs array. Ignored if  ``iova_addrs``
+<b><a name="line294">294  </a></b>	 *   is NULL.
+<b><a name="line295">295  </a></b>	 * @param page_sz
+<b><a name="line296">296  </a></b>	 *   Page size of the underlying memory
+<b><a name="line297">297  </a></b>	 *
+<b><a name="line298">298  </a></b>	 * @return
+<b><a name="line299">299  </a></b>	 *   - 0 on success
+<b><a name="line300">300  </a></b>	 *   - -1 in case of error, with rte_errno set to one of the following:
+<b><a name="line301">301  </a></b>	 *     EINVAL - one of the parameters was invalid
+<b><a name="line302">302  </a></b>	 *     EPERM  - attempted to add memory to a reserved heap
+<b><a name="line303">303  </a></b>	 *     ENOSPC - no more space in internal config to store a new memory chunk
+<b><a name="line304">304  </a></b>	 */
+<b><a name="line305">305  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line306">306  </a></b>	rte_malloc_heap_memory_add(const char *heap_name, void *va_addr, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> len,
+<b><a name="line307">307  </a></b>			<a href="../rte_memory.h/code.html#line80">rte_iova_t</a> iova_addrs[], unsigned int n_pages, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> page_sz);
+<b><a name="line308">308  </a></b>	
+<b><a name="line309">309  </a></b>	/**
+<b><a name="line310">310  </a></b>	 * Remove memory chunk from heap with specified name.
+<b><a name="line311">311  </a></b>	 *
+<b><a name="line312">312  </a></b>	 * @note Memory chunk being removed must be the same as one that was added;
+<b><a name="line313">313  </a></b>	 *   partially removing memory chunks is not supported
+<b><a name="line314">314  </a></b>	 *
+<b><a name="line315">315  </a></b>	 * @note Memory area must not contain any allocated elements to allow its
+<b><a name="line316">316  </a></b>	 *   removal from the heap
+<b><a name="line317">317  </a></b>	 *
+<b><a name="line318">318  </a></b>	 * @note All other processes must detach from the memory chunk prior to it being
+<b><a name="line319">319  </a></b>	 *   removed from the heap.
+<b><a name="line320">320  </a></b>	 *
+<b><a name="line321">321  </a></b>	 * @param heap_name
+<b><a name="line322">322  </a></b>	 *   Name of the heap to remove memory from
+<b><a name="line323">323  </a></b>	 * @param va_addr
+<b><a name="line324">324  </a></b>	 *   Virtual address to remove from the heap
+<b><a name="line325">325  </a></b>	 * @param len
+<b><a name="line326">326  </a></b>	 *   Length of virtual area to remove from the heap
+<b><a name="line327">327  </a></b>	 *
+<b><a name="line328">328  </a></b>	 * @return
+<b><a name="line329">329  </a></b>	 *   - 0 on success
+<b><a name="line330">330  </a></b>	 *   - -1 in case of error, with rte_errno set to one of the following:
+<b><a name="line331">331  </a></b>	 *     EINVAL - one of the parameters was invalid
+<b><a name="line332">332  </a></b>	 *     EPERM  - attempted to remove memory from a reserved heap
+<b><a name="line333">333  </a></b>	 *     ENOENT - heap or memory chunk was not found
+<b><a name="line334">334  </a></b>	 *     EBUSY  - memory chunk still contains data
+<b><a name="line335">335  </a></b>	 */
+<b><a name="line336">336  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line337">337  </a></b>	rte_malloc_heap_memory_remove(const char *heap_name, void *va_addr, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> len);
+<b><a name="line338">338  </a></b>	
+<b><a name="line339">339  </a></b>	/**
+<b><a name="line340">340  </a></b>	 * Attach to an already existing chunk of external memory in another process.
+<b><a name="line341">341  </a></b>	 *
+<b><a name="line342">342  </a></b>	 * @note This function must be called before any attempt is made to use an
+<b><a name="line343">343  </a></b>	 *   already existing external memory chunk. This function does *not* need to
+<b><a name="line344">344  </a></b>	 *   be called if a call to ``rte_malloc_heap_memory_add`` was made in the
+<b><a name="line345">345  </a></b>	 *   current process.
+<b><a name="line346">346  </a></b>	 *
+<b><a name="line347">347  </a></b>	 * @param heap_name
+<b><a name="line348">348  </a></b>	 *   Heap name to which this chunk of memory belongs
+<b><a name="line349">349  </a></b>	 * @param va_addr
+<b><a name="line350">350  </a></b>	 *   Start address of memory chunk to attach to
+<b><a name="line351">351  </a></b>	 * @param len
+<b><a name="line352">352  </a></b>	 *   Length of memory chunk to attach to
+<b><a name="line353">353  </a></b>	 * @return
+<b><a name="line354">354  </a></b>	 *   0 on successful attach
+<b><a name="line355">355  </a></b>	 *   -1 on unsuccessful attach, with rte_errno set to indicate cause for error:
+<b><a name="line356">356  </a></b>	 *     EINVAL - one of the parameters was invalid
+<b><a name="line357">357  </a></b>	 *     EPERM  - attempted to attach memory to a reserved heap
+<b><a name="line358">358  </a></b>	 *     ENOENT - heap or memory chunk was not found
+<b><a name="line359">359  </a></b>	 */
+<b><a name="line360">360  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line361">361  </a></b>	rte_malloc_heap_memory_attach(const char *heap_name, void *va_addr, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> len);
+<b><a name="line362">362  </a></b>	
+<b><a name="line363">363  </a></b>	/**
+<b><a name="line364">364  </a></b>	 * Detach from a chunk of external memory in secondary process.
+<b><a name="line365">365  </a></b>	 *
+<b><a name="line366">366  </a></b>	 * @note This function must be called in before any attempt is made to remove
+<b><a name="line367">367  </a></b>	 *   external memory from the heap in another process. This function does *not*
+<b><a name="line368">368  </a></b>	 *   need to be called if a call to ``rte_malloc_heap_memory_remove`` will be
+<b><a name="line369">369  </a></b>	 *   called in current process.
+<b><a name="line370">370  </a></b>	 *
+<b><a name="line371">371  </a></b>	 * @param heap_name
+<b><a name="line372">372  </a></b>	 *   Heap name to which this chunk of memory belongs
+<b><a name="line373">373  </a></b>	 * @param va_addr
+<b><a name="line374">374  </a></b>	 *   Start address of memory chunk to attach to
+<b><a name="line375">375  </a></b>	 * @param len
+<b><a name="line376">376  </a></b>	 *   Length of memory chunk to attach to
+<b><a name="line377">377  </a></b>	 * @return
+<b><a name="line378">378  </a></b>	 *   0 on successful detach
+<b><a name="line379">379  </a></b>	 *   -1 on unsuccessful detach, with rte_errno set to indicate cause for error:
+<b><a name="line380">380  </a></b>	 *     EINVAL - one of the parameters was invalid
+<b><a name="line381">381  </a></b>	 *     EPERM  - attempted to detach memory from a reserved heap
+<b><a name="line382">382  </a></b>	 *     ENOENT - heap or memory chunk was not found
+<b><a name="line383">383  </a></b>	 */
+<b><a name="line384">384  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line385">385  </a></b>	rte_malloc_heap_memory_detach(const char *heap_name, void *va_addr, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> len);
+<b><a name="line386">386  </a></b>	
+<b><a name="line387">387  </a></b>	/**
+<b><a name="line388">388  </a></b>	 * Creates a new empty malloc heap with a specified name.
+<b><a name="line389">389  </a></b>	 *
+<b><a name="line390">390  </a></b>	 * @note Heaps created via this call will automatically get assigned a unique
+<b><a name="line391">391  </a></b>	 *   socket ID, which can be found using ``rte_malloc_heap_get_socket()``
+<b><a name="line392">392  </a></b>	 *
+<b><a name="line393">393  </a></b>	 * @param heap_name
+<b><a name="line394">394  </a></b>	 *   Name of the heap to create.
+<b><a name="line395">395  </a></b>	 *
+<b><a name="line396">396  </a></b>	 * @return
+<b><a name="line397">397  </a></b>	 *   - 0 on successful creation
+<b><a name="line398">398  </a></b>	 *   - -1 in case of error, with rte_errno set to one of the following:
+<b><a name="line399">399  </a></b>	 *     EINVAL - ``heap_name`` was NULL, empty or too long
+<b><a name="line400">400  </a></b>	 *     EEXIST - heap by name of ``heap_name`` already exists
+<b><a name="line401">401  </a></b>	 *     ENOSPC - no more space in internal config to store a new heap
+<b><a name="line402">402  </a></b>	 */
+<b><a name="line403">403  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line404">404  </a></b>	rte_malloc_heap_create(const char *heap_name);
+<b><a name="line405">405  </a></b>	
+<b><a name="line406">406  </a></b>	/**
+<b><a name="line407">407  </a></b>	 * Destroys a previously created malloc heap with specified name.
+<b><a name="line408">408  </a></b>	 *
+<b><a name="line409">409  </a></b>	 * @note This function will return a failure result if not all memory allocated
+<b><a name="line410">410  </a></b>	 *   from the heap has been freed back to the heap
+<b><a name="line411">411  </a></b>	 *
+<b><a name="line412">412  </a></b>	 * @note This function will return a failure result if not all memory segments
+<b><a name="line413">413  </a></b>	 *   were removed from the heap prior to its destruction
+<b><a name="line414">414  </a></b>	 *
+<b><a name="line415">415  </a></b>	 * @param heap_name
+<b><a name="line416">416  </a></b>	 *   Name of the heap to create.
+<b><a name="line417">417  </a></b>	 *
+<b><a name="line418">418  </a></b>	 * @return
+<b><a name="line419">419  </a></b>	 *   - 0 on success
+<b><a name="line420">420  </a></b>	 *   - -1 in case of error, with rte_errno set to one of the following:
+<b><a name="line421">421  </a></b>	 *     EINVAL - ``heap_name`` was NULL, empty or too long
+<b><a name="line422">422  </a></b>	 *     ENOENT - heap by the name of ``heap_name`` was not found
+<b><a name="line423">423  </a></b>	 *     EPERM  - attempting to destroy reserved heap
+<b><a name="line424">424  </a></b>	 *     EBUSY  - heap still contains data
+<b><a name="line425">425  </a></b>	 */
+<b><a name="line426">426  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line427">427  </a></b>	rte_malloc_heap_destroy(const char *heap_name);
+<b><a name="line428">428  </a></b>	
+<b><a name="line429">429  </a></b>	/**
+<b><a name="line430">430  </a></b>	 * Find socket ID corresponding to a named heap.
+<b><a name="line431">431  </a></b>	 *
+<b><a name="line432">432  </a></b>	 * @param name
+<b><a name="line433">433  </a></b>	 *   Heap name to find socket ID for
+<b><a name="line434">434  </a></b>	 * @return
+<b><a name="line435">435  </a></b>	 *   Socket ID in case of success (a non-negative number)
+<b><a name="line436">436  </a></b>	 *   -1 in case of error, with rte_errno set to one of the following:
+<b><a name="line437">437  </a></b>	 *     EINVAL - ``name`` was NULL
+<b><a name="line438">438  </a></b>	 *     ENOENT - heap identified by the name ``name`` was not found
+<b><a name="line439">439  </a></b>	 */
+<b><a name="line440">440  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line441">441  </a></b>	rte_malloc_heap_get_socket(const char *name);
+<b><a name="line442">442  </a></b>	
+<b><a name="line443">443  </a></b>	/**
+<b><a name="line444">444  </a></b>	 * Check if a given socket ID refers to externally allocated memory.
+<b><a name="line445">445  </a></b>	 *
+<b><a name="line446">446  </a></b>	 * @note Passing SOCKET_ID_ANY will return 0.
+<b><a name="line447">447  </a></b>	 *
+<b><a name="line448">448  </a></b>	 * @param socket_id
+<b><a name="line449">449  </a></b>	 *   Socket ID to check
+<b><a name="line450">450  </a></b>	 * @return
+<b><a name="line451">451  </a></b>	 *   1 if socket ID refers to externally allocated memory
+<b><a name="line452">452  </a></b>	 *   0 if socket ID refers to internal DPDK memory
+<b><a name="line453">453  </a></b>	 *   -1 if socket ID is invalid
+<b><a name="line454">454  </a></b>	 */
+<b><a name="line455">455  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line456">456  </a></b>	rte_malloc_heap_socket_is_external(int socket_id);
+<b><a name="line457">457  </a></b>	
+<b><a name="line458">458  </a></b>	/**
+<b><a name="line459">459  </a></b>	 * Dump statistics.
+<b><a name="line460">460  </a></b>	 *
+<b><a name="line461">461  </a></b>	 * Dump for the specified type to a file. If the type argument is
+<b><a name="line462">462  </a></b>	 * NULL, all memory types will be dumped.
+<b><a name="line463">463  </a></b>	 *
+<b><a name="line464">464  </a></b>	 * @param f
+<b><a name="line465">465  </a></b>	 *   A pointer to a file for output
+<b><a name="line466">466  </a></b>	 * @param type
+<b><a name="line467">467  </a></b>	 *   A string identifying the type of objects to dump, or NULL
+<b><a name="line468">468  </a></b>	 *   to dump all objects.
+<b><a name="line469">469  </a></b>	 */
+<b><a name="line470">470  </a></b>	void
+<b><a name="line471">471  </a></b>	rte_malloc_dump_stats(<a href="../../../../include/stdio.h/code.html#line48">FILE</a> *f, const char *type);
+<b><a name="line472">472  </a></b>	
+<b><a name="line473">473  </a></b>	/**
+<b><a name="line474">474  </a></b>	 * Dump contents of all malloc heaps to a file.
+<b><a name="line475">475  </a></b>	 *
+<b><a name="line476">476  </a></b>	 * @param f
+<b><a name="line477">477  </a></b>	 *   A pointer to a file for output
+<b><a name="line478">478  </a></b>	 */
+<b><a name="line479">479  </a></b>	void <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line480">480  </a></b>	rte_malloc_dump_heaps(<a href="../../../../include/stdio.h/code.html#line48">FILE</a> *f);
+<b><a name="line481">481  </a></b>	
+<b><a name="line482">482  </a></b>	/**
+<b><a name="line483">483  </a></b>	 * Set the maximum amount of allocated memory for this type.
+<b><a name="line484">484  </a></b>	 *
+<b><a name="line485">485  </a></b>	 * This is not yet implemented
+<b><a name="line486">486  </a></b>	 *
+<b><a name="line487">487  </a></b>	 * @param type
+<b><a name="line488">488  </a></b>	 *   A string identifying the type of allocated objects.
+<b><a name="line489">489  </a></b>	 * @param max
+<b><a name="line490">490  </a></b>	 *   The maximum amount of allocated bytes for this type.
+<b><a name="line491">491  </a></b>	 * @return
+<b><a name="line492">492  </a></b>	 *   - 0: Success.
+<b><a name="line493">493  </a></b>	 *   - (-1): Error.
+<b><a name="line494">494  </a></b>	 */
+<b><a name="line495">495  </a></b>	int
+<b><a name="line496">496  </a></b>	rte_malloc_set_limit(const char *type, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> max);
+<b><a name="line497">497  </a></b>	
+<b><a name="line498">498  </a></b>	/**
+<b><a name="line499">499  </a></b>	 * Return the IO address of a virtual address obtained through
+<b><a name="line500">500  </a></b>	 * rte_malloc
+<b><a name="line501">501  </a></b>	 *
+<b><a name="line502">502  </a></b>	 * @param addr
+<b><a name="line503">503  </a></b>	 *   Address obtained from a previous rte_malloc call
+<b><a name="line504">504  </a></b>	 * @return
+<b><a name="line505">505  </a></b>	 *   RTE_BAD_IOVA on error
+<b><a name="line506">506  </a></b>	 *   otherwise return an address suitable for IO
+<b><a name="line507">507  </a></b>	 */
+<b><a name="line508">508  </a></b>	<a href="../rte_memory.h/code.html#line80">rte_iova_t</a>
+<b><a name="line509">509  </a></b>	rte_malloc_virt2iova(const void *addr);
+<b><a name="line510">510  </a></b>	
+<b><a name="line511">511  </a></b>	<a href="../rte_common.h/code.html#line69">__rte_deprecated</a>
+<b><a name="line512">512  </a></b>	static inline <a href="../rte_memory.h/code.html#line71">phys_addr_t</a>
+<b><a name="line513">513  </a></b>	<b>rte_malloc_virt2phy</b>(const void *<b>addr</b>)
+<b><a name="line514">514  </a></b>	{
+<b><a name="line515">515  </a></b>		return <a href="#line509">rte_malloc_virt2iova</a>(<a href="#line513">addr</a>);
+<b><a name="line516">516  </a></b>	}
+<b><a name="line517">517  </a></b>	
+<b><a name="line518">518  </a></b>	#ifdef __cplusplus
+<b><a name="line519">519  </a></b>	}
+<b><a name="line520">520  </a></b>	#endif
+<b><a name="line521">521  </a></b>	
+<b><a name="line522">522  </a></b>	#endif /* _RTE_MALLOC_H_ */
+<b><a name="line523">523  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

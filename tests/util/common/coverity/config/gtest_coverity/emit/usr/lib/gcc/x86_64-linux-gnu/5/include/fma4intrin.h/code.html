@@ -1,0 +1,298 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/lib/gcc/x86_64-linux-gnu/5/include/fma4intrin.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 2007-2015 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	   This file is part of GCC.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   GCC is free software; you can redistribute it and/or modify
+<b><a name="line6">6    </a></b>	   it under the terms of the GNU General Public License as published by
+<b><a name="line7">7    </a></b>	   the Free Software Foundation; either version 3, or (at your option)
+<b><a name="line8">8    </a></b>	   any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   GCC is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line13">13   </a></b>	   GNU General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line16">16   </a></b>	   permissions described in the GCC Runtime Library Exception, version
+<b><a name="line17">17   </a></b>	   3.1, as published by the Free Software Foundation.
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	   You should have received a copy of the GNU General Public License and
+<b><a name="line20">20   </a></b>	   a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line21">21   </a></b>	   see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line22">22   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>	#ifndef <a href="../x86intrin.h/code.html#line25">_X86INTRIN_H_INCLUDED</a>
+<b><a name="line25">25   </a></b>	# error &quot;Never use &lt;fma4intrin.h&gt; directly; include &lt;x86intrin.h&gt; instead.&quot;
+<b><a name="line26">26   </a></b>	#endif
+<b><a name="line27">27   </a></b>	
+<b><a name="line28">28   </a></b>	#ifndef <a href="#line29">_FMA4INTRIN_H_INCLUDED</a>
+<b><a name="line29">29   </a></b>	#define <b>_FMA4INTRIN_H_INCLUDED</b>
+<b><a name="line30">30   </a></b>	
+<b><a name="line31">31   </a></b>	/* We need definitions from the SSE4A, SSE3, SSE2 and SSE header files.  */
+<b><a name="line32">32   </a></b>	#include &lt;ammintrin.h&gt;
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	#ifndef __FMA4__
+<b><a name="line35">35   </a></b>	#pragma GCC push_options
+<b><a name="line36">36   </a></b>	#pragma GCC target(&quot;fma4&quot;)
+<b><a name="line37">37   </a></b>	#define <b>__DISABLE_FMA4__</b>
+<b><a name="line38">38   </a></b>	#endif /* __FMA4__ */
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	/* 128b Floating point multiply/add type instructions.  */
+<b><a name="line41">41   </a></b>	extern __inline <a href="../xmmintrin.h/code.html#line69">__m128</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line42">42   </a></b>	<b>_mm_macc_ps</b> (<a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__A</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__B</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__C</b>)
+<b><a name="line43">43   </a></b>	{
+<b><a name="line44">44   </a></b>	  return (<a href="../xmmintrin.h/code.html#line69">__m128</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1564">__builtin_ia32_vfmaddps</a> ((<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line42">__A</a>, (<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line42">__B</a>, (<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line42">__C</a>);
+<b><a name="line45">45   </a></b>	}
+<b><a name="line46">46   </a></b>	
+<b><a name="line47">47   </a></b>	extern __inline <a href="../emmintrin.h/code.html#line53">__m128d</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line48">48   </a></b>	<b>_mm_macc_pd</b> (<a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__A</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__B</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__C</b>)
+<b><a name="line49">49   </a></b>	{
+<b><a name="line50">50   </a></b>	  return (<a href="../emmintrin.h/code.html#line53">__m128d</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1562">__builtin_ia32_vfmaddpd</a> ((<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line48">__A</a>, (<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line48">__B</a>, (<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line48">__C</a>);
+<b><a name="line51">51   </a></b>	}
+<b><a name="line52">52   </a></b>	
+<b><a name="line53">53   </a></b>	extern __inline <a href="../xmmintrin.h/code.html#line69">__m128</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line54">54   </a></b>	<b>_mm_macc_ss</b> (<a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__A</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__B</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__C</b>)
+<b><a name="line55">55   </a></b>	{
+<b><a name="line56">56   </a></b>	  return (<a href="../xmmintrin.h/code.html#line69">__m128</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1579">__builtin_ia32_vfmaddss</a> ((<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line54">__A</a>, (<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line54">__B</a>, (<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line54">__C</a>);
+<b><a name="line57">57   </a></b>	}
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	extern __inline <a href="../emmintrin.h/code.html#line53">__m128d</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line60">60   </a></b>	<b>_mm_macc_sd</b> (<a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__A</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__B</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__C</b>)
+<b><a name="line61">61   </a></b>	{
+<b><a name="line62">62   </a></b>	  return (<a href="../emmintrin.h/code.html#line53">__m128d</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1580">__builtin_ia32_vfmaddsd</a> ((<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line60">__A</a>, (<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line60">__B</a>, (<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line60">__C</a>);
+<b><a name="line63">63   </a></b>	}
+<b><a name="line64">64   </a></b>	
+<b><a name="line65">65   </a></b>	extern __inline <a href="../xmmintrin.h/code.html#line69">__m128</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line66">66   </a></b>	<b>_mm_msub_ps</b> (<a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__A</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__B</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__C</b>)
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	{
+<b><a name="line69">69   </a></b>	  return (<a href="../xmmintrin.h/code.html#line69">__m128</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1564">__builtin_ia32_vfmaddps</a> ((<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line66">__A</a>, (<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line66">__B</a>, -(<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line66">__C</a>);
+<b><a name="line70">70   </a></b>	}
+<b><a name="line71">71   </a></b>	
+<b><a name="line72">72   </a></b>	extern __inline <a href="../emmintrin.h/code.html#line53">__m128d</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line73">73   </a></b>	<b>_mm_msub_pd</b> (<a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__A</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__B</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__C</b>)
+<b><a name="line74">74   </a></b>	{
+<b><a name="line75">75   </a></b>	  return (<a href="../emmintrin.h/code.html#line53">__m128d</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1562">__builtin_ia32_vfmaddpd</a> ((<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line73">__A</a>, (<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line73">__B</a>, -(<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line73">__C</a>);
+<b><a name="line76">76   </a></b>	}
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	extern __inline <a href="../xmmintrin.h/code.html#line69">__m128</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line79">79   </a></b>	<b>_mm_msub_ss</b> (<a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__A</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__B</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__C</b>)
+<b><a name="line80">80   </a></b>	{
+<b><a name="line81">81   </a></b>	  return (<a href="../xmmintrin.h/code.html#line69">__m128</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1579">__builtin_ia32_vfmaddss</a> ((<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line79">__A</a>, (<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line79">__B</a>, -(<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line79">__C</a>);
+<b><a name="line82">82   </a></b>	}
+<b><a name="line83">83   </a></b>	
+<b><a name="line84">84   </a></b>	extern __inline <a href="../emmintrin.h/code.html#line53">__m128d</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line85">85   </a></b>	<b>_mm_msub_sd</b> (<a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__A</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__B</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__C</b>)
+<b><a name="line86">86   </a></b>	{
+<b><a name="line87">87   </a></b>	  return (<a href="../emmintrin.h/code.html#line53">__m128d</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1580">__builtin_ia32_vfmaddsd</a> ((<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line85">__A</a>, (<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line85">__B</a>, -(<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line85">__C</a>);
+<b><a name="line88">88   </a></b>	}
+<b><a name="line89">89   </a></b>	
+<b><a name="line90">90   </a></b>	extern __inline <a href="../xmmintrin.h/code.html#line69">__m128</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line91">91   </a></b>	<b>_mm_nmacc_ps</b> (<a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__A</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__B</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__C</b>)
+<b><a name="line92">92   </a></b>	{
+<b><a name="line93">93   </a></b>	  return (<a href="../xmmintrin.h/code.html#line69">__m128</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1564">__builtin_ia32_vfmaddps</a> (-(<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line91">__A</a>, (<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line91">__B</a>, (<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line91">__C</a>);
+<b><a name="line94">94   </a></b>	}
+<b><a name="line95">95   </a></b>	
+<b><a name="line96">96   </a></b>	extern __inline <a href="../emmintrin.h/code.html#line53">__m128d</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line97">97   </a></b>	<b>_mm_nmacc_pd</b> (<a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__A</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__B</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__C</b>)
+<b><a name="line98">98   </a></b>	{
+<b><a name="line99">99   </a></b>	  return (<a href="../emmintrin.h/code.html#line53">__m128d</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1562">__builtin_ia32_vfmaddpd</a> (-(<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line97">__A</a>, (<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line97">__B</a>, (<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line97">__C</a>);
+<b><a name="line100">100  </a></b>	}
+<b><a name="line101">101  </a></b>	
+<b><a name="line102">102  </a></b>	extern __inline <a href="../xmmintrin.h/code.html#line69">__m128</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line103">103  </a></b>	<b>_mm_nmacc_ss</b> (<a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__A</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__B</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__C</b>)
+<b><a name="line104">104  </a></b>	{
+<b><a name="line105">105  </a></b>	  return (<a href="../xmmintrin.h/code.html#line69">__m128</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1579">__builtin_ia32_vfmaddss</a> (-(<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line103">__A</a>, (<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line103">__B</a>, (<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line103">__C</a>);
+<b><a name="line106">106  </a></b>	}
+<b><a name="line107">107  </a></b>	
+<b><a name="line108">108  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line53">__m128d</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line109">109  </a></b>	<b>_mm_nmacc_sd</b> (<a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__A</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__B</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__C</b>)
+<b><a name="line110">110  </a></b>	{
+<b><a name="line111">111  </a></b>	  return (<a href="../emmintrin.h/code.html#line53">__m128d</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1580">__builtin_ia32_vfmaddsd</a> (-(<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line109">__A</a>, (<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line109">__B</a>, (<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line109">__C</a>);
+<b><a name="line112">112  </a></b>	}
+<b><a name="line113">113  </a></b>	
+<b><a name="line114">114  </a></b>	extern __inline <a href="../xmmintrin.h/code.html#line69">__m128</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line115">115  </a></b>	<b>_mm_nmsub_ps</b> (<a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__A</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__B</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__C</b>)
+<b><a name="line116">116  </a></b>	{
+<b><a name="line117">117  </a></b>	  return (<a href="../xmmintrin.h/code.html#line69">__m128</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1564">__builtin_ia32_vfmaddps</a> (-(<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line115">__A</a>, (<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line115">__B</a>, -(<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line115">__C</a>);
+<b><a name="line118">118  </a></b>	}
+<b><a name="line119">119  </a></b>	
+<b><a name="line120">120  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line53">__m128d</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line121">121  </a></b>	<b>_mm_nmsub_pd</b> (<a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__A</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__B</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__C</b>)
+<b><a name="line122">122  </a></b>	{
+<b><a name="line123">123  </a></b>	  return (<a href="../emmintrin.h/code.html#line53">__m128d</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1562">__builtin_ia32_vfmaddpd</a> (-(<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line121">__A</a>, (<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line121">__B</a>, -(<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line121">__C</a>);
+<b><a name="line124">124  </a></b>	}
+<b><a name="line125">125  </a></b>	
+<b><a name="line126">126  </a></b>	extern __inline <a href="../xmmintrin.h/code.html#line69">__m128</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line127">127  </a></b>	<b>_mm_nmsub_ss</b> (<a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__A</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__B</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__C</b>)
+<b><a name="line128">128  </a></b>	{
+<b><a name="line129">129  </a></b>	  return (<a href="../xmmintrin.h/code.html#line69">__m128</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1579">__builtin_ia32_vfmaddss</a> (-(<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line127">__A</a>, (<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line127">__B</a>, -(<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line127">__C</a>);
+<b><a name="line130">130  </a></b>	}
+<b><a name="line131">131  </a></b>	
+<b><a name="line132">132  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line53">__m128d</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line133">133  </a></b>	<b>_mm_nmsub_sd</b> (<a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__A</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__B</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__C</b>)
+<b><a name="line134">134  </a></b>	{
+<b><a name="line135">135  </a></b>	  return (<a href="../emmintrin.h/code.html#line53">__m128d</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1580">__builtin_ia32_vfmaddsd</a> (-(<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line133">__A</a>, (<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line133">__B</a>, -(<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line133">__C</a>);
+<b><a name="line136">136  </a></b>	}
+<b><a name="line137">137  </a></b>	
+<b><a name="line138">138  </a></b>	extern __inline <a href="../xmmintrin.h/code.html#line69">__m128</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line139">139  </a></b>	<b>_mm_maddsub_ps</b> (<a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__A</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__B</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__C</b>)
+<b><a name="line140">140  </a></b>	{
+<b><a name="line141">141  </a></b>	  return (<a href="../xmmintrin.h/code.html#line69">__m128</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1570">__builtin_ia32_vfmaddsubps</a> ((<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line139">__A</a>, (<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line139">__B</a>, (<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line139">__C</a>);
+<b><a name="line142">142  </a></b>	}
+<b><a name="line143">143  </a></b>	
+<b><a name="line144">144  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line53">__m128d</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line145">145  </a></b>	<b>_mm_maddsub_pd</b> (<a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__A</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__B</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__C</b>)
+<b><a name="line146">146  </a></b>	{
+<b><a name="line147">147  </a></b>	  return (<a href="../emmintrin.h/code.html#line53">__m128d</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1568">__builtin_ia32_vfmaddsubpd</a> ((<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line145">__A</a>, (<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line145">__B</a>, (<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line145">__C</a>);
+<b><a name="line148">148  </a></b>	}
+<b><a name="line149">149  </a></b>	
+<b><a name="line150">150  </a></b>	extern __inline <a href="../xmmintrin.h/code.html#line69">__m128</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line151">151  </a></b>	<b>_mm_msubadd_ps</b> (<a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__A</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__B</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__C</b>)
+<b><a name="line152">152  </a></b>	{
+<b><a name="line153">153  </a></b>	  return (<a href="../xmmintrin.h/code.html#line69">__m128</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1570">__builtin_ia32_vfmaddsubps</a> ((<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line151">__A</a>, (<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line151">__B</a>, -(<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line151">__C</a>);
+<b><a name="line154">154  </a></b>	}
+<b><a name="line155">155  </a></b>	
+<b><a name="line156">156  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line53">__m128d</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line157">157  </a></b>	<b>_mm_msubadd_pd</b> (<a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__A</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__B</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__C</b>)
+<b><a name="line158">158  </a></b>	{
+<b><a name="line159">159  </a></b>	  return (<a href="../emmintrin.h/code.html#line53">__m128d</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1568">__builtin_ia32_vfmaddsubpd</a> ((<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line157">__A</a>, (<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line157">__B</a>, -(<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line157">__C</a>);
+<b><a name="line160">160  </a></b>	}
+<b><a name="line161">161  </a></b>	
+<b><a name="line162">162  </a></b>	/* 256b Floating point multiply/add type instructions.  */
+<b><a name="line163">163  </a></b>	extern __inline <a href="../avxintrin.h/code.html#line54">__m256</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line164">164  </a></b>	<b>_mm256_macc_ps</b> (<a href="../avxintrin.h/code.html#line54">__m256</a> <b>__A</b>, <a href="../avxintrin.h/code.html#line54">__m256</a> <b>__B</b>, <a href="../avxintrin.h/code.html#line54">__m256</a> <b>__C</b>)
+<b><a name="line165">165  </a></b>	{
+<b><a name="line166">166  </a></b>	  return (<a href="../avxintrin.h/code.html#line54">__m256</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1565">__builtin_ia32_vfmaddps256</a> ((<a href="../avxintrin.h/code.html#line42">__v8sf</a>)<a href="#line164">__A</a>, (<a href="../avxintrin.h/code.html#line42">__v8sf</a>)<a href="#line164">__B</a>, (<a href="../avxintrin.h/code.html#line42">__v8sf</a>)<a href="#line164">__C</a>);
+<b><a name="line167">167  </a></b>	}
+<b><a name="line168">168  </a></b>	
+<b><a name="line169">169  </a></b>	extern __inline <a href="../avxintrin.h/code.html#line58">__m256d</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line170">170  </a></b>	<b>_mm256_macc_pd</b> (<a href="../avxintrin.h/code.html#line58">__m256d</a> <b>__A</b>, <a href="../avxintrin.h/code.html#line58">__m256d</a> <b>__B</b>, <a href="../avxintrin.h/code.html#line58">__m256d</a> <b>__C</b>)
+<b><a name="line171">171  </a></b>	{
+<b><a name="line172">172  </a></b>	  return (<a href="../avxintrin.h/code.html#line58">__m256d</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1563">__builtin_ia32_vfmaddpd256</a> ((<a href="../avxintrin.h/code.html#line41">__v4df</a>)<a href="#line170">__A</a>, (<a href="../avxintrin.h/code.html#line41">__v4df</a>)<a href="#line170">__B</a>, (<a href="../avxintrin.h/code.html#line41">__v4df</a>)<a href="#line170">__C</a>);
+<b><a name="line173">173  </a></b>	}
+<b><a name="line174">174  </a></b>	
+<b><a name="line175">175  </a></b>	extern __inline <a href="../avxintrin.h/code.html#line54">__m256</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line176">176  </a></b>	<b>_mm256_msub_ps</b> (<a href="../avxintrin.h/code.html#line54">__m256</a> <b>__A</b>, <a href="../avxintrin.h/code.html#line54">__m256</a> <b>__B</b>, <a href="../avxintrin.h/code.html#line54">__m256</a> <b>__C</b>)
+<b><a name="line177">177  </a></b>	
+<b><a name="line178">178  </a></b>	{
+<b><a name="line179">179  </a></b>	  return (<a href="../avxintrin.h/code.html#line54">__m256</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1565">__builtin_ia32_vfmaddps256</a> ((<a href="../avxintrin.h/code.html#line42">__v8sf</a>)<a href="#line176">__A</a>, (<a href="../avxintrin.h/code.html#line42">__v8sf</a>)<a href="#line176">__B</a>, -(<a href="../avxintrin.h/code.html#line42">__v8sf</a>)<a href="#line176">__C</a>);
+<b><a name="line180">180  </a></b>	}
+<b><a name="line181">181  </a></b>	
+<b><a name="line182">182  </a></b>	extern __inline <a href="../avxintrin.h/code.html#line58">__m256d</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line183">183  </a></b>	<b>_mm256_msub_pd</b> (<a href="../avxintrin.h/code.html#line58">__m256d</a> <b>__A</b>, <a href="../avxintrin.h/code.html#line58">__m256d</a> <b>__B</b>, <a href="../avxintrin.h/code.html#line58">__m256d</a> <b>__C</b>)
+<b><a name="line184">184  </a></b>	{
+<b><a name="line185">185  </a></b>	  return (<a href="../avxintrin.h/code.html#line58">__m256d</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1563">__builtin_ia32_vfmaddpd256</a> ((<a href="../avxintrin.h/code.html#line41">__v4df</a>)<a href="#line183">__A</a>, (<a href="../avxintrin.h/code.html#line41">__v4df</a>)<a href="#line183">__B</a>, -(<a href="../avxintrin.h/code.html#line41">__v4df</a>)<a href="#line183">__C</a>);
+<b><a name="line186">186  </a></b>	}
+<b><a name="line187">187  </a></b>	
+<b><a name="line188">188  </a></b>	extern __inline <a href="../avxintrin.h/code.html#line54">__m256</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line189">189  </a></b>	<b>_mm256_nmacc_ps</b> (<a href="../avxintrin.h/code.html#line54">__m256</a> <b>__A</b>, <a href="../avxintrin.h/code.html#line54">__m256</a> <b>__B</b>, <a href="../avxintrin.h/code.html#line54">__m256</a> <b>__C</b>)
+<b><a name="line190">190  </a></b>	{
+<b><a name="line191">191  </a></b>	  return (<a href="../avxintrin.h/code.html#line54">__m256</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1565">__builtin_ia32_vfmaddps256</a> (-(<a href="../avxintrin.h/code.html#line42">__v8sf</a>)<a href="#line189">__A</a>, (<a href="../avxintrin.h/code.html#line42">__v8sf</a>)<a href="#line189">__B</a>, (<a href="../avxintrin.h/code.html#line42">__v8sf</a>)<a href="#line189">__C</a>);
+<b><a name="line192">192  </a></b>	}
+<b><a name="line193">193  </a></b>	
+<b><a name="line194">194  </a></b>	extern __inline <a href="../avxintrin.h/code.html#line58">__m256d</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line195">195  </a></b>	<b>_mm256_nmacc_pd</b> (<a href="../avxintrin.h/code.html#line58">__m256d</a> <b>__A</b>, <a href="../avxintrin.h/code.html#line58">__m256d</a> <b>__B</b>, <a href="../avxintrin.h/code.html#line58">__m256d</a> <b>__C</b>)
+<b><a name="line196">196  </a></b>	{
+<b><a name="line197">197  </a></b>	  return (<a href="../avxintrin.h/code.html#line58">__m256d</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1563">__builtin_ia32_vfmaddpd256</a> (-(<a href="../avxintrin.h/code.html#line41">__v4df</a>)<a href="#line195">__A</a>, (<a href="../avxintrin.h/code.html#line41">__v4df</a>)<a href="#line195">__B</a>, (<a href="../avxintrin.h/code.html#line41">__v4df</a>)<a href="#line195">__C</a>);
+<b><a name="line198">198  </a></b>	}
+<b><a name="line199">199  </a></b>	
+<b><a name="line200">200  </a></b>	extern __inline <a href="../avxintrin.h/code.html#line54">__m256</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line201">201  </a></b>	<b>_mm256_nmsub_ps</b> (<a href="../avxintrin.h/code.html#line54">__m256</a> <b>__A</b>, <a href="../avxintrin.h/code.html#line54">__m256</a> <b>__B</b>, <a href="../avxintrin.h/code.html#line54">__m256</a> <b>__C</b>)
+<b><a name="line202">202  </a></b>	{
+<b><a name="line203">203  </a></b>	  return (<a href="../avxintrin.h/code.html#line54">__m256</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1565">__builtin_ia32_vfmaddps256</a> (-(<a href="../avxintrin.h/code.html#line42">__v8sf</a>)<a href="#line201">__A</a>, (<a href="../avxintrin.h/code.html#line42">__v8sf</a>)<a href="#line201">__B</a>, -(<a href="../avxintrin.h/code.html#line42">__v8sf</a>)<a href="#line201">__C</a>);
+<b><a name="line204">204  </a></b>	}
+<b><a name="line205">205  </a></b>	
+<b><a name="line206">206  </a></b>	extern __inline <a href="../avxintrin.h/code.html#line58">__m256d</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line207">207  </a></b>	<b>_mm256_nmsub_pd</b> (<a href="../avxintrin.h/code.html#line58">__m256d</a> <b>__A</b>, <a href="../avxintrin.h/code.html#line58">__m256d</a> <b>__B</b>, <a href="../avxintrin.h/code.html#line58">__m256d</a> <b>__C</b>)
+<b><a name="line208">208  </a></b>	{
+<b><a name="line209">209  </a></b>	  return (<a href="../avxintrin.h/code.html#line58">__m256d</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1563">__builtin_ia32_vfmaddpd256</a> (-(<a href="../avxintrin.h/code.html#line41">__v4df</a>)<a href="#line207">__A</a>, (<a href="../avxintrin.h/code.html#line41">__v4df</a>)<a href="#line207">__B</a>, -(<a href="../avxintrin.h/code.html#line41">__v4df</a>)<a href="#line207">__C</a>);
+<b><a name="line210">210  </a></b>	}
+<b><a name="line211">211  </a></b>	
+<b><a name="line212">212  </a></b>	extern __inline <a href="../avxintrin.h/code.html#line54">__m256</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line213">213  </a></b>	<b>_mm256_maddsub_ps</b> (<a href="../avxintrin.h/code.html#line54">__m256</a> <b>__A</b>, <a href="../avxintrin.h/code.html#line54">__m256</a> <b>__B</b>, <a href="../avxintrin.h/code.html#line54">__m256</a> <b>__C</b>)
+<b><a name="line214">214  </a></b>	{
+<b><a name="line215">215  </a></b>	  return (<a href="../avxintrin.h/code.html#line54">__m256</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1571">__builtin_ia32_vfmaddsubps256</a> ((<a href="../avxintrin.h/code.html#line42">__v8sf</a>)<a href="#line213">__A</a>, (<a href="../avxintrin.h/code.html#line42">__v8sf</a>)<a href="#line213">__B</a>, (<a href="../avxintrin.h/code.html#line42">__v8sf</a>)<a href="#line213">__C</a>);
+<b><a name="line216">216  </a></b>	}
+<b><a name="line217">217  </a></b>	
+<b><a name="line218">218  </a></b>	extern __inline <a href="../avxintrin.h/code.html#line58">__m256d</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line219">219  </a></b>	<b>_mm256_maddsub_pd</b> (<a href="../avxintrin.h/code.html#line58">__m256d</a> <b>__A</b>, <a href="../avxintrin.h/code.html#line58">__m256d</a> <b>__B</b>, <a href="../avxintrin.h/code.html#line58">__m256d</a> <b>__C</b>)
+<b><a name="line220">220  </a></b>	{
+<b><a name="line221">221  </a></b>	  return (<a href="../avxintrin.h/code.html#line58">__m256d</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1569">__builtin_ia32_vfmaddsubpd256</a> ((<a href="../avxintrin.h/code.html#line41">__v4df</a>)<a href="#line219">__A</a>, (<a href="../avxintrin.h/code.html#line41">__v4df</a>)<a href="#line219">__B</a>, (<a href="../avxintrin.h/code.html#line41">__v4df</a>)<a href="#line219">__C</a>);
+<b><a name="line222">222  </a></b>	}
+<b><a name="line223">223  </a></b>	
+<b><a name="line224">224  </a></b>	extern __inline <a href="../avxintrin.h/code.html#line54">__m256</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line225">225  </a></b>	<b>_mm256_msubadd_ps</b> (<a href="../avxintrin.h/code.html#line54">__m256</a> <b>__A</b>, <a href="../avxintrin.h/code.html#line54">__m256</a> <b>__B</b>, <a href="../avxintrin.h/code.html#line54">__m256</a> <b>__C</b>)
+<b><a name="line226">226  </a></b>	{
+<b><a name="line227">227  </a></b>	  return (<a href="../avxintrin.h/code.html#line54">__m256</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1571">__builtin_ia32_vfmaddsubps256</a> ((<a href="../avxintrin.h/code.html#line42">__v8sf</a>)<a href="#line225">__A</a>, (<a href="../avxintrin.h/code.html#line42">__v8sf</a>)<a href="#line225">__B</a>, -(<a href="../avxintrin.h/code.html#line42">__v8sf</a>)<a href="#line225">__C</a>);
+<b><a name="line228">228  </a></b>	}
+<b><a name="line229">229  </a></b>	
+<b><a name="line230">230  </a></b>	extern __inline <a href="../avxintrin.h/code.html#line58">__m256d</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line231">231  </a></b>	<b>_mm256_msubadd_pd</b> (<a href="../avxintrin.h/code.html#line58">__m256d</a> <b>__A</b>, <a href="../avxintrin.h/code.html#line58">__m256d</a> <b>__B</b>, <a href="../avxintrin.h/code.html#line58">__m256d</a> <b>__C</b>)
+<b><a name="line232">232  </a></b>	{
+<b><a name="line233">233  </a></b>	  return (<a href="../avxintrin.h/code.html#line58">__m256d</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line1569">__builtin_ia32_vfmaddsubpd256</a> ((<a href="../avxintrin.h/code.html#line41">__v4df</a>)<a href="#line231">__A</a>, (<a href="../avxintrin.h/code.html#line41">__v4df</a>)<a href="#line231">__B</a>, -(<a href="../avxintrin.h/code.html#line41">__v4df</a>)<a href="#line231">__C</a>);
+<b><a name="line234">234  </a></b>	}
+<b><a name="line235">235  </a></b>	
+<b><a name="line236">236  </a></b>	#ifdef <a href="#line37">__DISABLE_FMA4__</a>
+<b><a name="line237">237  </a></b>	#undef <a href="#line37">__DISABLE_FMA4__</a>
+<b><a name="line238">238  </a></b>	#pragma GCC pop_options
+<b><a name="line239">239  </a></b>	#endif /* __DISABLE_FMA4__ */
+<b><a name="line240">240  </a></b>	
+<b><a name="line241">241  </a></b>	#endif
+<b><a name="line242">242  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

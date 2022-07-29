@@ -1,0 +1,585 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/iomanip</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Standard stream manipulators -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 1997-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file include/iomanip
+<b><a name="line26">26   </a></b>	 *  This is a Standard C++ Library header.
+<b><a name="line27">27   </a></b>	 */
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	//
+<b><a name="line30">30   </a></b>	// ISO C++ 14882: 27.6.3  Standard manipulators
+<b><a name="line31">31   </a></b>	//
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	#ifndef _GLIBCXX_IOMANIP
+<b><a name="line34">34   </a></b>	#define <b>_GLIBCXX_IOMANIP</b> 1
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	#pragma GCC system_header
+<b><a name="line37">37   </a></b>	
+<b><a name="line38">38   </a></b>	#include &lt;bits/c++config.h&gt;
+<b><a name="line39">39   </a></b>	#include &lt;iosfwd&gt;
+<b><a name="line40">40   </a></b>	#include &lt;bits/ios_base.h&gt;
+<b><a name="line41">41   </a></b>	
+<b><a name="line42">42   </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line43">43   </a></b>	#include &lt;locale&gt;
+<b><a name="line44">44   </a></b>	#if __cplusplus &gt; 201103L
+<b><a name="line45">45   </a></b>	#include &lt;bits/quoted_string.h&gt;
+<b><a name="line46">46   </a></b>	#endif
+<b><a name="line47">47   </a></b>	#endif
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	namespace <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line50">50   </a></b>	{
+<b><a name="line51">51   </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line52">52   </a></b>	
+<b><a name="line53">53   </a></b>	  // [27.6.3] standard manipulators
+<b><a name="line54">54   </a></b>	  // Also see DR 183.
+<b><a name="line55">55   </a></b>	
+<b><a name="line56">56   </a></b>	  struct <b>_Resetiosflags</b> { <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line323">fmtflags</a> <b>_M_mask</b>; };
+<b><a name="line57">57   </a></b>	
+<b><a name="line58">58   </a></b>	  /**
+<b><a name="line59">59   </a></b>	   *  @brief  Manipulator for @c setf.
+<b><a name="line60">60   </a></b>	   *  @param  __mask  A format flags mask.
+<b><a name="line61">61   </a></b>	   *
+<b><a name="line62">62   </a></b>	   *  Sent to a stream object, this manipulator resets the specified flags,
+<b><a name="line63">63   </a></b>	   *  via @e stream.setf(0,__mask).
+<b><a name="line64">64   </a></b>	  */
+<b><a name="line65">65   </a></b>	  inline <a href="#line56">_Resetiosflags</a> 
+<b><a name="line66">66   </a></b>	  <b>resetiosflags</b>(<a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line323">fmtflags</a> <b>__mask</b>)
+<b><a name="line67">67   </a></b>	  { return { <a href="#line66">__mask</a> }; }
+<b><a name="line68">68   </a></b>	
+<b><a name="line69">69   </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line70">70   </a></b>	    inline <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line69">_CharT</a>, <a href="#line69">_Traits</a>&gt;&amp; 
+<b><a name="line71">71   </a></b>	    operator&gt;&gt;(<a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line69">_CharT</a>, <a href="#line69">_Traits</a>&gt;&amp; __is, <a href="#line56">_Resetiosflags</a> __f)
+<b><a name="line72">72   </a></b>	    { 
+<b><a name="line73">73   </a></b>	      __is.setf(ios_base::fmtflags(0), __f._M_mask); 
+<b><a name="line74">74   </a></b>	      return __is; 
+<b><a name="line75">75   </a></b>	    }
+<b><a name="line76">76   </a></b>	
+<b><a name="line77">77   </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line78">78   </a></b>	    inline <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line77">_CharT</a>, <a href="#line77">_Traits</a>&gt;&amp; 
+<b><a name="line79">79   </a></b>	    operator&lt;&lt;(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line77">_CharT</a>, <a href="#line77">_Traits</a>&gt;&amp; __os, <a href="#line56">_Resetiosflags</a> __f)
+<b><a name="line80">80   </a></b>	    { 
+<b><a name="line81">81   </a></b>	      __os.setf(ios_base::fmtflags(0), __f._M_mask); 
+<b><a name="line82">82   </a></b>	      return __os; 
+<b><a name="line83">83   </a></b>	    }
+<b><a name="line84">84   </a></b>	
+<b><a name="line85">85   </a></b>	
+<b><a name="line86">86   </a></b>	  struct <b>_Setiosflags</b> { <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line323">fmtflags</a> <b>_M_mask</b>; };
+<b><a name="line87">87   </a></b>	
+<b><a name="line88">88   </a></b>	  /**
+<b><a name="line89">89   </a></b>	   *  @brief  Manipulator for @c setf.
+<b><a name="line90">90   </a></b>	   *  @param  __mask  A format flags mask.
+<b><a name="line91">91   </a></b>	   *
+<b><a name="line92">92   </a></b>	   *  Sent to a stream object, this manipulator sets the format flags
+<b><a name="line93">93   </a></b>	   *  to @a __mask.
+<b><a name="line94">94   </a></b>	  */
+<b><a name="line95">95   </a></b>	  inline <a href="#line86">_Setiosflags</a> 
+<b><a name="line96">96   </a></b>	  <b>setiosflags</b>(<a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line323">fmtflags</a> <b>__mask</b>)
+<b><a name="line97">97   </a></b>	  { return { <a href="#line96">__mask</a> }; }
+<b><a name="line98">98   </a></b>	
+<b><a name="line99">99   </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line100">100  </a></b>	    inline <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line99">_CharT</a>, <a href="#line99">_Traits</a>&gt;&amp; 
+<b><a name="line101">101  </a></b>	    operator&gt;&gt;(<a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line99">_CharT</a>, <a href="#line99">_Traits</a>&gt;&amp; __is, <a href="#line86">_Setiosflags</a> __f)
+<b><a name="line102">102  </a></b>	    { 
+<b><a name="line103">103  </a></b>	      __is.setf(__f._M_mask); 
+<b><a name="line104">104  </a></b>	      return __is; 
+<b><a name="line105">105  </a></b>	    }
+<b><a name="line106">106  </a></b>	
+<b><a name="line107">107  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line108">108  </a></b>	    inline <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line107">_CharT</a>, <a href="#line107">_Traits</a>&gt;&amp; 
+<b><a name="line109">109  </a></b>	    operator&lt;&lt;(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line107">_CharT</a>, <a href="#line107">_Traits</a>&gt;&amp; __os, <a href="#line86">_Setiosflags</a> __f)
+<b><a name="line110">110  </a></b>	    { 
+<b><a name="line111">111  </a></b>	      __os.setf(__f._M_mask); 
+<b><a name="line112">112  </a></b>	      return __os; 
+<b><a name="line113">113  </a></b>	    }
+<b><a name="line114">114  </a></b>	
+<b><a name="line115">115  </a></b>	
+<b><a name="line116">116  </a></b>	  struct <b>_Setbase</b> { int <b>_M_base</b>; };
+<b><a name="line117">117  </a></b>	
+<b><a name="line118">118  </a></b>	  /**
+<b><a name="line119">119  </a></b>	   *  @brief  Manipulator for @c setf.
+<b><a name="line120">120  </a></b>	   *  @param  __base  A numeric base.
+<b><a name="line121">121  </a></b>	   *
+<b><a name="line122">122  </a></b>	   *  Sent to a stream object, this manipulator changes the
+<b><a name="line123">123  </a></b>	   *  @c ios_base::basefield flags to @c oct, @c dec, or @c hex when @a base
+<b><a name="line124">124  </a></b>	   *  is 8, 10, or 16, accordingly, and to 0 if @a __base is any other value.
+<b><a name="line125">125  </a></b>	  */
+<b><a name="line126">126  </a></b>	  inline <a href="#line116">_Setbase</a> 
+<b><a name="line127">127  </a></b>	  <b>setbase</b>(int <b>__base</b>)
+<b><a name="line128">128  </a></b>	  { return { <a href="#line127">__base</a> }; }
+<b><a name="line129">129  </a></b>	
+<b><a name="line130">130  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line131">131  </a></b>	    inline <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line130">_CharT</a>, <a href="#line130">_Traits</a>&gt;&amp; 
+<b><a name="line132">132  </a></b>	    operator&gt;&gt;(<a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line130">_CharT</a>, <a href="#line130">_Traits</a>&gt;&amp; __is, <a href="#line116">_Setbase</a> __f)
+<b><a name="line133">133  </a></b>	    {
+<b><a name="line134">134  </a></b>	      __is.setf(__f._M_base ==  8 ? ios_base::oct : 
+<b><a name="line135">135  </a></b>			__f._M_base == 10 ? ios_base::dec : 
+<b><a name="line136">136  </a></b>			__f._M_base == 16 ? ios_base::hex : 
+<b><a name="line137">137  </a></b>			ios_base::fmtflags(0), ios_base::basefield);
+<b><a name="line138">138  </a></b>	      return __is; 
+<b><a name="line139">139  </a></b>	    }
+<b><a name="line140">140  </a></b>	  
+<b><a name="line141">141  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line142">142  </a></b>	    inline <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line141">_CharT</a>, <a href="#line141">_Traits</a>&gt;&amp; 
+<b><a name="line143">143  </a></b>	    operator&lt;&lt;(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line141">_CharT</a>, <a href="#line141">_Traits</a>&gt;&amp; __os, <a href="#line116">_Setbase</a> __f)
+<b><a name="line144">144  </a></b>	    {
+<b><a name="line145">145  </a></b>	      __os.setf(__f._M_base ==  8 ? ios_base::oct : 
+<b><a name="line146">146  </a></b>			__f._M_base == 10 ? ios_base::dec : 
+<b><a name="line147">147  </a></b>			__f._M_base == 16 ? ios_base::hex : 
+<b><a name="line148">148  </a></b>			ios_base::fmtflags(0), ios_base::basefield);
+<b><a name="line149">149  </a></b>	      return __os; 
+<b><a name="line150">150  </a></b>	    }
+<b><a name="line151">151  </a></b>	  
+<b><a name="line152">152  </a></b>	
+<b><a name="line153">153  </a></b>	  template&lt;typename <b>_CharT</b>&gt;
+<b><a name="line154">154  </a></b>	    struct _Setfill { <a href="#line153">_CharT</a> <b>_M_c</b>; };
+<b><a name="line155">155  </a></b>	
+<b><a name="line156">156  </a></b>	  /**
+<b><a name="line157">157  </a></b>	   *  @brief  Manipulator for @c fill.
+<b><a name="line158">158  </a></b>	   *  @param  __c  The new fill character.
+<b><a name="line159">159  </a></b>	   *
+<b><a name="line160">160  </a></b>	   *  Sent to a stream object, this manipulator calls @c fill(__c) for that
+<b><a name="line161">161  </a></b>	   *  object.
+<b><a name="line162">162  </a></b>	  */
+<b><a name="line163">163  </a></b>	  template&lt;typename <b>_CharT</b>&gt;
+<b><a name="line164">164  </a></b>	    inline <a href="#line154">_Setfill</a>&lt;<a href="#line163">_CharT</a>&gt;
+<b><a name="line165">165  </a></b>	    <b>setfill</b>(<a href="#line163">_CharT</a> <b>__c</b>)
+<b><a name="line166">166  </a></b>	    { return { <a href="#line165">__c</a> }; }
+<b><a name="line167">167  </a></b>	
+<b><a name="line168">168  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line169">169  </a></b>	    inline <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line168">_CharT</a>, <a href="#line168">_Traits</a>&gt;&amp; 
+<b><a name="line170">170  </a></b>	    operator&gt;&gt;(<a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line168">_CharT</a>, <a href="#line168">_Traits</a>&gt;&amp; __is, <a href="#line154">_Setfill</a>&lt;<a href="#line168">_CharT</a>&gt; __f)
+<b><a name="line171">171  </a></b>	    { 
+<b><a name="line172">172  </a></b>	      __is.fill(__f._M_c); 
+<b><a name="line173">173  </a></b>	      return __is; 
+<b><a name="line174">174  </a></b>	    }
+<b><a name="line175">175  </a></b>	
+<b><a name="line176">176  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line177">177  </a></b>	    inline <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line176">_CharT</a>, <a href="#line176">_Traits</a>&gt;&amp; 
+<b><a name="line178">178  </a></b>	    operator&lt;&lt;(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line176">_CharT</a>, <a href="#line176">_Traits</a>&gt;&amp; <b>__os</b>, <a href="#line154">_Setfill</a>&lt;<a href="#line176">_CharT</a>&gt; <b>__f</b>)
+<b><a name="line179">179  </a></b>	    { 
+<b><a name="line180">180  </a></b>	      <a href="#line178">__os</a>.<a href="../bits/basic_ios.h/code.html#line390">fill</a>(<a href="#line178">__f</a>.<a href="#line154">_M_c</a>); 
+<b><a name="line181">181  </a></b>	      return <a href="#line178">__os</a>; 
+<b><a name="line182">182  </a></b>	    }
+<b><a name="line183">183  </a></b>	
+<b><a name="line184">184  </a></b>	
+<b><a name="line185">185  </a></b>	  struct <b>_Setprecision</b> { int <b>_M_n</b>; };
+<b><a name="line186">186  </a></b>	
+<b><a name="line187">187  </a></b>	  /**
+<b><a name="line188">188  </a></b>	   *  @brief  Manipulator for @c precision.
+<b><a name="line189">189  </a></b>	   *  @param  __n  The new precision.
+<b><a name="line190">190  </a></b>	   *
+<b><a name="line191">191  </a></b>	   *  Sent to a stream object, this manipulator calls @c precision(__n) for
+<b><a name="line192">192  </a></b>	   *  that object.
+<b><a name="line193">193  </a></b>	  */
+<b><a name="line194">194  </a></b>	  inline <a href="#line185">_Setprecision</a> 
+<b><a name="line195">195  </a></b>	  <b>setprecision</b>(int <b>__n</b>)
+<b><a name="line196">196  </a></b>	  { return { <a href="#line195">__n</a> }; }
+<b><a name="line197">197  </a></b>	
+<b><a name="line198">198  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line199">199  </a></b>	    inline <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line198">_CharT</a>, <a href="#line198">_Traits</a>&gt;&amp; 
+<b><a name="line200">200  </a></b>	    operator&gt;&gt;(<a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line198">_CharT</a>, <a href="#line198">_Traits</a>&gt;&amp; __is, <a href="#line185">_Setprecision</a> __f)
+<b><a name="line201">201  </a></b>	    { 
+<b><a name="line202">202  </a></b>	      __is.precision(__f._M_n); 
+<b><a name="line203">203  </a></b>	      return __is; 
+<b><a name="line204">204  </a></b>	    }
+<b><a name="line205">205  </a></b>	
+<b><a name="line206">206  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line207">207  </a></b>	    inline <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line206">_CharT</a>, <a href="#line206">_Traits</a>&gt;&amp; 
+<b><a name="line208">208  </a></b>	    operator&lt;&lt;(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line206">_CharT</a>, <a href="#line206">_Traits</a>&gt;&amp; __os, <a href="#line185">_Setprecision</a> __f)
+<b><a name="line209">209  </a></b>	    { 
+<b><a name="line210">210  </a></b>	      __os.precision(__f._M_n); 
+<b><a name="line211">211  </a></b>	      return __os; 
+<b><a name="line212">212  </a></b>	    }
+<b><a name="line213">213  </a></b>	
+<b><a name="line214">214  </a></b>	
+<b><a name="line215">215  </a></b>	  struct <b>_Setw</b> { int <b>_M_n</b>; };
+<b><a name="line216">216  </a></b>	
+<b><a name="line217">217  </a></b>	  /**
+<b><a name="line218">218  </a></b>	   *  @brief  Manipulator for @c width.
+<b><a name="line219">219  </a></b>	   *  @param  __n  The new width.
+<b><a name="line220">220  </a></b>	   *
+<b><a name="line221">221  </a></b>	   *  Sent to a stream object, this manipulator calls @c width(__n) for
+<b><a name="line222">222  </a></b>	   *  that object.
+<b><a name="line223">223  </a></b>	  */
+<b><a name="line224">224  </a></b>	  inline <a href="#line215">_Setw</a> 
+<b><a name="line225">225  </a></b>	  <b>setw</b>(int <b>__n</b>)
+<b><a name="line226">226  </a></b>	  { return { <a href="#line225">__n</a> }; }
+<b><a name="line227">227  </a></b>	
+<b><a name="line228">228  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line229">229  </a></b>	    inline <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line228">_CharT</a>, <a href="#line228">_Traits</a>&gt;&amp; 
+<b><a name="line230">230  </a></b>	    operator&gt;&gt;(<a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line228">_CharT</a>, <a href="#line228">_Traits</a>&gt;&amp; __is, <a href="#line215">_Setw</a> __f)
+<b><a name="line231">231  </a></b>	    {
+<b><a name="line232">232  </a></b>	      __is.width(__f._M_n);
+<b><a name="line233">233  </a></b>	      return __is; 
+<b><a name="line234">234  </a></b>	    }
+<b><a name="line235">235  </a></b>	
+<b><a name="line236">236  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line237">237  </a></b>	    inline <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line236">_CharT</a>, <a href="#line236">_Traits</a>&gt;&amp; 
+<b><a name="line238">238  </a></b>	    operator&lt;&lt;(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line236">_CharT</a>, <a href="#line236">_Traits</a>&gt;&amp; <b>__os</b>, <a href="#line215">_Setw</a> <b>__f</b>)
+<b><a name="line239">239  </a></b>	    {
+<b><a name="line240">240  </a></b>	      <a href="#line238">__os</a>.<a href="../bits/ios_base.h/code.html#line721">width</a>(<a href="#line238">__f</a>.<a href="#line215">_M_n</a>);
+<b><a name="line241">241  </a></b>	      return <a href="#line238">__os</a>; 
+<b><a name="line242">242  </a></b>	    }
+<b><a name="line243">243  </a></b>	
+<b><a name="line244">244  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line245">245  </a></b>	  
+<b><a name="line246">246  </a></b>	  template&lt;typename <b>_MoneyT</b>&gt;
+<b><a name="line247">247  </a></b>	    struct <b>_Get_money</b> { <a href="#line246">_MoneyT</a>&amp; <b>_M_mon</b>; bool <b>_M_intl</b>; };
+<b><a name="line248">248  </a></b>	
+<b><a name="line249">249  </a></b>	  /**
+<b><a name="line250">250  </a></b>	   *  @brief  Extended manipulator for extracting money.
+<b><a name="line251">251  </a></b>	   *  @param  __mon  Either long double or a specialization of @c basic_string.
+<b><a name="line252">252  </a></b>	   *  @param  __intl A bool indicating whether international format 
+<b><a name="line253">253  </a></b>	   *                 is to be used.
+<b><a name="line254">254  </a></b>	   *
+<b><a name="line255">255  </a></b>	   *  Sent to a stream object, this manipulator extracts @a __mon.
+<b><a name="line256">256  </a></b>	  */
+<b><a name="line257">257  </a></b>	  template&lt;typename <b>_MoneyT</b>&gt;
+<b><a name="line258">258  </a></b>	    inline <a href="#line247">_Get_money</a>&lt;<a href="#line257">_MoneyT</a>&gt;
+<b><a name="line259">259  </a></b>	    <b>get_money</b>(<a href="#line257">_MoneyT</a>&amp; __mon, bool __intl = false)
+<b><a name="line260">260  </a></b>	    { return { __mon, __intl }; }
+<b><a name="line261">261  </a></b>	
+<b><a name="line262">262  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>, typename <b>_MoneyT</b>&gt;
+<b><a name="line263">263  </a></b>	    <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line262">_CharT</a>, <a href="#line262">_Traits</a>&gt;&amp;
+<b><a name="line264">264  </a></b>	    <b>operator&gt;&gt;</b>(<a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line262">_CharT</a>, <a href="#line262">_Traits</a>&gt;&amp; __is, <a href="#line247">_Get_money</a>&lt;<a href="#line262">_MoneyT</a>&gt; __f)
+<b><a name="line265">265  </a></b>	    {
+<b><a name="line266">266  </a></b>	      typename basic_istream&lt;_CharT, _Traits&gt;::sentry __cerb(__is, false);
+<b><a name="line267">267  </a></b>	      if (__cerb)
+<b><a name="line268">268  </a></b>		{
+<b><a name="line269">269  </a></b>		  ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line270">270  </a></b>		  <a href="../bits/exception_defines.h/code.html#line40">__try</a>
+<b><a name="line271">271  </a></b>		    {
+<b><a name="line272">272  </a></b>		      typedef istreambuf_iterator&lt;_CharT, _Traits&gt;   _Iter;
+<b><a name="line273">273  </a></b>		      typedef money_get&lt;_CharT, _Iter&gt;               _MoneyGet;
+<b><a name="line274">274  </a></b>	
+<b><a name="line275">275  </a></b>		      const _MoneyGet&amp; __mg = use_facet&lt;_MoneyGet&gt;(__is.getloc());
+<b><a name="line276">276  </a></b>		      __mg.get(_Iter(__is.rdbuf()), _Iter(), __f._M_intl,
+<b><a name="line277">277  </a></b>			       __is, __err, __f._M_mon);
+<b><a name="line278">278  </a></b>		    }
+<b><a name="line279">279  </a></b>		  <a href="../bits/exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line280">280  </a></b>		    {
+<b><a name="line281">281  </a></b>		      __is._M_setstate(ios_base::badbit);
+<b><a name="line282">282  </a></b>		      <a href="../bits/exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line283">283  </a></b>		    }
+<b><a name="line284">284  </a></b>		  <a href="../bits/exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line285">285  </a></b>		    { __is._M_setstate(ios_base::badbit); }
+<b><a name="line286">286  </a></b>		  if (__err)
+<b><a name="line287">287  </a></b>		    __is.setstate(__err);
+<b><a name="line288">288  </a></b>		}
+<b><a name="line289">289  </a></b>	      return __is; 
+<b><a name="line290">290  </a></b>	    }
+<b><a name="line291">291  </a></b>	
+<b><a name="line292">292  </a></b>	
+<b><a name="line293">293  </a></b>	  template&lt;typename <b>_MoneyT</b>&gt;
+<b><a name="line294">294  </a></b>	    struct <b>_Put_money</b> { const <a href="#line293">_MoneyT</a>&amp; <b>_M_mon</b>; bool <b>_M_intl</b>; };
+<b><a name="line295">295  </a></b>	
+<b><a name="line296">296  </a></b>	  /**
+<b><a name="line297">297  </a></b>	   *  @brief  Extended manipulator for inserting money.
+<b><a name="line298">298  </a></b>	   *  @param  __mon  Either long double or a specialization of @c basic_string.
+<b><a name="line299">299  </a></b>	   *  @param  __intl A bool indicating whether international format 
+<b><a name="line300">300  </a></b>	   *                 is to be used.
+<b><a name="line301">301  </a></b>	   *
+<b><a name="line302">302  </a></b>	   *  Sent to a stream object, this manipulator inserts @a __mon.
+<b><a name="line303">303  </a></b>	  */
+<b><a name="line304">304  </a></b>	  template&lt;typename <b>_MoneyT</b>&gt;
+<b><a name="line305">305  </a></b>	    inline <a href="#line294">_Put_money</a>&lt;<a href="#line304">_MoneyT</a>&gt;
+<b><a name="line306">306  </a></b>	    <b>put_money</b>(const <a href="#line304">_MoneyT</a>&amp; __mon, bool __intl = false)
+<b><a name="line307">307  </a></b>	    { return { __mon, __intl }; }
+<b><a name="line308">308  </a></b>	
+<b><a name="line309">309  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>, typename <b>_MoneyT</b>&gt;
+<b><a name="line310">310  </a></b>	    <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line309">_CharT</a>, <a href="#line309">_Traits</a>&gt;&amp; 
+<b><a name="line311">311  </a></b>	    <b>operator&lt;&lt;</b>(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line309">_CharT</a>, <a href="#line309">_Traits</a>&gt;&amp; __os, <a href="#line294">_Put_money</a>&lt;<a href="#line309">_MoneyT</a>&gt; __f)
+<b><a name="line312">312  </a></b>	    {
+<b><a name="line313">313  </a></b>	      typename basic_ostream&lt;_CharT, _Traits&gt;::sentry __cerb(__os);
+<b><a name="line314">314  </a></b>	      if (__cerb)
+<b><a name="line315">315  </a></b>		{
+<b><a name="line316">316  </a></b>		  ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line317">317  </a></b>		  <a href="../bits/exception_defines.h/code.html#line40">__try</a>
+<b><a name="line318">318  </a></b>		    {
+<b><a name="line319">319  </a></b>		      typedef ostreambuf_iterator&lt;_CharT, _Traits&gt;   _Iter;
+<b><a name="line320">320  </a></b>		      typedef money_put&lt;_CharT, _Iter&gt;               _MoneyPut;
+<b><a name="line321">321  </a></b>	
+<b><a name="line322">322  </a></b>		      const _MoneyPut&amp; __mp = use_facet&lt;_MoneyPut&gt;(__os.getloc());
+<b><a name="line323">323  </a></b>		      if (__mp.put(_Iter(__os.rdbuf()), __f._M_intl, __os,
+<b><a name="line324">324  </a></b>				   __os.fill(), __f._M_mon).failed())
+<b><a name="line325">325  </a></b>			__err |= ios_base::badbit;
+<b><a name="line326">326  </a></b>		    }
+<b><a name="line327">327  </a></b>		  <a href="../bits/exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line328">328  </a></b>		    {
+<b><a name="line329">329  </a></b>		      __os._M_setstate(ios_base::badbit);
+<b><a name="line330">330  </a></b>		      <a href="../bits/exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line331">331  </a></b>		    }
+<b><a name="line332">332  </a></b>		  <a href="../bits/exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line333">333  </a></b>		    { __os._M_setstate(ios_base::badbit); }
+<b><a name="line334">334  </a></b>		  if (__err)
+<b><a name="line335">335  </a></b>		    __os.setstate(__err);
+<b><a name="line336">336  </a></b>		}
+<b><a name="line337">337  </a></b>	      return __os; 
+<b><a name="line338">338  </a></b>	    }
+<b><a name="line339">339  </a></b>	
+<b><a name="line340">340  </a></b>	  template&lt;typename <b>_CharT</b>&gt;
+<b><a name="line341">341  </a></b>	    struct _Put_time
+<b><a name="line342">342  </a></b>	    {
+<b><a name="line343">343  </a></b>	      const <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../wchar.h/code.html#line137">tm</a>* <b>_M_tmb</b>;
+<b><a name="line344">344  </a></b>	      const <a href="#line340">_CharT</a>* <b>_M_fmt</b>;
+<b><a name="line345">345  </a></b>	    };
+<b><a name="line346">346  </a></b>	
+<b><a name="line347">347  </a></b>	  /**
+<b><a name="line348">348  </a></b>	   *  @brief  Extended manipulator for formatting time.
+<b><a name="line349">349  </a></b>	   *
+<b><a name="line350">350  </a></b>	   *  This manipulator uses time_put::put to format time.
+<b><a name="line351">351  </a></b>	   *  [ext.manip]
+<b><a name="line352">352  </a></b>	   *
+<b><a name="line353">353  </a></b>	   *  @param __tmb  struct tm time data to format.
+<b><a name="line354">354  </a></b>	   *  @param __fmt  format string.
+<b><a name="line355">355  </a></b>	   */
+<b><a name="line356">356  </a></b>	  template&lt;typename <b>_CharT</b>&gt;
+<b><a name="line357">357  </a></b>	    inline <a href="#line341">_Put_time</a>&lt;<a href="#line356">_CharT</a>&gt;
+<b><a name="line358">358  </a></b>	    <b>put_time</b>(const <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../wchar.h/code.html#line137">tm</a>* __tmb, const <a href="#line356">_CharT</a>* __fmt)
+<b><a name="line359">359  </a></b>	    { return { __tmb, __fmt }; }
+<b><a name="line360">360  </a></b>	
+<b><a name="line361">361  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line362">362  </a></b>	    <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line361">_CharT</a>, <a href="#line361">_Traits</a>&gt;&amp;
+<b><a name="line363">363  </a></b>	    <b>operator&lt;&lt;</b>(<a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line361">_CharT</a>, <a href="#line361">_Traits</a>&gt;&amp; __os, <a href="#line341">_Put_time</a>&lt;<a href="#line361">_CharT</a>&gt; __f)
+<b><a name="line364">364  </a></b>	    {
+<b><a name="line365">365  </a></b>	      typename basic_ostream&lt;_CharT, _Traits&gt;::sentry __cerb(__os);
+<b><a name="line366">366  </a></b>	      if (__cerb)
+<b><a name="line367">367  </a></b>	        {
+<b><a name="line368">368  </a></b>	          ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line369">369  </a></b>	          <a href="../bits/exception_defines.h/code.html#line40">__try</a>
+<b><a name="line370">370  </a></b>	            {
+<b><a name="line371">371  </a></b>	              typedef ostreambuf_iterator&lt;_CharT, _Traits&gt;   _Iter;
+<b><a name="line372">372  </a></b>	              typedef time_put&lt;_CharT, _Iter&gt;                _TimePut;
+<b><a name="line373">373  </a></b>	
+<b><a name="line374">374  </a></b>	              const _CharT* const __fmt_end = __f._M_fmt +
+<b><a name="line375">375  </a></b>	                _Traits::length(__f._M_fmt);
+<b><a name="line376">376  </a></b>	
+<b><a name="line377">377  </a></b>	              const _TimePut&amp; __mp = use_facet&lt;_TimePut&gt;(__os.getloc());
+<b><a name="line378">378  </a></b>	              if (__mp.put(_Iter(__os.rdbuf()), __os, __os.fill(),
+<b><a name="line379">379  </a></b>	                           __f._M_tmb, __f._M_fmt, __fmt_end).failed())
+<b><a name="line380">380  </a></b>	                __err |= ios_base::badbit;
+<b><a name="line381">381  </a></b>	            }
+<b><a name="line382">382  </a></b>	          <a href="../bits/exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line383">383  </a></b>	            {
+<b><a name="line384">384  </a></b>	              __os._M_setstate(ios_base::badbit);
+<b><a name="line385">385  </a></b>	              <a href="../bits/exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line386">386  </a></b>	            }
+<b><a name="line387">387  </a></b>	          <a href="../bits/exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line388">388  </a></b>	            { __os._M_setstate(ios_base::badbit); }
+<b><a name="line389">389  </a></b>	          if (__err)
+<b><a name="line390">390  </a></b>	            __os.setstate(__err);
+<b><a name="line391">391  </a></b>	        }
+<b><a name="line392">392  </a></b>	      return __os;
+<b><a name="line393">393  </a></b>	    }
+<b><a name="line394">394  </a></b>	
+<b><a name="line395">395  </a></b>	  template&lt;typename <b>_CharT</b>&gt;
+<b><a name="line396">396  </a></b>	    struct <b>_Get_time</b>
+<b><a name="line397">397  </a></b>	    {
+<b><a name="line398">398  </a></b>	      <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../wchar.h/code.html#line137">tm</a>*	    <b>_M_tmb</b>;
+<b><a name="line399">399  </a></b>	      const <a href="#line395">_CharT</a>* <b>_M_fmt</b>;
+<b><a name="line400">400  </a></b>	    };
+<b><a name="line401">401  </a></b>	
+<b><a name="line402">402  </a></b>	  /**
+<b><a name="line403">403  </a></b>	   *  @brief  Extended manipulator for extracting time.
+<b><a name="line404">404  </a></b>	   *
+<b><a name="line405">405  </a></b>	   *  This manipulator uses time_get::get to extract time.
+<b><a name="line406">406  </a></b>	   *  [ext.manip]
+<b><a name="line407">407  </a></b>	   *
+<b><a name="line408">408  </a></b>	   *  @param __tmb  struct to extract the time data to.
+<b><a name="line409">409  </a></b>	   *  @param __fmt  format string.
+<b><a name="line410">410  </a></b>	   */
+<b><a name="line411">411  </a></b>	  template&lt;typename <b>_CharT</b>&gt;
+<b><a name="line412">412  </a></b>	    inline <a href="#line396">_Get_time</a>&lt;<a href="#line411">_CharT</a>&gt;
+<b><a name="line413">413  </a></b>	    <b>get_time</b>(<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../wchar.h/code.html#line137">tm</a>* __tmb, const <a href="#line411">_CharT</a>* __fmt)
+<b><a name="line414">414  </a></b>	    { return { __tmb, __fmt }; }
+<b><a name="line415">415  </a></b>	
+<b><a name="line416">416  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line417">417  </a></b>	    <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line416">_CharT</a>, <a href="#line416">_Traits</a>&gt;&amp;
+<b><a name="line418">418  </a></b>	    <b>operator&gt;&gt;</b>(<a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line416">_CharT</a>, <a href="#line416">_Traits</a>&gt;&amp; __is, <a href="#line396">_Get_time</a>&lt;<a href="#line416">_CharT</a>&gt; __f)
+<b><a name="line419">419  </a></b>	    {
+<b><a name="line420">420  </a></b>	      typename basic_istream&lt;_CharT, _Traits&gt;::sentry __cerb(__is, false);
+<b><a name="line421">421  </a></b>	      if (__cerb)
+<b><a name="line422">422  </a></b>	        {
+<b><a name="line423">423  </a></b>	          ios_base::iostate __err = ios_base::goodbit;
+<b><a name="line424">424  </a></b>	          <a href="../bits/exception_defines.h/code.html#line40">__try</a>
+<b><a name="line425">425  </a></b>	            {
+<b><a name="line426">426  </a></b>	              typedef istreambuf_iterator&lt;_CharT, _Traits&gt;   _Iter;
+<b><a name="line427">427  </a></b>	              typedef time_get&lt;_CharT, _Iter&gt;                _TimeGet;
+<b><a name="line428">428  </a></b>	
+<b><a name="line429">429  </a></b>	              const _CharT* const __fmt_end = __f._M_fmt +
+<b><a name="line430">430  </a></b>	                _Traits::length(__f._M_fmt);
+<b><a name="line431">431  </a></b>	
+<b><a name="line432">432  </a></b>	              const _TimeGet&amp; __mg = use_facet&lt;_TimeGet&gt;(__is.getloc());
+<b><a name="line433">433  </a></b>	              __mg.get(_Iter(__is.rdbuf()), _Iter(), __is,
+<b><a name="line434">434  </a></b>	                       __err, __f._M_tmb, __f._M_fmt, __fmt_end);
+<b><a name="line435">435  </a></b>	            }
+<b><a name="line436">436  </a></b>	          <a href="../bits/exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line437">437  </a></b>	            {
+<b><a name="line438">438  </a></b>	              __is._M_setstate(ios_base::badbit);
+<b><a name="line439">439  </a></b>	              <a href="../bits/exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line440">440  </a></b>	            }
+<b><a name="line441">441  </a></b>	          <a href="../bits/exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line442">442  </a></b>	            { __is._M_setstate(ios_base::badbit); }
+<b><a name="line443">443  </a></b>	          if (__err)
+<b><a name="line444">444  </a></b>	            __is.setstate(__err);
+<b><a name="line445">445  </a></b>	        }
+<b><a name="line446">446  </a></b>	      return __is;
+<b><a name="line447">447  </a></b>	    }
+<b><a name="line448">448  </a></b>	
+<b><a name="line449">449  </a></b>	#if __cplusplus &gt; 201103L
+<b><a name="line450">450  </a></b>	
+<b><a name="line451">451  </a></b>	#define __cpp_lib_quoted_string_io 201304
+<b><a name="line452">452  </a></b>	
+<b><a name="line453">453  </a></b>	  /**
+<b><a name="line454">454  </a></b>	   * @brief Manipulator for quoted strings.
+<b><a name="line455">455  </a></b>	   * @param __string String to quote.
+<b><a name="line456">456  </a></b>	   * @param __delim  Character to quote string with.
+<b><a name="line457">457  </a></b>	   * @param __escape Escape character to escape itself or quote character.
+<b><a name="line458">458  </a></b>	   */
+<b><a name="line459">459  </a></b>	  template&lt;typename _CharT&gt;
+<b><a name="line460">460  </a></b>	    inline auto
+<b><a name="line461">461  </a></b>	    quoted(const _CharT* __string,
+<b><a name="line462">462  </a></b>		   _CharT __delim = _CharT('&quot;'), _CharT __escape = _CharT('\\'))
+<b><a name="line463">463  </a></b>	    {
+<b><a name="line464">464  </a></b>	      return __detail::_Quoted_string&lt;const _CharT*, _CharT&gt;(__string, __delim,
+<b><a name="line465">465  </a></b>								     __escape);
+<b><a name="line466">466  </a></b>	    }
+<b><a name="line467">467  </a></b>	
+<b><a name="line468">468  </a></b>	  template&lt;typename _CharT, typename _Traits, typename _Alloc&gt;
+<b><a name="line469">469  </a></b>	    inline auto
+<b><a name="line470">470  </a></b>	    quoted(const basic_string&lt;_CharT, _Traits, _Alloc&gt;&amp; __string,
+<b><a name="line471">471  </a></b>		   _CharT __delim = _CharT('&quot;'), _CharT __escape = _CharT('\\'))
+<b><a name="line472">472  </a></b>	    {
+<b><a name="line473">473  </a></b>	      return __detail::_Quoted_string&lt;
+<b><a name="line474">474  </a></b>				const basic_string&lt;_CharT, _Traits, _Alloc&gt;&amp;, _CharT&gt;(
+<b><a name="line475">475  </a></b>					__string, __delim, __escape);
+<b><a name="line476">476  </a></b>	    }
+<b><a name="line477">477  </a></b>	
+<b><a name="line478">478  </a></b>	  template&lt;typename _CharT, typename _Traits, typename _Alloc&gt;
+<b><a name="line479">479  </a></b>	    inline auto
+<b><a name="line480">480  </a></b>	    quoted(basic_string&lt;_CharT, _Traits, _Alloc&gt;&amp; __string,
+<b><a name="line481">481  </a></b>		   _CharT __delim = _CharT('&quot;'), _CharT __escape = _CharT('\\'))
+<b><a name="line482">482  </a></b>	    {
+<b><a name="line483">483  </a></b>	      return __detail::_Quoted_string&lt;
+<b><a name="line484">484  </a></b>				basic_string&lt;_CharT, _Traits, _Alloc&gt;&amp;, _CharT&gt;(
+<b><a name="line485">485  </a></b>					__string, __delim, __escape);
+<b><a name="line486">486  </a></b>	    }
+<b><a name="line487">487  </a></b>	
+<b><a name="line488">488  </a></b>	#endif // __cplusplus &gt; 201103L
+<b><a name="line489">489  </a></b>	
+<b><a name="line490">490  </a></b>	#endif // __cplusplus &gt;= 201103L
+<b><a name="line491">491  </a></b>	
+<b><a name="line492">492  </a></b>	  // Inhibit implicit instantiations for required instantiations,
+<b><a name="line493">493  </a></b>	  // which are defined via explicit instantiations elsewhere.  
+<b><a name="line494">494  </a></b>	  // NB:  This syntax is a GNU extension.
+<b><a name="line495">495  </a></b>	#if <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line149">_GLIBCXX_EXTERN_TEMPLATE</a>
+<b><a name="line496">496  </a></b>	  extern template <a href="../iosfwd/code.html#line141">ostream</a>&amp; operator&lt;&lt;(<a href="../iosfwd/code.html#line141">ostream</a>&amp;, <a href="#line154">_Setfill</a>&lt;char&gt;);
+<b><a name="line497">497  </a></b>	  extern template <a href="../iosfwd/code.html#line141">ostream</a>&amp; operator&lt;&lt;(<a href="../iosfwd/code.html#line141">ostream</a>&amp;, <a href="#line86">_Setiosflags</a>);
+<b><a name="line498">498  </a></b>	  extern template <a href="../iosfwd/code.html#line141">ostream</a>&amp; operator&lt;&lt;(<a href="../iosfwd/code.html#line141">ostream</a>&amp;, <a href="#line56">_Resetiosflags</a>);
+<b><a name="line499">499  </a></b>	  extern template <a href="../iosfwd/code.html#line141">ostream</a>&amp; operator&lt;&lt;(<a href="../iosfwd/code.html#line141">ostream</a>&amp;, <a href="#line116">_Setbase</a>);
+<b><a name="line500">500  </a></b>	  extern template <a href="../iosfwd/code.html#line141">ostream</a>&amp; operator&lt;&lt;(<a href="../iosfwd/code.html#line141">ostream</a>&amp;, <a href="#line185">_Setprecision</a>);
+<b><a name="line501">501  </a></b>	  extern template <a href="../iosfwd/code.html#line141">ostream</a>&amp; operator&lt;&lt;(<a href="../iosfwd/code.html#line141">ostream</a>&amp;, <a href="#line215">_Setw</a>);
+<b><a name="line502">502  </a></b>	  extern template <a href="../iosfwd/code.html#line138">istream</a>&amp; operator&gt;&gt;(<a href="../iosfwd/code.html#line138">istream</a>&amp;, <a href="#line154">_Setfill</a>&lt;char&gt;);
+<b><a name="line503">503  </a></b>	  extern template <a href="../iosfwd/code.html#line138">istream</a>&amp; operator&gt;&gt;(<a href="../iosfwd/code.html#line138">istream</a>&amp;, <a href="#line86">_Setiosflags</a>);
+<b><a name="line504">504  </a></b>	  extern template <a href="../iosfwd/code.html#line138">istream</a>&amp; operator&gt;&gt;(<a href="../iosfwd/code.html#line138">istream</a>&amp;, <a href="#line56">_Resetiosflags</a>);
+<b><a name="line505">505  </a></b>	  extern template <a href="../iosfwd/code.html#line138">istream</a>&amp; operator&gt;&gt;(<a href="../iosfwd/code.html#line138">istream</a>&amp;, <a href="#line116">_Setbase</a>);
+<b><a name="line506">506  </a></b>	  extern template <a href="../iosfwd/code.html#line138">istream</a>&amp; operator&gt;&gt;(<a href="../iosfwd/code.html#line138">istream</a>&amp;, <a href="#line185">_Setprecision</a>);
+<b><a name="line507">507  </a></b>	  extern template <a href="../iosfwd/code.html#line138">istream</a>&amp; operator&gt;&gt;(<a href="../iosfwd/code.html#line138">istream</a>&amp;, <a href="#line215">_Setw</a>);
+<b><a name="line508">508  </a></b>	
+<b><a name="line509">509  </a></b>	#ifdef <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1432">_GLIBCXX_USE_WCHAR_T</a>
+<b><a name="line510">510  </a></b>	  extern template <a href="../iosfwd/code.html#line181">wostream</a>&amp; operator&lt;&lt;(<a href="../iosfwd/code.html#line181">wostream</a>&amp;, <a href="#line154">_Setfill</a>&lt;wchar_t&gt;);
+<b><a name="line511">511  </a></b>	  extern template <a href="../iosfwd/code.html#line181">wostream</a>&amp; operator&lt;&lt;(<a href="../iosfwd/code.html#line181">wostream</a>&amp;, <a href="#line86">_Setiosflags</a>);
+<b><a name="line512">512  </a></b>	  extern template <a href="../iosfwd/code.html#line181">wostream</a>&amp; operator&lt;&lt;(<a href="../iosfwd/code.html#line181">wostream</a>&amp;, <a href="#line56">_Resetiosflags</a>);
+<b><a name="line513">513  </a></b>	  extern template <a href="../iosfwd/code.html#line181">wostream</a>&amp; operator&lt;&lt;(<a href="../iosfwd/code.html#line181">wostream</a>&amp;, <a href="#line116">_Setbase</a>);
+<b><a name="line514">514  </a></b>	  extern template <a href="../iosfwd/code.html#line181">wostream</a>&amp; operator&lt;&lt;(<a href="../iosfwd/code.html#line181">wostream</a>&amp;, <a href="#line185">_Setprecision</a>);
+<b><a name="line515">515  </a></b>	  extern template <a href="../iosfwd/code.html#line181">wostream</a>&amp; operator&lt;&lt;(<a href="../iosfwd/code.html#line181">wostream</a>&amp;, <a href="#line215">_Setw</a>);
+<b><a name="line516">516  </a></b>	  extern template <a href="../iosfwd/code.html#line178">wistream</a>&amp; operator&gt;&gt;(<a href="../iosfwd/code.html#line178">wistream</a>&amp;, <a href="#line154">_Setfill</a>&lt;wchar_t&gt;);
+<b><a name="line517">517  </a></b>	  extern template <a href="../iosfwd/code.html#line178">wistream</a>&amp; operator&gt;&gt;(<a href="../iosfwd/code.html#line178">wistream</a>&amp;, <a href="#line86">_Setiosflags</a>);
+<b><a name="line518">518  </a></b>	  extern template <a href="../iosfwd/code.html#line178">wistream</a>&amp; operator&gt;&gt;(<a href="../iosfwd/code.html#line178">wistream</a>&amp;, <a href="#line56">_Resetiosflags</a>);
+<b><a name="line519">519  </a></b>	  extern template <a href="../iosfwd/code.html#line178">wistream</a>&amp; operator&gt;&gt;(<a href="../iosfwd/code.html#line178">wistream</a>&amp;, <a href="#line116">_Setbase</a>);
+<b><a name="line520">520  </a></b>	  extern template <a href="../iosfwd/code.html#line178">wistream</a>&amp; operator&gt;&gt;(<a href="../iosfwd/code.html#line178">wistream</a>&amp;, <a href="#line185">_Setprecision</a>);
+<b><a name="line521">521  </a></b>	  extern template <a href="../iosfwd/code.html#line178">wistream</a>&amp; operator&gt;&gt;(<a href="../iosfwd/code.html#line178">wistream</a>&amp;, <a href="#line215">_Setw</a>);
+<b><a name="line522">522  </a></b>	#endif
+<b><a name="line523">523  </a></b>	#endif
+<b><a name="line524">524  </a></b>	
+<b><a name="line525">525  </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line526">526  </a></b>	} // namespace
+<b><a name="line527">527  </a></b>	
+<b><a name="line528">528  </a></b>	#endif /* _GLIBCXX_IOMANIP */
+<b><a name="line529">529  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

@@ -1,0 +1,19 @@
+name=default_pf_vf
+test_mask=0x0F #bit 0 - auto mode, 1 - poll mode, bit 2 - intr mode, bit 3 - aggr mode
+repeat=1 #number of iterations
+filter=-*ST016_64B_desc*:*DMACTL*:*DEBUGFS*
+#master_pf=0
+run_gtest=1
+pf_qmax_cfg_en=(1 1 1 1 1 1 1 1)
+pf_qmax=(502 502 502 502 502 502 502 502)
+pf_nvf=(1 1 1 1 1 1 1 1) #number of VFs in PF
+vf_pf0_qmax=(10)
+vf_pf1_qmax=(10)
+vf_pf2_qmax=(10)
+vf_pf3_qmax=(10)
+vf_pf4_qmax=(10)
+vf_pf5_qmax=(10)
+vf_pf6_qmax=(10)
+vf_pf7_qmax=(10)
+valid_drv=(linux dpdk windows)
+#necessary dummy line

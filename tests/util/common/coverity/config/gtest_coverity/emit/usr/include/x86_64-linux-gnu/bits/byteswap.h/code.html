@@ -1,0 +1,212 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/byteswap.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Macros to swap the order of bytes in integer values.
+<b><a name="line2">2    </a></b>	   Copyright (C) 1997-2016 Free Software Foundation, Inc.
+<b><a name="line3">3    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line6">6    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line7">7    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line8">8    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line13">13   </a></b>	   Lesser General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line16">16   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line17">17   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	#if !defined _BYTESWAP_H &amp;&amp; !defined _NETINET_IN_H &amp;&amp; !defined <a href="../../../endian.h/code.html#line19">_ENDIAN_H</a>
+<b><a name="line20">20   </a></b>	# error &quot;Never use &lt;bits/byteswap.h&gt; directly; include &lt;byteswap.h&gt; instead.&quot;
+<b><a name="line21">21   </a></b>	#endif
+<b><a name="line22">22   </a></b>	
+<b><a name="line23">23   </a></b>	#ifndef _BITS_BYTESWAP_H
+<b><a name="line24">24   </a></b>	#define <b>_BITS_BYTESWAP_H</b> 1
+<b><a name="line25">25   </a></b>	
+<b><a name="line26">26   </a></b>	#include &lt;features.h&gt;
+<b><a name="line27">27   </a></b>	#include &lt;bits/types.h&gt;
+<b><a name="line28">28   </a></b>	#include &lt;bits/wordsize.h&gt;
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	/* Swap bytes in 16 bit value.  */
+<b><a name="line31">31   </a></b>	#define <b>__bswap_constant_16</b>(x) \
+<b><a name="line32">32   </a></b>	     ((unsigned short int) ((((x) &gt;&gt; 8) &amp; 0xff) | (((x) &amp; 0xff) &lt;&lt; 8)))
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	/* Get __bswap_16.  */
+<b><a name="line35">35   </a></b>	#include &lt;bits/byteswap-16.h&gt;
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	/* Swap bytes in 32 bit value.  */
+<b><a name="line38">38   </a></b>	#define <b>__bswap_constant_32</b>(x) \
+<b><a name="line39">39   </a></b>	     ((((x) &amp; 0xff000000) &gt;&gt; 24) | (((x) &amp; 0x00ff0000) &gt;&gt;  8) |		      \
+<b><a name="line40">40   </a></b>	      (((x) &amp; 0x0000ff00) &lt;&lt;  8) | (((x) &amp; 0x000000ff) &lt;&lt; 24))
+<b><a name="line41">41   </a></b>	
+<b><a name="line42">42   </a></b>	#ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line240">__GNUC__</a>
+<b><a name="line43">43   </a></b>	# if <a href="../../../features.h/code.html#line136">__GNUC_PREREQ</a> (4, 3)
+<b><a name="line44">44   </a></b>	static __inline unsigned int
+<b><a name="line45">45   </a></b>	<b>__bswap_32</b> (unsigned int <b>__bsx</b>)
+<b><a name="line46">46   </a></b>	{
+<b><a name="line47">47   </a></b>	  return __builtin_bswap32 (<a href="#line45">__bsx</a>);
+<b><a name="line48">48   </a></b>	}
+<b><a name="line49">49   </a></b>	# elif __GNUC__ &gt;= 2
+<b><a name="line50">50   </a></b>	#  if __WORDSIZE == 64 || (defined __i486__ || defined __pentium__	      \
+<b><a name="line51">51   </a></b>				   || defined __pentiumpro__ || defined __pentium4__  \
+<b><a name="line52">52   </a></b>				   || defined __k8__ || defined __athlon__	      \
+<b><a name="line53">53   </a></b>				   || defined __k6__ || defined __nocona__	      \
+<b><a name="line54">54   </a></b>				   || defined __core2__ || defined __geode__	      \
+<b><a name="line55">55   </a></b>				   || defined __amdfam10__)
+<b><a name="line56">56   </a></b>	/* To swap the bytes in a word the i486 processors and up provide the
+<b><a name="line57">57   </a></b>	   `bswap' opcode.  On i386 we have to use three instructions.  */
+<b><a name="line58">58   </a></b>	#   define __bswap_32(x) \
+<b><a name="line59">59   </a></b>	      (__extension__							      \
+<b><a name="line60">60   </a></b>	       ({ unsigned int __v, __x = (x);					      \
+<b><a name="line61">61   </a></b>		  if (__builtin_constant_p (__x))				      \
+<b><a name="line62">62   </a></b>		    __v = __bswap_constant_32 (__x);				      \
+<b><a name="line63">63   </a></b>		  else								      \
+<b><a name="line64">64   </a></b>		    __asm__ (&quot;bswap %0&quot; : &quot;=r&quot; (__v) : &quot;0&quot; (__x));		      \
+<b><a name="line65">65   </a></b>		  __v; }))
+<b><a name="line66">66   </a></b>	#  else
+<b><a name="line67">67   </a></b>	#   define __bswap_32(x)						      \
+<b><a name="line68">68   </a></b>	      (__extension__							      \
+<b><a name="line69">69   </a></b>	       ({ unsigned int __v, __x = (x);					      \
+<b><a name="line70">70   </a></b>		  if (__builtin_constant_p (__x))				      \
+<b><a name="line71">71   </a></b>		    __v = __bswap_constant_32 (__x);				      \
+<b><a name="line72">72   </a></b>		  else								      \
+<b><a name="line73">73   </a></b>		    __asm__ (&quot;rorw $8, %w0;&quot;					      \
+<b><a name="line74">74   </a></b>			     &quot;rorl $16, %0;&quot;					      \
+<b><a name="line75">75   </a></b>			     &quot;rorw $8, %w0&quot;					      \
+<b><a name="line76">76   </a></b>			     : &quot;=r&quot; (__v)					      \
+<b><a name="line77">77   </a></b>			     : &quot;0&quot; (__x)					      \
+<b><a name="line78">78   </a></b>			     : &quot;cc&quot;);						      \
+<b><a name="line79">79   </a></b>		  __v; }))
+<b><a name="line80">80   </a></b>	#  endif
+<b><a name="line81">81   </a></b>	# else
+<b><a name="line82">82   </a></b>	#  define __bswap_32(x) \
+<b><a name="line83">83   </a></b>	     (__extension__							      \
+<b><a name="line84">84   </a></b>	      ({ unsigned int __x = (x); __bswap_constant_32 (__x); }))
+<b><a name="line85">85   </a></b>	# endif
+<b><a name="line86">86   </a></b>	#else
+<b><a name="line87">87   </a></b>	static __inline unsigned int
+<b><a name="line88">88   </a></b>	__bswap_32 (unsigned int __bsx)
+<b><a name="line89">89   </a></b>	{
+<b><a name="line90">90   </a></b>	  return __bswap_constant_32 (__bsx);
+<b><a name="line91">91   </a></b>	}
+<b><a name="line92">92   </a></b>	#endif
+<b><a name="line93">93   </a></b>	
+<b><a name="line94">94   </a></b>	
+<b><a name="line95">95   </a></b>	#if <a href="../../../features.h/code.html#line136">__GNUC_PREREQ</a> (2, 0)
+<b><a name="line96">96   </a></b>	/* Swap bytes in 64 bit value.  */
+<b><a name="line97">97   </a></b>	# define <b>__bswap_constant_64</b>(x) \
+<b><a name="line98">98   </a></b>	     (__extension__ ((((x) &amp; 0xff00000000000000ull) &gt;&gt; 56)		      \
+<b><a name="line99">99   </a></b>			     | (((x) &amp; 0x00ff000000000000ull) &gt;&gt; 40)		      \
+<b><a name="line100">100  </a></b>			     | (((x) &amp; 0x0000ff0000000000ull) &gt;&gt; 24)		      \
+<b><a name="line101">101  </a></b>			     | (((x) &amp; 0x000000ff00000000ull) &gt;&gt; 8)		      \
+<b><a name="line102">102  </a></b>			     | (((x) &amp; 0x00000000ff000000ull) &lt;&lt; 8)		      \
+<b><a name="line103">103  </a></b>			     | (((x) &amp; 0x0000000000ff0000ull) &lt;&lt; 24)		      \
+<b><a name="line104">104  </a></b>			     | (((x) &amp; 0x000000000000ff00ull) &lt;&lt; 40)		      \
+<b><a name="line105">105  </a></b>			     | (((x) &amp; 0x00000000000000ffull) &lt;&lt; 56)))
+<b><a name="line106">106  </a></b>	
+<b><a name="line107">107  </a></b>	# if <a href="../../../features.h/code.html#line136">__GNUC_PREREQ</a> (4, 3)
+<b><a name="line108">108  </a></b>	static __inline <a href="../types.h/code.html#line44">__uint64_t</a>
+<b><a name="line109">109  </a></b>	<b>__bswap_64</b> (<a href="../types.h/code.html#line44">__uint64_t</a> <b>__bsx</b>)
+<b><a name="line110">110  </a></b>	{
+<b><a name="line111">111  </a></b>	  return __builtin_bswap64 (<a href="#line109">__bsx</a>);
+<b><a name="line112">112  </a></b>	}
+<b><a name="line113">113  </a></b>	# elif __WORDSIZE == 64
+<b><a name="line114">114  </a></b>	#  define __bswap_64(x) \
+<b><a name="line115">115  </a></b>	     (__extension__							      \
+<b><a name="line116">116  </a></b>	      ({ __uint64_t __v, __x = (x);					      \
+<b><a name="line117">117  </a></b>		 if (__builtin_constant_p (__x))				      \
+<b><a name="line118">118  </a></b>		   __v = __bswap_constant_64 (__x);				      \
+<b><a name="line119">119  </a></b>		 else								      \
+<b><a name="line120">120  </a></b>		   __asm__ (&quot;bswap %q0&quot; : &quot;=r&quot; (__v) : &quot;0&quot; (__x));		      \
+<b><a name="line121">121  </a></b>		 __v; }))
+<b><a name="line122">122  </a></b>	# else
+<b><a name="line123">123  </a></b>	#  define __bswap_64(x) \
+<b><a name="line124">124  </a></b>	     (__extension__                                                           \
+<b><a name="line125">125  </a></b>	      ({ union { __extension__ __uint64_t __ll;		                      \
+<b><a name="line126">126  </a></b>			 unsigned int __l[2]; } __w, __r;                             \
+<b><a name="line127">127  </a></b>		 if (__builtin_constant_p (x))                                        \
+<b><a name="line128">128  </a></b>		   __r.__ll = __bswap_constant_64 (x);                                \
+<b><a name="line129">129  </a></b>		 else                                                                 \
+<b><a name="line130">130  </a></b>		   {                                                                  \
+<b><a name="line131">131  </a></b>		     __w.__ll = (x);                                                  \
+<b><a name="line132">132  </a></b>		     __r.__l[0] = __bswap_32 (__w.__l[1]);                            \
+<b><a name="line133">133  </a></b>		     __r.__l[1] = __bswap_32 (__w.__l[0]);                            \
+<b><a name="line134">134  </a></b>		   }                                                                  \
+<b><a name="line135">135  </a></b>		 __r.__ll; }))
+<b><a name="line136">136  </a></b>	# endif
+<b><a name="line137">137  </a></b>	#else
+<b><a name="line138">138  </a></b>	# define __bswap_constant_64(x) \
+<b><a name="line139">139  </a></b>	     ((((x) &amp; 0xff00000000000000ull) &gt;&gt; 56)				      \
+<b><a name="line140">140  </a></b>	      | (((x) &amp; 0x00ff000000000000ull) &gt;&gt; 40)				      \
+<b><a name="line141">141  </a></b>	      | (((x) &amp; 0x0000ff0000000000ull) &gt;&gt; 24)				      \
+<b><a name="line142">142  </a></b>	      | (((x) &amp; 0x000000ff00000000ull) &gt;&gt; 8)				      \
+<b><a name="line143">143  </a></b>	      | (((x) &amp; 0x00000000ff000000ull) &lt;&lt; 8)				      \
+<b><a name="line144">144  </a></b>	      | (((x) &amp; 0x0000000000ff0000ull) &lt;&lt; 24)				      \
+<b><a name="line145">145  </a></b>	      | (((x) &amp; 0x000000000000ff00ull) &lt;&lt; 40)				      \
+<b><a name="line146">146  </a></b>	      | (((x) &amp; 0x00000000000000ffull) &lt;&lt; 56))
+<b><a name="line147">147  </a></b>	
+<b><a name="line148">148  </a></b>	static __inline __uint64_t
+<b><a name="line149">149  </a></b>	__bswap_64 (__uint64_t __bsx)
+<b><a name="line150">150  </a></b>	{
+<b><a name="line151">151  </a></b>	  return __bswap_constant_64 (__bsx);
+<b><a name="line152">152  </a></b>	}
+<b><a name="line153">153  </a></b>	#endif
+<b><a name="line154">154  </a></b>	
+<b><a name="line155">155  </a></b>	#endif /* _BITS_BYTESWAP_H */
+<b><a name="line156">156  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

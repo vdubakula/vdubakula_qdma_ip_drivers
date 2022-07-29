@@ -1,0 +1,709 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_memory.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2010-2014 Intel Corporation
+<b><a name="line3">3    </a></b>	 */
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	#ifndef _RTE_MEMORY_H_
+<b><a name="line6">6    </a></b>	#define <b>_RTE_MEMORY_H_</b>
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	/**
+<b><a name="line9">9    </a></b>	 * @file
+<b><a name="line10">10   </a></b>	 *
+<b><a name="line11">11   </a></b>	 * Memory-related RTE API.
+<b><a name="line12">12   </a></b>	 */
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	#include &lt;stdint.h&gt;
+<b><a name="line15">15   </a></b>	#include &lt;stddef.h&gt;
+<b><a name="line16">16   </a></b>	#include &lt;stdio.h&gt;
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	#ifdef __cplusplus
+<b><a name="line19">19   </a></b>	extern &quot;C&quot; {
+<b><a name="line20">20   </a></b>	#endif
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	#include &lt;rte_common.h&gt;
+<b><a name="line23">23   </a></b>	#include &lt;rte_compat.h&gt;
+<b><a name="line24">24   </a></b>	#include &lt;rte_config.h&gt;
+<b><a name="line25">25   </a></b>	
+<b><a name="line26">26   </a></b>	/* forward declaration for pointers */
+<b><a name="line27">27   </a></b>	struct rte_memseg_list;
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	__extension__
+<b><a name="line30">30   </a></b>	enum <b>rte_page_sizes</b> {
+<b><a name="line31">31   </a></b>		<b>RTE_PGSIZE_4K</b>    = 1ULL &lt;&lt; 12,
+<b><a name="line32">32   </a></b>		<b>RTE_PGSIZE_64K</b>   = 1ULL &lt;&lt; 16,
+<b><a name="line33">33   </a></b>		<b>RTE_PGSIZE_256K</b>  = 1ULL &lt;&lt; 18,
+<b><a name="line34">34   </a></b>		<b>RTE_PGSIZE_2M</b>    = 1ULL &lt;&lt; 21,
+<b><a name="line35">35   </a></b>		<b>RTE_PGSIZE_16M</b>   = 1ULL &lt;&lt; 24,
+<b><a name="line36">36   </a></b>		<b>RTE_PGSIZE_256M</b>  = 1ULL &lt;&lt; 28,
+<b><a name="line37">37   </a></b>		<b>RTE_PGSIZE_512M</b>  = 1ULL &lt;&lt; 29,
+<b><a name="line38">38   </a></b>		<b>RTE_PGSIZE_1G</b>    = 1ULL &lt;&lt; 30,
+<b><a name="line39">39   </a></b>		<b>RTE_PGSIZE_4G</b>    = 1ULL &lt;&lt; 32,
+<b><a name="line40">40   </a></b>		<b>RTE_PGSIZE_16G</b>   = 1ULL &lt;&lt; 34,
+<b><a name="line41">41   </a></b>	};
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	#define <b>SOCKET_ID_ANY</b> -1                    /**&lt; Any NUMA socket. */
+<b><a name="line44">44   </a></b>	#define <b>RTE_CACHE_LINE_MASK</b> (RTE_CACHE_LINE_SIZE-1) /**&lt; Cache line mask. */
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	#define <b>RTE_CACHE_LINE_ROUNDUP</b>(size) \
+<b><a name="line47">47   </a></b>		(RTE_CACHE_LINE_SIZE * ((size + RTE_CACHE_LINE_SIZE - 1) / RTE_CACHE_LINE_SIZE))
+<b><a name="line48">48   </a></b>	/**&lt; Return the first cache-aligned value greater or equal to size. */
+<b><a name="line49">49   </a></b>	
+<b><a name="line50">50   </a></b>	/**&lt; Cache line size in terms of log2 */
+<b><a name="line51">51   </a></b>	#if <a href="../rte_config.h/code.html#line19">RTE_CACHE_LINE_SIZE</a> == 64
+<b><a name="line52">52   </a></b>	#define <b>RTE_CACHE_LINE_SIZE_LOG2</b> 6
+<b><a name="line53">53   </a></b>	#elif RTE_CACHE_LINE_SIZE == 128
+<b><a name="line54">54   </a></b>	#define RTE_CACHE_LINE_SIZE_LOG2 7
+<b><a name="line55">55   </a></b>	#else
+<b><a name="line56">56   </a></b>	#error &quot;Unsupported cache line size&quot;
+<b><a name="line57">57   </a></b>	#endif
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	#define <b>RTE_CACHE_LINE_MIN_SIZE</b> 64	/**&lt; Minimum Cache line size. */
+<b><a name="line60">60   </a></b>	
+<b><a name="line61">61   </a></b>	/**
+<b><a name="line62">62   </a></b>	 * Force alignment to cache line.
+<b><a name="line63">63   </a></b>	 */
+<b><a name="line64">64   </a></b>	#define <b>__rte_cache_aligned</b> __rte_aligned(RTE_CACHE_LINE_SIZE)
+<b><a name="line65">65   </a></b>	
+<b><a name="line66">66   </a></b>	/**
+<b><a name="line67">67   </a></b>	 * Force minimum cache line alignment.
+<b><a name="line68">68   </a></b>	 */
+<b><a name="line69">69   </a></b>	#define <b>__rte_cache_min_aligned</b> __rte_aligned(RTE_CACHE_LINE_MIN_SIZE)
+<b><a name="line70">70   </a></b>	
+<b><a name="line71">71   </a></b>	typedef <a href="../../../../include/stdint.h/code.html#line55">uint64_t</a> <b>phys_addr_t</b>; /**&lt; Physical address. */
+<b><a name="line72">72   </a></b>	#define <b>RTE_BAD_PHYS_ADDR</b> ((phys_addr_t)-1)
+<b><a name="line73">73   </a></b>	/**
+<b><a name="line74">74   </a></b>	 * IO virtual address type.
+<b><a name="line75">75   </a></b>	 * When the physical addressing mode (IOVA as PA) is in use,
+<b><a name="line76">76   </a></b>	 * the translation from an IO virtual address (IOVA) to a physical address
+<b><a name="line77">77   </a></b>	 * is a direct mapping, i.e. the same value.
+<b><a name="line78">78   </a></b>	 * Otherwise, in virtual mode (IOVA as VA), an IOMMU may do the translation.
+<b><a name="line79">79   </a></b>	 */
+<b><a name="line80">80   </a></b>	typedef <a href="../../../../include/stdint.h/code.html#line55">uint64_t</a> <b>rte_iova_t</b>;
+<b><a name="line81">81   </a></b>	#define <b>RTE_BAD_IOVA</b> ((rte_iova_t)-1)
+<b><a name="line82">82   </a></b>	
+<b><a name="line83">83   </a></b>	/**
+<b><a name="line84">84   </a></b>	 * Physical memory segment descriptor.
+<b><a name="line85">85   </a></b>	 */
+<b><a name="line86">86   </a></b>	#define <b>RTE_MEMSEG_FLAG_DO_NOT_FREE</b> (1 &lt;&lt; 0)
+<b><a name="line87">87   </a></b>	/**&lt; Prevent this segment from being freed back to the OS. */
+<b><a name="line88">88   </a></b>	struct <b>rte_memseg</b> {
+<b><a name="line89">89   </a></b>		<a href="../rte_common.h/code.html#line37">RTE_STD_C11</a>
+<b><a name="line90">90   </a></b>		union {
+<b><a name="line91">91   </a></b>			<a href="#line71">phys_addr_t</a> <b>phys_addr</b>;  /**&lt; deprecated - Start physical address. */
+<b><a name="line92">92   </a></b>			<a href="#line80">rte_iova_t</a> <b>iova</b>;        /**&lt; Start IO address. */
+<b><a name="line93">93   </a></b>		};
+<b><a name="line94">94   </a></b>		<a href="../rte_common.h/code.html#line37">RTE_STD_C11</a>
+<b><a name="line95">95   </a></b>		union {
+<b><a name="line96">96   </a></b>			void *<b>addr</b>;         /**&lt; Start virtual address. */
+<b><a name="line97">97   </a></b>			<a href="../../../../include/stdint.h/code.html#line55">uint64_t</a> <b>addr_64</b>;   /**&lt; Makes sure addr is always 64 bits */
+<b><a name="line98">98   </a></b>		};
+<b><a name="line99">99   </a></b>		<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>len</b>;               /**&lt; Length of the segment. */
+<b><a name="line100">100  </a></b>		<a href="../../../../include/stdint.h/code.html#line55">uint64_t</a> <b>hugepage_sz</b>;       /**&lt; The pagesize of underlying memory */
+<b><a name="line101">101  </a></b>		<a href="../../../../include/stdint.h/code.html#line38">int32_t</a> <b>socket_id</b>;          /**&lt; NUMA socket ID. */
+<b><a name="line102">102  </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>nchannel</b>;          /**&lt; Number of channels. */
+<b><a name="line103">103  </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>nrank</b>;             /**&lt; Number of ranks. */
+<b><a name="line104">104  </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>flags</b>;             /**&lt; Memseg-specific flags */
+<b><a name="line105">105  </a></b>	} <a href="../rte_common.h/code.html#line66">__rte_packed</a>;
+<b><a name="line106">106  </a></b>	
+<b><a name="line107">107  </a></b>	/**
+<b><a name="line108">108  </a></b>	 * Lock page in physical memory and prevent from swapping.
+<b><a name="line109">109  </a></b>	 *
+<b><a name="line110">110  </a></b>	 * @param virt
+<b><a name="line111">111  </a></b>	 *   The virtual address.
+<b><a name="line112">112  </a></b>	 * @return
+<b><a name="line113">113  </a></b>	 *   0 on success, negative on error.
+<b><a name="line114">114  </a></b>	 */
+<b><a name="line115">115  </a></b>	int rte_mem_lock_page(const void *virt);
+<b><a name="line116">116  </a></b>	
+<b><a name="line117">117  </a></b>	/**
+<b><a name="line118">118  </a></b>	 * Get physical address of any mapped virtual address in the current process.
+<b><a name="line119">119  </a></b>	 * It is found by browsing the /proc/self/pagemap special file.
+<b><a name="line120">120  </a></b>	 * The page must be locked.
+<b><a name="line121">121  </a></b>	 *
+<b><a name="line122">122  </a></b>	 * @param virt
+<b><a name="line123">123  </a></b>	 *   The virtual address.
+<b><a name="line124">124  </a></b>	 * @return
+<b><a name="line125">125  </a></b>	 *   The physical address or RTE_BAD_IOVA on error.
+<b><a name="line126">126  </a></b>	 */
+<b><a name="line127">127  </a></b>	<a href="#line71">phys_addr_t</a> rte_mem_virt2phy(const void *virt);
+<b><a name="line128">128  </a></b>	
+<b><a name="line129">129  </a></b>	/**
+<b><a name="line130">130  </a></b>	 * Get IO virtual address of any mapped virtual address in the current process.
+<b><a name="line131">131  </a></b>	 *
+<b><a name="line132">132  </a></b>	 * @param virt
+<b><a name="line133">133  </a></b>	 *   The virtual address.
+<b><a name="line134">134  </a></b>	 * @return
+<b><a name="line135">135  </a></b>	 *   The IO address or RTE_BAD_IOVA on error.
+<b><a name="line136">136  </a></b>	 */
+<b><a name="line137">137  </a></b>	<a href="#line80">rte_iova_t</a> rte_mem_virt2iova(const void *virt);
+<b><a name="line138">138  </a></b>	
+<b><a name="line139">139  </a></b>	/**
+<b><a name="line140">140  </a></b>	 * Get virtual memory address corresponding to iova address.
+<b><a name="line141">141  </a></b>	 *
+<b><a name="line142">142  </a></b>	 * @note This function read-locks the memory hotplug subsystem, and thus cannot
+<b><a name="line143">143  </a></b>	 *       be used within memory-related callback functions.
+<b><a name="line144">144  </a></b>	 *
+<b><a name="line145">145  </a></b>	 * @param iova
+<b><a name="line146">146  </a></b>	 *   The iova address.
+<b><a name="line147">147  </a></b>	 * @return
+<b><a name="line148">148  </a></b>	 *   Virtual address corresponding to iova address (or NULL if address does not
+<b><a name="line149">149  </a></b>	 *   exist within DPDK memory map).
+<b><a name="line150">150  </a></b>	 */
+<b><a name="line151">151  </a></b>	<a href="../rte_compat.h/code.html#line81">__rte_experimental</a> void *
+<b><a name="line152">152  </a></b>	rte_mem_iova2virt(<a href="#line80">rte_iova_t</a> iova);
+<b><a name="line153">153  </a></b>	
+<b><a name="line154">154  </a></b>	/**
+<b><a name="line155">155  </a></b>	 * Get memseg to which a particular virtual address belongs.
+<b><a name="line156">156  </a></b>	 *
+<b><a name="line157">157  </a></b>	 * @param virt
+<b><a name="line158">158  </a></b>	 *   The virtual address.
+<b><a name="line159">159  </a></b>	 * @param msl
+<b><a name="line160">160  </a></b>	 *   The memseg list in which to look up based on ``virt`` address
+<b><a name="line161">161  </a></b>	 *   (can be NULL).
+<b><a name="line162">162  </a></b>	 * @return
+<b><a name="line163">163  </a></b>	 *   Memseg pointer on success, or NULL on error.
+<b><a name="line164">164  </a></b>	 */
+<b><a name="line165">165  </a></b>	<a href="../rte_compat.h/code.html#line81">__rte_experimental</a> struct <a href="#line88">rte_memseg</a> *
+<b><a name="line166">166  </a></b>	rte_mem_virt2memseg(const void *virt, const struct <a href="#line27">rte_memseg_list</a> *msl);
+<b><a name="line167">167  </a></b>	
+<b><a name="line168">168  </a></b>	/**
+<b><a name="line169">169  </a></b>	 * Get memseg list corresponding to virtual memory address.
+<b><a name="line170">170  </a></b>	 *
+<b><a name="line171">171  </a></b>	 * @param virt
+<b><a name="line172">172  </a></b>	 *   The virtual address.
+<b><a name="line173">173  </a></b>	 * @return
+<b><a name="line174">174  </a></b>	 *   Memseg list to which this virtual address belongs to.
+<b><a name="line175">175  </a></b>	 */
+<b><a name="line176">176  </a></b>	<a href="../rte_compat.h/code.html#line81">__rte_experimental</a> struct <a href="#line27">rte_memseg_list</a> *
+<b><a name="line177">177  </a></b>	rte_mem_virt2memseg_list(const void *virt);
+<b><a name="line178">178  </a></b>	
+<b><a name="line179">179  </a></b>	/**
+<b><a name="line180">180  </a></b>	 * Memseg walk function prototype.
+<b><a name="line181">181  </a></b>	 *
+<b><a name="line182">182  </a></b>	 * Returning 0 will continue walk
+<b><a name="line183">183  </a></b>	 * Returning 1 will stop the walk
+<b><a name="line184">184  </a></b>	 * Returning -1 will stop the walk and report error
+<b><a name="line185">185  </a></b>	 */
+<b><a name="line186">186  </a></b>	typedef int (*<b>rte_memseg_walk_t</b>)(const struct <a href="#line27">rte_memseg_list</a> *msl,
+<b><a name="line187">187  </a></b>			const struct <a href="#line88">rte_memseg</a> *ms, void *arg);
+<b><a name="line188">188  </a></b>	
+<b><a name="line189">189  </a></b>	/**
+<b><a name="line190">190  </a></b>	 * Memseg contig walk function prototype. This will trigger a callback on every
+<b><a name="line191">191  </a></b>	 * VA-contiguous are starting at memseg ``ms``, so total valid VA space at each
+<b><a name="line192">192  </a></b>	 * callback call will be [``ms-&gt;addr``, ``ms-&gt;addr + len``).
+<b><a name="line193">193  </a></b>	 *
+<b><a name="line194">194  </a></b>	 * Returning 0 will continue walk
+<b><a name="line195">195  </a></b>	 * Returning 1 will stop the walk
+<b><a name="line196">196  </a></b>	 * Returning -1 will stop the walk and report error
+<b><a name="line197">197  </a></b>	 */
+<b><a name="line198">198  </a></b>	typedef int (*<b>rte_memseg_contig_walk_t</b>)(const struct <a href="#line27">rte_memseg_list</a> *msl,
+<b><a name="line199">199  </a></b>			const struct <a href="#line88">rte_memseg</a> *ms, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> len, void *arg);
+<b><a name="line200">200  </a></b>	
+<b><a name="line201">201  </a></b>	/**
+<b><a name="line202">202  </a></b>	 * Memseg list walk function prototype. This will trigger a callback on every
+<b><a name="line203">203  </a></b>	 * allocated memseg list.
+<b><a name="line204">204  </a></b>	 *
+<b><a name="line205">205  </a></b>	 * Returning 0 will continue walk
+<b><a name="line206">206  </a></b>	 * Returning 1 will stop the walk
+<b><a name="line207">207  </a></b>	 * Returning -1 will stop the walk and report error
+<b><a name="line208">208  </a></b>	 */
+<b><a name="line209">209  </a></b>	typedef int (*<b>rte_memseg_list_walk_t</b>)(const struct <a href="#line27">rte_memseg_list</a> *msl,
+<b><a name="line210">210  </a></b>			void *arg);
+<b><a name="line211">211  </a></b>	
+<b><a name="line212">212  </a></b>	/**
+<b><a name="line213">213  </a></b>	 * Walk list of all memsegs.
+<b><a name="line214">214  </a></b>	 *
+<b><a name="line215">215  </a></b>	 * @note This function read-locks the memory hotplug subsystem, and thus cannot
+<b><a name="line216">216  </a></b>	 *       be used within memory-related callback functions.
+<b><a name="line217">217  </a></b>	 *
+<b><a name="line218">218  </a></b>	 * @note This function will also walk through externally allocated segments. It
+<b><a name="line219">219  </a></b>	 *       is up to the user to decide whether to skip through these segments.
+<b><a name="line220">220  </a></b>	 *
+<b><a name="line221">221  </a></b>	 * @param func
+<b><a name="line222">222  </a></b>	 *   Iterator function
+<b><a name="line223">223  </a></b>	 * @param arg
+<b><a name="line224">224  </a></b>	 *   Argument passed to iterator
+<b><a name="line225">225  </a></b>	 * @return
+<b><a name="line226">226  </a></b>	 *   0 if walked over the entire list
+<b><a name="line227">227  </a></b>	 *   1 if stopped by the user
+<b><a name="line228">228  </a></b>	 *   -1 if user function reported error
+<b><a name="line229">229  </a></b>	 */
+<b><a name="line230">230  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line231">231  </a></b>	rte_memseg_walk(<a href="#line186">rte_memseg_walk_t</a> func, void *arg);
+<b><a name="line232">232  </a></b>	
+<b><a name="line233">233  </a></b>	/**
+<b><a name="line234">234  </a></b>	 * Walk each VA-contiguous area.
+<b><a name="line235">235  </a></b>	 *
+<b><a name="line236">236  </a></b>	 * @note This function read-locks the memory hotplug subsystem, and thus cannot
+<b><a name="line237">237  </a></b>	 *       be used within memory-related callback functions.
+<b><a name="line238">238  </a></b>	 *
+<b><a name="line239">239  </a></b>	 * @note This function will also walk through externally allocated segments. It
+<b><a name="line240">240  </a></b>	 *       is up to the user to decide whether to skip through these segments.
+<b><a name="line241">241  </a></b>	 *
+<b><a name="line242">242  </a></b>	 * @param func
+<b><a name="line243">243  </a></b>	 *   Iterator function
+<b><a name="line244">244  </a></b>	 * @param arg
+<b><a name="line245">245  </a></b>	 *   Argument passed to iterator
+<b><a name="line246">246  </a></b>	 * @return
+<b><a name="line247">247  </a></b>	 *   0 if walked over the entire list
+<b><a name="line248">248  </a></b>	 *   1 if stopped by the user
+<b><a name="line249">249  </a></b>	 *   -1 if user function reported error
+<b><a name="line250">250  </a></b>	 */
+<b><a name="line251">251  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line252">252  </a></b>	rte_memseg_contig_walk(<a href="#line198">rte_memseg_contig_walk_t</a> func, void *arg);
+<b><a name="line253">253  </a></b>	
+<b><a name="line254">254  </a></b>	/**
+<b><a name="line255">255  </a></b>	 * Walk each allocated memseg list.
+<b><a name="line256">256  </a></b>	 *
+<b><a name="line257">257  </a></b>	 * @note This function read-locks the memory hotplug subsystem, and thus cannot
+<b><a name="line258">258  </a></b>	 *       be used within memory-related callback functions.
+<b><a name="line259">259  </a></b>	 *
+<b><a name="line260">260  </a></b>	 * @note This function will also walk through externally allocated segments. It
+<b><a name="line261">261  </a></b>	 *       is up to the user to decide whether to skip through these segments.
+<b><a name="line262">262  </a></b>	 *
+<b><a name="line263">263  </a></b>	 * @param func
+<b><a name="line264">264  </a></b>	 *   Iterator function
+<b><a name="line265">265  </a></b>	 * @param arg
+<b><a name="line266">266  </a></b>	 *   Argument passed to iterator
+<b><a name="line267">267  </a></b>	 * @return
+<b><a name="line268">268  </a></b>	 *   0 if walked over the entire list
+<b><a name="line269">269  </a></b>	 *   1 if stopped by the user
+<b><a name="line270">270  </a></b>	 *   -1 if user function reported error
+<b><a name="line271">271  </a></b>	 */
+<b><a name="line272">272  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line273">273  </a></b>	rte_memseg_list_walk(<a href="#line209">rte_memseg_list_walk_t</a> func, void *arg);
+<b><a name="line274">274  </a></b>	
+<b><a name="line275">275  </a></b>	/**
+<b><a name="line276">276  </a></b>	 * Walk list of all memsegs without performing any locking.
+<b><a name="line277">277  </a></b>	 *
+<b><a name="line278">278  </a></b>	 * @note This function does not perform any locking, and is only safe to call
+<b><a name="line279">279  </a></b>	 *       from within memory-related callback functions.
+<b><a name="line280">280  </a></b>	 *
+<b><a name="line281">281  </a></b>	 * @param func
+<b><a name="line282">282  </a></b>	 *   Iterator function
+<b><a name="line283">283  </a></b>	 * @param arg
+<b><a name="line284">284  </a></b>	 *   Argument passed to iterator
+<b><a name="line285">285  </a></b>	 * @return
+<b><a name="line286">286  </a></b>	 *   0 if walked over the entire list
+<b><a name="line287">287  </a></b>	 *   1 if stopped by the user
+<b><a name="line288">288  </a></b>	 *   -1 if user function reported error
+<b><a name="line289">289  </a></b>	 */
+<b><a name="line290">290  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line291">291  </a></b>	rte_memseg_walk_thread_unsafe(<a href="#line186">rte_memseg_walk_t</a> func, void *arg);
+<b><a name="line292">292  </a></b>	
+<b><a name="line293">293  </a></b>	/**
+<b><a name="line294">294  </a></b>	 * Walk each VA-contiguous area without performing any locking.
+<b><a name="line295">295  </a></b>	 *
+<b><a name="line296">296  </a></b>	 * @note This function does not perform any locking, and is only safe to call
+<b><a name="line297">297  </a></b>	 *       from within memory-related callback functions.
+<b><a name="line298">298  </a></b>	 *
+<b><a name="line299">299  </a></b>	 * @param func
+<b><a name="line300">300  </a></b>	 *   Iterator function
+<b><a name="line301">301  </a></b>	 * @param arg
+<b><a name="line302">302  </a></b>	 *   Argument passed to iterator
+<b><a name="line303">303  </a></b>	 * @return
+<b><a name="line304">304  </a></b>	 *   0 if walked over the entire list
+<b><a name="line305">305  </a></b>	 *   1 if stopped by the user
+<b><a name="line306">306  </a></b>	 *   -1 if user function reported error
+<b><a name="line307">307  </a></b>	 */
+<b><a name="line308">308  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line309">309  </a></b>	rte_memseg_contig_walk_thread_unsafe(<a href="#line198">rte_memseg_contig_walk_t</a> func, void *arg);
+<b><a name="line310">310  </a></b>	
+<b><a name="line311">311  </a></b>	/**
+<b><a name="line312">312  </a></b>	 * Walk each allocated memseg list without performing any locking.
+<b><a name="line313">313  </a></b>	 *
+<b><a name="line314">314  </a></b>	 * @note This function does not perform any locking, and is only safe to call
+<b><a name="line315">315  </a></b>	 *       from within memory-related callback functions.
+<b><a name="line316">316  </a></b>	 *
+<b><a name="line317">317  </a></b>	 * @param func
+<b><a name="line318">318  </a></b>	 *   Iterator function
+<b><a name="line319">319  </a></b>	 * @param arg
+<b><a name="line320">320  </a></b>	 *   Argument passed to iterator
+<b><a name="line321">321  </a></b>	 * @return
+<b><a name="line322">322  </a></b>	 *   0 if walked over the entire list
+<b><a name="line323">323  </a></b>	 *   1 if stopped by the user
+<b><a name="line324">324  </a></b>	 *   -1 if user function reported error
+<b><a name="line325">325  </a></b>	 */
+<b><a name="line326">326  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line327">327  </a></b>	rte_memseg_list_walk_thread_unsafe(<a href="#line209">rte_memseg_list_walk_t</a> func, void *arg);
+<b><a name="line328">328  </a></b>	
+<b><a name="line329">329  </a></b>	/**
+<b><a name="line330">330  </a></b>	 * Return file descriptor associated with a particular memseg (if available).
+<b><a name="line331">331  </a></b>	 *
+<b><a name="line332">332  </a></b>	 * @note This function read-locks the memory hotplug subsystem, and thus cannot
+<b><a name="line333">333  </a></b>	 *       be used within memory-related callback functions.
+<b><a name="line334">334  </a></b>	 *
+<b><a name="line335">335  </a></b>	 * @note This returns an internal file descriptor. Performing any operations on
+<b><a name="line336">336  </a></b>	 *       this file descriptor is inherently dangerous, so it should be treated
+<b><a name="line337">337  </a></b>	 *       as read-only for all intents and purposes.
+<b><a name="line338">338  </a></b>	 *
+<b><a name="line339">339  </a></b>	 * @param ms
+<b><a name="line340">340  </a></b>	 *   A pointer to memseg for which to get file descriptor.
+<b><a name="line341">341  </a></b>	 *
+<b><a name="line342">342  </a></b>	 * @return
+<b><a name="line343">343  </a></b>	 *   Valid file descriptor in case of success.
+<b><a name="line344">344  </a></b>	 *   -1 in case of error, with ``rte_errno`` set to the following values:
+<b><a name="line345">345  </a></b>	 *     - EINVAL  - ``ms`` pointer was NULL or did not point to a valid memseg
+<b><a name="line346">346  </a></b>	 *     - ENODEV  - ``ms`` fd is not available
+<b><a name="line347">347  </a></b>	 *     - ENOENT  - ``ms`` is an unused segment
+<b><a name="line348">348  </a></b>	 *     - ENOTSUP - segment fd's are not supported
+<b><a name="line349">349  </a></b>	 */
+<b><a name="line350">350  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line351">351  </a></b>	rte_memseg_get_fd(const struct <a href="#line88">rte_memseg</a> *ms);
+<b><a name="line352">352  </a></b>	
+<b><a name="line353">353  </a></b>	/**
+<b><a name="line354">354  </a></b>	 * Return file descriptor associated with a particular memseg (if available).
+<b><a name="line355">355  </a></b>	 *
+<b><a name="line356">356  </a></b>	 * @note This function does not perform any locking, and is only safe to call
+<b><a name="line357">357  </a></b>	 *       from within memory-related callback functions.
+<b><a name="line358">358  </a></b>	 *
+<b><a name="line359">359  </a></b>	 * @note This returns an internal file descriptor. Performing any operations on
+<b><a name="line360">360  </a></b>	 *       this file descriptor is inherently dangerous, so it should be treated
+<b><a name="line361">361  </a></b>	 *       as read-only for all intents and purposes.
+<b><a name="line362">362  </a></b>	 *
+<b><a name="line363">363  </a></b>	 * @param ms
+<b><a name="line364">364  </a></b>	 *   A pointer to memseg for which to get file descriptor.
+<b><a name="line365">365  </a></b>	 *
+<b><a name="line366">366  </a></b>	 * @return
+<b><a name="line367">367  </a></b>	 *   Valid file descriptor in case of success.
+<b><a name="line368">368  </a></b>	 *   -1 in case of error, with ``rte_errno`` set to the following values:
+<b><a name="line369">369  </a></b>	 *     - EINVAL  - ``ms`` pointer was NULL or did not point to a valid memseg
+<b><a name="line370">370  </a></b>	 *     - ENODEV  - ``ms`` fd is not available
+<b><a name="line371">371  </a></b>	 *     - ENOENT  - ``ms`` is an unused segment
+<b><a name="line372">372  </a></b>	 *     - ENOTSUP - segment fd's are not supported
+<b><a name="line373">373  </a></b>	 */
+<b><a name="line374">374  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line375">375  </a></b>	rte_memseg_get_fd_thread_unsafe(const struct <a href="#line88">rte_memseg</a> *ms);
+<b><a name="line376">376  </a></b>	
+<b><a name="line377">377  </a></b>	/**
+<b><a name="line378">378  </a></b>	 * Get offset into segment file descriptor associated with a particular memseg
+<b><a name="line379">379  </a></b>	 * (if available).
+<b><a name="line380">380  </a></b>	 *
+<b><a name="line381">381  </a></b>	 * @note This function read-locks the memory hotplug subsystem, and thus cannot
+<b><a name="line382">382  </a></b>	 *       be used within memory-related callback functions.
+<b><a name="line383">383  </a></b>	 *
+<b><a name="line384">384  </a></b>	 * @param ms
+<b><a name="line385">385  </a></b>	 *   A pointer to memseg for which to get file descriptor.
+<b><a name="line386">386  </a></b>	 * @param offset
+<b><a name="line387">387  </a></b>	 *   A pointer to offset value where the result will be stored.
+<b><a name="line388">388  </a></b>	 *
+<b><a name="line389">389  </a></b>	 * @return
+<b><a name="line390">390  </a></b>	 *   Valid file descriptor in case of success.
+<b><a name="line391">391  </a></b>	 *   -1 in case of error, with ``rte_errno`` set to the following values:
+<b><a name="line392">392  </a></b>	 *     - EINVAL  - ``ms`` pointer was NULL or did not point to a valid memseg
+<b><a name="line393">393  </a></b>	 *     - EINVAL  - ``offset`` pointer was NULL
+<b><a name="line394">394  </a></b>	 *     - ENODEV  - ``ms`` fd is not available
+<b><a name="line395">395  </a></b>	 *     - ENOENT  - ``ms`` is an unused segment
+<b><a name="line396">396  </a></b>	 *     - ENOTSUP - segment fd's are not supported
+<b><a name="line397">397  </a></b>	 */
+<b><a name="line398">398  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line399">399  </a></b>	rte_memseg_get_fd_offset(const struct <a href="#line88">rte_memseg</a> *ms, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> *offset);
+<b><a name="line400">400  </a></b>	
+<b><a name="line401">401  </a></b>	/**
+<b><a name="line402">402  </a></b>	 * Get offset into segment file descriptor associated with a particular memseg
+<b><a name="line403">403  </a></b>	 * (if available).
+<b><a name="line404">404  </a></b>	 *
+<b><a name="line405">405  </a></b>	 * @note This function does not perform any locking, and is only safe to call
+<b><a name="line406">406  </a></b>	 *       from within memory-related callback functions.
+<b><a name="line407">407  </a></b>	 *
+<b><a name="line408">408  </a></b>	 * @param ms
+<b><a name="line409">409  </a></b>	 *   A pointer to memseg for which to get file descriptor.
+<b><a name="line410">410  </a></b>	 * @param offset
+<b><a name="line411">411  </a></b>	 *   A pointer to offset value where the result will be stored.
+<b><a name="line412">412  </a></b>	 *
+<b><a name="line413">413  </a></b>	 * @return
+<b><a name="line414">414  </a></b>	 *   Valid file descriptor in case of success.
+<b><a name="line415">415  </a></b>	 *   -1 in case of error, with ``rte_errno`` set to the following values:
+<b><a name="line416">416  </a></b>	 *     - EINVAL  - ``ms`` pointer was NULL or did not point to a valid memseg
+<b><a name="line417">417  </a></b>	 *     - EINVAL  - ``offset`` pointer was NULL
+<b><a name="line418">418  </a></b>	 *     - ENODEV  - ``ms`` fd is not available
+<b><a name="line419">419  </a></b>	 *     - ENOENT  - ``ms`` is an unused segment
+<b><a name="line420">420  </a></b>	 *     - ENOTSUP - segment fd's are not supported
+<b><a name="line421">421  </a></b>	 */
+<b><a name="line422">422  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line423">423  </a></b>	rte_memseg_get_fd_offset_thread_unsafe(const struct <a href="#line88">rte_memseg</a> *ms,
+<b><a name="line424">424  </a></b>			<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> *offset);
+<b><a name="line425">425  </a></b>	
+<b><a name="line426">426  </a></b>	/**
+<b><a name="line427">427  </a></b>	 * Dump the physical memory layout to a file.
+<b><a name="line428">428  </a></b>	 *
+<b><a name="line429">429  </a></b>	 * @note This function read-locks the memory hotplug subsystem, and thus cannot
+<b><a name="line430">430  </a></b>	 *       be used within memory-related callback functions.
+<b><a name="line431">431  </a></b>	 *
+<b><a name="line432">432  </a></b>	 * @param f
+<b><a name="line433">433  </a></b>	 *   A pointer to a file for output
+<b><a name="line434">434  </a></b>	 */
+<b><a name="line435">435  </a></b>	void rte_dump_physmem_layout(<a href="../../../../include/stdio.h/code.html#line48">FILE</a> *f);
+<b><a name="line436">436  </a></b>	
+<b><a name="line437">437  </a></b>	/**
+<b><a name="line438">438  </a></b>	 * Get the total amount of available physical memory.
+<b><a name="line439">439  </a></b>	 *
+<b><a name="line440">440  </a></b>	 * @note This function read-locks the memory hotplug subsystem, and thus cannot
+<b><a name="line441">441  </a></b>	 *       be used within memory-related callback functions.
+<b><a name="line442">442  </a></b>	 *
+<b><a name="line443">443  </a></b>	 * @return
+<b><a name="line444">444  </a></b>	 *    The total amount of available physical memory in bytes.
+<b><a name="line445">445  </a></b>	 */
+<b><a name="line446">446  </a></b>	<a href="../../../../include/stdint.h/code.html#line55">uint64_t</a> rte_eal_get_physmem_size(void);
+<b><a name="line447">447  </a></b>	
+<b><a name="line448">448  </a></b>	/**
+<b><a name="line449">449  </a></b>	 * Get the number of memory channels.
+<b><a name="line450">450  </a></b>	 *
+<b><a name="line451">451  </a></b>	 * @return
+<b><a name="line452">452  </a></b>	 *   The number of memory channels on the system. The value is 0 if unknown
+<b><a name="line453">453  </a></b>	 *   or not the same on all devices.
+<b><a name="line454">454  </a></b>	 */
+<b><a name="line455">455  </a></b>	unsigned rte_memory_get_nchannel(void);
+<b><a name="line456">456  </a></b>	
+<b><a name="line457">457  </a></b>	/**
+<b><a name="line458">458  </a></b>	 * Get the number of memory ranks.
+<b><a name="line459">459  </a></b>	 *
+<b><a name="line460">460  </a></b>	 * @return
+<b><a name="line461">461  </a></b>	 *   The number of memory ranks on the system. The value is 0 if unknown or
+<b><a name="line462">462  </a></b>	 *   not the same on all devices.
+<b><a name="line463">463  </a></b>	 */
+<b><a name="line464">464  </a></b>	unsigned rte_memory_get_nrank(void);
+<b><a name="line465">465  </a></b>	
+<b><a name="line466">466  </a></b>	/**
+<b><a name="line467">467  </a></b>	 * @warning
+<b><a name="line468">468  </a></b>	 * @b EXPERIMENTAL: this API may change without prior notice
+<b><a name="line469">469  </a></b>	 *
+<b><a name="line470">470  </a></b>	 * Check if all currently allocated memory segments are compliant with
+<b><a name="line471">471  </a></b>	 * supplied DMA address width.
+<b><a name="line472">472  </a></b>	 *
+<b><a name="line473">473  </a></b>	 *  @param maskbits
+<b><a name="line474">474  </a></b>	 *    Address width to check against.
+<b><a name="line475">475  </a></b>	 */
+<b><a name="line476">476  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a> rte_mem_check_dma_mask(<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> maskbits);
+<b><a name="line477">477  </a></b>	
+<b><a name="line478">478  </a></b>	/**
+<b><a name="line479">479  </a></b>	 * @warning
+<b><a name="line480">480  </a></b>	 * @b EXPERIMENTAL: this API may change without prior notice
+<b><a name="line481">481  </a></b>	 *
+<b><a name="line482">482  </a></b>	 * Check if all currently allocated memory segments are compliant with
+<b><a name="line483">483  </a></b>	 * supplied DMA address width. This function will use
+<b><a name="line484">484  </a></b>	 * rte_memseg_walk_thread_unsafe instead of rte_memseg_walk implying
+<b><a name="line485">485  </a></b>	 * memory_hotplug_lock will not be acquired avoiding deadlock during
+<b><a name="line486">486  </a></b>	 * memory initialization.
+<b><a name="line487">487  </a></b>	 *
+<b><a name="line488">488  </a></b>	 * This function is just for EAL core memory internal use. Drivers should
+<b><a name="line489">489  </a></b>	 * use the previous rte_mem_check_dma_mask.
+<b><a name="line490">490  </a></b>	 *
+<b><a name="line491">491  </a></b>	 *  @param maskbits
+<b><a name="line492">492  </a></b>	 *    Address width to check against.
+<b><a name="line493">493  </a></b>	 */
+<b><a name="line494">494  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a> rte_mem_check_dma_mask_thread_unsafe(<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> maskbits);
+<b><a name="line495">495  </a></b>	
+<b><a name="line496">496  </a></b>	/**
+<b><a name="line497">497  </a></b>	 * @warning
+<b><a name="line498">498  </a></b>	 * @b EXPERIMENTAL: this API may change without prior notice
+<b><a name="line499">499  </a></b>	 *
+<b><a name="line500">500  </a></b>	 *  Set dma mask to use once memory initialization is done. Previous functions
+<b><a name="line501">501  </a></b>	 *  rte_mem_check_dma_mask and rte_mem_check_dma_mask_thread_unsafe can not be
+<b><a name="line502">502  </a></b>	 *  used safely until memory has been initialized.
+<b><a name="line503">503  </a></b>	 */
+<b><a name="line504">504  </a></b>	void <a href="../rte_compat.h/code.html#line81">__rte_experimental</a> rte_mem_set_dma_mask(<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> maskbits);
+<b><a name="line505">505  </a></b>	
+<b><a name="line506">506  </a></b>	/**
+<b><a name="line507">507  </a></b>	 * Drivers based on uio will not load unless physical
+<b><a name="line508">508  </a></b>	 * addresses are obtainable. It is only possible to get
+<b><a name="line509">509  </a></b>	 * physical addresses when running as a privileged user.
+<b><a name="line510">510  </a></b>	 *
+<b><a name="line511">511  </a></b>	 * @return
+<b><a name="line512">512  </a></b>	 *   1 if the system is able to obtain physical addresses.
+<b><a name="line513">513  </a></b>	 *   0 if using DMA addresses through an IOMMU.
+<b><a name="line514">514  </a></b>	 */
+<b><a name="line515">515  </a></b>	int rte_eal_using_phys_addrs(void);
+<b><a name="line516">516  </a></b>	
+<b><a name="line517">517  </a></b>	
+<b><a name="line518">518  </a></b>	/**
+<b><a name="line519">519  </a></b>	 * Enum indicating which kind of memory event has happened. Used by callbacks to
+<b><a name="line520">520  </a></b>	 * distinguish between memory allocations and deallocations.
+<b><a name="line521">521  </a></b>	 */
+<b><a name="line522">522  </a></b>	enum <b>rte_mem_event</b> {
+<b><a name="line523">523  </a></b>		<b>RTE_MEM_EVENT_ALLOC</b> = 0, /**&lt; Allocation event. */
+<b><a name="line524">524  </a></b>		<b>RTE_MEM_EVENT_FREE</b>,      /**&lt; Deallocation event. */
+<b><a name="line525">525  </a></b>	};
+<b><a name="line526">526  </a></b>	#define <b>RTE_MEM_EVENT_CALLBACK_NAME_LEN</b> 64
+<b><a name="line527">527  </a></b>	/**&lt; maximum length of callback name */
+<b><a name="line528">528  </a></b>	
+<b><a name="line529">529  </a></b>	/**
+<b><a name="line530">530  </a></b>	 * Function typedef used to register callbacks for memory events.
+<b><a name="line531">531  </a></b>	 */
+<b><a name="line532">532  </a></b>	typedef void (*<b>rte_mem_event_callback_t</b>)(enum <a href="#line522">rte_mem_event</a> event_type,
+<b><a name="line533">533  </a></b>			const void *addr, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> len, void *arg);
+<b><a name="line534">534  </a></b>	
+<b><a name="line535">535  </a></b>	/**
+<b><a name="line536">536  </a></b>	 * Function used to register callbacks for memory events.
+<b><a name="line537">537  </a></b>	 *
+<b><a name="line538">538  </a></b>	 * @note callbacks will happen while memory hotplug subsystem is write-locked,
+<b><a name="line539">539  </a></b>	 *       therefore some functions (e.g. `rte_memseg_walk()`) will cause a
+<b><a name="line540">540  </a></b>	 *       deadlock when called from within such callbacks.
+<b><a name="line541">541  </a></b>	 *
+<b><a name="line542">542  </a></b>	 * @note mem event callbacks not being supported is an expected error condition,
+<b><a name="line543">543  </a></b>	 *       so user code needs to handle this situation. In these cases, return
+<b><a name="line544">544  </a></b>	 *       value will be -1, and rte_errno will be set to ENOTSUP.
+<b><a name="line545">545  </a></b>	 *
+<b><a name="line546">546  </a></b>	 * @param name
+<b><a name="line547">547  </a></b>	 *   Name associated with specified callback to be added to the list.
+<b><a name="line548">548  </a></b>	 *
+<b><a name="line549">549  </a></b>	 * @param clb
+<b><a name="line550">550  </a></b>	 *   Callback function pointer.
+<b><a name="line551">551  </a></b>	 *
+<b><a name="line552">552  </a></b>	 * @param arg
+<b><a name="line553">553  </a></b>	 *   Argument to pass to the callback.
+<b><a name="line554">554  </a></b>	 *
+<b><a name="line555">555  </a></b>	 * @return
+<b><a name="line556">556  </a></b>	 *   0 on successful callback register
+<b><a name="line557">557  </a></b>	 *   -1 on unsuccessful callback register, with rte_errno value indicating
+<b><a name="line558">558  </a></b>	 *   reason for failure.
+<b><a name="line559">559  </a></b>	 */
+<b><a name="line560">560  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line561">561  </a></b>	rte_mem_event_callback_register(const char *name, <a href="#line532">rte_mem_event_callback_t</a> clb,
+<b><a name="line562">562  </a></b>			void *arg);
+<b><a name="line563">563  </a></b>	
+<b><a name="line564">564  </a></b>	/**
+<b><a name="line565">565  </a></b>	 * Function used to unregister callbacks for memory events.
+<b><a name="line566">566  </a></b>	 *
+<b><a name="line567">567  </a></b>	 * @param name
+<b><a name="line568">568  </a></b>	 *   Name associated with specified callback to be removed from the list.
+<b><a name="line569">569  </a></b>	 *
+<b><a name="line570">570  </a></b>	 * @param arg
+<b><a name="line571">571  </a></b>	 *   Argument to look for among callbacks with specified callback name.
+<b><a name="line572">572  </a></b>	 *
+<b><a name="line573">573  </a></b>	 * @return
+<b><a name="line574">574  </a></b>	 *   0 on successful callback unregister
+<b><a name="line575">575  </a></b>	 *   -1 on unsuccessful callback unregister, with rte_errno value indicating
+<b><a name="line576">576  </a></b>	 *   reason for failure.
+<b><a name="line577">577  </a></b>	 */
+<b><a name="line578">578  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line579">579  </a></b>	rte_mem_event_callback_unregister(const char *name, void *arg);
+<b><a name="line580">580  </a></b>	
+<b><a name="line581">581  </a></b>	
+<b><a name="line582">582  </a></b>	#define <b>RTE_MEM_ALLOC_VALIDATOR_NAME_LEN</b> 64
+<b><a name="line583">583  </a></b>	/**&lt; maximum length of alloc validator name */
+<b><a name="line584">584  </a></b>	/**
+<b><a name="line585">585  </a></b>	 * Function typedef used to register memory allocation validation callbacks.
+<b><a name="line586">586  </a></b>	 *
+<b><a name="line587">587  </a></b>	 * Returning 0 will allow allocation attempt to continue. Returning -1 will
+<b><a name="line588">588  </a></b>	 * prevent allocation from succeeding.
+<b><a name="line589">589  </a></b>	 */
+<b><a name="line590">590  </a></b>	typedef int (*<b>rte_mem_alloc_validator_t</b>)(int socket_id,
+<b><a name="line591">591  </a></b>			<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> cur_limit, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> new_len);
+<b><a name="line592">592  </a></b>	
+<b><a name="line593">593  </a></b>	/**
+<b><a name="line594">594  </a></b>	 * @brief Register validator callback for memory allocations.
+<b><a name="line595">595  </a></b>	 *
+<b><a name="line596">596  </a></b>	 * Callbacks registered by this function will be called right before memory
+<b><a name="line597">597  </a></b>	 * allocator is about to trigger allocation of more pages from the system if
+<b><a name="line598">598  </a></b>	 * said allocation will bring total memory usage above specified limit on
+<b><a name="line599">599  </a></b>	 * specified socket. User will be able to cancel pending allocation if callback
+<b><a name="line600">600  </a></b>	 * returns -1.
+<b><a name="line601">601  </a></b>	 *
+<b><a name="line602">602  </a></b>	 * @note callbacks will happen while memory hotplug subsystem is write-locked,
+<b><a name="line603">603  </a></b>	 *       therefore some functions (e.g. `rte_memseg_walk()`) will cause a
+<b><a name="line604">604  </a></b>	 *       deadlock when called from within such callbacks.
+<b><a name="line605">605  </a></b>	 *
+<b><a name="line606">606  </a></b>	 * @note validator callbacks not being supported is an expected error condition,
+<b><a name="line607">607  </a></b>	 *       so user code needs to handle this situation. In these cases, return
+<b><a name="line608">608  </a></b>	 *       value will be -1, and rte_errno will be set to ENOTSUP.
+<b><a name="line609">609  </a></b>	 *
+<b><a name="line610">610  </a></b>	 * @param name
+<b><a name="line611">611  </a></b>	 *   Name associated with specified callback to be added to the list.
+<b><a name="line612">612  </a></b>	 *
+<b><a name="line613">613  </a></b>	 * @param clb
+<b><a name="line614">614  </a></b>	 *   Callback function pointer.
+<b><a name="line615">615  </a></b>	 *
+<b><a name="line616">616  </a></b>	 * @param socket_id
+<b><a name="line617">617  </a></b>	 *   Socket ID on which to watch for allocations.
+<b><a name="line618">618  </a></b>	 *
+<b><a name="line619">619  </a></b>	 * @param limit
+<b><a name="line620">620  </a></b>	 *   Limit above which to trigger callbacks.
+<b><a name="line621">621  </a></b>	 *
+<b><a name="line622">622  </a></b>	 * @return
+<b><a name="line623">623  </a></b>	 *   0 on successful callback register
+<b><a name="line624">624  </a></b>	 *   -1 on unsuccessful callback register, with rte_errno value indicating
+<b><a name="line625">625  </a></b>	 *   reason for failure.
+<b><a name="line626">626  </a></b>	 */
+<b><a name="line627">627  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line628">628  </a></b>	rte_mem_alloc_validator_register(const char *name,
+<b><a name="line629">629  </a></b>			<a href="#line590">rte_mem_alloc_validator_t</a> clb, int socket_id, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> limit);
+<b><a name="line630">630  </a></b>	
+<b><a name="line631">631  </a></b>	/**
+<b><a name="line632">632  </a></b>	 * @brief Unregister validator callback for memory allocations.
+<b><a name="line633">633  </a></b>	 *
+<b><a name="line634">634  </a></b>	 * @param name
+<b><a name="line635">635  </a></b>	 *   Name associated with specified callback to be removed from the list.
+<b><a name="line636">636  </a></b>	 *
+<b><a name="line637">637  </a></b>	 * @param socket_id
+<b><a name="line638">638  </a></b>	 *   Socket ID on which to watch for allocations.
+<b><a name="line639">639  </a></b>	 *
+<b><a name="line640">640  </a></b>	 * @return
+<b><a name="line641">641  </a></b>	 *   0 on successful callback unregister
+<b><a name="line642">642  </a></b>	 *   -1 on unsuccessful callback unregister, with rte_errno value indicating
+<b><a name="line643">643  </a></b>	 *   reason for failure.
+<b><a name="line644">644  </a></b>	 */
+<b><a name="line645">645  </a></b>	int <a href="../rte_compat.h/code.html#line81">__rte_experimental</a>
+<b><a name="line646">646  </a></b>	rte_mem_alloc_validator_unregister(const char *name, int socket_id);
+<b><a name="line647">647  </a></b>	
+<b><a name="line648">648  </a></b>	#ifdef __cplusplus
+<b><a name="line649">649  </a></b>	}
+<b><a name="line650">650  </a></b>	#endif
+<b><a name="line651">651  </a></b>	
+<b><a name="line652">652  </a></b>	#endif /* _RTE_MEMORY_H_ */
+<b><a name="line653">653  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

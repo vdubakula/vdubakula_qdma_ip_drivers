@@ -1,0 +1,17 @@
+name=default_pf
+test_mask=0x01 #bit 0 - auto mode, 1 - poll mode, bit 2 - intr mode, bit 3 - aggr mode
+repeat=1 #number of iterations
+#filter=*VF_ST010*
+filter=*VF_ST010_test_generic/qdma_st_generic_test.DISABLED_h2c_c2h_loopback*:*VF_AIOST002_randomized_transfers/qdma_st_aio_test.DISABLED_h2c_c2h_loopback*:*VF_AIOST001_tx_sizes/qdma_st_aio_test.DISABLED_h2c_c2h_loopback*
+master_pf=0
+run_gtest=1
+run_disabled=1
+pf_qmax_cfg_en=(0 0 0 0)
+pf_qmax=(0 0 0 0)
+pf_nvf=(1 1 1 1) #number of VFs in PF
+vf_pf0_qmax=(10)
+vf_pf1_qmax=(10)
+vf_pf2_qmax=(10)
+vf_pf3_qmax=(10)
+valid_drv=(linux dpdk windows)
+#necessary dummy line

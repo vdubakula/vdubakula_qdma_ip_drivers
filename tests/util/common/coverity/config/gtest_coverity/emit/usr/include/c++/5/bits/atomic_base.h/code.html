@@ -1,0 +1,853 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/bits/atomic_base.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// -*- C++ -*- header.
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2008-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file bits/atomic_base.h
+<b><a name="line26">26   </a></b>	 *  This is an internal header file, included by other library headers.
+<b><a name="line27">27   </a></b>	 *  Do not attempt to use it directly. @headername{atomic}
+<b><a name="line28">28   </a></b>	 */
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	#ifndef _GLIBCXX_ATOMIC_BASE_H
+<b><a name="line31">31   </a></b>	#define <b>_GLIBCXX_ATOMIC_BASE_H</b> 1
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	#pragma GCC system_header
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	#include &lt;bits/c++config.h&gt;
+<b><a name="line36">36   </a></b>	#include &lt;stdint.h&gt;
+<b><a name="line37">37   </a></b>	#include &lt;bits/atomic_lockfree_defines.h&gt;
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	#ifndef _GLIBCXX_ALWAYS_INLINE
+<b><a name="line40">40   </a></b>	#define <b>_GLIBCXX_ALWAYS_INLINE</b> inline __attribute__((__always_inline__))
+<b><a name="line41">41   </a></b>	#endif
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line44">44   </a></b>	{
+<b><a name="line45">45   </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line46">46   </a></b>	
+<b><a name="line47">47   </a></b>	  /**
+<b><a name="line48">48   </a></b>	   * @defgroup atomics Atomics
+<b><a name="line49">49   </a></b>	   *
+<b><a name="line50">50   </a></b>	   * Components for performing atomic operations.
+<b><a name="line51">51   </a></b>	   * @{
+<b><a name="line52">52   </a></b>	   */
+<b><a name="line53">53   </a></b>	
+<b><a name="line54">54   </a></b>	  /// Enumeration for memory_order
+<b><a name="line55">55   </a></b>	  typedef enum <b>memory_order</b>
+<b><a name="line56">56   </a></b>	    {
+<b><a name="line57">57   </a></b>	      <b>memory_order_relaxed</b>,
+<b><a name="line58">58   </a></b>	      <b>memory_order_consume</b>,
+<b><a name="line59">59   </a></b>	      <b>memory_order_acquire</b>,
+<b><a name="line60">60   </a></b>	      <b>memory_order_release</b>,
+<b><a name="line61">61   </a></b>	      <b>memory_order_acq_rel</b>,
+<b><a name="line62">62   </a></b>	      <b>memory_order_seq_cst</b>
+<b><a name="line63">63   </a></b>	    } <b>memory_order</b>;
+<b><a name="line64">64   </a></b>	
+<b><a name="line65">65   </a></b>	  enum <b>__memory_order_modifier</b>
+<b><a name="line66">66   </a></b>	    {
+<b><a name="line67">67   </a></b>	      <b>__memory_order_mask</b>          = 0x0ffff,
+<b><a name="line68">68   </a></b>	      <b>__memory_order_modifier_mask</b> = 0xffff0000,
+<b><a name="line69">69   </a></b>	      <b>__memory_order_hle_acquire</b>   = 0x10000,
+<b><a name="line70">70   </a></b>	      <b>__memory_order_hle_release</b>   = 0x20000
+<b><a name="line71">71   </a></b>	    };
+<b><a name="line72">72   </a></b>	
+<b><a name="line73">73   </a></b>	  constexpr <a href="#line63">memory_order</a>
+<b><a name="line74">74   </a></b>	  <b>operator|</b>(<a href="#line63">memory_order</a> <b>__m</b>, <a href="#line65">__memory_order_modifier</a> <b>__mod</b>)
+<b><a name="line75">75   </a></b>	  {
+<b><a name="line76">76   </a></b>	    return <a href="#line63">memory_order</a>(<a href="#line74">__m</a> | int(<a href="#line74">__mod</a>));
+<b><a name="line77">77   </a></b>	  }
+<b><a name="line78">78   </a></b>	
+<b><a name="line79">79   </a></b>	  constexpr <a href="#line63">memory_order</a>
+<b><a name="line80">80   </a></b>	  <b>operator&amp;</b>(<a href="#line63">memory_order</a> <b>__m</b>, <a href="#line65">__memory_order_modifier</a> <b>__mod</b>)
+<b><a name="line81">81   </a></b>	  {
+<b><a name="line82">82   </a></b>	    return <a href="#line63">memory_order</a>(<a href="#line80">__m</a> &amp; int(<a href="#line80">__mod</a>));
+<b><a name="line83">83   </a></b>	  }
+<b><a name="line84">84   </a></b>	
+<b><a name="line85">85   </a></b>	  // Drop release ordering as per [atomics.types.operations.req]/21
+<b><a name="line86">86   </a></b>	  constexpr <a href="#line63">memory_order</a>
+<b><a name="line87">87   </a></b>	  <b>__cmpexch_failure_order2</b>(<a href="#line63">memory_order</a> <b>__m</b>) noexcept
+<b><a name="line88">88   </a></b>	  {
+<b><a name="line89">89   </a></b>	    return <a href="#line87">__m</a> == <a href="#line61">memory_order_acq_rel</a> ? <a href="#line59">memory_order_acquire</a>
+<b><a name="line90">90   </a></b>	      : <a href="#line87">__m</a> == <a href="#line60">memory_order_release</a> ? <a href="#line57">memory_order_relaxed</a> : <a href="#line87">__m</a>;
+<b><a name="line91">91   </a></b>	  }
+<b><a name="line92">92   </a></b>	
+<b><a name="line93">93   </a></b>	  constexpr <a href="#line63">memory_order</a>
+<b><a name="line94">94   </a></b>	  <b>__cmpexch_failure_order</b>(<a href="#line63">memory_order</a> <b>__m</b>) noexcept
+<b><a name="line95">95   </a></b>	  {
+<b><a name="line96">96   </a></b>	    return <a href="#line63">memory_order</a>(<a href="#line87">__cmpexch_failure_order2</a>(<a href="#line94">__m</a> <a href="#line80">&amp;</a> <a href="#line67">__memory_order_mask</a>)
+<b><a name="line97">97   </a></b>	      | (<a href="#line94">__m</a> <a href="#line80">&amp;</a> <a href="#line68">__memory_order_modifier_mask</a>));
+<b><a name="line98">98   </a></b>	  }
+<b><a name="line99">99   </a></b>	
+<b><a name="line100">100  </a></b>	  <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> void
+<b><a name="line101">101  </a></b>	  <b>atomic_thread_fence</b>(<a href="#line63">memory_order</a> <b>__m</b>) noexcept
+<b><a name="line102">102  </a></b>	  { <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line135">__atomic_thread_fence</a>(<a href="#line101">__m</a>); }
+<b><a name="line103">103  </a></b>	
+<b><a name="line104">104  </a></b>	  <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> void
+<b><a name="line105">105  </a></b>	  <b>atomic_signal_fence</b>(<a href="#line63">memory_order</a> <b>__m</b>) noexcept
+<b><a name="line106">106  </a></b>	  { <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line136">__atomic_signal_fence</a>(<a href="#line105">__m</a>); }
+<b><a name="line107">107  </a></b>	
+<b><a name="line108">108  </a></b>	  /// kill_dependency
+<b><a name="line109">109  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line110">110  </a></b>	    inline <a href="#line109">_Tp</a>
+<b><a name="line111">111  </a></b>	    <b>kill_dependency</b>(<a href="#line109">_Tp</a> __y) noexcept
+<b><a name="line112">112  </a></b>	    {
+<b><a name="line113">113  </a></b>	      _Tp __ret(__y);
+<b><a name="line114">114  </a></b>	      return __ret;
+<b><a name="line115">115  </a></b>	    }
+<b><a name="line116">116  </a></b>	
+<b><a name="line117">117  </a></b>	
+<b><a name="line118">118  </a></b>	  // Base types for atomics.
+<b><a name="line119">119  </a></b>	  template&lt;typename <b>_IntTp</b>&gt;
+<b><a name="line120">120  </a></b>	    struct __atomic_base;
+<b><a name="line121">121  </a></b>	
+<b><a name="line122">122  </a></b>	
+<b><a name="line123">123  </a></b>	#define <b>ATOMIC_VAR_INIT</b>(_VI) { _VI }
+<b><a name="line124">124  </a></b>	
+<b><a name="line125">125  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line126">126  </a></b>	    struct atomic;
+<b><a name="line127">127  </a></b>	
+<b><a name="line128">128  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line129">129  </a></b>	    struct atomic&lt;<a href="#line128">_Tp</a>*&gt;;
+<b><a name="line130">130  </a></b>	
+<b><a name="line131">131  </a></b>	    /* The target's &quot;set&quot; value for test-and-set may not be exactly 1.  */
+<b><a name="line132">132  </a></b>	#if <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line609">__GCC_ATOMIC_TEST_AND_SET_TRUEVAL</a> == 1
+<b><a name="line133">133  </a></b>	    typedef bool <b>__atomic_flag_data_type</b>;
+<b><a name="line134">134  </a></b>	#else
+<b><a name="line135">135  </a></b>	    typedef unsigned char __atomic_flag_data_type;
+<b><a name="line136">136  </a></b>	#endif
+<b><a name="line137">137  </a></b>	
+<b><a name="line138">138  </a></b>	  /**
+<b><a name="line139">139  </a></b>	   *  @brief Base type for atomic_flag.
+<b><a name="line140">140  </a></b>	   *
+<b><a name="line141">141  </a></b>	   *  Base type is POD with data, allowing atomic_flag to derive from
+<b><a name="line142">142  </a></b>	   *  it and meet the standard layout type requirement. In addition to
+<b><a name="line143">143  </a></b>	   *  compatibility with a C interface, this allows different
+<b><a name="line144">144  </a></b>	   *  implementations of atomic_flag to use the same atomic operation
+<b><a name="line145">145  </a></b>	   *  functions, via a standard conversion to the __atomic_flag_base
+<b><a name="line146">146  </a></b>	   *  argument.
+<b><a name="line147">147  </a></b>	  */
+<b><a name="line148">148  </a></b>	  <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line470">_GLIBCXX_BEGIN_EXTERN_C</a>
+<b><a name="line149">149  </a></b>	
+<b><a name="line150">150  </a></b>	  struct <b>__atomic_flag_base</b>
+<b><a name="line151">151  </a></b>	  {
+<b><a name="line152">152  </a></b>	    <a href="#line133">__atomic_flag_data_type</a> <b>_M_i</b>;
+<b><a name="line153">153  </a></b>	  };
+<b><a name="line154">154  </a></b>	
+<b><a name="line155">155  </a></b>	  <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line471">_GLIBCXX_END_EXTERN_C</a>
+<b><a name="line156">156  </a></b>	
+<b><a name="line157">157  </a></b>	#define <b>ATOMIC_FLAG_INIT</b> { 0 }
+<b><a name="line158">158  </a></b>	
+<b><a name="line159">159  </a></b>	  /// atomic_flag
+<b><a name="line160">160  </a></b>	  struct <b>atomic_flag</b> : public <a href="#line150">__atomic_flag_base</a>
+<b><a name="line161">161  </a></b>	  {
+<b><a name="line162">162  </a></b>	    <b>atomic_flag</b>() noexcept = default;
+<b><a name="line163">163  </a></b>	    <b>~atomic_flag</b>() noexcept = default;
+<b><a name="line164">164  </a></b>	    <b>atomic_flag</b>(const <a href="#line160">atomic_flag</a>&amp;) = delete;
+<b><a name="line165">165  </a></b>	    <a href="#line160">atomic_flag</a>&amp; <b>operator=</b>(const <a href="#line160">atomic_flag</a>&amp;) = delete;
+<b><a name="line166">166  </a></b>	    <a href="#line160">atomic_flag</a>&amp; <b>operator=</b>(const <a href="#line160">atomic_flag</a>&amp;) volatile = delete;
+<b><a name="line167">167  </a></b>	
+<b><a name="line168">168  </a></b>	    // Conversion to ATOMIC_FLAG_INIT.
+<b><a name="line169">169  </a></b>	    constexpr <b>atomic_flag</b>(bool <b>__i</b>) noexcept
+<b><a name="line170">170  </a></b>	      : <a href="#line150">__atomic_flag_base</a>{ <a href="#line209">_S_init</a>(<a href="#line169">__i</a>) }
+<b><a name="line171">171  </a></b>	    { }
+<b><a name="line172">172  </a></b>	
+<b><a name="line173">173  </a></b>	    <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> bool
+<b><a name="line174">174  </a></b>	    <b>test_and_set</b>(<a href="#line63">memory_order</a> <b>__m</b> = <a href="#line62">memory_order_seq_cst</a>) noexcept
+<b><a name="line175">175  </a></b>	    {
+<b><a name="line176">176  </a></b>	      return <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line132">__atomic_test_and_set</a> (&amp;<a href="#line152">_M_i</a>, <a href="#line174">__m</a>);
+<b><a name="line177">177  </a></b>	    }
+<b><a name="line178">178  </a></b>	
+<b><a name="line179">179  </a></b>	    <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> bool
+<b><a name="line180">180  </a></b>	    <b>test_and_set</b>(<a href="#line63">memory_order</a> <b>__m</b> = <a href="#line62">memory_order_seq_cst</a>) volatile noexcept
+<b><a name="line181">181  </a></b>	    {
+<b><a name="line182">182  </a></b>	      return <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line132">__atomic_test_and_set</a> (&amp;<a href="#line152">_M_i</a>, <a href="#line180">__m</a>);
+<b><a name="line183">183  </a></b>	    }
+<b><a name="line184">184  </a></b>	
+<b><a name="line185">185  </a></b>	    <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> void
+<b><a name="line186">186  </a></b>	    <b>clear</b>(<a href="#line63">memory_order</a> <b>__m</b> = <a href="#line62">memory_order_seq_cst</a>) noexcept
+<b><a name="line187">187  </a></b>	    {
+<b><a name="line188">188  </a></b>	      <a href="#line63">memory_order</a> <b>__b</b> = <a href="#line186">__m</a> <a href="#line80">&amp;</a> <a href="#line67">__memory_order_mask</a>;
+<b><a name="line189">189  </a></b>	      <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_consume);
+<b><a name="line190">190  </a></b>	      <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_acquire);
+<b><a name="line191">191  </a></b>	      <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_acq_rel);
+<b><a name="line192">192  </a></b>	
+<b><a name="line193">193  </a></b>	      <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line134">__atomic_clear</a> (&amp;<a href="#line152">_M_i</a>, <a href="#line186">__m</a>);
+<b><a name="line194">194  </a></b>	    }
+<b><a name="line195">195  </a></b>	
+<b><a name="line196">196  </a></b>	    <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> void
+<b><a name="line197">197  </a></b>	    <b>clear</b>(<a href="#line63">memory_order</a> <b>__m</b> = <a href="#line62">memory_order_seq_cst</a>) volatile noexcept
+<b><a name="line198">198  </a></b>	    {
+<b><a name="line199">199  </a></b>	      <a href="#line63">memory_order</a> <b>__b</b> = <a href="#line197">__m</a> <a href="#line80">&amp;</a> <a href="#line67">__memory_order_mask</a>;
+<b><a name="line200">200  </a></b>	      <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_consume);
+<b><a name="line201">201  </a></b>	      <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_acquire);
+<b><a name="line202">202  </a></b>	      <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_acq_rel);
+<b><a name="line203">203  </a></b>	
+<b><a name="line204">204  </a></b>	      <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line134">__atomic_clear</a> (&amp;<a href="#line152">_M_i</a>, <a href="#line197">__m</a>);
+<b><a name="line205">205  </a></b>	    }
+<b><a name="line206">206  </a></b>	
+<b><a name="line207">207  </a></b>	  private:
+<b><a name="line208">208  </a></b>	    static constexpr <a href="#line133">__atomic_flag_data_type</a>
+<b><a name="line209">209  </a></b>	    <b>_S_init</b>(bool <b>__i</b>)
+<b><a name="line210">210  </a></b>	    { return <a href="#line209">__i</a> ? <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line609">__GCC_ATOMIC_TEST_AND_SET_TRUEVAL</a> : 0; }
+<b><a name="line211">211  </a></b>	  };
+<b><a name="line212">212  </a></b>	
+<b><a name="line213">213  </a></b>	
+<b><a name="line214">214  </a></b>	  /// Base class for atomic integrals.
+<b><a name="line215">215  </a></b>	  //
+<b><a name="line216">216  </a></b>	  // For each of the integral types, define atomic_[integral type] struct
+<b><a name="line217">217  </a></b>	  //
+<b><a name="line218">218  </a></b>	  // atomic_bool     bool
+<b><a name="line219">219  </a></b>	  // atomic_char     char
+<b><a name="line220">220  </a></b>	  // atomic_schar    signed char
+<b><a name="line221">221  </a></b>	  // atomic_uchar    unsigned char
+<b><a name="line222">222  </a></b>	  // atomic_short    short
+<b><a name="line223">223  </a></b>	  // atomic_ushort   unsigned short
+<b><a name="line224">224  </a></b>	  // atomic_int      int
+<b><a name="line225">225  </a></b>	  // atomic_uint     unsigned int
+<b><a name="line226">226  </a></b>	  // atomic_long     long
+<b><a name="line227">227  </a></b>	  // atomic_ulong    unsigned long
+<b><a name="line228">228  </a></b>	  // atomic_llong    long long
+<b><a name="line229">229  </a></b>	  // atomic_ullong   unsigned long long
+<b><a name="line230">230  </a></b>	  // atomic_char16_t char16_t
+<b><a name="line231">231  </a></b>	  // atomic_char32_t char32_t
+<b><a name="line232">232  </a></b>	  // atomic_wchar_t  wchar_t
+<b><a name="line233">233  </a></b>	  //
+<b><a name="line234">234  </a></b>	  // NB: Assuming _ITp is an integral scalar type that is 1, 2, 4, or
+<b><a name="line235">235  </a></b>	  // 8 bytes, since that is what GCC built-in functions for atomic
+<b><a name="line236">236  </a></b>	  // memory access expect.
+<b><a name="line237">237  </a></b>	  template&lt;typename <b>_ITp</b>&gt;
+<b><a name="line238">238  </a></b>	    struct <b>__atomic_base</b>
+<b><a name="line239">239  </a></b>	    {
+<b><a name="line240">240  </a></b>	    private:
+<b><a name="line241">241  </a></b>	      typedef <a href="#line237">_ITp</a> 	<b>__int_type</b>;
+<b><a name="line242">242  </a></b>	
+<b><a name="line243">243  </a></b>	      static constexpr int _S_alignment =
+<b><a name="line244">244  </a></b>		sizeof(<a href="#line237">_ITp</a>) &gt; alignof(<a href="#line237">_ITp</a>) ? sizeof(<a href="#line237">_ITp</a>) : alignof(<a href="#line237">_ITp</a>);
+<b><a name="line245">245  </a></b>	
+<b><a name="line246">246  </a></b>	      alignas(<a href="#line243">_S_alignment</a>) <a href="#line241">__int_type</a> <b>_M_i</b>;
+<b><a name="line247">247  </a></b>	
+<b><a name="line248">248  </a></b>	    public:
+<b><a name="line249">249  </a></b>	      <b>__atomic_base</b>() noexcept = default;
+<b><a name="line250">250  </a></b>	      <b>~__atomic_base</b>() noexcept = default;
+<b><a name="line251">251  </a></b>	      <b>__atomic_base</b>(const <a href="#line120">__atomic_base</a>&amp;) = delete;
+<b><a name="line252">252  </a></b>	      <a href="#line120">__atomic_base</a>&amp; <b>operator=</b>(const <a href="#line120">__atomic_base</a>&amp;) = delete;
+<b><a name="line253">253  </a></b>	      <a href="#line120">__atomic_base</a>&amp; <b>operator=</b>(const <a href="#line120">__atomic_base</a>&amp;) volatile = delete;
+<b><a name="line254">254  </a></b>	
+<b><a name="line255">255  </a></b>	      // Requires __int_type convertible to _M_i.
+<b><a name="line256">256  </a></b>	      constexpr <b>__atomic_base</b>(<a href="#line241">__int_type</a> __i) noexcept : _M_i (__i) { }
+<b><a name="line257">257  </a></b>	
+<b><a name="line258">258  </a></b>	      operator <a href="#line241">__int_type</a>() const noexcept
+<b><a name="line259">259  </a></b>	      { return load(); }
+<b><a name="line260">260  </a></b>	
+<b><a name="line261">261  </a></b>	      operator <a href="#line241">__int_type</a>() const volatile noexcept
+<b><a name="line262">262  </a></b>	      { return load(); }
+<b><a name="line263">263  </a></b>	
+<b><a name="line264">264  </a></b>	      <a href="#line241">__int_type</a>
+<b><a name="line265">265  </a></b>	      <b>operator=</b>(<a href="#line241">__int_type</a> __i) noexcept
+<b><a name="line266">266  </a></b>	      {
+<b><a name="line267">267  </a></b>		store(__i);
+<b><a name="line268">268  </a></b>		return __i;
+<b><a name="line269">269  </a></b>	      }
+<b><a name="line270">270  </a></b>	
+<b><a name="line271">271  </a></b>	      <a href="#line241">__int_type</a>
+<b><a name="line272">272  </a></b>	      <b>operator=</b>(<a href="#line241">__int_type</a> __i) volatile noexcept
+<b><a name="line273">273  </a></b>	      {
+<b><a name="line274">274  </a></b>		store(__i);
+<b><a name="line275">275  </a></b>		return __i;
+<b><a name="line276">276  </a></b>	      }
+<b><a name="line277">277  </a></b>	
+<b><a name="line278">278  </a></b>	      <a href="#line241">__int_type</a>
+<b><a name="line279">279  </a></b>	      <b>operator++</b>(int) noexcept
+<b><a name="line280">280  </a></b>	      { return fetch_add(1); }
+<b><a name="line281">281  </a></b>	
+<b><a name="line282">282  </a></b>	      <a href="#line241">__int_type</a>
+<b><a name="line283">283  </a></b>	      <b>operator++</b>(int) volatile noexcept
+<b><a name="line284">284  </a></b>	      { return fetch_add(1); }
+<b><a name="line285">285  </a></b>	
+<b><a name="line286">286  </a></b>	      <a href="#line241">__int_type</a>
+<b><a name="line287">287  </a></b>	      <b>operator--</b>(int) noexcept
+<b><a name="line288">288  </a></b>	      { return fetch_sub(1); }
+<b><a name="line289">289  </a></b>	
+<b><a name="line290">290  </a></b>	      <a href="#line241">__int_type</a>
+<b><a name="line291">291  </a></b>	      <b>operator--</b>(int) volatile noexcept
+<b><a name="line292">292  </a></b>	      { return fetch_sub(1); }
+<b><a name="line293">293  </a></b>	
+<b><a name="line294">294  </a></b>	      <a href="#line241">__int_type</a>
+<b><a name="line295">295  </a></b>	      <b>operator++</b>() noexcept
+<b><a name="line296">296  </a></b>	      { return __atomic_add_fetch(&amp;_M_i, 1, memory_order_seq_cst); }
+<b><a name="line297">297  </a></b>	
+<b><a name="line298">298  </a></b>	      <a href="#line241">__int_type</a>
+<b><a name="line299">299  </a></b>	      <b>operator++</b>() volatile noexcept
+<b><a name="line300">300  </a></b>	      { return __atomic_add_fetch(&amp;_M_i, 1, memory_order_seq_cst); }
+<b><a name="line301">301  </a></b>	
+<b><a name="line302">302  </a></b>	      <a href="#line241">__int_type</a>
+<b><a name="line303">303  </a></b>	      <b>operator--</b>() noexcept
+<b><a name="line304">304  </a></b>	      { return __atomic_sub_fetch(&amp;_M_i, 1, memory_order_seq_cst); }
+<b><a name="line305">305  </a></b>	
+<b><a name="line306">306  </a></b>	      <a href="#line241">__int_type</a>
+<b><a name="line307">307  </a></b>	      <b>operator--</b>() volatile noexcept
+<b><a name="line308">308  </a></b>	      { return __atomic_sub_fetch(&amp;_M_i, 1, memory_order_seq_cst); }
+<b><a name="line309">309  </a></b>	
+<b><a name="line310">310  </a></b>	      <a href="#line241">__int_type</a>
+<b><a name="line311">311  </a></b>	      <b>operator+=</b>(<a href="#line241">__int_type</a> __i) noexcept
+<b><a name="line312">312  </a></b>	      { return __atomic_add_fetch(&amp;_M_i, __i, memory_order_seq_cst); }
+<b><a name="line313">313  </a></b>	
+<b><a name="line314">314  </a></b>	      <a href="#line241">__int_type</a>
+<b><a name="line315">315  </a></b>	      <b>operator+=</b>(<a href="#line241">__int_type</a> __i) volatile noexcept
+<b><a name="line316">316  </a></b>	      { return __atomic_add_fetch(&amp;_M_i, __i, memory_order_seq_cst); }
+<b><a name="line317">317  </a></b>	
+<b><a name="line318">318  </a></b>	      <a href="#line241">__int_type</a>
+<b><a name="line319">319  </a></b>	      <b>operator-=</b>(<a href="#line241">__int_type</a> __i) noexcept
+<b><a name="line320">320  </a></b>	      { return __atomic_sub_fetch(&amp;_M_i, __i, memory_order_seq_cst); }
+<b><a name="line321">321  </a></b>	
+<b><a name="line322">322  </a></b>	      <a href="#line241">__int_type</a>
+<b><a name="line323">323  </a></b>	      <b>operator-=</b>(<a href="#line241">__int_type</a> __i) volatile noexcept
+<b><a name="line324">324  </a></b>	      { return __atomic_sub_fetch(&amp;_M_i, __i, memory_order_seq_cst); }
+<b><a name="line325">325  </a></b>	
+<b><a name="line326">326  </a></b>	      <a href="#line241">__int_type</a>
+<b><a name="line327">327  </a></b>	      <b>operator&amp;=</b>(<a href="#line241">__int_type</a> __i) noexcept
+<b><a name="line328">328  </a></b>	      { return __atomic_and_fetch(&amp;_M_i, __i, memory_order_seq_cst); }
+<b><a name="line329">329  </a></b>	
+<b><a name="line330">330  </a></b>	      <a href="#line241">__int_type</a>
+<b><a name="line331">331  </a></b>	      <b>operator&amp;=</b>(<a href="#line241">__int_type</a> __i) volatile noexcept
+<b><a name="line332">332  </a></b>	      { return __atomic_and_fetch(&amp;_M_i, __i, memory_order_seq_cst); }
+<b><a name="line333">333  </a></b>	
+<b><a name="line334">334  </a></b>	      <a href="#line241">__int_type</a>
+<b><a name="line335">335  </a></b>	      <b>operator|=</b>(<a href="#line241">__int_type</a> __i) noexcept
+<b><a name="line336">336  </a></b>	      { return __atomic_or_fetch(&amp;_M_i, __i, memory_order_seq_cst); }
+<b><a name="line337">337  </a></b>	
+<b><a name="line338">338  </a></b>	      <a href="#line241">__int_type</a>
+<b><a name="line339">339  </a></b>	      <b>operator|=</b>(<a href="#line241">__int_type</a> __i) volatile noexcept
+<b><a name="line340">340  </a></b>	      { return __atomic_or_fetch(&amp;_M_i, __i, memory_order_seq_cst); }
+<b><a name="line341">341  </a></b>	
+<b><a name="line342">342  </a></b>	      <a href="#line241">__int_type</a>
+<b><a name="line343">343  </a></b>	      <b>operator^=</b>(<a href="#line241">__int_type</a> __i) noexcept
+<b><a name="line344">344  </a></b>	      { return __atomic_xor_fetch(&amp;_M_i, __i, memory_order_seq_cst); }
+<b><a name="line345">345  </a></b>	
+<b><a name="line346">346  </a></b>	      <a href="#line241">__int_type</a>
+<b><a name="line347">347  </a></b>	      <b>operator^=</b>(<a href="#line241">__int_type</a> __i) volatile noexcept
+<b><a name="line348">348  </a></b>	      { return __atomic_xor_fetch(&amp;_M_i, __i, memory_order_seq_cst); }
+<b><a name="line349">349  </a></b>	
+<b><a name="line350">350  </a></b>	      bool
+<b><a name="line351">351  </a></b>	      <b>is_lock_free</b>() const noexcept
+<b><a name="line352">352  </a></b>	      {
+<b><a name="line353">353  </a></b>		// Use a fake, minimally aligned pointer.
+<b><a name="line354">354  </a></b>		return __atomic_is_lock_free(sizeof(_M_i),
+<b><a name="line355">355  </a></b>		    reinterpret_cast&lt;void *&gt;(-__alignof(_M_i)));
+<b><a name="line356">356  </a></b>	      }
+<b><a name="line357">357  </a></b>	
+<b><a name="line358">358  </a></b>	      bool
+<b><a name="line359">359  </a></b>	      <b>is_lock_free</b>() const volatile noexcept
+<b><a name="line360">360  </a></b>	      {
+<b><a name="line361">361  </a></b>		// Use a fake, minimally aligned pointer.
+<b><a name="line362">362  </a></b>		return __atomic_is_lock_free(sizeof(_M_i),
+<b><a name="line363">363  </a></b>		    reinterpret_cast&lt;void *&gt;(-__alignof(_M_i)));
+<b><a name="line364">364  </a></b>	      }
+<b><a name="line365">365  </a></b>	
+<b><a name="line366">366  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> void
+<b><a name="line367">367  </a></b>	      <b>store</b>(<a href="#line241">__int_type</a> __i, <a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) noexcept
+<b><a name="line368">368  </a></b>	      {
+<b><a name="line369">369  </a></b>	        memory_order __b = __m &amp; __memory_order_mask;
+<b><a name="line370">370  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_acquire);
+<b><a name="line371">371  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_acq_rel);
+<b><a name="line372">372  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_consume);
+<b><a name="line373">373  </a></b>	
+<b><a name="line374">374  </a></b>		__atomic_store_n(&amp;_M_i, __i, __m);
+<b><a name="line375">375  </a></b>	      }
+<b><a name="line376">376  </a></b>	
+<b><a name="line377">377  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> void
+<b><a name="line378">378  </a></b>	      <b>store</b>(<a href="#line241">__int_type</a> __i,
+<b><a name="line379">379  </a></b>		    <a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) volatile noexcept
+<b><a name="line380">380  </a></b>	      {
+<b><a name="line381">381  </a></b>	        memory_order __b = __m &amp; __memory_order_mask;
+<b><a name="line382">382  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_acquire);
+<b><a name="line383">383  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_acq_rel);
+<b><a name="line384">384  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_consume);
+<b><a name="line385">385  </a></b>	
+<b><a name="line386">386  </a></b>		__atomic_store_n(&amp;_M_i, __i, __m);
+<b><a name="line387">387  </a></b>	      }
+<b><a name="line388">388  </a></b>	
+<b><a name="line389">389  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> <a href="#line241">__int_type</a>
+<b><a name="line390">390  </a></b>	      <b>load</b>(<a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) const noexcept
+<b><a name="line391">391  </a></b>	      {
+<b><a name="line392">392  </a></b>	       memory_order __b = __m &amp; __memory_order_mask;
+<b><a name="line393">393  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_release);
+<b><a name="line394">394  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_acq_rel);
+<b><a name="line395">395  </a></b>	
+<b><a name="line396">396  </a></b>		return __atomic_load_n(&amp;_M_i, __m);
+<b><a name="line397">397  </a></b>	      }
+<b><a name="line398">398  </a></b>	
+<b><a name="line399">399  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> <a href="#line241">__int_type</a>
+<b><a name="line400">400  </a></b>	      <b>load</b>(<a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) const volatile noexcept
+<b><a name="line401">401  </a></b>	      {
+<b><a name="line402">402  </a></b>	        memory_order __b = __m &amp; __memory_order_mask;
+<b><a name="line403">403  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_release);
+<b><a name="line404">404  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_acq_rel);
+<b><a name="line405">405  </a></b>	
+<b><a name="line406">406  </a></b>		return __atomic_load_n(&amp;_M_i, __m);
+<b><a name="line407">407  </a></b>	      }
+<b><a name="line408">408  </a></b>	
+<b><a name="line409">409  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> <a href="#line241">__int_type</a>
+<b><a name="line410">410  </a></b>	      <b>exchange</b>(<a href="#line241">__int_type</a> __i,
+<b><a name="line411">411  </a></b>		       <a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) noexcept
+<b><a name="line412">412  </a></b>	      {
+<b><a name="line413">413  </a></b>		return __atomic_exchange_n(&amp;_M_i, __i, __m);
+<b><a name="line414">414  </a></b>	      }
+<b><a name="line415">415  </a></b>	
+<b><a name="line416">416  </a></b>	
+<b><a name="line417">417  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> <a href="#line241">__int_type</a>
+<b><a name="line418">418  </a></b>	      <b>exchange</b>(<a href="#line241">__int_type</a> __i,
+<b><a name="line419">419  </a></b>		       <a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) volatile noexcept
+<b><a name="line420">420  </a></b>	      {
+<b><a name="line421">421  </a></b>		return __atomic_exchange_n(&amp;_M_i, __i, __m);
+<b><a name="line422">422  </a></b>	      }
+<b><a name="line423">423  </a></b>	
+<b><a name="line424">424  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> bool
+<b><a name="line425">425  </a></b>	      <b>compare_exchange_weak</b>(<a href="#line241">__int_type</a>&amp; __i1, <a href="#line241">__int_type</a> __i2,
+<b><a name="line426">426  </a></b>				    <a href="#line63">memory_order</a> __m1, <a href="#line63">memory_order</a> __m2) noexcept
+<b><a name="line427">427  </a></b>	      {
+<b><a name="line428">428  </a></b>	       memory_order __b2 = __m2 &amp; __memory_order_mask;
+<b><a name="line429">429  </a></b>	       memory_order __b1 = __m1 &amp; __memory_order_mask;
+<b><a name="line430">430  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b2 != memory_order_release);
+<b><a name="line431">431  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b2 != memory_order_acq_rel);
+<b><a name="line432">432  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b2 &lt;= __b1);
+<b><a name="line433">433  </a></b>	
+<b><a name="line434">434  </a></b>		return __atomic_compare_exchange_n(&amp;_M_i, &amp;__i1, __i2, 1, __m1, __m2);
+<b><a name="line435">435  </a></b>	      }
+<b><a name="line436">436  </a></b>	
+<b><a name="line437">437  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> bool
+<b><a name="line438">438  </a></b>	      <b>compare_exchange_weak</b>(<a href="#line241">__int_type</a>&amp; __i1, <a href="#line241">__int_type</a> __i2,
+<b><a name="line439">439  </a></b>				    <a href="#line63">memory_order</a> __m1,
+<b><a name="line440">440  </a></b>				    <a href="#line63">memory_order</a> __m2) volatile noexcept
+<b><a name="line441">441  </a></b>	      {
+<b><a name="line442">442  </a></b>	       memory_order __b2 = __m2 &amp; __memory_order_mask;
+<b><a name="line443">443  </a></b>	       memory_order __b1 = __m1 &amp; __memory_order_mask;
+<b><a name="line444">444  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b2 != memory_order_release);
+<b><a name="line445">445  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b2 != memory_order_acq_rel);
+<b><a name="line446">446  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b2 &lt;= __b1);
+<b><a name="line447">447  </a></b>	
+<b><a name="line448">448  </a></b>		return __atomic_compare_exchange_n(&amp;_M_i, &amp;__i1, __i2, 1, __m1, __m2);
+<b><a name="line449">449  </a></b>	      }
+<b><a name="line450">450  </a></b>	
+<b><a name="line451">451  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> bool
+<b><a name="line452">452  </a></b>	      <b>compare_exchange_weak</b>(<a href="#line241">__int_type</a>&amp; __i1, <a href="#line241">__int_type</a> __i2,
+<b><a name="line453">453  </a></b>				    <a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) noexcept
+<b><a name="line454">454  </a></b>	      {
+<b><a name="line455">455  </a></b>		return compare_exchange_weak(__i1, __i2, __m,
+<b><a name="line456">456  </a></b>					     __cmpexch_failure_order(__m));
+<b><a name="line457">457  </a></b>	      }
+<b><a name="line458">458  </a></b>	
+<b><a name="line459">459  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> bool
+<b><a name="line460">460  </a></b>	      <b>compare_exchange_weak</b>(<a href="#line241">__int_type</a>&amp; __i1, <a href="#line241">__int_type</a> __i2,
+<b><a name="line461">461  </a></b>			   <a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) volatile noexcept
+<b><a name="line462">462  </a></b>	      {
+<b><a name="line463">463  </a></b>		return compare_exchange_weak(__i1, __i2, __m,
+<b><a name="line464">464  </a></b>					     __cmpexch_failure_order(__m));
+<b><a name="line465">465  </a></b>	      }
+<b><a name="line466">466  </a></b>	
+<b><a name="line467">467  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> bool
+<b><a name="line468">468  </a></b>	      <b>compare_exchange_strong</b>(<a href="#line241">__int_type</a>&amp; __i1, <a href="#line241">__int_type</a> __i2,
+<b><a name="line469">469  </a></b>				      <a href="#line63">memory_order</a> __m1, <a href="#line63">memory_order</a> __m2) noexcept
+<b><a name="line470">470  </a></b>	      {
+<b><a name="line471">471  </a></b>	        memory_order __b2 = __m2 &amp; __memory_order_mask;
+<b><a name="line472">472  </a></b>	        memory_order __b1 = __m1 &amp; __memory_order_mask;
+<b><a name="line473">473  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b2 != memory_order_release);
+<b><a name="line474">474  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b2 != memory_order_acq_rel);
+<b><a name="line475">475  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b2 &lt;= __b1);
+<b><a name="line476">476  </a></b>	
+<b><a name="line477">477  </a></b>		return __atomic_compare_exchange_n(&amp;_M_i, &amp;__i1, __i2, 0, __m1, __m2);
+<b><a name="line478">478  </a></b>	      }
+<b><a name="line479">479  </a></b>	
+<b><a name="line480">480  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> bool
+<b><a name="line481">481  </a></b>	      <b>compare_exchange_strong</b>(<a href="#line241">__int_type</a>&amp; __i1, <a href="#line241">__int_type</a> __i2,
+<b><a name="line482">482  </a></b>				      <a href="#line63">memory_order</a> __m1,
+<b><a name="line483">483  </a></b>				      <a href="#line63">memory_order</a> __m2) volatile noexcept
+<b><a name="line484">484  </a></b>	      {
+<b><a name="line485">485  </a></b>	        memory_order __b2 = __m2 &amp; __memory_order_mask;
+<b><a name="line486">486  </a></b>	        memory_order __b1 = __m1 &amp; __memory_order_mask;
+<b><a name="line487">487  </a></b>	
+<b><a name="line488">488  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b2 != memory_order_release);
+<b><a name="line489">489  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b2 != memory_order_acq_rel);
+<b><a name="line490">490  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b2 &lt;= __b1);
+<b><a name="line491">491  </a></b>	
+<b><a name="line492">492  </a></b>		return __atomic_compare_exchange_n(&amp;_M_i, &amp;__i1, __i2, 0, __m1, __m2);
+<b><a name="line493">493  </a></b>	      }
+<b><a name="line494">494  </a></b>	
+<b><a name="line495">495  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> bool
+<b><a name="line496">496  </a></b>	      <b>compare_exchange_strong</b>(<a href="#line241">__int_type</a>&amp; __i1, <a href="#line241">__int_type</a> __i2,
+<b><a name="line497">497  </a></b>				      <a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) noexcept
+<b><a name="line498">498  </a></b>	      {
+<b><a name="line499">499  </a></b>		return compare_exchange_strong(__i1, __i2, __m,
+<b><a name="line500">500  </a></b>					       __cmpexch_failure_order(__m));
+<b><a name="line501">501  </a></b>	      }
+<b><a name="line502">502  </a></b>	
+<b><a name="line503">503  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> bool
+<b><a name="line504">504  </a></b>	      <b>compare_exchange_strong</b>(<a href="#line241">__int_type</a>&amp; __i1, <a href="#line241">__int_type</a> __i2,
+<b><a name="line505">505  </a></b>			 <a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) volatile noexcept
+<b><a name="line506">506  </a></b>	      {
+<b><a name="line507">507  </a></b>		return compare_exchange_strong(__i1, __i2, __m,
+<b><a name="line508">508  </a></b>					       __cmpexch_failure_order(__m));
+<b><a name="line509">509  </a></b>	      }
+<b><a name="line510">510  </a></b>	
+<b><a name="line511">511  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> <a href="#line241">__int_type</a>
+<b><a name="line512">512  </a></b>	      <b>fetch_add</b>(<a href="#line241">__int_type</a> __i,
+<b><a name="line513">513  </a></b>			<a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) noexcept
+<b><a name="line514">514  </a></b>	      { return __atomic_fetch_add(&amp;_M_i, __i, __m); }
+<b><a name="line515">515  </a></b>	
+<b><a name="line516">516  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> <a href="#line241">__int_type</a>
+<b><a name="line517">517  </a></b>	      <b>fetch_add</b>(<a href="#line241">__int_type</a> __i,
+<b><a name="line518">518  </a></b>			<a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) volatile noexcept
+<b><a name="line519">519  </a></b>	      { return __atomic_fetch_add(&amp;_M_i, __i, __m); }
+<b><a name="line520">520  </a></b>	
+<b><a name="line521">521  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> <a href="#line241">__int_type</a>
+<b><a name="line522">522  </a></b>	      <b>fetch_sub</b>(<a href="#line241">__int_type</a> __i,
+<b><a name="line523">523  </a></b>			<a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) noexcept
+<b><a name="line524">524  </a></b>	      { return __atomic_fetch_sub(&amp;_M_i, __i, __m); }
+<b><a name="line525">525  </a></b>	
+<b><a name="line526">526  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> <a href="#line241">__int_type</a>
+<b><a name="line527">527  </a></b>	      <b>fetch_sub</b>(<a href="#line241">__int_type</a> __i,
+<b><a name="line528">528  </a></b>			<a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) volatile noexcept
+<b><a name="line529">529  </a></b>	      { return __atomic_fetch_sub(&amp;_M_i, __i, __m); }
+<b><a name="line530">530  </a></b>	
+<b><a name="line531">531  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> <a href="#line241">__int_type</a>
+<b><a name="line532">532  </a></b>	      <b>fetch_and</b>(<a href="#line241">__int_type</a> __i,
+<b><a name="line533">533  </a></b>			<a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) noexcept
+<b><a name="line534">534  </a></b>	      { return __atomic_fetch_and(&amp;_M_i, __i, __m); }
+<b><a name="line535">535  </a></b>	
+<b><a name="line536">536  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> <a href="#line241">__int_type</a>
+<b><a name="line537">537  </a></b>	      <b>fetch_and</b>(<a href="#line241">__int_type</a> __i,
+<b><a name="line538">538  </a></b>			<a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) volatile noexcept
+<b><a name="line539">539  </a></b>	      { return __atomic_fetch_and(&amp;_M_i, __i, __m); }
+<b><a name="line540">540  </a></b>	
+<b><a name="line541">541  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> <a href="#line241">__int_type</a>
+<b><a name="line542">542  </a></b>	      <b>fetch_or</b>(<a href="#line241">__int_type</a> __i,
+<b><a name="line543">543  </a></b>		       <a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) noexcept
+<b><a name="line544">544  </a></b>	      { return __atomic_fetch_or(&amp;_M_i, __i, __m); }
+<b><a name="line545">545  </a></b>	
+<b><a name="line546">546  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> <a href="#line241">__int_type</a>
+<b><a name="line547">547  </a></b>	      <b>fetch_or</b>(<a href="#line241">__int_type</a> __i,
+<b><a name="line548">548  </a></b>		       <a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) volatile noexcept
+<b><a name="line549">549  </a></b>	      { return __atomic_fetch_or(&amp;_M_i, __i, __m); }
+<b><a name="line550">550  </a></b>	
+<b><a name="line551">551  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> <a href="#line241">__int_type</a>
+<b><a name="line552">552  </a></b>	      <b>fetch_xor</b>(<a href="#line241">__int_type</a> __i,
+<b><a name="line553">553  </a></b>			<a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) noexcept
+<b><a name="line554">554  </a></b>	      { return __atomic_fetch_xor(&amp;_M_i, __i, __m); }
+<b><a name="line555">555  </a></b>	
+<b><a name="line556">556  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> <a href="#line241">__int_type</a>
+<b><a name="line557">557  </a></b>	      <b>fetch_xor</b>(<a href="#line241">__int_type</a> __i,
+<b><a name="line558">558  </a></b>			<a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) volatile noexcept
+<b><a name="line559">559  </a></b>	      { return __atomic_fetch_xor(&amp;_M_i, __i, __m); }
+<b><a name="line560">560  </a></b>	    };
+<b><a name="line561">561  </a></b>	
+<b><a name="line562">562  </a></b>	
+<b><a name="line563">563  </a></b>	  /// Partial specialization for pointer types.
+<b><a name="line564">564  </a></b>	  template&lt;typename <b>_PTp</b>&gt;
+<b><a name="line565">565  </a></b>	    struct <b>__atomic_base</b>&lt;<a href="#line564">_PTp</a>*&gt;
+<b><a name="line566">566  </a></b>	    {
+<b><a name="line567">567  </a></b>	    private:
+<b><a name="line568">568  </a></b>	      typedef <a href="#line564">_PTp</a>* 	<b>__pointer_type</b>;
+<b><a name="line569">569  </a></b>	
+<b><a name="line570">570  </a></b>	      <a href="#line568">__pointer_type</a> 	<b>_M_p</b>;
+<b><a name="line571">571  </a></b>	
+<b><a name="line572">572  </a></b>	      // Factored out to facilitate explicit specialization.
+<b><a name="line573">573  </a></b>	      constexpr <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line197">ptrdiff_t</a>
+<b><a name="line574">574  </a></b>	      <b>_M_type_size</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line197">ptrdiff_t</a> __d) const { return __d * sizeof(_PTp); }
+<b><a name="line575">575  </a></b>	
+<b><a name="line576">576  </a></b>	      constexpr <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line197">ptrdiff_t</a>
+<b><a name="line577">577  </a></b>	      <b>_M_type_size</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line197">ptrdiff_t</a> __d) const volatile { return __d * sizeof(_PTp); }
+<b><a name="line578">578  </a></b>	
+<b><a name="line579">579  </a></b>	    public:
+<b><a name="line580">580  </a></b>	      <b>__atomic_base</b>() noexcept = default;
+<b><a name="line581">581  </a></b>	      <b>~__atomic_base</b>() noexcept = default;
+<b><a name="line582">582  </a></b>	      <b>__atomic_base</b>(const <a href="#line565">__atomic_base</a>&amp;) = delete;
+<b><a name="line583">583  </a></b>	      <a href="#line565">__atomic_base</a>&amp; <b>operator=</b>(const <a href="#line565">__atomic_base</a>&amp;) = delete;
+<b><a name="line584">584  </a></b>	      <a href="#line565">__atomic_base</a>&amp; <b>operator=</b>(const <a href="#line565">__atomic_base</a>&amp;) volatile = delete;
+<b><a name="line585">585  </a></b>	
+<b><a name="line586">586  </a></b>	      // Requires __pointer_type convertible to _M_p.
+<b><a name="line587">587  </a></b>	      constexpr <b>__atomic_base</b>(<a href="#line568">__pointer_type</a> __p) noexcept : _M_p (__p) { }
+<b><a name="line588">588  </a></b>	
+<b><a name="line589">589  </a></b>	      operator <a href="#line568">__pointer_type</a>() const noexcept
+<b><a name="line590">590  </a></b>	      { return load(); }
+<b><a name="line591">591  </a></b>	
+<b><a name="line592">592  </a></b>	      operator <a href="#line568">__pointer_type</a>() const volatile noexcept
+<b><a name="line593">593  </a></b>	      { return load(); }
+<b><a name="line594">594  </a></b>	
+<b><a name="line595">595  </a></b>	      <a href="#line568">__pointer_type</a>
+<b><a name="line596">596  </a></b>	      <b>operator=</b>(<a href="#line568">__pointer_type</a> __p) noexcept
+<b><a name="line597">597  </a></b>	      {
+<b><a name="line598">598  </a></b>		store(__p);
+<b><a name="line599">599  </a></b>		return __p;
+<b><a name="line600">600  </a></b>	      }
+<b><a name="line601">601  </a></b>	
+<b><a name="line602">602  </a></b>	      <a href="#line568">__pointer_type</a>
+<b><a name="line603">603  </a></b>	      <b>operator=</b>(<a href="#line568">__pointer_type</a> __p) volatile noexcept
+<b><a name="line604">604  </a></b>	      {
+<b><a name="line605">605  </a></b>		store(__p);
+<b><a name="line606">606  </a></b>		return __p;
+<b><a name="line607">607  </a></b>	      }
+<b><a name="line608">608  </a></b>	
+<b><a name="line609">609  </a></b>	      <a href="#line568">__pointer_type</a>
+<b><a name="line610">610  </a></b>	      <b>operator++</b>(int) noexcept
+<b><a name="line611">611  </a></b>	      { return fetch_add(1); }
+<b><a name="line612">612  </a></b>	
+<b><a name="line613">613  </a></b>	      <a href="#line568">__pointer_type</a>
+<b><a name="line614">614  </a></b>	      <b>operator++</b>(int) volatile noexcept
+<b><a name="line615">615  </a></b>	      { return fetch_add(1); }
+<b><a name="line616">616  </a></b>	
+<b><a name="line617">617  </a></b>	      <a href="#line568">__pointer_type</a>
+<b><a name="line618">618  </a></b>	      <b>operator--</b>(int) noexcept
+<b><a name="line619">619  </a></b>	      { return fetch_sub(1); }
+<b><a name="line620">620  </a></b>	
+<b><a name="line621">621  </a></b>	      <a href="#line568">__pointer_type</a>
+<b><a name="line622">622  </a></b>	      <b>operator--</b>(int) volatile noexcept
+<b><a name="line623">623  </a></b>	      { return fetch_sub(1); }
+<b><a name="line624">624  </a></b>	
+<b><a name="line625">625  </a></b>	      <a href="#line568">__pointer_type</a>
+<b><a name="line626">626  </a></b>	      <b>operator++</b>() noexcept
+<b><a name="line627">627  </a></b>	      { return __atomic_add_fetch(&amp;_M_p, _M_type_size(1),
+<b><a name="line628">628  </a></b>					  memory_order_seq_cst); }
+<b><a name="line629">629  </a></b>	
+<b><a name="line630">630  </a></b>	      <a href="#line568">__pointer_type</a>
+<b><a name="line631">631  </a></b>	      <b>operator++</b>() volatile noexcept
+<b><a name="line632">632  </a></b>	      { return __atomic_add_fetch(&amp;_M_p, _M_type_size(1),
+<b><a name="line633">633  </a></b>					  memory_order_seq_cst); }
+<b><a name="line634">634  </a></b>	
+<b><a name="line635">635  </a></b>	      <a href="#line568">__pointer_type</a>
+<b><a name="line636">636  </a></b>	      <b>operator--</b>() noexcept
+<b><a name="line637">637  </a></b>	      { return __atomic_sub_fetch(&amp;_M_p, _M_type_size(1),
+<b><a name="line638">638  </a></b>					  memory_order_seq_cst); }
+<b><a name="line639">639  </a></b>	
+<b><a name="line640">640  </a></b>	      <a href="#line568">__pointer_type</a>
+<b><a name="line641">641  </a></b>	      <b>operator--</b>() volatile noexcept
+<b><a name="line642">642  </a></b>	      { return __atomic_sub_fetch(&amp;_M_p, _M_type_size(1),
+<b><a name="line643">643  </a></b>					  memory_order_seq_cst); }
+<b><a name="line644">644  </a></b>	
+<b><a name="line645">645  </a></b>	      <a href="#line568">__pointer_type</a>
+<b><a name="line646">646  </a></b>	      <b>operator+=</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line197">ptrdiff_t</a> __d) noexcept
+<b><a name="line647">647  </a></b>	      { return __atomic_add_fetch(&amp;_M_p, _M_type_size(__d),
+<b><a name="line648">648  </a></b>					  memory_order_seq_cst); }
+<b><a name="line649">649  </a></b>	
+<b><a name="line650">650  </a></b>	      <a href="#line568">__pointer_type</a>
+<b><a name="line651">651  </a></b>	      <b>operator+=</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line197">ptrdiff_t</a> __d) volatile noexcept
+<b><a name="line652">652  </a></b>	      { return __atomic_add_fetch(&amp;_M_p, _M_type_size(__d),
+<b><a name="line653">653  </a></b>					  memory_order_seq_cst); }
+<b><a name="line654">654  </a></b>	
+<b><a name="line655">655  </a></b>	      <a href="#line568">__pointer_type</a>
+<b><a name="line656">656  </a></b>	      <b>operator-=</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line197">ptrdiff_t</a> __d) noexcept
+<b><a name="line657">657  </a></b>	      { return __atomic_sub_fetch(&amp;_M_p, _M_type_size(__d),
+<b><a name="line658">658  </a></b>					  memory_order_seq_cst); }
+<b><a name="line659">659  </a></b>	
+<b><a name="line660">660  </a></b>	      <a href="#line568">__pointer_type</a>
+<b><a name="line661">661  </a></b>	      <b>operator-=</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line197">ptrdiff_t</a> __d) volatile noexcept
+<b><a name="line662">662  </a></b>	      { return __atomic_sub_fetch(&amp;_M_p, _M_type_size(__d),
+<b><a name="line663">663  </a></b>					  memory_order_seq_cst); }
+<b><a name="line664">664  </a></b>	
+<b><a name="line665">665  </a></b>	      bool
+<b><a name="line666">666  </a></b>	      <b>is_lock_free</b>() const noexcept
+<b><a name="line667">667  </a></b>	      {
+<b><a name="line668">668  </a></b>		// Produce a fake, minimally aligned pointer.
+<b><a name="line669">669  </a></b>		return __atomic_is_lock_free(sizeof(_M_p),
+<b><a name="line670">670  </a></b>		    reinterpret_cast&lt;void *&gt;(-__alignof(_M_p)));
+<b><a name="line671">671  </a></b>	      }
+<b><a name="line672">672  </a></b>	
+<b><a name="line673">673  </a></b>	      bool
+<b><a name="line674">674  </a></b>	      <b>is_lock_free</b>() const volatile noexcept
+<b><a name="line675">675  </a></b>	      {
+<b><a name="line676">676  </a></b>		// Produce a fake, minimally aligned pointer.
+<b><a name="line677">677  </a></b>		return __atomic_is_lock_free(sizeof(_M_p),
+<b><a name="line678">678  </a></b>		    reinterpret_cast&lt;void *&gt;(-__alignof(_M_p)));
+<b><a name="line679">679  </a></b>	      }
+<b><a name="line680">680  </a></b>	
+<b><a name="line681">681  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> void
+<b><a name="line682">682  </a></b>	      <b>store</b>(<a href="#line568">__pointer_type</a> __p,
+<b><a name="line683">683  </a></b>		    <a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) noexcept
+<b><a name="line684">684  </a></b>	      {
+<b><a name="line685">685  </a></b>	        memory_order __b = __m &amp; __memory_order_mask;
+<b><a name="line686">686  </a></b>	
+<b><a name="line687">687  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_acquire);
+<b><a name="line688">688  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_acq_rel);
+<b><a name="line689">689  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_consume);
+<b><a name="line690">690  </a></b>	
+<b><a name="line691">691  </a></b>		__atomic_store_n(&amp;_M_p, __p, __m);
+<b><a name="line692">692  </a></b>	      }
+<b><a name="line693">693  </a></b>	
+<b><a name="line694">694  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> void
+<b><a name="line695">695  </a></b>	      <b>store</b>(<a href="#line568">__pointer_type</a> __p,
+<b><a name="line696">696  </a></b>		    <a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) volatile noexcept
+<b><a name="line697">697  </a></b>	      {
+<b><a name="line698">698  </a></b>	        memory_order __b = __m &amp; __memory_order_mask;
+<b><a name="line699">699  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_acquire);
+<b><a name="line700">700  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_acq_rel);
+<b><a name="line701">701  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_consume);
+<b><a name="line702">702  </a></b>	
+<b><a name="line703">703  </a></b>		__atomic_store_n(&amp;_M_p, __p, __m);
+<b><a name="line704">704  </a></b>	      }
+<b><a name="line705">705  </a></b>	
+<b><a name="line706">706  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> <a href="#line568">__pointer_type</a>
+<b><a name="line707">707  </a></b>	      <b>load</b>(<a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) const noexcept
+<b><a name="line708">708  </a></b>	      {
+<b><a name="line709">709  </a></b>	        memory_order __b = __m &amp; __memory_order_mask;
+<b><a name="line710">710  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_release);
+<b><a name="line711">711  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_acq_rel);
+<b><a name="line712">712  </a></b>	
+<b><a name="line713">713  </a></b>		return __atomic_load_n(&amp;_M_p, __m);
+<b><a name="line714">714  </a></b>	      }
+<b><a name="line715">715  </a></b>	
+<b><a name="line716">716  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> <a href="#line568">__pointer_type</a>
+<b><a name="line717">717  </a></b>	      <b>load</b>(<a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) const volatile noexcept
+<b><a name="line718">718  </a></b>	      {
+<b><a name="line719">719  </a></b>	        memory_order __b = __m &amp; __memory_order_mask;
+<b><a name="line720">720  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_release);
+<b><a name="line721">721  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b != memory_order_acq_rel);
+<b><a name="line722">722  </a></b>	
+<b><a name="line723">723  </a></b>		return __atomic_load_n(&amp;_M_p, __m);
+<b><a name="line724">724  </a></b>	      }
+<b><a name="line725">725  </a></b>	
+<b><a name="line726">726  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> <a href="#line568">__pointer_type</a>
+<b><a name="line727">727  </a></b>	      <b>exchange</b>(<a href="#line568">__pointer_type</a> __p,
+<b><a name="line728">728  </a></b>		       <a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) noexcept
+<b><a name="line729">729  </a></b>	      {
+<b><a name="line730">730  </a></b>		return __atomic_exchange_n(&amp;_M_p, __p, __m);
+<b><a name="line731">731  </a></b>	      }
+<b><a name="line732">732  </a></b>	
+<b><a name="line733">733  </a></b>	
+<b><a name="line734">734  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> <a href="#line568">__pointer_type</a>
+<b><a name="line735">735  </a></b>	      <b>exchange</b>(<a href="#line568">__pointer_type</a> __p,
+<b><a name="line736">736  </a></b>		       <a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) volatile noexcept
+<b><a name="line737">737  </a></b>	      {
+<b><a name="line738">738  </a></b>		return __atomic_exchange_n(&amp;_M_p, __p, __m);
+<b><a name="line739">739  </a></b>	      }
+<b><a name="line740">740  </a></b>	
+<b><a name="line741">741  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> bool
+<b><a name="line742">742  </a></b>	      <b>compare_exchange_strong</b>(<a href="#line568">__pointer_type</a>&amp; __p1, <a href="#line568">__pointer_type</a> __p2,
+<b><a name="line743">743  </a></b>				      <a href="#line63">memory_order</a> __m1,
+<b><a name="line744">744  </a></b>				      <a href="#line63">memory_order</a> __m2) noexcept
+<b><a name="line745">745  </a></b>	      {
+<b><a name="line746">746  </a></b>	        memory_order __b2 = __m2 &amp; __memory_order_mask;
+<b><a name="line747">747  </a></b>	        memory_order __b1 = __m1 &amp; __memory_order_mask;
+<b><a name="line748">748  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b2 != memory_order_release);
+<b><a name="line749">749  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b2 != memory_order_acq_rel);
+<b><a name="line750">750  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b2 &lt;= __b1);
+<b><a name="line751">751  </a></b>	
+<b><a name="line752">752  </a></b>		return __atomic_compare_exchange_n(&amp;_M_p, &amp;__p1, __p2, 0, __m1, __m2);
+<b><a name="line753">753  </a></b>	      }
+<b><a name="line754">754  </a></b>	
+<b><a name="line755">755  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> bool
+<b><a name="line756">756  </a></b>	      <b>compare_exchange_strong</b>(<a href="#line568">__pointer_type</a>&amp; __p1, <a href="#line568">__pointer_type</a> __p2,
+<b><a name="line757">757  </a></b>				      <a href="#line63">memory_order</a> __m1,
+<b><a name="line758">758  </a></b>				      <a href="#line63">memory_order</a> __m2) volatile noexcept
+<b><a name="line759">759  </a></b>	      {
+<b><a name="line760">760  </a></b>	        memory_order __b2 = __m2 &amp; __memory_order_mask;
+<b><a name="line761">761  </a></b>	        memory_order __b1 = __m1 &amp; __memory_order_mask;
+<b><a name="line762">762  </a></b>	
+<b><a name="line763">763  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b2 != memory_order_release);
+<b><a name="line764">764  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b2 != memory_order_acq_rel);
+<b><a name="line765">765  </a></b>		<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line417">__glibcxx_assert</a>(__b2 &lt;= __b1);
+<b><a name="line766">766  </a></b>	
+<b><a name="line767">767  </a></b>		return __atomic_compare_exchange_n(&amp;_M_p, &amp;__p1, __p2, 0, __m1, __m2);
+<b><a name="line768">768  </a></b>	      }
+<b><a name="line769">769  </a></b>	
+<b><a name="line770">770  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> <a href="#line568">__pointer_type</a>
+<b><a name="line771">771  </a></b>	      <b>fetch_add</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line197">ptrdiff_t</a> __d,
+<b><a name="line772">772  </a></b>			<a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) noexcept
+<b><a name="line773">773  </a></b>	      { return __atomic_fetch_add(&amp;_M_p, _M_type_size(__d), __m); }
+<b><a name="line774">774  </a></b>	
+<b><a name="line775">775  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> <a href="#line568">__pointer_type</a>
+<b><a name="line776">776  </a></b>	      <b>fetch_add</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line197">ptrdiff_t</a> __d,
+<b><a name="line777">777  </a></b>			<a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) volatile noexcept
+<b><a name="line778">778  </a></b>	      { return __atomic_fetch_add(&amp;_M_p, _M_type_size(__d), __m); }
+<b><a name="line779">779  </a></b>	
+<b><a name="line780">780  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> <a href="#line568">__pointer_type</a>
+<b><a name="line781">781  </a></b>	      <b>fetch_sub</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line197">ptrdiff_t</a> __d,
+<b><a name="line782">782  </a></b>			<a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) noexcept
+<b><a name="line783">783  </a></b>	      { return __atomic_fetch_sub(&amp;_M_p, _M_type_size(__d), __m); }
+<b><a name="line784">784  </a></b>	
+<b><a name="line785">785  </a></b>	      <a href="#line40">_GLIBCXX_ALWAYS_INLINE</a> <a href="#line568">__pointer_type</a>
+<b><a name="line786">786  </a></b>	      <b>fetch_sub</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line197">ptrdiff_t</a> __d,
+<b><a name="line787">787  </a></b>			<a href="#line63">memory_order</a> __m = <a href="#line62">memory_order_seq_cst</a>) volatile noexcept
+<b><a name="line788">788  </a></b>	      { return __atomic_fetch_sub(&amp;_M_p, _M_type_size(__d), __m); }
+<b><a name="line789">789  </a></b>	    };
+<b><a name="line790">790  </a></b>	
+<b><a name="line791">791  </a></b>	  // @} group atomics
+<b><a name="line792">792  </a></b>	
+<b><a name="line793">793  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line794">794  </a></b>	} // namespace std
+<b><a name="line795">795  </a></b>	
+<b><a name="line796">796  </a></b>	#endif
+<b><a name="line797">797  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

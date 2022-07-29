@@ -1,0 +1,901 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/bits/locale_classes.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Locale support -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 1997-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file bits/locale_classes.h
+<b><a name="line26">26   </a></b>	 *  This is an internal header file, included by other library headers.
+<b><a name="line27">27   </a></b>	 *  Do not attempt to use it directly. @headername{locale}
+<b><a name="line28">28   </a></b>	 */
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	//
+<b><a name="line31">31   </a></b>	// ISO C++ 14882: 22.1  Locales
+<b><a name="line32">32   </a></b>	//
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	#ifndef _LOCALE_CLASSES_H
+<b><a name="line35">35   </a></b>	#define <b>_LOCALE_CLASSES_H</b> 1
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	#pragma GCC system_header
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	#include &lt;bits/localefwd.h&gt;
+<b><a name="line40">40   </a></b>	#include &lt;string&gt;
+<b><a name="line41">41   </a></b>	#include &lt;ext/atomicity.h&gt;
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line44">44   </a></b>	{
+<b><a name="line45">45   </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line46">46   </a></b>	
+<b><a name="line47">47   </a></b>	  // 22.1.1 Class locale
+<b><a name="line48">48   </a></b>	  /**
+<b><a name="line49">49   </a></b>	   *  @brief  Container class for localization functionality.
+<b><a name="line50">50   </a></b>	   *  @ingroup locales
+<b><a name="line51">51   </a></b>	   *
+<b><a name="line52">52   </a></b>	   *  The locale class is first a class wrapper for C library locales.  It is
+<b><a name="line53">53   </a></b>	   *  also an extensible container for user-defined localization.  A locale is
+<b><a name="line54">54   </a></b>	   *  a collection of facets that implement various localization features such
+<b><a name="line55">55   </a></b>	   *  as money, time, and number printing.
+<b><a name="line56">56   </a></b>	   *
+<b><a name="line57">57   </a></b>	   *  Constructing C++ locales does not change the C library locale.
+<b><a name="line58">58   </a></b>	   *
+<b><a name="line59">59   </a></b>	   *  This library supports efficient construction and copying of locales
+<b><a name="line60">60   </a></b>	   *  through a reference counting implementation of the locale class.
+<b><a name="line61">61   </a></b>	  */
+<b><a name="line62">62   </a></b>	  class <b>locale</b>
+<b><a name="line63">63   </a></b>	  {
+<b><a name="line64">64   </a></b>	  public:
+<b><a name="line65">65   </a></b>	    // Types:
+<b><a name="line66">66   </a></b>	    /// Definition of locale::category.
+<b><a name="line67">67   </a></b>	    typedef int	<b>category</b>;
+<b><a name="line68">68   </a></b>	
+<b><a name="line69">69   </a></b>	    // Forward decls and friends:
+<b><a name="line70">70   </a></b>	    class facet;
+<b><a name="line71">71   </a></b>	    class id;
+<b><a name="line72">72   </a></b>	    class _Impl;
+<b><a name="line73">73   </a></b>	
+<b><a name="line74">74   </a></b>	    friend class <a href="#line70">facet</a>;
+<b><a name="line75">75   </a></b>	    friend class <a href="#line72">_Impl</a>;
+<b><a name="line76">76   </a></b>	
+<b><a name="line77">77   </a></b>	    template&lt;typename <b>_Facet</b>&gt;
+<b><a name="line78">78   </a></b>	      friend bool
+<b><a name="line79">79   </a></b>	      <a href="../localefwd.h/code.html#line59">has_facet</a>(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;) throw();
+<b><a name="line80">80   </a></b>	
+<b><a name="line81">81   </a></b>	    template&lt;typename <b>_Facet</b>&gt;
+<b><a name="line82">82   </a></b>	      friend const <a href="#line81">_Facet</a>&amp;
+<b><a name="line83">83   </a></b>	      <a href="../localefwd.h/code.html#line63">use_facet</a>(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line84">84   </a></b>	
+<b><a name="line85">85   </a></b>	    template&lt;typename <b>_Cache</b>&gt;
+<b><a name="line86">86   </a></b>	      friend struct __use_cache;
+<b><a name="line87">87   </a></b>	
+<b><a name="line88">88   </a></b>	    //@{
+<b><a name="line89">89   </a></b>	    /**
+<b><a name="line90">90   </a></b>	     *  @brief  Category values.
+<b><a name="line91">91   </a></b>	     *
+<b><a name="line92">92   </a></b>	     *  The standard category values are none, ctype, numeric, collate, time,
+<b><a name="line93">93   </a></b>	     *  monetary, and messages.  They form a bitmask that supports union and
+<b><a name="line94">94   </a></b>	     *  intersection.  The category all is the union of these values.
+<b><a name="line95">95   </a></b>	     *
+<b><a name="line96">96   </a></b>	     *  NB: Order must match _S_facet_categories definition in locale.cc
+<b><a name="line97">97   </a></b>	    */
+<b><a name="line98">98   </a></b>	    static const <a href="#line67">category</a> none		= 0;
+<b><a name="line99">99   </a></b>	    static const <a href="#line67">category</a> ctype		= 1L &lt;&lt; 0;
+<b><a name="line100">100  </a></b>	    static const <a href="#line67">category</a> numeric	= 1L &lt;&lt; 1;
+<b><a name="line101">101  </a></b>	    static const <a href="#line67">category</a> collate	= 1L &lt;&lt; 2;
+<b><a name="line102">102  </a></b>	    static const <a href="#line67">category</a> time		= 1L &lt;&lt; 3;
+<b><a name="line103">103  </a></b>	    static const <a href="#line67">category</a> monetary	= 1L &lt;&lt; 4;
+<b><a name="line104">104  </a></b>	    static const <a href="#line67">category</a> messages	= 1L &lt;&lt; 5;
+<b><a name="line105">105  </a></b>	    static const <a href="#line67">category</a> all		= (<a href="#line99">ctype</a> | <a href="#line100">numeric</a> | <a href="#line101">collate</a> |
+<b><a name="line106">106  </a></b>						   <a href="#line102">time</a>  | <a href="#line103">monetary</a> | <a href="#line104">messages</a>);
+<b><a name="line107">107  </a></b>	    //@}
+<b><a name="line108">108  </a></b>	
+<b><a name="line109">109  </a></b>	    // Construct/copy/destroy:
+<b><a name="line110">110  </a></b>	
+<b><a name="line111">111  </a></b>	    /**
+<b><a name="line112">112  </a></b>	     *  @brief  Default constructor.
+<b><a name="line113">113  </a></b>	     *
+<b><a name="line114">114  </a></b>	     *  Constructs a copy of the global locale.  If no locale has been
+<b><a name="line115">115  </a></b>	     *  explicitly set, this is the C locale.
+<b><a name="line116">116  </a></b>	    */
+<b><a name="line117">117  </a></b>	    locale() throw();
+<b><a name="line118">118  </a></b>	
+<b><a name="line119">119  </a></b>	    /**
+<b><a name="line120">120  </a></b>	     *  @brief  Copy constructor.
+<b><a name="line121">121  </a></b>	     *
+<b><a name="line122">122  </a></b>	     *  Constructs a copy of @a other.
+<b><a name="line123">123  </a></b>	     *
+<b><a name="line124">124  </a></b>	     *  @param  __other  The locale to copy.
+<b><a name="line125">125  </a></b>	    */
+<b><a name="line126">126  </a></b>	    locale(const <a href="../localefwd.h/code.html#line55">locale</a>&amp; __other) throw();
+<b><a name="line127">127  </a></b>	
+<b><a name="line128">128  </a></b>	    /**
+<b><a name="line129">129  </a></b>	     *  @brief  Named locale constructor.
+<b><a name="line130">130  </a></b>	     *
+<b><a name="line131">131  </a></b>	     *  Constructs a copy of the named C library locale.
+<b><a name="line132">132  </a></b>	     *
+<b><a name="line133">133  </a></b>	     *  @param  __s  Name of the locale to construct.
+<b><a name="line134">134  </a></b>	     *  @throw  std::runtime_error if __s is null or an undefined locale.
+<b><a name="line135">135  </a></b>	    */
+<b><a name="line136">136  </a></b>	    explicit
+<b><a name="line137">137  </a></b>	    locale(const char* __s);
+<b><a name="line138">138  </a></b>	
+<b><a name="line139">139  </a></b>	    /**
+<b><a name="line140">140  </a></b>	     *  @brief  Construct locale with facets from another locale.
+<b><a name="line141">141  </a></b>	     *
+<b><a name="line142">142  </a></b>	     *  Constructs a copy of the locale @a base.  The facets specified by @a
+<b><a name="line143">143  </a></b>	     *  cat are replaced with those from the locale named by @a s.  If base is
+<b><a name="line144">144  </a></b>	     *  named, this locale instance will also be named.
+<b><a name="line145">145  </a></b>	     *
+<b><a name="line146">146  </a></b>	     *  @param  __base  The locale to copy.
+<b><a name="line147">147  </a></b>	     *  @param  __s  Name of the locale to use facets from.
+<b><a name="line148">148  </a></b>	     *  @param  __cat  Set of categories defining the facets to use from __s.
+<b><a name="line149">149  </a></b>	     *  @throw  std::runtime_error if __s is null or an undefined locale.
+<b><a name="line150">150  </a></b>	    */
+<b><a name="line151">151  </a></b>	    locale(const <a href="../localefwd.h/code.html#line55">locale</a>&amp; __base, const char* __s, <a href="#line67">category</a> __cat);
+<b><a name="line152">152  </a></b>	
+<b><a name="line153">153  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line154">154  </a></b>	    /**
+<b><a name="line155">155  </a></b>	     *  @brief  Named locale constructor.
+<b><a name="line156">156  </a></b>	     *
+<b><a name="line157">157  </a></b>	     *  Constructs a copy of the named C library locale.
+<b><a name="line158">158  </a></b>	     *
+<b><a name="line159">159  </a></b>	     *  @param  __s  Name of the locale to construct.
+<b><a name="line160">160  </a></b>	     *  @throw  std::runtime_error if __s is an undefined locale.
+<b><a name="line161">161  </a></b>	    */
+<b><a name="line162">162  </a></b>	    explicit
+<b><a name="line163">163  </a></b>	    <b>locale</b>(const <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../stringfwd.h/code.html#line74">string</a>&amp; <b>__s</b>) : <a href="../localefwd.h/code.html#line55">locale</a>(__s.<a href="../basic_string.h/code.html#line1887">c_str</a>()) { }
+<b><a name="line164">164  </a></b>	
+<b><a name="line165">165  </a></b>	    /**
+<b><a name="line166">166  </a></b>	     *  @brief  Construct locale with facets from another locale.
+<b><a name="line167">167  </a></b>	     *
+<b><a name="line168">168  </a></b>	     *  Constructs a copy of the locale @a base.  The facets specified by @a
+<b><a name="line169">169  </a></b>	     *  cat are replaced with those from the locale named by @a s.  If base is
+<b><a name="line170">170  </a></b>	     *  named, this locale instance will also be named.
+<b><a name="line171">171  </a></b>	     *
+<b><a name="line172">172  </a></b>	     *  @param  __base  The locale to copy.
+<b><a name="line173">173  </a></b>	     *  @param  __s  Name of the locale to use facets from.
+<b><a name="line174">174  </a></b>	     *  @param  __cat  Set of categories defining the facets to use from __s.
+<b><a name="line175">175  </a></b>	     *  @throw  std::runtime_error if __s is an undefined locale.
+<b><a name="line176">176  </a></b>	    */
+<b><a name="line177">177  </a></b>	    <b>locale</b>(const <a href="../localefwd.h/code.html#line55">locale</a>&amp; <b>__base</b>, const <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../stringfwd.h/code.html#line74">string</a>&amp; <b>__s</b>, <a href="#line67">category</a> <b>__cat</b>)
+<b><a name="line178">178  </a></b>	    : <a href="../localefwd.h/code.html#line55">locale</a>(<a href="#line177">__base</a>, <a href="#line177">__s</a>.<a href="../basic_string.h/code.html#line1887">c_str</a>(), <a href="#line177">__cat</a>) { }
+<b><a name="line179">179  </a></b>	#endif
+<b><a name="line180">180  </a></b>	
+<b><a name="line181">181  </a></b>	    /**
+<b><a name="line182">182  </a></b>	     *  @brief  Construct locale with facets from another locale.
+<b><a name="line183">183  </a></b>	     *
+<b><a name="line184">184  </a></b>	     *  Constructs a copy of the locale @a base.  The facets specified by @a
+<b><a name="line185">185  </a></b>	     *  cat are replaced with those from the locale @a add.  If @a base and @a
+<b><a name="line186">186  </a></b>	     *  add are named, this locale instance will also be named.
+<b><a name="line187">187  </a></b>	     *
+<b><a name="line188">188  </a></b>	     *  @param  __base  The locale to copy.
+<b><a name="line189">189  </a></b>	     *  @param  __add  The locale to use facets from.
+<b><a name="line190">190  </a></b>	     *  @param  __cat  Set of categories defining the facets to use from add.
+<b><a name="line191">191  </a></b>	    */
+<b><a name="line192">192  </a></b>	    locale(const <a href="../localefwd.h/code.html#line55">locale</a>&amp; __base, const <a href="../localefwd.h/code.html#line55">locale</a>&amp; __add, <a href="#line67">category</a> __cat);
+<b><a name="line193">193  </a></b>	
+<b><a name="line194">194  </a></b>	    /**
+<b><a name="line195">195  </a></b>	     *  @brief  Construct locale with another facet.
+<b><a name="line196">196  </a></b>	     *
+<b><a name="line197">197  </a></b>	     *  Constructs a copy of the locale @a __other.  The facet @a __f
+<b><a name="line198">198  </a></b>	     *  is added to @a __other, replacing an existing facet of type
+<b><a name="line199">199  </a></b>	     *  Facet if there is one.  If @a __f is null, this locale is a
+<b><a name="line200">200  </a></b>	     *  copy of @a __other.
+<b><a name="line201">201  </a></b>	     *
+<b><a name="line202">202  </a></b>	     *  @param  __other  The locale to copy.
+<b><a name="line203">203  </a></b>	     *  @param  __f  The facet to add in.
+<b><a name="line204">204  </a></b>	    */
+<b><a name="line205">205  </a></b>	    template&lt;typename <b>_Facet</b>&gt;
+<b><a name="line206">206  </a></b>	      locale(const <a href="../localefwd.h/code.html#line55">locale</a>&amp; __other, <a href="#line205">_Facet</a>* __f);
+<b><a name="line207">207  </a></b>	
+<b><a name="line208">208  </a></b>	    /// Locale destructor.
+<b><a name="line209">209  </a></b>	    ~locale() throw();
+<b><a name="line210">210  </a></b>	
+<b><a name="line211">211  </a></b>	    /**
+<b><a name="line212">212  </a></b>	     *  @brief  Assignment operator.
+<b><a name="line213">213  </a></b>	     *
+<b><a name="line214">214  </a></b>	     *  Set this locale to be a copy of @a other.
+<b><a name="line215">215  </a></b>	     *
+<b><a name="line216">216  </a></b>	     *  @param  __other  The locale to copy.
+<b><a name="line217">217  </a></b>	     *  @return  A reference to this locale.
+<b><a name="line218">218  </a></b>	    */
+<b><a name="line219">219  </a></b>	    const <a href="../localefwd.h/code.html#line55">locale</a>&amp;
+<b><a name="line220">220  </a></b>	    operator=(const <a href="../localefwd.h/code.html#line55">locale</a>&amp; __other) throw();
+<b><a name="line221">221  </a></b>	
+<b><a name="line222">222  </a></b>	    /**
+<b><a name="line223">223  </a></b>	     *  @brief  Construct locale with another facet.
+<b><a name="line224">224  </a></b>	     *
+<b><a name="line225">225  </a></b>	     *  Constructs and returns a new copy of this locale.  Adds or replaces an
+<b><a name="line226">226  </a></b>	     *  existing facet of type Facet from the locale @a other into the new
+<b><a name="line227">227  </a></b>	     *  locale.
+<b><a name="line228">228  </a></b>	     *
+<b><a name="line229">229  </a></b>	     *  @tparam  _Facet  The facet type to copy from other
+<b><a name="line230">230  </a></b>	     *  @param  __other  The locale to copy from.
+<b><a name="line231">231  </a></b>	     *  @return  Newly constructed locale.
+<b><a name="line232">232  </a></b>	     *  @throw  std::runtime_error if __other has no facet of type _Facet.
+<b><a name="line233">233  </a></b>	    */
+<b><a name="line234">234  </a></b>	    template&lt;typename <b>_Facet</b>&gt;
+<b><a name="line235">235  </a></b>	      <a href="../localefwd.h/code.html#line55">locale</a>
+<b><a name="line236">236  </a></b>	      combine(const <a href="../localefwd.h/code.html#line55">locale</a>&amp; __other) const;
+<b><a name="line237">237  </a></b>	
+<b><a name="line238">238  </a></b>	    // Locale operations:
+<b><a name="line239">239  </a></b>	    /**
+<b><a name="line240">240  </a></b>	     *  @brief  Return locale name.
+<b><a name="line241">241  </a></b>	     *  @return  Locale name or &quot;*&quot; if unnamed.
+<b><a name="line242">242  </a></b>	    */
+<b><a name="line243">243  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line227">_GLIBCXX_DEFAULT_ABI_TAG</a>
+<b><a name="line244">244  </a></b>	    <a href="../stringfwd.h/code.html#line74">string</a>
+<b><a name="line245">245  </a></b>	    name() const;
+<b><a name="line246">246  </a></b>	
+<b><a name="line247">247  </a></b>	    /**
+<b><a name="line248">248  </a></b>	     *  @brief  Locale equality.
+<b><a name="line249">249  </a></b>	     *
+<b><a name="line250">250  </a></b>	     *  @param  __other  The locale to compare against.
+<b><a name="line251">251  </a></b>	     *  @return  True if other and this refer to the same locale instance, are
+<b><a name="line252">252  </a></b>	     *		 copies, or have the same name.  False otherwise.
+<b><a name="line253">253  </a></b>	    */
+<b><a name="line254">254  </a></b>	    bool
+<b><a name="line255">255  </a></b>	    operator==(const <a href="../localefwd.h/code.html#line55">locale</a>&amp; __other) const throw();
+<b><a name="line256">256  </a></b>	
+<b><a name="line257">257  </a></b>	    /**
+<b><a name="line258">258  </a></b>	     *  @brief  Locale inequality.
+<b><a name="line259">259  </a></b>	     *
+<b><a name="line260">260  </a></b>	     *  @param  __other  The locale to compare against.
+<b><a name="line261">261  </a></b>	     *  @return  ! (*this == __other)
+<b><a name="line262">262  </a></b>	    */
+<b><a name="line263">263  </a></b>	    bool
+<b><a name="line264">264  </a></b>	    <b>operator!=</b>(const <a href="../localefwd.h/code.html#line55">locale</a>&amp; <b>__other</b>) const throw()
+<b><a name="line265">265  </a></b>	    { return !(this-&gt;<a href="#line255">op</a>erator==(<a href="#line264">__other</a>)); }
+<b><a name="line266">266  </a></b>	
+<b><a name="line267">267  </a></b>	    /**
+<b><a name="line268">268  </a></b>	     *  @brief  Compare two strings according to collate.
+<b><a name="line269">269  </a></b>	     *
+<b><a name="line270">270  </a></b>	     *  Template operator to compare two strings using the compare function of
+<b><a name="line271">271  </a></b>	     *  the collate facet in this locale.  One use is to provide the locale to
+<b><a name="line272">272  </a></b>	     *  the sort function.  For example, a vector v of strings could be sorted
+<b><a name="line273">273  </a></b>	     *  according to locale loc by doing:
+<b><a name="line274">274  </a></b>	     *  @code
+<b><a name="line275">275  </a></b>	     *  std::sort(v.begin(), v.end(), loc);
+<b><a name="line276">276  </a></b>	     *  @endcode
+<b><a name="line277">277  </a></b>	     *
+<b><a name="line278">278  </a></b>	     *  @param  __s1  First string to compare.
+<b><a name="line279">279  </a></b>	     *  @param  __s2  Second string to compare.
+<b><a name="line280">280  </a></b>	     *  @return  True if collate&lt;_Char&gt; facet compares __s1 &lt; __s2, else false.
+<b><a name="line281">281  </a></b>	    */
+<b><a name="line282">282  </a></b>	    template&lt;typename <b>_Char</b>, typename <b>_Traits</b>, typename <b>_Alloc</b>&gt;
+<b><a name="line283">283  </a></b>	      bool
+<b><a name="line284">284  </a></b>	      operator()(const <a href="../stringfwd.h/code.html#line71">basic_string</a>&lt;<a href="#line282">_Char</a>, <a href="#line282">_Traits</a>, <a href="#line282">_Alloc</a>&gt;&amp; __s1,
+<b><a name="line285">285  </a></b>			 const <a href="../stringfwd.h/code.html#line71">basic_string</a>&lt;<a href="#line282">_Char</a>, <a href="#line282">_Traits</a>, <a href="#line282">_Alloc</a>&gt;&amp; __s2) const;
+<b><a name="line286">286  </a></b>	
+<b><a name="line287">287  </a></b>	    // Global locale objects:
+<b><a name="line288">288  </a></b>	    /**
+<b><a name="line289">289  </a></b>	     *  @brief  Set global locale
+<b><a name="line290">290  </a></b>	     *
+<b><a name="line291">291  </a></b>	     *  This function sets the global locale to the argument and returns a
+<b><a name="line292">292  </a></b>	     *  copy of the previous global locale.  If the argument has a name, it
+<b><a name="line293">293  </a></b>	     *  will also call std::setlocale(LC_ALL, loc.name()).
+<b><a name="line294">294  </a></b>	     *
+<b><a name="line295">295  </a></b>	     *  @param  __loc  The new locale to make global.
+<b><a name="line296">296  </a></b>	     *  @return  Copy of the old global locale.
+<b><a name="line297">297  </a></b>	    */
+<b><a name="line298">298  </a></b>	    static <a href="../localefwd.h/code.html#line55">locale</a>
+<b><a name="line299">299  </a></b>	    global(const <a href="../localefwd.h/code.html#line55">locale</a>&amp; __loc);
+<b><a name="line300">300  </a></b>	
+<b><a name="line301">301  </a></b>	    /**
+<b><a name="line302">302  </a></b>	     *  @brief  Return reference to the C locale.
+<b><a name="line303">303  </a></b>	    */
+<b><a name="line304">304  </a></b>	    static const <a href="../localefwd.h/code.html#line55">locale</a>&amp;
+<b><a name="line305">305  </a></b>	    classic();
+<b><a name="line306">306  </a></b>	
+<b><a name="line307">307  </a></b>	  private:
+<b><a name="line308">308  </a></b>	    // The (shared) implementation
+<b><a name="line309">309  </a></b>	    <a href="#line72">_Impl</a>*		<b>_M_impl</b>;
+<b><a name="line310">310  </a></b>	
+<b><a name="line311">311  </a></b>	    // The &quot;C&quot; reference locale
+<b><a name="line312">312  </a></b>	    static <a href="#line72">_Impl</a>*       _S_classic;
+<b><a name="line313">313  </a></b>	
+<b><a name="line314">314  </a></b>	    // Current global locale
+<b><a name="line315">315  </a></b>	    static <a href="#line72">_Impl</a>*	_S_global;
+<b><a name="line316">316  </a></b>	
+<b><a name="line317">317  </a></b>	    // Names of underlying locale categories.
+<b><a name="line318">318  </a></b>	    // NB: locale::global() has to know how to modify all the
+<b><a name="line319">319  </a></b>	    // underlying categories, not just the ones required by the C++
+<b><a name="line320">320  </a></b>	    // standard.
+<b><a name="line321">321  </a></b>	    static const char* const* const _S_categories;
+<b><a name="line322">322  </a></b>	
+<b><a name="line323">323  </a></b>	    // Number of standard categories. For C++, these categories are
+<b><a name="line324">324  </a></b>	    // collate, ctype, monetary, numeric, time, and messages. These
+<b><a name="line325">325  </a></b>	    // directly correspond to ISO C99 macros LC_COLLATE, LC_CTYPE,
+<b><a name="line326">326  </a></b>	    // LC_MONETARY, LC_NUMERIC, and LC_TIME. In addition, POSIX (IEEE
+<b><a name="line327">327  </a></b>	    // 1003.1-2001) specifies LC_MESSAGES.
+<b><a name="line328">328  </a></b>	    // In addition to the standard categories, the underlying
+<b><a name="line329">329  </a></b>	    // operating system is allowed to define extra LC_*
+<b><a name="line330">330  </a></b>	    // macros. For GNU systems, the following are also valid:
+<b><a name="line331">331  </a></b>	    // LC_PAPER, LC_NAME, LC_ADDRESS, LC_TELEPHONE, LC_MEASUREMENT,
+<b><a name="line332">332  </a></b>	    // and LC_IDENTIFICATION.
+<b><a name="line333">333  </a></b>	    enum { <b>_S_categories_size</b> = 6 + <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++locale.h/code.html#line45">_GLIBCXX_NUM_CATEGORIES</a> };
+<b><a name="line334">334  </a></b>	
+<b><a name="line335">335  </a></b>	#ifdef <a href="../../../../x86_64-linux-gnu/c++/5/bits/gthr-default.h/code.html#line32">__GTHREADS</a>
+<b><a name="line336">336  </a></b>	    static <a href="../../../../x86_64-linux-gnu/c++/5/bits/gthr-default.h/code.html#line49">__gthread_once_t</a> _S_once;
+<b><a name="line337">337  </a></b>	#endif
+<b><a name="line338">338  </a></b>	
+<b><a name="line339">339  </a></b>	    explicit
+<b><a name="line340">340  </a></b>	    locale(<a href="#line72">_Impl</a>*) throw();
+<b><a name="line341">341  </a></b>	
+<b><a name="line342">342  </a></b>	    static void
+<b><a name="line343">343  </a></b>	    _S_initialize();
+<b><a name="line344">344  </a></b>	
+<b><a name="line345">345  </a></b>	    static void
+<b><a name="line346">346  </a></b>	    _S_initialize_once() throw();
+<b><a name="line347">347  </a></b>	
+<b><a name="line348">348  </a></b>	    static <a href="#line67">category</a>
+<b><a name="line349">349  </a></b>	    _S_normalize_category(<a href="#line67">category</a>);
+<b><a name="line350">350  </a></b>	
+<b><a name="line351">351  </a></b>	    void
+<b><a name="line352">352  </a></b>	    _M_coalesce(const <a href="../localefwd.h/code.html#line55">locale</a>&amp; __base, const <a href="../localefwd.h/code.html#line55">locale</a>&amp; __add, <a href="#line67">category</a> __cat);
+<b><a name="line353">353  </a></b>	
+<b><a name="line354">354  </a></b>	#if <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line212">_GLIBCXX_USE_CXX11_ABI</a>
+<b><a name="line355">355  </a></b>	    static const <a href="#line71">id</a>* const _S_twinned_facets[];
+<b><a name="line356">356  </a></b>	#endif
+<b><a name="line357">357  </a></b>	  };
+<b><a name="line358">358  </a></b>	
+<b><a name="line359">359  </a></b>	
+<b><a name="line360">360  </a></b>	  // 22.1.1.1.2  Class locale::facet
+<b><a name="line361">361  </a></b>	  /**
+<b><a name="line362">362  </a></b>	   *  @brief  Localization functionality base class.
+<b><a name="line363">363  </a></b>	   *  @ingroup locales
+<b><a name="line364">364  </a></b>	   *
+<b><a name="line365">365  </a></b>	   *  The facet class is the base class for a localization feature, such as
+<b><a name="line366">366  </a></b>	   *  money, time, and number printing.  It provides common support for facets
+<b><a name="line367">367  </a></b>	   *  and reference management.
+<b><a name="line368">368  </a></b>	   *
+<b><a name="line369">369  </a></b>	   *  Facets may not be copied or assigned.
+<b><a name="line370">370  </a></b>	  */
+<b><a name="line371">371  </a></b>	  class <a href="../localefwd.h/code.html#line55">locale</a>::<b>facet</b>
+<b><a name="line372">372  </a></b>	  {
+<b><a name="line373">373  </a></b>	  private:
+<b><a name="line374">374  </a></b>	    friend class <a href="../localefwd.h/code.html#line55">locale</a>;
+<b><a name="line375">375  </a></b>	    friend class <a href="../localefwd.h/code.html#line55">locale</a>::<a href="#line72">_Impl</a>;
+<b><a name="line376">376  </a></b>	
+<b><a name="line377">377  </a></b>	    mutable <a href="../../../../x86_64-linux-gnu/c++/5/bits/atomic_word.h/code.html#line32">_Atomic_word</a>		<b>_M_refcount</b>;
+<b><a name="line378">378  </a></b>	
+<b><a name="line379">379  </a></b>	    // Contains data from the underlying &quot;C&quot; library for the classic locale.
+<b><a name="line380">380  </a></b>	    static <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++locale.h/code.html#line62">__c_locale</a>                   _S_c_locale;
+<b><a name="line381">381  </a></b>	
+<b><a name="line382">382  </a></b>	    // String literal for the name of the classic locale.
+<b><a name="line383">383  </a></b>	    static const char			_S_c_name[2];
+<b><a name="line384">384  </a></b>	
+<b><a name="line385">385  </a></b>	#ifdef <a href="../../../../x86_64-linux-gnu/c++/5/bits/gthr-default.h/code.html#line32">__GTHREADS</a>
+<b><a name="line386">386  </a></b>	    static <a href="../../../../x86_64-linux-gnu/c++/5/bits/gthr-default.h/code.html#line49">__gthread_once_t</a>		_S_once;
+<b><a name="line387">387  </a></b>	#endif
+<b><a name="line388">388  </a></b>	
+<b><a name="line389">389  </a></b>	    static void
+<b><a name="line390">390  </a></b>	    _S_initialize_once();
+<b><a name="line391">391  </a></b>	
+<b><a name="line392">392  </a></b>	  protected:
+<b><a name="line393">393  </a></b>	    /**
+<b><a name="line394">394  </a></b>	     *  @brief  Facet constructor.
+<b><a name="line395">395  </a></b>	     *
+<b><a name="line396">396  </a></b>	     *  This is the constructor provided by the standard.  If refs is 0, the
+<b><a name="line397">397  </a></b>	     *  facet is destroyed when the last referencing locale is destroyed.
+<b><a name="line398">398  </a></b>	     *  Otherwise the facet will never be destroyed.
+<b><a name="line399">399  </a></b>	     *
+<b><a name="line400">400  </a></b>	     *  @param __refs  The initial value for reference count.
+<b><a name="line401">401  </a></b>	    */
+<b><a name="line402">402  </a></b>	    explicit
+<b><a name="line403">403  </a></b>	    <b>facet</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>__refs</b> = 0) throw() : <a href="#line377">_M_refcount</a>(__refs ? 1 : 0)
+<b><a name="line404">404  </a></b>	    { }
+<b><a name="line405">405  </a></b>	
+<b><a name="line406">406  </a></b>	    /// Facet destructor.
+<b><a name="line407">407  </a></b>	    virtual
+<b><a name="line408">408  </a></b>	    ~facet();
+<b><a name="line409">409  </a></b>	
+<b><a name="line410">410  </a></b>	    static void
+<b><a name="line411">411  </a></b>	    _S_create_c_locale(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++locale.h/code.html#line62">__c_locale</a>&amp; __cloc, const char* __s,
+<b><a name="line412">412  </a></b>			       <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++locale.h/code.html#line62">__c_locale</a> __old = 0);
+<b><a name="line413">413  </a></b>	
+<b><a name="line414">414  </a></b>	    static <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++locale.h/code.html#line62">__c_locale</a>
+<b><a name="line415">415  </a></b>	    _S_clone_c_locale(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++locale.h/code.html#line62">__c_locale</a>&amp; __cloc) throw();
+<b><a name="line416">416  </a></b>	
+<b><a name="line417">417  </a></b>	    static void
+<b><a name="line418">418  </a></b>	    _S_destroy_c_locale(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++locale.h/code.html#line62">__c_locale</a>&amp; __cloc);
+<b><a name="line419">419  </a></b>	
+<b><a name="line420">420  </a></b>	    static <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++locale.h/code.html#line62">__c_locale</a>
+<b><a name="line421">421  </a></b>	    _S_lc_ctype_c_locale(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++locale.h/code.html#line62">__c_locale</a> __cloc, const char* __s);
+<b><a name="line422">422  </a></b>	
+<b><a name="line423">423  </a></b>	    // Returns data from the underlying &quot;C&quot; library data for the
+<b><a name="line424">424  </a></b>	    // classic locale.
+<b><a name="line425">425  </a></b>	    static <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++locale.h/code.html#line62">__c_locale</a>
+<b><a name="line426">426  </a></b>	    _S_get_c_locale();
+<b><a name="line427">427  </a></b>	
+<b><a name="line428">428  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line47">_GLIBCXX_CONST</a> static const char*
+<b><a name="line429">429  </a></b>	    _S_get_c_name() throw();
+<b><a name="line430">430  </a></b>	
+<b><a name="line431">431  </a></b>	  private:
+<b><a name="line432">432  </a></b>	    void
+<b><a name="line433">433  </a></b>	    <b>_M_add_reference</b>() const throw()
+<b><a name="line434">434  </a></b>	    { <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../ext/atomicity.h/code.html#line92">__atomic_add_dispatch</a>(&amp;<a href="#line377">_M_refcount</a>, 1); }
+<b><a name="line435">435  </a></b>	
+<b><a name="line436">436  </a></b>	    void
+<b><a name="line437">437  </a></b>	    <b>_M_remove_reference</b>() const throw()
+<b><a name="line438">438  </a></b>	    {
+<b><a name="line439">439  </a></b>	      // Be race-detector-friendly.  For more info see bits/c++config.
+<b><a name="line440">440  </a></b>	      <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line463">_GLIBCXX_SYNCHRONIZATION_HAPPENS_BEFORE</a>(&amp;_M_refcount);
+<b><a name="line441">441  </a></b>	      if (<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../ext/atomicity.h/code.html#line78">__exchange_and_add_dispatch</a>(&amp;<a href="#line377">_M_refcount</a>, -1) == 1)
+<b><a name="line442">442  </a></b>		{
+<b><a name="line443">443  </a></b>	          <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line466">_GLIBCXX_SYNCHRONIZATION_HAPPENS_AFTER</a>(&amp;_M_refcount);
+<b><a name="line444">444  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line445">445  </a></b>		    { <a href="../../new/code.html#line115">delete</a> this; }
+<b><a name="line446">446  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line447">447  </a></b>		    { }
+<b><a name="line448">448  </a></b>		}
+<b><a name="line449">449  </a></b>	    }
+<b><a name="line450">450  </a></b>	
+<b><a name="line451">451  </a></b>	    facet(const <a href="#line70">facet</a>&amp;);  // Not defined.
+<b><a name="line452">452  </a></b>	
+<b><a name="line453">453  </a></b>	    <a href="#line70">facet</a>&amp;
+<b><a name="line454">454  </a></b>	    operator=(const <a href="#line70">facet</a>&amp;);  // Not defined.
+<b><a name="line455">455  </a></b>	
+<b><a name="line456">456  </a></b>	    class __shim;
+<b><a name="line457">457  </a></b>	
+<b><a name="line458">458  </a></b>	    const <a href="#line70">facet</a>* _M_sso_shim(const <a href="#line71">id</a>*) const;
+<b><a name="line459">459  </a></b>	    const <a href="#line70">facet</a>* _M_cow_shim(const <a href="#line71">id</a>*) const;
+<b><a name="line460">460  </a></b>	  };
+<b><a name="line461">461  </a></b>	
+<b><a name="line462">462  </a></b>	
+<b><a name="line463">463  </a></b>	  // 22.1.1.1.3 Class locale::id
+<b><a name="line464">464  </a></b>	  /**
+<b><a name="line465">465  </a></b>	   *  @brief  Facet ID class.
+<b><a name="line466">466  </a></b>	   *  @ingroup locales
+<b><a name="line467">467  </a></b>	   *
+<b><a name="line468">468  </a></b>	   *  The ID class provides facets with an index used to identify them.
+<b><a name="line469">469  </a></b>	   *  Every facet class must define a public static member locale::id, or be
+<b><a name="line470">470  </a></b>	   *  derived from a facet that provides this member, otherwise the facet
+<b><a name="line471">471  </a></b>	   *  cannot be used in a locale.  The locale::id ensures that each class
+<b><a name="line472">472  </a></b>	   *  type gets a unique identifier.
+<b><a name="line473">473  </a></b>	  */
+<b><a name="line474">474  </a></b>	  class <a href="../localefwd.h/code.html#line55">locale</a>::<b>id</b>
+<b><a name="line475">475  </a></b>	  {
+<b><a name="line476">476  </a></b>	  private:
+<b><a name="line477">477  </a></b>	    friend class <a href="../localefwd.h/code.html#line55">locale</a>;
+<b><a name="line478">478  </a></b>	    friend class <a href="../localefwd.h/code.html#line55">locale</a>::<a href="#line72">_Impl</a>;
+<b><a name="line479">479  </a></b>	
+<b><a name="line480">480  </a></b>	    template&lt;typename <b>_Facet</b>&gt;
+<b><a name="line481">481  </a></b>	      friend const <a href="#line480">_Facet</a>&amp;
+<b><a name="line482">482  </a></b>	      <a href="../localefwd.h/code.html#line63">use_facet</a>(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line483">483  </a></b>	
+<b><a name="line484">484  </a></b>	    template&lt;typename <b>_Facet</b>&gt;
+<b><a name="line485">485  </a></b>	      friend bool
+<b><a name="line486">486  </a></b>	      <a href="../localefwd.h/code.html#line59">has_facet</a>(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;) throw();
+<b><a name="line487">487  </a></b>	
+<b><a name="line488">488  </a></b>	    // NB: There is no accessor for _M_index because it may be used
+<b><a name="line489">489  </a></b>	    // before the constructor is run; the effect of calling a member
+<b><a name="line490">490  </a></b>	    // function (even an inline) would be undefined.
+<b><a name="line491">491  </a></b>	    mutable <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>		<b>_M_index</b>;
+<b><a name="line492">492  </a></b>	
+<b><a name="line493">493  </a></b>	    // Last id number assigned.
+<b><a name="line494">494  </a></b>	    static <a href="../../../../x86_64-linux-gnu/c++/5/bits/atomic_word.h/code.html#line32">_Atomic_word</a>		_S_refcount;
+<b><a name="line495">495  </a></b>	
+<b><a name="line496">496  </a></b>	    void
+<b><a name="line497">497  </a></b>	    operator=(const <a href="#line71">id</a>&amp;);  // Not defined.
+<b><a name="line498">498  </a></b>	
+<b><a name="line499">499  </a></b>	    id(const <a href="#line71">id</a>&amp;);  // Not defined.
+<b><a name="line500">500  </a></b>	
+<b><a name="line501">501  </a></b>	  public:
+<b><a name="line502">502  </a></b>	    // NB: This class is always a static data member, and thus can be
+<b><a name="line503">503  </a></b>	    // counted on to be zero-initialized.
+<b><a name="line504">504  </a></b>	    /// Constructor.
+<b><a name="line505">505  </a></b>	    <b>id</b>() { }
+<b><a name="line506">506  </a></b>	
+<b><a name="line507">507  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>
+<b><a name="line508">508  </a></b>	    _M_id() const throw();
+<b><a name="line509">509  </a></b>	  };
+<b><a name="line510">510  </a></b>	
+<b><a name="line511">511  </a></b>	
+<b><a name="line512">512  </a></b>	  // Implementation object for locale.
+<b><a name="line513">513  </a></b>	  class <a href="../localefwd.h/code.html#line55">locale</a>::<b>_Impl</b>
+<b><a name="line514">514  </a></b>	  {
+<b><a name="line515">515  </a></b>	  public:
+<b><a name="line516">516  </a></b>	    // Friends.
+<b><a name="line517">517  </a></b>	    friend class <a href="../localefwd.h/code.html#line55">locale</a>;
+<b><a name="line518">518  </a></b>	    friend class <a href="../localefwd.h/code.html#line55">locale</a>::<a href="#line70">facet</a>;
+<b><a name="line519">519  </a></b>	
+<b><a name="line520">520  </a></b>	    template&lt;typename <b>_Facet</b>&gt;
+<b><a name="line521">521  </a></b>	      friend bool
+<b><a name="line522">522  </a></b>	      <a href="../localefwd.h/code.html#line59">has_facet</a>(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;) throw();
+<b><a name="line523">523  </a></b>	
+<b><a name="line524">524  </a></b>	    template&lt;typename <b>_Facet</b>&gt;
+<b><a name="line525">525  </a></b>	      friend const <a href="#line524">_Facet</a>&amp;
+<b><a name="line526">526  </a></b>	      <a href="../localefwd.h/code.html#line63">use_facet</a>(const <a href="../localefwd.h/code.html#line55">locale</a>&amp;);
+<b><a name="line527">527  </a></b>	
+<b><a name="line528">528  </a></b>	    template&lt;typename <b>_Cache</b>&gt;
+<b><a name="line529">529  </a></b>	      friend struct <a href="#line86">__use_cache</a>;
+<b><a name="line530">530  </a></b>	
+<b><a name="line531">531  </a></b>	  private:
+<b><a name="line532">532  </a></b>	    // Data Members.
+<b><a name="line533">533  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/atomic_word.h/code.html#line32">_Atomic_word</a>			<b>_M_refcount</b>;
+<b><a name="line534">534  </a></b>	    const <a href="#line70">facet</a>**			<b>_M_facets</b>;
+<b><a name="line535">535  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>				<b>_M_facets_size</b>;
+<b><a name="line536">536  </a></b>	    const <a href="#line70">facet</a>**			<b>_M_caches</b>;
+<b><a name="line537">537  </a></b>	    char**				<b>_M_names</b>;
+<b><a name="line538">538  </a></b>	    static const <a href="../localefwd.h/code.html#line55">locale</a>::<a href="#line71">id</a>* const	_S_id_ctype[];
+<b><a name="line539">539  </a></b>	    static const <a href="../localefwd.h/code.html#line55">locale</a>::<a href="#line71">id</a>* const	_S_id_numeric[];
+<b><a name="line540">540  </a></b>	    static const <a href="../localefwd.h/code.html#line55">locale</a>::<a href="#line71">id</a>* const	_S_id_collate[];
+<b><a name="line541">541  </a></b>	    static const <a href="../localefwd.h/code.html#line55">locale</a>::<a href="#line71">id</a>* const	_S_id_time[];
+<b><a name="line542">542  </a></b>	    static const <a href="../localefwd.h/code.html#line55">locale</a>::<a href="#line71">id</a>* const	_S_id_monetary[];
+<b><a name="line543">543  </a></b>	    static const <a href="../localefwd.h/code.html#line55">locale</a>::<a href="#line71">id</a>* const	_S_id_messages[];
+<b><a name="line544">544  </a></b>	    static const <a href="../localefwd.h/code.html#line55">locale</a>::<a href="#line71">id</a>* const* const _S_facet_categories[];
+<b><a name="line545">545  </a></b>	
+<b><a name="line546">546  </a></b>	    void
+<b><a name="line547">547  </a></b>	    <b>_M_add_reference</b>() throw()
+<b><a name="line548">548  </a></b>	    { <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../ext/atomicity.h/code.html#line92">__atomic_add_dispatch</a>(&amp;<a href="#line533">_M_refcount</a>, 1); }
+<b><a name="line549">549  </a></b>	
+<b><a name="line550">550  </a></b>	    void
+<b><a name="line551">551  </a></b>	    <b>_M_remove_reference</b>() throw()
+<b><a name="line552">552  </a></b>	    {
+<b><a name="line553">553  </a></b>	      // Be race-detector-friendly.  For more info see bits/c++config.
+<b><a name="line554">554  </a></b>	      <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line463">_GLIBCXX_SYNCHRONIZATION_HAPPENS_BEFORE</a>(&amp;_M_refcount);
+<b><a name="line555">555  </a></b>	      if (<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../ext/atomicity.h/code.html#line78">__exchange_and_add_dispatch</a>(&amp;<a href="#line533">_M_refcount</a>, -1) == 1)
+<b><a name="line556">556  </a></b>		{
+<b><a name="line557">557  </a></b>	          <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line466">_GLIBCXX_SYNCHRONIZATION_HAPPENS_AFTER</a>(&amp;_M_refcount);
+<b><a name="line558">558  </a></b>		  <a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line559">559  </a></b>		    { <a href="../../new/code.html#line115">delete</a> this; }
+<b><a name="line560">560  </a></b>		  <a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line561">561  </a></b>		    { }
+<b><a name="line562">562  </a></b>		}
+<b><a name="line563">563  </a></b>	    }
+<b><a name="line564">564  </a></b>	
+<b><a name="line565">565  </a></b>	    _Impl(const <a href="#line72">_Impl</a>&amp;, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>);
+<b><a name="line566">566  </a></b>	    _Impl(const char*, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>);
+<b><a name="line567">567  </a></b>	    _Impl(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>) throw();
+<b><a name="line568">568  </a></b>	
+<b><a name="line569">569  </a></b>	   ~_Impl() throw();
+<b><a name="line570">570  </a></b>	
+<b><a name="line571">571  </a></b>	    _Impl(const <a href="#line72">_Impl</a>&amp;);  // Not defined.
+<b><a name="line572">572  </a></b>	
+<b><a name="line573">573  </a></b>	    void
+<b><a name="line574">574  </a></b>	    operator=(const <a href="#line72">_Impl</a>&amp;);  // Not defined.
+<b><a name="line575">575  </a></b>	
+<b><a name="line576">576  </a></b>	    bool
+<b><a name="line577">577  </a></b>	    <b>_M_check_same_name</b>()
+<b><a name="line578">578  </a></b>	    {
+<b><a name="line579">579  </a></b>	      bool <b>__ret</b> = true;
+<b><a name="line580">580  </a></b>	      if (<a href="#line537">_M_names</a>[1])
+<b><a name="line581">581  </a></b>		// We must actually compare all the _M_names: can be all equal!
+<b><a name="line582">582  </a></b>		for (<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>__i</b> = 0; <a href="#line579">__ret</a> &amp;&amp; __i &lt; <a href="#line333">_S_categories_size</a> - 1; ++__i)
+<b><a name="line583">583  </a></b>		  <a href="#line579">__ret</a> = __builtin_strcmp(<a href="#line537">_M_names</a>[<a href="#line582">__i</a>], <a href="#line537">_M_names</a>[<a href="#line582">__i</a> + 1]) == 0;
+<b><a name="line584">584  </a></b>	      return <a href="#line579">__ret</a>;
+<b><a name="line585">585  </a></b>	    }
+<b><a name="line586">586  </a></b>	
+<b><a name="line587">587  </a></b>	    void
+<b><a name="line588">588  </a></b>	    _M_replace_categories(const <a href="#line72">_Impl</a>*, <a href="#line67">category</a>);
+<b><a name="line589">589  </a></b>	
+<b><a name="line590">590  </a></b>	    void
+<b><a name="line591">591  </a></b>	    _M_replace_category(const <a href="#line72">_Impl</a>*, const <a href="../localefwd.h/code.html#line55">locale</a>::<a href="#line71">id</a>* const*);
+<b><a name="line592">592  </a></b>	
+<b><a name="line593">593  </a></b>	    void
+<b><a name="line594">594  </a></b>	    _M_replace_facet(const <a href="#line72">_Impl</a>*, const <a href="../localefwd.h/code.html#line55">locale</a>::<a href="#line71">id</a>*);
+<b><a name="line595">595  </a></b>	
+<b><a name="line596">596  </a></b>	    void
+<b><a name="line597">597  </a></b>	    _M_install_facet(const <a href="../localefwd.h/code.html#line55">locale</a>::<a href="#line71">id</a>*, const <a href="#line70">facet</a>*);
+<b><a name="line598">598  </a></b>	
+<b><a name="line599">599  </a></b>	    template&lt;typename <b>_Facet</b>&gt;
+<b><a name="line600">600  </a></b>	      void
+<b><a name="line601">601  </a></b>	      <b>_M_init_facet</b>(<a href="#line599">_Facet</a>* __facet)
+<b><a name="line602">602  </a></b>	      { _M_install_facet(&amp;_Facet::id, __facet); }
+<b><a name="line603">603  </a></b>	
+<b><a name="line604">604  </a></b>	    template&lt;typename <b>_Facet</b>&gt;
+<b><a name="line605">605  </a></b>	      void
+<b><a name="line606">606  </a></b>	      <b>_M_init_facet_unchecked</b>(<a href="#line604">_Facet</a>* __facet)
+<b><a name="line607">607  </a></b>	      {
+<b><a name="line608">608  </a></b>		__facet-&gt;_M_add_reference();
+<b><a name="line609">609  </a></b>		_M_facets[_Facet::id._M_id()] = __facet;
+<b><a name="line610">610  </a></b>	      }
+<b><a name="line611">611  </a></b>	
+<b><a name="line612">612  </a></b>	    void
+<b><a name="line613">613  </a></b>	    _M_install_cache(const <a href="#line70">facet</a>*, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>);
+<b><a name="line614">614  </a></b>	
+<b><a name="line615">615  </a></b>	    void _M_init_extra(<a href="#line70">facet</a>**);
+<b><a name="line616">616  </a></b>	    void _M_init_extra(void*, void*, const char*, const char*);
+<b><a name="line617">617  </a></b>	  };
+<b><a name="line618">618  </a></b>	
+<b><a name="line619">619  </a></b>	
+<b><a name="line620">620  </a></b>	  /**
+<b><a name="line621">621  </a></b>	   *  @brief  Facet for localized string comparison.
+<b><a name="line622">622  </a></b>	   *
+<b><a name="line623">623  </a></b>	   *  This facet encapsulates the code to compare strings in a localized
+<b><a name="line624">624  </a></b>	   *  manner.
+<b><a name="line625">625  </a></b>	   *
+<b><a name="line626">626  </a></b>	   *  The collate template uses protected virtual functions to provide
+<b><a name="line627">627  </a></b>	   *  the actual results.  The public accessors forward the call to
+<b><a name="line628">628  </a></b>	   *  the virtual functions.  These virtual functions are hooks for
+<b><a name="line629">629  </a></b>	   *  developers to implement the behavior they require from the
+<b><a name="line630">630  </a></b>	   *  collate facet.
+<b><a name="line631">631  </a></b>	  */
+<b><a name="line632">632  </a></b>	  template&lt;typename <b>_CharT</b>&gt;
+<b><a name="line633">633  </a></b>	    class <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line224">_GLIBCXX_NAMESPACE_CXX11</a> collate : public <a href="../localefwd.h/code.html#line55">locale</a>::<a href="#line70">facet</a>
+<b><a name="line634">634  </a></b>	    {
+<b><a name="line635">635  </a></b>	    public:
+<b><a name="line636">636  </a></b>	      // Types:
+<b><a name="line637">637  </a></b>	      //@{
+<b><a name="line638">638  </a></b>	      /// Public typedefs
+<b><a name="line639">639  </a></b>	      typedef <a href="#line632">_CharT</a>			<b>char_type</b>;
+<b><a name="line640">640  </a></b>	      typedef <a href="../stringfwd.h/code.html#line71">basic_string</a>&lt;<a href="#line632">_CharT</a>&gt;	<b>string_type</b>;
+<b><a name="line641">641  </a></b>	      //@}
+<b><a name="line642">642  </a></b>	
+<b><a name="line643">643  </a></b>	    protected:
+<b><a name="line644">644  </a></b>	      // Underlying &quot;C&quot; library locale information saved from
+<b><a name="line645">645  </a></b>	      // initialization, needed by collate_byname as well.
+<b><a name="line646">646  </a></b>	      <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++locale.h/code.html#line62">__c_locale</a>			<b>_M_c_locale_collate</b>;
+<b><a name="line647">647  </a></b>	
+<b><a name="line648">648  </a></b>	    public:
+<b><a name="line649">649  </a></b>	      /// Numpunct facet id.
+<b><a name="line650">650  </a></b>	      static <a href="../localefwd.h/code.html#line55">locale</a>::<a href="#line71">id</a>			id;
+<b><a name="line651">651  </a></b>	
+<b><a name="line652">652  </a></b>	      /**
+<b><a name="line653">653  </a></b>	       *  @brief  Constructor performs initialization.
+<b><a name="line654">654  </a></b>	       *
+<b><a name="line655">655  </a></b>	       *  This is the constructor provided by the standard.
+<b><a name="line656">656  </a></b>	       *
+<b><a name="line657">657  </a></b>	       *  @param __refs  Passed to the base facet class.
+<b><a name="line658">658  </a></b>	      */
+<b><a name="line659">659  </a></b>	      explicit
+<b><a name="line660">660  </a></b>	      collate(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> __refs = 0)
+<b><a name="line661">661  </a></b>	      : facet(__refs), _M_c_locale_collate(_S_get_c_locale())
+<b><a name="line662">662  </a></b>	      { }
+<b><a name="line663">663  </a></b>	
+<b><a name="line664">664  </a></b>	      /**
+<b><a name="line665">665  </a></b>	       *  @brief  Internal constructor. Not for general use.
+<b><a name="line666">666  </a></b>	       *
+<b><a name="line667">667  </a></b>	       *  This is a constructor for use by the library itself to set up new
+<b><a name="line668">668  </a></b>	       *  locales.
+<b><a name="line669">669  </a></b>	       *
+<b><a name="line670">670  </a></b>	       *  @param __cloc  The C locale.
+<b><a name="line671">671  </a></b>	       *  @param __refs  Passed to the base facet class.
+<b><a name="line672">672  </a></b>	      */
+<b><a name="line673">673  </a></b>	      explicit
+<b><a name="line674">674  </a></b>	      collate(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++locale.h/code.html#line62">__c_locale</a> __cloc, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> __refs = 0)
+<b><a name="line675">675  </a></b>	      : facet(__refs), _M_c_locale_collate(_S_clone_c_locale(__cloc))
+<b><a name="line676">676  </a></b>	      { }
+<b><a name="line677">677  </a></b>	
+<b><a name="line678">678  </a></b>	      /**
+<b><a name="line679">679  </a></b>	       *  @brief  Compare two strings.
+<b><a name="line680">680  </a></b>	       *
+<b><a name="line681">681  </a></b>	       *  This function compares two strings and returns the result by calling
+<b><a name="line682">682  </a></b>	       *  collate::do_compare().
+<b><a name="line683">683  </a></b>	       *
+<b><a name="line684">684  </a></b>	       *  @param __lo1  Start of string 1.
+<b><a name="line685">685  </a></b>	       *  @param __hi1  End of string 1.
+<b><a name="line686">686  </a></b>	       *  @param __lo2  Start of string 2.
+<b><a name="line687">687  </a></b>	       *  @param __hi2  End of string 2.
+<b><a name="line688">688  </a></b>	       *  @return  1 if string1 &gt; string2, -1 if string1 &lt; string2, else 0.
+<b><a name="line689">689  </a></b>	      */
+<b><a name="line690">690  </a></b>	      int
+<b><a name="line691">691  </a></b>	      compare(const <a href="#line632">_CharT</a>* __lo1, const <a href="#line632">_CharT</a>* __hi1,
+<b><a name="line692">692  </a></b>		      const <a href="#line632">_CharT</a>* __lo2, const <a href="#line632">_CharT</a>* __hi2) const
+<b><a name="line693">693  </a></b>	      { return this-&gt;do_compare(__lo1, __hi1, __lo2, __hi2); }
+<b><a name="line694">694  </a></b>	
+<b><a name="line695">695  </a></b>	      /**
+<b><a name="line696">696  </a></b>	       *  @brief  Transform string to comparable form.
+<b><a name="line697">697  </a></b>	       *
+<b><a name="line698">698  </a></b>	       *  This function is a wrapper for strxfrm functionality.  It takes the
+<b><a name="line699">699  </a></b>	       *  input string and returns a modified string that can be directly
+<b><a name="line700">700  </a></b>	       *  compared to other transformed strings.  In the C locale, this
+<b><a name="line701">701  </a></b>	       *  function just returns a copy of the input string.  In some other
+<b><a name="line702">702  </a></b>	       *  locales, it may replace two chars with one, change a char for
+<b><a name="line703">703  </a></b>	       *  another, etc.  It does so by returning collate::do_transform().
+<b><a name="line704">704  </a></b>	       *
+<b><a name="line705">705  </a></b>	       *  @param __lo  Start of string.
+<b><a name="line706">706  </a></b>	       *  @param __hi  End of string.
+<b><a name="line707">707  </a></b>	       *  @return  Transformed string_type.
+<b><a name="line708">708  </a></b>	      */
+<b><a name="line709">709  </a></b>	      <a href="#line640">string_type</a>
+<b><a name="line710">710  </a></b>	      transform(const <a href="#line632">_CharT</a>* __lo, const <a href="#line632">_CharT</a>* __hi) const
+<b><a name="line711">711  </a></b>	      { return this-&gt;do_transform(__lo, __hi); }
+<b><a name="line712">712  </a></b>	
+<b><a name="line713">713  </a></b>	      /**
+<b><a name="line714">714  </a></b>	       *  @brief  Return hash of a string.
+<b><a name="line715">715  </a></b>	       *
+<b><a name="line716">716  </a></b>	       *  This function computes and returns a hash on the input string.  It
+<b><a name="line717">717  </a></b>	       *  does so by returning collate::do_hash().
+<b><a name="line718">718  </a></b>	       *
+<b><a name="line719">719  </a></b>	       *  @param __lo  Start of string.
+<b><a name="line720">720  </a></b>	       *  @param __hi  End of string.
+<b><a name="line721">721  </a></b>	       *  @return  Hash value.
+<b><a name="line722">722  </a></b>	      */
+<b><a name="line723">723  </a></b>	      long
+<b><a name="line724">724  </a></b>	      hash(const <a href="#line632">_CharT</a>* __lo, const <a href="#line632">_CharT</a>* __hi) const
+<b><a name="line725">725  </a></b>	      { return this-&gt;do_hash(__lo, __hi); }
+<b><a name="line726">726  </a></b>	
+<b><a name="line727">727  </a></b>	      // Used to abstract out _CharT bits in virtual member functions, below.
+<b><a name="line728">728  </a></b>	      int
+<b><a name="line729">729  </a></b>	      _M_compare(const <a href="#line632">_CharT</a>*, const <a href="#line632">_CharT</a>*) const throw();
+<b><a name="line730">730  </a></b>	
+<b><a name="line731">731  </a></b>	      <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>
+<b><a name="line732">732  </a></b>	      _M_transform(<a href="#line632">_CharT</a>*, const <a href="#line632">_CharT</a>*, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>) const throw();
+<b><a name="line733">733  </a></b>	
+<b><a name="line734">734  </a></b>	  protected:
+<b><a name="line735">735  </a></b>	      /// Destructor.
+<b><a name="line736">736  </a></b>	      virtual
+<b><a name="line737">737  </a></b>	      ~collate()
+<b><a name="line738">738  </a></b>	      { _S_destroy_c_locale(_M_c_locale_collate); }
+<b><a name="line739">739  </a></b>	
+<b><a name="line740">740  </a></b>	      /**
+<b><a name="line741">741  </a></b>	       *  @brief  Compare two strings.
+<b><a name="line742">742  </a></b>	       *
+<b><a name="line743">743  </a></b>	       *  This function is a hook for derived classes to change the value
+<b><a name="line744">744  </a></b>	       *  returned.  @see compare().
+<b><a name="line745">745  </a></b>	       *
+<b><a name="line746">746  </a></b>	       *  @param __lo1  Start of string 1.
+<b><a name="line747">747  </a></b>	       *  @param __hi1  End of string 1.
+<b><a name="line748">748  </a></b>	       *  @param __lo2  Start of string 2.
+<b><a name="line749">749  </a></b>	       *  @param __hi2  End of string 2.
+<b><a name="line750">750  </a></b>	       *  @return  1 if string1 &gt; string2, -1 if string1 &lt; string2, else 0.
+<b><a name="line751">751  </a></b>	      */
+<b><a name="line752">752  </a></b>	      virtual int
+<b><a name="line753">753  </a></b>	      do_compare(const <a href="#line632">_CharT</a>* __lo1, const <a href="#line632">_CharT</a>* __hi1,
+<b><a name="line754">754  </a></b>			 const <a href="#line632">_CharT</a>* __lo2, const <a href="#line632">_CharT</a>* __hi2) const;
+<b><a name="line755">755  </a></b>	
+<b><a name="line756">756  </a></b>	      /**
+<b><a name="line757">757  </a></b>	       *  @brief  Transform string to comparable form.
+<b><a name="line758">758  </a></b>	       *
+<b><a name="line759">759  </a></b>	       *  This function is a hook for derived classes to change the value
+<b><a name="line760">760  </a></b>	       *  returned.
+<b><a name="line761">761  </a></b>	       *
+<b><a name="line762">762  </a></b>	       *  @param __lo  Start.
+<b><a name="line763">763  </a></b>	       *  @param __hi  End.
+<b><a name="line764">764  </a></b>	       *  @return  transformed string.
+<b><a name="line765">765  </a></b>	      */
+<b><a name="line766">766  </a></b>	      virtual <a href="#line640">string_type</a>
+<b><a name="line767">767  </a></b>	      do_transform(const <a href="#line632">_CharT</a>* __lo, const <a href="#line632">_CharT</a>* __hi) const;
+<b><a name="line768">768  </a></b>	
+<b><a name="line769">769  </a></b>	      /**
+<b><a name="line770">770  </a></b>	       *  @brief  Return hash of a string.
+<b><a name="line771">771  </a></b>	       *
+<b><a name="line772">772  </a></b>	       *  This function computes and returns a hash on the input string.  This
+<b><a name="line773">773  </a></b>	       *  function is a hook for derived classes to change the value returned.
+<b><a name="line774">774  </a></b>	       *
+<b><a name="line775">775  </a></b>	       *  @param __lo  Start of string.
+<b><a name="line776">776  </a></b>	       *  @param __hi  End of string.
+<b><a name="line777">777  </a></b>	       *  @return  Hash value.
+<b><a name="line778">778  </a></b>	      */
+<b><a name="line779">779  </a></b>	      virtual long
+<b><a name="line780">780  </a></b>	      do_hash(const <a href="#line632">_CharT</a>* __lo, const <a href="#line632">_CharT</a>* __hi) const;
+<b><a name="line781">781  </a></b>	    };
+<b><a name="line782">782  </a></b>	
+<b><a name="line783">783  </a></b>	  template&lt;typename <b>_CharT</b>&gt;
+<b><a name="line784">784  </a></b>	    <a href="../localefwd.h/code.html#line55">locale</a>::<a href="#line71">id</a> <a href="../localefwd.h/code.html#line161">collate</a>&lt;<a href="#line783">_CharT</a>&gt;::<b>id</b>;
+<b><a name="line785">785  </a></b>	
+<b><a name="line786">786  </a></b>	  // Specializations.
+<b><a name="line787">787  </a></b>	  template&lt;&gt;
+<b><a name="line788">788  </a></b>	    int
+<b><a name="line789">789  </a></b>	    <a href="#line633">collate</a>&lt;char&gt;::<a href="#line729">_M_compare</a>(const char*, const char*) const throw();
+<b><a name="line790">790  </a></b>	
+<b><a name="line791">791  </a></b>	  template&lt;&gt;
+<b><a name="line792">792  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>
+<b><a name="line793">793  </a></b>	    <a href="#line633">collate</a>&lt;char&gt;::<a href="#line732">_M_transform</a>(char*, const char*, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>) const throw();
+<b><a name="line794">794  </a></b>	
+<b><a name="line795">795  </a></b>	#ifdef <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1432">_GLIBCXX_USE_WCHAR_T</a>
+<b><a name="line796">796  </a></b>	  template&lt;&gt;
+<b><a name="line797">797  </a></b>	    int
+<b><a name="line798">798  </a></b>	    <a href="#line633">collate</a>&lt;wchar_t&gt;::<a href="#line729">_M_compare</a>(const wchar_t*, const wchar_t*) const throw();
+<b><a name="line799">799  </a></b>	
+<b><a name="line800">800  </a></b>	  template&lt;&gt;
+<b><a name="line801">801  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>
+<b><a name="line802">802  </a></b>	    <a href="#line633">collate</a>&lt;wchar_t&gt;::<a href="#line732">_M_transform</a>(wchar_t*, const wchar_t*, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>) const throw();
+<b><a name="line803">803  </a></b>	#endif
+<b><a name="line804">804  </a></b>	
+<b><a name="line805">805  </a></b>	  /// class collate_byname [22.2.4.2].
+<b><a name="line806">806  </a></b>	  template&lt;typename <b>_CharT</b>&gt;
+<b><a name="line807">807  </a></b>	    class <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line224">_GLIBCXX_NAMESPACE_CXX11</a> collate_byname : public <a href="#line633">collate</a>&lt;<a href="#line806">_CharT</a>&gt;
+<b><a name="line808">808  </a></b>	    {
+<b><a name="line809">809  </a></b>	    public:
+<b><a name="line810">810  </a></b>	      //@{
+<b><a name="line811">811  </a></b>	      /// Public typedefs
+<b><a name="line812">812  </a></b>	      typedef <a href="#line806">_CharT</a>               <b>char_type</b>;
+<b><a name="line813">813  </a></b>	      typedef <a href="../stringfwd.h/code.html#line71">basic_string</a>&lt;<a href="#line806">_CharT</a>&gt; <b>string_type</b>;
+<b><a name="line814">814  </a></b>	      //@}
+<b><a name="line815">815  </a></b>	
+<b><a name="line816">816  </a></b>	      explicit
+<b><a name="line817">817  </a></b>	      collate_byname(const char* __s, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> __refs = 0)
+<b><a name="line818">818  </a></b>	      : collate&lt;_CharT&gt;(__refs)
+<b><a name="line819">819  </a></b>	      {
+<b><a name="line820">820  </a></b>		if (__builtin_strcmp(__s, &quot;C&quot;) != 0
+<b><a name="line821">821  </a></b>		    &amp;&amp; __builtin_strcmp(__s, &quot;POSIX&quot;) != 0)
+<b><a name="line822">822  </a></b>		  {
+<b><a name="line823">823  </a></b>		    this-&gt;_S_destroy_c_locale(this-&gt;_M_c_locale_collate);
+<b><a name="line824">824  </a></b>		    this-&gt;_S_create_c_locale(this-&gt;_M_c_locale_collate, __s);
+<b><a name="line825">825  </a></b>		  }
+<b><a name="line826">826  </a></b>	      }
+<b><a name="line827">827  </a></b>	
+<b><a name="line828">828  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line829">829  </a></b>	      explicit
+<b><a name="line830">830  </a></b>	      collate_byname(const <a href="../stringfwd.h/code.html#line74">string</a>&amp; __s, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> __refs = 0)
+<b><a name="line831">831  </a></b>	      : collate_byname(__s.c_str(), __refs) { }
+<b><a name="line832">832  </a></b>	#endif
+<b><a name="line833">833  </a></b>	
+<b><a name="line834">834  </a></b>	    protected:
+<b><a name="line835">835  </a></b>	      virtual
+<b><a name="line836">836  </a></b>	      ~collate_byname() { }
+<b><a name="line837">837  </a></b>	    };
+<b><a name="line838">838  </a></b>	
+<b><a name="line839">839  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line840">840  </a></b>	} // namespace
+<b><a name="line841">841  </a></b>	
+<b><a name="line842">842  </a></b>	# include &lt;bits/locale_classes.tcc&gt;
+<b><a name="line843">843  </a></b>	
+<b><a name="line844">844  </a></b>	#endif
+<b><a name="line845">845  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

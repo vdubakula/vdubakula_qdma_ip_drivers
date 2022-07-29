@@ -1,0 +1,152 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_vect.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2010-2015 Intel Corporation
+<b><a name="line3">3    </a></b>	 */
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	#ifndef _RTE_VECT_X86_H_
+<b><a name="line6">6    </a></b>	#define <b>_RTE_VECT_X86_H_</b>
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	/**
+<b><a name="line9">9    </a></b>	 * @file
+<b><a name="line10">10   </a></b>	 *
+<b><a name="line11">11   </a></b>	 * RTE SSE/AVX related header.
+<b><a name="line12">12   </a></b>	 */
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	#include &lt;stdint.h&gt;
+<b><a name="line15">15   </a></b>	#include &lt;rte_config.h&gt;
+<b><a name="line16">16   </a></b>	#include &quot;generic/rte_vect.h&quot;
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	#if (defined(__ICC) || (<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line240">__GNUC__</a> == 4 &amp;&amp;  <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line759">__GNUC_MINOR__</a> &lt; 4))
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	#include &lt;smmintrin.h&gt; /* SSE4 */
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	#if defined(__AVX__)
+<b><a name="line23">23   </a></b>	#include &lt;immintrin.h&gt;
+<b><a name="line24">24   </a></b>	#endif
+<b><a name="line25">25   </a></b>	
+<b><a name="line26">26   </a></b>	#else
+<b><a name="line27">27   </a></b>	
+<b><a name="line28">28   </a></b>	#include &lt;x86intrin.h&gt;
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	#endif
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	#ifdef __cplusplus
+<b><a name="line33">33   </a></b>	extern &quot;C&quot; {
+<b><a name="line34">34   </a></b>	#endif
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	typedef <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/emmintrin.h/code.html#line52">__m128i</a> <b>xmm_t</b>;
+<b><a name="line37">37   </a></b>	
+<b><a name="line38">38   </a></b>	#define	<b>XMM_SIZE</b>	(sizeof(xmm_t))
+<b><a name="line39">39   </a></b>	#define	<b>XMM_MASK</b>	(XMM_SIZE - 1)
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	typedef union <b>rte_xmm</b> {
+<b><a name="line42">42   </a></b>		<a href="#line36">xmm_t</a>    <b>x</b>;
+<b><a name="line43">43   </a></b>		<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a>  <b>u8</b>[<a href="#line38">XMM_SIZE</a> / sizeof(<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a>)];
+<b><a name="line44">44   </a></b>		<a href="../../../../include/stdint.h/code.html#line49">uint16_t</a> <b>u16</b>[<a href="#line38">XMM_SIZE</a> / sizeof(<a href="../../../../include/stdint.h/code.html#line49">uint16_t</a>)];
+<b><a name="line45">45   </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>u32</b>[<a href="#line38">XMM_SIZE</a> / sizeof(<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a>)];
+<b><a name="line46">46   </a></b>		<a href="../../../../include/stdint.h/code.html#line55">uint64_t</a> <b>u64</b>[<a href="#line38">XMM_SIZE</a> / sizeof(<a href="../../../../include/stdint.h/code.html#line55">uint64_t</a>)];
+<b><a name="line47">47   </a></b>		double   <b>pd</b>[<a href="#line38">XMM_SIZE</a> / sizeof(double)];
+<b><a name="line48">48   </a></b>	} <b>rte_xmm_t</b>;
+<b><a name="line49">49   </a></b>	
+<b><a name="line50">50   </a></b>	#ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line324">__AVX__</a>
+<b><a name="line51">51   </a></b>	
+<b><a name="line52">52   </a></b>	typedef <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/avxintrin.h/code.html#line56">__m256i</a> <b>ymm_t</b>;
+<b><a name="line53">53   </a></b>	
+<b><a name="line54">54   </a></b>	#define	<b>YMM_SIZE</b>	(sizeof(ymm_t))
+<b><a name="line55">55   </a></b>	#define	<b>YMM_MASK</b>	(YMM_SIZE - 1)
+<b><a name="line56">56   </a></b>	
+<b><a name="line57">57   </a></b>	typedef union <b>rte_ymm</b> {
+<b><a name="line58">58   </a></b>		<a href="#line52">ymm_t</a>    <b>y</b>;
+<b><a name="line59">59   </a></b>		<a href="#line36">xmm_t</a>    <b>x</b>[<a href="#line54">YMM_SIZE</a> / sizeof(<a href="#line36">xmm_t</a>)];
+<b><a name="line60">60   </a></b>		<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a>  <b>u8</b>[<a href="#line54">YMM_SIZE</a> / sizeof(<a href="../../../../include/stdint.h/code.html#line48">uint8_t</a>)];
+<b><a name="line61">61   </a></b>		<a href="../../../../include/stdint.h/code.html#line49">uint16_t</a> <b>u16</b>[<a href="#line54">YMM_SIZE</a> / sizeof(<a href="../../../../include/stdint.h/code.html#line49">uint16_t</a>)];
+<b><a name="line62">62   </a></b>		<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>u32</b>[<a href="#line54">YMM_SIZE</a> / sizeof(<a href="../../../../include/stdint.h/code.html#line51">uint32_t</a>)];
+<b><a name="line63">63   </a></b>		<a href="../../../../include/stdint.h/code.html#line55">uint64_t</a> <b>u64</b>[<a href="#line54">YMM_SIZE</a> / sizeof(<a href="../../../../include/stdint.h/code.html#line55">uint64_t</a>)];
+<b><a name="line64">64   </a></b>		double   <b>pd</b>[<a href="#line54">YMM_SIZE</a> / sizeof(double)];
+<b><a name="line65">65   </a></b>	} <b>rte_ymm_t</b>;
+<b><a name="line66">66   </a></b>	
+<b><a name="line67">67   </a></b>	#endif /* __AVX__ */
+<b><a name="line68">68   </a></b>	
+<b><a name="line69">69   </a></b>	#ifdef RTE_ARCH_I686
+<b><a name="line70">70   </a></b>	#define _mm_cvtsi128_si64(a)    \
+<b><a name="line71">71   </a></b>	__extension__ ({                \
+<b><a name="line72">72   </a></b>		rte_xmm_t m;            \
+<b><a name="line73">73   </a></b>		m.x = (a);              \
+<b><a name="line74">74   </a></b>		(m.u64[0]);             \
+<b><a name="line75">75   </a></b>	})
+<b><a name="line76">76   </a></b>	#endif
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	/*
+<b><a name="line79">79   </a></b>	 * Prior to version 12.1 icc doesn't support _mm_set_epi64x.
+<b><a name="line80">80   </a></b>	 */
+<b><a name="line81">81   </a></b>	#if (defined(__ICC) &amp;&amp; __ICC &lt; 1210)
+<b><a name="line82">82   </a></b>	#define _mm_set_epi64x(a, b)     \
+<b><a name="line83">83   </a></b>	__extension__ ({                 \
+<b><a name="line84">84   </a></b>		rte_xmm_t m;             \
+<b><a name="line85">85   </a></b>		m.u64[0] = b;            \
+<b><a name="line86">86   </a></b>		m.u64[1] = a;            \
+<b><a name="line87">87   </a></b>		(m.x);                   \
+<b><a name="line88">88   </a></b>	})
+<b><a name="line89">89   </a></b>	#endif /* (defined(__ICC) &amp;&amp; __ICC &lt; 1210) */
+<b><a name="line90">90   </a></b>	
+<b><a name="line91">91   </a></b>	#ifdef __cplusplus
+<b><a name="line92">92   </a></b>	}
+<b><a name="line93">93   </a></b>	#endif
+<b><a name="line94">94   </a></b>	
+<b><a name="line95">95   </a></b>	#endif /* _RTE_VECT_X86_H_ */
+<b><a name="line96">96   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

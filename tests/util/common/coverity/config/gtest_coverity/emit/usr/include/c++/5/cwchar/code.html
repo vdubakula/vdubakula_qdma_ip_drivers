@@ -1,0 +1,360 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/cwchar</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// -*- C++ -*- forwarding header.
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 1997-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file include/cwchar
+<b><a name="line26">26   </a></b>	 *  This is a Standard C++ Library file.  You should @c \#include this file
+<b><a name="line27">27   </a></b>	 *  in your programs, rather than any of the @a *.h implementation files.
+<b><a name="line28">28   </a></b>	 *
+<b><a name="line29">29   </a></b>	 *  This is the C++ version of the Standard C Library header @c wchar.h,
+<b><a name="line30">30   </a></b>	 *  and its contents are (mostly) the same as that header, but are all
+<b><a name="line31">31   </a></b>	 *  contained in the namespace @c std (except for names which are defined
+<b><a name="line32">32   </a></b>	 *  as macros in C).
+<b><a name="line33">33   </a></b>	 */
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	//
+<b><a name="line36">36   </a></b>	// ISO C++ 14882: 21.4
+<b><a name="line37">37   </a></b>	//
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	#pragma GCC system_header
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	#include &lt;bits/c++config.h&gt;
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	#if <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1001">_GLIBCXX_HAVE_WCHAR_H</a>
+<b><a name="line44">44   </a></b>	#include &lt;wchar.h&gt;
+<b><a name="line45">45   </a></b>	#endif
+<b><a name="line46">46   </a></b>	
+<b><a name="line47">47   </a></b>	#ifndef <a href="#line48">_GLIBCXX_CWCHAR</a>
+<b><a name="line48">48   </a></b>	#define <b>_GLIBCXX_CWCHAR</b> 1
+<b><a name="line49">49   </a></b>	
+<b><a name="line50">50   </a></b>	// Need to do a bit of trickery here with mbstate_t as char_traits
+<b><a name="line51">51   </a></b>	// assumes it is in wchar.h, regardless of wchar_t specializations.
+<b><a name="line52">52   </a></b>	#ifndef <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line808">_GLIBCXX_HAVE_MBSTATE_T</a>
+<b><a name="line53">53   </a></b>	extern &quot;C&quot;
+<b><a name="line54">54   </a></b>	{
+<b><a name="line55">55   </a></b>	  typedef struct
+<b><a name="line56">56   </a></b>	  {
+<b><a name="line57">57   </a></b>	    int __fill[6];
+<b><a name="line58">58   </a></b>	  } mbstate_t;
+<b><a name="line59">59   </a></b>	}
+<b><a name="line60">60   </a></b>	#endif
+<b><a name="line61">61   </a></b>	
+<b><a name="line62">62   </a></b>	namespace <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>
+<b><a name="line63">63   </a></b>	{
+<b><a name="line64">64   </a></b>	  using ::<a href="../../../wchar.h/code.html#line106">mbstate_t</a>;
+<b><a name="line65">65   </a></b>	} // namespace std
+<b><a name="line66">66   </a></b>	
+<b><a name="line67">67   </a></b>	// Get rid of those macros defined in &lt;wchar.h&gt; in lieu of real functions.
+<b><a name="line68">68   </a></b>	#undef btowc
+<b><a name="line69">69   </a></b>	#undef fgetwc
+<b><a name="line70">70   </a></b>	#undef fgetws
+<b><a name="line71">71   </a></b>	#undef fputwc
+<b><a name="line72">72   </a></b>	#undef fputws
+<b><a name="line73">73   </a></b>	#undef fwide
+<b><a name="line74">74   </a></b>	#undef fwprintf
+<b><a name="line75">75   </a></b>	#undef fwscanf
+<b><a name="line76">76   </a></b>	#undef getwc
+<b><a name="line77">77   </a></b>	#undef getwchar
+<b><a name="line78">78   </a></b>	#undef mbrlen
+<b><a name="line79">79   </a></b>	#undef mbrtowc
+<b><a name="line80">80   </a></b>	#undef mbsinit
+<b><a name="line81">81   </a></b>	#undef mbsrtowcs
+<b><a name="line82">82   </a></b>	#undef putwc
+<b><a name="line83">83   </a></b>	#undef putwchar
+<b><a name="line84">84   </a></b>	#undef swprintf
+<b><a name="line85">85   </a></b>	#undef swscanf
+<b><a name="line86">86   </a></b>	#undef ungetwc
+<b><a name="line87">87   </a></b>	#undef vfwprintf
+<b><a name="line88">88   </a></b>	#if <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line992">_GLIBCXX_HAVE_VFWSCANF</a>
+<b><a name="line89">89   </a></b>	# undef vfwscanf
+<b><a name="line90">90   </a></b>	#endif
+<b><a name="line91">91   </a></b>	#undef vswprintf
+<b><a name="line92">92   </a></b>	#if <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line995">_GLIBCXX_HAVE_VSWSCANF</a>
+<b><a name="line93">93   </a></b>	# undef vswscanf
+<b><a name="line94">94   </a></b>	#endif
+<b><a name="line95">95   </a></b>	#undef vwprintf
+<b><a name="line96">96   </a></b>	#if <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line998">_GLIBCXX_HAVE_VWSCANF</a>
+<b><a name="line97">97   </a></b>	# undef vwscanf
+<b><a name="line98">98   </a></b>	#endif
+<b><a name="line99">99   </a></b>	#undef wcrtomb
+<b><a name="line100">100  </a></b>	#undef wcscat
+<b><a name="line101">101  </a></b>	#undef wcschr
+<b><a name="line102">102  </a></b>	#undef wcscmp
+<b><a name="line103">103  </a></b>	#undef wcscoll
+<b><a name="line104">104  </a></b>	#undef wcscpy
+<b><a name="line105">105  </a></b>	#undef wcscspn
+<b><a name="line106">106  </a></b>	#undef wcsftime
+<b><a name="line107">107  </a></b>	#undef wcslen
+<b><a name="line108">108  </a></b>	#undef wcsncat
+<b><a name="line109">109  </a></b>	#undef wcsncmp
+<b><a name="line110">110  </a></b>	#undef wcsncpy
+<b><a name="line111">111  </a></b>	#undef wcspbrk
+<b><a name="line112">112  </a></b>	#undef wcsrchr
+<b><a name="line113">113  </a></b>	#undef wcsrtombs
+<b><a name="line114">114  </a></b>	#undef wcsspn
+<b><a name="line115">115  </a></b>	#undef wcsstr
+<b><a name="line116">116  </a></b>	#undef wcstod
+<b><a name="line117">117  </a></b>	#if <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1004">_GLIBCXX_HAVE_WCSTOF</a>
+<b><a name="line118">118  </a></b>	# undef wcstof
+<b><a name="line119">119  </a></b>	#endif
+<b><a name="line120">120  </a></b>	#undef wcstok
+<b><a name="line121">121  </a></b>	#undef wcstol
+<b><a name="line122">122  </a></b>	#undef wcstoul
+<b><a name="line123">123  </a></b>	#undef wcsxfrm
+<b><a name="line124">124  </a></b>	#undef wctob
+<b><a name="line125">125  </a></b>	#undef wmemchr
+<b><a name="line126">126  </a></b>	#undef wmemcmp
+<b><a name="line127">127  </a></b>	#undef wmemcpy
+<b><a name="line128">128  </a></b>	#undef wmemmove
+<b><a name="line129">129  </a></b>	#undef wmemset
+<b><a name="line130">130  </a></b>	#undef wprintf
+<b><a name="line131">131  </a></b>	#undef wscanf
+<b><a name="line132">132  </a></b>	
+<b><a name="line133">133  </a></b>	#if <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1432">_GLIBCXX_USE_WCHAR_T</a>
+<b><a name="line134">134  </a></b>	
+<b><a name="line135">135  </a></b>	namespace <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line136">136  </a></b>	{
+<b><a name="line137">137  </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line138">138  </a></b>	
+<b><a name="line139">139  </a></b>	  using ::<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line357">wint_t</a>;
+<b><a name="line140">140  </a></b>	
+<b><a name="line141">141  </a></b>	  using ::<a href="../../../wchar.h/code.html#line356">btowc</a>;
+<b><a name="line142">142  </a></b>	  using ::<a href="../../../wchar.h/code.html#line748">fgetwc</a>;
+<b><a name="line143">143  </a></b>	  using ::<a href="../../../wchar.h/code.html#line777">fgetws</a>;
+<b><a name="line144">144  </a></b>	  using ::<a href="../../../wchar.h/code.html#line762">fputwc</a>;
+<b><a name="line145">145  </a></b>	  using ::<a href="../../../wchar.h/code.html#line784">fputws</a>;
+<b><a name="line146">146  </a></b>	  using ::<a href="../../../wchar.h/code.html#line590">fwide</a>;
+<b><a name="line147">147  </a></b>	  using ::<a href="../../../wchar.h/code.html#line597">fwprintf</a>;
+<b><a name="line148">148  </a></b>	  using ::<a href="../../../wchar.h/code.html#line638">fwscanf</a>;
+<b><a name="line149">149  </a></b>	  using ::<a href="../../../wchar.h/code.html#line749">getwc</a>;
+<b><a name="line150">150  </a></b>	  using ::<a href="../../../wchar.h/code.html#line755">getwchar</a>;
+<b><a name="line151">151  </a></b>	  using ::<a href="../../../wchar.h/code.html#line379">mbrlen</a>;
+<b><a name="line152">152  </a></b>	  using ::<a href="../../../wchar.h/code.html#line368">mbrtowc</a>;
+<b><a name="line153">153  </a></b>	  using ::<a href="../../../wchar.h/code.html#line364">mbsinit</a>;
+<b><a name="line154">154  </a></b>	  using ::<a href="../../../wchar.h/code.html#line411">mbsrtowcs</a>;
+<b><a name="line155">155  </a></b>	  using ::<a href="../../../wchar.h/code.html#line763">putwc</a>;
+<b><a name="line156">156  </a></b>	  using ::<a href="../../../wchar.h/code.html#line769">putwchar</a>;
+<b><a name="line157">157  </a></b>	#ifndef _GLIBCXX_HAVE_BROKEN_VSWPRINTF
+<b><a name="line158">158  </a></b>	  using ::<a href="../../../wchar.h/code.html#line607">swprintf</a>;
+<b><a name="line159">159  </a></b>	#endif
+<b><a name="line160">160  </a></b>	  using ::<a href="../../../wchar.h/code.html#line648">swscanf</a>;
+<b><a name="line161">161  </a></b>	  using ::<a href="../../../wchar.h/code.html#line792">ungetwc</a>;
+<b><a name="line162">162  </a></b>	  using ::<a href="../../../wchar.h/code.html#line615">vfwprintf</a>;
+<b><a name="line163">163  </a></b>	#if <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line992">_GLIBCXX_HAVE_VFWSCANF</a>
+<b><a name="line164">164  </a></b>	  using ::<a href="../../../wchar.h/code.html#line692">vfwscanf</a>;
+<b><a name="line165">165  </a></b>	#endif
+<b><a name="line166">166  </a></b>	#ifndef _GLIBCXX_HAVE_BROKEN_VSWPRINTF
+<b><a name="line167">167  </a></b>	  using ::<a href="../../../wchar.h/code.html#line628">vswprintf</a>;
+<b><a name="line168">168  </a></b>	#endif
+<b><a name="line169">169  </a></b>	#if <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line995">_GLIBCXX_HAVE_VSWSCANF</a>
+<b><a name="line170">170  </a></b>	  using ::<a href="../../../wchar.h/code.html#line704">vswscanf</a>;
+<b><a name="line171">171  </a></b>	#endif
+<b><a name="line172">172  </a></b>	  using ::<a href="../../../wchar.h/code.html#line623">vwprintf</a>;
+<b><a name="line173">173  </a></b>	#if <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line998">_GLIBCXX_HAVE_VWSCANF</a>
+<b><a name="line174">174  </a></b>	  using ::<a href="../../../wchar.h/code.html#line700">vwscanf</a>;
+<b><a name="line175">175  </a></b>	#endif
+<b><a name="line176">176  </a></b>	  using ::<a href="../../../wchar.h/code.html#line373">wcrtomb</a>;
+<b><a name="line177">177  </a></b>	  using ::<a href="../../../wchar.h/code.html#line157">wcscat</a>;
+<b><a name="line178">178  </a></b>	  using ::<a href="../../../wchar.h/code.html#line166">wcscmp</a>;
+<b><a name="line179">179  </a></b>	  using ::<a href="../../../wchar.h/code.html#line195">wcscoll</a>;
+<b><a name="line180">180  </a></b>	  using ::<a href="../../../wchar.h/code.html#line147">wcscpy</a>;
+<b><a name="line181">181  </a></b>	  using ::<a href="../../../wchar.h/code.html#line255">wcscspn</a>;
+<b><a name="line182">182  </a></b>	  using ::<a href="../../../wchar.h/code.html#line858">wcsftime</a>;
+<b><a name="line183">183  </a></b>	  using ::<a href="../../../wchar.h/code.html#line290">wcslen</a>;
+<b><a name="line184">184  </a></b>	  using ::<a href="../../../wchar.h/code.html#line161">wcsncat</a>;
+<b><a name="line185">185  </a></b>	  using ::<a href="../../../wchar.h/code.html#line169">wcsncmp</a>;
+<b><a name="line186">186  </a></b>	  using ::<a href="../../../wchar.h/code.html#line152">wcsncpy</a>;
+<b><a name="line187">187  </a></b>	  using ::<a href="../../../wchar.h/code.html#line417">wcsrtombs</a>;
+<b><a name="line188">188  </a></b>	  using ::<a href="../../../wchar.h/code.html#line259">wcsspn</a>;
+<b><a name="line189">189  </a></b>	  using ::<a href="../../../wchar.h/code.html#line453">wcstod</a>;
+<b><a name="line190">190  </a></b>	#if <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1004">_GLIBCXX_HAVE_WCSTOF</a>
+<b><a name="line191">191  </a></b>	  using ::<a href="../../../wchar.h/code.html#line460">wcstof</a>;
+<b><a name="line192">192  </a></b>	#endif
+<b><a name="line193">193  </a></b>	  using ::<a href="../../../wchar.h/code.html#line285">wcstok</a>;
+<b><a name="line194">194  </a></b>	  using ::<a href="../../../wchar.h/code.html#line471">wcstol</a>;
+<b><a name="line195">195  </a></b>	  using ::<a href="../../../wchar.h/code.html#line476">wcstoul</a>;
+<b><a name="line196">196  </a></b>	  using ::<a href="../../../wchar.h/code.html#line199">wcsxfrm</a>;
+<b><a name="line197">197  </a></b>	  using ::<a href="../../../wchar.h/code.html#line360">wctob</a>;
+<b><a name="line198">198  </a></b>	  using ::<a href="../../../wchar.h/code.html#line328">wmemcmp</a>;
+<b><a name="line199">199  </a></b>	  using ::<a href="../../../wchar.h/code.html#line332">wmemcpy</a>;
+<b><a name="line200">200  </a></b>	  using ::<a href="../../../wchar.h/code.html#line337">wmemmove</a>;
+<b><a name="line201">201  </a></b>	  using ::<a href="../../../wchar.h/code.html#line341">wmemset</a>;
+<b><a name="line202">202  </a></b>	  using ::<a href="../../../wchar.h/code.html#line604">wprintf</a>;
+<b><a name="line203">203  </a></b>	  using ::<a href="../../../wchar.h/code.html#line645">wscanf</a>;
+<b><a name="line204">204  </a></b>	  using ::<a href="../../../wchar.h/code.html#line227">wcschr</a>;
+<b><a name="line205">205  </a></b>	  using ::<a href="../../../wchar.h/code.html#line265">wcspbrk</a>;
+<b><a name="line206">206  </a></b>	  using ::<a href="../../../wchar.h/code.html#line237">wcsrchr</a>;
+<b><a name="line207">207  </a></b>	  using ::<a href="../../../wchar.h/code.html#line276">wcsstr</a>;
+<b><a name="line208">208  </a></b>	  using ::<a href="../../../wchar.h/code.html#line319">wmemchr</a>;
+<b><a name="line209">209  </a></b>	
+<b><a name="line210">210  </a></b>	#ifndef <a href="../../../wchar.h/code.html#line75">__CORRECT_ISO_CPP_WCHAR_H_PROTO</a>
+<b><a name="line211">211  </a></b>	  inline wchar_t*
+<b><a name="line212">212  </a></b>	  wcschr(wchar_t* __p, wchar_t __c)
+<b><a name="line213">213  </a></b>	  { return wcschr(const_cast&lt;const wchar_t*&gt;(__p), __c); }
+<b><a name="line214">214  </a></b>	
+<b><a name="line215">215  </a></b>	  inline wchar_t*
+<b><a name="line216">216  </a></b>	  wcspbrk(wchar_t* __s1, const wchar_t* __s2)
+<b><a name="line217">217  </a></b>	  { return wcspbrk(const_cast&lt;const wchar_t*&gt;(__s1), __s2); }
+<b><a name="line218">218  </a></b>	
+<b><a name="line219">219  </a></b>	  inline wchar_t*
+<b><a name="line220">220  </a></b>	  wcsrchr(wchar_t* __p, wchar_t __c)
+<b><a name="line221">221  </a></b>	  { return wcsrchr(const_cast&lt;const wchar_t*&gt;(__p), __c); }
+<b><a name="line222">222  </a></b>	
+<b><a name="line223">223  </a></b>	  inline wchar_t*
+<b><a name="line224">224  </a></b>	  wcsstr(wchar_t* __s1, const wchar_t* __s2)
+<b><a name="line225">225  </a></b>	  { return wcsstr(const_cast&lt;const wchar_t*&gt;(__s1), __s2); }
+<b><a name="line226">226  </a></b>	
+<b><a name="line227">227  </a></b>	  inline wchar_t*
+<b><a name="line228">228  </a></b>	  wmemchr(wchar_t* __p, wchar_t __c, size_t __n)
+<b><a name="line229">229  </a></b>	  { return wmemchr(const_cast&lt;const wchar_t*&gt;(__p), __c, __n); }
+<b><a name="line230">230  </a></b>	#endif
+<b><a name="line231">231  </a></b>	
+<b><a name="line232">232  </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line233">233  </a></b>	} // namespace
+<b><a name="line234">234  </a></b>	
+<b><a name="line235">235  </a></b>	#if <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1309">_GLIBCXX_USE_C99</a>
+<b><a name="line236">236  </a></b>	
+<b><a name="line237">237  </a></b>	#undef wcstold
+<b><a name="line238">238  </a></b>	#undef wcstoll
+<b><a name="line239">239  </a></b>	#undef wcstoull
+<b><a name="line240">240  </a></b>	
+<b><a name="line241">241  </a></b>	namespace <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>
+<b><a name="line242">242  </a></b>	{
+<b><a name="line243">243  </a></b>	#if _GLIBCXX_USE_C99_CHECK || _GLIBCXX_USE_C99_DYNAMIC
+<b><a name="line244">244  </a></b>	  extern &quot;C&quot; long double
+<b><a name="line245">245  </a></b>	    (wcstold)(const wchar_t * __restrict, wchar_t ** __restrict) throw ();
+<b><a name="line246">246  </a></b>	#endif
+<b><a name="line247">247  </a></b>	#if !_GLIBCXX_USE_C99_DYNAMIC
+<b><a name="line248">248  </a></b>	  using ::<a href="../../../wchar.h/code.html#line462">wcstold</a>;
+<b><a name="line249">249  </a></b>	#endif
+<b><a name="line250">250  </a></b>	#if _GLIBCXX_USE_C99_LONG_LONG_CHECK || _GLIBCXX_USE_C99_LONG_LONG_DYNAMIC
+<b><a name="line251">251  </a></b>	  extern &quot;C&quot; long long int
+<b><a name="line252">252  </a></b>	    (wcstoll)(const wchar_t * __restrict, wchar_t ** __restrict, int) throw ();
+<b><a name="line253">253  </a></b>	  extern &quot;C&quot; unsigned long long int
+<b><a name="line254">254  </a></b>	    (wcstoull)(const wchar_t * __restrict, wchar_t ** __restrict, int) throw ();
+<b><a name="line255">255  </a></b>	#endif
+<b><a name="line256">256  </a></b>	#if !_GLIBCXX_USE_C99_LONG_LONG_DYNAMIC
+<b><a name="line257">257  </a></b>	  using ::<a href="../../../wchar.h/code.html#line486">wcstoll</a>;
+<b><a name="line258">258  </a></b>	  using ::<a href="../../../wchar.h/code.html#line493">wcstoull</a>;
+<b><a name="line259">259  </a></b>	#endif
+<b><a name="line260">260  </a></b>	} // namespace __gnu_cxx
+<b><a name="line261">261  </a></b>	
+<b><a name="line262">262  </a></b>	namespace <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>
+<b><a name="line263">263  </a></b>	{
+<b><a name="line264">264  </a></b>	  using ::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../../wchar.h/code.html#line462">wcstold</a>;
+<b><a name="line265">265  </a></b>	  using ::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../../wchar.h/code.html#line486">wcstoll</a>;
+<b><a name="line266">266  </a></b>	  using ::<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line220">__gnu_cxx</a>::<a href="../../../wchar.h/code.html#line493">wcstoull</a>;
+<b><a name="line267">267  </a></b>	} // namespace
+<b><a name="line268">268  </a></b>	
+<b><a name="line269">269  </a></b>	#endif
+<b><a name="line270">270  </a></b>	
+<b><a name="line271">271  </a></b>	#endif //_GLIBCXX_USE_WCHAR_T
+<b><a name="line272">272  </a></b>	
+<b><a name="line273">273  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line274">274  </a></b>	
+<b><a name="line275">275  </a></b>	#ifdef <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1432">_GLIBCXX_USE_WCHAR_T</a>
+<b><a name="line276">276  </a></b>	
+<b><a name="line277">277  </a></b>	namespace <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>
+<b><a name="line278">278  </a></b>	{
+<b><a name="line279">279  </a></b>	#if <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1004">_GLIBCXX_HAVE_WCSTOF</a>
+<b><a name="line280">280  </a></b>	  using <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::wcstof;
+<b><a name="line281">281  </a></b>	#endif
+<b><a name="line282">282  </a></b>	#if <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line992">_GLIBCXX_HAVE_VFWSCANF</a>
+<b><a name="line283">283  </a></b>	  using <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::vfwscanf;
+<b><a name="line284">284  </a></b>	#endif
+<b><a name="line285">285  </a></b>	#if <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line995">_GLIBCXX_HAVE_VSWSCANF</a>
+<b><a name="line286">286  </a></b>	  using <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::vswscanf;
+<b><a name="line287">287  </a></b>	#endif
+<b><a name="line288">288  </a></b>	#if <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line998">_GLIBCXX_HAVE_VWSCANF</a>
+<b><a name="line289">289  </a></b>	  using <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::vwscanf;
+<b><a name="line290">290  </a></b>	#endif
+<b><a name="line291">291  </a></b>	
+<b><a name="line292">292  </a></b>	#if <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1309">_GLIBCXX_USE_C99</a>
+<b><a name="line293">293  </a></b>	  using <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::wcstold;
+<b><a name="line294">294  </a></b>	  using <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::wcstoll;
+<b><a name="line295">295  </a></b>	  using <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::wcstoull;
+<b><a name="line296">296  </a></b>	#endif
+<b><a name="line297">297  </a></b>	} // namespace
+<b><a name="line298">298  </a></b>	
+<b><a name="line299">299  </a></b>	#endif // _GLIBCXX_USE_WCHAR_T
+<b><a name="line300">300  </a></b>	
+<b><a name="line301">301  </a></b>	#endif // C++11
+<b><a name="line302">302  </a></b>	
+<b><a name="line303">303  </a></b>	#endif
+<b><a name="line304">304  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

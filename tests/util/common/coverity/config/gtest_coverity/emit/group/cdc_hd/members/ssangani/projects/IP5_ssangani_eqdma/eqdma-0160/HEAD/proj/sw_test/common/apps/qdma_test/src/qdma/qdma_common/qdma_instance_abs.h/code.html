@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_common/qdma_instance_abs.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	#ifndef SRC_QDMA_QDMA_INSTANCE_ABS_H_
+<b><a name="line2">2    </a></b>	#define <b>SRC_QDMA_QDMA_INSTANCE_ABS_H_</b>
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	#include &lt;algorithm&gt;
+<b><a name="line5">5    </a></b>	#include &lt;cstdint&gt;
+<b><a name="line6">6    </a></b>	#include &lt;iterator&gt;
+<b><a name="line7">7    </a></b>	#include &lt;vector&gt;
+<b><a name="line8">8    </a></b>	#include &lt;stddef.h&gt;
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	#include &quot;qdma_device.h&quot;
+<b><a name="line11">11   </a></b>	#include &quot;qdma_queue.h&quot;
+<b><a name="line12">12   </a></b>	
+<b><a name="line13">13   </a></b>	namespace <a href="../qdma_queue_abs.h/code.html#line17">qdma</a> {
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	// qdma driver instance
+<b><a name="line16">16   </a></b>	// implementes user-space control api
+<b><a name="line17">17   </a></b>	class <b>instance</b> {
+<b><a name="line18">18   </a></b>	public:
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	    enum class <b>type</b> {
+<b><a name="line21">21   </a></b>	        <b>pf</b>,
+<b><a name="line22">22   </a></b>	        <b>vf</b>
+<b><a name="line23">23   </a></b>	    };
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	    virtual <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="../../qdma_dpdk/qdma_device.h/code.html#line31">device</a>&gt; get_devices() = 0;
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>		virtual <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> get_last_id() = 0;
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	    virtual <a href="../../qdma_dpdk/qdma_device.h/code.html#line31">device</a>::<a href="../../qdma_dpdk/qdma_device.h/code.html#line34">info</a> dev_info(unsigned dev_id) = 0;
+<b><a name="line30">30   </a></b>	
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	    virtual unsigned start_queue(unsigned dev_id, unsigned queue_id, <a href="../qdma_queue_abs.h/code.html#line21">queue</a>::<a href="../qdma_queue_abs.h/code.html#line24">mode</a> q_mode, <a href="../../qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../qdma_queue_abs.h/code.html#line29">direction</a> q_dir,
+<b><a name="line33">33   </a></b>	                     const <a href="../../qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma_dpdk/qdma_queue.h/code.html#line14">config</a>&amp; qcfg, bool throw_err = true) = 0;
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	    virtual unsigned stop_queue(unsigned dev_id, unsigned queue_id, <a href="../qdma_queue_abs.h/code.html#line21">queue</a>::<a href="../qdma_queue_abs.h/code.html#line29">direction</a> q_dir, bool throw_err = true) = 0;
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	    virtual unsigned add_queue(unsigned dev_id, unsigned q_id, unsigned num_q, <a href="../qdma_queue_abs.h/code.html#line21">queue</a>::<a href="../qdma_queue_abs.h/code.html#line24">mode</a> q_mode,
+<b><a name="line38">38   </a></b>	                       <a href="../qdma_queue_abs.h/code.html#line21">queue</a>::<a href="../qdma_queue_abs.h/code.html#line29">direction</a> q_dir, const <a href="../../qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma_dpdk/qdma_queue.h/code.html#line14">config</a>&amp; qcfg, bool throw_err = true) = 0;
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>		<a href="#line20">type</a> <b>m_type</b> = <a href="#line20">type</a>::<a href="#line21">pf</a>;
+<b><a name="line42">42   </a></b>	protected:
+<b><a name="line43">43   </a></b>		<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>m_last_id</b>;
+<b><a name="line44">44   </a></b>	};
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	inline <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a>&gt; <b>get_num_qs_per_pf</b>(<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="../../qdma_dpdk/qdma_device.h/code.html#line31">device</a>&gt;&amp; <b>qdevs</b>) {
+<b><a name="line47">47   </a></b>	
+<b><a name="line48">48   </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a>&gt; <b>num_qs_per_pf</b>;
+<b><a name="line49">49   </a></b>	    <a href="#line48">num_qs_per_pf</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line764">reserve</a>(<a href="#line46">qdevs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>());
+<b><a name="line50">50   </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_algo.h/code.html#line4164">transform</a>(<a href="#line46">qdevs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line620">cbegin</a>(), <a href="#line46">qdevs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line629">cend</a>(), <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_iterator.h/code.html#line492">back_inserter</a>(<a href="#line48">num_qs_per_pf</a>),
+<b><a name="line51">51   </a></b>	            [](const <a href="../../qdma_dpdk/qdma_device.h/code.html#line31">device</a>&amp; <b>qdev</b>) -&gt; <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> {
+<b><a name="line52">52   </a></b>	                    return <a href="#line51">qdev</a>.<a href="../../qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a>;
+<b><a name="line53">53   </a></b>	    });
+<b><a name="line54">54   </a></b>	    return <a href="#line48">num_qs_per_pf</a>;
+<b><a name="line55">55   </a></b>	}
+<b><a name="line56">56   </a></b>	
+<b><a name="line57">57   </a></b>	} // namespace qdma
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	#endif /* SRC_QDMA_QDMA_INSTANCE_ABS_H_ */
+<b><a name="line60">60   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

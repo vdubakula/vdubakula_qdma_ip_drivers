@@ -1,0 +1,33 @@
+Common Steps:
+1. Copy perf_scripts folder to dpdk root directory.
+2. Run setup.sh present in perf_scripts folder.
+3. Bind the device to be used for performance to igb_uio device.
+
+Forwarding performance using TestPMD:
+
+0. Install expect package if not already installed on Machine. (apt-get install expect)
+1. cd to directory perf_scripts/tespmd.
+2. Run ./testpmd_perf.sh B:D.f CmptLen_PfchEN ...
+	where
+	B:D.f is the PCI_ID of the device to be used for performance.
+	CmptLen is completion entry size
+	PfchEN is prefetch enable(1)/disable(0)
+3. Example command: ./testpmd_perf.sh 02:00.0 8_0 16_1 
+	This command will run testPMD performance on 02:00.0 device for 8 byte descriptor size with prefetch disable and 16 byte descriptor with prefetch enable.
+
+4. latecy and performance results will be available in testpmd_{dsc_size}{pfch_enabled}.csv file.
+
+C2H and H2C performance using pktgen:
+1. copy the content of directory perf_scripts/pktgen to pktgen-dpdk root directory.
+2. cd to pktgen-dpdk root directory.
+3. run ./pktgen_perf.sh B:D.f CmptLen_PfchEN ...
+	where
+	B:D.f is the PCI_ID of the device to be used for performance.
+	CmptLen is completion entry size
+	PfchEN is prefetch enable(1)/disable(0)
+4. Example command: ./pktgen_perf.sh 02:00.0 8_0 16_1
+This command will run pktgen performance on 02:00.0 device for 8 byte descriptor size with prefetch disable and 16 byte descriptor with prefetch enable.
+Note that H2C perforamnce will be taken for only first combination of descriptor size and prefetch.
+
+5. test_{dsc_size}_{pfch_enabled}.csv file will be generated containing all performance report for different queues and packet sizes.
+

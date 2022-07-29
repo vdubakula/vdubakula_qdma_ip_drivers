@@ -1,0 +1,149 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_compat.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2015 Neil Horman &lt;nhorman@tuxdriver.com&gt;.
+<b><a name="line3">3    </a></b>	 * All rights reserved.
+<b><a name="line4">4    </a></b>	 */
+<b><a name="line5">5    </a></b>	
+<b><a name="line6">6    </a></b>	#ifndef _RTE_COMPAT_H_
+<b><a name="line7">7    </a></b>	#define <b>_RTE_COMPAT_H_</b>
+<b><a name="line8">8    </a></b>	#include &lt;rte_common.h&gt;
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	#ifdef RTE_BUILD_SHARED_LIB
+<b><a name="line11">11   </a></b>	
+<b><a name="line12">12   </a></b>	/*
+<b><a name="line13">13   </a></b>	 * Provides backwards compatibility when updating exported functions.
+<b><a name="line14">14   </a></b>	 * When a symol is exported from a library to provide an API, it also provides a
+<b><a name="line15">15   </a></b>	 * calling convention (ABI) that is embodied in its name, return type,
+<b><a name="line16">16   </a></b>	 * arguments, etc.  On occasion that function may need to change to accommodate
+<b><a name="line17">17   </a></b>	 * new functionality, behavior, etc.  When that occurs, it is desirable to
+<b><a name="line18">18   </a></b>	 * allow for backwards compatibility for a time with older binaries that are
+<b><a name="line19">19   </a></b>	 * dynamically linked to the dpdk.  To support that, the __vsym and
+<b><a name="line20">20   </a></b>	 * VERSION_SYMBOL macros are created.  They, in conjunction with the
+<b><a name="line21">21   </a></b>	 * &lt;library&gt;_version.map file for a given library allow for multiple versions of
+<b><a name="line22">22   </a></b>	 * a symbol to exist in a shared library so that older binaries need not be
+<b><a name="line23">23   </a></b>	 * immediately recompiled.
+<b><a name="line24">24   </a></b>	 *
+<b><a name="line25">25   </a></b>	 * Refer to the guidelines document in the docs subdirectory for details on the
+<b><a name="line26">26   </a></b>	 * use of these macros
+<b><a name="line27">27   </a></b>	 */
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	/*
+<b><a name="line30">30   </a></b>	 * Macro Parameters:
+<b><a name="line31">31   </a></b>	 * b - function base name
+<b><a name="line32">32   </a></b>	 * e - function version extension, to be concatenated with base name
+<b><a name="line33">33   </a></b>	 * n - function symbol version string to be applied
+<b><a name="line34">34   </a></b>	 * f - function prototype
+<b><a name="line35">35   </a></b>	 * p - full function symbol name
+<b><a name="line36">36   </a></b>	 */
+<b><a name="line37">37   </a></b>	
+<b><a name="line38">38   </a></b>	/*
+<b><a name="line39">39   </a></b>	 * VERSION_SYMBOL
+<b><a name="line40">40   </a></b>	 * Creates a symbol version table entry binding symbol &lt;b&gt;@DPDK_&lt;n&gt; to the internal
+<b><a name="line41">41   </a></b>	 * function name &lt;b&gt;_&lt;e&gt;
+<b><a name="line42">42   </a></b>	 */
+<b><a name="line43">43   </a></b>	#define VERSION_SYMBOL(b, e, n) __asm__(&quot;.symver &quot; RTE_STR(b) RTE_STR(e) &quot;, &quot; RTE_STR(b) &quot;@DPDK_&quot; RTE_STR(n))
+<b><a name="line44">44   </a></b>	
+<b><a name="line45">45   </a></b>	/*
+<b><a name="line46">46   </a></b>	 * BIND_DEFAULT_SYMBOL
+<b><a name="line47">47   </a></b>	 * Creates a symbol version entry instructing the linker to bind references to
+<b><a name="line48">48   </a></b>	 * symbol &lt;b&gt; to the internal symbol &lt;b&gt;_&lt;e&gt;
+<b><a name="line49">49   </a></b>	 */
+<b><a name="line50">50   </a></b>	#define BIND_DEFAULT_SYMBOL(b, e, n) __asm__(&quot;.symver &quot; RTE_STR(b) RTE_STR(e) &quot;, &quot; RTE_STR(b) &quot;@@DPDK_&quot; RTE_STR(n))
+<b><a name="line51">51   </a></b>	#define __vsym __attribute__((used))
+<b><a name="line52">52   </a></b>	
+<b><a name="line53">53   </a></b>	/*
+<b><a name="line54">54   </a></b>	 * MAP_STATIC_SYMBOL
+<b><a name="line55">55   </a></b>	 * If a function has been bifurcated into multiple versions, none of which
+<b><a name="line56">56   </a></b>	 * are defined as the exported symbol name in the map file, this macro can be
+<b><a name="line57">57   </a></b>	 * used to alias a specific version of the symbol to its exported name.  For
+<b><a name="line58">58   </a></b>	 * example, if you have 2 versions of a function foo_v1 and foo_v2, where the
+<b><a name="line59">59   </a></b>	 * former is mapped to foo@DPDK_1 and the latter is mapped to foo@DPDK_2 when
+<b><a name="line60">60   </a></b>	 * building a shared library, this macro can be used to map either foo_v1 or
+<b><a name="line61">61   </a></b>	 * foo_v2 to the symbol foo when building a static library, e.g.:
+<b><a name="line62">62   </a></b>	 * MAP_STATIC_SYMBOL(void foo(), foo_v2);
+<b><a name="line63">63   </a></b>	 */
+<b><a name="line64">64   </a></b>	#define MAP_STATIC_SYMBOL(f, p)
+<b><a name="line65">65   </a></b>	
+<b><a name="line66">66   </a></b>	#else
+<b><a name="line67">67   </a></b>	/*
+<b><a name="line68">68   </a></b>	 * No symbol versioning in use
+<b><a name="line69">69   </a></b>	 */
+<b><a name="line70">70   </a></b>	#define <b>VERSION_SYMBOL</b>(b, e, n)
+<b><a name="line71">71   </a></b>	#define <b>__vsym</b>
+<b><a name="line72">72   </a></b>	#define <b>BIND_DEFAULT_SYMBOL</b>(b, e, n)
+<b><a name="line73">73   </a></b>	#define <b>MAP_STATIC_SYMBOL</b>(f, p) f __attribute__((alias(RTE_STR(p))))
+<b><a name="line74">74   </a></b>	/*
+<b><a name="line75">75   </a></b>	 * RTE_BUILD_SHARED_LIB=n
+<b><a name="line76">76   </a></b>	 */
+<b><a name="line77">77   </a></b>	#endif
+<b><a name="line78">78   </a></b>	
+<b><a name="line79">79   </a></b>	#ifndef ALLOW_EXPERIMENTAL_API
+<b><a name="line80">80   </a></b>	
+<b><a name="line81">81   </a></b>	#define <b>__rte_experimental</b> \
+<b><a name="line82">82   </a></b>	__attribute__((deprecated(&quot;Symbol is not yet part of stable ABI&quot;), \
+<b><a name="line83">83   </a></b>	section(&quot;.text.experimental&quot;)))
+<b><a name="line84">84   </a></b>	
+<b><a name="line85">85   </a></b>	#else
+<b><a name="line86">86   </a></b>	
+<b><a name="line87">87   </a></b>	#define __rte_experimental \
+<b><a name="line88">88   </a></b>	__attribute__((section(&quot;.text.experimental&quot;)))
+<b><a name="line89">89   </a></b>	
+<b><a name="line90">90   </a></b>	#endif
+<b><a name="line91">91   </a></b>	
+<b><a name="line92">92   </a></b>	#endif /* _RTE_COMPAT_H_ */
+<b><a name="line93">93   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

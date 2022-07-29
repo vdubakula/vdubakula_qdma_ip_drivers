@@ -1,0 +1,279 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/typeinfo</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// RTTI support for -*- C++ -*-
+<b><a name="line2">2    </a></b>	// Copyright (C) 1994-2015 Free Software Foundation, Inc.
+<b><a name="line3">3    </a></b>	//
+<b><a name="line4">4    </a></b>	// This file is part of GCC.
+<b><a name="line5">5    </a></b>	//
+<b><a name="line6">6    </a></b>	// GCC is free software; you can redistribute it and/or modify
+<b><a name="line7">7    </a></b>	// it under the terms of the GNU General Public License as published by
+<b><a name="line8">8    </a></b>	// the Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	//
+<b><a name="line11">11   </a></b>	// GCC is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	//
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file typeinfo
+<b><a name="line26">26   </a></b>	 *  This is a Standard C++ Library header.
+<b><a name="line27">27   </a></b>	 */
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	#ifndef _TYPEINFO
+<b><a name="line30">30   </a></b>	#define <b>_TYPEINFO</b>
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	#pragma GCC system_header
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	#include &lt;exception&gt;
+<b><a name="line35">35   </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line36">36   </a></b>	#include &lt;bits/hash_bytes.h&gt;
+<b><a name="line37">37   </a></b>	#endif
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	#pragma GCC visibility push(default)
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	extern &quot;C++&quot; {
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	namespace <a href="../bits/cxxabi_forced.h/code.html#line39">__cxxabiv1</a>
+<b><a name="line44">44   </a></b>	{
+<b><a name="line45">45   </a></b>	  class __class_type_info;
+<b><a name="line46">46   </a></b>	} // namespace __cxxabiv1
+<b><a name="line47">47   </a></b>	
+<b><a name="line48">48   </a></b>	// Determine whether typeinfo names for the same type are merged (in which
+<b><a name="line49">49   </a></b>	// case comparison can just compare pointers) or not (in which case strings
+<b><a name="line50">50   </a></b>	// must be compared), and whether comparison is to be implemented inline or
+<b><a name="line51">51   </a></b>	// not.  We used to do inline pointer comparison by default if weak symbols
+<b><a name="line52">52   </a></b>	// are available, but even with weak symbols sometimes names are not merged
+<b><a name="line53">53   </a></b>	// when objects are loaded with RTLD_LOCAL, so now we always use strcmp by
+<b><a name="line54">54   </a></b>	// default.  For ABI compatibility, we do the strcmp inline if weak symbols
+<b><a name="line55">55   </a></b>	// are available, and out-of-line if not.  Out-of-line pointer comparison
+<b><a name="line56">56   </a></b>	// is used where the object files are to be portable to multiple systems,
+<b><a name="line57">57   </a></b>	// some of which may not be able to use pointer comparison, but the
+<b><a name="line58">58   </a></b>	// particular system for which libstdc++ is being built can use pointer
+<b><a name="line59">59   </a></b>	// comparison; in particular for most ARM EABI systems, where the ABI
+<b><a name="line60">60   </a></b>	// specifies out-of-line comparison.  The compiler's target configuration
+<b><a name="line61">61   </a></b>	// can override the defaults by defining __GXX_TYPEINFO_EQUALITY_INLINE to
+<b><a name="line62">62   </a></b>	// 1 or 0 to indicate whether or not comparison is inline, and
+<b><a name="line63">63   </a></b>	// __GXX_MERGED_TYPEINFO_NAMES to 1 or 0 to indicate whether or not pointer
+<b><a name="line64">64   </a></b>	// comparison can be used.
+<b><a name="line65">65   </a></b>	
+<b><a name="line66">66   </a></b>	#ifndef __GXX_MERGED_TYPEINFO_NAMES
+<b><a name="line67">67   </a></b>	// By default, typeinfo names are not merged.
+<b><a name="line68">68   </a></b>	#define <b>__GXX_MERGED_TYPEINFO_NAMES</b> 0
+<b><a name="line69">69   </a></b>	#endif
+<b><a name="line70">70   </a></b>	
+<b><a name="line71">71   </a></b>	// By default follow the old inline rules to avoid ABI changes.
+<b><a name="line72">72   </a></b>	#ifndef __GXX_TYPEINFO_EQUALITY_INLINE
+<b><a name="line73">73   </a></b>	  #if !<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line198">__GXX_WEAK__</a>
+<b><a name="line74">74   </a></b>	    #define __GXX_TYPEINFO_EQUALITY_INLINE 0
+<b><a name="line75">75   </a></b>	  #else
+<b><a name="line76">76   </a></b>	    #define <b>__GXX_TYPEINFO_EQUALITY_INLINE</b> 1
+<b><a name="line77">77   </a></b>	  #endif
+<b><a name="line78">78   </a></b>	#endif
+<b><a name="line79">79   </a></b>	
+<b><a name="line80">80   </a></b>	namespace <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>
+<b><a name="line81">81   </a></b>	{
+<b><a name="line82">82   </a></b>	  /**
+<b><a name="line83">83   </a></b>	   *  @brief  Part of RTTI.
+<b><a name="line84">84   </a></b>	   *
+<b><a name="line85">85   </a></b>	   *  The @c type_info class describes type information generated by
+<b><a name="line86">86   </a></b>	   *  an implementation.
+<b><a name="line87">87   </a></b>	  */
+<b><a name="line88">88   </a></b>	  class <b>type_info</b>
+<b><a name="line89">89   </a></b>	  {
+<b><a name="line90">90   </a></b>	  public:
+<b><a name="line91">91   </a></b>	    /** Destructor first. Being the first non-inline virtual function, this
+<b><a name="line92">92   </a></b>	     *  controls in which translation unit the vtable is emitted. The
+<b><a name="line93">93   </a></b>	     *  compiler makes use of that information to know where to emit
+<b><a name="line94">94   </a></b>	     *  the runtime-mandated type_info structures in the new-abi.  */
+<b><a name="line95">95   </a></b>	    virtual ~type_info();
+<b><a name="line96">96   </a></b>	
+<b><a name="line97">97   </a></b>	    /** Returns an @e implementation-defined byte string; this is not
+<b><a name="line98">98   </a></b>	     *  portable between compilers!  */
+<b><a name="line99">99   </a></b>	    const char* <b>name</b>() const <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line100">100  </a></b>	    { return <a href="#line171">__name</a>[0] == '*' ? <a href="#line171">__name</a> + 1 : <a href="#line171">__name</a>; }
+<b><a name="line101">101  </a></b>	
+<b><a name="line102">102  </a></b>	#if !<a href="#line76">__GXX_TYPEINFO_EQUALITY_INLINE</a>
+<b><a name="line103">103  </a></b>	    // In old abi, or when weak symbols are not supported, there can
+<b><a name="line104">104  </a></b>	    // be multiple instances of a type_info object for one
+<b><a name="line105">105  </a></b>	    // type. Uniqueness must use the _name value, not object address.
+<b><a name="line106">106  </a></b>	    bool before(const type_info&amp; __arg) const _GLIBCXX_NOEXCEPT;
+<b><a name="line107">107  </a></b>	    bool operator==(const type_info&amp; __arg) const _GLIBCXX_NOEXCEPT;
+<b><a name="line108">108  </a></b>	#else
+<b><a name="line109">109  </a></b>	  #if !<a href="#line68">__GXX_MERGED_TYPEINFO_NAMES</a>
+<b><a name="line110">110  </a></b>	    /** Returns true if @c *this precedes @c __arg in the implementation's
+<b><a name="line111">111  </a></b>	     *  collation order.  */
+<b><a name="line112">112  </a></b>	    // Even with the new abi, on systems that support dlopen
+<b><a name="line113">113  </a></b>	    // we can run into cases where type_info names aren't merged,
+<b><a name="line114">114  </a></b>	    // so we still need to do string comparison.
+<b><a name="line115">115  </a></b>	    bool <b>before</b>(const <a href="../bits/exception_ptr.h/code.html#line47">type_info</a>&amp; <b>__arg</b>) const <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line116">116  </a></b>	    { return (<a href="#line171">__name</a>[0] == '*' &amp;&amp; <a href="#line115">__arg</a>.<a href="#line171">__name</a>[0] == '*')
+<b><a name="line117">117  </a></b>		? <a href="#line171">__name</a> &lt; <a href="#line115">__arg</a>.<a href="#line171">__name</a>
+<b><a name="line118">118  </a></b>		: __builtin_strcmp (<a href="#line171">__name</a>, <a href="#line115">__arg</a>.<a href="#line171">__name</a>) &lt; 0; }
+<b><a name="line119">119  </a></b>	
+<b><a name="line120">120  </a></b>	    bool <b>operator==</b>(const <a href="../bits/exception_ptr.h/code.html#line47">type_info</a>&amp; <b>__arg</b>) const <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line121">121  </a></b>	    {
+<b><a name="line122">122  </a></b>	      return ((<a href="#line171">__name</a> == <a href="#line120">__arg</a>.<a href="#line171">__name</a>)
+<b><a name="line123">123  </a></b>		      || (<a href="#line171">__name</a>[0] != '*' &amp;&amp;
+<b><a name="line124">124  </a></b>			  __builtin_strcmp (<a href="#line171">__name</a>, <a href="#line120">__arg</a>.<a href="#line171">__name</a>) == 0));
+<b><a name="line125">125  </a></b>	    }
+<b><a name="line126">126  </a></b>	  #else
+<b><a name="line127">127  </a></b>	    // On some targets we can rely on type_info's NTBS being unique,
+<b><a name="line128">128  </a></b>	    // and therefore address comparisons are sufficient.
+<b><a name="line129">129  </a></b>	    bool before(const type_info&amp; __arg) const _GLIBCXX_NOEXCEPT
+<b><a name="line130">130  </a></b>	    { return __name &lt; __arg.__name; }
+<b><a name="line131">131  </a></b>	
+<b><a name="line132">132  </a></b>	    bool operator==(const type_info&amp; __arg) const _GLIBCXX_NOEXCEPT
+<b><a name="line133">133  </a></b>	    { return __name == __arg.__name; }
+<b><a name="line134">134  </a></b>	  #endif
+<b><a name="line135">135  </a></b>	#endif
+<b><a name="line136">136  </a></b>	    bool <b>operator!=</b>(const <a href="../bits/exception_ptr.h/code.html#line47">type_info</a>&amp; <b>__arg</b>) const <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line117">_GLIBCXX_NOEXCEPT</a>
+<b><a name="line137">137  </a></b>	    { return !<a href="#line120">op</a>erator==(<a href="#line136">__arg</a>); }
+<b><a name="line138">138  </a></b>	
+<b><a name="line139">139  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line140">140  </a></b>	    <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>hash_code</b>() const noexcept
+<b><a name="line141">141  </a></b>	    {
+<b><a name="line142">142  </a></b>	#  if !<a href="#line68">__GXX_MERGED_TYPEINFO_NAMES</a>
+<b><a name="line143">143  </a></b>	      return <a href="../bits/hash_bytes.h/code.html#line47">_Hash_bytes</a>(<a href="#line99">name</a>(), __builtin_strlen(<a href="#line99">name</a>()),
+<b><a name="line144">144  </a></b>				 static_cast&lt;<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>&gt;(0xc70f6907UL));
+<b><a name="line145">145  </a></b>	#  else
+<b><a name="line146">146  </a></b>	      return reinterpret_cast&lt;size_t&gt;(__name);
+<b><a name="line147">147  </a></b>	#  endif
+<b><a name="line148">148  </a></b>	    }
+<b><a name="line149">149  </a></b>	#endif // C++11
+<b><a name="line150">150  </a></b>	
+<b><a name="line151">151  </a></b>	    // Return true if this is a pointer type of some kind
+<b><a name="line152">152  </a></b>	    virtual bool __is_pointer_p() const;
+<b><a name="line153">153  </a></b>	
+<b><a name="line154">154  </a></b>	    // Return true if this is a function type
+<b><a name="line155">155  </a></b>	    virtual bool __is_function_p() const;
+<b><a name="line156">156  </a></b>	
+<b><a name="line157">157  </a></b>	    // Try and catch a thrown type. Store an adjusted pointer to the
+<b><a name="line158">158  </a></b>	    // caught type in THR_OBJ. If THR_TYPE is not a pointer type, then
+<b><a name="line159">159  </a></b>	    // THR_OBJ points to the thrown object. If THR_TYPE is a pointer
+<b><a name="line160">160  </a></b>	    // type, then THR_OBJ is the pointer itself. OUTER indicates the
+<b><a name="line161">161  </a></b>	    // number of outer pointers, and whether they were const
+<b><a name="line162">162  </a></b>	    // qualified.
+<b><a name="line163">163  </a></b>	    virtual bool __do_catch(const <a href="../bits/exception_ptr.h/code.html#line47">type_info</a> *__thr_type, void **__thr_obj,
+<b><a name="line164">164  </a></b>				    unsigned __outer) const;
+<b><a name="line165">165  </a></b>	
+<b><a name="line166">166  </a></b>	    // Internally used during catch matching
+<b><a name="line167">167  </a></b>	    virtual bool __do_upcast(const <a href="../bits/cxxabi_forced.h/code.html#line39">__cxxabiv1</a>::<a href="#line45">__class_type_info</a> *__target,
+<b><a name="line168">168  </a></b>				     void **__obj_ptr) const;
+<b><a name="line169">169  </a></b>	
+<b><a name="line170">170  </a></b>	  protected:
+<b><a name="line171">171  </a></b>	    const char *<b>__name</b>;
+<b><a name="line172">172  </a></b>	
+<b><a name="line173">173  </a></b>	    explicit <b>type_info</b>(const char *<b>__n</b>): <a href="#line171">__name</a>(__n) { }
+<b><a name="line174">174  </a></b>	
+<b><a name="line175">175  </a></b>	  private:
+<b><a name="line176">176  </a></b>	    /// Assigning type_info is not supported.
+<b><a name="line177">177  </a></b>	    <a href="../bits/exception_ptr.h/code.html#line47">type_info</a>&amp; operator=(const <a href="../bits/exception_ptr.h/code.html#line47">type_info</a>&amp;);
+<b><a name="line178">178  </a></b>	    type_info(const <a href="../bits/exception_ptr.h/code.html#line47">type_info</a>&amp;);
+<b><a name="line179">179  </a></b>	  };
+<b><a name="line180">180  </a></b>	
+<b><a name="line181">181  </a></b>	  /**
+<b><a name="line182">182  </a></b>	   *  @brief  Thrown during incorrect typecasting.
+<b><a name="line183">183  </a></b>	   *  @ingroup exceptions
+<b><a name="line184">184  </a></b>	   *
+<b><a name="line185">185  </a></b>	   *  If you attempt an invalid @c dynamic_cast expression, an instance of
+<b><a name="line186">186  </a></b>	   *  this class (or something derived from this class) is thrown.  */
+<b><a name="line187">187  </a></b>	  class <b>bad_cast</b> : public <a href="../exception/code.html#line60">exception</a>
+<b><a name="line188">188  </a></b>	  {
+<b><a name="line189">189  </a></b>	  public:
+<b><a name="line190">190  </a></b>	    <b>bad_cast</b>() <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line118">_GLIBCXX_USE_NOEXCEPT</a> { }
+<b><a name="line191">191  </a></b>	
+<b><a name="line192">192  </a></b>	    // This declaration is not useless:
+<b><a name="line193">193  </a></b>	    // http://gcc.gnu.org/onlinedocs/gcc-3.0.2/gcc_6.html#SEC118
+<b><a name="line194">194  </a></b>	    virtual ~bad_cast() <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line118">_GLIBCXX_USE_NOEXCEPT</a>;
+<b><a name="line195">195  </a></b>	
+<b><a name="line196">196  </a></b>	    // See comment in eh_exception.cc.
+<b><a name="line197">197  </a></b>	    virtual const char* what() const <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line118">_GLIBCXX_USE_NOEXCEPT</a>;
+<b><a name="line198">198  </a></b>	  };
+<b><a name="line199">199  </a></b>	
+<b><a name="line200">200  </a></b>	  /**
+<b><a name="line201">201  </a></b>	   *  @brief Thrown when a NULL pointer in a @c typeid expression is used.
+<b><a name="line202">202  </a></b>	   *  @ingroup exceptions
+<b><a name="line203">203  </a></b>	   */
+<b><a name="line204">204  </a></b>	  class <b>bad_typeid</b> : public <a href="../exception/code.html#line60">exception</a>
+<b><a name="line205">205  </a></b>	  {
+<b><a name="line206">206  </a></b>	  public:
+<b><a name="line207">207  </a></b>	    <b>bad_typeid</b> () <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line118">_GLIBCXX_USE_NOEXCEPT</a> { }
+<b><a name="line208">208  </a></b>	
+<b><a name="line209">209  </a></b>	    // This declaration is not useless:
+<b><a name="line210">210  </a></b>	    // http://gcc.gnu.org/onlinedocs/gcc-3.0.2/gcc_6.html#SEC118
+<b><a name="line211">211  </a></b>	    virtual ~bad_typeid() <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line118">_GLIBCXX_USE_NOEXCEPT</a>;
+<b><a name="line212">212  </a></b>	
+<b><a name="line213">213  </a></b>	    // See comment in eh_exception.cc.
+<b><a name="line214">214  </a></b>	    virtual const char* what() const <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line118">_GLIBCXX_USE_NOEXCEPT</a>;
+<b><a name="line215">215  </a></b>	  };
+<b><a name="line216">216  </a></b>	} // namespace std
+<b><a name="line217">217  </a></b>	
+<b><a name="line218">218  </a></b>	} // extern &quot;C++&quot;
+<b><a name="line219">219  </a></b>	
+<b><a name="line220">220  </a></b>	#pragma GCC visibility pop
+<b><a name="line221">221  </a></b>	
+<b><a name="line222">222  </a></b>	#endif
+<b><a name="line223">223  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

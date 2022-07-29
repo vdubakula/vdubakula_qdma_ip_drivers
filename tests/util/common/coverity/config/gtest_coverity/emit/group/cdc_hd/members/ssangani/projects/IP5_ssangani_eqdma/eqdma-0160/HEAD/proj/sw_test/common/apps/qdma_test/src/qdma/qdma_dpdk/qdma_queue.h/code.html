@@ -1,0 +1,114 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_dpdk/qdma_queue.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	#ifndef SRC_QDMA_QDMA_QUEUE_EXT_H_
+<b><a name="line2">2    </a></b>	#define <b>SRC_QDMA_QDMA_QUEUE_EXT_H_</b>
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	#include &quot;qdma_queue_abs.h&quot;
+<b><a name="line5">5    </a></b>	#include &quot;xlnx_pci.h&quot;
+<b><a name="line6">6    </a></b>	
+<b><a name="line7">7    </a></b>	namespace <a href="../../qdma_common/qdma_queue_abs.h/code.html#line17">qdma</a> {
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	class <a href="../qdma_device.h/code.html#line22">instance</a>;
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	class <b>queue_ext</b>: public <a href="../../qdma_common/qdma_queue_abs.h/code.html#line21">queue</a> {
+<b><a name="line12">12   </a></b>	public:
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	    struct <b>config</b> {
+<b><a name="line15">15   </a></b>	        <a href="/usr/include/stdint.h/code.html#line49">uint16_t</a> <b>idx_rngsz</b> = 1024; /* selects 2048 ring size */
+<b><a name="line16">16   </a></b>	        <a href="/usr/include/stdint.h/code.html#line49">uint16_t</a> <b>idx_bufsz</b> = 4096;
+<b><a name="line17">17   </a></b>	        <a href="/usr/include/stdint.h/code.html#line49">uint16_t</a> <b>idx_tmr</b> = 5;
+<b><a name="line18">18   </a></b>	        <a href="/usr/include/stdint.h/code.html#line49">uint16_t</a> <b>idx_cntr</b> = 64;
+<b><a name="line19">19   </a></b>	        <a href="/usr/include/stdint.h/code.html#line48">uint8_t</a> <b>sw_desc_sz</b> = 0;
+<b><a name="line20">20   </a></b>	        <a href="../../qdma_common/qdma_queue_abs.h/code.html#line36">c2h_wrb_intr_trigmode</a> <b>trigmode</b> = <a href="../../qdma_common/qdma_queue_abs.h/code.html#line36">c2h_wrb_intr_trigmode</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line41">usr_tmr</a>; 
+<b><a name="line21">21   </a></b>	        <a href="../../../../include/qdma_dpdk.h/code.html#line149">xnl_st_c2h_cmpt_desc_size</a> <b>cmptsz</b> = <a href="../../../../include/qdma_dpdk.h/code.html#line150">XNL_ST_C2H_CMPT_DESC_SIZE_8B</a>;
+<b><a name="line22">22   </a></b>	        bool <b>desc_bypass</b> = false;
+<b><a name="line23">23   </a></b>	        bool <b>pfetch_bypass</b> = false;
+<b><a name="line24">24   </a></b>	        bool <b>prefetch</b> = false;
+<b><a name="line25">25   </a></b>	        bool <b>fetch_credit</b> = true;
+<b><a name="line26">26   </a></b>	        bool <b>wbk_en</b> = true;
+<b><a name="line27">27   </a></b>	        bool <b>wbk_acc_en</b> = true;
+<b><a name="line28">28   </a></b>	        bool <b>wbk_pend_chk</b> = true;
+<b><a name="line29">29   </a></b>	        bool <b>wrb_stat_desc_en</b> = true;
+<b><a name="line30">30   </a></b>	        bool <b>c2h_cmpl_intr_en</b> = true;
+<b><a name="line31">31   </a></b>	        bool <b>c2h_udd_en</b> = false;
+<b><a name="line32">32   </a></b>	        bool <b>c2h_ovf_chk_dis</b> = false;
+<b><a name="line33">33   </a></b>	        <a href="/usr/include/stdint.h/code.html#line49">uint16_t</a> <b>burst_size</b> = 32;
+<b><a name="line34">34   </a></b>	    };
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	    queue_ext(<a href="../../qdma_common/qdma_queue_abs.h/code.html#line19">instance</a>&amp; drv, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> dev_id, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> q_id, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line24">mode</a> m, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line29">direction</a> dir, const <a href="#line14">config</a>&amp; qcfg);
+<b><a name="line37">37   </a></b>	
+<b><a name="line38">38   </a></b>	    ~queue_ext();
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	    <b>queue_ext</b>(const <a href="#line11">queue_ext</a>&amp; other) = delete;
+<b><a name="line41">41   </a></b>	    <a href="#line11">queue_ext</a>&amp; <b>operator=</b>(const <a href="#line11">queue_ext</a>&amp; other) = delete;
+<b><a name="line42">42   </a></b>	    queue_ext(<a href="#line11">queue_ext</a>&amp;&amp; other);
+<b><a name="line43">43   </a></b>	    <a href="#line11">queue_ext</a>&amp; operator=(<a href="#line11">queue_ext</a>&amp;&amp; other);
+<b><a name="line44">44   </a></b>	
+<b><a name="line45">45   </a></b>	    virtual <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> write(void* buffer, <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> size, long device_offset = 0, bool throw_err = true);
+<b><a name="line46">46   </a></b>	    virtual <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> read(void* buffer, <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> size, long device_offset = 0, bool throw_err = true);
+<b><a name="line47">47   </a></b>	private:
+<b><a name="line48">48   </a></b>	    <a href="../../qdma_common/qdma_queue_abs.h/code.html#line24">mode</a> <b>m_mode</b>;
+<b><a name="line49">49   </a></b>	
+<b><a name="line50">50   </a></b>	};
+<b><a name="line51">51   </a></b>	
+<b><a name="line52">52   </a></b>	
+<b><a name="line53">53   </a></b>	
+<b><a name="line54">54   </a></b>	
+<b><a name="line55">55   </a></b>	} // namespace qdma
+<b><a name="line56">56   </a></b>	
+<b><a name="line57">57   </a></b>	#endif /* SRC_QDMA_QDMA_QUEUE_EXT_H_ */
+<b><a name="line58">58   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

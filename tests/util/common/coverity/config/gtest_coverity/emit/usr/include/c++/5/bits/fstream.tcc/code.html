@@ -1,0 +1,1126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/bits/fstream.tcc</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// File based streams -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 1997-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file bits/fstream.tcc
+<b><a name="line26">26   </a></b>	 *  This is an internal header file, included by other library headers.
+<b><a name="line27">27   </a></b>	 *  Do not attempt to use it directly. @headername{fstream}
+<b><a name="line28">28   </a></b>	 */
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	//
+<b><a name="line31">31   </a></b>	// ISO C++ 14882: 27.8  File-based streams
+<b><a name="line32">32   </a></b>	//
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	#ifndef _FSTREAM_TCC
+<b><a name="line35">35   </a></b>	#define <b>_FSTREAM_TCC</b> 1
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	#pragma GCC system_header
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	#include &lt;bits/cxxabi_forced.h&gt;
+<b><a name="line40">40   </a></b>	#include &lt;bits/move.h&gt;   // for swap
+<b><a name="line41">41   </a></b>	
+<b><a name="line42">42   </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line43">43   </a></b>	{
+<b><a name="line44">44   </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line47">47   </a></b>	    void
+<b><a name="line48">48   </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line46">_CharT</a>, <a href="#line46">_Traits</a>&gt;::
+<b><a name="line49">49   </a></b>	    <b>_M_allocate_internal_buffer</b>()
+<b><a name="line50">50   </a></b>	    {
+<b><a name="line51">51   </a></b>	      // Allocate internal buffer only if one doesn't already exist
+<b><a name="line52">52   </a></b>	      // (either allocated or provided by the user via setbuf).
+<b><a name="line53">53   </a></b>	      if (!_M_buf_allocated &amp;&amp; !_M_buf)
+<b><a name="line54">54   </a></b>		{
+<b><a name="line55">55   </a></b>		  _M_buf = new char_type[_M_buf_size];
+<b><a name="line56">56   </a></b>		  _M_buf_allocated = true;
+<b><a name="line57">57   </a></b>		}
+<b><a name="line58">58   </a></b>	    }
+<b><a name="line59">59   </a></b>	
+<b><a name="line60">60   </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line61">61   </a></b>	    void
+<b><a name="line62">62   </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line60">_CharT</a>, <a href="#line60">_Traits</a>&gt;::
+<b><a name="line63">63   </a></b>	    <b>_M_destroy_internal_buffer</b>() throw()
+<b><a name="line64">64   </a></b>	    {
+<b><a name="line65">65   </a></b>	      if (_M_buf_allocated)
+<b><a name="line66">66   </a></b>		{
+<b><a name="line67">67   </a></b>		  delete [] _M_buf;
+<b><a name="line68">68   </a></b>		  _M_buf = 0;
+<b><a name="line69">69   </a></b>		  _M_buf_allocated = false;
+<b><a name="line70">70   </a></b>		}
+<b><a name="line71">71   </a></b>	      delete [] _M_ext_buf;
+<b><a name="line72">72   </a></b>	      _M_ext_buf = 0;
+<b><a name="line73">73   </a></b>	      _M_ext_buf_size = 0;
+<b><a name="line74">74   </a></b>	      _M_ext_next = 0;
+<b><a name="line75">75   </a></b>	      _M_ext_end = 0;
+<b><a name="line76">76   </a></b>	    }
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line79">79   </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line78">_CharT</a>, <a href="#line78">_Traits</a>&gt;::
+<b><a name="line80">80   </a></b>	    <b>basic_filebuf</b>() : __streambuf_type(), _M_lock(), _M_file(&amp;_M_lock),
+<b><a name="line81">81   </a></b>	    _M_mode(ios_base::openmode(0)), _M_state_beg(), _M_state_cur(),
+<b><a name="line82">82   </a></b>	    _M_state_last(), _M_buf(0), _M_buf_size(<a href="../../../../stdio.h/code.html#line127">BUFSIZ</a>),
+<b><a name="line83">83   </a></b>	    _M_buf_allocated(false), _M_reading(false), _M_writing(false), _M_pback(), 
+<b><a name="line84">84   </a></b>	    _M_pback_cur_save(0), _M_pback_end_save(0), _M_pback_init(false),
+<b><a name="line85">85   </a></b>	    _M_codecvt(0), _M_ext_buf(0), _M_ext_buf_size(0), _M_ext_next(0),
+<b><a name="line86">86   </a></b>	    _M_ext_end(0)
+<b><a name="line87">87   </a></b>	    {
+<b><a name="line88">88   </a></b>	      if (has_facet&lt;__codecvt_type&gt;(this-&gt;_M_buf_locale))
+<b><a name="line89">89   </a></b>		_M_codecvt = &amp;use_facet&lt;__codecvt_type&gt;(this-&gt;_M_buf_locale);
+<b><a name="line90">90   </a></b>	    }
+<b><a name="line91">91   </a></b>	
+<b><a name="line92">92   </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line93">93   </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line94">94   </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line93">_CharT</a>, <a href="#line93">_Traits</a>&gt;::
+<b><a name="line95">95   </a></b>	    <b>basic_filebuf</b>(<a href="../../iosfwd/code.html#line113">basic_filebuf</a>&amp;&amp; __rhs)
+<b><a name="line96">96   </a></b>	    : __streambuf_type(__rhs),
+<b><a name="line97">97   </a></b>	    _M_lock(), _M_file(std::move(__rhs._M_file), &amp;_M_lock),
+<b><a name="line98">98   </a></b>	    _M_mode(std::__exchange(__rhs._M_mode, ios_base::openmode(0))),
+<b><a name="line99">99   </a></b>	    _M_state_beg(std::move(__rhs._M_state_beg)),
+<b><a name="line100">100  </a></b>	    _M_state_cur(std::move(__rhs._M_state_cur)),
+<b><a name="line101">101  </a></b>	    _M_state_last(std::move(__rhs._M_state_last)),
+<b><a name="line102">102  </a></b>	    _M_buf(std::__exchange(__rhs._M_buf, nullptr)),
+<b><a name="line103">103  </a></b>	    _M_buf_size(std::__exchange(__rhs._M_buf_size, 1)),
+<b><a name="line104">104  </a></b>	    _M_buf_allocated(std::__exchange(__rhs._M_buf_allocated, false)),
+<b><a name="line105">105  </a></b>	    _M_reading(std::__exchange(__rhs._M_reading, false)),
+<b><a name="line106">106  </a></b>	    _M_writing(std::__exchange(__rhs._M_writing, false)),
+<b><a name="line107">107  </a></b>	    _M_pback(__rhs._M_pback),
+<b><a name="line108">108  </a></b>	    _M_pback_cur_save(std::__exchange(__rhs._M_pback_cur_save, nullptr)),
+<b><a name="line109">109  </a></b>	    _M_pback_end_save(std::__exchange(__rhs._M_pback_end_save, nullptr)),
+<b><a name="line110">110  </a></b>	    _M_pback_init(std::__exchange(__rhs._M_pback_init, false)),
+<b><a name="line111">111  </a></b>	    _M_codecvt(__rhs._M_codecvt),
+<b><a name="line112">112  </a></b>	    _M_ext_buf(std::__exchange(__rhs._M_ext_buf, nullptr)),
+<b><a name="line113">113  </a></b>	    _M_ext_buf_size(std::__exchange(__rhs._M_ext_buf_size, 0)),
+<b><a name="line114">114  </a></b>	    _M_ext_next(std::__exchange(__rhs._M_ext_next, nullptr)),
+<b><a name="line115">115  </a></b>	    _M_ext_end(std::__exchange(__rhs._M_ext_end, nullptr))
+<b><a name="line116">116  </a></b>	    {
+<b><a name="line117">117  </a></b>	      __rhs._M_set_buffer(-1);
+<b><a name="line118">118  </a></b>	      __rhs._M_state_last = __rhs._M_state_cur = __rhs._M_state_beg;
+<b><a name="line119">119  </a></b>	    }
+<b><a name="line120">120  </a></b>	
+<b><a name="line121">121  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line122">122  </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line121">_CharT</a>, <a href="#line121">_Traits</a>&gt;&amp;
+<b><a name="line123">123  </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line121">_CharT</a>, <a href="#line121">_Traits</a>&gt;::
+<b><a name="line124">124  </a></b>	    <b>operator=</b>(<a href="../../iosfwd/code.html#line113">basic_filebuf</a>&amp;&amp; __rhs)
+<b><a name="line125">125  </a></b>	    {
+<b><a name="line126">126  </a></b>	      this-&gt;close();
+<b><a name="line127">127  </a></b>	      __streambuf_type::operator=(__rhs);
+<b><a name="line128">128  </a></b>	      _M_file.swap(__rhs._M_file);
+<b><a name="line129">129  </a></b>	      _M_mode = std::__exchange(__rhs._M_mode, ios_base::openmode(0));
+<b><a name="line130">130  </a></b>	      _M_state_beg = std::move(__rhs._M_state_beg);
+<b><a name="line131">131  </a></b>	      _M_state_cur = std::move(__rhs._M_state_cur);
+<b><a name="line132">132  </a></b>	      _M_state_last = std::move(__rhs._M_state_last);
+<b><a name="line133">133  </a></b>	      _M_buf = std::__exchange(__rhs._M_buf, nullptr);
+<b><a name="line134">134  </a></b>	      _M_buf_size = std::__exchange(__rhs._M_buf_size, 1);
+<b><a name="line135">135  </a></b>	      _M_buf_allocated = std::__exchange(__rhs._M_buf_allocated, false);
+<b><a name="line136">136  </a></b>	      _M_ext_buf = std::__exchange(__rhs._M_ext_buf, nullptr);
+<b><a name="line137">137  </a></b>	      _M_ext_buf_size = std::__exchange(__rhs._M_ext_buf_size, 0);
+<b><a name="line138">138  </a></b>	      _M_ext_next = std::__exchange(__rhs._M_ext_next, nullptr);
+<b><a name="line139">139  </a></b>	      _M_ext_end = std::__exchange(__rhs._M_ext_end, nullptr);
+<b><a name="line140">140  </a></b>	      _M_reading = std::__exchange(__rhs._M_reading, false);
+<b><a name="line141">141  </a></b>	      _M_writing = std::__exchange(__rhs._M_writing, false);
+<b><a name="line142">142  </a></b>	      _M_pback_cur_save = std::__exchange(__rhs._M_pback_cur_save, nullptr);
+<b><a name="line143">143  </a></b>	      _M_pback_end_save = std::__exchange(__rhs._M_pback_end_save, nullptr);
+<b><a name="line144">144  </a></b>	      _M_pback_init = std::__exchange(__rhs._M_pback_init, false);
+<b><a name="line145">145  </a></b>	      __rhs._M_set_buffer(-1);
+<b><a name="line146">146  </a></b>	      __rhs._M_state_last = __rhs._M_state_cur = __rhs._M_state_beg;
+<b><a name="line147">147  </a></b>	      return *this;
+<b><a name="line148">148  </a></b>	    }
+<b><a name="line149">149  </a></b>	
+<b><a name="line150">150  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line151">151  </a></b>	    void
+<b><a name="line152">152  </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line150">_CharT</a>, <a href="#line150">_Traits</a>&gt;::
+<b><a name="line153">153  </a></b>	    <b>swap</b>(<a href="../../iosfwd/code.html#line113">basic_filebuf</a>&amp; __rhs)
+<b><a name="line154">154  </a></b>	    {
+<b><a name="line155">155  </a></b>	      __streambuf_type::swap(__rhs);
+<b><a name="line156">156  </a></b>	      _M_file.swap(__rhs._M_file);
+<b><a name="line157">157  </a></b>	      std::swap(_M_mode, __rhs._M_mode);
+<b><a name="line158">158  </a></b>	      std::swap(_M_state_beg, __rhs._M_state_beg);
+<b><a name="line159">159  </a></b>	      std::swap(_M_state_cur, __rhs._M_state_cur);
+<b><a name="line160">160  </a></b>	      std::swap(_M_state_last, __rhs._M_state_last);
+<b><a name="line161">161  </a></b>	      std::swap(_M_buf, __rhs._M_buf);
+<b><a name="line162">162  </a></b>	      std::swap(_M_buf_size, __rhs._M_buf_size);
+<b><a name="line163">163  </a></b>	      std::swap(_M_buf_allocated, __rhs._M_buf_allocated);
+<b><a name="line164">164  </a></b>	      std::swap(_M_ext_buf, __rhs._M_ext_buf);
+<b><a name="line165">165  </a></b>	      std::swap(_M_ext_buf_size, __rhs._M_ext_buf_size);
+<b><a name="line166">166  </a></b>	      std::swap(_M_ext_next, __rhs._M_ext_next);
+<b><a name="line167">167  </a></b>	      std::swap(_M_ext_end, __rhs._M_ext_end);
+<b><a name="line168">168  </a></b>	      std::swap(_M_reading, __rhs._M_reading);
+<b><a name="line169">169  </a></b>	      std::swap(_M_writing, __rhs._M_writing);
+<b><a name="line170">170  </a></b>	      std::swap(_M_pback_cur_save, __rhs._M_pback_cur_save);
+<b><a name="line171">171  </a></b>	      std::swap(_M_pback_end_save, __rhs._M_pback_end_save);
+<b><a name="line172">172  </a></b>	      std::swap(_M_pback_init, __rhs._M_pback_init);
+<b><a name="line173">173  </a></b>	    }
+<b><a name="line174">174  </a></b>	#endif
+<b><a name="line175">175  </a></b>	
+<b><a name="line176">176  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line177">177  </a></b>	    typename <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line176">_CharT</a>, <a href="#line176">_Traits</a>&gt;::<a href="../../fstream/code.html#line97">__filebuf_type</a>*
+<b><a name="line178">178  </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line176">_CharT</a>, <a href="#line176">_Traits</a>&gt;::
+<b><a name="line179">179  </a></b>	    <b>open</b>(const char* __s, <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="../ios_base.h/code.html#line429">openmode</a> __mode)
+<b><a name="line180">180  </a></b>	    {
+<b><a name="line181">181  </a></b>	      __filebuf_type *__ret = 0;
+<b><a name="line182">182  </a></b>	      if (!this-&gt;is_open())
+<b><a name="line183">183  </a></b>		{
+<b><a name="line184">184  </a></b>		  _M_file.open(__s, __mode);
+<b><a name="line185">185  </a></b>		  if (this-&gt;is_open())
+<b><a name="line186">186  </a></b>		    {
+<b><a name="line187">187  </a></b>		      _M_allocate_internal_buffer();
+<b><a name="line188">188  </a></b>		      _M_mode = __mode;
+<b><a name="line189">189  </a></b>	
+<b><a name="line190">190  </a></b>		      // Setup initial buffer to 'uncommitted' mode.
+<b><a name="line191">191  </a></b>		      _M_reading = false;
+<b><a name="line192">192  </a></b>		      _M_writing = false;
+<b><a name="line193">193  </a></b>		      _M_set_buffer(-1);
+<b><a name="line194">194  </a></b>	
+<b><a name="line195">195  </a></b>		      // Reset to initial state.
+<b><a name="line196">196  </a></b>		      _M_state_last = _M_state_cur = _M_state_beg;
+<b><a name="line197">197  </a></b>	
+<b><a name="line198">198  </a></b>		      // 27.8.1.3,4
+<b><a name="line199">199  </a></b>		      if ((__mode &amp; ios_base::ate)
+<b><a name="line200">200  </a></b>			  &amp;&amp; this-&gt;seekoff(0, ios_base::end, __mode)
+<b><a name="line201">201  </a></b>			  == pos_type(off_type(-1)))
+<b><a name="line202">202  </a></b>			this-&gt;close();
+<b><a name="line203">203  </a></b>		      else
+<b><a name="line204">204  </a></b>			__ret = this;
+<b><a name="line205">205  </a></b>		    }
+<b><a name="line206">206  </a></b>		}
+<b><a name="line207">207  </a></b>	      return __ret;
+<b><a name="line208">208  </a></b>	    }
+<b><a name="line209">209  </a></b>	
+<b><a name="line210">210  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line211">211  </a></b>	    typename <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line210">_CharT</a>, <a href="#line210">_Traits</a>&gt;::<a href="../../fstream/code.html#line97">__filebuf_type</a>*
+<b><a name="line212">212  </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line210">_CharT</a>, <a href="#line210">_Traits</a>&gt;::
+<b><a name="line213">213  </a></b>	    <b>close</b>()
+<b><a name="line214">214  </a></b>	    {
+<b><a name="line215">215  </a></b>	      if (!this-&gt;is_open())
+<b><a name="line216">216  </a></b>		return 0;
+<b><a name="line217">217  </a></b>	
+<b><a name="line218">218  </a></b>	      bool __testfail = false;
+<b><a name="line219">219  </a></b>	      {
+<b><a name="line220">220  </a></b>		// NB: Do this here so that re-opened filebufs will be cool...
+<b><a name="line221">221  </a></b>		struct __close_sentry
+<b><a name="line222">222  </a></b>		{
+<b><a name="line223">223  </a></b>		  basic_filebuf *__fb;
+<b><a name="line224">224  </a></b>		  __close_sentry (basic_filebuf *__fbi): __fb(__fbi) { }
+<b><a name="line225">225  </a></b>		  ~__close_sentry ()
+<b><a name="line226">226  </a></b>		  {
+<b><a name="line227">227  </a></b>		    __fb-&gt;_M_mode = ios_base::openmode(0);
+<b><a name="line228">228  </a></b>		    __fb-&gt;_M_pback_init = false;
+<b><a name="line229">229  </a></b>		    __fb-&gt;_M_destroy_internal_buffer();
+<b><a name="line230">230  </a></b>		    __fb-&gt;_M_reading = false;
+<b><a name="line231">231  </a></b>		    __fb-&gt;_M_writing = false;
+<b><a name="line232">232  </a></b>		    __fb-&gt;_M_set_buffer(-1);
+<b><a name="line233">233  </a></b>		    __fb-&gt;_M_state_last = __fb-&gt;_M_state_cur = __fb-&gt;_M_state_beg;
+<b><a name="line234">234  </a></b>		  }
+<b><a name="line235">235  </a></b>		} __cs (this);
+<b><a name="line236">236  </a></b>	
+<b><a name="line237">237  </a></b>		<a href="../exception_defines.h/code.html#line40">__try</a>
+<b><a name="line238">238  </a></b>		  {
+<b><a name="line239">239  </a></b>		    if (!_M_terminate_output())
+<b><a name="line240">240  </a></b>		      __testfail = true;
+<b><a name="line241">241  </a></b>		  }
+<b><a name="line242">242  </a></b>		<a href="../exception_defines.h/code.html#line41">__catch</a>(__cxxabiv1::__forced_unwind&amp;)
+<b><a name="line243">243  </a></b>		  {
+<b><a name="line244">244  </a></b>		    _M_file.close();
+<b><a name="line245">245  </a></b>		    <a href="../exception_defines.h/code.html#line42">__throw_exception_again</a>;
+<b><a name="line246">246  </a></b>		  }
+<b><a name="line247">247  </a></b>		<a href="../exception_defines.h/code.html#line41">__catch</a>(...)
+<b><a name="line248">248  </a></b>		  { __testfail = true; }
+<b><a name="line249">249  </a></b>	      }
+<b><a name="line250">250  </a></b>	
+<b><a name="line251">251  </a></b>	      if (!_M_file.close())
+<b><a name="line252">252  </a></b>		__testfail = true;
+<b><a name="line253">253  </a></b>	
+<b><a name="line254">254  </a></b>	      if (__testfail)
+<b><a name="line255">255  </a></b>		return 0;
+<b><a name="line256">256  </a></b>	      else
+<b><a name="line257">257  </a></b>		return this;
+<b><a name="line258">258  </a></b>	    }
+<b><a name="line259">259  </a></b>	
+<b><a name="line260">260  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line261">261  </a></b>	    <a href="../postypes.h/code.html#line98">streamsize</a>
+<b><a name="line262">262  </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line260">_CharT</a>, <a href="#line260">_Traits</a>&gt;::
+<b><a name="line263">263  </a></b>	    <b>showmanyc</b>()
+<b><a name="line264">264  </a></b>	    {
+<b><a name="line265">265  </a></b>	      streamsize __ret = -1;
+<b><a name="line266">266  </a></b>	      const bool __testin = _M_mode &amp; ios_base::in;
+<b><a name="line267">267  </a></b>	      if (__testin &amp;&amp; this-&gt;is_open())
+<b><a name="line268">268  </a></b>		{
+<b><a name="line269">269  </a></b>		  // For a stateful encoding (-1) the pending sequence might be just
+<b><a name="line270">270  </a></b>		  // shift and unshift prefixes with no actual character.
+<b><a name="line271">271  </a></b>		  __ret = this-&gt;egptr() - this-&gt;gptr();
+<b><a name="line272">272  </a></b>	
+<b><a name="line273">273  </a></b>	#if _GLIBCXX_HAVE_DOS_BASED_FILESYSTEM
+<b><a name="line274">274  </a></b>		  // About this workaround, see libstdc++/20806.
+<b><a name="line275">275  </a></b>		  const bool __testbinary = _M_mode &amp; ios_base::binary;
+<b><a name="line276">276  </a></b>		  if (__check_facet(_M_codecvt).encoding() &gt;= 0
+<b><a name="line277">277  </a></b>		      &amp;&amp; __testbinary)
+<b><a name="line278">278  </a></b>	#else
+<b><a name="line279">279  </a></b>		  if (__check_facet(_M_codecvt).encoding() &gt;= 0)
+<b><a name="line280">280  </a></b>	#endif
+<b><a name="line281">281  </a></b>		    __ret += _M_file.showmanyc() / _M_codecvt-&gt;max_length();
+<b><a name="line282">282  </a></b>		}
+<b><a name="line283">283  </a></b>	      return __ret;
+<b><a name="line284">284  </a></b>	    }
+<b><a name="line285">285  </a></b>	
+<b><a name="line286">286  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line287">287  </a></b>	    typename <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line286">_CharT</a>, <a href="#line286">_Traits</a>&gt;::<a href="../../fstream/code.html#line92">int_type</a>
+<b><a name="line288">288  </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line286">_CharT</a>, <a href="#line286">_Traits</a>&gt;::
+<b><a name="line289">289  </a></b>	    <b>underflow</b>()
+<b><a name="line290">290  </a></b>	    {
+<b><a name="line291">291  </a></b>	      int_type __ret = traits_type::eof();
+<b><a name="line292">292  </a></b>	      const bool __testin = _M_mode &amp; ios_base::in;
+<b><a name="line293">293  </a></b>	      if (__testin)
+<b><a name="line294">294  </a></b>		{
+<b><a name="line295">295  </a></b>		  if (_M_writing)
+<b><a name="line296">296  </a></b>		    {
+<b><a name="line297">297  </a></b>		      if (overflow() == traits_type::eof())
+<b><a name="line298">298  </a></b>			return __ret;
+<b><a name="line299">299  </a></b>		      _M_set_buffer(-1);
+<b><a name="line300">300  </a></b>		      _M_writing = false;
+<b><a name="line301">301  </a></b>		    }
+<b><a name="line302">302  </a></b>		  // Check for pback madness, and if so switch back to the
+<b><a name="line303">303  </a></b>		  // normal buffers and jet outta here before expensive
+<b><a name="line304">304  </a></b>		  // fileops happen...
+<b><a name="line305">305  </a></b>		  _M_destroy_pback();
+<b><a name="line306">306  </a></b>	
+<b><a name="line307">307  </a></b>		  if (this-&gt;gptr() &lt; this-&gt;egptr())
+<b><a name="line308">308  </a></b>		    return traits_type::to_int_type(*this-&gt;gptr());
+<b><a name="line309">309  </a></b>	
+<b><a name="line310">310  </a></b>		  // Get and convert input sequence.
+<b><a name="line311">311  </a></b>		  const size_t __buflen = _M_buf_size &gt; 1 ? _M_buf_size - 1 : 1;
+<b><a name="line312">312  </a></b>	
+<b><a name="line313">313  </a></b>		  // Will be set to true if ::read() returns 0 indicating EOF.
+<b><a name="line314">314  </a></b>		  bool __got_eof = false;
+<b><a name="line315">315  </a></b>		  // Number of internal characters produced.
+<b><a name="line316">316  </a></b>		  streamsize __ilen = 0;
+<b><a name="line317">317  </a></b>		  codecvt_base::result __r = codecvt_base::ok;
+<b><a name="line318">318  </a></b>		  if (__check_facet(_M_codecvt).always_noconv())
+<b><a name="line319">319  </a></b>		    {
+<b><a name="line320">320  </a></b>		      __ilen = _M_file.xsgetn(reinterpret_cast&lt;char*&gt;(this-&gt;eback()),
+<b><a name="line321">321  </a></b>					      __buflen);
+<b><a name="line322">322  </a></b>		      if (__ilen == 0)
+<b><a name="line323">323  </a></b>			__got_eof = true;
+<b><a name="line324">324  </a></b>		    }
+<b><a name="line325">325  </a></b>		  else
+<b><a name="line326">326  </a></b>		    {
+<b><a name="line327">327  </a></b>	              // Worst-case number of external bytes.
+<b><a name="line328">328  </a></b>		      // XXX Not done encoding() == -1.
+<b><a name="line329">329  </a></b>		      const int __enc = _M_codecvt-&gt;encoding();
+<b><a name="line330">330  </a></b>		      streamsize __blen; // Minimum buffer size.
+<b><a name="line331">331  </a></b>		      streamsize __rlen; // Number of chars to read.
+<b><a name="line332">332  </a></b>		      if (__enc &gt; 0)
+<b><a name="line333">333  </a></b>			__blen = __rlen = __buflen * __enc;
+<b><a name="line334">334  </a></b>		      else
+<b><a name="line335">335  </a></b>			{
+<b><a name="line336">336  </a></b>			  __blen = __buflen + _M_codecvt-&gt;max_length() - 1;
+<b><a name="line337">337  </a></b>			  __rlen = __buflen;
+<b><a name="line338">338  </a></b>			}
+<b><a name="line339">339  </a></b>		      const streamsize __remainder = _M_ext_end - _M_ext_next;
+<b><a name="line340">340  </a></b>		      __rlen = __rlen &gt; __remainder ? __rlen - __remainder : 0;
+<b><a name="line341">341  </a></b>	
+<b><a name="line342">342  </a></b>		      // An imbue in 'read' mode implies first converting the external
+<b><a name="line343">343  </a></b>		      // chars already present.
+<b><a name="line344">344  </a></b>		      if (_M_reading &amp;&amp; this-&gt;egptr() == this-&gt;eback() &amp;&amp; __remainder)
+<b><a name="line345">345  </a></b>			__rlen = 0;
+<b><a name="line346">346  </a></b>	
+<b><a name="line347">347  </a></b>		      // Allocate buffer if necessary and move unconverted
+<b><a name="line348">348  </a></b>		      // bytes to front.
+<b><a name="line349">349  </a></b>		      if (_M_ext_buf_size &lt; __blen)
+<b><a name="line350">350  </a></b>			{
+<b><a name="line351">351  </a></b>			  char* __buf = new char[__blen];
+<b><a name="line352">352  </a></b>			  if (__remainder)
+<b><a name="line353">353  </a></b>			    <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line344">__builtin_memcpy</a>(__buf, _M_ext_next, __remainder);
+<b><a name="line354">354  </a></b>	
+<b><a name="line355">355  </a></b>			  delete [] _M_ext_buf;
+<b><a name="line356">356  </a></b>			  _M_ext_buf = __buf;
+<b><a name="line357">357  </a></b>			  _M_ext_buf_size = __blen;
+<b><a name="line358">358  </a></b>			}
+<b><a name="line359">359  </a></b>		      else if (__remainder)
+<b><a name="line360">360  </a></b>			<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line345">__builtin_memmove</a>(_M_ext_buf, _M_ext_next, __remainder);
+<b><a name="line361">361  </a></b>	
+<b><a name="line362">362  </a></b>		      _M_ext_next = _M_ext_buf;
+<b><a name="line363">363  </a></b>		      _M_ext_end = _M_ext_buf + __remainder;
+<b><a name="line364">364  </a></b>		      _M_state_last = _M_state_cur;
+<b><a name="line365">365  </a></b>	
+<b><a name="line366">366  </a></b>		      do
+<b><a name="line367">367  </a></b>			{
+<b><a name="line368">368  </a></b>			  if (__rlen &gt; 0)
+<b><a name="line369">369  </a></b>			    {
+<b><a name="line370">370  </a></b>			      // Sanity check!
+<b><a name="line371">371  </a></b>			      // This may fail if the return value of
+<b><a name="line372">372  </a></b>			      // codecvt::max_length() is bogus.
+<b><a name="line373">373  </a></b>			      if (_M_ext_end - _M_ext_buf + __rlen &gt; _M_ext_buf_size)
+<b><a name="line374">374  </a></b>				{
+<b><a name="line375">375  </a></b>				  __throw_ios_failure(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line515">__N</a>(&quot;basic_filebuf::underflow &quot;
+<b><a name="line376">376  </a></b>						      &quot;codecvt::max_length() &quot;
+<b><a name="line377">377  </a></b>						      &quot;is not valid&quot;));
+<b><a name="line378">378  </a></b>				}
+<b><a name="line379">379  </a></b>			      streamsize __elen = _M_file.xsgetn(_M_ext_end, __rlen);
+<b><a name="line380">380  </a></b>			      if (__elen == 0)
+<b><a name="line381">381  </a></b>				__got_eof = true;
+<b><a name="line382">382  </a></b>			      else if (__elen == -1)
+<b><a name="line383">383  </a></b>				break;
+<b><a name="line384">384  </a></b>			      _M_ext_end += __elen;
+<b><a name="line385">385  </a></b>			    }
+<b><a name="line386">386  </a></b>	
+<b><a name="line387">387  </a></b>			  char_type* __iend = this-&gt;eback();
+<b><a name="line388">388  </a></b>			  if (_M_ext_next &lt; _M_ext_end)
+<b><a name="line389">389  </a></b>			    __r = _M_codecvt-&gt;in(_M_state_cur, _M_ext_next,
+<b><a name="line390">390  </a></b>						 _M_ext_end, _M_ext_next,
+<b><a name="line391">391  </a></b>						 this-&gt;eback(),
+<b><a name="line392">392  </a></b>						 this-&gt;eback() + __buflen, __iend);
+<b><a name="line393">393  </a></b>			  if (__r == codecvt_base::noconv)
+<b><a name="line394">394  </a></b>			    {
+<b><a name="line395">395  </a></b>			      size_t __avail = _M_ext_end - _M_ext_buf;
+<b><a name="line396">396  </a></b>			      __ilen = std::min(__avail, __buflen);
+<b><a name="line397">397  </a></b>			      traits_type::copy(this-&gt;eback(),
+<b><a name="line398">398  </a></b>						reinterpret_cast&lt;char_type*&gt;
+<b><a name="line399">399  </a></b>						(_M_ext_buf), __ilen);
+<b><a name="line400">400  </a></b>			      _M_ext_next = _M_ext_buf + __ilen;
+<b><a name="line401">401  </a></b>			    }
+<b><a name="line402">402  </a></b>			  else
+<b><a name="line403">403  </a></b>			    __ilen = __iend - this-&gt;eback();
+<b><a name="line404">404  </a></b>	
+<b><a name="line405">405  </a></b>			  // _M_codecvt-&gt;in may return error while __ilen &gt; 0: this is
+<b><a name="line406">406  </a></b>			  // ok, and actually occurs in case of mixed encodings (e.g.,
+<b><a name="line407">407  </a></b>			  // XML files).
+<b><a name="line408">408  </a></b>			  if (__r == codecvt_base::error)
+<b><a name="line409">409  </a></b>			    break;
+<b><a name="line410">410  </a></b>	
+<b><a name="line411">411  </a></b>			  __rlen = 1;
+<b><a name="line412">412  </a></b>			}
+<b><a name="line413">413  </a></b>		      while (__ilen == 0 &amp;&amp; !__got_eof);
+<b><a name="line414">414  </a></b>		    }
+<b><a name="line415">415  </a></b>	
+<b><a name="line416">416  </a></b>		  if (__ilen &gt; 0)
+<b><a name="line417">417  </a></b>		    {
+<b><a name="line418">418  </a></b>		      _M_set_buffer(__ilen);
+<b><a name="line419">419  </a></b>		      _M_reading = true;
+<b><a name="line420">420  </a></b>		      __ret = traits_type::to_int_type(*this-&gt;gptr());
+<b><a name="line421">421  </a></b>		    }
+<b><a name="line422">422  </a></b>		  else if (__got_eof)
+<b><a name="line423">423  </a></b>		    {
+<b><a name="line424">424  </a></b>		      // If the actual end of file is reached, set 'uncommitted'
+<b><a name="line425">425  </a></b>		      // mode, thus allowing an immediate write without an
+<b><a name="line426">426  </a></b>		      // intervening seek.
+<b><a name="line427">427  </a></b>		      _M_set_buffer(-1);
+<b><a name="line428">428  </a></b>		      _M_reading = false;
+<b><a name="line429">429  </a></b>		      // However, reaching it while looping on partial means that
+<b><a name="line430">430  </a></b>		      // the file has got an incomplete character.
+<b><a name="line431">431  </a></b>		      if (__r == codecvt_base::partial)
+<b><a name="line432">432  </a></b>			__throw_ios_failure(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line515">__N</a>(&quot;basic_filebuf::underflow &quot;
+<b><a name="line433">433  </a></b>					    &quot;incomplete character in file&quot;));
+<b><a name="line434">434  </a></b>		    }
+<b><a name="line435">435  </a></b>		  else if (__r == codecvt_base::error)
+<b><a name="line436">436  </a></b>		    __throw_ios_failure(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line515">__N</a>(&quot;basic_filebuf::underflow &quot;
+<b><a name="line437">437  </a></b>					&quot;invalid byte sequence in file&quot;));
+<b><a name="line438">438  </a></b>		  else
+<b><a name="line439">439  </a></b>		    __throw_ios_failure(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line515">__N</a>(&quot;basic_filebuf::underflow &quot;
+<b><a name="line440">440  </a></b>					&quot;error reading the file&quot;));
+<b><a name="line441">441  </a></b>		}
+<b><a name="line442">442  </a></b>	      return __ret;
+<b><a name="line443">443  </a></b>	    }
+<b><a name="line444">444  </a></b>	
+<b><a name="line445">445  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line446">446  </a></b>	    typename <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line445">_CharT</a>, <a href="#line445">_Traits</a>&gt;::<a href="../../fstream/code.html#line92">int_type</a>
+<b><a name="line447">447  </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line445">_CharT</a>, <a href="#line445">_Traits</a>&gt;::
+<b><a name="line448">448  </a></b>	    <b>pbackfail</b>(<a href="../../fstream/code.html#line92">int_type</a> __i)
+<b><a name="line449">449  </a></b>	    {
+<b><a name="line450">450  </a></b>	      int_type __ret = traits_type::eof();
+<b><a name="line451">451  </a></b>	      const bool __testin = _M_mode &amp; ios_base::in;
+<b><a name="line452">452  </a></b>	      if (__testin)
+<b><a name="line453">453  </a></b>		{
+<b><a name="line454">454  </a></b>		  if (_M_writing)
+<b><a name="line455">455  </a></b>		    {
+<b><a name="line456">456  </a></b>		      if (overflow() == traits_type::eof())
+<b><a name="line457">457  </a></b>			return __ret;
+<b><a name="line458">458  </a></b>		      _M_set_buffer(-1);
+<b><a name="line459">459  </a></b>		      _M_writing = false;
+<b><a name="line460">460  </a></b>		    }
+<b><a name="line461">461  </a></b>		  // Remember whether the pback buffer is active, otherwise below
+<b><a name="line462">462  </a></b>		  // we may try to store in it a second char (libstdc++/9761).
+<b><a name="line463">463  </a></b>		  const bool __testpb = _M_pback_init;
+<b><a name="line464">464  </a></b>		  const bool __testeof = traits_type::eq_int_type(__i, __ret);
+<b><a name="line465">465  </a></b>		  int_type __tmp;
+<b><a name="line466">466  </a></b>		  if (this-&gt;eback() &lt; this-&gt;gptr())
+<b><a name="line467">467  </a></b>		    {
+<b><a name="line468">468  </a></b>		      this-&gt;gbump(-1);
+<b><a name="line469">469  </a></b>		      __tmp = traits_type::to_int_type(*this-&gt;gptr());
+<b><a name="line470">470  </a></b>		    }
+<b><a name="line471">471  </a></b>		  else if (this-&gt;seekoff(-1, ios_base::cur) != pos_type(off_type(-1)))
+<b><a name="line472">472  </a></b>		    {
+<b><a name="line473">473  </a></b>		      __tmp = this-&gt;underflow();
+<b><a name="line474">474  </a></b>		      if (traits_type::eq_int_type(__tmp, __ret))
+<b><a name="line475">475  </a></b>			return __ret;
+<b><a name="line476">476  </a></b>		    }
+<b><a name="line477">477  </a></b>		  else
+<b><a name="line478">478  </a></b>		    {
+<b><a name="line479">479  </a></b>		      // At the beginning of the buffer, need to make a
+<b><a name="line480">480  </a></b>		      // putback position available.  But the seek may fail
+<b><a name="line481">481  </a></b>		      // (f.i., at the beginning of a file, see
+<b><a name="line482">482  </a></b>		      // libstdc++/9439) and in that case we return
+<b><a name="line483">483  </a></b>		      // traits_type::eof().
+<b><a name="line484">484  </a></b>		      return __ret;
+<b><a name="line485">485  </a></b>		    }
+<b><a name="line486">486  </a></b>	
+<b><a name="line487">487  </a></b>		  // Try to put back __i into input sequence in one of three ways.
+<b><a name="line488">488  </a></b>		  // Order these tests done in is unspecified by the standard.
+<b><a name="line489">489  </a></b>		  if (!__testeof &amp;&amp; traits_type::eq_int_type(__i, __tmp))
+<b><a name="line490">490  </a></b>		    __ret = __i;
+<b><a name="line491">491  </a></b>		  else if (__testeof)
+<b><a name="line492">492  </a></b>		    __ret = traits_type::not_eof(__i);
+<b><a name="line493">493  </a></b>		  else if (!__testpb)
+<b><a name="line494">494  </a></b>		    {
+<b><a name="line495">495  </a></b>		      _M_create_pback();
+<b><a name="line496">496  </a></b>		      _M_reading = true;
+<b><a name="line497">497  </a></b>		      *this-&gt;gptr() = traits_type::to_char_type(__i);
+<b><a name="line498">498  </a></b>		      __ret = __i;
+<b><a name="line499">499  </a></b>		    }
+<b><a name="line500">500  </a></b>		}
+<b><a name="line501">501  </a></b>	      return __ret;
+<b><a name="line502">502  </a></b>	    }
+<b><a name="line503">503  </a></b>	
+<b><a name="line504">504  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line505">505  </a></b>	    typename <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line504">_CharT</a>, <a href="#line504">_Traits</a>&gt;::<a href="../../fstream/code.html#line92">int_type</a>
+<b><a name="line506">506  </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line504">_CharT</a>, <a href="#line504">_Traits</a>&gt;::
+<b><a name="line507">507  </a></b>	    <b>overflow</b>(<a href="../../fstream/code.html#line92">int_type</a> __c)
+<b><a name="line508">508  </a></b>	    {
+<b><a name="line509">509  </a></b>	      int_type __ret = traits_type::eof();
+<b><a name="line510">510  </a></b>	      const bool __testeof = traits_type::eq_int_type(__c, __ret);
+<b><a name="line511">511  </a></b>	      const bool __testout = (_M_mode &amp; ios_base::out
+<b><a name="line512">512  </a></b>				      || _M_mode &amp; ios_base::app);
+<b><a name="line513">513  </a></b>	      if (__testout)
+<b><a name="line514">514  </a></b>		{
+<b><a name="line515">515  </a></b>	          if (_M_reading)
+<b><a name="line516">516  </a></b>	            {
+<b><a name="line517">517  </a></b>	              _M_destroy_pback();
+<b><a name="line518">518  </a></b>	              const int __gptr_off = _M_get_ext_pos(_M_state_last);
+<b><a name="line519">519  </a></b>	              if (_M_seek(__gptr_off, ios_base::cur, _M_state_last)
+<b><a name="line520">520  </a></b>	                  == pos_type(off_type(-1)))
+<b><a name="line521">521  </a></b>	                return __ret;
+<b><a name="line522">522  </a></b>	            }
+<b><a name="line523">523  </a></b>		  if (this-&gt;pbase() &lt; this-&gt;pptr())
+<b><a name="line524">524  </a></b>		    {
+<b><a name="line525">525  </a></b>		      // If appropriate, append the overflow char.
+<b><a name="line526">526  </a></b>		      if (!__testeof)
+<b><a name="line527">527  </a></b>			{
+<b><a name="line528">528  </a></b>			  *this-&gt;pptr() = traits_type::to_char_type(__c);
+<b><a name="line529">529  </a></b>			  this-&gt;pbump(1);
+<b><a name="line530">530  </a></b>			}
+<b><a name="line531">531  </a></b>	
+<b><a name="line532">532  </a></b>		      // Convert pending sequence to external representation,
+<b><a name="line533">533  </a></b>		      // and output.
+<b><a name="line534">534  </a></b>		      if (_M_convert_to_external(this-&gt;pbase(),
+<b><a name="line535">535  </a></b>						 this-&gt;pptr() - this-&gt;pbase()))
+<b><a name="line536">536  </a></b>			{
+<b><a name="line537">537  </a></b>			  _M_set_buffer(0);
+<b><a name="line538">538  </a></b>			  __ret = traits_type::not_eof(__c);
+<b><a name="line539">539  </a></b>			}
+<b><a name="line540">540  </a></b>		    }
+<b><a name="line541">541  </a></b>		  else if (_M_buf_size &gt; 1)
+<b><a name="line542">542  </a></b>		    {
+<b><a name="line543">543  </a></b>		      // Overflow in 'uncommitted' mode: set _M_writing, set
+<b><a name="line544">544  </a></b>		      // the buffer to the initial 'write' mode, and put __c
+<b><a name="line545">545  </a></b>		      // into the buffer.
+<b><a name="line546">546  </a></b>		      _M_set_buffer(0);
+<b><a name="line547">547  </a></b>		      _M_writing = true;
+<b><a name="line548">548  </a></b>		      if (!__testeof)
+<b><a name="line549">549  </a></b>			{
+<b><a name="line550">550  </a></b>			  *this-&gt;pptr() = traits_type::to_char_type(__c);
+<b><a name="line551">551  </a></b>			  this-&gt;pbump(1);
+<b><a name="line552">552  </a></b>			}
+<b><a name="line553">553  </a></b>		      __ret = traits_type::not_eof(__c);
+<b><a name="line554">554  </a></b>		    }
+<b><a name="line555">555  </a></b>		  else
+<b><a name="line556">556  </a></b>		    {
+<b><a name="line557">557  </a></b>		      // Unbuffered.
+<b><a name="line558">558  </a></b>		      char_type __conv = traits_type::to_char_type(__c);
+<b><a name="line559">559  </a></b>		      if (__testeof || _M_convert_to_external(&amp;__conv, 1))
+<b><a name="line560">560  </a></b>			{
+<b><a name="line561">561  </a></b>			  _M_writing = true;
+<b><a name="line562">562  </a></b>			  __ret = traits_type::not_eof(__c);
+<b><a name="line563">563  </a></b>			}
+<b><a name="line564">564  </a></b>		    }
+<b><a name="line565">565  </a></b>		}
+<b><a name="line566">566  </a></b>	      return __ret;
+<b><a name="line567">567  </a></b>	    }
+<b><a name="line568">568  </a></b>	
+<b><a name="line569">569  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line570">570  </a></b>	    bool
+<b><a name="line571">571  </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line569">_CharT</a>, <a href="#line569">_Traits</a>&gt;::
+<b><a name="line572">572  </a></b>	    <b>_M_convert_to_external</b>(<a href="#line569">_CharT</a>* __ibuf, <a href="../postypes.h/code.html#line98">streamsize</a> __ilen)
+<b><a name="line573">573  </a></b>	    {
+<b><a name="line574">574  </a></b>	      // Sizes of external and pending output.
+<b><a name="line575">575  </a></b>	      streamsize __elen;
+<b><a name="line576">576  </a></b>	      streamsize __plen;
+<b><a name="line577">577  </a></b>	      if (__check_facet(_M_codecvt).always_noconv())
+<b><a name="line578">578  </a></b>		{
+<b><a name="line579">579  </a></b>		  __elen = _M_file.xsputn(reinterpret_cast&lt;char*&gt;(__ibuf), __ilen);
+<b><a name="line580">580  </a></b>		  __plen = __ilen;
+<b><a name="line581">581  </a></b>		}
+<b><a name="line582">582  </a></b>	      else
+<b><a name="line583">583  </a></b>		{
+<b><a name="line584">584  </a></b>		  // Worst-case number of external bytes needed.
+<b><a name="line585">585  </a></b>		  // XXX Not done encoding() == -1.
+<b><a name="line586">586  </a></b>		  streamsize __blen = __ilen * _M_codecvt-&gt;max_length();
+<b><a name="line587">587  </a></b>		  char* __buf = static_cast&lt;char*&gt;(__builtin_alloca(__blen));
+<b><a name="line588">588  </a></b>	
+<b><a name="line589">589  </a></b>		  char* __bend;
+<b><a name="line590">590  </a></b>		  const char_type* __iend;
+<b><a name="line591">591  </a></b>		  codecvt_base::result __r;
+<b><a name="line592">592  </a></b>		  __r = _M_codecvt-&gt;out(_M_state_cur, __ibuf, __ibuf + __ilen,
+<b><a name="line593">593  </a></b>					__iend, __buf, __buf + __blen, __bend);
+<b><a name="line594">594  </a></b>	
+<b><a name="line595">595  </a></b>		  if (__r == codecvt_base::ok || __r == codecvt_base::partial)
+<b><a name="line596">596  </a></b>		    __blen = __bend - __buf;
+<b><a name="line597">597  </a></b>		  else if (__r == codecvt_base::noconv)
+<b><a name="line598">598  </a></b>		    {
+<b><a name="line599">599  </a></b>		      // Same as the always_noconv case above.
+<b><a name="line600">600  </a></b>		      __buf = reinterpret_cast&lt;char*&gt;(__ibuf);
+<b><a name="line601">601  </a></b>		      __blen = __ilen;
+<b><a name="line602">602  </a></b>		    }
+<b><a name="line603">603  </a></b>		  else
+<b><a name="line604">604  </a></b>		    __throw_ios_failure(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line515">__N</a>(&quot;basic_filebuf::_M_convert_to_external &quot;
+<b><a name="line605">605  </a></b>					    &quot;conversion error&quot;));
+<b><a name="line606">606  </a></b>	  
+<b><a name="line607">607  </a></b>		  __elen = _M_file.xsputn(__buf, __blen);
+<b><a name="line608">608  </a></b>		  __plen = __blen;
+<b><a name="line609">609  </a></b>	
+<b><a name="line610">610  </a></b>		  // Try once more for partial conversions.
+<b><a name="line611">611  </a></b>		  if (__r == codecvt_base::partial &amp;&amp; __elen == __plen)
+<b><a name="line612">612  </a></b>		    {
+<b><a name="line613">613  </a></b>		      const char_type* __iresume = __iend;
+<b><a name="line614">614  </a></b>		      streamsize __rlen = this-&gt;pptr() - __iend;
+<b><a name="line615">615  </a></b>		      __r = _M_codecvt-&gt;out(_M_state_cur, __iresume,
+<b><a name="line616">616  </a></b>					    __iresume + __rlen, __iend, __buf,
+<b><a name="line617">617  </a></b>					    __buf + __blen, __bend);
+<b><a name="line618">618  </a></b>		      if (__r != codecvt_base::error)
+<b><a name="line619">619  </a></b>			{
+<b><a name="line620">620  </a></b>			  __rlen = __bend - __buf;
+<b><a name="line621">621  </a></b>			  __elen = _M_file.xsputn(__buf, __rlen);
+<b><a name="line622">622  </a></b>			  __plen = __rlen;
+<b><a name="line623">623  </a></b>			}
+<b><a name="line624">624  </a></b>		      else
+<b><a name="line625">625  </a></b>			__throw_ios_failure(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line515">__N</a>(&quot;basic_filebuf::_M_convert_to_external &quot;
+<b><a name="line626">626  </a></b>						&quot;conversion error&quot;));
+<b><a name="line627">627  </a></b>		    }
+<b><a name="line628">628  </a></b>		}
+<b><a name="line629">629  </a></b>	      return __elen == __plen;
+<b><a name="line630">630  </a></b>	    }
+<b><a name="line631">631  </a></b>	
+<b><a name="line632">632  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line633">633  </a></b>	    <a href="../postypes.h/code.html#line98">streamsize</a>
+<b><a name="line634">634  </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line632">_CharT</a>, <a href="#line632">_Traits</a>&gt;::
+<b><a name="line635">635  </a></b>	    <b>xsgetn</b>(<a href="#line632">_CharT</a>* __s, <a href="../postypes.h/code.html#line98">streamsize</a> __n)
+<b><a name="line636">636  </a></b>	    {
+<b><a name="line637">637  </a></b>	      // Clear out pback buffer before going on to the real deal...
+<b><a name="line638">638  </a></b>	      streamsize __ret = 0;
+<b><a name="line639">639  </a></b>	      if (_M_pback_init)
+<b><a name="line640">640  </a></b>		{
+<b><a name="line641">641  </a></b>		  if (__n &gt; 0 &amp;&amp; this-&gt;gptr() == this-&gt;eback())
+<b><a name="line642">642  </a></b>		    {
+<b><a name="line643">643  </a></b>		      *__s++ = *this-&gt;gptr(); // emulate non-underflowing sbumpc
+<b><a name="line644">644  </a></b>		      this-&gt;gbump(1);
+<b><a name="line645">645  </a></b>		      __ret = 1;
+<b><a name="line646">646  </a></b>		      --__n;
+<b><a name="line647">647  </a></b>		    }
+<b><a name="line648">648  </a></b>		  _M_destroy_pback();
+<b><a name="line649">649  </a></b>		}
+<b><a name="line650">650  </a></b>	      else if (_M_writing)
+<b><a name="line651">651  </a></b>		{
+<b><a name="line652">652  </a></b>	 	  if (overflow() == traits_type::eof())
+<b><a name="line653">653  </a></b>	 	    return __ret;
+<b><a name="line654">654  </a></b>	 	  _M_set_buffer(-1);
+<b><a name="line655">655  </a></b>	 	  _M_writing = false;
+<b><a name="line656">656  </a></b>	 	}
+<b><a name="line657">657  </a></b>	 
+<b><a name="line658">658  </a></b>	      // Optimization in the always_noconv() case, to be generalized in the
+<b><a name="line659">659  </a></b>	      // future: when __n &gt; __buflen we read directly instead of using the
+<b><a name="line660">660  </a></b>	      // buffer repeatedly.
+<b><a name="line661">661  </a></b>	      const bool __testin = _M_mode &amp; ios_base::in;
+<b><a name="line662">662  </a></b>	      const streamsize __buflen = _M_buf_size &gt; 1 ? _M_buf_size - 1 : 1;
+<b><a name="line663">663  </a></b>	 
+<b><a name="line664">664  </a></b>	      if (__n &gt; __buflen &amp;&amp; __check_facet(_M_codecvt).always_noconv()
+<b><a name="line665">665  </a></b>	 	   &amp;&amp; __testin)
+<b><a name="line666">666  </a></b>	 	 {
+<b><a name="line667">667  </a></b>	 	   // First, copy the chars already present in the buffer.
+<b><a name="line668">668  </a></b>	 	   const streamsize __avail = this-&gt;egptr() - this-&gt;gptr();
+<b><a name="line669">669  </a></b>	 	   if (__avail != 0)
+<b><a name="line670">670  </a></b>	 	     {
+<b><a name="line671">671  </a></b>		       traits_type::copy(__s, this-&gt;gptr(), __avail);
+<b><a name="line672">672  </a></b>	 	       __s += __avail;
+<b><a name="line673">673  </a></b>		       this-&gt;setg(this-&gt;eback(), this-&gt;gptr() + __avail,
+<b><a name="line674">674  </a></b>				  this-&gt;egptr());
+<b><a name="line675">675  </a></b>		       __ret += __avail;
+<b><a name="line676">676  </a></b>		       __n -= __avail;
+<b><a name="line677">677  </a></b>	 	     }
+<b><a name="line678">678  </a></b>	 
+<b><a name="line679">679  </a></b>	 	   // Need to loop in case of short reads (relatively common
+<b><a name="line680">680  </a></b>	 	   // with pipes).
+<b><a name="line681">681  </a></b>	 	   streamsize __len;
+<b><a name="line682">682  </a></b>	 	   for (;;)
+<b><a name="line683">683  </a></b>	 	     {
+<b><a name="line684">684  </a></b>	 	       __len = _M_file.xsgetn(reinterpret_cast&lt;char*&gt;(__s),
+<b><a name="line685">685  </a></b>	 				      __n);
+<b><a name="line686">686  </a></b>	 	       if (__len == -1)
+<b><a name="line687">687  </a></b>	 		 __throw_ios_failure(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line515">__N</a>(&quot;basic_filebuf::xsgetn &quot;
+<b><a name="line688">688  </a></b>	 					 &quot;error reading the file&quot;));
+<b><a name="line689">689  </a></b>	 	       if (__len == 0)
+<b><a name="line690">690  </a></b>	 		 break;
+<b><a name="line691">691  </a></b>	 
+<b><a name="line692">692  </a></b>	 	       __n -= __len;
+<b><a name="line693">693  </a></b>	 	       __ret += __len;
+<b><a name="line694">694  </a></b>	 	       if (__n == 0)
+<b><a name="line695">695  </a></b>	 		 break;
+<b><a name="line696">696  </a></b>	 
+<b><a name="line697">697  </a></b>	 	       __s += __len;
+<b><a name="line698">698  </a></b>	 	     }
+<b><a name="line699">699  </a></b>	 
+<b><a name="line700">700  </a></b>	 	   if (__n == 0)
+<b><a name="line701">701  </a></b>	 	     {
+<b><a name="line702">702  </a></b>	 	       _M_set_buffer(0);
+<b><a name="line703">703  </a></b>	 	       _M_reading = true;
+<b><a name="line704">704  </a></b>	 	     }
+<b><a name="line705">705  </a></b>	 	   else if (__len == 0)
+<b><a name="line706">706  </a></b>	 	     {
+<b><a name="line707">707  </a></b>	 	       // If end of file is reached, set 'uncommitted'
+<b><a name="line708">708  </a></b>	 	       // mode, thus allowing an immediate write without
+<b><a name="line709">709  </a></b>	 	       // an intervening seek.
+<b><a name="line710">710  </a></b>	 	       _M_set_buffer(-1);
+<b><a name="line711">711  </a></b>	 	       _M_reading = false;
+<b><a name="line712">712  </a></b>	 	     }
+<b><a name="line713">713  </a></b>	 	 }
+<b><a name="line714">714  </a></b>	      else
+<b><a name="line715">715  </a></b>	 	 __ret += __streambuf_type::xsgetn(__s, __n);
+<b><a name="line716">716  </a></b>	 
+<b><a name="line717">717  </a></b>	      return __ret;
+<b><a name="line718">718  </a></b>	    }
+<b><a name="line719">719  </a></b>	
+<b><a name="line720">720  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line721">721  </a></b>	    <a href="../postypes.h/code.html#line98">streamsize</a>
+<b><a name="line722">722  </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line720">_CharT</a>, <a href="#line720">_Traits</a>&gt;::
+<b><a name="line723">723  </a></b>	    <b>xsputn</b>(const <a href="#line720">_CharT</a>* __s, <a href="../postypes.h/code.html#line98">streamsize</a> __n)
+<b><a name="line724">724  </a></b>	    {
+<b><a name="line725">725  </a></b>	      streamsize __ret = 0;
+<b><a name="line726">726  </a></b>	      // Optimization in the always_noconv() case, to be generalized in the
+<b><a name="line727">727  </a></b>	      // future: when __n is sufficiently large we write directly instead of
+<b><a name="line728">728  </a></b>	      // using the buffer.
+<b><a name="line729">729  </a></b>	      const bool __testout = (_M_mode &amp; ios_base::out
+<b><a name="line730">730  </a></b>				      || _M_mode &amp; ios_base::app);
+<b><a name="line731">731  </a></b>	      if (__check_facet(_M_codecvt).always_noconv()
+<b><a name="line732">732  </a></b>	 	   &amp;&amp; __testout &amp;&amp; !_M_reading)
+<b><a name="line733">733  </a></b>		{
+<b><a name="line734">734  </a></b>		  // Measurement would reveal the best choice.
+<b><a name="line735">735  </a></b>		  const streamsize __chunk = 1ul &lt;&lt; 10;
+<b><a name="line736">736  </a></b>		  streamsize __bufavail = this-&gt;epptr() - this-&gt;pptr();
+<b><a name="line737">737  </a></b>	
+<b><a name="line738">738  </a></b>		  // Don't mistake 'uncommitted' mode buffered with unbuffered.
+<b><a name="line739">739  </a></b>		  if (!_M_writing &amp;&amp; _M_buf_size &gt; 1)
+<b><a name="line740">740  </a></b>		    __bufavail = _M_buf_size - 1;
+<b><a name="line741">741  </a></b>	
+<b><a name="line742">742  </a></b>		  const streamsize __limit = std::min(__chunk, __bufavail);
+<b><a name="line743">743  </a></b>		  if (__n &gt;= __limit)
+<b><a name="line744">744  </a></b>		    {
+<b><a name="line745">745  </a></b>		      const streamsize __buffill = this-&gt;pptr() - this-&gt;pbase();
+<b><a name="line746">746  </a></b>		      const char* __buf = reinterpret_cast&lt;const char*&gt;(this-&gt;pbase());
+<b><a name="line747">747  </a></b>		      __ret = _M_file.xsputn_2(__buf, __buffill,
+<b><a name="line748">748  </a></b>					       reinterpret_cast&lt;const char*&gt;(__s),
+<b><a name="line749">749  </a></b>					       __n);
+<b><a name="line750">750  </a></b>		      if (__ret == __buffill + __n)
+<b><a name="line751">751  </a></b>			{
+<b><a name="line752">752  </a></b>			  _M_set_buffer(0);
+<b><a name="line753">753  </a></b>			  _M_writing = true;
+<b><a name="line754">754  </a></b>			}
+<b><a name="line755">755  </a></b>		      if (__ret &gt; __buffill)
+<b><a name="line756">756  </a></b>			__ret -= __buffill;
+<b><a name="line757">757  </a></b>		      else
+<b><a name="line758">758  </a></b>			__ret = 0;
+<b><a name="line759">759  </a></b>		    }
+<b><a name="line760">760  </a></b>		  else
+<b><a name="line761">761  </a></b>		    __ret = __streambuf_type::xsputn(__s, __n);
+<b><a name="line762">762  </a></b>		}
+<b><a name="line763">763  </a></b>	       else
+<b><a name="line764">764  </a></b>		 __ret = __streambuf_type::xsputn(__s, __n);
+<b><a name="line765">765  </a></b>	       return __ret;
+<b><a name="line766">766  </a></b>	    }
+<b><a name="line767">767  </a></b>	
+<b><a name="line768">768  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line769">769  </a></b>	    typename <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line768">_CharT</a>, <a href="#line768">_Traits</a>&gt;::<a href="../../fstream/code.html#line96">__streambuf_type</a>*
+<b><a name="line770">770  </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line768">_CharT</a>, <a href="#line768">_Traits</a>&gt;::
+<b><a name="line771">771  </a></b>	    <b>setbuf</b>(<a href="../../fstream/code.html#line90">char_type</a>* __s, <a href="../postypes.h/code.html#line98">streamsize</a> __n)
+<b><a name="line772">772  </a></b>	    {
+<b><a name="line773">773  </a></b>	      if (!this-&gt;is_open())
+<b><a name="line774">774  </a></b>		{
+<b><a name="line775">775  </a></b>		  if (__s == 0 &amp;&amp; __n == 0)
+<b><a name="line776">776  </a></b>		    _M_buf_size = 1;
+<b><a name="line777">777  </a></b>		  else if (__s &amp;&amp; __n &gt; 0)
+<b><a name="line778">778  </a></b>		    {
+<b><a name="line779">779  </a></b>		      // This is implementation-defined behavior, and assumes that
+<b><a name="line780">780  </a></b>		      // an external char_type array of length __n exists and has
+<b><a name="line781">781  </a></b>		      // been pre-allocated. If this is not the case, things will
+<b><a name="line782">782  </a></b>		      // quickly blow up. When __n &gt; 1, __n - 1 positions will be
+<b><a name="line783">783  </a></b>		      // used for the get area, __n - 1 for the put area and 1
+<b><a name="line784">784  </a></b>		      // position to host the overflow char of a full put area.
+<b><a name="line785">785  </a></b>		      // When __n == 1, 1 position will be used for the get area
+<b><a name="line786">786  </a></b>		      // and 0 for the put area, as in the unbuffered case above.
+<b><a name="line787">787  </a></b>		      _M_buf = __s;
+<b><a name="line788">788  </a></b>		      _M_buf_size = __n;
+<b><a name="line789">789  </a></b>		    }
+<b><a name="line790">790  </a></b>		}
+<b><a name="line791">791  </a></b>	      return this;
+<b><a name="line792">792  </a></b>	    }
+<b><a name="line793">793  </a></b>	
+<b><a name="line794">794  </a></b>	
+<b><a name="line795">795  </a></b>	  // According to 27.8.1.4 p11 - 13, seekoff should ignore the last
+<b><a name="line796">796  </a></b>	  // argument (of type openmode).
+<b><a name="line797">797  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line798">798  </a></b>	    typename <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line797">_CharT</a>, <a href="#line797">_Traits</a>&gt;::<a href="../../fstream/code.html#line93">pos_type</a>
+<b><a name="line799">799  </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line797">_CharT</a>, <a href="#line797">_Traits</a>&gt;::
+<b><a name="line800">800  </a></b>	    <b>seekoff</b>(<a href="../../fstream/code.html#line94">off_type</a> __off, <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="../ios_base.h/code.html#line461">seekdir</a> __way, <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="../ios_base.h/code.html#line429">openmode</a>)
+<b><a name="line801">801  </a></b>	    {
+<b><a name="line802">802  </a></b>	      int __width = 0;
+<b><a name="line803">803  </a></b>	      if (_M_codecvt)
+<b><a name="line804">804  </a></b>		__width = _M_codecvt-&gt;encoding();
+<b><a name="line805">805  </a></b>	      if (__width &lt; 0)
+<b><a name="line806">806  </a></b>		__width = 0;
+<b><a name="line807">807  </a></b>	
+<b><a name="line808">808  </a></b>	      pos_type __ret = pos_type(off_type(-1));
+<b><a name="line809">809  </a></b>	      const bool __testfail = __off != 0 &amp;&amp; __width &lt;= 0;
+<b><a name="line810">810  </a></b>	      if (this-&gt;is_open() &amp;&amp; !__testfail)
+<b><a name="line811">811  </a></b>		{
+<b><a name="line812">812  </a></b>		  // tellg and tellp queries do not affect any state, unless
+<b><a name="line813">813  </a></b>		  // ! always_noconv and the put sequence is not empty.
+<b><a name="line814">814  </a></b>		  // In that case, determining the position requires converting the
+<b><a name="line815">815  </a></b>		  // put sequence. That doesn't use ext_buf, so requires a flush.
+<b><a name="line816">816  </a></b>		  bool __no_movement = __way == ios_base::cur &amp;&amp; __off == 0
+<b><a name="line817">817  </a></b>		    &amp;&amp; (!_M_writing || _M_codecvt-&gt;always_noconv());
+<b><a name="line818">818  </a></b>	
+<b><a name="line819">819  </a></b>		  // Ditch any pback buffers to avoid confusion.
+<b><a name="line820">820  </a></b>		  if (!__no_movement)
+<b><a name="line821">821  </a></b>		    _M_destroy_pback();
+<b><a name="line822">822  </a></b>	
+<b><a name="line823">823  </a></b>		  // Correct state at destination. Note that this is the correct
+<b><a name="line824">824  </a></b>		  // state for the current position during output, because
+<b><a name="line825">825  </a></b>		  // codecvt::unshift() returns the state to the initial state.
+<b><a name="line826">826  </a></b>		  // This is also the correct state at the end of the file because
+<b><a name="line827">827  </a></b>		  // an unshift sequence should have been written at the end.
+<b><a name="line828">828  </a></b>		  __state_type __state = _M_state_beg;
+<b><a name="line829">829  </a></b>		  off_type __computed_off = __off * __width;
+<b><a name="line830">830  </a></b>		  if (_M_reading &amp;&amp; __way == ios_base::cur)
+<b><a name="line831">831  </a></b>		    {
+<b><a name="line832">832  </a></b>		      __state = _M_state_last;
+<b><a name="line833">833  </a></b>		      __computed_off += _M_get_ext_pos(__state);
+<b><a name="line834">834  </a></b>		    }
+<b><a name="line835">835  </a></b>		  if (!__no_movement)
+<b><a name="line836">836  </a></b>		    __ret = _M_seek(__computed_off, __way, __state);
+<b><a name="line837">837  </a></b>		  else
+<b><a name="line838">838  </a></b>		    {
+<b><a name="line839">839  </a></b>		      if (_M_writing)
+<b><a name="line840">840  </a></b>			__computed_off = this-&gt;pptr() - this-&gt;pbase();
+<b><a name="line841">841  </a></b>		      
+<b><a name="line842">842  </a></b>	 	      off_type __file_off = _M_file.seekoff(0, ios_base::cur);
+<b><a name="line843">843  </a></b>	 	      if (__file_off != off_type(-1))
+<b><a name="line844">844  </a></b>			{
+<b><a name="line845">845  </a></b>			  __ret = __file_off + __computed_off;
+<b><a name="line846">846  </a></b>			  __ret.state(__state);
+<b><a name="line847">847  </a></b>			}
+<b><a name="line848">848  </a></b>		    }
+<b><a name="line849">849  </a></b>		}
+<b><a name="line850">850  </a></b>	      return __ret;
+<b><a name="line851">851  </a></b>	    }
+<b><a name="line852">852  </a></b>	
+<b><a name="line853">853  </a></b>	  // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line854">854  </a></b>	  // 171. Strange seekpos() semantics due to joint position
+<b><a name="line855">855  </a></b>	  // According to the resolution of DR 171, seekpos should ignore the last
+<b><a name="line856">856  </a></b>	  // argument (of type openmode).
+<b><a name="line857">857  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line858">858  </a></b>	    typename <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line857">_CharT</a>, <a href="#line857">_Traits</a>&gt;::<a href="../../fstream/code.html#line93">pos_type</a>
+<b><a name="line859">859  </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line857">_CharT</a>, <a href="#line857">_Traits</a>&gt;::
+<b><a name="line860">860  </a></b>	    <b>seekpos</b>(<a href="../../fstream/code.html#line93">pos_type</a> __pos, <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="../ios_base.h/code.html#line429">openmode</a>)
+<b><a name="line861">861  </a></b>	    {
+<b><a name="line862">862  </a></b>	      pos_type __ret =  pos_type(off_type(-1));
+<b><a name="line863">863  </a></b>	      if (this-&gt;is_open())
+<b><a name="line864">864  </a></b>		{
+<b><a name="line865">865  </a></b>		  // Ditch any pback buffers to avoid confusion.
+<b><a name="line866">866  </a></b>		  _M_destroy_pback();
+<b><a name="line867">867  </a></b>		  __ret = _M_seek(off_type(__pos), ios_base::beg, __pos.state());
+<b><a name="line868">868  </a></b>		}
+<b><a name="line869">869  </a></b>	      return __ret;
+<b><a name="line870">870  </a></b>	    }
+<b><a name="line871">871  </a></b>	
+<b><a name="line872">872  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line873">873  </a></b>	    typename <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line872">_CharT</a>, <a href="#line872">_Traits</a>&gt;::<a href="../../fstream/code.html#line93">pos_type</a>
+<b><a name="line874">874  </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line872">_CharT</a>, <a href="#line872">_Traits</a>&gt;::
+<b><a name="line875">875  </a></b>	    <b>_M_seek</b>(<a href="../../fstream/code.html#line94">off_type</a> __off, <a href="../../iosfwd/code.html#line74">ios_base</a>::<a href="../ios_base.h/code.html#line461">seekdir</a> __way, <a href="../../fstream/code.html#line99">__state_type</a> __state)
+<b><a name="line876">876  </a></b>	    {
+<b><a name="line877">877  </a></b>	      pos_type __ret = pos_type(off_type(-1));
+<b><a name="line878">878  </a></b>	      if (_M_terminate_output())
+<b><a name="line879">879  </a></b>		{
+<b><a name="line880">880  </a></b>		  off_type __file_off = _M_file.seekoff(__off, __way);
+<b><a name="line881">881  </a></b>		  if (__file_off != off_type(-1))
+<b><a name="line882">882  </a></b>		    {
+<b><a name="line883">883  </a></b>		      _M_reading = false;
+<b><a name="line884">884  </a></b>		      _M_writing = false;
+<b><a name="line885">885  </a></b>		      _M_ext_next = _M_ext_end = _M_ext_buf;
+<b><a name="line886">886  </a></b>		      _M_set_buffer(-1);
+<b><a name="line887">887  </a></b>		      _M_state_cur = __state;
+<b><a name="line888">888  </a></b>		      __ret = __file_off;
+<b><a name="line889">889  </a></b>		      __ret.state(_M_state_cur);
+<b><a name="line890">890  </a></b>		    }
+<b><a name="line891">891  </a></b>		}
+<b><a name="line892">892  </a></b>	      return __ret;
+<b><a name="line893">893  </a></b>	    }
+<b><a name="line894">894  </a></b>	
+<b><a name="line895">895  </a></b>	  // Returns the distance from the end of the ext buffer to the point
+<b><a name="line896">896  </a></b>	  // corresponding to gptr(). This is a negative value. Updates __state
+<b><a name="line897">897  </a></b>	  // from eback() correspondence to gptr().
+<b><a name="line898">898  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line899">899  </a></b>	    int <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line898">_CharT</a>, <a href="#line898">_Traits</a>&gt;::
+<b><a name="line900">900  </a></b>	    <b>_M_get_ext_pos</b>(<a href="../../fstream/code.html#line99">__state_type</a>&amp; __state)
+<b><a name="line901">901  </a></b>	    {
+<b><a name="line902">902  </a></b>	      if (_M_codecvt-&gt;always_noconv())
+<b><a name="line903">903  </a></b>	        return this-&gt;gptr() - this-&gt;egptr();
+<b><a name="line904">904  </a></b>	      else
+<b><a name="line905">905  </a></b>	        {
+<b><a name="line906">906  </a></b>	          // Calculate offset from _M_ext_buf that corresponds to
+<b><a name="line907">907  </a></b>	          // gptr(). Precondition: __state == _M_state_last, which
+<b><a name="line908">908  </a></b>	          // corresponds to eback().
+<b><a name="line909">909  </a></b>	          const int __gptr_off =
+<b><a name="line910">910  </a></b>	            _M_codecvt-&gt;length(__state, _M_ext_buf, _M_ext_next,
+<b><a name="line911">911  </a></b>	                               this-&gt;gptr() - this-&gt;eback());
+<b><a name="line912">912  </a></b>	          return _M_ext_buf + __gptr_off - _M_ext_end;
+<b><a name="line913">913  </a></b>	        }
+<b><a name="line914">914  </a></b>	    }
+<b><a name="line915">915  </a></b>	    
+<b><a name="line916">916  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line917">917  </a></b>	    bool
+<b><a name="line918">918  </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line916">_CharT</a>, <a href="#line916">_Traits</a>&gt;::
+<b><a name="line919">919  </a></b>	    <b>_M_terminate_output</b>()
+<b><a name="line920">920  </a></b>	    {
+<b><a name="line921">921  </a></b>	      // Part one: update the output sequence.
+<b><a name="line922">922  </a></b>	      bool __testvalid = true;
+<b><a name="line923">923  </a></b>	      if (this-&gt;pbase() &lt; this-&gt;pptr())
+<b><a name="line924">924  </a></b>		{
+<b><a name="line925">925  </a></b>		  const int_type __tmp = this-&gt;overflow();
+<b><a name="line926">926  </a></b>		  if (traits_type::eq_int_type(__tmp, traits_type::eof()))
+<b><a name="line927">927  </a></b>		    __testvalid = false;
+<b><a name="line928">928  </a></b>		}
+<b><a name="line929">929  </a></b>	
+<b><a name="line930">930  </a></b>	      // Part two: output unshift sequence.
+<b><a name="line931">931  </a></b>	      if (_M_writing &amp;&amp; !__check_facet(_M_codecvt).always_noconv()
+<b><a name="line932">932  </a></b>		  &amp;&amp; __testvalid)
+<b><a name="line933">933  </a></b>		{
+<b><a name="line934">934  </a></b>		  // Note: this value is arbitrary, since there is no way to
+<b><a name="line935">935  </a></b>		  // get the length of the unshift sequence from codecvt,
+<b><a name="line936">936  </a></b>		  // without calling unshift.
+<b><a name="line937">937  </a></b>		  const size_t __blen = 128;
+<b><a name="line938">938  </a></b>		  char __buf[__blen];
+<b><a name="line939">939  </a></b>		  codecvt_base::result __r;
+<b><a name="line940">940  </a></b>		  streamsize __ilen = 0;
+<b><a name="line941">941  </a></b>	
+<b><a name="line942">942  </a></b>		  do
+<b><a name="line943">943  </a></b>		    {
+<b><a name="line944">944  </a></b>		      char* __next;
+<b><a name="line945">945  </a></b>		      __r = _M_codecvt-&gt;unshift(_M_state_cur, __buf,
+<b><a name="line946">946  </a></b>						__buf + __blen, __next);
+<b><a name="line947">947  </a></b>		      if (__r == codecvt_base::error)
+<b><a name="line948">948  </a></b>			__testvalid = false;
+<b><a name="line949">949  </a></b>		      else if (__r == codecvt_base::ok ||
+<b><a name="line950">950  </a></b>			       __r == codecvt_base::partial)
+<b><a name="line951">951  </a></b>			{
+<b><a name="line952">952  </a></b>			  __ilen = __next - __buf;
+<b><a name="line953">953  </a></b>			  if (__ilen &gt; 0)
+<b><a name="line954">954  </a></b>			    {
+<b><a name="line955">955  </a></b>			      const streamsize __elen = _M_file.xsputn(__buf, __ilen);
+<b><a name="line956">956  </a></b>			      if (__elen != __ilen)
+<b><a name="line957">957  </a></b>				__testvalid = false;
+<b><a name="line958">958  </a></b>			    }
+<b><a name="line959">959  </a></b>			}
+<b><a name="line960">960  </a></b>		    }
+<b><a name="line961">961  </a></b>		  while (__r == codecvt_base::partial &amp;&amp; __ilen &gt; 0 &amp;&amp; __testvalid);
+<b><a name="line962">962  </a></b>	
+<b><a name="line963">963  </a></b>		  if (__testvalid)
+<b><a name="line964">964  </a></b>		    {
+<b><a name="line965">965  </a></b>		      // This second call to overflow() is required by the standard,
+<b><a name="line966">966  </a></b>		      // but it's not clear why it's needed, since the output buffer
+<b><a name="line967">967  </a></b>		      // should be empty by this point (it should have been emptied
+<b><a name="line968">968  </a></b>		      // in the first call to overflow()).
+<b><a name="line969">969  </a></b>		      const int_type __tmp = this-&gt;overflow();
+<b><a name="line970">970  </a></b>		      if (traits_type::eq_int_type(__tmp, traits_type::eof()))
+<b><a name="line971">971  </a></b>			__testvalid = false;
+<b><a name="line972">972  </a></b>		    }
+<b><a name="line973">973  </a></b>		}
+<b><a name="line974">974  </a></b>	      return __testvalid;
+<b><a name="line975">975  </a></b>	    }
+<b><a name="line976">976  </a></b>	
+<b><a name="line977">977  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line978">978  </a></b>	    int
+<b><a name="line979">979  </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line977">_CharT</a>, <a href="#line977">_Traits</a>&gt;::
+<b><a name="line980">980  </a></b>	    <b>sync</b>()
+<b><a name="line981">981  </a></b>	    {
+<b><a name="line982">982  </a></b>	      // Make sure that the internal buffer resyncs its idea of
+<b><a name="line983">983  </a></b>	      // the file position with the external file.
+<b><a name="line984">984  </a></b>	      int __ret = 0;
+<b><a name="line985">985  </a></b>	      if (this-&gt;pbase() &lt; this-&gt;pptr())
+<b><a name="line986">986  </a></b>		{
+<b><a name="line987">987  </a></b>		  const int_type __tmp = this-&gt;overflow();
+<b><a name="line988">988  </a></b>		  if (traits_type::eq_int_type(__tmp, traits_type::eof()))
+<b><a name="line989">989  </a></b>		    __ret = -1;
+<b><a name="line990">990  </a></b>		}
+<b><a name="line991">991  </a></b>	      return __ret;
+<b><a name="line992">992  </a></b>	    }
+<b><a name="line993">993  </a></b>	
+<b><a name="line994">994  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>&gt;
+<b><a name="line995">995  </a></b>	    void
+<b><a name="line996">996  </a></b>	    <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;<a href="#line994">_CharT</a>, <a href="#line994">_Traits</a>&gt;::
+<b><a name="line997">997  </a></b>	    <b>imbue</b>(const <a href="../localefwd.h/code.html#line55">locale</a>&amp; __loc)
+<b><a name="line998">998  </a></b>	    {
+<b><a name="line999">999  </a></b>	      bool __testvalid = true;
+<b><a name="line1000">1000 </a></b>	
+<b><a name="line1001">1001 </a></b>	      const __codecvt_type* _M_codecvt_tmp = 0;
+<b><a name="line1002">1002 </a></b>	      if (__builtin_expect(has_facet&lt;__codecvt_type&gt;(__loc), true))
+<b><a name="line1003">1003 </a></b>		_M_codecvt_tmp = &amp;use_facet&lt;__codecvt_type&gt;(__loc);
+<b><a name="line1004">1004 </a></b>	
+<b><a name="line1005">1005 </a></b>	      if (this-&gt;is_open())
+<b><a name="line1006">1006 </a></b>		{
+<b><a name="line1007">1007 </a></b>		  // encoding() == -1 is ok only at the beginning.
+<b><a name="line1008">1008 </a></b>		  if ((_M_reading || _M_writing)
+<b><a name="line1009">1009 </a></b>		      &amp;&amp; __check_facet(_M_codecvt).encoding() == -1)
+<b><a name="line1010">1010 </a></b>		    __testvalid = false;
+<b><a name="line1011">1011 </a></b>		  else
+<b><a name="line1012">1012 </a></b>		    {
+<b><a name="line1013">1013 </a></b>		      if (_M_reading)
+<b><a name="line1014">1014 </a></b>			{
+<b><a name="line1015">1015 </a></b>			  if (__check_facet(_M_codecvt).always_noconv())
+<b><a name="line1016">1016 </a></b>			    {
+<b><a name="line1017">1017 </a></b>			      if (_M_codecvt_tmp
+<b><a name="line1018">1018 </a></b>				  &amp;&amp; !__check_facet(_M_codecvt_tmp).always_noconv())
+<b><a name="line1019">1019 </a></b>				__testvalid = this-&gt;seekoff(0, ios_base::cur, _M_mode)
+<b><a name="line1020">1020 </a></b>				              != pos_type(off_type(-1));
+<b><a name="line1021">1021 </a></b>			    }
+<b><a name="line1022">1022 </a></b>			  else
+<b><a name="line1023">1023 </a></b>			    {
+<b><a name="line1024">1024 </a></b>			      // External position corresponding to gptr().
+<b><a name="line1025">1025 </a></b>			      _M_ext_next = _M_ext_buf
+<b><a name="line1026">1026 </a></b>				+ _M_codecvt-&gt;length(_M_state_last, _M_ext_buf,
+<b><a name="line1027">1027 </a></b>						     _M_ext_next,
+<b><a name="line1028">1028 </a></b>						     this-&gt;gptr() - this-&gt;eback());
+<b><a name="line1029">1029 </a></b>			      const streamsize __remainder = _M_ext_end - _M_ext_next;
+<b><a name="line1030">1030 </a></b>			      if (__remainder)
+<b><a name="line1031">1031 </a></b>				<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line345">__builtin_memmove</a>(_M_ext_buf, _M_ext_next, __remainder);
+<b><a name="line1032">1032 </a></b>	
+<b><a name="line1033">1033 </a></b>			      _M_ext_next = _M_ext_buf;
+<b><a name="line1034">1034 </a></b>			      _M_ext_end = _M_ext_buf + __remainder;
+<b><a name="line1035">1035 </a></b>			      _M_set_buffer(-1);
+<b><a name="line1036">1036 </a></b>			      _M_state_last = _M_state_cur = _M_state_beg;
+<b><a name="line1037">1037 </a></b>			    }
+<b><a name="line1038">1038 </a></b>			}
+<b><a name="line1039">1039 </a></b>		      else if (_M_writing &amp;&amp; (__testvalid = _M_terminate_output()))
+<b><a name="line1040">1040 </a></b>			_M_set_buffer(-1);
+<b><a name="line1041">1041 </a></b>		    }
+<b><a name="line1042">1042 </a></b>		}
+<b><a name="line1043">1043 </a></b>	
+<b><a name="line1044">1044 </a></b>	      if (__testvalid)
+<b><a name="line1045">1045 </a></b>		_M_codecvt = _M_codecvt_tmp;
+<b><a name="line1046">1046 </a></b>	      else
+<b><a name="line1047">1047 </a></b>		_M_codecvt = 0;
+<b><a name="line1048">1048 </a></b>	    }
+<b><a name="line1049">1049 </a></b>	
+<b><a name="line1050">1050 </a></b>	  // Inhibit implicit instantiations for required instantiations,
+<b><a name="line1051">1051 </a></b>	  // which are defined via explicit instantiations elsewhere.
+<b><a name="line1052">1052 </a></b>	#if <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line149">_GLIBCXX_EXTERN_TEMPLATE</a>
+<b><a name="line1053">1053 </a></b>	  extern template class <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;char&gt;;
+<b><a name="line1054">1054 </a></b>	  extern template class <a href="../../iosfwd/code.html#line116">basic_ifstream</a>&lt;char&gt;;
+<b><a name="line1055">1055 </a></b>	  extern template class <a href="../../iosfwd/code.html#line119">basic_ofstream</a>&lt;char&gt;;
+<b><a name="line1056">1056 </a></b>	  extern template class <a href="../../iosfwd/code.html#line122">basic_fstream</a>&lt;char&gt;;
+<b><a name="line1057">1057 </a></b>	
+<b><a name="line1058">1058 </a></b>	#ifdef <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1432">_GLIBCXX_USE_WCHAR_T</a>
+<b><a name="line1059">1059 </a></b>	  extern template class <a href="../../iosfwd/code.html#line113">basic_filebuf</a>&lt;wchar_t&gt;;
+<b><a name="line1060">1060 </a></b>	  extern template class <a href="../../iosfwd/code.html#line116">basic_ifstream</a>&lt;wchar_t&gt;;
+<b><a name="line1061">1061 </a></b>	  extern template class <a href="../../iosfwd/code.html#line119">basic_ofstream</a>&lt;wchar_t&gt;;
+<b><a name="line1062">1062 </a></b>	  extern template class <a href="../../iosfwd/code.html#line122">basic_fstream</a>&lt;wchar_t&gt;;
+<b><a name="line1063">1063 </a></b>	#endif
+<b><a name="line1064">1064 </a></b>	#endif
+<b><a name="line1065">1065 </a></b>	
+<b><a name="line1066">1066 </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line1067">1067 </a></b>	} // namespace std
+<b><a name="line1068">1068 </a></b>	
+<b><a name="line1069">1069 </a></b>	#endif
+<b><a name="line1070">1070 </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

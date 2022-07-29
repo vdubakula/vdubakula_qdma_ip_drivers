@@ -1,0 +1,179 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/asm-generic/errno.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	#ifndef _ASM_GENERIC_ERRNO_H
+<b><a name="line2">2    </a></b>	#define <b>_ASM_GENERIC_ERRNO_H</b>
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	#include &lt;asm-generic/errno-base.h&gt;
+<b><a name="line5">5    </a></b>	
+<b><a name="line6">6    </a></b>	#define	<b>EDEADLK</b>		35	/* Resource deadlock would occur */
+<b><a name="line7">7    </a></b>	#define	<b>ENAMETOOLONG</b>	36	/* File name too long */
+<b><a name="line8">8    </a></b>	#define	<b>ENOLCK</b>		37	/* No record locks available */
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	/*
+<b><a name="line11">11   </a></b>	 * This error code is special: arch syscall entry code will return
+<b><a name="line12">12   </a></b>	 * -ENOSYS if users try to call a syscall that doesn't exist.  To keep
+<b><a name="line13">13   </a></b>	 * failures of syscalls that really do exist distinguishable from
+<b><a name="line14">14   </a></b>	 * failures due to attempts to use a nonexistent syscall, syscall
+<b><a name="line15">15   </a></b>	 * implementations should refrain from returning -ENOSYS.
+<b><a name="line16">16   </a></b>	 */
+<b><a name="line17">17   </a></b>	#define	<b>ENOSYS</b>		38	/* Invalid system call number */
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	#define	<b>ENOTEMPTY</b>	39	/* Directory not empty */
+<b><a name="line20">20   </a></b>	#define	<b>ELOOP</b>		40	/* Too many symbolic links encountered */
+<b><a name="line21">21   </a></b>	#define	<b>EWOULDBLOCK</b>	EAGAIN	/* Operation would block */
+<b><a name="line22">22   </a></b>	#define	<b>ENOMSG</b>		42	/* No message of desired type */
+<b><a name="line23">23   </a></b>	#define	<b>EIDRM</b>		43	/* Identifier removed */
+<b><a name="line24">24   </a></b>	#define	<b>ECHRNG</b>		44	/* Channel number out of range */
+<b><a name="line25">25   </a></b>	#define	<b>EL2NSYNC</b>	45	/* Level 2 not synchronized */
+<b><a name="line26">26   </a></b>	#define	<b>EL3HLT</b>		46	/* Level 3 halted */
+<b><a name="line27">27   </a></b>	#define	<b>EL3RST</b>		47	/* Level 3 reset */
+<b><a name="line28">28   </a></b>	#define	<b>ELNRNG</b>		48	/* Link number out of range */
+<b><a name="line29">29   </a></b>	#define	<b>EUNATCH</b>		49	/* Protocol driver not attached */
+<b><a name="line30">30   </a></b>	#define	<b>ENOCSI</b>		50	/* No CSI structure available */
+<b><a name="line31">31   </a></b>	#define	<b>EL2HLT</b>		51	/* Level 2 halted */
+<b><a name="line32">32   </a></b>	#define	<b>EBADE</b>		52	/* Invalid exchange */
+<b><a name="line33">33   </a></b>	#define	<b>EBADR</b>		53	/* Invalid request descriptor */
+<b><a name="line34">34   </a></b>	#define	<b>EXFULL</b>		54	/* Exchange full */
+<b><a name="line35">35   </a></b>	#define	<b>ENOANO</b>		55	/* No anode */
+<b><a name="line36">36   </a></b>	#define	<b>EBADRQC</b>		56	/* Invalid request code */
+<b><a name="line37">37   </a></b>	#define	<b>EBADSLT</b>		57	/* Invalid slot */
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	#define	<b>EDEADLOCK</b>	EDEADLK
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	#define	<b>EBFONT</b>		59	/* Bad font file format */
+<b><a name="line42">42   </a></b>	#define	<b>ENOSTR</b>		60	/* Device not a stream */
+<b><a name="line43">43   </a></b>	#define	<b>ENODATA</b>		61	/* No data available */
+<b><a name="line44">44   </a></b>	#define	<b>ETIME</b>		62	/* Timer expired */
+<b><a name="line45">45   </a></b>	#define	<b>ENOSR</b>		63	/* Out of streams resources */
+<b><a name="line46">46   </a></b>	#define	<b>ENONET</b>		64	/* Machine is not on the network */
+<b><a name="line47">47   </a></b>	#define	<b>ENOPKG</b>		65	/* Package not installed */
+<b><a name="line48">48   </a></b>	#define	<b>EREMOTE</b>		66	/* Object is remote */
+<b><a name="line49">49   </a></b>	#define	<b>ENOLINK</b>		67	/* Link has been severed */
+<b><a name="line50">50   </a></b>	#define	<b>EADV</b>		68	/* Advertise error */
+<b><a name="line51">51   </a></b>	#define	<b>ESRMNT</b>		69	/* Srmount error */
+<b><a name="line52">52   </a></b>	#define	<b>ECOMM</b>		70	/* Communication error on send */
+<b><a name="line53">53   </a></b>	#define	<b>EPROTO</b>		71	/* Protocol error */
+<b><a name="line54">54   </a></b>	#define	<b>EMULTIHOP</b>	72	/* Multihop attempted */
+<b><a name="line55">55   </a></b>	#define	<b>EDOTDOT</b>		73	/* RFS specific error */
+<b><a name="line56">56   </a></b>	#define	<b>EBADMSG</b>		74	/* Not a data message */
+<b><a name="line57">57   </a></b>	#define	<b>EOVERFLOW</b>	75	/* Value too large for defined data type */
+<b><a name="line58">58   </a></b>	#define	<b>ENOTUNIQ</b>	76	/* Name not unique on network */
+<b><a name="line59">59   </a></b>	#define	<b>EBADFD</b>		77	/* File descriptor in bad state */
+<b><a name="line60">60   </a></b>	#define	<b>EREMCHG</b>		78	/* Remote address changed */
+<b><a name="line61">61   </a></b>	#define	<b>ELIBACC</b>		79	/* Can not access a needed shared library */
+<b><a name="line62">62   </a></b>	#define	<b>ELIBBAD</b>		80	/* Accessing a corrupted shared library */
+<b><a name="line63">63   </a></b>	#define	<b>ELIBSCN</b>		81	/* .lib section in a.out corrupted */
+<b><a name="line64">64   </a></b>	#define	<b>ELIBMAX</b>		82	/* Attempting to link in too many shared libraries */
+<b><a name="line65">65   </a></b>	#define	<b>ELIBEXEC</b>	83	/* Cannot exec a shared library directly */
+<b><a name="line66">66   </a></b>	#define	<b>EILSEQ</b>		84	/* Illegal byte sequence */
+<b><a name="line67">67   </a></b>	#define	<b>ERESTART</b>	85	/* Interrupted system call should be restarted */
+<b><a name="line68">68   </a></b>	#define	<b>ESTRPIPE</b>	86	/* Streams pipe error */
+<b><a name="line69">69   </a></b>	#define	<b>EUSERS</b>		87	/* Too many users */
+<b><a name="line70">70   </a></b>	#define	<b>ENOTSOCK</b>	88	/* Socket operation on non-socket */
+<b><a name="line71">71   </a></b>	#define	<b>EDESTADDRREQ</b>	89	/* Destination address required */
+<b><a name="line72">72   </a></b>	#define	<b>EMSGSIZE</b>	90	/* Message too long */
+<b><a name="line73">73   </a></b>	#define	<b>EPROTOTYPE</b>	91	/* Protocol wrong type for socket */
+<b><a name="line74">74   </a></b>	#define	<b>ENOPROTOOPT</b>	92	/* Protocol not available */
+<b><a name="line75">75   </a></b>	#define	<b>EPROTONOSUPPORT</b>	93	/* Protocol not supported */
+<b><a name="line76">76   </a></b>	#define	<b>ESOCKTNOSUPPORT</b>	94	/* Socket type not supported */
+<b><a name="line77">77   </a></b>	#define	<b>EOPNOTSUPP</b>	95	/* Operation not supported on transport endpoint */
+<b><a name="line78">78   </a></b>	#define	<b>EPFNOSUPPORT</b>	96	/* Protocol family not supported */
+<b><a name="line79">79   </a></b>	#define	<b>EAFNOSUPPORT</b>	97	/* Address family not supported by protocol */
+<b><a name="line80">80   </a></b>	#define	<b>EADDRINUSE</b>	98	/* Address already in use */
+<b><a name="line81">81   </a></b>	#define	<b>EADDRNOTAVAIL</b>	99	/* Cannot assign requested address */
+<b><a name="line82">82   </a></b>	#define	<b>ENETDOWN</b>	100	/* Network is down */
+<b><a name="line83">83   </a></b>	#define	<b>ENETUNREACH</b>	101	/* Network is unreachable */
+<b><a name="line84">84   </a></b>	#define	<b>ENETRESET</b>	102	/* Network dropped connection because of reset */
+<b><a name="line85">85   </a></b>	#define	<b>ECONNABORTED</b>	103	/* Software caused connection abort */
+<b><a name="line86">86   </a></b>	#define	<b>ECONNRESET</b>	104	/* Connection reset by peer */
+<b><a name="line87">87   </a></b>	#define	<b>ENOBUFS</b>		105	/* No buffer space available */
+<b><a name="line88">88   </a></b>	#define	<b>EISCONN</b>		106	/* Transport endpoint is already connected */
+<b><a name="line89">89   </a></b>	#define	<b>ENOTCONN</b>	107	/* Transport endpoint is not connected */
+<b><a name="line90">90   </a></b>	#define	<b>ESHUTDOWN</b>	108	/* Cannot send after transport endpoint shutdown */
+<b><a name="line91">91   </a></b>	#define	<b>ETOOMANYREFS</b>	109	/* Too many references: cannot splice */
+<b><a name="line92">92   </a></b>	#define	<b>ETIMEDOUT</b>	110	/* Connection timed out */
+<b><a name="line93">93   </a></b>	#define	<b>ECONNREFUSED</b>	111	/* Connection refused */
+<b><a name="line94">94   </a></b>	#define	<b>EHOSTDOWN</b>	112	/* Host is down */
+<b><a name="line95">95   </a></b>	#define	<b>EHOSTUNREACH</b>	113	/* No route to host */
+<b><a name="line96">96   </a></b>	#define	<b>EALREADY</b>	114	/* Operation already in progress */
+<b><a name="line97">97   </a></b>	#define	<b>EINPROGRESS</b>	115	/* Operation now in progress */
+<b><a name="line98">98   </a></b>	#define	<b>ESTALE</b>		116	/* Stale file handle */
+<b><a name="line99">99   </a></b>	#define	<b>EUCLEAN</b>		117	/* Structure needs cleaning */
+<b><a name="line100">100  </a></b>	#define	<b>ENOTNAM</b>		118	/* Not a XENIX named type file */
+<b><a name="line101">101  </a></b>	#define	<b>ENAVAIL</b>		119	/* No XENIX semaphores available */
+<b><a name="line102">102  </a></b>	#define	<b>EISNAM</b>		120	/* Is a named type file */
+<b><a name="line103">103  </a></b>	#define	<b>EREMOTEIO</b>	121	/* Remote I/O error */
+<b><a name="line104">104  </a></b>	#define	<b>EDQUOT</b>		122	/* Quota exceeded */
+<b><a name="line105">105  </a></b>	
+<b><a name="line106">106  </a></b>	#define	<b>ENOMEDIUM</b>	123	/* No medium found */
+<b><a name="line107">107  </a></b>	#define	<b>EMEDIUMTYPE</b>	124	/* Wrong medium type */
+<b><a name="line108">108  </a></b>	#define	<b>ECANCELED</b>	125	/* Operation Canceled */
+<b><a name="line109">109  </a></b>	#define	<b>ENOKEY</b>		126	/* Required key not available */
+<b><a name="line110">110  </a></b>	#define	<b>EKEYEXPIRED</b>	127	/* Key has expired */
+<b><a name="line111">111  </a></b>	#define	<b>EKEYREVOKED</b>	128	/* Key has been revoked */
+<b><a name="line112">112  </a></b>	#define	<b>EKEYREJECTED</b>	129	/* Key was rejected by service */
+<b><a name="line113">113  </a></b>	
+<b><a name="line114">114  </a></b>	/* for robust mutexes */
+<b><a name="line115">115  </a></b>	#define	<b>EOWNERDEAD</b>	130	/* Owner died */
+<b><a name="line116">116  </a></b>	#define	<b>ENOTRECOVERABLE</b>	131	/* State not recoverable */
+<b><a name="line117">117  </a></b>	
+<b><a name="line118">118  </a></b>	#define <b>ERFKILL</b>		132	/* Operation not possible due to RF-kill */
+<b><a name="line119">119  </a></b>	
+<b><a name="line120">120  </a></b>	#define <b>EHWPOISON</b>	133	/* Memory page has hardware error */
+<b><a name="line121">121  </a></b>	
+<b><a name="line122">122  </a></b>	#endif
+<b><a name="line123">123  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

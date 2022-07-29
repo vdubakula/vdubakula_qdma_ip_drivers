@@ -1,0 +1,48 @@
+# Copyright (c) 2016, 2018, Oracle and/or its affiliates. All rights reserved.
+#
+# SPDX-License-Identifier: GPL-2.0
+#
+# Kernel module implementing a test suite for testing KTF itself
+#
+
+MOD_NAME := qdma_test
+KVER = @KVER@
+KTF_DIR = @KTF_DIR@
+KTF_BDIR = @KTF_BDIR@
+
+-include ktf_gen.mk
+
+EXTRASYMS := KBUILD_EXTRA_SYMBOLS="$(KTF_BDIR)/Module.symvers"
+
+DRV_HOME := $(shell pwd)
+DRV_KVER := $(shell uname -r)
+
+ifneq ($(SUBDIRS),)
+        EXTRA_CFLAGS += -I.
+        EXTRA_CFLAGS += -I$(KTF_DIR)
+        EXTRA_CFLAGS += -I$(SUBDIRS)/libqdma -I$(SUBDIRS)/qdma_access -I$(SUBDIRS)/qdma_access/qdma_soft_access -I$(SUBDIRS)/qdma_access/eqdma_soft_access -I$(SUBDIRS)/qdma_access/qdma_cpm4_access
+        CORE_OBJS := $(patsubst $(SUBDIRS)/%.c,%.o,$(wildcard $(SUBDIRS)/*.c))
+        LIBQDMA_OBJS := $(patsubst $(SUBDIRS)/libqdma/%.c,libqdma/%.o,$(wildcard $(SUBDIRS)/libqdma/*.c))
+        QDMA_ACCESS_OBJS := $(patsubst $(SUBDIRS)/qdma_access/%.c,qdma_access/%.o,$(wildcard $(SUBDIRS)/qdma_access/*.c))
+        EQDMA_ACCESS_OBJS := $(patsubst $(SUBDIRS)/qdma_access/eqdma_soft_access/%.c,qdma_access/eqdma_soft_access/%.o,$(wildcard $(SUBDIRS)/qdma_access/eqdma_soft_access/*.c))
+        QDMA_SOFT_ACCESS_OBJS := $(patsubst $(SUBDIRS)/qdma_access/qdma_soft_access/%.c,qdma_access/qdma_soft_access/%.o,$(wildcard $(SUBDIRS)/qdma_access/qdma_soft_access/*.c))
+        QDMA_CPM4_ACCESS_OBJS := $(patsubst $(SUBDIRS)/qdma_access/qdma_cpm4_access/%.c,qdma_access/qdma_cpm4_access/%.o,$(wildcard $(SUBDIRS)/qdma_access/qdma_cpm4_access/*.c))
+endif
+
+obj-m += $(MOD_NAME).o
+$(MOD_NAME)-objs += $(CORE_OBJS)
+$(MOD_NAME)-objs += $(LIBQDMA_OBJS)
+$(MOD_NAME)-objs += $(QDMA_ACCESS_OBJS)
+$(MOD_NAME)-objs += $(EQDMA_ACCESS_OBJS)
+$(MOD_NAME)-objs += $(QDMA_SOFT_ACCESS_OBJS)
+$(MOD_NAME)-objs += $(QDMA_CPM4_ACCESS_OBJS)
+
+module:
+	make -C /lib/modules/$(KVER)/build M=$(DRV_HOME) SUBDIRS=$(shell pwd) $(EXTRASYMS) modules
+
+clean:
+	make -C /lib/modules/$(KVER)/build M=$(DRV_HOME) SUBDIRS=$(shell pwd) clean
+
+check: all
+	make -C /lib/modules/$(KVER)/build M=$(DRV_HOME) C=2
+

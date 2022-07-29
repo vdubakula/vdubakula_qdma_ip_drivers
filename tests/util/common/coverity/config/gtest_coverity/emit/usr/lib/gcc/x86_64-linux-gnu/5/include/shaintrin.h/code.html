@@ -1,0 +1,155 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/lib/gcc/x86_64-linux-gnu/5/include/shaintrin.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 2013-2015 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	   This file is part of GCC.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   GCC is free software; you can redistribute it and/or modify
+<b><a name="line6">6    </a></b>	   it under the terms of the GNU General Public License as published by
+<b><a name="line7">7    </a></b>	   the Free Software Foundation; either version 3, or (at your option)
+<b><a name="line8">8    </a></b>	   any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   GCC is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line13">13   </a></b>	   GNU General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line16">16   </a></b>	   permissions described in the GCC Runtime Library Exception, version
+<b><a name="line17">17   </a></b>	   3.1, as published by the Free Software Foundation.
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	   You should have received a copy of the GNU General Public License and
+<b><a name="line20">20   </a></b>	   a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line21">21   </a></b>	   see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line22">22   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>	#ifndef <a href="../immintrin.h/code.html#line25">_IMMINTRIN_H_INCLUDED</a>
+<b><a name="line25">25   </a></b>	#error &quot;Never use &lt;shaintrin.h&gt; directly; include &lt;immintrin.h&gt; instead.&quot;
+<b><a name="line26">26   </a></b>	#endif
+<b><a name="line27">27   </a></b>	
+<b><a name="line28">28   </a></b>	#ifndef _SHAINTRIN_H_INCLUDED
+<b><a name="line29">29   </a></b>	#define <b>_SHAINTRIN_H_INCLUDED</b>
+<b><a name="line30">30   </a></b>	
+<b><a name="line31">31   </a></b>	#ifndef __SHA__
+<b><a name="line32">32   </a></b>	#pragma GCC push_options
+<b><a name="line33">33   </a></b>	#pragma GCC target(&quot;sha&quot;)
+<b><a name="line34">34   </a></b>	#define <b>__DISABLE_SHA__</b>
+<b><a name="line35">35   </a></b>	#endif /* __SHA__ */
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a>
+<b><a name="line38">38   </a></b>	__attribute__ ((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line39">39   </a></b>	<b>_mm_sha1msg1_epu32</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__A</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__B</b>)
+<b><a name="line40">40   </a></b>	{
+<b><a name="line41">41   </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line2296">__builtin_ia32_sha1msg1</a> ((<a href="../emmintrin.h/code.html#line43">__v4si</a>) <a href="#line39">__A</a>, (<a href="../emmintrin.h/code.html#line43">__v4si</a>) <a href="#line39">__B</a>);
+<b><a name="line42">42   </a></b>	}
+<b><a name="line43">43   </a></b>	
+<b><a name="line44">44   </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a>
+<b><a name="line45">45   </a></b>	__attribute__ ((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line46">46   </a></b>	<b>_mm_sha1msg2_epu32</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__A</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__B</b>)
+<b><a name="line47">47   </a></b>	{
+<b><a name="line48">48   </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line2297">__builtin_ia32_sha1msg2</a> ((<a href="../emmintrin.h/code.html#line43">__v4si</a>) <a href="#line46">__A</a>, (<a href="../emmintrin.h/code.html#line43">__v4si</a>) <a href="#line46">__B</a>);
+<b><a name="line49">49   </a></b>	}
+<b><a name="line50">50   </a></b>	
+<b><a name="line51">51   </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a>
+<b><a name="line52">52   </a></b>	__attribute__ ((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line53">53   </a></b>	<b>_mm_sha1nexte_epu32</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__A</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__B</b>)
+<b><a name="line54">54   </a></b>	{
+<b><a name="line55">55   </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line2298">__builtin_ia32_sha1nexte</a> ((<a href="../emmintrin.h/code.html#line43">__v4si</a>) <a href="#line53">__A</a>, (<a href="../emmintrin.h/code.html#line43">__v4si</a>) <a href="#line53">__B</a>);
+<b><a name="line56">56   </a></b>	}
+<b><a name="line57">57   </a></b>	
+<b><a name="line58">58   </a></b>	#ifdef __OPTIMIZE__
+<b><a name="line59">59   </a></b>	extern __inline __m128i
+<b><a name="line60">60   </a></b>	__attribute__ ((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line61">61   </a></b>	_mm_sha1rnds4_epu32 (__m128i __A, __m128i __B, const int __I)
+<b><a name="line62">62   </a></b>	{
+<b><a name="line63">63   </a></b>	  return (__m128i) __builtin_ia32_sha1rnds4 ((__v4si) __A, (__v4si) __B, __I);
+<b><a name="line64">64   </a></b>	}
+<b><a name="line65">65   </a></b>	#else
+<b><a name="line66">66   </a></b>	#define <b>_mm_sha1rnds4_epu32</b>(A, B, I)				    \
+<b><a name="line67">67   </a></b>	  ((__m128i) __builtin_ia32_sha1rnds4 ((__v4si)(__m128i)A,	    \
+<b><a name="line68">68   </a></b>					       (__v4si)(__m128i)B, (int)I))
+<b><a name="line69">69   </a></b>	#endif
+<b><a name="line70">70   </a></b>	
+<b><a name="line71">71   </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a>
+<b><a name="line72">72   </a></b>	__attribute__ ((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line73">73   </a></b>	<b>_mm_sha256msg1_epu32</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__A</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__B</b>)
+<b><a name="line74">74   </a></b>	{
+<b><a name="line75">75   </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line2299">__builtin_ia32_sha256msg1</a> ((<a href="../emmintrin.h/code.html#line43">__v4si</a>) <a href="#line73">__A</a>, (<a href="../emmintrin.h/code.html#line43">__v4si</a>) <a href="#line73">__B</a>);
+<b><a name="line76">76   </a></b>	}
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a>
+<b><a name="line79">79   </a></b>	__attribute__ ((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line80">80   </a></b>	<b>_mm_sha256msg2_epu32</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__A</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__B</b>)
+<b><a name="line81">81   </a></b>	{
+<b><a name="line82">82   </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line2300">__builtin_ia32_sha256msg2</a> ((<a href="../emmintrin.h/code.html#line43">__v4si</a>) <a href="#line80">__A</a>, (<a href="../emmintrin.h/code.html#line43">__v4si</a>) <a href="#line80">__B</a>);
+<b><a name="line83">83   </a></b>	}
+<b><a name="line84">84   </a></b>	
+<b><a name="line85">85   </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a>
+<b><a name="line86">86   </a></b>	__attribute__ ((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line87">87   </a></b>	<b>_mm_sha256rnds2_epu32</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__A</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__B</b>, <a href="../emmintrin.h/code.html#line52">__m128i</a> <b>__C</b>)
+<b><a name="line88">88   </a></b>	{
+<b><a name="line89">89   </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line2301">__builtin_ia32_sha256rnds2</a> ((<a href="../emmintrin.h/code.html#line43">__v4si</a>) <a href="#line87">__A</a>, (<a href="../emmintrin.h/code.html#line43">__v4si</a>) <a href="#line87">__B</a>,
+<b><a name="line90">90   </a></b>						       (<a href="../emmintrin.h/code.html#line43">__v4si</a>) <a href="#line87">__C</a>);
+<b><a name="line91">91   </a></b>	}
+<b><a name="line92">92   </a></b>	
+<b><a name="line93">93   </a></b>	#ifdef <a href="#line34">__DISABLE_SHA__</a>
+<b><a name="line94">94   </a></b>	#undef <a href="#line34">__DISABLE_SHA__</a>
+<b><a name="line95">95   </a></b>	#pragma GCC pop_options
+<b><a name="line96">96   </a></b>	#endif /* __DISABLE_SHA__ */
+<b><a name="line97">97   </a></b>	
+<b><a name="line98">98   </a></b>	#endif /* _SHAINTRIN_H_INCLUDED */
+<b><a name="line99">99   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

@@ -1,0 +1,944 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/chrono</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// &lt;chrono&gt; -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2008-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file include/chrono
+<b><a name="line26">26   </a></b>	 *  This is a Standard C++ Library header.
+<b><a name="line27">27   </a></b>	 */
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	#ifndef _GLIBCXX_CHRONO
+<b><a name="line30">30   </a></b>	#define <b>_GLIBCXX_CHRONO</b> 1
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	#pragma GCC system_header
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	#if __cplusplus &lt; 201103L
+<b><a name="line35">35   </a></b>	# include &lt;bits/c++0x_warning.h&gt;
+<b><a name="line36">36   </a></b>	#else
+<b><a name="line37">37   </a></b>	
+<b><a name="line38">38   </a></b>	#include &lt;ratio&gt;
+<b><a name="line39">39   </a></b>	#include &lt;type_traits&gt;
+<b><a name="line40">40   </a></b>	#include &lt;limits&gt;
+<b><a name="line41">41   </a></b>	#include &lt;ctime&gt;
+<b><a name="line42">42   </a></b>	#include &lt;bits/parse_numbers.h&gt; // for literals support.
+<b><a name="line43">43   </a></b>	
+<b><a name="line44">44   </a></b>	#ifdef <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1347">_GLIBCXX_USE_C99_STDINT_TR1</a>
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	namespace <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line47">47   </a></b>	{
+<b><a name="line48">48   </a></b>	  /**
+<b><a name="line49">49   </a></b>	   * @defgroup chrono Time
+<b><a name="line50">50   </a></b>	   * @ingroup utilities
+<b><a name="line51">51   </a></b>	   *
+<b><a name="line52">52   </a></b>	   * Classes and functions for time.
+<b><a name="line53">53   </a></b>	   * @{
+<b><a name="line54">54   </a></b>	   */
+<b><a name="line55">55   </a></b>	
+<b><a name="line56">56   </a></b>	  /** @namespace std::chrono
+<b><a name="line57">57   </a></b>	   *  @brief ISO C++ 2011 entities sub-namespace for time and date.
+<b><a name="line58">58   </a></b>	   */
+<b><a name="line59">59   </a></b>	  namespace <b>chrono</b>
+<b><a name="line60">60   </a></b>	  {
+<b><a name="line61">61   </a></b>	  <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line62">62   </a></b>	
+<b><a name="line63">63   </a></b>	    template&lt;typename <b>_Rep</b>, typename <b>_Period</b> = <a href="../ratio/code.html#line263">ratio</a>&lt;1&gt;&gt;
+<b><a name="line64">64   </a></b>	      struct duration;
+<b><a name="line65">65   </a></b>	
+<b><a name="line66">66   </a></b>	    template&lt;typename <b>_Clock</b>, typename <b>_Dur</b> = typename _Clock::duration&gt;
+<b><a name="line67">67   </a></b>	      struct time_point;
+<b><a name="line68">68   </a></b>	
+<b><a name="line69">69   </a></b>	  <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line70">70   </a></b>	  }
+<b><a name="line71">71   </a></b>	
+<b><a name="line72">72   </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line73">73   </a></b>	
+<b><a name="line74">74   </a></b>	  // 20.11.4.3 specialization of common_type (for duration, sfinae-friendly)
+<b><a name="line75">75   </a></b>	  
+<b><a name="line76">76   </a></b>	  template&lt;typename <b>_CT</b>, typename <b>_Period1</b>, typename <b>_Period2</b>&gt;
+<b><a name="line77">77   </a></b>	    struct __duration_common_type_wrapper
+<b><a name="line78">78   </a></b>	    {
+<b><a name="line79">79   </a></b>	    private:
+<b><a name="line80">80   </a></b>	      typedef <a href="../ratio/code.html#line66">__static_gcd</a>&lt;<a href="#line76">_Period1</a>::<a href="../ratio/code.html#line270">num</a>, <a href="#line76">_Period2</a>::<a href="../ratio/code.html#line270">num</a>&gt; <b>__gcd_num</b>;
+<b><a name="line81">81   </a></b>	      typedef <a href="../ratio/code.html#line66">__static_gcd</a>&lt;<a href="#line76">_Period1</a>::<a href="../ratio/code.html#line273">den</a>, <a href="#line76">_Period2</a>::<a href="../ratio/code.html#line273">den</a>&gt; <b>__gcd_den</b>;
+<b><a name="line82">82   </a></b>	      typedef typename <a href="#line76">_CT</a>::<a href="../type_traits/code.html#line158">type</a> <b>__cr</b>;
+<b><a name="line83">83   </a></b>	      typedef <a href="../ratio/code.html#line263">ratio</a>&lt;<a href="#line80">__gcd_num</a>::<a href="../type_traits/code.html#line71">value</a>,
+<b><a name="line84">84   </a></b>	        (<a href="#line76">_Period1</a>::<a href="../ratio/code.html#line273">den</a> / <a href="#line81">__gcd_den</a>::<a href="../type_traits/code.html#line71">value</a>) * <a href="#line76">_Period2</a>::<a href="../ratio/code.html#line273">den</a>&gt; <b>__r</b>;
+<b><a name="line85">85   </a></b>	    public:
+<b><a name="line86">86   </a></b>	      typedef <a href="../type_traits/code.html#line157">__success_type</a>&lt;<a href="#line59">chrono</a>::<a href="#line241">duration</a>&lt;<a href="#line82">__cr</a>, <a href="#line84">__r</a>&gt;&gt; <b>type</b>;
+<b><a name="line87">87   </a></b>	    };
+<b><a name="line88">88   </a></b>	
+<b><a name="line89">89   </a></b>	  template&lt;typename <b>_Period1</b>, typename <b>_Period2</b>&gt;
+<b><a name="line90">90   </a></b>	    struct <b>__duration_common_type_wrapper</b>&lt;<a href="../type_traits/code.html#line160">__failure_type</a>, <a href="#line89">_Period1</a>, <a href="#line89">_Period2</a>&gt;
+<b><a name="line91">91   </a></b>	    { typedef <a href="../type_traits/code.html#line160">__failure_type</a> <b>type</b>; };
+<b><a name="line92">92   </a></b>	
+<b><a name="line93">93   </a></b>	  template&lt;typename <b>_Rep1</b>, typename <b>_Period1</b>, typename <b>_Rep2</b>, typename <b>_Period2</b>&gt;
+<b><a name="line94">94   </a></b>	    struct <b>common_type</b>&lt;<a href="#line59">chrono</a>::<a href="#line64">duration</a>&lt;<a href="#line93">_Rep1</a>, <a href="#line93">_Period1</a>&gt;,
+<b><a name="line95">95   </a></b>	             <a href="#line59">chrono</a>::<a href="#line64">duration</a>&lt;<a href="#line93">_Rep2</a>, <a href="#line93">_Period2</a>&gt;&gt;
+<b><a name="line96">96   </a></b>	    : public <a href="#line77">__duration_common_type_wrapper</a>&lt;typename <a href="../type_traits/code.html#line2155">__member_type_wrapper</a>&lt;
+<b><a name="line97">97   </a></b>	             <a href="../type_traits/code.html#line2123">common_type</a>&lt;<a href="#line93">_Rep1</a>, <a href="#line93">_Rep2</a>&gt;&gt;::<a href="../type_traits/code.html#line2158">type</a>, <a href="#line93">_Period1</a>, <a href="#line93">_Period2</a>&gt;::<a href="#line86">type</a>
+<b><a name="line98">98   </a></b>	    { };
+<b><a name="line99">99   </a></b>	
+<b><a name="line100">100  </a></b>	  // 20.11.4.3 specialization of common_type (for time_point, sfinae-friendly)
+<b><a name="line101">101  </a></b>	  
+<b><a name="line102">102  </a></b>	  template&lt;typename <b>_CT</b>, typename <b>_Clock</b>&gt;
+<b><a name="line103">103  </a></b>	    struct <b>__timepoint_common_type_wrapper</b>
+<b><a name="line104">104  </a></b>	    {
+<b><a name="line105">105  </a></b>	      typedef <a href="../type_traits/code.html#line157">__success_type</a>&lt;<a href="#line59">chrono</a>::<a href="#line67">time_point</a>&lt;<a href="#line102">_Clock</a>, typename <a href="#line102">_CT</a>::type&gt;&gt;
+<b><a name="line106">106  </a></b>	        <b>type</b>;
+<b><a name="line107">107  </a></b>	    };
+<b><a name="line108">108  </a></b>	
+<b><a name="line109">109  </a></b>	  template&lt;typename <b>_Clock</b>&gt;
+<b><a name="line110">110  </a></b>	    struct <b>__timepoint_common_type_wrapper</b>&lt;<a href="../type_traits/code.html#line160">__failure_type</a>, <a href="#line109">_Clock</a>&gt;
+<b><a name="line111">111  </a></b>	    { typedef <a href="../type_traits/code.html#line160">__failure_type</a> <b>type</b>; };
+<b><a name="line112">112  </a></b>	
+<b><a name="line113">113  </a></b>	  template&lt;typename <b>_Clock</b>, typename <b>_Duration1</b>, typename <b>_Duration2</b>&gt;
+<b><a name="line114">114  </a></b>	    struct <b>common_type</b>&lt;<a href="#line59">chrono</a>::<a href="#line67">time_point</a>&lt;<a href="#line113">_Clock</a>, <a href="#line113">_Duration1</a>&gt;,
+<b><a name="line115">115  </a></b>	             <a href="#line59">chrono</a>::<a href="#line67">time_point</a>&lt;<a href="#line113">_Clock</a>, <a href="#line113">_Duration2</a>&gt;&gt;
+<b><a name="line116">116  </a></b>	    : public <a href="#line103">__timepoint_common_type_wrapper</a>&lt;typename <a href="../type_traits/code.html#line2155">__member_type_wrapper</a>&lt;
+<b><a name="line117">117  </a></b>	             <a href="../type_traits/code.html#line2123">common_type</a>&lt;<a href="#line113">_Duration1</a>, <a href="#line113">_Duration2</a>&gt;&gt;::type, <a href="#line113">_Clock</a>&gt;::type
+<b><a name="line118">118  </a></b>	    { };
+<b><a name="line119">119  </a></b>	
+<b><a name="line120">120  </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line121">121  </a></b>	
+<b><a name="line122">122  </a></b>	  namespace <a href="#line59">chrono</a>
+<b><a name="line123">123  </a></b>	  {
+<b><a name="line124">124  </a></b>	  <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line125">125  </a></b>	
+<b><a name="line126">126  </a></b>	    // Primary template for duration_cast impl.
+<b><a name="line127">127  </a></b>	    template&lt;typename <b>_ToDur</b>, typename <b>_CF</b>, typename <b>_CR</b>,
+<b><a name="line128">128  </a></b>		     bool <b>_NumIsOne</b> = false, bool <b>_DenIsOne</b> = false&gt;
+<b><a name="line129">129  </a></b>	      struct __duration_cast_impl
+<b><a name="line130">130  </a></b>	      {
+<b><a name="line131">131  </a></b>		template&lt;typename <b>_Rep</b>, typename <b>_Period</b>&gt;
+<b><a name="line132">132  </a></b>		  static constexpr <a href="#line127">_ToDur</a>
+<b><a name="line133">133  </a></b>		  <b>__cast</b>(const <a href="#line64">duration</a>&lt;<a href="#line131">_Rep</a>, <a href="#line131">_Period</a>&gt;&amp; __d)
+<b><a name="line134">134  </a></b>		  {
+<b><a name="line135">135  </a></b>		    typedef typename _ToDur::rep			__to_rep;
+<b><a name="line136">136  </a></b>		    return _ToDur(static_cast&lt;__to_rep&gt;(static_cast&lt;_CR&gt;(__d.count())
+<b><a name="line137">137  </a></b>		      * static_cast&lt;_CR&gt;(_CF::num)
+<b><a name="line138">138  </a></b>		      / static_cast&lt;_CR&gt;(_CF::den)));
+<b><a name="line139">139  </a></b>		  }
+<b><a name="line140">140  </a></b>	      };
+<b><a name="line141">141  </a></b>	
+<b><a name="line142">142  </a></b>	    template&lt;typename <b>_ToDur</b>, typename <b>_CF</b>, typename <b>_CR</b>&gt;
+<b><a name="line143">143  </a></b>	      struct <b>__duration_cast_impl</b>&lt;<a href="#line142">_ToDur</a>, <a href="#line142">_CF</a>, <a href="#line142">_CR</a>, true, true&gt;
+<b><a name="line144">144  </a></b>	      {
+<b><a name="line145">145  </a></b>		template&lt;typename <b>_Rep</b>, typename <b>_Period</b>&gt;
+<b><a name="line146">146  </a></b>		  static constexpr <a href="#line142">_ToDur</a>
+<b><a name="line147">147  </a></b>		  <b>__cast</b>(const <a href="#line64">duration</a>&lt;<a href="#line145">_Rep</a>, <a href="#line145">_Period</a>&gt;&amp; __d)
+<b><a name="line148">148  </a></b>		  {
+<b><a name="line149">149  </a></b>		    typedef typename _ToDur::rep			__to_rep;
+<b><a name="line150">150  </a></b>		    return _ToDur(static_cast&lt;__to_rep&gt;(__d.count()));
+<b><a name="line151">151  </a></b>		  }
+<b><a name="line152">152  </a></b>	      };
+<b><a name="line153">153  </a></b>	
+<b><a name="line154">154  </a></b>	    template&lt;typename <b>_ToDur</b>, typename <b>_CF</b>, typename <b>_CR</b>&gt;
+<b><a name="line155">155  </a></b>	      struct <b>__duration_cast_impl</b>&lt;<a href="#line154">_ToDur</a>, <a href="#line154">_CF</a>, <a href="#line154">_CR</a>, true, false&gt;
+<b><a name="line156">156  </a></b>	      {
+<b><a name="line157">157  </a></b>		template&lt;typename <b>_Rep</b>, typename <b>_Period</b>&gt;
+<b><a name="line158">158  </a></b>		  static constexpr <a href="#line154">_ToDur</a>
+<b><a name="line159">159  </a></b>		  __cast(const <a href="#line241">duration</a>&lt;<a href="#line157">_Rep</a>, <a href="#line157">_Period</a>&gt;&amp; <b>__d</b>)
+<b><a name="line160">160  </a></b>		  {
+<b><a name="line161">161  </a></b>		    typedef typename <a href="#line154">_ToDur</a>::<a href="#line243">rep</a>			<b>__to_rep</b>;
+<b><a name="line162">162  </a></b>		    return <a href="#line154">_ToDur</a>(static_cast&lt;<a href="#line161">__to_rep</a>&gt;(
+<b><a name="line163">163  </a></b>		      static_cast&lt;<a href="#line154">_CR</a>&gt;(<a href="#line159">__d</a>.<a href="#line278">count</a>()) / static_cast&lt;<a href="#line154">_CR</a>&gt;(<a href="#line154">_CF</a>::<a href="../ratio/code.html#line273">den</a>)));
+<b><a name="line164">164  </a></b>		  }
+<b><a name="line165">165  </a></b>	      };
+<b><a name="line166">166  </a></b>	
+<b><a name="line167">167  </a></b>	    template&lt;typename <b>_ToDur</b>, typename <b>_CF</b>, typename <b>_CR</b>&gt;
+<b><a name="line168">168  </a></b>	      struct <b>__duration_cast_impl</b>&lt;<a href="#line167">_ToDur</a>, <a href="#line167">_CF</a>, <a href="#line167">_CR</a>, false, true&gt;
+<b><a name="line169">169  </a></b>	      {
+<b><a name="line170">170  </a></b>		template&lt;typename <b>_Rep</b>, typename <b>_Period</b>&gt;
+<b><a name="line171">171  </a></b>		  static constexpr <a href="#line167">_ToDur</a>
+<b><a name="line172">172  </a></b>		  __cast(const <a href="#line241">duration</a>&lt;<a href="#line170">_Rep</a>, <a href="#line170">_Period</a>&gt;&amp; <b>__d</b>)
+<b><a name="line173">173  </a></b>		  {
+<b><a name="line174">174  </a></b>		    typedef typename <a href="#line167">_ToDur</a>::<a href="#line243">rep</a>			<b>__to_rep</b>;
+<b><a name="line175">175  </a></b>		    return <a href="#line167">_ToDur</a>(static_cast&lt;<a href="#line174">__to_rep</a>&gt;(
+<b><a name="line176">176  </a></b>		      static_cast&lt;<a href="#line167">_CR</a>&gt;(<a href="#line172">__d</a>.<a href="#line278">count</a>()) * static_cast&lt;<a href="#line167">_CR</a>&gt;(<a href="#line167">_CF</a>::<a href="../ratio/code.html#line270">num</a>)));
+<b><a name="line177">177  </a></b>		  }
+<b><a name="line178">178  </a></b>	      };
+<b><a name="line179">179  </a></b>	
+<b><a name="line180">180  </a></b>	    template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line181">181  </a></b>	      struct __is_duration
+<b><a name="line182">182  </a></b>	      : <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../type_traits/code.html#line90">false_type</a>
+<b><a name="line183">183  </a></b>	      { };
+<b><a name="line184">184  </a></b>	
+<b><a name="line185">185  </a></b>	    template&lt;typename <b>_Rep</b>, typename <b>_Period</b>&gt;
+<b><a name="line186">186  </a></b>	      struct <b>__is_duration</b>&lt;<a href="#line64">duration</a>&lt;<a href="#line185">_Rep</a>, <a href="#line185">_Period</a>&gt;&gt;
+<b><a name="line187">187  </a></b>	      : <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../type_traits/code.html#line87">true_type</a>
+<b><a name="line188">188  </a></b>	      { };
+<b><a name="line189">189  </a></b>	
+<b><a name="line190">190  </a></b>	    /// duration_cast
+<b><a name="line191">191  </a></b>	    template&lt;typename <b>_ToDur</b>, typename <b>_Rep</b>, typename <b>_Period</b>&gt;
+<b><a name="line192">192  </a></b>	      constexpr typename <a href="../type_traits/code.html#line2099">enable_if</a>&lt;<a href="#line181">__is_duration</a>&lt;<a href="#line191">_ToDur</a>&gt;::<a href="../type_traits/code.html#line71">value</a>,
+<b><a name="line193">193  </a></b>					   <a href="#line191">_ToDur</a>&gt;::<a href="../type_traits/code.html#line2105">type</a>
+<b><a name="line194">194  </a></b>	      duration_cast(const <a href="#line241">duration</a>&lt;<a href="#line191">_Rep</a>, <a href="#line191">_Period</a>&gt;&amp; <b>__d</b>)
+<b><a name="line195">195  </a></b>	      {
+<b><a name="line196">196  </a></b>		typedef typename <a href="#line191">_ToDur</a>::<a href="#line244">period</a>				<b>__to_period</b>;
+<b><a name="line197">197  </a></b>		typedef typename <a href="#line191">_ToDur</a>::<a href="#line243">rep</a>				<b>__to_rep</b>;
+<b><a name="line198">198  </a></b>		typedef <a href="../ratio/code.html#line336">ratio_divide</a>&lt;<a href="#line191">_Period</a>, <a href="#line196">__to_period</a>&gt; 		<b>__cf</b>;
+<b><a name="line199">199  </a></b>		typedef typename <a href="../type_traits/code.html#line2123">common_type</a>&lt;<a href="#line197">__to_rep</a>, <a href="#line191">_Rep</a>, <a href="../../../stdint.h/code.html#line134">intmax_t</a>&gt;::<a href="../type_traits/code.html#line158">type</a>
+<b><a name="line200">200  </a></b>		  							<b>__cr</b>;
+<b><a name="line201">201  </a></b>		typedef  <a href="#line129">__duration_cast_impl</a>&lt;<a href="#line191">_ToDur</a>, <a href="#line198">__cf</a>, <a href="#line200">__cr</a>,
+<b><a name="line202">202  </a></b>					      <a href="#line198">__cf</a>::<a href="../ratio/code.html#line270">num</a> == 1, <a href="#line198">__cf</a>::<a href="../ratio/code.html#line273">den</a> == 1&gt; <b>__dc</b>;
+<b><a name="line203">203  </a></b>		return <a href="#line202">__dc</a>::<a href="#line172">__cast</a>(<a href="#line194">__d</a>);
+<b><a name="line204">204  </a></b>	      }
+<b><a name="line205">205  </a></b>	
+<b><a name="line206">206  </a></b>	    /// treat_as_floating_point
+<b><a name="line207">207  </a></b>	    template&lt;typename <b>_Rep</b>&gt;
+<b><a name="line208">208  </a></b>	      struct treat_as_floating_point
+<b><a name="line209">209  </a></b>	      : <a href="../type_traits/code.html#line317">is_floating_point</a>&lt;<a href="#line207">_Rep</a>&gt;
+<b><a name="line210">210  </a></b>	      { };
+<b><a name="line211">211  </a></b>	
+<b><a name="line212">212  </a></b>	    /// duration_values
+<b><a name="line213">213  </a></b>	    template&lt;typename <b>_Rep</b>&gt;
+<b><a name="line214">214  </a></b>	      struct duration_values
+<b><a name="line215">215  </a></b>	      {
+<b><a name="line216">216  </a></b>		static constexpr <a href="#line213">_Rep</a>
+<b><a name="line217">217  </a></b>		zero()
+<b><a name="line218">218  </a></b>		{ return <a href="#line213">_Rep</a>(0); }
+<b><a name="line219">219  </a></b>	
+<b><a name="line220">220  </a></b>		static constexpr <a href="#line213">_Rep</a>
+<b><a name="line221">221  </a></b>		max()
+<b><a name="line222">222  </a></b>		{ return numeric_limits&lt;_Rep&gt;::max(); }
+<b><a name="line223">223  </a></b>	
+<b><a name="line224">224  </a></b>		static constexpr <a href="#line213">_Rep</a>
+<b><a name="line225">225  </a></b>		min()
+<b><a name="line226">226  </a></b>		{ return <a href="../limits/code.html#line315">numeric_limits</a>&lt;<a href="#line213">_Rep</a>&gt;::<a href="../limits/code.html#line1144">lowest</a>(); }
+<b><a name="line227">227  </a></b>	      };
+<b><a name="line228">228  </a></b>	
+<b><a name="line229">229  </a></b>	    template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line230">230  </a></b>	      struct __is_ratio
+<b><a name="line231">231  </a></b>	      : <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../type_traits/code.html#line90">false_type</a>
+<b><a name="line232">232  </a></b>	      { };
+<b><a name="line233">233  </a></b>	
+<b><a name="line234">234  </a></b>	    template&lt;<a href="../../../stdint.h/code.html#line134">intmax_t</a> <b>_Num</b>, <a href="../../../stdint.h/code.html#line134">intmax_t</a> <b>_Den</b>&gt;
+<b><a name="line235">235  </a></b>	      struct <b>__is_ratio</b>&lt;<a href="../ratio/code.html#line263">ratio</a>&lt;<a href="#line234">_Num</a>, <a href="#line234">_Den</a>&gt;&gt;
+<b><a name="line236">236  </a></b>	      : <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../type_traits/code.html#line87">true_type</a>
+<b><a name="line237">237  </a></b>	      { };
+<b><a name="line238">238  </a></b>	
+<b><a name="line239">239  </a></b>	    /// duration
+<b><a name="line240">240  </a></b>	    template&lt;typename <b>_Rep</b>, typename <b>_Period</b>&gt;
+<b><a name="line241">241  </a></b>	      struct duration
+<b><a name="line242">242  </a></b>	      {
+<b><a name="line243">243  </a></b>		typedef <a href="#line240">_Rep</a>						<b>rep</b>;
+<b><a name="line244">244  </a></b>		typedef <a href="#line240">_Period</a> 					<b>period</b>;
+<b><a name="line245">245  </a></b>	
+<b><a name="line246">246  </a></b>		static_assert(!<a href="#line181">__is_duration</a>&lt;<a href="#line240">_Rep</a>&gt;::<a href="../type_traits/code.html#line71">value</a>, &quot;rep cannot be a duration&quot;);
+<b><a name="line247">247  </a></b>		static_assert(<a href="#line230">__is_ratio</a>&lt;<a href="#line240">_Period</a>&gt;::<a href="../type_traits/code.html#line71">value</a>,
+<b><a name="line248">248  </a></b>			      &quot;period must be a specialization of ratio&quot;);
+<b><a name="line249">249  </a></b>		static_assert(<a href="#line240">_Period</a>::<a href="../ratio/code.html#line270">num</a> &gt; 0, &quot;period must be positive&quot;);
+<b><a name="line250">250  </a></b>	
+<b><a name="line251">251  </a></b>		// 20.11.5.1 construction / copy / destroy
+<b><a name="line252">252  </a></b>		constexpr <b>duration</b>() = default;
+<b><a name="line253">253  </a></b>	
+<b><a name="line254">254  </a></b>		// NB: Make constexpr implicit. This cannot be explicitly
+<b><a name="line255">255  </a></b>		// constexpr, as any UDT that is not a literal type with a
+<b><a name="line256">256  </a></b>		// constexpr copy constructor will be ill-formed.
+<b><a name="line257">257  </a></b>		<b>duration</b>(const <a href="#line241">duration</a>&amp;) = default;
+<b><a name="line258">258  </a></b>	
+<b><a name="line259">259  </a></b>		template&lt;typename <b>_Rep2</b>, typename = typename
+<b><a name="line260">260  </a></b>		       <a href="../type_traits/code.html#line2099">enable_if</a>&lt;<a href="../type_traits/code.html#line1491">is_convertible</a>&lt;<a href="#line259">_Rep2</a>, <a href="#line243">rep</a>&gt;::value
+<b><a name="line261">261  </a></b>				 &amp;&amp; (<a href="#line208">treat_as_floating_point</a>&lt;<a href="#line243">rep</a>&gt;::<a href="../type_traits/code.html#line71">value</a>
+<b><a name="line262">262  </a></b>				     || !<a href="#line208">treat_as_floating_point</a>&lt;<a href="#line259">_Rep2</a>&gt;::value)&gt;::type&gt;
+<b><a name="line263">263  </a></b>		  constexpr explicit duration(const <a href="#line259">_Rep2</a>&amp; <b>__rep</b>)
+<b><a name="line264">264  </a></b>		  : <a href="#line373">__r</a>(static_cast&lt;<a href="#line243">rep</a>&gt;(<a href="#line263">__rep</a>)) { }
+<b><a name="line265">265  </a></b>	
+<b><a name="line266">266  </a></b>		template&lt;typename <b>_Rep2</b>, typename <b>_Period2</b>, typename = typename
+<b><a name="line267">267  </a></b>		       <a href="../type_traits/code.html#line2099">enable_if</a>&lt;<a href="#line208">treat_as_floating_point</a>&lt;<a href="#line243">rep</a>&gt;::<a href="../type_traits/code.html#line71">value</a>
+<b><a name="line268">268  </a></b>				 || (<a href="../ratio/code.html#line336">ratio_divide</a>&lt;<a href="#line266">_Period2</a>, <a href="#line244">period</a>&gt;::den == 1
+<b><a name="line269">269  </a></b>				     &amp;&amp; !<a href="#line208">treat_as_floating_point</a>&lt;<a href="#line266">_Rep2</a>&gt;::value)&gt;::type&gt;
+<b><a name="line270">270  </a></b>		  constexpr duration(const <a href="#line241">duration</a>&lt;<a href="#line266">_Rep2</a>, <a href="#line266">_Period2</a>&gt;&amp; <b>__d</b>)
+<b><a name="line271">271  </a></b>		  : <a href="#line373">__r</a>(<a href="#line194">duration_cast</a>&lt;<a href="#line241">duration</a>&gt;(<a href="#line270">__d</a>).<a href="#line278">count</a>()) { }
+<b><a name="line272">272  </a></b>	
+<b><a name="line273">273  </a></b>		<b>~duration</b>() = default;
+<b><a name="line274">274  </a></b>		<a href="#line241">duration</a>&amp; <b>operator=</b>(const <a href="#line241">duration</a>&amp;) = default;
+<b><a name="line275">275  </a></b>	
+<b><a name="line276">276  </a></b>		// 20.11.5.2 observer
+<b><a name="line277">277  </a></b>		constexpr <a href="#line243">rep</a>
+<b><a name="line278">278  </a></b>		count() const
+<b><a name="line279">279  </a></b>		{ return <a href="#line373">__r</a>; }
+<b><a name="line280">280  </a></b>	
+<b><a name="line281">281  </a></b>		// 20.11.5.3 arithmetic
+<b><a name="line282">282  </a></b>		constexpr <a href="#line241">duration</a>
+<b><a name="line283">283  </a></b>		operator+() const
+<b><a name="line284">284  </a></b>		{ return *this; }
+<b><a name="line285">285  </a></b>	
+<b><a name="line286">286  </a></b>		constexpr <a href="#line241">duration</a>
+<b><a name="line287">287  </a></b>		operator-() const
+<b><a name="line288">288  </a></b>		{ return duration(-__r); }
+<b><a name="line289">289  </a></b>	
+<b><a name="line290">290  </a></b>		<a href="#line241">duration</a>&amp;
+<b><a name="line291">291  </a></b>		operator++()
+<b><a name="line292">292  </a></b>		{
+<b><a name="line293">293  </a></b>		  ++__r;
+<b><a name="line294">294  </a></b>		  return *this;
+<b><a name="line295">295  </a></b>		}
+<b><a name="line296">296  </a></b>	
+<b><a name="line297">297  </a></b>		<a href="#line241">duration</a>
+<b><a name="line298">298  </a></b>		operator++(int)
+<b><a name="line299">299  </a></b>		{ return duration(__r++); }
+<b><a name="line300">300  </a></b>	
+<b><a name="line301">301  </a></b>		<a href="#line241">duration</a>&amp;
+<b><a name="line302">302  </a></b>		operator--()
+<b><a name="line303">303  </a></b>		{
+<b><a name="line304">304  </a></b>		  --__r;
+<b><a name="line305">305  </a></b>		  return *this;
+<b><a name="line306">306  </a></b>		}
+<b><a name="line307">307  </a></b>	
+<b><a name="line308">308  </a></b>		<a href="#line241">duration</a>
+<b><a name="line309">309  </a></b>		operator--(int)
+<b><a name="line310">310  </a></b>		{ return duration(__r--); }
+<b><a name="line311">311  </a></b>	
+<b><a name="line312">312  </a></b>		<a href="#line241">duration</a>&amp;
+<b><a name="line313">313  </a></b>		operator+=(const <a href="#line241">duration</a>&amp; __d)
+<b><a name="line314">314  </a></b>		{
+<b><a name="line315">315  </a></b>		  __r += __d.count();
+<b><a name="line316">316  </a></b>		  return *this;
+<b><a name="line317">317  </a></b>		}
+<b><a name="line318">318  </a></b>	
+<b><a name="line319">319  </a></b>		<a href="#line241">duration</a>&amp;
+<b><a name="line320">320  </a></b>		operator-=(const <a href="#line241">duration</a>&amp; __d)
+<b><a name="line321">321  </a></b>		{
+<b><a name="line322">322  </a></b>		  __r -= __d.count();
+<b><a name="line323">323  </a></b>		  return *this;
+<b><a name="line324">324  </a></b>		}
+<b><a name="line325">325  </a></b>	
+<b><a name="line326">326  </a></b>		<a href="#line241">duration</a>&amp;
+<b><a name="line327">327  </a></b>		operator*=(const <a href="#line243">rep</a>&amp; __rhs)
+<b><a name="line328">328  </a></b>		{
+<b><a name="line329">329  </a></b>		  __r *= __rhs;
+<b><a name="line330">330  </a></b>		  return *this;
+<b><a name="line331">331  </a></b>		}
+<b><a name="line332">332  </a></b>	
+<b><a name="line333">333  </a></b>		<a href="#line241">duration</a>&amp;
+<b><a name="line334">334  </a></b>		operator/=(const <a href="#line243">rep</a>&amp; __rhs)
+<b><a name="line335">335  </a></b>		{
+<b><a name="line336">336  </a></b>		  __r /= __rhs;
+<b><a name="line337">337  </a></b>		  return *this;
+<b><a name="line338">338  </a></b>		}
+<b><a name="line339">339  </a></b>	
+<b><a name="line340">340  </a></b>		// DR 934.
+<b><a name="line341">341  </a></b>		template&lt;typename <b>_Rep2</b> = <a href="#line243">rep</a>&gt;
+<b><a name="line342">342  </a></b>		  typename <a href="../type_traits/code.html#line2099">enable_if</a>&lt;!<a href="#line208">treat_as_floating_point</a>&lt;<a href="#line341">_Rep2</a>&gt;::value,
+<b><a name="line343">343  </a></b>				     <a href="#line241">duration</a>&amp;&gt;::type
+<b><a name="line344">344  </a></b>		  operator%=(const <a href="#line243">rep</a>&amp; __rhs)
+<b><a name="line345">345  </a></b>		  {
+<b><a name="line346">346  </a></b>		    __r %= __rhs;
+<b><a name="line347">347  </a></b>		    return *this;
+<b><a name="line348">348  </a></b>		  }
+<b><a name="line349">349  </a></b>	
+<b><a name="line350">350  </a></b>		template&lt;typename <b>_Rep2</b> = <a href="#line243">rep</a>&gt;
+<b><a name="line351">351  </a></b>		  typename <a href="../type_traits/code.html#line2099">enable_if</a>&lt;!<a href="#line208">treat_as_floating_point</a>&lt;<a href="#line350">_Rep2</a>&gt;::value,
+<b><a name="line352">352  </a></b>				     <a href="#line241">duration</a>&amp;&gt;::type
+<b><a name="line353">353  </a></b>		  operator%=(const <a href="#line241">duration</a>&amp; __d)
+<b><a name="line354">354  </a></b>		  {
+<b><a name="line355">355  </a></b>		    __r %= __d.count();
+<b><a name="line356">356  </a></b>		    return *this;
+<b><a name="line357">357  </a></b>		  }
+<b><a name="line358">358  </a></b>	
+<b><a name="line359">359  </a></b>		// 20.11.5.4 special values
+<b><a name="line360">360  </a></b>		static constexpr <a href="#line241">duration</a>
+<b><a name="line361">361  </a></b>		zero()
+<b><a name="line362">362  </a></b>		{ return <a href="#line263">duration</a>(<a href="#line214">duration_values</a>&lt;<a href="#line243">rep</a>&gt;::<a href="#line217">zero</a>()); }
+<b><a name="line363">363  </a></b>	
+<b><a name="line364">364  </a></b>		static constexpr <a href="#line241">duration</a>
+<b><a name="line365">365  </a></b>		min()
+<b><a name="line366">366  </a></b>		{ return <a href="#line263">duration</a>(<a href="#line214">duration_values</a>&lt;<a href="#line243">rep</a>&gt;::<a href="#line225">min</a>()); }
+<b><a name="line367">367  </a></b>	
+<b><a name="line368">368  </a></b>		static constexpr <a href="#line241">duration</a>
+<b><a name="line369">369  </a></b>		max()
+<b><a name="line370">370  </a></b>		{ return duration(duration_values&lt;rep&gt;::max()); }
+<b><a name="line371">371  </a></b>	
+<b><a name="line372">372  </a></b>	      private:
+<b><a name="line373">373  </a></b>		<a href="#line243">rep</a> <b>__r</b>;
+<b><a name="line374">374  </a></b>	      };
+<b><a name="line375">375  </a></b>	
+<b><a name="line376">376  </a></b>	    template&lt;typename <b>_Rep1</b>, typename <b>_Period1</b>,
+<b><a name="line377">377  </a></b>		     typename <b>_Rep2</b>, typename <b>_Period2</b>&gt;
+<b><a name="line378">378  </a></b>	      constexpr typename <a href="../type_traits/code.html#line2123">common_type</a>&lt;<a href="#line64">duration</a>&lt;<a href="#line376">_Rep1</a>, <a href="#line376">_Period1</a>&gt;,
+<b><a name="line379">379  </a></b>					     <a href="#line64">duration</a>&lt;<a href="#line377">_Rep2</a>, <a href="#line377">_Period2</a>&gt;&gt;::type
+<b><a name="line380">380  </a></b>	      <b>operator+</b>(const <a href="#line64">duration</a>&lt;<a href="#line376">_Rep1</a>, <a href="#line376">_Period1</a>&gt;&amp; __lhs,
+<b><a name="line381">381  </a></b>			const <a href="#line64">duration</a>&lt;<a href="#line377">_Rep2</a>, <a href="#line377">_Period2</a>&gt;&amp; __rhs)
+<b><a name="line382">382  </a></b>	      {
+<b><a name="line383">383  </a></b>		typedef duration&lt;_Rep1, _Period1&gt;			__dur1;
+<b><a name="line384">384  </a></b>		typedef duration&lt;_Rep2, _Period2&gt;			__dur2;
+<b><a name="line385">385  </a></b>		typedef typename common_type&lt;__dur1,__dur2&gt;::type	__cd;
+<b><a name="line386">386  </a></b>		return __cd(__cd(__lhs).count() + __cd(__rhs).count());
+<b><a name="line387">387  </a></b>	      }
+<b><a name="line388">388  </a></b>	
+<b><a name="line389">389  </a></b>	    template&lt;typename <b>_Rep1</b>, typename <b>_Period1</b>,
+<b><a name="line390">390  </a></b>		     typename <b>_Rep2</b>, typename <b>_Period2</b>&gt;
+<b><a name="line391">391  </a></b>	      constexpr typename <a href="../type_traits/code.html#line2123">common_type</a>&lt;<a href="#line241">duration</a>&lt;<a href="#line389">_Rep1</a>, <a href="#line389">_Period1</a>&gt;,
+<b><a name="line392">392  </a></b>					     <a href="#line241">duration</a>&lt;<a href="#line390">_Rep2</a>, <a href="#line390">_Period2</a>&gt;&gt;::<a href="../type_traits/code.html#line158">type</a>
+<b><a name="line393">393  </a></b>	      operator-(const <a href="#line241">duration</a>&lt;<a href="#line389">_Rep1</a>, <a href="#line389">_Period1</a>&gt;&amp; <b>__lhs</b>,
+<b><a name="line394">394  </a></b>			const <a href="#line241">duration</a>&lt;<a href="#line390">_Rep2</a>, <a href="#line390">_Period2</a>&gt;&amp; <b>__rhs</b>)
+<b><a name="line395">395  </a></b>	      {
+<b><a name="line396">396  </a></b>		typedef <a href="#line241">duration</a>&lt;<a href="#line389">_Rep1</a>, <a href="#line389">_Period1</a>&gt;			<b>__dur1</b>;
+<b><a name="line397">397  </a></b>		typedef <a href="#line241">duration</a>&lt;<a href="#line390">_Rep2</a>, <a href="#line390">_Period2</a>&gt;			<b>__dur2</b>;
+<b><a name="line398">398  </a></b>		typedef typename <a href="../type_traits/code.html#line2123">common_type</a>&lt;<a href="#line396">__dur1</a>,<a href="#line397">__dur2</a>&gt;::<a href="../type_traits/code.html#line158">type</a>	<b>__cd</b>;
+<b><a name="line399">399  </a></b>		return <a href="#line398">__cd</a>(<a href="#line398">__cd</a>(<a href="#line393">__lhs</a>).<a href="#line278">count</a>() - <a href="#line398">__cd</a>(<a href="#line394">__rhs</a>).<a href="#line278">count</a>());
+<b><a name="line400">400  </a></b>	      }
+<b><a name="line401">401  </a></b>	
+<b><a name="line402">402  </a></b>	    template&lt;typename <b>_Rep1</b>, typename <b>_Rep2</b>, bool =
+<b><a name="line403">403  </a></b>		     <a href="../type_traits/code.html#line1491">is_convertible</a>&lt;<a href="#line402">_Rep2</a>,
+<b><a name="line404">404  </a></b>				    typename <a href="../type_traits/code.html#line2123">common_type</a>&lt;<a href="#line402">_Rep1</a>, <a href="#line402">_Rep2</a>&gt;::type&gt;::value&gt;
+<b><a name="line405">405  </a></b>	      struct <b>__common_rep_type</b> { };
+<b><a name="line406">406  </a></b>	
+<b><a name="line407">407  </a></b>	    template&lt;typename <b>_Rep1</b>, typename <b>_Rep2</b>&gt;
+<b><a name="line408">408  </a></b>	      struct <b>__common_rep_type</b>&lt;<a href="#line407">_Rep1</a>, <a href="#line407">_Rep2</a>, true&gt;
+<b><a name="line409">409  </a></b>	      { typedef typename <a href="../type_traits/code.html#line2123">common_type</a>&lt;<a href="#line407">_Rep1</a>, <a href="#line407">_Rep2</a>&gt;::type <b>type</b>; };
+<b><a name="line410">410  </a></b>	
+<b><a name="line411">411  </a></b>	    template&lt;typename <b>_Rep1</b>, typename <b>_Period</b>, typename <b>_Rep2</b>&gt;
+<b><a name="line412">412  </a></b>	      constexpr
+<b><a name="line413">413  </a></b>	      <a href="#line64">duration</a>&lt;typename <a href="#line405">__common_rep_type</a>&lt;<a href="#line411">_Rep1</a>, <a href="#line411">_Rep2</a>&gt;::type, <a href="#line411">_Period</a>&gt;
+<b><a name="line414">414  </a></b>	      <b>operator*</b>(const <a href="#line64">duration</a>&lt;<a href="#line411">_Rep1</a>, <a href="#line411">_Period</a>&gt;&amp; __d, const <a href="#line411">_Rep2</a>&amp; __s)
+<b><a name="line415">415  </a></b>	      {
+<b><a name="line416">416  </a></b>		typedef duration&lt;typename common_type&lt;_Rep1, _Rep2&gt;::type, _Period&gt;
+<b><a name="line417">417  </a></b>		  __cd;
+<b><a name="line418">418  </a></b>		return __cd(__cd(__d).count() * __s);
+<b><a name="line419">419  </a></b>	      }
+<b><a name="line420">420  </a></b>	
+<b><a name="line421">421  </a></b>	    template&lt;typename <b>_Rep1</b>, typename <b>_Rep2</b>, typename <b>_Period</b>&gt;
+<b><a name="line422">422  </a></b>	      constexpr
+<b><a name="line423">423  </a></b>	      <a href="#line64">duration</a>&lt;typename <a href="#line405">__common_rep_type</a>&lt;<a href="#line421">_Rep2</a>, <a href="#line421">_Rep1</a>&gt;::type, <a href="#line421">_Period</a>&gt;
+<b><a name="line424">424  </a></b>	      <b>operator*</b>(const <a href="#line421">_Rep1</a>&amp; __s, const <a href="#line64">duration</a>&lt;<a href="#line421">_Rep2</a>, <a href="#line421">_Period</a>&gt;&amp; __d)
+<b><a name="line425">425  </a></b>	      { return __d * __s; }
+<b><a name="line426">426  </a></b>	
+<b><a name="line427">427  </a></b>	    template&lt;typename <b>_Rep1</b>, typename <b>_Period</b>, typename <b>_Rep2</b>&gt;
+<b><a name="line428">428  </a></b>	      constexpr <a href="#line64">duration</a>&lt;typename <a href="#line405">__common_rep_type</a>&lt;<a href="#line427">_Rep1</a>, typename
+<b><a name="line429">429  </a></b>		<a href="../type_traits/code.html#line2099">enable_if</a>&lt;!<a href="#line181">__is_duration</a>&lt;<a href="#line427">_Rep2</a>&gt;::value, <a href="#line427">_Rep2</a>&gt;::type&gt;::type, <a href="#line427">_Period</a>&gt;
+<b><a name="line430">430  </a></b>	      <b>operator/</b>(const <a href="#line64">duration</a>&lt;<a href="#line427">_Rep1</a>, <a href="#line427">_Period</a>&gt;&amp; __d, const <a href="#line427">_Rep2</a>&amp; __s)
+<b><a name="line431">431  </a></b>	      {
+<b><a name="line432">432  </a></b>		typedef duration&lt;typename common_type&lt;_Rep1, _Rep2&gt;::type, _Period&gt;
+<b><a name="line433">433  </a></b>		  __cd;
+<b><a name="line434">434  </a></b>		return __cd(__cd(__d).count() / __s);
+<b><a name="line435">435  </a></b>	      }
+<b><a name="line436">436  </a></b>	
+<b><a name="line437">437  </a></b>	    template&lt;typename <b>_Rep1</b>, typename <b>_Period1</b>,
+<b><a name="line438">438  </a></b>		     typename <b>_Rep2</b>, typename <b>_Period2</b>&gt;
+<b><a name="line439">439  </a></b>	      constexpr typename <a href="../type_traits/code.html#line2123">common_type</a>&lt;<a href="#line437">_Rep1</a>, <a href="#line438">_Rep2</a>&gt;::type
+<b><a name="line440">440  </a></b>	      <b>operator/</b>(const <a href="#line64">duration</a>&lt;<a href="#line437">_Rep1</a>, <a href="#line437">_Period1</a>&gt;&amp; __lhs,
+<b><a name="line441">441  </a></b>			const <a href="#line64">duration</a>&lt;<a href="#line438">_Rep2</a>, <a href="#line438">_Period2</a>&gt;&amp; __rhs)
+<b><a name="line442">442  </a></b>	      {
+<b><a name="line443">443  </a></b>		typedef duration&lt;_Rep1, _Period1&gt;			__dur1;
+<b><a name="line444">444  </a></b>		typedef duration&lt;_Rep2, _Period2&gt;			__dur2;
+<b><a name="line445">445  </a></b>		typedef typename common_type&lt;__dur1,__dur2&gt;::type	__cd;
+<b><a name="line446">446  </a></b>		return __cd(__lhs).count() / __cd(__rhs).count();
+<b><a name="line447">447  </a></b>	      }
+<b><a name="line448">448  </a></b>	
+<b><a name="line449">449  </a></b>	    // DR 934.
+<b><a name="line450">450  </a></b>	    template&lt;typename <b>_Rep1</b>, typename <b>_Period</b>, typename <b>_Rep2</b>&gt;
+<b><a name="line451">451  </a></b>	      constexpr <a href="#line64">duration</a>&lt;typename <a href="#line405">__common_rep_type</a>&lt;<a href="#line450">_Rep1</a>, typename
+<b><a name="line452">452  </a></b>		<a href="../type_traits/code.html#line2099">enable_if</a>&lt;!<a href="#line181">__is_duration</a>&lt;<a href="#line450">_Rep2</a>&gt;::value, <a href="#line450">_Rep2</a>&gt;::type&gt;::type, <a href="#line450">_Period</a>&gt;
+<b><a name="line453">453  </a></b>	      <b>operator%</b>(const <a href="#line64">duration</a>&lt;<a href="#line450">_Rep1</a>, <a href="#line450">_Period</a>&gt;&amp; __d, const <a href="#line450">_Rep2</a>&amp; __s)
+<b><a name="line454">454  </a></b>	      {
+<b><a name="line455">455  </a></b>		typedef duration&lt;typename common_type&lt;_Rep1, _Rep2&gt;::type, _Period&gt;
+<b><a name="line456">456  </a></b>		  __cd;
+<b><a name="line457">457  </a></b>		return __cd(__cd(__d).count() % __s);
+<b><a name="line458">458  </a></b>	      }
+<b><a name="line459">459  </a></b>	
+<b><a name="line460">460  </a></b>	    template&lt;typename <b>_Rep1</b>, typename <b>_Period1</b>,
+<b><a name="line461">461  </a></b>		     typename <b>_Rep2</b>, typename <b>_Period2</b>&gt;
+<b><a name="line462">462  </a></b>	      constexpr typename <a href="../type_traits/code.html#line2123">common_type</a>&lt;<a href="#line64">duration</a>&lt;<a href="#line460">_Rep1</a>, <a href="#line460">_Period1</a>&gt;,
+<b><a name="line463">463  </a></b>					     <a href="#line64">duration</a>&lt;<a href="#line461">_Rep2</a>, <a href="#line461">_Period2</a>&gt;&gt;::type
+<b><a name="line464">464  </a></b>	      <b>operator%</b>(const <a href="#line64">duration</a>&lt;<a href="#line460">_Rep1</a>, <a href="#line460">_Period1</a>&gt;&amp; __lhs,
+<b><a name="line465">465  </a></b>			const <a href="#line64">duration</a>&lt;<a href="#line461">_Rep2</a>, <a href="#line461">_Period2</a>&gt;&amp; __rhs)
+<b><a name="line466">466  </a></b>	      {
+<b><a name="line467">467  </a></b>		typedef duration&lt;_Rep1, _Period1&gt;			__dur1;
+<b><a name="line468">468  </a></b>		typedef duration&lt;_Rep2, _Period2&gt;			__dur2;
+<b><a name="line469">469  </a></b>		typedef typename common_type&lt;__dur1,__dur2&gt;::type	__cd;
+<b><a name="line470">470  </a></b>		return __cd(__cd(__lhs).count() % __cd(__rhs).count());
+<b><a name="line471">471  </a></b>	      }
+<b><a name="line472">472  </a></b>	
+<b><a name="line473">473  </a></b>	    // comparisons
+<b><a name="line474">474  </a></b>	    template&lt;typename <b>_Rep1</b>, typename <b>_Period1</b>,
+<b><a name="line475">475  </a></b>		     typename <b>_Rep2</b>, typename <b>_Period2</b>&gt;
+<b><a name="line476">476  </a></b>	      constexpr bool
+<b><a name="line477">477  </a></b>	      <b>operator==</b>(const <a href="#line64">duration</a>&lt;<a href="#line474">_Rep1</a>, <a href="#line474">_Period1</a>&gt;&amp; __lhs,
+<b><a name="line478">478  </a></b>			 const <a href="#line64">duration</a>&lt;<a href="#line475">_Rep2</a>, <a href="#line475">_Period2</a>&gt;&amp; __rhs)
+<b><a name="line479">479  </a></b>	      {
+<b><a name="line480">480  </a></b>		typedef duration&lt;_Rep1, _Period1&gt;			__dur1;
+<b><a name="line481">481  </a></b>		typedef duration&lt;_Rep2, _Period2&gt;			__dur2;
+<b><a name="line482">482  </a></b>		typedef typename common_type&lt;__dur1,__dur2&gt;::type	__ct;
+<b><a name="line483">483  </a></b>		return __ct(__lhs).count() == __ct(__rhs).count();
+<b><a name="line484">484  </a></b>	      }
+<b><a name="line485">485  </a></b>	
+<b><a name="line486">486  </a></b>	    template&lt;typename <b>_Rep1</b>, typename <b>_Period1</b>,
+<b><a name="line487">487  </a></b>		     typename <b>_Rep2</b>, typename <b>_Period2</b>&gt;
+<b><a name="line488">488  </a></b>	      constexpr bool
+<b><a name="line489">489  </a></b>	      operator&lt;(const <a href="#line241">duration</a>&lt;<a href="#line486">_Rep1</a>, <a href="#line486">_Period1</a>&gt;&amp; <b>__lhs</b>,
+<b><a name="line490">490  </a></b>			const <a href="#line241">duration</a>&lt;<a href="#line487">_Rep2</a>, <a href="#line487">_Period2</a>&gt;&amp; <b>__rhs</b>)
+<b><a name="line491">491  </a></b>	      {
+<b><a name="line492">492  </a></b>		typedef <a href="#line241">duration</a>&lt;<a href="#line486">_Rep1</a>, <a href="#line486">_Period1</a>&gt;			<b>__dur1</b>;
+<b><a name="line493">493  </a></b>		typedef <a href="#line241">duration</a>&lt;<a href="#line487">_Rep2</a>, <a href="#line487">_Period2</a>&gt;			<b>__dur2</b>;
+<b><a name="line494">494  </a></b>		typedef typename <a href="../type_traits/code.html#line2123">common_type</a>&lt;<a href="#line492">__dur1</a>,<a href="#line493">__dur2</a>&gt;::<a href="../type_traits/code.html#line158">type</a>	<b>__ct</b>;
+<b><a name="line495">495  </a></b>		return <a href="#line494">__ct</a>(<a href="#line489">__lhs</a>).<a href="#line278">count</a>() &lt; <a href="#line494">__ct</a>(<a href="#line490">__rhs</a>).<a href="#line278">count</a>();
+<b><a name="line496">496  </a></b>	      }
+<b><a name="line497">497  </a></b>	
+<b><a name="line498">498  </a></b>	    template&lt;typename <b>_Rep1</b>, typename <b>_Period1</b>,
+<b><a name="line499">499  </a></b>		     typename <b>_Rep2</b>, typename <b>_Period2</b>&gt;
+<b><a name="line500">500  </a></b>	      constexpr bool
+<b><a name="line501">501  </a></b>	      <b>operator!=</b>(const <a href="#line64">duration</a>&lt;<a href="#line498">_Rep1</a>, <a href="#line498">_Period1</a>&gt;&amp; __lhs,
+<b><a name="line502">502  </a></b>			 const <a href="#line64">duration</a>&lt;<a href="#line499">_Rep2</a>, <a href="#line499">_Period2</a>&gt;&amp; __rhs)
+<b><a name="line503">503  </a></b>	      { return !(__lhs == __rhs); }
+<b><a name="line504">504  </a></b>	
+<b><a name="line505">505  </a></b>	    template&lt;typename <b>_Rep1</b>, typename <b>_Period1</b>,
+<b><a name="line506">506  </a></b>		     typename <b>_Rep2</b>, typename <b>_Period2</b>&gt;
+<b><a name="line507">507  </a></b>	      constexpr bool
+<b><a name="line508">508  </a></b>	      operator&lt;=(const <a href="#line241">duration</a>&lt;<a href="#line505">_Rep1</a>, <a href="#line505">_Period1</a>&gt;&amp; <b>__lhs</b>,
+<b><a name="line509">509  </a></b>			 const <a href="#line241">duration</a>&lt;<a href="#line506">_Rep2</a>, <a href="#line506">_Period2</a>&gt;&amp; <b>__rhs</b>)
+<b><a name="line510">510  </a></b>	      { return !(<a href="#line509">__rhs</a> <a href="#line489">&lt;</a> <a href="#line508">__lhs</a>); }
+<b><a name="line511">511  </a></b>	
+<b><a name="line512">512  </a></b>	    template&lt;typename <b>_Rep1</b>, typename <b>_Period1</b>,
+<b><a name="line513">513  </a></b>		     typename <b>_Rep2</b>, typename <b>_Period2</b>&gt;
+<b><a name="line514">514  </a></b>	      constexpr bool
+<b><a name="line515">515  </a></b>	      <b>operator&gt;</b>(const <a href="#line64">duration</a>&lt;<a href="#line512">_Rep1</a>, <a href="#line512">_Period1</a>&gt;&amp; __lhs,
+<b><a name="line516">516  </a></b>			const <a href="#line64">duration</a>&lt;<a href="#line513">_Rep2</a>, <a href="#line513">_Period2</a>&gt;&amp; __rhs)
+<b><a name="line517">517  </a></b>	      { return __rhs &lt; __lhs; }
+<b><a name="line518">518  </a></b>	
+<b><a name="line519">519  </a></b>	    template&lt;typename <b>_Rep1</b>, typename <b>_Period1</b>,
+<b><a name="line520">520  </a></b>		     typename <b>_Rep2</b>, typename <b>_Period2</b>&gt;
+<b><a name="line521">521  </a></b>	      constexpr bool
+<b><a name="line522">522  </a></b>	      <b>operator&gt;=</b>(const <a href="#line64">duration</a>&lt;<a href="#line519">_Rep1</a>, <a href="#line519">_Period1</a>&gt;&amp; __lhs,
+<b><a name="line523">523  </a></b>			 const <a href="#line64">duration</a>&lt;<a href="#line520">_Rep2</a>, <a href="#line520">_Period2</a>&gt;&amp; __rhs)
+<b><a name="line524">524  </a></b>	      { return !(__lhs &lt; __rhs); }
+<b><a name="line525">525  </a></b>	
+<b><a name="line526">526  </a></b>	    /// nanoseconds
+<b><a name="line527">527  </a></b>	    typedef <a href="#line241">duration</a>&lt;<a href="../../../x86_64-linux-gnu/sys/types.h/code.html#line197">int64_t</a>, <a href="../ratio/code.html#line516">nano</a>&gt; 	    <b>nanoseconds</b>;
+<b><a name="line528">528  </a></b>	
+<b><a name="line529">529  </a></b>	    /// microseconds
+<b><a name="line530">530  </a></b>	    typedef <a href="#line241">duration</a>&lt;<a href="../../../x86_64-linux-gnu/sys/types.h/code.html#line197">int64_t</a>, <a href="../ratio/code.html#line517">micro</a>&gt; 	    <b>microseconds</b>;
+<b><a name="line531">531  </a></b>	
+<b><a name="line532">532  </a></b>	    /// milliseconds
+<b><a name="line533">533  </a></b>	    typedef <a href="#line241">duration</a>&lt;<a href="../../../x86_64-linux-gnu/sys/types.h/code.html#line197">int64_t</a>, <a href="../ratio/code.html#line518">milli</a>&gt; 	    <b>milliseconds</b>;
+<b><a name="line534">534  </a></b>	
+<b><a name="line535">535  </a></b>	    /// seconds
+<b><a name="line536">536  </a></b>	    typedef <a href="#line241">duration</a>&lt;<a href="../../../x86_64-linux-gnu/sys/types.h/code.html#line197">int64_t</a>&gt; 		    <b>seconds</b>;
+<b><a name="line537">537  </a></b>	
+<b><a name="line538">538  </a></b>	    /// minutes
+<b><a name="line539">539  </a></b>	    typedef <a href="#line241">duration</a>&lt;<a href="../../../x86_64-linux-gnu/sys/types.h/code.html#line197">int64_t</a>, <a href="../ratio/code.html#line263">ratio</a>&lt; 60&gt;&gt;   <b>minutes</b>;
+<b><a name="line540">540  </a></b>	
+<b><a name="line541">541  </a></b>	    /// hours
+<b><a name="line542">542  </a></b>	    typedef <a href="#line241">duration</a>&lt;<a href="../../../x86_64-linux-gnu/sys/types.h/code.html#line197">int64_t</a>, <a href="../ratio/code.html#line263">ratio</a>&lt;3600&gt;&gt;  <b>hours</b>;
+<b><a name="line543">543  </a></b>	
+<b><a name="line544">544  </a></b>	    /// time_point
+<b><a name="line545">545  </a></b>	    template&lt;typename <b>_Clock</b>, typename <b>_Dur</b>&gt;
+<b><a name="line546">546  </a></b>	      struct time_point
+<b><a name="line547">547  </a></b>	      {
+<b><a name="line548">548  </a></b>		typedef <a href="#line545">_Clock</a>			  			<b>clock</b>;
+<b><a name="line549">549  </a></b>		typedef <a href="#line545">_Dur</a>		  				<b>duration</b>;
+<b><a name="line550">550  </a></b>		typedef typename <a href="#line549">duration</a>::<a href="#line243">rep</a>	  			<b>rep</b>;
+<b><a name="line551">551  </a></b>		typedef typename <a href="#line549">duration</a>::<a href="#line244">period</a>			<b>period</b>;
+<b><a name="line552">552  </a></b>	
+<b><a name="line553">553  </a></b>		constexpr time_point() : __d(duration::zero())
+<b><a name="line554">554  </a></b>		{ }
+<b><a name="line555">555  </a></b>	
+<b><a name="line556">556  </a></b>		constexpr explicit time_point(const <a href="#line549">duration</a>&amp; <b>__dur</b>)
+<b><a name="line557">557  </a></b>		: <a href="#line596">__d</a>(<a href="#line556">__dur</a>)
+<b><a name="line558">558  </a></b>		{ }
+<b><a name="line559">559  </a></b>	
+<b><a name="line560">560  </a></b>		// conversions
+<b><a name="line561">561  </a></b>		template&lt;typename <b>_Dur2</b>&gt;
+<b><a name="line562">562  </a></b>		  constexpr time_point(const <a href="#line67">time_point</a>&lt;<a href="#line548">clock</a>, <a href="#line561">_Dur2</a>&gt;&amp; __t)
+<b><a name="line563">563  </a></b>		  : __d(__t.time_since_epoch())
+<b><a name="line564">564  </a></b>		  { }
+<b><a name="line565">565  </a></b>	
+<b><a name="line566">566  </a></b>		// observer
+<b><a name="line567">567  </a></b>		constexpr <a href="#line549">duration</a>
+<b><a name="line568">568  </a></b>		time_since_epoch() const
+<b><a name="line569">569  </a></b>		{ return <a href="#line596">__d</a>; }
+<b><a name="line570">570  </a></b>	
+<b><a name="line571">571  </a></b>		// arithmetic
+<b><a name="line572">572  </a></b>		<a href="#line546">time_point</a>&amp;
+<b><a name="line573">573  </a></b>		operator+=(const <a href="#line549">duration</a>&amp; __dur)
+<b><a name="line574">574  </a></b>		{
+<b><a name="line575">575  </a></b>		  __d += __dur;
+<b><a name="line576">576  </a></b>		  return *this;
+<b><a name="line577">577  </a></b>		}
+<b><a name="line578">578  </a></b>	
+<b><a name="line579">579  </a></b>		<a href="#line546">time_point</a>&amp;
+<b><a name="line580">580  </a></b>		operator-=(const <a href="#line549">duration</a>&amp; __dur)
+<b><a name="line581">581  </a></b>		{
+<b><a name="line582">582  </a></b>		  __d -= __dur;
+<b><a name="line583">583  </a></b>		  return *this;
+<b><a name="line584">584  </a></b>		}
+<b><a name="line585">585  </a></b>	
+<b><a name="line586">586  </a></b>		// special values
+<b><a name="line587">587  </a></b>		static constexpr <a href="#line546">time_point</a>
+<b><a name="line588">588  </a></b>		min()
+<b><a name="line589">589  </a></b>		{ return time_point(duration::min()); }
+<b><a name="line590">590  </a></b>	
+<b><a name="line591">591  </a></b>		static constexpr <a href="#line546">time_point</a>
+<b><a name="line592">592  </a></b>		max()
+<b><a name="line593">593  </a></b>		{ return time_point(duration::max()); }
+<b><a name="line594">594  </a></b>	
+<b><a name="line595">595  </a></b>	      private:
+<b><a name="line596">596  </a></b>		<a href="#line549">duration</a> <b>__d</b>;
+<b><a name="line597">597  </a></b>	      };
+<b><a name="line598">598  </a></b>	
+<b><a name="line599">599  </a></b>	    /// time_point_cast
+<b><a name="line600">600  </a></b>	    template&lt;typename <b>_ToDur</b>, typename <b>_Clock</b>, typename <b>_Dur</b>&gt;
+<b><a name="line601">601  </a></b>	      constexpr typename <a href="../type_traits/code.html#line2099">enable_if</a>&lt;<a href="#line181">__is_duration</a>&lt;<a href="#line600">_ToDur</a>&gt;::<a href="../type_traits/code.html#line71">value</a>,
+<b><a name="line602">602  </a></b>					   <a href="#line546">time_point</a>&lt;<a href="#line600">_Clock</a>, <a href="#line600">_ToDur</a>&gt;&gt;::<a href="../type_traits/code.html#line2105">type</a>
+<b><a name="line603">603  </a></b>	      time_point_cast(const <a href="#line546">time_point</a>&lt;<a href="#line600">_Clock</a>, <a href="#line600">_Dur</a>&gt;&amp; <b>__t</b>)
+<b><a name="line604">604  </a></b>	      {
+<b><a name="line605">605  </a></b>		typedef <a href="#line546">time_point</a>&lt;<a href="#line600">_Clock</a>, <a href="#line600">_ToDur</a>&gt; 			<b>__time_point</b>;
+<b><a name="line606">606  </a></b>		return <a href="#line605">__time_point</a>(<a href="#line194">duration_cast</a>&lt;<a href="#line600">_ToDur</a>&gt;(<a href="#line603">__t</a>.<a href="#line568">time_since_epoch</a>()));
+<b><a name="line607">607  </a></b>	      }
+<b><a name="line608">608  </a></b>	
+<b><a name="line609">609  </a></b>	    template&lt;typename <b>_Clock</b>, typename <b>_Dur1</b>,
+<b><a name="line610">610  </a></b>		     typename <b>_Rep2</b>, typename <b>_Period2</b>&gt;
+<b><a name="line611">611  </a></b>	      constexpr <a href="#line67">time_point</a>&lt;<a href="#line609">_Clock</a>,
+<b><a name="line612">612  </a></b>		typename <a href="../type_traits/code.html#line2123">common_type</a>&lt;<a href="#line609">_Dur1</a>, <a href="#line64">duration</a>&lt;<a href="#line610">_Rep2</a>, <a href="#line610">_Period2</a>&gt;&gt;::type&gt;
+<b><a name="line613">613  </a></b>	      <b>operator+</b>(const <a href="#line67">time_point</a>&lt;<a href="#line609">_Clock</a>, <a href="#line609">_Dur1</a>&gt;&amp; __lhs,
+<b><a name="line614">614  </a></b>			const <a href="#line64">duration</a>&lt;<a href="#line610">_Rep2</a>, <a href="#line610">_Period2</a>&gt;&amp; __rhs)
+<b><a name="line615">615  </a></b>	      {
+<b><a name="line616">616  </a></b>		typedef duration&lt;_Rep2, _Period2&gt;			__dur2;
+<b><a name="line617">617  </a></b>		typedef typename common_type&lt;_Dur1,__dur2&gt;::type	__ct;
+<b><a name="line618">618  </a></b>		typedef time_point&lt;_Clock, __ct&gt; 			__time_point;
+<b><a name="line619">619  </a></b>		return __time_point(__lhs.time_since_epoch() + __rhs);
+<b><a name="line620">620  </a></b>	      }
+<b><a name="line621">621  </a></b>	
+<b><a name="line622">622  </a></b>	    template&lt;typename <b>_Rep1</b>, typename <b>_Period1</b>,
+<b><a name="line623">623  </a></b>		     typename <b>_Clock</b>, typename <b>_Dur2</b>&gt;
+<b><a name="line624">624  </a></b>	      constexpr <a href="#line67">time_point</a>&lt;<a href="#line623">_Clock</a>,
+<b><a name="line625">625  </a></b>		typename <a href="../type_traits/code.html#line2123">common_type</a>&lt;<a href="#line64">duration</a>&lt;<a href="#line622">_Rep1</a>, <a href="#line622">_Period1</a>&gt;, <a href="#line623">_Dur2</a>&gt;::type&gt;
+<b><a name="line626">626  </a></b>	      <b>operator+</b>(const <a href="#line64">duration</a>&lt;<a href="#line622">_Rep1</a>, <a href="#line622">_Period1</a>&gt;&amp; __lhs,
+<b><a name="line627">627  </a></b>			const <a href="#line67">time_point</a>&lt;<a href="#line623">_Clock</a>, <a href="#line623">_Dur2</a>&gt;&amp; __rhs)
+<b><a name="line628">628  </a></b>	      { 
+<b><a name="line629">629  </a></b>		typedef duration&lt;_Rep1, _Period1&gt;			__dur1;
+<b><a name="line630">630  </a></b>		typedef typename common_type&lt;__dur1,_Dur2&gt;::type	__ct;
+<b><a name="line631">631  </a></b>		typedef time_point&lt;_Clock, __ct&gt; 			__time_point;
+<b><a name="line632">632  </a></b>		return __time_point(__rhs.time_since_epoch() + __lhs); 
+<b><a name="line633">633  </a></b>	      }
+<b><a name="line634">634  </a></b>	
+<b><a name="line635">635  </a></b>	    template&lt;typename <b>_Clock</b>, typename <b>_Dur1</b>,
+<b><a name="line636">636  </a></b>		     typename <b>_Rep2</b>, typename <b>_Period2</b>&gt;
+<b><a name="line637">637  </a></b>	      constexpr <a href="#line67">time_point</a>&lt;<a href="#line635">_Clock</a>,
+<b><a name="line638">638  </a></b>		typename <a href="../type_traits/code.html#line2123">common_type</a>&lt;<a href="#line635">_Dur1</a>, <a href="#line64">duration</a>&lt;<a href="#line636">_Rep2</a>, <a href="#line636">_Period2</a>&gt;&gt;::type&gt;
+<b><a name="line639">639  </a></b>	      <b>operator-</b>(const <a href="#line67">time_point</a>&lt;<a href="#line635">_Clock</a>, <a href="#line635">_Dur1</a>&gt;&amp; __lhs,
+<b><a name="line640">640  </a></b>			const <a href="#line64">duration</a>&lt;<a href="#line636">_Rep2</a>, <a href="#line636">_Period2</a>&gt;&amp; __rhs)
+<b><a name="line641">641  </a></b>	      { 
+<b><a name="line642">642  </a></b>		typedef duration&lt;_Rep2, _Period2&gt;			__dur2;
+<b><a name="line643">643  </a></b>		typedef typename common_type&lt;_Dur1,__dur2&gt;::type	__ct;
+<b><a name="line644">644  </a></b>		typedef time_point&lt;_Clock, __ct&gt; 			__time_point;
+<b><a name="line645">645  </a></b>		return __time_point(__lhs.time_since_epoch() -__rhs); 
+<b><a name="line646">646  </a></b>	      }
+<b><a name="line647">647  </a></b>	
+<b><a name="line648">648  </a></b>	    template&lt;typename <b>_Clock</b>, typename <b>_Dur1</b>, typename <b>_Dur2</b>&gt;
+<b><a name="line649">649  </a></b>	      constexpr typename <a href="../type_traits/code.html#line2123">common_type</a>&lt;<a href="#line648">_Dur1</a>, <a href="#line648">_Dur2</a>&gt;::type
+<b><a name="line650">650  </a></b>	      <b>operator-</b>(const <a href="#line67">time_point</a>&lt;<a href="#line648">_Clock</a>, <a href="#line648">_Dur1</a>&gt;&amp; __lhs,
+<b><a name="line651">651  </a></b>			const <a href="#line67">time_point</a>&lt;<a href="#line648">_Clock</a>, <a href="#line648">_Dur2</a>&gt;&amp; __rhs)
+<b><a name="line652">652  </a></b>	      { return __lhs.time_since_epoch() - __rhs.time_since_epoch(); }
+<b><a name="line653">653  </a></b>	
+<b><a name="line654">654  </a></b>	    template&lt;typename <b>_Clock</b>, typename <b>_Dur1</b>, typename <b>_Dur2</b>&gt;
+<b><a name="line655">655  </a></b>	      constexpr bool
+<b><a name="line656">656  </a></b>	      <b>operator==</b>(const <a href="#line67">time_point</a>&lt;<a href="#line654">_Clock</a>, <a href="#line654">_Dur1</a>&gt;&amp; __lhs,
+<b><a name="line657">657  </a></b>			 const <a href="#line67">time_point</a>&lt;<a href="#line654">_Clock</a>, <a href="#line654">_Dur2</a>&gt;&amp; __rhs)
+<b><a name="line658">658  </a></b>	      { return __lhs.time_since_epoch() == __rhs.time_since_epoch(); }
+<b><a name="line659">659  </a></b>	
+<b><a name="line660">660  </a></b>	    template&lt;typename <b>_Clock</b>, typename <b>_Dur1</b>, typename <b>_Dur2</b>&gt;
+<b><a name="line661">661  </a></b>	      constexpr bool
+<b><a name="line662">662  </a></b>	      <b>operator!=</b>(const <a href="#line67">time_point</a>&lt;<a href="#line660">_Clock</a>, <a href="#line660">_Dur1</a>&gt;&amp; __lhs,
+<b><a name="line663">663  </a></b>			 const <a href="#line67">time_point</a>&lt;<a href="#line660">_Clock</a>, <a href="#line660">_Dur2</a>&gt;&amp; __rhs)
+<b><a name="line664">664  </a></b>	      { return !(__lhs == __rhs); }
+<b><a name="line665">665  </a></b>	
+<b><a name="line666">666  </a></b>	    template&lt;typename <b>_Clock</b>, typename <b>_Dur1</b>, typename <b>_Dur2</b>&gt;
+<b><a name="line667">667  </a></b>	      constexpr bool
+<b><a name="line668">668  </a></b>	      <b>operator&lt;</b>(const <a href="#line67">time_point</a>&lt;<a href="#line666">_Clock</a>, <a href="#line666">_Dur1</a>&gt;&amp; __lhs,
+<b><a name="line669">669  </a></b>			const <a href="#line67">time_point</a>&lt;<a href="#line666">_Clock</a>, <a href="#line666">_Dur2</a>&gt;&amp; __rhs)
+<b><a name="line670">670  </a></b>	      { return  __lhs.time_since_epoch() &lt; __rhs.time_since_epoch(); }
+<b><a name="line671">671  </a></b>	
+<b><a name="line672">672  </a></b>	    template&lt;typename <b>_Clock</b>, typename <b>_Dur1</b>, typename <b>_Dur2</b>&gt;
+<b><a name="line673">673  </a></b>	      constexpr bool
+<b><a name="line674">674  </a></b>	      <b>operator&lt;=</b>(const <a href="#line67">time_point</a>&lt;<a href="#line672">_Clock</a>, <a href="#line672">_Dur1</a>&gt;&amp; __lhs,
+<b><a name="line675">675  </a></b>			 const <a href="#line67">time_point</a>&lt;<a href="#line672">_Clock</a>, <a href="#line672">_Dur2</a>&gt;&amp; __rhs)
+<b><a name="line676">676  </a></b>	      { return !(__rhs &lt; __lhs); }
+<b><a name="line677">677  </a></b>	
+<b><a name="line678">678  </a></b>	    template&lt;typename <b>_Clock</b>, typename <b>_Dur1</b>, typename <b>_Dur2</b>&gt;
+<b><a name="line679">679  </a></b>	      constexpr bool
+<b><a name="line680">680  </a></b>	      <b>operator&gt;</b>(const <a href="#line67">time_point</a>&lt;<a href="#line678">_Clock</a>, <a href="#line678">_Dur1</a>&gt;&amp; __lhs,
+<b><a name="line681">681  </a></b>			const <a href="#line67">time_point</a>&lt;<a href="#line678">_Clock</a>, <a href="#line678">_Dur2</a>&gt;&amp; __rhs)
+<b><a name="line682">682  </a></b>	      { return __rhs &lt; __lhs; }
+<b><a name="line683">683  </a></b>	
+<b><a name="line684">684  </a></b>	    template&lt;typename <b>_Clock</b>, typename <b>_Dur1</b>, typename <b>_Dur2</b>&gt;
+<b><a name="line685">685  </a></b>	      constexpr bool
+<b><a name="line686">686  </a></b>	      <b>operator&gt;=</b>(const <a href="#line67">time_point</a>&lt;<a href="#line684">_Clock</a>, <a href="#line684">_Dur1</a>&gt;&amp; __lhs,
+<b><a name="line687">687  </a></b>			 const <a href="#line67">time_point</a>&lt;<a href="#line684">_Clock</a>, <a href="#line684">_Dur2</a>&gt;&amp; __rhs)
+<b><a name="line688">688  </a></b>	      { return !(__lhs &lt; __rhs); }
+<b><a name="line689">689  </a></b>	
+<b><a name="line690">690  </a></b>	
+<b><a name="line691">691  </a></b>	    // Clocks. 
+<b><a name="line692">692  </a></b>	
+<b><a name="line693">693  </a></b>	    // Why nanosecond resolution as the default?  
+<b><a name="line694">694  </a></b>	    // Why have std::system_clock always count in the higest
+<b><a name="line695">695  </a></b>	    // resolution (ie nanoseconds), even if on some OSes the low 3
+<b><a name="line696">696  </a></b>	    // or 9 decimal digits will be always zero? This allows later
+<b><a name="line697">697  </a></b>	    // implementations to change the system_clock::now()
+<b><a name="line698">698  </a></b>	    // implementation any time to provide better resolution without
+<b><a name="line699">699  </a></b>	    // changing function signature or units.
+<b><a name="line700">700  </a></b>	
+<b><a name="line701">701  </a></b>	    // To support the (forward) evolution of the library's defined
+<b><a name="line702">702  </a></b>	    // clocks, wrap inside inline namespace so that the current
+<b><a name="line703">703  </a></b>	    // defintions of system_clock, steady_clock, and
+<b><a name="line704">704  </a></b>	    // high_resolution_clock types are uniquely mangled. This way, new
+<b><a name="line705">705  </a></b>	    // code can use the latests clocks, while the library can contain
+<b><a name="line706">706  </a></b>	    // compatibility definitions for previous versions.  At some
+<b><a name="line707">707  </a></b>	    // point, when these clocks settle down, the inlined namespaces
+<b><a name="line708">708  </a></b>	    // can be removed.  XXX GLIBCXX_ABI Deprecated
+<b><a name="line709">709  </a></b>	    inline namespace <b>_V2</b> {
+<b><a name="line710">710  </a></b>	
+<b><a name="line711">711  </a></b>	    /**
+<b><a name="line712">712  </a></b>	     *  @brief System clock.
+<b><a name="line713">713  </a></b>	     *
+<b><a name="line714">714  </a></b>	     *  Time returned represents wall time from the system-wide clock.
+<b><a name="line715">715  </a></b>	    */
+<b><a name="line716">716  </a></b>	    struct <b>system_clock</b>
+<b><a name="line717">717  </a></b>	    {
+<b><a name="line718">718  </a></b>	      typedef <a href="#line59">chrono</a>::<a href="#line527">nanoseconds</a>     				<b>duration</b>;
+<b><a name="line719">719  </a></b>	      typedef <a href="#line718">duration</a>::<a href="#line243">rep</a>    					<b>rep</b>;
+<b><a name="line720">720  </a></b>	      typedef <a href="#line718">duration</a>::<a href="#line244">period</a> 					<b>period</b>;
+<b><a name="line721">721  </a></b>	      typedef <a href="#line59">chrono</a>::<a href="#line546">time_point</a>&lt;<a href="#line716">system_clock</a>, <a href="#line718">duration</a>&gt; 	<b>time_point</b>;
+<b><a name="line722">722  </a></b>	
+<b><a name="line723">723  </a></b>	      static_assert(<a href="#line716">system_clock</a>::<a href="#line718">duration</a>::<a href="#line365">min</a>()
+<b><a name="line724">724  </a></b>			    <a href="#line489">&lt;</a> <a href="#line716">system_clock</a>::<a href="#line718">duration</a>::<a href="#line361">zero</a>(),
+<b><a name="line725">725  </a></b>			    &quot;a clock's minimum duration cannot be less than its epoch&quot;);
+<b><a name="line726">726  </a></b>	
+<b><a name="line727">727  </a></b>	      static constexpr bool is_steady = false;
+<b><a name="line728">728  </a></b>	
+<b><a name="line729">729  </a></b>	      static <a href="#line721">time_point</a>
+<b><a name="line730">730  </a></b>	      now() noexcept;
+<b><a name="line731">731  </a></b>	
+<b><a name="line732">732  </a></b>	      // Map to C API
+<b><a name="line733">733  </a></b>	      static <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../time.h/code.html#line75">time_t</a>
+<b><a name="line734">734  </a></b>	      <b>to_time_t</b>(const <a href="#line721">time_point</a>&amp; <b>__t</b>) noexcept
+<b><a name="line735">735  </a></b>	      {
+<b><a name="line736">736  </a></b>		return <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../time.h/code.html#line75">time_t</a>(<a href="#line194">duration_cast</a>&lt;<a href="#line59">chrono</a>::<a href="#line536">seconds</a>&gt;
+<b><a name="line737">737  </a></b>				   (<a href="#line734">__t</a>.<a href="#line568">time_since_epoch</a>()).<a href="#line278">count</a>());
+<b><a name="line738">738  </a></b>	      }
+<b><a name="line739">739  </a></b>	
+<b><a name="line740">740  </a></b>	      static <a href="#line721">time_point</a>
+<b><a name="line741">741  </a></b>	      <b>from_time_t</b>(<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../time.h/code.html#line75">time_t</a> <b>__t</b>) noexcept
+<b><a name="line742">742  </a></b>	      {
+<b><a name="line743">743  </a></b>		typedef <a href="#line59">chrono</a>::<a href="#line546">time_point</a>&lt;<a href="#line716">system_clock</a>, <a href="#line536">seconds</a>&gt;	<b>__from</b>;
+<b><a name="line744">744  </a></b>		return <a href="#line603">time_point_cast</a>&lt;<a href="#line716">system_clock</a>::<a href="#line718">duration</a>&gt;
+<b><a name="line745">745  </a></b>		       (<a href="#line743">__from</a>(<a href="#line59">chrono</a>::<a href="#line536">seconds</a>(<a href="#line741">__t</a>)));
+<b><a name="line746">746  </a></b>	      }
+<b><a name="line747">747  </a></b>	    };
+<b><a name="line748">748  </a></b>	
+<b><a name="line749">749  </a></b>	
+<b><a name="line750">750  </a></b>	    /**
+<b><a name="line751">751  </a></b>	     *  @brief Monotonic clock
+<b><a name="line752">752  </a></b>	     *
+<b><a name="line753">753  </a></b>	     *  Time returned has the property of only increasing at a uniform rate.
+<b><a name="line754">754  </a></b>	    */
+<b><a name="line755">755  </a></b>	    struct <b>steady_clock</b>
+<b><a name="line756">756  </a></b>	    {
+<b><a name="line757">757  </a></b>	      typedef <a href="#line59">chrono</a>::<a href="#line527">nanoseconds</a> 				<b>duration</b>;
+<b><a name="line758">758  </a></b>	      typedef <a href="#line757">duration</a>::<a href="#line243">rep</a>	  				<b>rep</b>;
+<b><a name="line759">759  </a></b>	      typedef <a href="#line757">duration</a>::<a href="#line244">period</a>	  				<b>period</b>;
+<b><a name="line760">760  </a></b>	      typedef <a href="#line59">chrono</a>::<a href="#line546">time_point</a>&lt;<a href="#line755">steady_clock</a>, <a href="#line757">duration</a>&gt; 	<b>time_point</b>;
+<b><a name="line761">761  </a></b>	
+<b><a name="line762">762  </a></b>	      static constexpr bool is_steady = true;
+<b><a name="line763">763  </a></b>	
+<b><a name="line764">764  </a></b>	      static <a href="#line760">time_point</a>
+<b><a name="line765">765  </a></b>	      now() noexcept;
+<b><a name="line766">766  </a></b>	    };
+<b><a name="line767">767  </a></b>	
+<b><a name="line768">768  </a></b>	
+<b><a name="line769">769  </a></b>	    /**
+<b><a name="line770">770  </a></b>	     *  @brief Highest-resolution clock
+<b><a name="line771">771  </a></b>	     *
+<b><a name="line772">772  </a></b>	     *  This is the clock &quot;with the shortest tick period.&quot; Alias to
+<b><a name="line773">773  </a></b>	     *  std::system_clock until higher-than-nanosecond definitions
+<b><a name="line774">774  </a></b>	     *  become feasible.
+<b><a name="line775">775  </a></b>	    */
+<b><a name="line776">776  </a></b>	    using <b>high_resolution_clock</b> = <a href="#line716">system_clock</a>;
+<b><a name="line777">777  </a></b>	
+<b><a name="line778">778  </a></b>	    } // end inline namespace _V2
+<b><a name="line779">779  </a></b>	
+<b><a name="line780">780  </a></b>	  <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line781">781  </a></b>	  } // namespace chrono
+<b><a name="line782">782  </a></b>	
+<b><a name="line783">783  </a></b>	#if __cplusplus &gt; 201103L
+<b><a name="line784">784  </a></b>	
+<b><a name="line785">785  </a></b>	#define __cpp_lib_chrono_udls 201304
+<b><a name="line786">786  </a></b>	
+<b><a name="line787">787  </a></b>	  inline namespace literals
+<b><a name="line788">788  </a></b>	  {
+<b><a name="line789">789  </a></b>	  inline namespace chrono_literals
+<b><a name="line790">790  </a></b>	  {
+<b><a name="line791">791  </a></b>	
+<b><a name="line792">792  </a></b>	    template&lt;typename _Rep, unsigned long long _Val&gt;
+<b><a name="line793">793  </a></b>	      struct _Checked_integral_constant
+<b><a name="line794">794  </a></b>	      : integral_constant&lt;_Rep, static_cast&lt;_Rep&gt;(_Val)&gt;
+<b><a name="line795">795  </a></b>	      {
+<b><a name="line796">796  </a></b>		static_assert(_Checked_integral_constant::value &gt;= 0
+<b><a name="line797">797  </a></b>			      &amp;&amp; _Checked_integral_constant::value == _Val,
+<b><a name="line798">798  </a></b>			      &quot;literal value cannot be represented by duration type&quot;);
+<b><a name="line799">799  </a></b>	      };
+<b><a name="line800">800  </a></b>	
+<b><a name="line801">801  </a></b>	    template&lt;typename _Dur, char... _Digits&gt;
+<b><a name="line802">802  </a></b>	      constexpr _Dur __check_overflow()
+<b><a name="line803">803  </a></b>	      {
+<b><a name="line804">804  </a></b>		using _Val = __parse_int::_Parse_int&lt;_Digits...&gt;;
+<b><a name="line805">805  </a></b>		using _Rep = typename _Dur::rep;
+<b><a name="line806">806  </a></b>		// TODO: should be simply integral_constant&lt;_Rep, _Val::value&gt;
+<b><a name="line807">807  </a></b>		// but GCC doesn't reject narrowing conversions to _Rep.
+<b><a name="line808">808  </a></b>		using _CheckedVal = _Checked_integral_constant&lt;_Rep, _Val::value&gt;;
+<b><a name="line809">809  </a></b>		return _Dur{_CheckedVal::value};
+<b><a name="line810">810  </a></b>	      }
+<b><a name="line811">811  </a></b>	
+<b><a name="line812">812  </a></b>	    constexpr chrono::duration&lt;long double, ratio&lt;3600,1&gt;&gt;
+<b><a name="line813">813  </a></b>	    operator&quot;&quot;h(long double __hours)
+<b><a name="line814">814  </a></b>	    { return chrono::duration&lt;long double, ratio&lt;3600,1&gt;&gt;{__hours}; }
+<b><a name="line815">815  </a></b>	
+<b><a name="line816">816  </a></b>	    template &lt;char... _Digits&gt;
+<b><a name="line817">817  </a></b>	      constexpr chrono::hours
+<b><a name="line818">818  </a></b>	      operator&quot;&quot;h()
+<b><a name="line819">819  </a></b>	      { return __check_overflow&lt;chrono::hours, _Digits...&gt;(); }
+<b><a name="line820">820  </a></b>	
+<b><a name="line821">821  </a></b>	    constexpr chrono::duration&lt;long double, ratio&lt;60,1&gt;&gt;
+<b><a name="line822">822  </a></b>	    operator&quot;&quot;min(long double __mins)
+<b><a name="line823">823  </a></b>	    { return chrono::duration&lt;long double, ratio&lt;60,1&gt;&gt;{__mins}; }
+<b><a name="line824">824  </a></b>	
+<b><a name="line825">825  </a></b>	    template &lt;char... _Digits&gt;
+<b><a name="line826">826  </a></b>	      constexpr chrono::minutes
+<b><a name="line827">827  </a></b>	      operator&quot;&quot;min()
+<b><a name="line828">828  </a></b>	      { return __check_overflow&lt;chrono::minutes, _Digits...&gt;(); }
+<b><a name="line829">829  </a></b>	
+<b><a name="line830">830  </a></b>	    constexpr chrono::duration&lt;long double&gt;
+<b><a name="line831">831  </a></b>	    operator&quot;&quot;s(long double __secs)
+<b><a name="line832">832  </a></b>	    { return chrono::duration&lt;long double&gt;{__secs}; }
+<b><a name="line833">833  </a></b>	
+<b><a name="line834">834  </a></b>	    template &lt;char... _Digits&gt;
+<b><a name="line835">835  </a></b>	      constexpr chrono::seconds
+<b><a name="line836">836  </a></b>	      operator&quot;&quot;s()
+<b><a name="line837">837  </a></b>	      { return __check_overflow&lt;chrono::seconds, _Digits...&gt;(); }
+<b><a name="line838">838  </a></b>	
+<b><a name="line839">839  </a></b>	    constexpr chrono::duration&lt;long double, milli&gt;
+<b><a name="line840">840  </a></b>	    operator&quot;&quot;ms(long double __msecs)
+<b><a name="line841">841  </a></b>	    { return chrono::duration&lt;long double, milli&gt;{__msecs}; }
+<b><a name="line842">842  </a></b>	
+<b><a name="line843">843  </a></b>	    template &lt;char... _Digits&gt;
+<b><a name="line844">844  </a></b>	      constexpr chrono::milliseconds
+<b><a name="line845">845  </a></b>	      operator&quot;&quot;ms()
+<b><a name="line846">846  </a></b>	      { return __check_overflow&lt;chrono::milliseconds, _Digits...&gt;(); }
+<b><a name="line847">847  </a></b>	
+<b><a name="line848">848  </a></b>	    constexpr chrono::duration&lt;long double, micro&gt;
+<b><a name="line849">849  </a></b>	    operator&quot;&quot;us(long double __usecs)
+<b><a name="line850">850  </a></b>	    { return chrono::duration&lt;long double, micro&gt;{__usecs}; }
+<b><a name="line851">851  </a></b>	
+<b><a name="line852">852  </a></b>	    template &lt;char... _Digits&gt;
+<b><a name="line853">853  </a></b>	      constexpr chrono::microseconds
+<b><a name="line854">854  </a></b>	      operator&quot;&quot;us()
+<b><a name="line855">855  </a></b>	      { return __check_overflow&lt;chrono::microseconds, _Digits...&gt;(); }
+<b><a name="line856">856  </a></b>	
+<b><a name="line857">857  </a></b>	    constexpr chrono::duration&lt;long double, nano&gt;
+<b><a name="line858">858  </a></b>	    operator&quot;&quot;ns(long double __nsecs)
+<b><a name="line859">859  </a></b>	    { return chrono::duration&lt;long double, nano&gt;{__nsecs}; }
+<b><a name="line860">860  </a></b>	
+<b><a name="line861">861  </a></b>	    template &lt;char... _Digits&gt;
+<b><a name="line862">862  </a></b>	      constexpr chrono::nanoseconds
+<b><a name="line863">863  </a></b>	      operator&quot;&quot;ns()
+<b><a name="line864">864  </a></b>	      { return __check_overflow&lt;chrono::nanoseconds, _Digits...&gt;(); }
+<b><a name="line865">865  </a></b>	
+<b><a name="line866">866  </a></b>	  } // inline namespace chrono_literals
+<b><a name="line867">867  </a></b>	  } // inline namespace literals
+<b><a name="line868">868  </a></b>	
+<b><a name="line869">869  </a></b>	  namespace chrono
+<b><a name="line870">870  </a></b>	  {
+<b><a name="line871">871  </a></b>	  _GLIBCXX_BEGIN_NAMESPACE_VERSION
+<b><a name="line872">872  </a></b>	
+<b><a name="line873">873  </a></b>	  using namespace literals::chrono_literals;
+<b><a name="line874">874  </a></b>	
+<b><a name="line875">875  </a></b>	  _GLIBCXX_END_NAMESPACE_VERSION
+<b><a name="line876">876  </a></b>	  } // namespace chrono
+<b><a name="line877">877  </a></b>	
+<b><a name="line878">878  </a></b>	#endif // __cplusplus &gt; 201103L
+<b><a name="line879">879  </a></b>	
+<b><a name="line880">880  </a></b>	  // @} group chrono
+<b><a name="line881">881  </a></b>	} // namespace std
+<b><a name="line882">882  </a></b>	
+<b><a name="line883">883  </a></b>	#endif //_GLIBCXX_USE_C99_STDINT_TR1
+<b><a name="line884">884  </a></b>	
+<b><a name="line885">885  </a></b>	#endif // C++11
+<b><a name="line886">886  </a></b>	
+<b><a name="line887">887  </a></b>	#endif //_GLIBCXX_CHRONO
+<b><a name="line888">888  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

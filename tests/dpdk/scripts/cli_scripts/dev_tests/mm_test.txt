@@ -1,0 +1,70 @@
+port_init 0 8 0 1024 1024
+dma_to_device 0 8 mm_datafile_1MB.bin 0 524288 0
+dma_from_device 0 8 MM001_port0_qcount8_size524288.bin 0 524288 0
+port_close 0
+port_init 1 8 0 1024 2048
+dma_to_device 1 8 mm_datafile_1MB.bin 0 524288 0
+dma_from_device 1 8 MM001_port1_qcount8_size524288.bin 0 524288 0
+port_close 1
+port_init 2 8 0 1024 1024
+dma_to_device 2 8 mm_datafile_1MB.bin 0 524288 0
+dma_from_device 2 8 MM001_port2_qcount8_size524288.bin 0 524288 0
+port_close 2
+port_init 3 8 0 1024 2048
+dma_to_device 3 8 mm_datafile_1MB.bin 0 524288 0
+dma_from_device 3 8 MM001_port3_qcount8_size524288.bin 0 524288 0
+port_close 3
+port_init 4 8 0 1024 1024
+dma_to_device 4 8 mm_datafile_1MB.bin 0 524288 0
+dma_from_device 4 8 MM001_port4_qcount8_size524288.bin 0 524288 0
+port_close 4
+port_init 0 8 0 1024 4096
+port_init 1 8 0 1024 4096
+port_init 2 8 0 1024 4096
+port_init 3 8 0 1024 4096
+port_init 4 8 0 1024 4096
+port_init 5 8 0 1024 4096
+dma_to_device 0 8 mm_datafile_1MB.bin 0 32768 1
+dma_from_device 0 8 MM002_port0_qcount8_size32768.bin 0 32768 1
+dma_to_device 0 8 mm_datafile_1MB.bin 0 13172 100
+dma_from_device 0 8 MM002_port0_qcount8_size13172.bin 0 13172 100
+dma_to_device 0 8 mm_datafile_1MB.bin 0 524288 1
+dma_from_device 0 8 MM002_port0_qcount8_size524288.bin 0 524288 1
+dma_to_device 1 8 mm_datafile_1MB.bin 0 32768 1
+dma_from_device 1 8 MM002_port1_qcount8_size32768.bin 0 32768 1
+dma_to_device 1 8 mm_datafile_1MB.bin 0 13172 1
+dma_from_device 1 8 MM002_port1_qcount8_size13172.bin 0 13172 1
+dma_to_device 1 8 mm_datafile_1MB.bin 0 524288 1
+dma_from_device 1 8 MM002_port1_qcount8_size524288.bin 0 524288 1
+dma_to_device 2 8 mm_datafile_1MB.bin 0 32768 1
+dma_from_device 2 8 MM002_port2_qcount8_size32768.bin 0 32768 1
+dma_to_device 2 8 mm_datafile_1MB.bin 0 13172 1
+dma_from_device 2 8 MM002_port2_qcount8_size13172.bin 0 13172 1
+dma_to_device 2 8 mm_datafile_1MB.bin 0 524288 1
+dma_from_device 2 8 MM002_port2_qcount8_size524288.bin 0 524288 1
+dma_to_device 3 8 mm_datafile_1MB.bin 0 32768 1
+dma_from_device 3 8 MM002_port3_qcount8_size32768.bin 0 32768 1
+dma_to_device 3 8 mm_datafile_1MB.bin 0 13172 1
+dma_from_device 3 8 MM002_port3_qcount8_size13172.bin 0 13172 1
+dma_to_device 3 8 mm_datafile_1MB.bin 0 524288 1
+dma_from_device 3 8 MM002_port3_qcount8_size524288.bin 0 524288 1
+dma_to_device 4 8 mm_datafile_1MB.bin 0 32768 1
+dma_from_device 4 8 MM002_port4_qcount8_size32768.bin 0 32768 1
+dma_to_device 4 8 mm_datafile_1MB.bin 0 13172 1
+dma_from_device 4 8 MM002_port4_qcount8_size13172.bin 0 13172 1
+dma_to_device 4 8 mm_datafile_1MB.bin 0 524288 1
+dma_from_device 4 8 MM002_port4_qcount8_size524288.bin 0 524288 1
+dma_to_device 5 8 mm_datafile_1MB.bin 0 32768 1
+dma_from_device 5 8 MM002_port5_qcount8_size32768.bin 0 32768 1
+dma_to_device 5 8 mm_datafile_1MB.bin 0 13172 1
+dma_from_device 5 8 MM002_port5_qcount8_size13172.bin 0 13172 1
+dma_to_device 5 8 mm_datafile_1MB.bin 0 524288 1
+dma_from_device 5 8 MM002_port5_qcount8_size524288.bin 0 524288 1
+dma_to_device 0 8 mm_datafile_1MB.bin 0 524288 1000
+dma_from_device 0 8 MM002_port0_qcount8_size524288_1000.bin 0 524288 1000
+port_close 0
+port_close 1
+port_close 2
+port_close 3
+port_close 4
+port_close 5

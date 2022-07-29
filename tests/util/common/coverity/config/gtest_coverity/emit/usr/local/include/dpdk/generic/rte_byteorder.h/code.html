@@ -1,0 +1,304 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/generic/rte_byteorder.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2010-2014 Intel Corporation
+<b><a name="line3">3    </a></b>	 */
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	#ifndef _RTE_BYTEORDER_H_
+<b><a name="line6">6    </a></b>	#define <b>_RTE_BYTEORDER_H_</b>
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	/**
+<b><a name="line9">9    </a></b>	 * @file
+<b><a name="line10">10   </a></b>	 *
+<b><a name="line11">11   </a></b>	 * Byte Swap Operations
+<b><a name="line12">12   </a></b>	 *
+<b><a name="line13">13   </a></b>	 * This file defines a generic API for byte swap operations. Part of
+<b><a name="line14">14   </a></b>	 * the implementation is architecture-specific.
+<b><a name="line15">15   </a></b>	 */
+<b><a name="line16">16   </a></b>	
+<b><a name="line17">17   </a></b>	#include &lt;stdint.h&gt;
+<b><a name="line18">18   </a></b>	#ifdef RTE_EXEC_ENV_BSDAPP
+<b><a name="line19">19   </a></b>	#include &lt;sys/endian.h&gt;
+<b><a name="line20">20   </a></b>	#else
+<b><a name="line21">21   </a></b>	#include &lt;endian.h&gt;
+<b><a name="line22">22   </a></b>	#endif
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>	#include &lt;rte_common.h&gt;
+<b><a name="line25">25   </a></b>	#include &lt;rte_config.h&gt;
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>	/*
+<b><a name="line28">28   </a></b>	 * Compile-time endianness detection
+<b><a name="line29">29   </a></b>	 */
+<b><a name="line30">30   </a></b>	#define <b>RTE_BIG_ENDIAN</b>    1
+<b><a name="line31">31   </a></b>	#define <b>RTE_LITTLE_ENDIAN</b> 2
+<b><a name="line32">32   </a></b>	#if defined <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line714">__BYTE_ORDER__</a>
+<b><a name="line33">33   </a></b>	#if <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line714">__BYTE_ORDER__</a> == <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line633">__ORDER_BIG_ENDIAN__</a>
+<b><a name="line34">34   </a></b>	#define RTE_BYTE_ORDER RTE_BIG_ENDIAN
+<b><a name="line35">35   </a></b>	#elif <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line714">__BYTE_ORDER__</a> == <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line42">__ORDER_LITTLE_ENDIAN__</a>
+<b><a name="line36">36   </a></b>	#define <b>RTE_BYTE_ORDER</b> RTE_LITTLE_ENDIAN
+<b><a name="line37">37   </a></b>	#endif /* __BYTE_ORDER__ */
+<b><a name="line38">38   </a></b>	#elif defined __BYTE_ORDER
+<b><a name="line39">39   </a></b>	#if __BYTE_ORDER == __BIG_ENDIAN
+<b><a name="line40">40   </a></b>	#define RTE_BYTE_ORDER RTE_BIG_ENDIAN
+<b><a name="line41">41   </a></b>	#elif __BYTE_ORDER == __LITTLE_ENDIAN
+<b><a name="line42">42   </a></b>	#define RTE_BYTE_ORDER RTE_LITTLE_ENDIAN
+<b><a name="line43">43   </a></b>	#endif /* __BYTE_ORDER */
+<b><a name="line44">44   </a></b>	#elif defined __BIG_ENDIAN__
+<b><a name="line45">45   </a></b>	#define RTE_BYTE_ORDER RTE_BIG_ENDIAN
+<b><a name="line46">46   </a></b>	#elif defined __LITTLE_ENDIAN__
+<b><a name="line47">47   </a></b>	#define RTE_BYTE_ORDER RTE_LITTLE_ENDIAN
+<b><a name="line48">48   </a></b>	#endif
+<b><a name="line49">49   </a></b>	#if !defined(<a href="#line36">RTE_BYTE_ORDER</a>)
+<b><a name="line50">50   </a></b>	#error Unknown endianness.
+<b><a name="line51">51   </a></b>	#endif
+<b><a name="line52">52   </a></b>	
+<b><a name="line53">53   </a></b>	#define <b>RTE_STATIC_BSWAP16</b>(v) \
+<b><a name="line54">54   </a></b>		((((uint16_t)(v) &amp; UINT16_C(0x00ff)) &lt;&lt; 8) | \
+<b><a name="line55">55   </a></b>		 (((uint16_t)(v) &amp; UINT16_C(0xff00)) &gt;&gt; 8))
+<b><a name="line56">56   </a></b>	
+<b><a name="line57">57   </a></b>	#define <b>RTE_STATIC_BSWAP32</b>(v) \
+<b><a name="line58">58   </a></b>		((((uint32_t)(v) &amp; UINT32_C(0x000000ff)) &lt;&lt; 24) | \
+<b><a name="line59">59   </a></b>		 (((uint32_t)(v) &amp; UINT32_C(0x0000ff00)) &lt;&lt;  8) | \
+<b><a name="line60">60   </a></b>		 (((uint32_t)(v) &amp; UINT32_C(0x00ff0000)) &gt;&gt;  8) | \
+<b><a name="line61">61   </a></b>		 (((uint32_t)(v) &amp; UINT32_C(0xff000000)) &gt;&gt; 24))
+<b><a name="line62">62   </a></b>	
+<b><a name="line63">63   </a></b>	#define <b>RTE_STATIC_BSWAP64</b>(v) \
+<b><a name="line64">64   </a></b>		((((uint64_t)(v) &amp; UINT64_C(0x00000000000000ff)) &lt;&lt; 56) | \
+<b><a name="line65">65   </a></b>		 (((uint64_t)(v) &amp; UINT64_C(0x000000000000ff00)) &lt;&lt; 40) | \
+<b><a name="line66">66   </a></b>		 (((uint64_t)(v) &amp; UINT64_C(0x0000000000ff0000)) &lt;&lt; 24) | \
+<b><a name="line67">67   </a></b>		 (((uint64_t)(v) &amp; UINT64_C(0x00000000ff000000)) &lt;&lt;  8) | \
+<b><a name="line68">68   </a></b>		 (((uint64_t)(v) &amp; UINT64_C(0x000000ff00000000)) &gt;&gt;  8) | \
+<b><a name="line69">69   </a></b>		 (((uint64_t)(v) &amp; UINT64_C(0x0000ff0000000000)) &gt;&gt; 24) | \
+<b><a name="line70">70   </a></b>		 (((uint64_t)(v) &amp; UINT64_C(0x00ff000000000000)) &gt;&gt; 40) | \
+<b><a name="line71">71   </a></b>		 (((uint64_t)(v) &amp; UINT64_C(0xff00000000000000)) &gt;&gt; 56))
+<b><a name="line72">72   </a></b>	
+<b><a name="line73">73   </a></b>	/*
+<b><a name="line74">74   </a></b>	 * These macros are functionally similar to rte_cpu_to_(be|le)(16|32|64)(),
+<b><a name="line75">75   </a></b>	 * they take values in host CPU order and return them converted to the
+<b><a name="line76">76   </a></b>	 * intended endianness.
+<b><a name="line77">77   </a></b>	 *
+<b><a name="line78">78   </a></b>	 * They resolve at compilation time to integer constants which can safely be
+<b><a name="line79">79   </a></b>	 * used with static initializers, since those cannot involve function calls.
+<b><a name="line80">80   </a></b>	 *
+<b><a name="line81">81   </a></b>	 * On the other hand, they are not as optimized as their rte_cpu_to_*()
+<b><a name="line82">82   </a></b>	 * counterparts, therefore applications should refrain from using them on
+<b><a name="line83">83   </a></b>	 * variable values, particularly inside performance-sensitive code.
+<b><a name="line84">84   </a></b>	 */
+<b><a name="line85">85   </a></b>	#if <a href="#line36">RTE_BYTE_ORDER</a> == <a href="#line30">RTE_BIG_ENDIAN</a>
+<b><a name="line86">86   </a></b>	#define RTE_BE16(v) (rte_be16_t)(v)
+<b><a name="line87">87   </a></b>	#define RTE_BE32(v) (rte_be32_t)(v)
+<b><a name="line88">88   </a></b>	#define RTE_BE64(v) (rte_be64_t)(v)
+<b><a name="line89">89   </a></b>	#define RTE_LE16(v) (rte_le16_t)(RTE_STATIC_BSWAP16(v))
+<b><a name="line90">90   </a></b>	#define RTE_LE32(v) (rte_le32_t)(RTE_STATIC_BSWAP32(v))
+<b><a name="line91">91   </a></b>	#define RTE_LE64(v) (rte_le64_t)(RTE_STATIC_BSWAP64(v))
+<b><a name="line92">92   </a></b>	#elif <a href="#line36">RTE_BYTE_ORDER</a> == <a href="#line31">RTE_LITTLE_ENDIAN</a>
+<b><a name="line93">93   </a></b>	#define <b>RTE_BE16</b>(v) (rte_be16_t)(RTE_STATIC_BSWAP16(v))
+<b><a name="line94">94   </a></b>	#define <b>RTE_BE32</b>(v) (rte_be32_t)(RTE_STATIC_BSWAP32(v))
+<b><a name="line95">95   </a></b>	#define <b>RTE_BE64</b>(v) (rte_be64_t)(RTE_STATIC_BSWAP64(v))
+<b><a name="line96">96   </a></b>	#define <b>RTE_LE16</b>(v) (rte_be16_t)(v)
+<b><a name="line97">97   </a></b>	#define <b>RTE_LE32</b>(v) (rte_be32_t)(v)
+<b><a name="line98">98   </a></b>	#define <b>RTE_LE64</b>(v) (rte_be64_t)(v)
+<b><a name="line99">99   </a></b>	#else
+<b><a name="line100">100  </a></b>	#error Unsupported endianness.
+<b><a name="line101">101  </a></b>	#endif
+<b><a name="line102">102  </a></b>	
+<b><a name="line103">103  </a></b>	/*
+<b><a name="line104">104  </a></b>	 * The following types should be used when handling values according to a
+<b><a name="line105">105  </a></b>	 * specific byte ordering, which may differ from that of the host CPU.
+<b><a name="line106">106  </a></b>	 *
+<b><a name="line107">107  </a></b>	 * Libraries, public APIs and applications are encouraged to use them for
+<b><a name="line108">108  </a></b>	 * documentation purposes.
+<b><a name="line109">109  </a></b>	 */
+<b><a name="line110">110  </a></b>	typedef <a href="../../../../../include/stdint.h/code.html#line49">uint16_t</a> <b>rte_be16_t</b>; /**&lt; 16-bit big-endian value. */
+<b><a name="line111">111  </a></b>	typedef <a href="../../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>rte_be32_t</b>; /**&lt; 32-bit big-endian value. */
+<b><a name="line112">112  </a></b>	typedef <a href="../../../../../include/stdint.h/code.html#line55">uint64_t</a> <b>rte_be64_t</b>; /**&lt; 64-bit big-endian value. */
+<b><a name="line113">113  </a></b>	typedef <a href="../../../../../include/stdint.h/code.html#line49">uint16_t</a> <b>rte_le16_t</b>; /**&lt; 16-bit little-endian value. */
+<b><a name="line114">114  </a></b>	typedef <a href="../../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>rte_le32_t</b>; /**&lt; 32-bit little-endian value. */
+<b><a name="line115">115  </a></b>	typedef <a href="../../../../../include/stdint.h/code.html#line55">uint64_t</a> <b>rte_le64_t</b>; /**&lt; 64-bit little-endian value. */
+<b><a name="line116">116  </a></b>	
+<b><a name="line117">117  </a></b>	/*
+<b><a name="line118">118  </a></b>	 * An internal function to swap bytes in a 16-bit value.
+<b><a name="line119">119  </a></b>	 *
+<b><a name="line120">120  </a></b>	 * It is used by rte_bswap16() when the value is constant. Do not use
+<b><a name="line121">121  </a></b>	 * this function directly; rte_bswap16() is preferred.
+<b><a name="line122">122  </a></b>	 */
+<b><a name="line123">123  </a></b>	static inline <a href="../../../../../include/stdint.h/code.html#line49">uint16_t</a>
+<b><a name="line124">124  </a></b>	<b>rte_constant_bswap16</b>(<a href="../../../../../include/stdint.h/code.html#line49">uint16_t</a> <b>x</b>)
+<b><a name="line125">125  </a></b>	{
+<b><a name="line126">126  </a></b>		return (<a href="../../../../../include/stdint.h/code.html#line49">uint16_t</a>)<a href="#line53">RTE_STATIC_BSWAP16</a>(x);
+<b><a name="line127">127  </a></b>	}
+<b><a name="line128">128  </a></b>	
+<b><a name="line129">129  </a></b>	/*
+<b><a name="line130">130  </a></b>	 * An internal function to swap bytes in a 32-bit value.
+<b><a name="line131">131  </a></b>	 *
+<b><a name="line132">132  </a></b>	 * It is used by rte_bswap32() when the value is constant. Do not use
+<b><a name="line133">133  </a></b>	 * this function directly; rte_bswap32() is preferred.
+<b><a name="line134">134  </a></b>	 */
+<b><a name="line135">135  </a></b>	static inline <a href="../../../../../include/stdint.h/code.html#line51">uint32_t</a>
+<b><a name="line136">136  </a></b>	<b>rte_constant_bswap32</b>(<a href="../../../../../include/stdint.h/code.html#line51">uint32_t</a> <b>x</b>)
+<b><a name="line137">137  </a></b>	{
+<b><a name="line138">138  </a></b>		return (<a href="../../../../../include/stdint.h/code.html#line51">uint32_t</a>)<a href="#line57">RTE_STATIC_BSWAP32</a>(x);
+<b><a name="line139">139  </a></b>	}
+<b><a name="line140">140  </a></b>	
+<b><a name="line141">141  </a></b>	/*
+<b><a name="line142">142  </a></b>	 * An internal function to swap bytes of a 64-bit value.
+<b><a name="line143">143  </a></b>	 *
+<b><a name="line144">144  </a></b>	 * It is used by rte_bswap64() when the value is constant. Do not use
+<b><a name="line145">145  </a></b>	 * this function directly; rte_bswap64() is preferred.
+<b><a name="line146">146  </a></b>	 */
+<b><a name="line147">147  </a></b>	static inline <a href="../../../../../include/stdint.h/code.html#line55">uint64_t</a>
+<b><a name="line148">148  </a></b>	<b>rte_constant_bswap64</b>(<a href="../../../../../include/stdint.h/code.html#line55">uint64_t</a> <b>x</b>)
+<b><a name="line149">149  </a></b>	{
+<b><a name="line150">150  </a></b>		return (<a href="../../../../../include/stdint.h/code.html#line55">uint64_t</a>)<a href="#line63">RTE_STATIC_BSWAP64</a>(x);
+<b><a name="line151">151  </a></b>	}
+<b><a name="line152">152  </a></b>	
+<b><a name="line153">153  </a></b>	
+<b><a name="line154">154  </a></b>	#ifdef __DOXYGEN__
+<b><a name="line155">155  </a></b>	
+<b><a name="line156">156  </a></b>	/**
+<b><a name="line157">157  </a></b>	 * Swap bytes in a 16-bit value.
+<b><a name="line158">158  </a></b>	 */
+<b><a name="line159">159  </a></b>	static uint16_t rte_bswap16(uint16_t _x);
+<b><a name="line160">160  </a></b>	
+<b><a name="line161">161  </a></b>	/**
+<b><a name="line162">162  </a></b>	 * Swap bytes in a 32-bit value.
+<b><a name="line163">163  </a></b>	 */
+<b><a name="line164">164  </a></b>	static uint32_t rte_bswap32(uint32_t x);
+<b><a name="line165">165  </a></b>	
+<b><a name="line166">166  </a></b>	/**
+<b><a name="line167">167  </a></b>	 * Swap bytes in a 64-bit value.
+<b><a name="line168">168  </a></b>	 */
+<b><a name="line169">169  </a></b>	static uint64_t rte_bswap64(uint64_t x);
+<b><a name="line170">170  </a></b>	
+<b><a name="line171">171  </a></b>	/**
+<b><a name="line172">172  </a></b>	 * Convert a 16-bit value from CPU order to little endian.
+<b><a name="line173">173  </a></b>	 */
+<b><a name="line174">174  </a></b>	static rte_le16_t rte_cpu_to_le_16(uint16_t x);
+<b><a name="line175">175  </a></b>	
+<b><a name="line176">176  </a></b>	/**
+<b><a name="line177">177  </a></b>	 * Convert a 32-bit value from CPU order to little endian.
+<b><a name="line178">178  </a></b>	 */
+<b><a name="line179">179  </a></b>	static rte_le32_t rte_cpu_to_le_32(uint32_t x);
+<b><a name="line180">180  </a></b>	
+<b><a name="line181">181  </a></b>	/**
+<b><a name="line182">182  </a></b>	 * Convert a 64-bit value from CPU order to little endian.
+<b><a name="line183">183  </a></b>	 */
+<b><a name="line184">184  </a></b>	static rte_le64_t rte_cpu_to_le_64(uint64_t x);
+<b><a name="line185">185  </a></b>	
+<b><a name="line186">186  </a></b>	
+<b><a name="line187">187  </a></b>	/**
+<b><a name="line188">188  </a></b>	 * Convert a 16-bit value from CPU order to big endian.
+<b><a name="line189">189  </a></b>	 */
+<b><a name="line190">190  </a></b>	static rte_be16_t rte_cpu_to_be_16(uint16_t x);
+<b><a name="line191">191  </a></b>	
+<b><a name="line192">192  </a></b>	/**
+<b><a name="line193">193  </a></b>	 * Convert a 32-bit value from CPU order to big endian.
+<b><a name="line194">194  </a></b>	 */
+<b><a name="line195">195  </a></b>	static rte_be32_t rte_cpu_to_be_32(uint32_t x);
+<b><a name="line196">196  </a></b>	
+<b><a name="line197">197  </a></b>	/**
+<b><a name="line198">198  </a></b>	 * Convert a 64-bit value from CPU order to big endian.
+<b><a name="line199">199  </a></b>	 */
+<b><a name="line200">200  </a></b>	static rte_be64_t rte_cpu_to_be_64(uint64_t x);
+<b><a name="line201">201  </a></b>	
+<b><a name="line202">202  </a></b>	
+<b><a name="line203">203  </a></b>	/**
+<b><a name="line204">204  </a></b>	 * Convert a 16-bit value from little endian to CPU order.
+<b><a name="line205">205  </a></b>	 */
+<b><a name="line206">206  </a></b>	static uint16_t rte_le_to_cpu_16(rte_le16_t x);
+<b><a name="line207">207  </a></b>	
+<b><a name="line208">208  </a></b>	/**
+<b><a name="line209">209  </a></b>	 * Convert a 32-bit value from little endian to CPU order.
+<b><a name="line210">210  </a></b>	 */
+<b><a name="line211">211  </a></b>	static uint32_t rte_le_to_cpu_32(rte_le32_t x);
+<b><a name="line212">212  </a></b>	
+<b><a name="line213">213  </a></b>	/**
+<b><a name="line214">214  </a></b>	 * Convert a 64-bit value from little endian to CPU order.
+<b><a name="line215">215  </a></b>	 */
+<b><a name="line216">216  </a></b>	static uint64_t rte_le_to_cpu_64(rte_le64_t x);
+<b><a name="line217">217  </a></b>	
+<b><a name="line218">218  </a></b>	
+<b><a name="line219">219  </a></b>	/**
+<b><a name="line220">220  </a></b>	 * Convert a 16-bit value from big endian to CPU order.
+<b><a name="line221">221  </a></b>	 */
+<b><a name="line222">222  </a></b>	static uint16_t rte_be_to_cpu_16(rte_be16_t x);
+<b><a name="line223">223  </a></b>	
+<b><a name="line224">224  </a></b>	/**
+<b><a name="line225">225  </a></b>	 * Convert a 32-bit value from big endian to CPU order.
+<b><a name="line226">226  </a></b>	 */
+<b><a name="line227">227  </a></b>	static uint32_t rte_be_to_cpu_32(rte_be32_t x);
+<b><a name="line228">228  </a></b>	
+<b><a name="line229">229  </a></b>	/**
+<b><a name="line230">230  </a></b>	 * Convert a 64-bit value from big endian to CPU order.
+<b><a name="line231">231  </a></b>	 */
+<b><a name="line232">232  </a></b>	static uint64_t rte_be_to_cpu_64(rte_be64_t x);
+<b><a name="line233">233  </a></b>	
+<b><a name="line234">234  </a></b>	#endif /* __DOXYGEN__ */
+<b><a name="line235">235  </a></b>	
+<b><a name="line236">236  </a></b>	#ifdef RTE_FORCE_INTRINSICS
+<b><a name="line237">237  </a></b>	#if __GNUC__ &gt; 4 || (__GNUC__ == 4 &amp;&amp; __GNUC_MINOR__ &gt;= 8)
+<b><a name="line238">238  </a></b>	#define rte_bswap16(x) __builtin_bswap16(x)
+<b><a name="line239">239  </a></b>	#endif
+<b><a name="line240">240  </a></b>	
+<b><a name="line241">241  </a></b>	#define rte_bswap32(x) __builtin_bswap32(x)
+<b><a name="line242">242  </a></b>	
+<b><a name="line243">243  </a></b>	#define rte_bswap64(x) __builtin_bswap64(x)
+<b><a name="line244">244  </a></b>	
+<b><a name="line245">245  </a></b>	#endif
+<b><a name="line246">246  </a></b>	
+<b><a name="line247">247  </a></b>	#endif /* _RTE_BYTEORDER_H_ */
+<b><a name="line248">248  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

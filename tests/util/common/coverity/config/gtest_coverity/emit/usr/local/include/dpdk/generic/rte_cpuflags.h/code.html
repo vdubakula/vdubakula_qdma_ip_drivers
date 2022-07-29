@@ -1,0 +1,145 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/generic/rte_cpuflags.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2010-2014 Intel Corporation
+<b><a name="line3">3    </a></b>	 */
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	#ifndef _RTE_CPUFLAGS_H_
+<b><a name="line6">6    </a></b>	#define <b>_RTE_CPUFLAGS_H_</b>
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	/**
+<b><a name="line9">9    </a></b>	 * @file
+<b><a name="line10">10   </a></b>	 * Architecture specific API to determine available CPU features at runtime.
+<b><a name="line11">11   </a></b>	 */
+<b><a name="line12">12   </a></b>	
+<b><a name="line13">13   </a></b>	#include &quot;rte_common.h&quot;
+<b><a name="line14">14   </a></b>	#include &lt;errno.h&gt;
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	/**
+<b><a name="line17">17   </a></b>	 * Enumeration of all CPU features supported
+<b><a name="line18">18   </a></b>	 */
+<b><a name="line19">19   </a></b>	__extension__
+<b><a name="line20">20   </a></b>	enum <a href="../../rte_cpuflags.h/code.html#line12">rte_cpu_flag_t</a>;
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	/**
+<b><a name="line23">23   </a></b>	 * Get name of CPU flag
+<b><a name="line24">24   </a></b>	 *
+<b><a name="line25">25   </a></b>	 * @param feature
+<b><a name="line26">26   </a></b>	 *     CPU flag ID
+<b><a name="line27">27   </a></b>	 * @return
+<b><a name="line28">28   </a></b>	 *     flag name
+<b><a name="line29">29   </a></b>	 *     NULL if flag ID is invalid
+<b><a name="line30">30   </a></b>	 */
+<b><a name="line31">31   </a></b>	__extension__
+<b><a name="line32">32   </a></b>	const char *
+<b><a name="line33">33   </a></b>	rte_cpu_get_flag_name(enum <a href="../../rte_cpuflags.h/code.html#line12">rte_cpu_flag_t</a> feature);
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	/**
+<b><a name="line36">36   </a></b>	 * Function for checking a CPU flag availability
+<b><a name="line37">37   </a></b>	 *
+<b><a name="line38">38   </a></b>	 * @param feature
+<b><a name="line39">39   </a></b>	 *     CPU flag to query CPU for
+<b><a name="line40">40   </a></b>	 * @return
+<b><a name="line41">41   </a></b>	 *     1 if flag is available
+<b><a name="line42">42   </a></b>	 *     0 if flag is not available
+<b><a name="line43">43   </a></b>	 *     -ENOENT if flag is invalid
+<b><a name="line44">44   </a></b>	 */
+<b><a name="line45">45   </a></b>	__extension__
+<b><a name="line46">46   </a></b>	int
+<b><a name="line47">47   </a></b>	rte_cpu_get_flag_enabled(enum <a href="../../rte_cpuflags.h/code.html#line12">rte_cpu_flag_t</a> feature);
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	/**
+<b><a name="line50">50   </a></b>	 * This function checks that the currently used CPU supports the CPU features
+<b><a name="line51">51   </a></b>	 * that were specified at compile time. It is called automatically within the
+<b><a name="line52">52   </a></b>	 * EAL, so does not need to be used by applications.
+<b><a name="line53">53   </a></b>	 */
+<b><a name="line54">54   </a></b>	<a href="../../rte_common.h/code.html#line69">__rte_deprecated</a>
+<b><a name="line55">55   </a></b>	void
+<b><a name="line56">56   </a></b>	rte_cpu_check_supported(void);
+<b><a name="line57">57   </a></b>	
+<b><a name="line58">58   </a></b>	/**
+<b><a name="line59">59   </a></b>	 * This function checks that the currently used CPU supports the CPU features
+<b><a name="line60">60   </a></b>	 * that were specified at compile time. It is called automatically within the
+<b><a name="line61">61   </a></b>	 * EAL, so does not need to be used by applications.  This version returns a
+<b><a name="line62">62   </a></b>	 * result so that decisions may be made (for instance, graceful shutdowns).
+<b><a name="line63">63   </a></b>	 */
+<b><a name="line64">64   </a></b>	int
+<b><a name="line65">65   </a></b>	rte_cpu_is_supported(void);
+<b><a name="line66">66   </a></b>	
+<b><a name="line67">67   </a></b>	/**
+<b><a name="line68">68   </a></b>	 * This function attempts to retrieve a value from the auxiliary vector.
+<b><a name="line69">69   </a></b>	 * If it is unsuccessful, the result will be 0, and errno will be set.
+<b><a name="line70">70   </a></b>	 *
+<b><a name="line71">71   </a></b>	 * @return A value from the auxiliary vector.  When the value is 0, check
+<b><a name="line72">72   </a></b>	 * errno to determine if an error occurred.
+<b><a name="line73">73   </a></b>	 */
+<b><a name="line74">74   </a></b>	unsigned long
+<b><a name="line75">75   </a></b>	rte_cpu_getauxval(unsigned long type);
+<b><a name="line76">76   </a></b>	
+<b><a name="line77">77   </a></b>	/**
+<b><a name="line78">78   </a></b>	 * This function retrieves a value from the auxiliary vector, and compares it
+<b><a name="line79">79   </a></b>	 * as a string against the value retrieved.
+<b><a name="line80">80   </a></b>	 *
+<b><a name="line81">81   </a></b>	 * @return The result of calling strcmp() against the value retrieved from
+<b><a name="line82">82   </a></b>	 * the auxiliary vector.  When the value is 0 (meaning a match is found),
+<b><a name="line83">83   </a></b>	 * check errno to determine if an error occurred.
+<b><a name="line84">84   </a></b>	 */
+<b><a name="line85">85   </a></b>	int
+<b><a name="line86">86   </a></b>	rte_cpu_strcmp_auxval(unsigned long type, const char *str);
+<b><a name="line87">87   </a></b>	
+<b><a name="line88">88   </a></b>	#endif /* _RTE_CPUFLAGS_H_ */
+<b><a name="line89">89   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

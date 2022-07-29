@@ -1,0 +1,238 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_spinlock.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2010-2014 Intel Corporation
+<b><a name="line3">3    </a></b>	 */
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	#ifndef _RTE_SPINLOCK_X86_64_H_
+<b><a name="line6">6    </a></b>	#define <b>_RTE_SPINLOCK_X86_64_H_</b>
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	#ifdef __cplusplus
+<b><a name="line9">9    </a></b>	extern &quot;C&quot; {
+<b><a name="line10">10   </a></b>	#endif
+<b><a name="line11">11   </a></b>	
+<b><a name="line12">12   </a></b>	#include &quot;generic/rte_spinlock.h&quot;
+<b><a name="line13">13   </a></b>	#include &quot;rte_rtm.h&quot;
+<b><a name="line14">14   </a></b>	#include &quot;rte_cpuflags.h&quot;
+<b><a name="line15">15   </a></b>	#include &quot;rte_branch_prediction.h&quot;
+<b><a name="line16">16   </a></b>	#include &quot;rte_common.h&quot;
+<b><a name="line17">17   </a></b>	#include &quot;rte_pause.h&quot;
+<b><a name="line18">18   </a></b>	#include &quot;rte_cycles.h&quot;
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	#define <b>RTE_RTM_MAX_RETRIES</b> (20)
+<b><a name="line21">21   </a></b>	#define <b>RTE_XABORT_LOCK_BUSY</b> (0xff)
+<b><a name="line22">22   </a></b>	
+<b><a name="line23">23   </a></b>	#ifndef RTE_FORCE_INTRINSICS
+<b><a name="line24">24   </a></b>	static inline void
+<b><a name="line25">25   </a></b>	<b>rte_spinlock_lock</b>(<a href="../generic/rte_spinlock.h/code.html#line32">rte_spinlock_t</a> *<b>sl</b>)
+<b><a name="line26">26   </a></b>	{
+<b><a name="line27">27   </a></b>		int <b>lock_val</b> = 1;
+<b><a name="line28">28   </a></b>		<a href="../rte_common.h/code.html#line32">asm</a> volatile (
+<b><a name="line29">29   </a></b>				&quot;1:\n&quot;
+<b><a name="line30">30   </a></b>				&quot;xchg %[locked], %[lv]\n&quot;
+<b><a name="line31">31   </a></b>				&quot;test %[lv], %[lv]\n&quot;
+<b><a name="line32">32   </a></b>				&quot;jz 3f\n&quot;
+<b><a name="line33">33   </a></b>				&quot;2:\n&quot;
+<b><a name="line34">34   </a></b>				&quot;pause\n&quot;
+<b><a name="line35">35   </a></b>				&quot;cmpl $0, %[locked]\n&quot;
+<b><a name="line36">36   </a></b>				&quot;jnz 2b\n&quot;
+<b><a name="line37">37   </a></b>				&quot;jmp 1b\n&quot;
+<b><a name="line38">38   </a></b>				&quot;3:\n&quot;
+<b><a name="line39">39   </a></b>				: [locked] &quot;=m&quot; (<a href="#line25">sl</a>-&gt;<a href="../generic/rte_spinlock.h/code.html#line31">locked</a>), [lv] &quot;=q&quot; (<a href="#line27">lock_val</a>)
+<b><a name="line40">40   </a></b>				: &quot;[lv]&quot; (<a href="#line27">lock_val</a>)
+<b><a name="line41">41   </a></b>				: &quot;memory&quot;);
+<b><a name="line42">42   </a></b>	}
+<b><a name="line43">43   </a></b>	
+<b><a name="line44">44   </a></b>	static inline void
+<b><a name="line45">45   </a></b>	<b>rte_spinlock_unlock</b> (<a href="../generic/rte_spinlock.h/code.html#line32">rte_spinlock_t</a> *<b>sl</b>)
+<b><a name="line46">46   </a></b>	{
+<b><a name="line47">47   </a></b>		int <b>unlock_val</b> = 0;
+<b><a name="line48">48   </a></b>		<a href="../rte_common.h/code.html#line32">asm</a> volatile (
+<b><a name="line49">49   </a></b>				&quot;xchg %[locked], %[ulv]\n&quot;
+<b><a name="line50">50   </a></b>				: [locked] &quot;=m&quot; (<a href="#line45">sl</a>-&gt;<a href="../generic/rte_spinlock.h/code.html#line31">locked</a>), [ulv] &quot;=q&quot; (<a href="#line47">unlock_val</a>)
+<b><a name="line51">51   </a></b>				: &quot;[ulv]&quot; (<a href="#line47">unlock_val</a>)
+<b><a name="line52">52   </a></b>				: &quot;memory&quot;);
+<b><a name="line53">53   </a></b>	}
+<b><a name="line54">54   </a></b>	
+<b><a name="line55">55   </a></b>	static inline int
+<b><a name="line56">56   </a></b>	<b>rte_spinlock_trylock</b> (<a href="../generic/rte_spinlock.h/code.html#line32">rte_spinlock_t</a> *<b>sl</b>)
+<b><a name="line57">57   </a></b>	{
+<b><a name="line58">58   </a></b>		int <b>lockval</b> = 1;
+<b><a name="line59">59   </a></b>	
+<b><a name="line60">60   </a></b>		<a href="../rte_common.h/code.html#line32">asm</a> volatile (
+<b><a name="line61">61   </a></b>				&quot;xchg %[locked], %[lockval]&quot;
+<b><a name="line62">62   </a></b>				: [locked] &quot;=m&quot; (<a href="#line56">sl</a>-&gt;<a href="../generic/rte_spinlock.h/code.html#line31">locked</a>), [lockval] &quot;=q&quot; (<a href="#line58">lockval</a>)
+<b><a name="line63">63   </a></b>				: &quot;[lockval]&quot; (<a href="#line58">lockval</a>)
+<b><a name="line64">64   </a></b>				: &quot;memory&quot;);
+<b><a name="line65">65   </a></b>	
+<b><a name="line66">66   </a></b>		return <a href="#line58">lockval</a> == 0;
+<b><a name="line67">67   </a></b>	}
+<b><a name="line68">68   </a></b>	#endif
+<b><a name="line69">69   </a></b>	
+<b><a name="line70">70   </a></b>	extern <a href="../../../../include/stdint.h/code.html#line48">uint8_t</a> rte_rtm_supported;
+<b><a name="line71">71   </a></b>	
+<b><a name="line72">72   </a></b>	static inline int <b>rte_tm_supported</b>(void)
+<b><a name="line73">73   </a></b>	{
+<b><a name="line74">74   </a></b>		return <a href="#line70">rte_rtm_supported</a>;
+<b><a name="line75">75   </a></b>	}
+<b><a name="line76">76   </a></b>	
+<b><a name="line77">77   </a></b>	static inline int
+<b><a name="line78">78   </a></b>	<b>rte_try_tm</b>(volatile int *<b>lock</b>)
+<b><a name="line79">79   </a></b>	{
+<b><a name="line80">80   </a></b>		int <b>i</b>, <b>retries</b>;
+<b><a name="line81">81   </a></b>	
+<b><a name="line82">82   </a></b>		if (!<a href="#line70">rte_rtm_supported</a>)
+<b><a name="line83">83   </a></b>			return 0;
+<b><a name="line84">84   </a></b>	
+<b><a name="line85">85   </a></b>		<a href="#line80">retries</a> = <a href="#line20">RTE_RTM_MAX_RETRIES</a>;
+<b><a name="line86">86   </a></b>	
+<b><a name="line87">87   </a></b>		while (<a href="../rte_branch_prediction.h/code.html#line24">likely</a>(retries--)) {
+<b><a name="line88">88   </a></b>	
+<b><a name="line89">89   </a></b>			unsigned int <b>status</b> = <a href="../rte_rtm.h/code.html#line29">rte_xbegin</a>();
+<b><a name="line90">90   </a></b>	
+<b><a name="line91">91   </a></b>			if (<a href="../rte_branch_prediction.h/code.html#line24">likely</a>(RTE_XBEGIN_STARTED == status)) {
+<b><a name="line92">92   </a></b>				if (<a href="../rte_branch_prediction.h/code.html#line38">unlikely</a>(*lock))
+<b><a name="line93">93   </a></b>					<a href="../rte_rtm.h/code.html#line44">rte_xabort</a>(RTE_XABORT_LOCK_BUSY);
+<b><a name="line94">94   </a></b>				else
+<b><a name="line95">95   </a></b>					return 1;
+<b><a name="line96">96   </a></b>			}
+<b><a name="line97">97   </a></b>			while (*<a href="#line78">lock</a>)
+<b><a name="line98">98   </a></b>				<a href="../generic/rte_pause.h/code.html#line21">rte_pause</a>();
+<b><a name="line99">99   </a></b>	
+<b><a name="line100">100  </a></b>			if ((<a href="#line89">status</a> &amp; <a href="../rte_rtm.h/code.html#line22">RTE_XABORT_CONFLICT</a>) ||
+<b><a name="line101">101  </a></b>			   ((<a href="#line89">status</a> &amp; <a href="../rte_rtm.h/code.html#line20">RTE_XABORT_EXPLICIT</a>) &amp;&amp;
+<b><a name="line102">102  </a></b>			    (<a href="../rte_rtm.h/code.html#line26">RTE_XABORT_CODE</a>(status) == <a href="#line21">RTE_XABORT_LOCK_BUSY</a>))) {
+<b><a name="line103">103  </a></b>				/* add a small delay before retrying, basing the
+<b><a name="line104">104  </a></b>				 * delay on the number of times we've already tried,
+<b><a name="line105">105  </a></b>				 * to give a back-off type of behaviour. We
+<b><a name="line106">106  </a></b>				 * randomize trycount by taking bits from the tsc count
+<b><a name="line107">107  </a></b>				 */
+<b><a name="line108">108  </a></b>				int <b>try_count</b> = <a href="#line20">RTE_RTM_MAX_RETRIES</a> - <a href="#line80">retries</a>;
+<b><a name="line109">109  </a></b>				int <b>pause_count</b> = (<a href="../rte_cycles.h/code.html#line24">rte_rdtsc</a>() &amp; 0x7) | 1;
+<b><a name="line110">110  </a></b>				<a href="#line109">pause_count</a> &lt;&lt;= <a href="#line108">try_count</a>;
+<b><a name="line111">111  </a></b>				for (<a href="#line80">i</a> = 0; <a href="#line80">i</a> &lt; <a href="#line109">pause_count</a>; <a href="#line80">i</a>++)
+<b><a name="line112">112  </a></b>					<a href="../generic/rte_pause.h/code.html#line21">rte_pause</a>();
+<b><a name="line113">113  </a></b>				continue;
+<b><a name="line114">114  </a></b>			}
+<b><a name="line115">115  </a></b>	
+<b><a name="line116">116  </a></b>			if ((<a href="#line89">status</a> &amp; <a href="../rte_rtm.h/code.html#line21">RTE_XABORT_RETRY</a>) == 0) /* do not retry */
+<b><a name="line117">117  </a></b>				break;
+<b><a name="line118">118  </a></b>		}
+<b><a name="line119">119  </a></b>		return 0;
+<b><a name="line120">120  </a></b>	}
+<b><a name="line121">121  </a></b>	
+<b><a name="line122">122  </a></b>	static inline void
+<b><a name="line123">123  </a></b>	<b>rte_spinlock_lock_tm</b>(<a href="../generic/rte_spinlock.h/code.html#line32">rte_spinlock_t</a> *<b>sl</b>)
+<b><a name="line124">124  </a></b>	{
+<b><a name="line125">125  </a></b>		if (<a href="../rte_branch_prediction.h/code.html#line24">likely</a>(rte_try_tm(&amp;sl-&gt;locked)))
+<b><a name="line126">126  </a></b>			return;
+<b><a name="line127">127  </a></b>	
+<b><a name="line128">128  </a></b>		<a href="../generic/rte_spinlock.h/code.html#line58">rte_spinlock_lock</a>(<a href="#line123">sl</a>); /* fall-back */
+<b><a name="line129">129  </a></b>	}
+<b><a name="line130">130  </a></b>	
+<b><a name="line131">131  </a></b>	static inline int
+<b><a name="line132">132  </a></b>	<b>rte_spinlock_trylock_tm</b>(<a href="../generic/rte_spinlock.h/code.html#line32">rte_spinlock_t</a> *<b>sl</b>)
+<b><a name="line133">133  </a></b>	{
+<b><a name="line134">134  </a></b>		if (<a href="../rte_branch_prediction.h/code.html#line24">likely</a>(rte_try_tm(&amp;sl-&gt;locked)))
+<b><a name="line135">135  </a></b>			return 1;
+<b><a name="line136">136  </a></b>	
+<b><a name="line137">137  </a></b>		return <a href="../generic/rte_spinlock.h/code.html#line96">rte_spinlock_trylock</a>(<a href="#line132">sl</a>);
+<b><a name="line138">138  </a></b>	}
+<b><a name="line139">139  </a></b>	
+<b><a name="line140">140  </a></b>	static inline void
+<b><a name="line141">141  </a></b>	<b>rte_spinlock_unlock_tm</b>(<a href="../generic/rte_spinlock.h/code.html#line32">rte_spinlock_t</a> *<b>sl</b>)
+<b><a name="line142">142  </a></b>	{
+<b><a name="line143">143  </a></b>		if (<a href="../rte_branch_prediction.h/code.html#line38">unlikely</a>(sl-&gt;locked))
+<b><a name="line144">144  </a></b>			<a href="../generic/rte_spinlock.h/code.html#line77">rte_spinlock_unlock</a>(<a href="#line141">sl</a>);
+<b><a name="line145">145  </a></b>		else
+<b><a name="line146">146  </a></b>			<a href="../rte_rtm.h/code.html#line38">rte_xend</a>();
+<b><a name="line147">147  </a></b>	}
+<b><a name="line148">148  </a></b>	
+<b><a name="line149">149  </a></b>	static inline void
+<b><a name="line150">150  </a></b>	<b>rte_spinlock_recursive_lock_tm</b>(<a href="../generic/rte_spinlock.h/code.html#line179">rte_spinlock_recursive_t</a> *<b>slr</b>)
+<b><a name="line151">151  </a></b>	{
+<b><a name="line152">152  </a></b>		if (<a href="../rte_branch_prediction.h/code.html#line24">likely</a>(rte_try_tm(&amp;slr-&gt;sl.locked)))
+<b><a name="line153">153  </a></b>			return;
+<b><a name="line154">154  </a></b>	
+<b><a name="line155">155  </a></b>		<a href="../generic/rte_spinlock.h/code.html#line205">rte_spinlock_recursive_lock</a>(<a href="#line150">slr</a>); /* fall-back */
+<b><a name="line156">156  </a></b>	}
+<b><a name="line157">157  </a></b>	
+<b><a name="line158">158  </a></b>	static inline void
+<b><a name="line159">159  </a></b>	<b>rte_spinlock_recursive_unlock_tm</b>(<a href="../generic/rte_spinlock.h/code.html#line179">rte_spinlock_recursive_t</a> *<b>slr</b>)
+<b><a name="line160">160  </a></b>	{
+<b><a name="line161">161  </a></b>		if (<a href="../rte_branch_prediction.h/code.html#line38">unlikely</a>(slr-&gt;sl.locked))
+<b><a name="line162">162  </a></b>			<a href="../generic/rte_spinlock.h/code.html#line221">rte_spinlock_recursive_unlock</a>(<a href="#line159">slr</a>);
+<b><a name="line163">163  </a></b>		else
+<b><a name="line164">164  </a></b>			<a href="../rte_rtm.h/code.html#line38">rte_xend</a>();
+<b><a name="line165">165  </a></b>	}
+<b><a name="line166">166  </a></b>	
+<b><a name="line167">167  </a></b>	static inline int
+<b><a name="line168">168  </a></b>	<b>rte_spinlock_recursive_trylock_tm</b>(<a href="../generic/rte_spinlock.h/code.html#line179">rte_spinlock_recursive_t</a> *<b>slr</b>)
+<b><a name="line169">169  </a></b>	{
+<b><a name="line170">170  </a></b>		if (<a href="../rte_branch_prediction.h/code.html#line24">likely</a>(rte_try_tm(&amp;slr-&gt;sl.locked)))
+<b><a name="line171">171  </a></b>			return 1;
+<b><a name="line172">172  </a></b>	
+<b><a name="line173">173  </a></b>		return <a href="../generic/rte_spinlock.h/code.html#line238">rte_spinlock_recursive_trylock</a>(<a href="#line168">slr</a>);
+<b><a name="line174">174  </a></b>	}
+<b><a name="line175">175  </a></b>	
+<b><a name="line176">176  </a></b>	
+<b><a name="line177">177  </a></b>	#ifdef __cplusplus
+<b><a name="line178">178  </a></b>	}
+<b><a name="line179">179  </a></b>	#endif
+<b><a name="line180">180  </a></b>	
+<b><a name="line181">181  </a></b>	#endif /* _RTE_SPINLOCK_X86_64_H_ */
+<b><a name="line182">182  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

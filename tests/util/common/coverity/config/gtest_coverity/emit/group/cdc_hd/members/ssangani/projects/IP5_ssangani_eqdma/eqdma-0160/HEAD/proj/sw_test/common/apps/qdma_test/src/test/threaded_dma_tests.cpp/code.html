@@ -1,0 +1,637 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test/threaded_dma_tests.cpp</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	#ifdef _WIN32
+<b><a name="line2">2    </a></b>	#define NOMINMAX
+<b><a name="line3">3    </a></b>	#endif
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	#include &lt;algorithm&gt;
+<b><a name="line6">6    </a></b>	#include &lt;cstdint&gt;
+<b><a name="line7">7    </a></b>	#include &lt;exception&gt;
+<b><a name="line8">8    </a></b>	#include &lt;functional&gt;
+<b><a name="line9">9    </a></b>	#include &lt;numeric&gt;
+<b><a name="line10">10   </a></b>	#include &lt;string&gt;
+<b><a name="line11">11   </a></b>	#include &lt;thread&gt;
+<b><a name="line12">12   </a></b>	#include &lt;vector&gt;
+<b><a name="line13">13   </a></b>	#include &lt;stddef.h&gt;
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	#include &lt;gtest/gtest.h&gt;
+<b><a name="line16">16   </a></b>	
+<b><a name="line17">17   </a></b>	#include &quot;example_design_ctrl.h&quot;
+<b><a name="line18">18   </a></b>	#include &quot;qdma_instance.h&quot;
+<b><a name="line19">19   </a></b>	#include &quot;qdma_queue.h&quot;
+<b><a name="line20">20   </a></b>	#include &quot;test_env.h&quot;
+<b><a name="line21">21   </a></b>	#include &quot;xlnx_gtest_ext.h&quot;
+<b><a name="line22">22   </a></b>	#include &quot;xlnx_util.h&quot;
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>	// =============================== Test framework helpers ==========================================
+<b><a name="line25">25   </a></b>	
+<b><a name="line26">26   </a></b>	extern <a href="../../test_env.h/code.html#line58">test_env</a> env; // in main.cpp
+<b><a name="line27">27   </a></b>	
+<b><a name="line28">28   </a></b>	struct <b>threaded_test_params</b> {
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	    struct <b>transfer</b> {
+<b><a name="line31">31   </a></b>	        <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>pf</b> = 0;
+<b><a name="line32">32   </a></b>	        <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>q</b> = 0;
+<b><a name="line33">33   </a></b>	        <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>it</b> = 0;
+<b><a name="line34">34   </a></b>	        <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>size</b> = 0;
+<b><a name="line35">35   </a></b>	        mutable <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>flag</b> = 0;
+<b><a name="line36">36   </a></b>	        <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line31">device</a>&amp; <b>qdev</b>;
+<b><a name="line37">37   </a></b>	
+<b><a name="line38">38   </a></b>	        <b>transfer</b>(<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>pf_id</b>, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>q_id</b>, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>iterations</b>, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>ts</b>, <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line31">device</a>&amp; <b>_qdev</b>=<a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line851">front</a>())
+<b><a name="line39">39   </a></b>	            : <a href="#line31">pf</a>(<a href="#line38">pf_id</a>), <a href="#line32">q</a>(<a href="#line38">q_id</a>), <a href="#line33">it</a>(<a href="#line38">iterations</a>), <a href="#line34">size</a>(<a href="#line38">ts</a>), <a href="#line36">qdev</a>(<a href="#line38">_qdev</a>) {}
+<b><a name="line40">40   </a></b>	    };
+<b><a name="line41">41   </a></b>	
+<b><a name="line42">42   </a></b>	#ifdef DPDK
+<b><a name="line43">43   </a></b>	    struct <b>fmap</b>{
+<b><a name="line44">44   </a></b>	    	<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>dev_id</b> =  0;
+<b><a name="line45">45   </a></b>	    	<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>qbase</b> = 0;
+<b><a name="line46">46   </a></b>	    	<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>qmax</b> = 0;
+<b><a name="line47">47   </a></b>	
+<b><a name="line48">48   </a></b>	    	<b>fmap</b>(<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>pf_id</b>, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>q_base_id</b>, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>q_max_id</b>)
+<b><a name="line49">49   </a></b>	    	: <a href="#line44">dev_id</a>(<a href="#line48">pf_id</a>), <a href="#line45">qbase</a>(<a href="#line48">q_base_id</a>), <a href="#line46">qmax</a>(<a href="#line48">q_max_id</a>){}
+<b><a name="line50">50   </a></b>	    };
+<b><a name="line51">51   </a></b>	
+<b><a name="line52">52   </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="#line43">fmap</a>&gt; <b>pfs</b>;
+<b><a name="line53">53   </a></b>	#endif
+<b><a name="line54">54   </a></b>	
+<b><a name="line55">55   </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="#line30">transfer</a>&gt; <b>transfers</b>;
+<b><a name="line56">56   </a></b>	    <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_instance.h/code.html#line32">instance_ext</a>::<a href="../../qdma/qdma_common/qdma_instance_abs.h/code.html#line20">type</a> <b>devtype</b> = <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_instance.h/code.html#line32">instance_ext</a>::<a href="../../qdma/qdma_common/qdma_instance_abs.h/code.html#line20">type</a>::<a href="../../qdma/qdma_common/qdma_instance_abs.h/code.html#line21">pf</a>;
+<b><a name="line57">57   </a></b>	    <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line14">config</a> <b>qcfg</b>;
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	    <b>threaded_test_params</b>() = default;
+<b><a name="line60">60   </a></b>	#ifdef DPDK
+<b><a name="line61">61   </a></b>	    <b>threaded_test_params</b>(<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="#line43">fmap</a>&gt;&amp;&amp; <b>fmaps</b>, <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="#line30">transfer</a>&gt;&amp;&amp; <b>txs</b>, <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line14">config</a> <b>_qcfg</b> = <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line14">config</a>())
+<b><a name="line62">62   </a></b>	            : <a href="#line52">pfs</a>(<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/move.h/code.html#line101">move</a>(<a href="#line61">fmaps</a>)), <a href="#line55">transfers</a>(<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/move.h/code.html#line101">move</a>(<a href="#line61">txs</a>)), <a href="#line57">qcfg</a>(<a href="#line61">_qcfg</a>) {
+<b><a name="line63">63   </a></b>	        }
+<b><a name="line64">64   </a></b>	    <b>threaded_test_params</b>(<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="#line43">fmap</a>&gt;&amp;&amp; <b>fmaps</b>, <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="#line30">transfer</a>&gt;&amp;&amp; <b>txs</b>, <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_instance.h/code.html#line32">instance_ext</a>::<a href="../../qdma/qdma_common/qdma_instance_abs.h/code.html#line20">type</a> <b>dev_type</b> = <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_instance.h/code.html#line32">instance_ext</a>::<a href="../../qdma/qdma_common/qdma_instance_abs.h/code.html#line20">type</a>::<a href="../../qdma/qdma_common/qdma_instance_abs.h/code.html#line21">pf</a> , <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line14">config</a> <b>_qcfg</b> = <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line14">config</a>())
+<b><a name="line65">65   </a></b>	    	    : <a href="#line52">pfs</a>(<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/move.h/code.html#line101">move</a>(<a href="#line64">fmaps</a>)), <a href="#line55">transfers</a>(<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/move.h/code.html#line101">move</a>(<a href="#line64">txs</a>)), <a href="#line56">devtype</a>(<a href="#line64">dev_type</a>), <a href="#line57">qcfg</a>(<a href="#line64">_qcfg</a>) {
+<b><a name="line66">66   </a></b>	    	}
+<b><a name="line67">67   </a></b>	#else
+<b><a name="line68">68   </a></b>	    threaded_test_params(std::vector&lt;transfer&gt;&amp;&amp; txs, qdma::queue_ext::config _qcfg = qdma::queue_ext::config())
+<b><a name="line69">69   </a></b>	        : transfers(std::move(txs)), qcfg(_qcfg) {
+<b><a name="line70">70   </a></b>	    }
+<b><a name="line71">71   </a></b>	
+<b><a name="line72">72   </a></b>	    threaded_test_params(std::vector&lt;transfer&gt;&amp;&amp; txs, qdma::instance_ext::type dev_type,  qdma::queue_ext::config _qcfg = qdma::queue_ext::config())
+<b><a name="line73">73   </a></b>	        : transfers(std::move(txs)), devtype(dev_type), qcfg(_qcfg) {
+<b><a name="line74">74   </a></b>	    }
+<b><a name="line75">75   </a></b>	#endif
+<b><a name="line76">76   </a></b>	};
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	void <b>PrintTo</b>(const <a href="#line28">threaded_test_params</a>&amp; <b>tp</b>, <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/iosfwd/code.html#line141">ostream</a>* <b>os</b>) {
+<b><a name="line79">79   </a></b>	
+<b><a name="line80">80   </a></b>	    const auto&amp; <b>txs</b> = <a href="#line78">tp</a>.<a href="#line55">transfers</a>;
+<b><a name="line81">81   </a></b>	    //only print the ranges (first and last entry)
+<b><a name="line82">82   </a></b>	    if (!<a href="#line80">txs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line743">empty</a>()) {
+<b><a name="line83">83   </a></b>	        *<a href="#line78">os</a> <a href="/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;{ pfs=[&quot; <a href="/usr/include/c++/5/ostream/code.html#line127">&lt;&lt;</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/ios_base.h/code.html#line1024">hex</a> <a href="/usr/include/c++/5/ostream/code.html#line127">&lt;&lt;</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/ios_base.h/code.html#line958">uppercase</a> <a href="/usr/include/c++/5/iomanip/code.html#line238">&lt;&lt;</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/iomanip/code.html#line225">setw</a>(5) <a href="/usr/include/c++/5/iomanip/code.html#line178">&lt;&lt;</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/iomanip/code.html#line165">setfill</a>('0') <a href="/usr/include/c++/5/ostream/code.html#line192">&lt;&lt;</a> <a href="#line80">txs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line859">front</a>().<a href="#line31">pf</a>
+<b><a name="line84">84   </a></b>	                <a href="/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;:&quot; <a href="/usr/include/c++/5/ostream/code.html#line127">&lt;&lt;</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/ios_base.h/code.html#line1024">hex</a> <a href="/usr/include/c++/5/ostream/code.html#line127">&lt;&lt;</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/ios_base.h/code.html#line958">uppercase</a> <a href="/usr/include/c++/5/iomanip/code.html#line238">&lt;&lt;</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/iomanip/code.html#line225">setw</a>(5) <a href="/usr/include/c++/5/iomanip/code.html#line178">&lt;&lt;</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/iomanip/code.html#line165">setfill</a>('0') <a href="/usr/include/c++/5/ostream/code.html#line192">&lt;&lt;</a> <a href="#line80">txs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line875">back</a>().<a href="#line31">pf</a> <a href="/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;], &quot;;
+<b><a name="line85">85   </a></b>	        *<a href="#line78">os</a> <a href="/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;queues=[&quot; <a href="/usr/include/c++/5/ostream/code.html#line192">&lt;&lt;</a> <a href="#line80">txs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line859">front</a>().<a href="#line32">q</a> <a href="/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;:&quot; <a href="/usr/include/c++/5/ostream/code.html#line192">&lt;&lt;</a> <a href="#line80">txs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line875">back</a>().<a href="#line32">q</a> <a href="/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;], &quot;;
+<b><a name="line86">86   </a></b>	        *<a href="#line78">os</a> <a href="/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;iterations=&quot; <a href="/usr/include/c++/5/ostream/code.html#line192">&lt;&lt;</a> <a href="#line80">txs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line859">front</a>().<a href="#line33">it</a> <a href="/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;, &quot;;
+<b><a name="line87">87   </a></b>	        *<a href="#line78">os</a> <a href="/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;tx_size=&quot; <a href="/usr/include/c++/5/ostream/code.html#line192">&lt;&lt;</a> <a href="#line80">txs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line859">front</a>().<a href="#line34">size</a> <a href="/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot; }&quot;;
+<b><a name="line88">88   </a></b>	    }
+<b><a name="line89">89   </a></b>	}
+<b><a name="line90">90   </a></b>	
+<b><a name="line91">91   </a></b>	// Separate test group class for concurrent tests of MM queues
+<b><a name="line92">92   </a></b>	class <b>qdma_threaded_test</b>: public <a href="/usr/local/include/gtest/internal/gtest-port.h/code.html#line988">testing</a>::<a href="/usr/local/include/gtest/gtest.h/code.html#line1783">TestWithParam</a>&lt;<a href="#line28">threaded_test_params</a>&gt; {
+<b><a name="line93">93   </a></b>	    void <b>SetUp</b>() override {
+<b><a name="line94">94   </a></b>	        // TODO clear BRAM via bypass BAR
+<b><a name="line95">95   </a></b>	    }
+<b><a name="line96">96   </a></b>	
+<b><a name="line97">97   </a></b>	public:
+<b><a name="line98">98   </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/thread/code.html#line60">thread</a>&gt; <b>workers</b>;
+<b><a name="line99">99   </a></b>	
+<b><a name="line100">100  </a></b>	    template&lt;typename <b>Callable</b>&gt;
+<b><a name="line101">101  </a></b>	    void execute_in_parallel(<a href="#line100">Callable</a>&amp; <b>work</b>, const <a href="#line28">threaded_test_params</a>&amp; <b>tp</b>) {
+<b><a name="line102">102  </a></b>	        <a href="#line98">workers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line764">reserve</a>(<a href="#line101">tp</a>.<a href="#line55">transfers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>());
+<b><a name="line103">103  </a></b>	        for (const auto&amp; <b>tx</b> : <a href="#line101">tp</a>.<a href="#line55">transfers</a>) {
+<b><a name="line104">104  </a></b>	            <a href="#line98">workers</a>.emplace_back(<a href="#line101">work</a>, <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/functional/code.html#line436">ref</a>(<a href="#line103">tx</a>));
+<b><a name="line105">105  </a></b>	        }
+<b><a name="line106">106  </a></b>	        for (auto&amp; <b>w</b> : <a href="#line98">workers</a>) {
+<b><a name="line107">107  </a></b>	            <a href="#line106">w</a>.<a href="/usr/include/c++/5/thread/code.html#line173">join</a>();
+<b><a name="line108">108  </a></b>	        }
+<b><a name="line109">109  </a></b>	    }
+<b><a name="line110">110  </a></b>	};
+<b><a name="line111">111  </a></b>	
+<b><a name="line112">112  </a></b>	class <b>qdma_threaded_mm_test</b>: public <a href="#line92">qdma_threaded_test</a> {};
+<b><a name="line113">113  </a></b>	class <b>qdma_threaded_st_test</b>: public <a href="#line92">qdma_threaded_test</a> {};
+<b><a name="line114">114  </a></b>	
+<b><a name="line115">115  </a></b>	// ====================== Test Case Parameter Generators ===========================================
+<b><a name="line116">116  </a></b>	
+<b><a name="line117">117  </a></b>	/// create test scenario where for each queue in num_q, it cycles through num_pf and executes num_it
+<b><a name="line118">118  </a></b>	/// transfers of tx_size bytes.
+<b><a name="line119">119  </a></b>	/// e.g.  interleaved_tx_test(2, 4, 1, 4K) produces:
+<b><a name="line120">120  </a></b>	///     [0] = { pf=0, q=0, it=1, tx_size=4k }
+<b><a name="line121">121  </a></b>	///     [1] = { pf=1, q=1, it=1, tx_size=4k }
+<b><a name="line122">122  </a></b>	///     [2] = { pf=0, q=2, it=1, tx_size=4k }
+<b><a name="line123">123  </a></b>	///     [3] = { pf=1, q=3, it=1, tx_size=4k }
+<b><a name="line124">124  </a></b>	static <a href="#line28">threaded_test_params</a> <b>interleaved_tx_test</b>(unsigned <b>num_func</b>, unsigned <b>num_q</b>, unsigned <b>num_it</b>,
+<b><a name="line125">125  </a></b>	                                                <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>tx_size</b>, <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_instance.h/code.html#line32">instance_ext</a>::<a href="../../qdma/qdma_common/qdma_instance_abs.h/code.html#line20">type</a> <b>dev_type</b>=<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_instance.h/code.html#line32">instance_ext</a>::<a href="../../qdma/qdma_common/qdma_instance_abs.h/code.html#line20">type</a>::<a href="../../qdma/qdma_common/qdma_instance_abs.h/code.html#line21">pf</a>) {
+<b><a name="line126">126  </a></b>	
+<b><a name="line127">127  </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="#line28">threaded_test_params</a>::<a href="#line30">transfer</a>&gt; <b>transfers</b>;
+<b><a name="line128">128  </a></b>	    <a href="#line127">transfers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line764">reserve</a>(<a href="#line124">num_q</a>);
+<b><a name="line129">129  </a></b>	
+<b><a name="line130">130  </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line31">device</a>&gt; &amp;<b>devlist</b> = <a href="#line26">env</a>.<a href="../../test_env.h/code.html#line375">get_dev_list</a>(<a href="#line125">dev_type</a>);
+<b><a name="line131">131  </a></b>	
+<b><a name="line132">132  </a></b>	    if (<a href="#line124">num_func</a> &gt; <a href="#line130">devlist</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>())
+<b><a name="line133">133  </a></b>			<a href="#line124">num_func</a> = (unsigned int)<a href="#line130">devlist</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>();
+<b><a name="line134">134  </a></b>	
+<b><a name="line135">135  </a></b>	#ifdef DPDK
+<b><a name="line136">136  </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="#line28">threaded_test_params</a>::<a href="#line43">fmap</a>&gt; <b>fmaps</b>;
+<b><a name="line137">137  </a></b>	    <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>base</b> = 0;
+<b><a name="line138">138  </a></b>	    <a href="#line136">fmaps</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line764">reserve</a>(<a href="#line124">num_func</a>);
+<b><a name="line139">139  </a></b>	#endif
+<b><a name="line140">140  </a></b>	
+<b><a name="line141">141  </a></b>	    for (unsigned <b>func_index</b> = 0; func_index &lt; <a href="#line124">num_func</a>; func_index++) {
+<b><a name="line142">142  </a></b>	    	if (!<a href="#line130">devlist</a>[<a href="#line141">func_index</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a>)
+<b><a name="line143">143  </a></b>				continue;
+<b><a name="line144">144  </a></b>	
+<b><a name="line145">145  </a></b>	        if (<a href="#line124">num_q</a> &gt; <a href="#line130">devlist</a>[<a href="#line141">func_index</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a>) {
+<b><a name="line146">146  </a></b>	        	<a href="#line124">num_q</a> = <a href="#line130">devlist</a>[<a href="#line141">func_index</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a>;
+<b><a name="line147">147  </a></b>	        }
+<b><a name="line148">148  </a></b>	#ifdef DPDK
+<b><a name="line149">149  </a></b>		    	<a href="#line136">fmaps</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line936">emplace_back</a>(<a href="#line130">devlist</a>[<a href="#line141">func_index</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line53">dev_id</a>, <a href="#line137">base</a>, <a href="#line124">num_q</a>);
+<b><a name="line150">150  </a></b>		    	<a href="#line137">base</a> += <a href="#line124">num_q</a>;
+<b><a name="line151">151  </a></b>	#endif
+<b><a name="line152">152  </a></b>			for (unsigned <b>q</b> = 0; q &lt; <a href="#line124">num_q</a>; q++) {
+<b><a name="line153">153  </a></b>					<a href="#line127">transfers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line936">emplace_back</a>(<a href="#line130">devlist</a>[<a href="#line141">func_index</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line53">dev_id</a>, <a href="#line152">q</a>, <a href="#line124">num_it</a>, (<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a>)<a href="#line125">tx_size</a>, <a href="#line130">devlist</a>[<a href="#line141">func_index</a>]);
+<b><a name="line154">154  </a></b>	        }
+<b><a name="line155">155  </a></b>	    }
+<b><a name="line156">156  </a></b>	#ifdef DPDK
+<b><a name="line157">157  </a></b>	    return <a href="#line28">threaded_test_params</a> { <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/move.h/code.html#line101">move</a>(<a href="#line136">fmaps</a>), <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/move.h/code.html#line101">move</a>(<a href="#line127">transfers</a>), <a href="#line125">dev_type</a>};
+<b><a name="line158">158  </a></b>	#else
+<b><a name="line159">159  </a></b>	    return threaded_test_params { std::move(transfers), dev_type};
+<b><a name="line160">160  </a></b>	#endif
+<b><a name="line161">161  </a></b>	}
+<b><a name="line162">162  </a></b>	
+<b><a name="line163">163  </a></b>	// ====================== Test Cases (Fixtures) ====================================================
+<b><a name="line164">164  </a></b>	
+<b><a name="line165">165  </a></b>	<a href="/usr/local/include/gtest/gtest.h/code.html#line2216">TEST_F</a>(qdma_threaded_mm_test, MM008_q_open_close_threaded) {
+<b><a name="line166">166  </a></b>	
+<b><a name="line167">167  </a></b>	    if (!<a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line743">empty</a>())
+<b><a name="line168">168  </a></b>	    {
+<b><a name="line169">169  </a></b>		    <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line14">config</a> <a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line14">config</a>;
+<b><a name="line170">170  </a></b>	#ifdef DPDK
+<b><a name="line171">171  </a></b>		    struct <a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line900">rte_eth_conf</a>	    <b>port_conf</b>;
+<b><a name="line172">172  </a></b>		    for(<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>pf</b> = 0; pf &lt; <a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>(); pf++) {
+<b><a name="line173">173  </a></b>				<a href="../../../logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line266">memset</a>(&amp;<a href="#line171">port_conf</a>, 0x0, sizeof(struct <a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line900">rte_eth_conf</a>));
+<b><a name="line174">174  </a></b>				auto&amp; <b>qdev</b> = <a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>[<a href="#line172">pf</a>];
+<b><a name="line175">175  </a></b>				if (!<a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>[<a href="#line172">pf</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a>)
+<b><a name="line176">176  </a></b>					continue;
+<b><a name="line177">177  </a></b>				try{
+<b><a name="line178">178  </a></b>					<a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line1570">rte_eth_dev_configure</a>(<a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>[<a href="#line172">pf</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line53">dev_id</a>, <a href="#line174">qdev</a>.<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a>, <a href="#line174">qdev</a>.<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a>, &amp;<a href="#line171">port_conf</a>);
+<b><a name="line179">179  </a></b>				} catch (const <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/exception/code.html#line60">exception</a>&amp; <b>e</b>){
+<b><a name="line180">180  </a></b>					<a href="/usr/local/include/gtest/gtest.h/code.html#line1822">FAIL</a>() <a href="/usr/local/include/gtest/gtest-message.h/code.html#line115">&lt;&lt;</a> &quot;Cannot configure port %d&quot;<a href="/usr/local/include/gtest/gtest-message.h/code.html#line115">&lt;&lt;</a> <a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>[<a href="#line172">pf</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line53">dev_id</a> <a href="/usr/local/include/gtest/gtest-message.h/code.html#line149">&lt;&lt;</a> <a href="#line179">e</a>.<a href="/usr/include/c++/5/exception/code.html#line68">what</a>();
+<b><a name="line181">181  </a></b>				}
+<b><a name="line182">182  </a></b>		    }
+<b><a name="line183">183  </a></b>	#endif
+<b><a name="line184">184  </a></b>	
+<b><a name="line185">185  </a></b>		    auto <b>work</b> = [](<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>pf</b>, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>qid</b>, <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma/qdma_common/qdma_queue_abs.h/code.html#line29">direction</a> <b>dir</b>, const <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line14">config</a>&amp; <b>config</b>) {
+<b><a name="line186">186  </a></b>				const auto <b>mode</b> = <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma/qdma_common/qdma_queue_abs.h/code.html#line24">mode</a>::<a href="../../qdma/qdma_common/qdma_queue_abs.h/code.html#line25">memory_mapped</a>;
+<b><a name="line187">187  </a></b>				<a href="/usr/local/include/gtest/gtest.h/code.html#line2115">SCOPED_TRACE</a>(&quot;pf=&quot; + int_to_hex(pf));
+<b><a name="line188">188  </a></b>				<a href="/usr/local/include/gtest/gtest.h/code.html#line2115">SCOPED_TRACE</a>(&quot;queue=&quot; + std::to_string(qid));
+<b><a name="line189">189  </a></b>				<a href="/usr/local/include/gtest/gtest.h/code.html#line1845">EXPECT_NO_THROW</a>(
+<b><a name="line190">190  </a></b>					qdma::instance_ext pf_driver { qdma::instance_ext::type::pf };
+<b><a name="line191">191  </a></b>					qdma::queue_ext q(pf_driver, pf, qid, mode, dir, config)
+<b><a name="line192">192  </a></b>				) <a href="/usr/local/include/gtest/gtest-message.h/code.html#line115">&lt;&lt;</a> &quot;failed to open h2c queue&quot;;
+<b><a name="line193">193  </a></b>		    };
+<b><a name="line194">194  </a></b>	
+<b><a name="line195">195  </a></b>			// keep number of open threads/qdma_instances limited
+<b><a name="line196">196  </a></b>			const int <b>block_size</b> = 10;
+<b><a name="line197">197  </a></b>	#ifdef _WIN32
+<b><a name="line198">198  </a></b>			workers.reserve(block_size); // For windows, one add will enable both h2c and c2h dir
+<b><a name="line199">199  </a></b>	#else
+<b><a name="line200">200  </a></b>	        <a href="#line98">workers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line764">reserve</a>(<a href="#line196">block_size</a> * 2); // h2c and c2h and per pf
+<b><a name="line201">201  </a></b>	#endif
+<b><a name="line202">202  </a></b>			for (<a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>pf</b> = 0; pf &lt; <a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>(); pf++) {
+<b><a name="line203">203  </a></b>				if (!<a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>[<a href="#line202">pf</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a>) {
+<b><a name="line204">204  </a></b>					continue;
+<b><a name="line205">205  </a></b>				}
+<b><a name="line206">206  </a></b>				const int <b>max_qid</b> = <a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>[<a href="#line202">pf</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a>;
+<b><a name="line207">207  </a></b>				for (int <b>qid_block</b> = 0; qid_block &lt; <a href="#line206">max_qid</a>; qid_block+= <a href="#line196">block_size</a>) {
+<b><a name="line208">208  </a></b>					const int <b>qid_end</b> = <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_algobase.h/code.html#line195">min</a>(<a href="#line206">max_qid</a>, <a href="#line207">qid_block</a> + <a href="#line196">block_size</a>);
+<b><a name="line209">209  </a></b>					for (int <b>qid</b> = <a href="#line207">qid_block</a>; qid &lt; <a href="#line208">qid_end</a>; qid++) {
+<b><a name="line210">210  </a></b>						<a href="#line98">workers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line936">emplace_back</a>(<a href="#line185">work</a>, <a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>[<a href="#line202">pf</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line53">dev_id</a>, <a href="#line209">qid</a>, <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma/qdma_common/qdma_queue_abs.h/code.html#line29">direction</a>::<a href="../../qdma/qdma_common/qdma_queue_abs.h/code.html#line30">host_to_card</a>, <a href="#line169">config</a>);
+<b><a name="line211">211  </a></b>	#ifndef _WIN32
+<b><a name="line212">212  </a></b>						<a href="#line98">workers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line936">emplace_back</a>(<a href="#line185">work</a>, <a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>[<a href="#line202">pf</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line53">dev_id</a>, <a href="#line209">qid</a>, <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma/qdma_common/qdma_queue_abs.h/code.html#line29">direction</a>::<a href="../../qdma/qdma_common/qdma_queue_abs.h/code.html#line31">card_to_host</a>, <a href="#line169">config</a>);
+<b><a name="line213">213  </a></b>	#endif
+<b><a name="line214">214  </a></b>					}
+<b><a name="line215">215  </a></b>					for (auto&amp; <b>w</b> : <a href="#line98">workers</a>) {
+<b><a name="line216">216  </a></b>						<a href="#line215">w</a>.<a href="/usr/include/c++/5/thread/code.html#line173">join</a>();
+<b><a name="line217">217  </a></b>					}
+<b><a name="line218">218  </a></b>					<a href="#line98">workers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line1211">clear</a>();
+<b><a name="line219">219  </a></b>				}
+<b><a name="line220">220  </a></b>	
+<b><a name="line221">221  </a></b>			}
+<b><a name="line222">222  </a></b>	#ifdef DPDK
+<b><a name="line223">223  </a></b>		    for(<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>pf</b> = 0; pf &lt; <a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>(); pf++){
+<b><a name="line224">224  </a></b>				if (!<a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>[<a href="#line223">pf</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a>)
+<b><a name="line225">225  </a></b>					continue;
+<b><a name="line226">226  </a></b>				<a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line1849">rte_eth_dev_close</a>(<a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>[<a href="#line223">pf</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line53">dev_id</a>);
+<b><a name="line227">227  </a></b>		    }
+<b><a name="line228">228  </a></b>	#endif
+<b><a name="line229">229  </a></b>	    }
+<b><a name="line230">230  </a></b>	    else
+<b><a name="line231">231  </a></b>	    {
+<b><a name="line232">232  </a></b>		    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/iostream/code.html#line61">cout</a> <a href="/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;PF List Empty...Bypassing the Test&quot; <a href="/usr/include/c++/5/ostream/code.html#line108">&lt;&lt;</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/ostream/code.html#line590">endl</a>;
+<b><a name="line233">233  </a></b>	    }
+<b><a name="line234">234  </a></b>	}
+<b><a name="line235">235  </a></b>	
+<b><a name="line236">236  </a></b>	<a href="/usr/local/include/gtest/gtest.h/code.html#line2216">TEST_F</a>(qdma_threaded_st_test, ST017_q_open_close_threaded) {
+<b><a name="line237">237  </a></b>	    <a href="/usr/local/include/gtest/gtest.h/code.html#line1868">ASSERT_FALSE</a>(env.pfs.empty());
+<b><a name="line238">238  </a></b>	    <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line14">config</a> <a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line14">config</a>;
+<b><a name="line239">239  </a></b>	
+<b><a name="line240">240  </a></b>	#ifdef DPDK
+<b><a name="line241">241  </a></b>		struct <a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line900">rte_eth_conf</a>	    <b>port_conf</b>;
+<b><a name="line242">242  </a></b>		for(<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>pf</b> = 0; pf &lt; <a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>(); pf++){
+<b><a name="line243">243  </a></b>			<a href="../../../logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line266">memset</a>(&amp;<a href="#line241">port_conf</a>, 0x0, sizeof(struct <a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line900">rte_eth_conf</a>));
+<b><a name="line244">244  </a></b>			auto&amp; <b>qdev</b> = <a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>[<a href="#line242">pf</a>];
+<b><a name="line245">245  </a></b>			if (!<a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>[<a href="#line242">pf</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a>)
+<b><a name="line246">246  </a></b>				continue;
+<b><a name="line247">247  </a></b>			try{
+<b><a name="line248">248  </a></b>				<a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line1570">rte_eth_dev_configure</a>(<a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>[<a href="#line242">pf</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line53">dev_id</a>, <a href="#line244">qdev</a>.<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a>, <a href="#line244">qdev</a>.<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a>, &amp;<a href="#line241">port_conf</a>);
+<b><a name="line249">249  </a></b>			} catch (const <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/exception/code.html#line60">exception</a>&amp; <b>e</b>){
+<b><a name="line250">250  </a></b>				<a href="/usr/local/include/gtest/gtest.h/code.html#line1822">FAIL</a>() <a href="/usr/local/include/gtest/gtest-message.h/code.html#line115">&lt;&lt;</a> &quot;Cannot configure port %d&quot;<a href="/usr/local/include/gtest/gtest-message.h/code.html#line115">&lt;&lt;</a> <a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>[<a href="#line242">pf</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line53">dev_id</a> <a href="/usr/local/include/gtest/gtest-message.h/code.html#line149">&lt;&lt;</a> <a href="#line249">e</a>.<a href="/usr/include/c++/5/exception/code.html#line68">what</a>();
+<b><a name="line251">251  </a></b>			}
+<b><a name="line252">252  </a></b>		}
+<b><a name="line253">253  </a></b>	#endif
+<b><a name="line254">254  </a></b>	
+<b><a name="line255">255  </a></b>	    auto <b>work</b> = [](<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>pf</b>, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>qid</b>, <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma/qdma_common/qdma_queue_abs.h/code.html#line29">direction</a> <b>dir</b>, const <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line14">config</a>&amp; <b>config</b>) {
+<b><a name="line256">256  </a></b>	        const auto <b>mode</b> = <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma/qdma_common/qdma_queue_abs.h/code.html#line24">mode</a>::<a href="../../qdma/qdma_common/qdma_queue_abs.h/code.html#line26">streaming</a>;
+<b><a name="line257">257  </a></b>	        <a href="/usr/local/include/gtest/gtest.h/code.html#line2115">SCOPED_TRACE</a>(&quot;pf=&quot; + int_to_hex(pf));
+<b><a name="line258">258  </a></b>	        <a href="/usr/local/include/gtest/gtest.h/code.html#line2115">SCOPED_TRACE</a>(&quot;queue=&quot; + std::to_string(qid));
+<b><a name="line259">259  </a></b>	        <a href="/usr/local/include/gtest/gtest.h/code.html#line1845">EXPECT_NO_THROW</a>(
+<b><a name="line260">260  </a></b>	                qdma::instance_ext pf_driver { qdma::instance_ext::type::pf };
+<b><a name="line261">261  </a></b>	                qdma::queue_ext q(pf_driver, pf, qid, mode, dir, config)
+<b><a name="line262">262  </a></b>	        ) <a href="/usr/local/include/gtest/gtest-message.h/code.html#line115">&lt;&lt;</a> &quot;failed to open h2c queue&quot;;
+<b><a name="line263">263  </a></b>	    };
+<b><a name="line264">264  </a></b>	
+<b><a name="line265">265  </a></b>		// keep number of open threads/qdma_instances limited
+<b><a name="line266">266  </a></b>		const int <b>block_size</b> = 10;
+<b><a name="line267">267  </a></b>	#ifdef _WIN32
+<b><a name="line268">268  </a></b>	    workers.reserve(block_size); // For windows, one add will enable both h2c and c2h dir
+<b><a name="line269">269  </a></b>	#else
+<b><a name="line270">270  </a></b>		<a href="#line98">workers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line764">reserve</a>(<a href="#line266">block_size</a> * 2); // h2c and c2h and per pf
+<b><a name="line271">271  </a></b>	#endif
+<b><a name="line272">272  </a></b>		for (<a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>pf</b> = 0; pf &lt; <a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>(); pf++) {
+<b><a name="line273">273  </a></b>			if (!<a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>[<a href="#line272">pf</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a>) {
+<b><a name="line274">274  </a></b>				continue;
+<b><a name="line275">275  </a></b>			}
+<b><a name="line276">276  </a></b>			const int <b>max_qid</b> = <a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>[<a href="#line272">pf</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a>;
+<b><a name="line277">277  </a></b>			for (int <b>qid_block</b> = 0; qid_block &lt; <a href="#line276">max_qid</a>; qid_block+= <a href="#line266">block_size</a>) {
+<b><a name="line278">278  </a></b>				const int <b>qid_end</b> = <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_algobase.h/code.html#line195">min</a>(<a href="#line276">max_qid</a>, <a href="#line277">qid_block</a> + <a href="#line266">block_size</a>);
+<b><a name="line279">279  </a></b>				for (int <b>qid</b> = <a href="#line277">qid_block</a>; qid &lt; <a href="#line278">qid_end</a>; qid++) {
+<b><a name="line280">280  </a></b>					<a href="#line98">workers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line936">emplace_back</a>(<a href="#line255">work</a>, <a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>[<a href="#line272">pf</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line53">dev_id</a>, <a href="#line279">qid</a>, <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma/qdma_common/qdma_queue_abs.h/code.html#line29">direction</a>::<a href="../../qdma/qdma_common/qdma_queue_abs.h/code.html#line30">host_to_card</a>, <a href="#line238">config</a>);
+<b><a name="line281">281  </a></b>	#ifndef _WIN32
+<b><a name="line282">282  </a></b>					<a href="#line98">workers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line936">emplace_back</a>(<a href="#line255">work</a>, <a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>[<a href="#line272">pf</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line53">dev_id</a>, <a href="#line279">qid</a>, <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma/qdma_common/qdma_queue_abs.h/code.html#line29">direction</a>::<a href="../../qdma/qdma_common/qdma_queue_abs.h/code.html#line31">card_to_host</a>, <a href="#line238">config</a>);
+<b><a name="line283">283  </a></b>	#endif
+<b><a name="line284">284  </a></b>				}
+<b><a name="line285">285  </a></b>				for (auto&amp; <b>w</b> : <a href="#line98">workers</a>) {
+<b><a name="line286">286  </a></b>					<a href="#line285">w</a>.<a href="/usr/include/c++/5/thread/code.html#line173">join</a>();
+<b><a name="line287">287  </a></b>				}
+<b><a name="line288">288  </a></b>				<a href="#line98">workers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line1211">clear</a>();
+<b><a name="line289">289  </a></b>			}
+<b><a name="line290">290  </a></b>	
+<b><a name="line291">291  </a></b>		}
+<b><a name="line292">292  </a></b>	#ifdef DPDK
+<b><a name="line293">293  </a></b>		for(<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>pf</b> = 0; pf &lt; <a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>(); pf++){
+<b><a name="line294">294  </a></b>			if (!<a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>[<a href="#line293">pf</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a>)
+<b><a name="line295">295  </a></b>				continue;
+<b><a name="line296">296  </a></b>			<a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line1849">rte_eth_dev_close</a>(<a href="#line26">env</a>.<a href="../../test_env.h/code.html#line366">pfs</a>[<a href="#line293">pf</a>].<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line53">dev_id</a>);
+<b><a name="line297">297  </a></b>		}
+<b><a name="line298">298  </a></b>	#endif
+<b><a name="line299">299  </a></b>	}
+<b><a name="line300">300  </a></b>	
+<b><a name="line301">301  </a></b>	// ====================== Test Cases (Parameterized) ===============================================
+<b><a name="line302">302  </a></b>	#ifndef _WIN32
+<b><a name="line303">303  </a></b>	<a href="/usr/local/include/gtest/gtest-param-test.h/code.html#line1380">TEST_P</a>(qdma_threaded_mm_test, mm_h2c_c2h) {
+<b><a name="line304">304  </a></b>	    // test case constants
+<b><a name="line305">305  </a></b>	    using <b>pattern_t</b> = <a href="/usr/include/stdint.h/code.html#line48">uint8_t</a>;
+<b><a name="line306">306  </a></b>	    const auto  <b>dir</b> = <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma/qdma_common/qdma_queue_abs.h/code.html#line29">direction</a>::<a href="../../qdma/qdma_common/qdma_queue_abs.h/code.html#line32">both</a>;
+<b><a name="line307">307  </a></b>	    const auto&amp; <b>tp</b> = <a href="/usr/local/include/gtest/gtest.h/code.html#line1755">GetParam</a>();
+<b><a name="line308">308  </a></b>	    const auto <b>mode</b> = <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma/qdma_common/qdma_queue_abs.h/code.html#line24">mode</a>::<a href="../../qdma/qdma_common/qdma_queue_abs.h/code.html#line25">memory_mapped</a>;
+<b><a name="line309">309  </a></b>	    const auto <b>array_size</b> = <a href="../../qdma/qdma_common/example_design_ctrl.h/code.html#line32">example_design_ctrl</a>::<a href="../../qdma/qdma_common/example_design_ctrl.h/code.html#line35">bram_size</a> / sizeof(<a href="#line305">pattern_t</a>);
+<b><a name="line310">310  </a></b>	
+<b><a name="line311">311  </a></b>	    <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_instance.h/code.html#line32">instance_ext</a> &amp;<b>drv</b> = <a href="#line26">env</a>.<a href="../../test_env.h/code.html#line382">get_drv_instance</a>(<a href="#line307">tp</a>.<a href="#line56">devtype</a>);
+<b><a name="line312">312  </a></b>	
+<b><a name="line313">313  </a></b>		// get the pf/vf device list based on dev_type
+<b><a name="line314">314  </a></b>		<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line31">device</a>&gt; &amp;<b>devlist</b> = <a href="#line26">env</a>.<a href="../../test_env.h/code.html#line375">get_dev_list</a>(<a href="#line307">tp</a>.<a href="#line56">devtype</a>);
+<b><a name="line315">315  </a></b>		<a href="/usr/local/include/gtest/gtest.h/code.html#line1868">ASSERT_FALSE</a>(devlist.empty());
+<b><a name="line316">316  </a></b>	
+<b><a name="line317">317  </a></b>	#ifdef DPDK
+<b><a name="line318">318  </a></b>	    struct <a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line900">rte_eth_conf</a>	    <b>port_conf</b>;
+<b><a name="line319">319  </a></b>	    for(const auto&amp; <b>pf</b> : <a href="#line307">tp</a>.<a href="#line52">pfs</a>){
+<b><a name="line320">320  </a></b>			<a href="../../../logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line266">memset</a>(&amp;<a href="#line318">port_conf</a>, 0x0, sizeof(struct <a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line900">rte_eth_conf</a>));
+<b><a name="line321">321  </a></b>	    	try{
+<b><a name="line322">322  </a></b>	    		<a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line1570">rte_eth_dev_configure</a>(<a href="#line319">pf</a>.<a href="#line44">dev_id</a>, <a href="#line319">pf</a>.<a href="#line46">qmax</a>, <a href="#line319">pf</a>.<a href="#line46">qmax</a>, &amp;<a href="#line318">port_conf</a>);
+<b><a name="line323">323  </a></b>	    	} catch (const <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/exception/code.html#line60">exception</a>&amp; <b>e</b>){
+<b><a name="line324">324  </a></b>	    		<a href="/usr/local/include/gtest/gtest.h/code.html#line1822">FAIL</a>() <a href="/usr/local/include/gtest/gtest-message.h/code.html#line115">&lt;&lt;</a> &quot;Cannot configure port %d&quot;<a href="/usr/local/include/gtest/gtest-message.h/code.html#line115">&lt;&lt;</a> <a href="#line319">pf</a>.<a href="#line44">dev_id</a> <a href="/usr/local/include/gtest/gtest-message.h/code.html#line149">&lt;&lt;</a> <a href="#line323">e</a>.<a href="/usr/include/c++/5/exception/code.html#line68">what</a>();
+<b><a name="line325">325  </a></b>	    	}
+<b><a name="line326">326  </a></b>	    }
+<b><a name="line327">327  </a></b>	#endif
+<b><a name="line328">328  </a></b>	
+<b><a name="line329">329  </a></b>	    // define work function to create queues and execute transfers
+<b><a name="line330">330  </a></b>	    auto <b>work</b> = [&amp;](const <a href="#line28">threaded_test_params</a>::<a href="#line30">transfer</a>&amp; <b>tx</b>) {
+<b><a name="line331">331  </a></b>	        try {
+<b><a name="line332">332  </a></b>	            <a href="../../util/xlnx_util.h/code.html#line94">aligned_vector</a>&lt;<a href="#line305">pattern_t</a>&gt; <b>wr_buffer</b>(<a href="#line309">array_size</a>);
+<b><a name="line333">333  </a></b>	            <a href="../../util/xlnx_util.h/code.html#line94">aligned_vector</a>&lt;<a href="#line305">pattern_t</a>&gt; <b>rd_buffer</b>(<a href="#line309">array_size</a>);
+<b><a name="line334">334  </a></b>	            // setup test buffers
+<b><a name="line335">335  </a></b>	            <a href="/usr/local/include/gtest/gtest.h/code.html#line2115">SCOPED_TRACE</a>(&quot;pf=&quot; + int_to_hex(tx.pf));
+<b><a name="line336">336  </a></b>	            <a href="/usr/local/include/gtest/gtest.h/code.html#line2115">SCOPED_TRACE</a>(&quot;queue=&quot; + std::to_string(tx.q));
+<b><a name="line337">337  </a></b>	
+<b><a name="line338">338  </a></b>	            // setup user logic
+<b><a name="line339">339  </a></b>	            <a href="../../qdma/qdma_common/example_design_ctrl.h/code.html#line32">example_design_ctrl</a> <b>user_logic</b>(<a href="#line330">tx</a>.<a href="#line36">qdev</a>);
+<b><a name="line340">340  </a></b>	            // setup user logic
+<b><a name="line341">341  </a></b>	            if(<a href="#line307">tp</a>.<a href="#line57">qcfg</a>.<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line22">desc_bypass</a>)
+<b><a name="line342">342  </a></b>	            	<a href="#line339">user_logic</a>.<a href="../../qdma/qdma_common/example_design_ctrl.h/code.html#line115">set_bypass_mode</a>(<a href="#line308">mode</a>, <a href="#line306">dir</a>, <a href="../../qdma/qdma_common/example_design_ctrl.h/code.html#line21">DESC_BYPASS_MODE</a>);
+<b><a name="line343">343  </a></b>	            else
+<b><a name="line344">344  </a></b>	            	<a href="#line339">user_logic</a>.<a href="../../qdma/qdma_common/example_design_ctrl.h/code.html#line115">set_bypass_mode</a>(<a href="#line308">mode</a>, <a href="#line306">dir</a>, <a href="../../qdma/qdma_common/example_design_ctrl.h/code.html#line18">NO_BYPASS_MODE</a>);
+<b><a name="line345">345  </a></b>	
+<b><a name="line346">346  </a></b>	            <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a> <b>q</b>(<a href="#line311">drv</a>, <a href="#line330">tx</a>.<a href="#line31">pf</a>, <a href="#line330">tx</a>.<a href="#line32">q</a>, <a href="#line308">mode</a>, <a href="#line306">dir</a>, <a href="#line307">tp</a>.<a href="#line57">qcfg</a>);
+<b><a name="line347">347  </a></b>	
+<b><a name="line348">348  </a></b>	            for (unsigned <b>i</b> = 0; i &lt; <a href="#line330">tx</a>.<a href="#line33">it</a>; i++) {
+<b><a name="line349">349  </a></b>	                <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_numeric.h/code.html#line82">iota</a>(<a href="#line332">wr_buffer</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line547">begin</a>(), <a href="#line332">wr_buffer</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line565">end</a>(), static_cast&lt;<a href="#line305">pattern_t</a>&gt;(0));    // 0, 1, 2, 3, 4 ...
+<b><a name="line350">350  </a></b>	                <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_algobase.h/code.html#line740">fill</a>(<a href="#line333">rd_buffer</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line547">begin</a>(), <a href="#line333">rd_buffer</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line565">end</a>(), static_cast&lt;<a href="#line305">pattern_t</a>&gt;(0xAC));
+<b><a name="line351">351  </a></b>	                <a href="/usr/local/include/gtest/gtest.h/code.html#line1960">ASSERT_NE</a>(rd_buffer, wr_buffer);
+<b><a name="line352">352  </a></b>	                <a href="/usr/local/include/gtest/gtest.h/code.html#line2115">SCOPED_TRACE</a>(&quot;iteration=&quot; + std::to_string(i));
+<b><a name="line353">353  </a></b>	
+<b><a name="line354">354  </a></b>	                <a href="/usr/local/include/gtest/gtest.h/code.html#line1845">EXPECT_NO_THROW</a>(q.write(wr_buffer.data(), tx.size, 0))
+<b><a name="line355">355  </a></b>	                    <a href="/usr/local/include/gtest/gtest-message.h/code.html#line115">&lt;&lt;</a> &quot;h2c transfer returned with an error!&quot;;
+<b><a name="line356">356  </a></b>	                <a href="/usr/include/unistd.h/code.html#line463">usleep</a>(1000);
+<b><a name="line357">357  </a></b>	                <a href="/usr/local/include/gtest/gtest.h/code.html#line1845">EXPECT_NO_THROW</a>(q.read(rd_buffer.data(), tx.size, 0))
+<b><a name="line358">358  </a></b>	                    <a href="/usr/local/include/gtest/gtest-message.h/code.html#line115">&lt;&lt;</a> &quot;c2h transfer returned with an error!&quot;;
+<b><a name="line359">359  </a></b>	
+<b><a name="line360">360  </a></b>	                // Compare read data with expected
+<b><a name="line361">361  </a></b>	                auto <b>cmp_result</b> = <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line226">memcmp</a>(<a href="#line332">wr_buffer</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line890">data</a>(),
+<b><a name="line362">362  </a></b>	                                              <a href="#line333">rd_buffer</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line890">data</a>(), <a href="#line330">tx</a>.<a href="#line34">size</a>);
+<b><a name="line363">363  </a></b>	                <a href="/usr/local/include/gtest/gtest.h/code.html#line1922">EXPECT_EQ</a>(cmp_result, 0) <a href="/usr/local/include/gtest/gtest-message.h/code.html#line115">&lt;&lt;</a> &quot;data returned from c2h tx does not match h2c data!\n&quot;
+<b><a name="line364">364  </a></b>	                        <a href="/usr/local/include/gtest/gtest-message.h/code.html#line115">&lt;&lt;</a> <a href="../../xlnx/xlnx_common/xlnx_gtest_ext.h/code.html#line50">print_diffs</a>(<a href="#line332">wr_buffer</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line620">cbegin</a>(), <a href="#line332">wr_buffer</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line629">cend</a>(), <a href="#line333">rd_buffer</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line620">cbegin</a>());
+<b><a name="line365">365  </a></b>	            }
+<b><a name="line366">366  </a></b>	        } catch (const <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/exception/code.html#line60">exception</a>&amp; <b>e</b>) {
+<b><a name="line367">367  </a></b>	            <a href="/usr/local/include/gtest/gtest.h/code.html#line1822">FAIL</a>() <a href="/usr/local/include/gtest/gtest-message.h/code.html#line115">&lt;&lt;</a> &quot;Unexpected exception: &quot; <a href="/usr/local/include/gtest/gtest-message.h/code.html#line149">&lt;&lt;</a> <a href="#line366">e</a>.<a href="/usr/include/c++/5/exception/code.html#line68">what</a>();
+<b><a name="line368">368  </a></b>	        }
+<b><a name="line369">369  </a></b>	    };
+<b><a name="line370">370  </a></b>	
+<b><a name="line371">371  </a></b>	    <a href="#line101">execute_in_parallel</a>(<a href="#line330">work</a>, <a href="#line307">tp</a>);
+<b><a name="line372">372  </a></b>	
+<b><a name="line373">373  </a></b>	#ifdef DPDK
+<b><a name="line374">374  </a></b>	    for(const auto&amp; <b>pf</b> : <a href="#line307">tp</a>.<a href="#line52">pfs</a>){
+<b><a name="line375">375  </a></b>	    	if (<a href="#line374">pf</a>.<a href="#line46">qmax</a>){
+<b><a name="line376">376  </a></b>	    		<a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line1849">rte_eth_dev_close</a>(<a href="#line374">pf</a>.<a href="#line44">dev_id</a>);
+<b><a name="line377">377  </a></b>	    	}
+<b><a name="line378">378  </a></b>	    }
+<b><a name="line379">379  </a></b>	#endif
+<b><a name="line380">380  </a></b>	}
+<b><a name="line381">381  </a></b>	#endif
+<b><a name="line382">382  </a></b>	
+<b><a name="line383">383  </a></b>	<a href="/usr/local/include/gtest/gtest-param-test.h/code.html#line1380">TEST_P</a>(qdma_threaded_st_test, st_c2h) {
+<b><a name="line384">384  </a></b>	
+<b><a name="line385">385  </a></b>	    using <b>pattern_t</b> = <a href="../../qdma/qdma_common/example_design_ctrl.h/code.html#line32">example_design_ctrl</a>::<a href="../../qdma/qdma_common/example_design_ctrl.h/code.html#line65">pattern_t</a>;
+<b><a name="line386">386  </a></b>	    const auto&amp; <b>tp</b> = <a href="/usr/local/include/gtest/gtest.h/code.html#line1755">GetParam</a>();
+<b><a name="line387">387  </a></b>	    const auto <b>mode</b> = <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma/qdma_common/qdma_queue_abs.h/code.html#line24">mode</a>::<a href="../../qdma/qdma_common/qdma_queue_abs.h/code.html#line26">streaming</a>;
+<b><a name="line388">388  </a></b>	    const auto <b>dir</b> = <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma/qdma_common/qdma_queue_abs.h/code.html#line29">direction</a>::<a href="../../qdma/qdma_common/qdma_queue_abs.h/code.html#line31">card_to_host</a>;
+<b><a name="line389">389  </a></b>	    const auto <b>array_size</b> = <a href="../../qdma/qdma_common/example_design_ctrl.h/code.html#line32">example_design_ctrl</a>::<a href="../../qdma/qdma_common/example_design_ctrl.h/code.html#line35">bram_size</a> / sizeof(<a href="#line385">pattern_t</a>);
+<b><a name="line390">390  </a></b>	
+<b><a name="line391">391  </a></b>	    <a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_instance.h/code.html#line32">instance_ext</a> &amp;<b>drv</b> = <a href="#line26">env</a>.<a href="../../test_env.h/code.html#line382">get_drv_instance</a>(<a href="#line386">tp</a>.<a href="#line56">devtype</a>);
+<b><a name="line392">392  </a></b>	
+<b><a name="line393">393  </a></b>	    // get the pf/vf device list based on dev_type
+<b><a name="line394">394  </a></b>		<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line31">device</a>&gt; &amp;<b>devlist</b> = <a href="#line26">env</a>.<a href="../../test_env.h/code.html#line375">get_dev_list</a>(<a href="#line386">tp</a>.<a href="#line56">devtype</a>);
+<b><a name="line395">395  </a></b>		<a href="/usr/local/include/gtest/gtest.h/code.html#line1868">ASSERT_FALSE</a>(devlist.empty());
+<b><a name="line396">396  </a></b>	
+<b><a name="line397">397  </a></b>	    if (!<a href="#line386">tp</a>.<a href="#line55">transfers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>())
+<b><a name="line398">398  </a></b>	    	return;
+<b><a name="line399">399  </a></b>	
+<b><a name="line400">400  </a></b>	    // setup buffers - each transfer scenario has its own read buffer
+<b><a name="line401">401  </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="../../util/xlnx_util.h/code.html#line94">aligned_vector</a>&lt;<a href="#line385">pattern_t</a>&gt;&gt; <b>rd_buffers</b>;
+<b><a name="line402">402  </a></b>	    <a href="#line401">rd_buffers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line764">reserve</a>(<a href="#line386">tp</a>.<a href="#line55">transfers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>());
+<b><a name="line403">403  </a></b>	    for (const auto&amp; <b>tx</b> : <a href="#line386">tp</a>.<a href="#line55">transfers</a>) {
+<b><a name="line404">404  </a></b>	        <a href="#line401">rd_buffers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line936">emplace_back</a>(<a href="#line403">tx</a>.<a href="#line34">size</a> * <a href="#line403">tx</a>.<a href="#line33">it</a>);
+<b><a name="line405">405  </a></b>	    }
+<b><a name="line406">406  </a></b>	
+<b><a name="line407">407  </a></b>	    // we only need a single buffer for expected data pattern
+<b><a name="line408">408  </a></b>	    <a href="../../util/xlnx_util.h/code.html#line94">aligned_vector</a>&lt;<a href="#line385">pattern_t</a>&gt; <b>expected</b>(<a href="#line389">array_size</a>);
+<b><a name="line409">409  </a></b>	    auto <b>ex_it</b> = <a href="#line408">expected</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line547">begin</a>();
+<b><a name="line410">410  </a></b>	    for (<a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>i</b> = 0; i &lt; <a href="#line386">tp</a>.<a href="#line55">transfers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line859">front</a>().<a href="#line33">it</a>; i++) {
+<b><a name="line411">411  </a></b>	        auto <b>chunk_size</b> = <a href="#line386">tp</a>.<a href="#line55">transfers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line859">front</a>().<a href="#line34">size</a> / sizeof(<a href="#line385">pattern_t</a>);
+<b><a name="line412">412  </a></b>	        <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_numeric.h/code.html#line82">iota</a>(<a href="#line409">ex_it</a>, <a href="#line409">ex_it</a> <a href="/usr/include/c++/5/bits/stl_iterator.h/code.html#line793">+</a> <a href="#line411">chunk_size</a>, static_cast&lt;<a href="#line385">pattern_t</a>&gt;(0));    // 0, 1, 2, 3, 4 ...
+<b><a name="line413">413  </a></b>	        <a href="#line409">ex_it</a> <a href="/usr/include/c++/5/bits/stl_iterator.h/code.html#line789">+=</a> <a href="#line411">chunk_size</a>;
+<b><a name="line414">414  </a></b>	    }
+<b><a name="line415">415  </a></b>	
+<b><a name="line416">416  </a></b>	#ifdef DPDK
+<b><a name="line417">417  </a></b>	    struct <a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line900">rte_eth_conf</a>	    <b>port_conf</b>;
+<b><a name="line418">418  </a></b>	    for(const auto&amp; <b>pf</b> : <a href="#line386">tp</a>.<a href="#line52">pfs</a>){
+<b><a name="line419">419  </a></b>			<a href="../../../logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line266">memset</a>(&amp;<a href="#line417">port_conf</a>, 0x0, sizeof(struct <a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line900">rte_eth_conf</a>));
+<b><a name="line420">420  </a></b>	    	try{
+<b><a name="line421">421  </a></b>	    		<a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line1570">rte_eth_dev_configure</a>(<a href="#line418">pf</a>.<a href="#line44">dev_id</a>, <a href="#line418">pf</a>.<a href="#line46">qmax</a>, <a href="#line418">pf</a>.<a href="#line46">qmax</a>, &amp;<a href="#line417">port_conf</a>);
+<b><a name="line422">422  </a></b>	    	} catch (const <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/exception/code.html#line60">exception</a>&amp; <b>e</b>){
+<b><a name="line423">423  </a></b>	    		<a href="/usr/local/include/gtest/gtest.h/code.html#line1822">FAIL</a>() <a href="/usr/local/include/gtest/gtest-message.h/code.html#line115">&lt;&lt;</a> &quot;Cannot configure port %d&quot;<a href="/usr/local/include/gtest/gtest-message.h/code.html#line115">&lt;&lt;</a> <a href="#line418">pf</a>.<a href="#line44">dev_id</a> <a href="/usr/local/include/gtest/gtest-message.h/code.html#line149">&lt;&lt;</a> <a href="#line422">e</a>.<a href="/usr/include/c++/5/exception/code.html#line68">what</a>();
+<b><a name="line424">424  </a></b>	    	}
+<b><a name="line425">425  </a></b>	    }
+<b><a name="line426">426  </a></b>	#endif
+<b><a name="line427">427  </a></b>	    // open queues
+<b><a name="line428">428  </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="../../qdma/qdma_dpdk/qdma_device.h/code.html#line17">qdma</a>::<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line11">queue_ext</a>&gt; <b>c2h_qs</b>;
+<b><a name="line429">429  </a></b>	    <a href="#line428">c2h_qs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line764">reserve</a>(<a href="#line386">tp</a>.<a href="#line55">transfers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>());
+<b><a name="line430">430  </a></b>	    for (const auto&amp; <b>tx</b> : <a href="#line386">tp</a>.<a href="#line55">transfers</a>) {
+<b><a name="line431">431  </a></b>	        <a href="/usr/local/include/gtest/gtest.h/code.html#line2115">SCOPED_TRACE</a>(&quot;pf=&quot; + int_to_hex(tx.pf));
+<b><a name="line432">432  </a></b>	        <a href="/usr/local/include/gtest/gtest.h/code.html#line2115">SCOPED_TRACE</a>(&quot;queue=&quot; + std::to_string(tx.q));
+<b><a name="line433">433  </a></b>	
+<b><a name="line434">434  </a></b>	        <a href="#line428">c2h_qs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line936">emplace_back</a>(<a href="#line391">drv</a>, <a href="#line430">tx</a>.<a href="#line31">pf</a>, <a href="#line430">tx</a>.<a href="#line32">q</a>, <a href="#line387">mode</a>, <a href="#line388">dir</a>, <a href="#line386">tp</a>.<a href="#line57">qcfg</a>);
+<b><a name="line435">435  </a></b>	    }
+<b><a name="line436">436  </a></b>	
+<b><a name="line437">437  </a></b>	    // start threads to read data
+<b><a name="line438">438  </a></b>	    auto <b>work</b> = [&amp;](<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>idx</b>) {
+<b><a name="line439">439  </a></b>	        auto&amp; <b>tx</b> = <a href="#line386">tp</a>.<a href="#line55">transfers</a>[<a href="#line438">idx</a>];
+<b><a name="line440">440  </a></b>	        auto&amp; <b>c2h_q</b> = <a href="#line428">c2h_qs</a>[<a href="#line438">idx</a>];
+<b><a name="line441">441  </a></b>	        auto&amp; <b>rd_buffer</b> = <a href="#line401">rd_buffers</a>[<a href="#line438">idx</a>];
+<b><a name="line442">442  </a></b>	        <a href="/usr/local/include/gtest/gtest.h/code.html#line2115">SCOPED_TRACE</a>(&quot;pf=&quot; + int_to_hex(tx.pf));
+<b><a name="line443">443  </a></b>	        <a href="/usr/local/include/gtest/gtest.h/code.html#line2115">SCOPED_TRACE</a>(&quot;queue=&quot; + std::to_string(tx.q));
+<b><a name="line444">444  </a></b>	#ifdef DPDK
+<b><a name="line445">445  </a></b>	        <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/thread/code.html#line257">this_thread</a>::<a href="/usr/include/c++/5/thread/code.html#line280">sleep_for</a>(<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/chrono/code.html#line59">chrono</a>::<a href="/usr/include/c++/5/chrono/code.html#line533">milliseconds</a>(1000));
+<b><a name="line446">446  </a></b>	#endif
+<b><a name="line447">447  </a></b>	        for (unsigned <b>i</b> = 0; i &lt; <a href="#line439">tx</a>.<a href="#line33">it</a>; i++) {
+<b><a name="line448">448  </a></b>	            <a href="/usr/local/include/gtest/gtest.h/code.html#line2115">SCOPED_TRACE</a>(&quot;iteration=&quot; + std::to_string(i));
+<b><a name="line449">449  </a></b>	#ifdef DPDK
+<b><a name="line450">450  </a></b>		    	while(!<a href="#line439">tx</a>.<a href="#line35">flag</a>)
+<b><a name="line451">451  </a></b>	        	<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/thread/code.html#line257">this_thread</a>::<a href="/usr/include/c++/5/thread/code.html#line280">sleep_for</a>(<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/chrono/code.html#line59">chrono</a>::<a href="/usr/include/c++/5/chrono/code.html#line533">milliseconds</a>(1));
+<b><a name="line452">452  </a></b>	#endif
+<b><a name="line453">453  </a></b>	            int <b>offset</b> = <a href="#line447">i</a> * <a href="#line439">tx</a>.<a href="#line34">size</a> / sizeof(<a href="#line385">pattern_t</a>);
+<b><a name="line454">454  </a></b>	            <a href="/usr/local/include/gtest/gtest.h/code.html#line1851">ASSERT_NO_THROW</a>(c2h_q.read(rd_buffer.data() + offset, tx.size))
+<b><a name="line455">455  </a></b>	                <a href="/usr/local/include/gtest/gtest-message.h/code.html#line115">&lt;&lt;</a> &quot;c2h transfer returned with an error!&quot;;
+<b><a name="line456">456  </a></b>	#ifdef DPDK
+<b><a name="line457">457  </a></b>	            <a href="#line439">tx</a>.<a href="#line35">flag</a>=0;
+<b><a name="line458">458  </a></b>	#endif
+<b><a name="line459">459  </a></b>	        }
+<b><a name="line460">460  </a></b>	    };
+<b><a name="line461">461  </a></b>	    <a href="#line98">workers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line764">reserve</a>(<a href="#line386">tp</a>.<a href="#line55">transfers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>());
+<b><a name="line462">462  </a></b>	    for (<a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>i</b> = 0; i &lt; <a href="#line386">tp</a>.<a href="#line55">transfers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>(); i++) {
+<b><a name="line463">463  </a></b>	        <a href="#line98">workers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line936">emplace_back</a>(<a href="#line438">work</a>, (<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a>)<a href="#line462">i</a>);
+<b><a name="line464">464  </a></b>	    }
+<b><a name="line465">465  </a></b>	
+<b><a name="line466">466  </a></b>	    // trigger data packets - interleaved
+<b><a name="line467">467  </a></b>	    for (<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>i</b> = 0; i &lt; <a href="#line386">tp</a>.<a href="#line55">transfers</a>[0].<a href="#line33">it</a>; i++) {
+<b><a name="line468">468  </a></b>	        for (auto&amp; <b>tx</b> : <a href="#line386">tp</a>.<a href="#line55">transfers</a>) {
+<b><a name="line469">469  </a></b>			// setup user logic
+<b><a name="line470">470  </a></b>	        	<a href="../../qdma/qdma_common/example_design_ctrl.h/code.html#line32">example_design_ctrl</a> <b>user_logic</b>(<a href="#line468">tx</a>.<a href="#line36">qdev</a>);
+<b><a name="line471">471  </a></b>	
+<b><a name="line472">472  </a></b>	            if(<a href="#line386">tp</a>.<a href="#line57">qcfg</a>.<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line22">desc_bypass</a> &amp;&amp; <a href="#line386">tp</a>.<a href="#line57">qcfg</a>.<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line23">pfetch_bypass</a>)
+<b><a name="line473">473  </a></b>	            	<a href="#line470">user_logic</a>.<a href="../../qdma/qdma_common/example_design_ctrl.h/code.html#line115">set_bypass_mode</a>(<a href="#line387">mode</a>, <a href="#line388">dir</a>, <a href="../../qdma/qdma_common/example_design_ctrl.h/code.html#line20">SIMPLE_BYPASS_MODE</a>);
+<b><a name="line474">474  </a></b>	            else if (<a href="#line386">tp</a>.<a href="#line57">qcfg</a>.<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line22">desc_bypass</a>)
+<b><a name="line475">475  </a></b>	            	<a href="#line470">user_logic</a>.<a href="../../qdma/qdma_common/example_design_ctrl.h/code.html#line115">set_bypass_mode</a>(<a href="#line387">mode</a>, <a href="#line388">dir</a>, <a href="../../qdma/qdma_common/example_design_ctrl.h/code.html#line19">CACHE_BYPASS_MODE</a>);
+<b><a name="line476">476  </a></b>	            else
+<b><a name="line477">477  </a></b>	            	<a href="#line470">user_logic</a>.<a href="../../qdma/qdma_common/example_design_ctrl.h/code.html#line115">set_bypass_mode</a>(<a href="#line387">mode</a>, <a href="#line388">dir</a>, <a href="../../qdma/qdma_common/example_design_ctrl.h/code.html#line18">NO_BYPASS_MODE</a>);
+<b><a name="line478">478  </a></b>	
+<b><a name="line479">479  </a></b>	            <a href="#line470">user_logic</a>.<a href="../../qdma/qdma_common/example_design_ctrl.h/code.html#line89">set_wrb_desc_size</a>(<a href="#line386">tp</a>.<a href="#line57">qcfg</a>.<a href="../../qdma/qdma_dpdk/qdma_queue.h/code.html#line21">cmptsz</a>);
+<b><a name="line480">480  </a></b>	            <a href="#line470">user_logic</a>.<a href="../../qdma/qdma_common/example_design_ctrl.h/code.html#line214">set_st_loopback</a>(false);
+<b><a name="line481">481  </a></b>	#ifdef DPDK
+<b><a name="line482">482  </a></b>	        	const auto <b>hw_qid</b> = <a href="../../test_env.h/code.html#line402">get_hw_qid</a>(<a href="#line468">tx</a>.<a href="#line31">pf</a>, <a href="#line468">tx</a>.<a href="#line32">q</a>);
+<b><a name="line483">483  </a></b>	        	while(<a href="#line468">tx</a>.<a href="#line35">flag</a>)
+<b><a name="line484">484  </a></b>	        		<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/thread/code.html#line257">this_thread</a>::<a href="/usr/include/c++/5/thread/code.html#line280">sleep_for</a>(<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/chrono/code.html#line59">chrono</a>::<a href="/usr/include/c++/5/chrono/code.html#line533">milliseconds</a>(1));
+<b><a name="line485">485  </a></b>	        	<a href="#line470">user_logic</a>.<a href="../../qdma/qdma_common/example_design_ctrl.h/code.html#line71">configure_c2h</a>(<a href="#line482">hw_qid</a>, <a href="#line468">tx</a>.<a href="#line34">size</a>, 1);
+<b><a name="line486">486  </a></b>	        	<a href="#line470">user_logic</a>.<a href="../../qdma/qdma_common/example_design_ctrl.h/code.html#line78">generate_packets</a>();
+<b><a name="line487">487  </a></b>	        	<a href="#line468">tx</a>.<a href="#line35">flag</a> = 1;
+<b><a name="line488">488  </a></b>	        	<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/thread/code.html#line257">this_thread</a>::<a href="/usr/include/c++/5/thread/code.html#line280">sleep_for</a>(<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/chrono/code.html#line59">chrono</a>::<a href="/usr/include/c++/5/chrono/code.html#line533">milliseconds</a>(1)); // fixme
+<b><a name="line489">489  </a></b>	#else
+<b><a name="line490">490  </a></b>	        	const auto hw_qid = get_hw_qid(tx.pf, tx.q, devlist);
+<b><a name="line491">491  </a></b>	        	user_logic.configure_c2h(hw_qid, tx.size, 1);
+<b><a name="line492">492  </a></b>	        	user_logic.generate_packets();
+<b><a name="line493">493  </a></b>	
+<b><a name="line494">494  </a></b>	#ifndef _WIN32
+<b><a name="line495">495  </a></b>	        	std::this_thread::sleep_for(std::chrono::milliseconds(1)); // fixme
+<b><a name="line496">496  </a></b>	#endif
+<b><a name="line497">497  </a></b>	
+<b><a name="line498">498  </a></b>	#endif
+<b><a name="line499">499  </a></b>	        }
+<b><a name="line500">500  </a></b>	    }
+<b><a name="line501">501  </a></b>	
+<b><a name="line502">502  </a></b>	    // wait until threads complete
+<b><a name="line503">503  </a></b>	    for (auto&amp; <b>w</b> : <a href="#line98">workers</a>) {
+<b><a name="line504">504  </a></b>	        <a href="#line503">w</a>.<a href="/usr/include/c++/5/thread/code.html#line173">join</a>();
+<b><a name="line505">505  </a></b>	    }
+<b><a name="line506">506  </a></b>	
+<b><a name="line507">507  </a></b>	    // compare results
+<b><a name="line508">508  </a></b>	    for (<a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>i</b> = 0; i &lt; <a href="#line401">rd_buffers</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>(); i++) {
+<b><a name="line509">509  </a></b>	        auto <b>cmp_result</b> = <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../../logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line226">memcmp</a>(<a href="#line408">expected</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line890">data</a>(), <a href="#line401">rd_buffers</a>[<a href="#line508">i</a>].<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line890">data</a>(),
+<b><a name="line510">510  </a></b>	                <a href="#line386">tp</a>.<a href="#line55">transfers</a>[<a href="#line508">i</a>].<a href="#line34">size</a> * <a href="#line386">tp</a>.<a href="#line55">transfers</a>[<a href="#line508">i</a>].<a href="#line33">it</a>);
+<b><a name="line511">511  </a></b>	        <a href="/usr/local/include/gtest/gtest.h/code.html#line1922">EXPECT_EQ</a>(0, cmp_result) <a href="/usr/local/include/gtest/gtest-message.h/code.html#line115">&lt;&lt;</a> &quot;packet data of tx&quot; <a href="/usr/local/include/gtest/gtest-message.h/code.html#line115">&lt;&lt;</a> <a href="#line508">i</a> <a href="/usr/local/include/gtest/gtest-message.h/code.html#line115">&lt;&lt;</a> &quot; does not match expected pattern!\n&quot;
+<b><a name="line512">512  </a></b>	                <a href="/usr/local/include/gtest/gtest-message.h/code.html#line115">&lt;&lt;</a> <a href="../../xlnx/xlnx_common/xlnx_gtest_ext.h/code.html#line50">print_diffs</a>(<a href="#line408">expected</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line620">cbegin</a>(), <a href="#line408">expected</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line629">cend</a>(), <a href="#line401">rd_buffers</a>[<a href="#line508">i</a>].<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line620">cbegin</a>());
+<b><a name="line513">513  </a></b>	    }
+<b><a name="line514">514  </a></b>	#ifdef DPDK
+<b><a name="line515">515  </a></b>	    <a href="#line428">c2h_qs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line1173">erase</a>(<a href="#line428">c2h_qs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line547">begin</a>(), <a href="#line428">c2h_qs</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line565">end</a>());
+<b><a name="line516">516  </a></b>	    for(const auto&amp; <b>pf</b> : <a href="#line386">tp</a>.<a href="#line52">pfs</a>){
+<b><a name="line517">517  </a></b>	    	if (<a href="#line516">pf</a>.<a href="#line46">qmax</a>){
+<b><a name="line518">518  </a></b>	    		//env.pfs[pf.dev_id].max_num_queues = 512;
+<b><a name="line519">519  </a></b>	    		<a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line1849">rte_eth_dev_close</a>(<a href="#line516">pf</a>.<a href="#line44">dev_id</a>);
+<b><a name="line520">520  </a></b>	    	}
+<b><a name="line521">521  </a></b>	    }
+<b><a name="line522">522  </a></b>	#endif
+<b><a name="line523">523  </a></b>	}
+<b><a name="line524">524  </a></b>	
+<b><a name="line525">525  </a></b>	// ====================== Test Parameter Definitions ===============================================
+<b><a name="line526">526  </a></b>	
+<b><a name="line527">527  </a></b>	<a href="/usr/local/include/gtest/gtest-param-test.h/code.html#line1421">INSTANTIATE_TEST_CASE_P</a>(MM009_threaded_tx, qdma_threaded_mm_test, ::testing::Values(
+<b><a name="line528">528  </a></b>	        // num_pf, num_q, num_tx, tx_size
+<b><a name="line529">529  </a></b>	        interleaved_tx_test(1, 4, 10, 4_kB),
+<b><a name="line530">530  </a></b>	        interleaved_tx_test(1, 64, 10, 4_kB),
+<b><a name="line531">531  </a></b>	        interleaved_tx_test(1, 16, 10, 16_kB),
+<b><a name="line532">532  </a></b>	        //interleaved_tx_test(4, 4, 10, 4_kB),
+<b><a name="line533">533  </a></b>	        //interleaved_tx_test(4, 64, 10, 4_kB),
+<b><a name="line534">534  </a></b>	        //interleaved_tx_test(4, 16, 10, 16_kB)
+<b><a name="line535">535  </a></b>	        interleaved_tx_test((unsigned)env.pfs.size(), 4, 10, 4_kB),
+<b><a name="line536">536  </a></b>	        interleaved_tx_test((unsigned)env.pfs.size(), 64, 10, 4_kB),
+<b><a name="line537">537  </a></b>	        interleaved_tx_test((unsigned)env.pfs.size(), 16, 10, 16_kB)
+<b><a name="line538">538  </a></b>	));
+<b><a name="line539">539  </a></b>	
+<b><a name="line540">540  </a></b>	
+<b><a name="line541">541  </a></b>	<a href="/usr/local/include/gtest/gtest-param-test.h/code.html#line1421">INSTANTIATE_TEST_CASE_P</a>(VF_MM009_threaded_tx, qdma_threaded_mm_test, ::testing::Values(
+<b><a name="line542">542  </a></b>	        // num_vf, num_q, num_tx, tx_size
+<b><a name="line543">543  </a></b>	        interleaved_tx_test(1, 4, 10, 4_kB, qdma::instance_ext::type::vf),
+<b><a name="line544">544  </a></b>	        interleaved_tx_test(1, 64, 10, 4_kB, qdma::instance_ext::type::vf),
+<b><a name="line545">545  </a></b>	        interleaved_tx_test(1, 16, 10, 16_kB, qdma::instance_ext::type::vf),
+<b><a name="line546">546  </a></b>	        //interleaved_tx_test(4, 4, 10, 4_kB),
+<b><a name="line547">547  </a></b>	        //interleaved_tx_test(4, 64, 10, 4_kB),
+<b><a name="line548">548  </a></b>	        //interleaved_tx_test(4, 16, 10, 16_kB)
+<b><a name="line549">549  </a></b>	        interleaved_tx_test((unsigned)env.vfs.size(), 4, 10, 4_kB, qdma::instance_ext::type::vf),
+<b><a name="line550">550  </a></b>	        interleaved_tx_test((unsigned)env.vfs.size(), 64, 10, 4_kB, qdma::instance_ext::type::vf),
+<b><a name="line551">551  </a></b>	        interleaved_tx_test((unsigned)env.vfs.size(), 16, 10, 16_kB, qdma::instance_ext::type::vf)
+<b><a name="line552">552  </a></b>	));
+<b><a name="line553">553  </a></b>	
+<b><a name="line554">554  </a></b>	
+<b><a name="line555">555  </a></b>	<a href="/usr/local/include/gtest/gtest-param-test.h/code.html#line1421">INSTANTIATE_TEST_CASE_P</a>(ST018_threaded_tx, qdma_threaded_st_test, ::testing::Values(
+<b><a name="line556">556  </a></b>	        // num_pf, num_q, num_tx, tx_size
+<b><a name="line557">557  </a></b>	        interleaved_tx_test(1, 4, 10, 4_kB),
+<b><a name="line558">558  </a></b>	        interleaved_tx_test(1, 64, 10, 4_kB),
+<b><a name="line559">559  </a></b>	        interleaved_tx_test(1, 16, 10, 16_kB),
+<b><a name="line560">560  </a></b>	        //interleaved_tx_test(4, 4, 10, 4_kB),
+<b><a name="line561">561  </a></b>	        //interleaved_tx_test(4, 64, 10, 4_kB),
+<b><a name="line562">562  </a></b>	        //interleaved_tx_test(4, 16, 10, 16_kB)
+<b><a name="line563">563  </a></b>	        interleaved_tx_test((unsigned)env.pfs.size(), 4, 10, 4_kB),
+<b><a name="line564">564  </a></b>	        interleaved_tx_test((unsigned)env.pfs.size(), 64, 10, 4_kB),
+<b><a name="line565">565  </a></b>	        interleaved_tx_test((unsigned)env.pfs.size(), 16, 10, 16_kB)
+<b><a name="line566">566  </a></b>	));
+<b><a name="line567">567  </a></b>	
+<b><a name="line568">568  </a></b>	<a href="/usr/local/include/gtest/gtest-param-test.h/code.html#line1421">INSTANTIATE_TEST_CASE_P</a>(VF_ST018_threaded_tx, qdma_threaded_st_test, ::testing::Values(
+<b><a name="line569">569  </a></b>	        // num_pf, num_q, num_tx, tx_size
+<b><a name="line570">570  </a></b>	        interleaved_tx_test(1, 4, 10, 4_kB, qdma::instance_ext::type::vf),
+<b><a name="line571">571  </a></b>	        interleaved_tx_test(1, 64, 10, 4_kB, qdma::instance_ext::type::vf),
+<b><a name="line572">572  </a></b>	        interleaved_tx_test(1, 16, 10, 16_kB, qdma::instance_ext::type::vf),
+<b><a name="line573">573  </a></b>	        //interleaved_tx_test(4, 4, 10, 4_kB),
+<b><a name="line574">574  </a></b>	        //interleaved_tx_test(4, 64, 10, 4_kB),
+<b><a name="line575">575  </a></b>	        //interleaved_tx_test(4, 16, 10, 16_kB)
+<b><a name="line576">576  </a></b>	        interleaved_tx_test((unsigned)env.vfs.size(), 4, 10, 4_kB, qdma::instance_ext::type::vf),
+<b><a name="line577">577  </a></b>	        interleaved_tx_test((unsigned)env.vfs.size(), 64, 10, 4_kB, qdma::instance_ext::type::vf),
+<b><a name="line578">578  </a></b>	        interleaved_tx_test((unsigned)env.vfs.size(), 16, 10, 16_kB, qdma::instance_ext::type::vf)
+<b><a name="line579">579  </a></b>	));
+<b><a name="line580">580  </a></b>	
+<b><a name="line581">581  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

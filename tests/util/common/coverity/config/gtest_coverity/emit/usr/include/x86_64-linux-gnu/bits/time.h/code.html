@@ -1,0 +1,158 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/time.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* System-dependent timing definitions.  Linux version.
+<b><a name="line2">2    </a></b>	   Copyright (C) 1996-2016 Free Software Foundation, Inc.
+<b><a name="line3">3    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line6">6    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line7">7    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line8">8    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line13">13   </a></b>	   Lesser General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line16">16   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line17">17   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	/*
+<b><a name="line20">20   </a></b>	 * Never include this file directly; use &lt;time.h&gt; instead.
+<b><a name="line21">21   </a></b>	 */
+<b><a name="line22">22   </a></b>	
+<b><a name="line23">23   </a></b>	#if defined <a href="../../sys/select.h/code.html#line44">__need_timeval</a> || defined <a href="../../../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line24">24   </a></b>	# ifndef <a href="#line25">_STRUCT_TIMEVAL</a>
+<b><a name="line25">25   </a></b>	#  define <b>_STRUCT_TIMEVAL</b>	1
+<b><a name="line26">26   </a></b>	#  include &lt;bits/types.h&gt;
+<b><a name="line27">27   </a></b>	
+<b><a name="line28">28   </a></b>	/* A time value that is accurate to the nearest
+<b><a name="line29">29   </a></b>	   microsecond but also has a range of years.  */
+<b><a name="line30">30   </a></b>	struct <b>timeval</b>
+<b><a name="line31">31   </a></b>	  {
+<b><a name="line32">32   </a></b>	    <a href="../types.h/code.html#line139">__time_t</a> <b>tv_sec</b>;		/* Seconds.  */
+<b><a name="line33">33   </a></b>	    <a href="../types.h/code.html#line141">__suseconds_t</a> <b>tv_usec</b>;	/* Microseconds.  */
+<b><a name="line34">34   </a></b>	  };
+<b><a name="line35">35   </a></b>	# endif	/* struct timeval */
+<b><a name="line36">36   </a></b>	#endif
+<b><a name="line37">37   </a></b>	
+<b><a name="line38">38   </a></b>	#ifndef <a href="../../sys/select.h/code.html#line44">__need_timeval</a>
+<b><a name="line39">39   </a></b>	# ifndef _BITS_TIME_H
+<b><a name="line40">40   </a></b>	#  define <b>_BITS_TIME_H</b>	1
+<b><a name="line41">41   </a></b>	
+<b><a name="line42">42   </a></b>	/* ISO/IEC 9899:1999 7.23.1: Components of time
+<b><a name="line43">43   </a></b>	   The macro `CLOCKS_PER_SEC' is an expression with type `clock_t' that is
+<b><a name="line44">44   </a></b>	   the number per second of the value returned by the `clock' function.  */
+<b><a name="line45">45   </a></b>	/* CAE XSH, Issue 4, Version 2: &lt;time.h&gt;
+<b><a name="line46">46   </a></b>	   The value of CLOCKS_PER_SEC is required to be 1 million on all
+<b><a name="line47">47   </a></b>	   XSI-conformant systems. */
+<b><a name="line48">48   </a></b>	#  define <b>CLOCKS_PER_SEC</b>  ((clock_t) 1000000)
+<b><a name="line49">49   </a></b>	
+<b><a name="line50">50   </a></b>	#  if (!defined __STRICT_ANSI__ || defined <a href="../../../features.h/code.html#line249">__USE_POSIX</a>) \
+<b><a name="line51">51   </a></b>	   &amp;&amp; !defined <a href="../../../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line52">52   </a></b>	/* Even though CLOCKS_PER_SEC has such a strange value CLK_TCK
+<b><a name="line53">53   </a></b>	   presents the real value for clock ticks per second for the system.  */
+<b><a name="line54">54   </a></b>	#   include &lt;bits/types.h&gt;
+<b><a name="line55">55   </a></b>	extern long int __sysconf (int);
+<b><a name="line56">56   </a></b>	#   define CLK_TCK ((__clock_t) __sysconf (2))	/* 2 is _SC_CLK_TCK */
+<b><a name="line57">57   </a></b>	#  endif
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	#  ifdef <a href="../../../features.h/code.html#line257">__USE_POSIX199309</a>
+<b><a name="line60">60   </a></b>	/* Identifier for system-wide realtime clock.  */
+<b><a name="line61">61   </a></b>	#   define <b>CLOCK_REALTIME</b>		0
+<b><a name="line62">62   </a></b>	/* Monotonic system-wide clock.  */
+<b><a name="line63">63   </a></b>	#   define <b>CLOCK_MONOTONIC</b>		1
+<b><a name="line64">64   </a></b>	/* High-resolution timer from the CPU.  */
+<b><a name="line65">65   </a></b>	#   define <b>CLOCK_PROCESS_CPUTIME_ID</b>	2
+<b><a name="line66">66   </a></b>	/* Thread-specific CPU-time clock.  */
+<b><a name="line67">67   </a></b>	#   define <b>CLOCK_THREAD_CPUTIME_ID</b>	3
+<b><a name="line68">68   </a></b>	/* Monotonic system-wide clock, not adjusted for frequency scaling.  */
+<b><a name="line69">69   </a></b>	#   define <b>CLOCK_MONOTONIC_RAW</b>		4
+<b><a name="line70">70   </a></b>	/* Identifier for system-wide realtime clock, updated only on ticks.  */
+<b><a name="line71">71   </a></b>	#   define <b>CLOCK_REALTIME_COARSE</b>	5
+<b><a name="line72">72   </a></b>	/* Monotonic system-wide clock, updated only on ticks.  */
+<b><a name="line73">73   </a></b>	#   define <b>CLOCK_MONOTONIC_COARSE</b>	6
+<b><a name="line74">74   </a></b>	/* Monotonic system-wide clock that includes time spent in suspension.  */
+<b><a name="line75">75   </a></b>	#   define <b>CLOCK_BOOTTIME</b>		7
+<b><a name="line76">76   </a></b>	/* Like CLOCK_REALTIME but also wakes suspended system.  */
+<b><a name="line77">77   </a></b>	#   define <b>CLOCK_REALTIME_ALARM</b>		8
+<b><a name="line78">78   </a></b>	/* Like CLOCK_BOOTTIME but also wakes suspended system.  */
+<b><a name="line79">79   </a></b>	#   define <b>CLOCK_BOOTTIME_ALARM</b>		9
+<b><a name="line80">80   </a></b>	/* Like CLOCK_REALTIME but in International Atomic Time.  */
+<b><a name="line81">81   </a></b>	#   define <b>CLOCK_TAI</b>			11
+<b><a name="line82">82   </a></b>	
+<b><a name="line83">83   </a></b>	/* Flag to indicate time is absolute.  */
+<b><a name="line84">84   </a></b>	#   define <b>TIMER_ABSTIME</b>		1
+<b><a name="line85">85   </a></b>	#  endif
+<b><a name="line86">86   </a></b>	
+<b><a name="line87">87   </a></b>	#  ifdef <a href="../../../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line88">88   </a></b>	#   include &lt;bits/timex.h&gt;
+<b><a name="line89">89   </a></b>	
+<b><a name="line90">90   </a></b>	<a href="../../sys/cdefs.h/code.html#line98">__BEGIN_DECLS</a>
+<b><a name="line91">91   </a></b>	
+<b><a name="line92">92   </a></b>	/* Tune a POSIX clock.  */
+<b><a name="line93">93   </a></b>	extern int clock_adjtime (<a href="../types.h/code.html#line147">__clockid_t</a> __clock_id, struct <a href="../timex.h/code.html#line25">timex</a> *__utx) <a href="../../sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line94">94   </a></b>	
+<b><a name="line95">95   </a></b>	<a href="../../sys/cdefs.h/code.html#line99">__END_DECLS</a>
+<b><a name="line96">96   </a></b>	#  endif /* use GNU */
+<b><a name="line97">97   </a></b>	
+<b><a name="line98">98   </a></b>	# endif	/* bits/time.h */
+<b><a name="line99">99   </a></b>	#endif
+<b><a name="line100">100  </a></b>	
+<b><a name="line101">101  </a></b>	#undef <a href="../../sys/select.h/code.html#line44">__need_timeval</a>
+<b><a name="line102">102  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

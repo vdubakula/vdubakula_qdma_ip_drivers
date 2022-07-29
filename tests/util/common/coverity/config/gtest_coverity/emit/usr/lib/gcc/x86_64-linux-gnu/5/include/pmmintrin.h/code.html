@@ -1,0 +1,189 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/lib/gcc/x86_64-linux-gnu/5/include/pmmintrin.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 2003-2015 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	   This file is part of GCC.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   GCC is free software; you can redistribute it and/or modify
+<b><a name="line6">6    </a></b>	   it under the terms of the GNU General Public License as published by
+<b><a name="line7">7    </a></b>	   the Free Software Foundation; either version 3, or (at your option)
+<b><a name="line8">8    </a></b>	   any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   GCC is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line13">13   </a></b>	   GNU General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line16">16   </a></b>	   permissions described in the GCC Runtime Library Exception, version
+<b><a name="line17">17   </a></b>	   3.1, as published by the Free Software Foundation.
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	   You should have received a copy of the GNU General Public License and
+<b><a name="line20">20   </a></b>	   a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line21">21   </a></b>	   see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line22">22   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>	/* Implemented from the specification included in the Intel C++ Compiler
+<b><a name="line25">25   </a></b>	   User Guide and Reference, version 9.0.  */
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>	#ifndef _PMMINTRIN_H_INCLUDED
+<b><a name="line28">28   </a></b>	#define <b>_PMMINTRIN_H_INCLUDED</b>
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	/* We need definitions from the SSE2 and SSE header files*/
+<b><a name="line31">31   </a></b>	#include &lt;emmintrin.h&gt;
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	#ifndef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line849">__SSE3__</a>
+<b><a name="line34">34   </a></b>	#pragma GCC push_options
+<b><a name="line35">35   </a></b>	#pragma GCC target(&quot;sse3&quot;)
+<b><a name="line36">36   </a></b>	#define __DISABLE_SSE3__
+<b><a name="line37">37   </a></b>	#endif /* __SSE3__ */
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	/* Additional bits in the MXCSR.  */
+<b><a name="line40">40   </a></b>	#define <b>_MM_DENORMALS_ZERO_MASK</b>		0x0040
+<b><a name="line41">41   </a></b>	#define <b>_MM_DENORMALS_ZERO_ON</b>		0x0040
+<b><a name="line42">42   </a></b>	#define <b>_MM_DENORMALS_ZERO_OFF</b>		0x0000
+<b><a name="line43">43   </a></b>	
+<b><a name="line44">44   </a></b>	#define <b>_MM_SET_DENORMALS_ZERO_MODE</b>(mode) \
+<b><a name="line45">45   </a></b>	  _mm_setcsr ((_mm_getcsr () &amp; ~_MM_DENORMALS_ZERO_MASK) | (mode))
+<b><a name="line46">46   </a></b>	#define <b>_MM_GET_DENORMALS_ZERO_MODE</b>() \
+<b><a name="line47">47   </a></b>	  (_mm_getcsr() &amp; _MM_DENORMALS_ZERO_MASK)
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	extern __inline <a href="../xmmintrin.h/code.html#line69">__m128</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line50">50   </a></b>	<b>_mm_addsub_ps</b> (<a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__X</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__Y</b>)
+<b><a name="line51">51   </a></b>	{
+<b><a name="line52">52   </a></b>	  return (<a href="../xmmintrin.h/code.html#line69">__m128</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line919">__builtin_ia32_addsubps</a> ((<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line50">__X</a>, (<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line50">__Y</a>);
+<b><a name="line53">53   </a></b>	}
+<b><a name="line54">54   </a></b>	
+<b><a name="line55">55   </a></b>	extern __inline <a href="../xmmintrin.h/code.html#line69">__m128</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line56">56   </a></b>	<b>_mm_hadd_ps</b> (<a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__X</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__Y</b>)
+<b><a name="line57">57   </a></b>	{
+<b><a name="line58">58   </a></b>	  return (<a href="../xmmintrin.h/code.html#line69">__m128</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line921">__builtin_ia32_haddps</a> ((<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line56">__X</a>, (<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line56">__Y</a>);
+<b><a name="line59">59   </a></b>	}
+<b><a name="line60">60   </a></b>	
+<b><a name="line61">61   </a></b>	extern __inline <a href="../xmmintrin.h/code.html#line69">__m128</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line62">62   </a></b>	<b>_mm_hsub_ps</b> (<a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__X</b>, <a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__Y</b>)
+<b><a name="line63">63   </a></b>	{
+<b><a name="line64">64   </a></b>	  return (<a href="../xmmintrin.h/code.html#line69">__m128</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line923">__builtin_ia32_hsubps</a> ((<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line62">__X</a>, (<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line62">__Y</a>);
+<b><a name="line65">65   </a></b>	}
+<b><a name="line66">66   </a></b>	
+<b><a name="line67">67   </a></b>	extern __inline <a href="../xmmintrin.h/code.html#line69">__m128</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line68">68   </a></b>	<b>_mm_movehdup_ps</b> (<a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__X</b>)
+<b><a name="line69">69   </a></b>	{
+<b><a name="line70">70   </a></b>	  return (<a href="../xmmintrin.h/code.html#line69">__m128</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line927">__builtin_ia32_movshdup</a> ((<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line68">__X</a>);
+<b><a name="line71">71   </a></b>	}
+<b><a name="line72">72   </a></b>	
+<b><a name="line73">73   </a></b>	extern __inline <a href="../xmmintrin.h/code.html#line69">__m128</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line74">74   </a></b>	<b>_mm_moveldup_ps</b> (<a href="../xmmintrin.h/code.html#line69">__m128</a> <b>__X</b>)
+<b><a name="line75">75   </a></b>	{
+<b><a name="line76">76   </a></b>	  return (<a href="../xmmintrin.h/code.html#line69">__m128</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line928">__builtin_ia32_movsldup</a> ((<a href="../xmmintrin.h/code.html#line72">__v4sf</a>)<a href="#line74">__X</a>);
+<b><a name="line77">77   </a></b>	}
+<b><a name="line78">78   </a></b>	
+<b><a name="line79">79   </a></b>	extern __inline <a href="../emmintrin.h/code.html#line53">__m128d</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line80">80   </a></b>	<b>_mm_addsub_pd</b> (<a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__X</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__Y</b>)
+<b><a name="line81">81   </a></b>	{
+<b><a name="line82">82   </a></b>	  return (<a href="../emmintrin.h/code.html#line53">__m128d</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line918">__builtin_ia32_addsubpd</a> ((<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line80">__X</a>, (<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line80">__Y</a>);
+<b><a name="line83">83   </a></b>	}
+<b><a name="line84">84   </a></b>	
+<b><a name="line85">85   </a></b>	extern __inline <a href="../emmintrin.h/code.html#line53">__m128d</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line86">86   </a></b>	<b>_mm_hadd_pd</b> (<a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__X</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__Y</b>)
+<b><a name="line87">87   </a></b>	{
+<b><a name="line88">88   </a></b>	  return (<a href="../emmintrin.h/code.html#line53">__m128d</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line920">__builtin_ia32_haddpd</a> ((<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line86">__X</a>, (<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line86">__Y</a>);
+<b><a name="line89">89   </a></b>	}
+<b><a name="line90">90   </a></b>	
+<b><a name="line91">91   </a></b>	extern __inline <a href="../emmintrin.h/code.html#line53">__m128d</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line92">92   </a></b>	<b>_mm_hsub_pd</b> (<a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__X</b>, <a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__Y</b>)
+<b><a name="line93">93   </a></b>	{
+<b><a name="line94">94   </a></b>	  return (<a href="../emmintrin.h/code.html#line53">__m128d</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line922">__builtin_ia32_hsubpd</a> ((<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line92">__X</a>, (<a href="../emmintrin.h/code.html#line40">__v2df</a>)<a href="#line92">__Y</a>);
+<b><a name="line95">95   </a></b>	}
+<b><a name="line96">96   </a></b>	
+<b><a name="line97">97   </a></b>	extern __inline <a href="../emmintrin.h/code.html#line53">__m128d</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line98">98   </a></b>	<b>_mm_loaddup_pd</b> (double const *<b>__P</b>)
+<b><a name="line99">99   </a></b>	{
+<b><a name="line100">100  </a></b>	  return <a href="../emmintrin.h/code.html#line131">_mm_load1_pd</a> (<a href="#line98">__P</a>);
+<b><a name="line101">101  </a></b>	}
+<b><a name="line102">102  </a></b>	
+<b><a name="line103">103  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line53">__m128d</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line104">104  </a></b>	<b>_mm_movedup_pd</b> (<a href="../emmintrin.h/code.html#line53">__m128d</a> <b>__X</b>)
+<b><a name="line105">105  </a></b>	{
+<b><a name="line106">106  </a></b>	  return <a href="../emmintrin.h/code.html#line909">_mm_shuffle_pd</a> (__X, __X, _MM_SHUFFLE2 (0,0));
+<b><a name="line107">107  </a></b>	}
+<b><a name="line108">108  </a></b>	
+<b><a name="line109">109  </a></b>	extern __inline <a href="../emmintrin.h/code.html#line52">__m128i</a> __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line110">110  </a></b>	<b>_mm_lddqu_si128</b> (<a href="../emmintrin.h/code.html#line52">__m128i</a> const *<b>__P</b>)
+<b><a name="line111">111  </a></b>	{
+<b><a name="line112">112  </a></b>	  return (<a href="../emmintrin.h/code.html#line52">__m128i</a>) <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line924">__builtin_ia32_lddqu</a> ((char const *)<a href="#line110">__P</a>);
+<b><a name="line113">113  </a></b>	}
+<b><a name="line114">114  </a></b>	
+<b><a name="line115">115  </a></b>	extern __inline void __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line116">116  </a></b>	<b>_mm_monitor</b> (void const * <b>__P</b>, unsigned int <b>__E</b>, unsigned int <b>__H</b>)
+<b><a name="line117">117  </a></b>	{
+<b><a name="line118">118  </a></b>	  <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line925">__builtin_ia32_monitor</a> (<a href="#line116">__P</a>, <a href="#line116">__E</a>, <a href="#line116">__H</a>);
+<b><a name="line119">119  </a></b>	}
+<b><a name="line120">120  </a></b>	
+<b><a name="line121">121  </a></b>	extern __inline void __attribute__((__gnu_inline__, __always_inline__, __artificial__))
+<b><a name="line122">122  </a></b>	<b>_mm_mwait</b> (unsigned int <b>__E</b>, unsigned int <b>__H</b>)
+<b><a name="line123">123  </a></b>	{
+<b><a name="line124">124  </a></b>	  <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line929">__builtin_ia32_mwait</a> (<a href="#line122">__E</a>, <a href="#line122">__H</a>);
+<b><a name="line125">125  </a></b>	}
+<b><a name="line126">126  </a></b>	
+<b><a name="line127">127  </a></b>	#ifdef __DISABLE_SSE3__
+<b><a name="line128">128  </a></b>	#undef __DISABLE_SSE3__
+<b><a name="line129">129  </a></b>	#pragma GCC pop_options
+<b><a name="line130">130  </a></b>	#endif /* __DISABLE_SSE3__ */
+<b><a name="line131">131  </a></b>	
+<b><a name="line132">132  </a></b>	#endif /* _PMMINTRIN_H_INCLUDED */
+<b><a name="line133">133  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

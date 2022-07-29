@@ -1,0 +1,13 @@
+name=pf0_vf0_2048q
+test_mask=0x02 #bit 0 - auto mode, 1 - poll mode, bit 2 - intr mode, bit 3 - aggr mode
+repeat=1 #number of iterations
+filter=*VF*-*ST016_64B_desc*:*DMACTL*:*DEBUGFS*:*PCIE003*:*CFG002*
+master_pf=0
+run_gtest=1
+pf_qmax_cfg_en=(1)
+pf_qmax=(0)
+pf_nvf=(1) #number of VFs in PF
+qmaxvfs=2048
+vf_pf0_qmax=(2048)
+valid_drv=(linux dpdk)
+#necessary dummy line

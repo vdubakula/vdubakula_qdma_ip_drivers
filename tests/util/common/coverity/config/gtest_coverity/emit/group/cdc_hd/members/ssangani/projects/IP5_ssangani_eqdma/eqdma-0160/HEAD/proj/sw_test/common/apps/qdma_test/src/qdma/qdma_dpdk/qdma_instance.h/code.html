@@ -1,0 +1,121 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_dpdk/qdma_instance.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	#ifndef SRC_QDMA_QDMA_INSTANCE_EXT_H_
+<b><a name="line2">2    </a></b>	#define <b>SRC_QDMA_QDMA_INSTANCE_EXT_H_</b>
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	#include &quot;qdma_instance_abs.h&quot;
+<b><a name="line5">5    </a></b>	
+<b><a name="line6">6    </a></b>	#define <b>NUM_DESC_PER_RING</b> 1024
+<b><a name="line7">7    </a></b>	#define <b>MAX_NUM_QUEUES</b> 2048
+<b><a name="line8">8    </a></b>	#define <b>DEFAULT_NUM_QUEUES</b> 64
+<b><a name="line9">9    </a></b>	#define <b>NUM_RX_PKTS</b> 32
+<b><a name="line10">10   </a></b>	#define <b>MP_CACHE_SZ</b>		512
+<b><a name="line11">11   </a></b>	
+<b><a name="line12">12   </a></b>	#define <b>MBUF_POOL_NAME_PORT_QUEUE_DIR</b> &quot;mp_%d_%d_%d&quot; /* mempool_port_qid_direction */
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	#define <b>MAX_WRITEBACK_SIZE</b> (MAX_BUF_SIZE * 7)
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	/* User bar registers */
+<b><a name="line17">17   </a></b>	#define <b>C2H_ST_QID_REG</b>		0x0
+<b><a name="line18">18   </a></b>	#define <b>C2H_ST_LEN_REG</b>		0x4
+<b><a name="line19">19   </a></b>	#define <b>C2H_CONTROL_REG</b>		0x8
+<b><a name="line20">20   </a></b>	#define <b>ST_LOOPBACK_EN</b>		0x1
+<b><a name="line21">21   </a></b>	#define <b>ST_C2H_START_VAL</b>	0x2
+<b><a name="line22">22   </a></b>	#define <b>ST_C2H_IMMEDIATE_DATA_EN</b>	0x4
+<b><a name="line23">23   </a></b>	#define <b>C2H_CONTROL_REG_MASK</b>		0xF
+<b><a name="line24">24   </a></b>	#define <b>H2C_CONTROL_REG</b>		0xC
+<b><a name="line25">25   </a></b>	#define <b>H2C_STATUS_REG</b>		0x10
+<b><a name="line26">26   </a></b>	#define <b>C2H_PACKET_COUNT_REG</b>	0x20
+<b><a name="line27">27   </a></b>	
+<b><a name="line28">28   </a></b>	namespace <a href="../../qdma_common/qdma_queue_abs.h/code.html#line17">qdma</a> {
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	// qdma driver instance
+<b><a name="line31">31   </a></b>	// implementes user-space control api
+<b><a name="line32">32   </a></b>	class <b>instance_ext</b>: public <a href="../../qdma_common/qdma_instance_abs.h/code.html#line17">instance</a> {
+<b><a name="line33">33   </a></b>	public:
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>		<b>instance_ext</b>() = default;
+<b><a name="line36">36   </a></b>		<b>instance_ext</b>(const <a href="#line32">instance_ext</a>&amp; other) = delete;
+<b><a name="line37">37   </a></b>		<a href="#line32">instance_ext</a>&amp; <b>operator=</b>(const <a href="#line32">instance_ext</a>&amp; other) = delete;
+<b><a name="line38">38   </a></b>		<b>instance_ext</b>(<a href="#line32">instance_ext</a>&amp;&amp; other) = default;
+<b><a name="line39">39   </a></b>		<a href="#line32">instance_ext</a>&amp; <b>operator=</b>(<a href="#line32">instance_ext</a>&amp;&amp; other) = default;
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>		instance_ext(<a href="../../qdma_common/qdma_instance_abs.h/code.html#line20">type</a> t);
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>			virtual <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="../qdma_device.h/code.html#line31">device</a>&gt; get_devices();
+<b><a name="line44">44   </a></b>	
+<b><a name="line45">45   </a></b>			virtual unsigned get_num_devices();
+<b><a name="line46">46   </a></b>	
+<b><a name="line47">47   </a></b>			virtual <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> get_last_id();
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>			virtual <a href="../qdma_device.h/code.html#line31">device</a>::<a href="../qdma_device.h/code.html#line34">info</a> dev_info(unsigned dev_id);
+<b><a name="line50">50   </a></b>	
+<b><a name="line51">51   </a></b>			virtual unsigned add_queue(unsigned dev_id, unsigned q_id, unsigned num_q, <a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line24">mode</a> q_mode,
+<b><a name="line52">52   </a></b>							   <a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line29">direction</a> q_dir, const <a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../qdma_queue.h/code.html#line14">config</a>&amp; qcfg, bool throw_err);
+<b><a name="line53">53   </a></b>	
+<b><a name="line54">54   </a></b>			virtual unsigned start_queue(unsigned dev_id, unsigned queue_id, <a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line24">mode</a> q_mode, <a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line29">direction</a> q_dir,
+<b><a name="line55">55   </a></b>							 const <a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../qdma_queue.h/code.html#line14">config</a>&amp; qcfg, bool throw_err);
+<b><a name="line56">56   </a></b>	
+<b><a name="line57">57   </a></b>			virtual unsigned stop_queue(unsigned dev_id, unsigned queue_id, <a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line29">direction</a> q_dir, bool throw_err);
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	
+<b><a name="line60">60   </a></b>	};
+<b><a name="line61">61   </a></b>	
+<b><a name="line62">62   </a></b>	} // namespace qdma
+<b><a name="line63">63   </a></b>	
+<b><a name="line64">64   </a></b>	#endif /* SRC_QDMA_QDMA_INSTANCE_EXT_H_ */
+<b><a name="line65">65   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

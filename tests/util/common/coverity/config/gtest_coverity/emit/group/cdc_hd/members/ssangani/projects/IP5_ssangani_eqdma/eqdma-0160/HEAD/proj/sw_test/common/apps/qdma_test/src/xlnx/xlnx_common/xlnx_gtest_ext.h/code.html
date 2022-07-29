@@ -1,0 +1,126 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/xlnx/xlnx_common/xlnx_gtest_ext.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	#pragma once
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	#include &lt;algorithm&gt;
+<b><a name="line4">4    </a></b>	#include &lt;cstddef&gt;
+<b><a name="line5">5    </a></b>	#include &lt;cstdint&gt;
+<b><a name="line6">6    </a></b>	#include &lt;fstream&gt;
+<b><a name="line7">7    </a></b>	#include &lt;iterator&gt;
+<b><a name="line8">8    </a></b>	#include &lt;stdexcept&gt;
+<b><a name="line9">9    </a></b>	#include &lt;string&gt;
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	#include &lt;gtest/gtest.h&gt;
+<b><a name="line12">12   </a></b>	
+<b><a name="line13">13   </a></b>	// =========================== gtest helper functions =============================================
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	template&lt;typename <b>T</b>&gt;
+<b><a name="line16">16   </a></b>	inline <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stringfwd.h/code.html#line74">string</a> <b>to_hex_string</b>(<a href="#line15">T</a> <b>t</b>) {
+<b><a name="line17">17   </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/iosfwd/code.html#line153">ostringstream</a> <b>oss</b>;
+<b><a name="line18">18   </a></b>	    <a href="#line17">oss</a> <a href="/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;0x&quot; <a href="/usr/include/c++/5/ostream/code.html#line127">&lt;&lt;</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/ios_base.h/code.html#line1024">hex</a> <a href="/usr/include/c++/5/ostream/code.html#line170">&lt;&lt;</a> <a href="#line16">t</a>;
+<b><a name="line19">19   </a></b>	    return <a href="#line17">oss</a>.<a href="/usr/include/c++/5/sstream/code.html#line624">str</a>();
+<b><a name="line20">20   </a></b>	}
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	// A predicate-formatter for asserting that two values are equal. Prints values in hex format
+<b><a name="line23">23   </a></b>	inline ::<a href="/usr/local/include/gtest/internal/gtest-port.h/code.html#line988">testing</a>::<a href="/usr/local/include/gtest/internal/gtest-internal.h/code.html#line86">AssertionResult</a> <b>hex_equal</b>(const char* <b>m_expr</b>,
+<b><a name="line24">24   </a></b>	        const char* <b>n_expr</b>, <a href="/usr/include/stdint.h/code.html#line55">uint64_t</a> <b>m</b>, <a href="/usr/include/stdint.h/code.html#line55">uint64_t</a> <b>n</b>) {
+<b><a name="line25">25   </a></b>	    if (<a href="#line24">m</a> == <a href="#line24">n</a>)
+<b><a name="line26">26   </a></b>	        return ::<a href="/usr/local/include/gtest/internal/gtest-port.h/code.html#line988">testing</a>::<a href="/usr/local/include/gtest/gtest.h/code.html#line339">AssertionSuccess</a>();
+<b><a name="line27">27   </a></b>	
+<b><a name="line28">28   </a></b>	    return ::<a href="/usr/local/include/gtest/internal/gtest-port.h/code.html#line988">testing</a>::<a href="/usr/local/include/gtest/gtest.h/code.html#line342">AssertionFailure</a>() <a href="/usr/local/include/gtest/gtest.h/code.html#line305">&lt;&lt;</a> &quot;expressions &quot; <a href="/usr/local/include/gtest/gtest.h/code.html#line305">&lt;&lt;</a> <a href="#line23">m_expr</a> <a href="/usr/local/include/gtest/gtest.h/code.html#line305">&lt;&lt;</a> &quot; and &quot;
+<b><a name="line29">29   </a></b>	            <a href="/usr/local/include/gtest/gtest.h/code.html#line305">&lt;&lt;</a> <a href="#line24">n_expr</a> <a href="/usr/local/include/gtest/gtest.h/code.html#line305">&lt;&lt;</a> &quot; are not equal:\n&quot; <a href="/usr/local/include/gtest/gtest.h/code.html#line305">&lt;&lt;</a> &quot; Actual:\t&quot; <a href="/usr/local/include/gtest/gtest.h/code.html#line305">&lt;&lt;</a> <a href="#line16">to_hex_string</a>(<a href="#line24">m</a>)
+<b><a name="line30">30   </a></b>	            <a href="/usr/local/include/gtest/gtest.h/code.html#line305">&lt;&lt;</a> &quot;\n&quot; // for some reason std::hex does not work
+<b><a name="line31">31   </a></b>	            <a href="/usr/local/include/gtest/gtest.h/code.html#line305">&lt;&lt;</a> &quot; Expected:\t&quot; <a href="/usr/local/include/gtest/gtest.h/code.html#line305">&lt;&lt;</a> <a href="#line16">to_hex_string</a>(<a href="#line24">n</a>);
+<b><a name="line32">32   </a></b>	}
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	inline void <b>write_data_to_file</b>(<a href="/usr/include/stdint.h/code.html#line48">uint8_t</a>* <b>buffer</b>, const <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>size</b>,
+<b><a name="line35">35   </a></b>	        const char* <b>tag</b> = &quot;&quot;) {
+<b><a name="line36">36   </a></b>	    const auto <b>test_info</b> =
+<b><a name="line37">37   </a></b>	            <a href="/usr/local/include/gtest/internal/gtest-port.h/code.html#line988">testing</a>::<a href="/usr/local/include/gtest/internal/gtest-internal.h/code.html#line91">UnitTest</a>::<a href="/usr/local/include/gtest/gtest.h/code.html#line1156">GetInstance</a>()-&gt;<a href="/usr/local/include/gtest/gtest.h/code.html#line1177">current_test_info</a>();
+<b><a name="line38">38   </a></b>	    auto <b>file_name_str</b> = <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stringfwd.h/code.html#line74">string</a>(<a href="#line36">test_info</a>-&gt;<a href="/usr/local/include/gtest/gtest.h/code.html#line651">test_case_name</a>()) <a href="/usr/include/c++/5/bits/basic_string.h/code.html#line4884">+</a> &quot;_&quot;
+<b><a name="line39">39   </a></b>	            <a href="/usr/include/c++/5/bits/basic_string.h/code.html#line4884">+</a> <a href="#line36">test_info</a>-&gt;<a href="/usr/local/include/gtest/gtest.h/code.html#line654">name</a>() <a href="/usr/include/c++/5/bits/basic_string.h/code.html#line4884">+</a> <a href="#line35">tag</a>;
+<b><a name="line40">40   </a></b>	    <a href="/usr/include/c++/5/bits/stl_algo.h/code.html#line4233">replace</a>(<a href="#line38">file_name_str</a>.<a href="/usr/include/c++/5/bits/basic_string.h/code.html#line611">begin</a>(), <a href="#line38">file_name_str</a>.<a href="/usr/include/c++/5/bits/basic_string.h/code.html#line627">end</a>(), '/', '_'); // replace all '/' to '_'
+<b><a name="line41">41   </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/iosfwd/code.html#line165">ofstream</a> <b>data_file</b>(<a href="#line38">file_name_str</a>,
+<b><a name="line42">42   </a></b>	            <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/iosfwd/code.html#line132">ios</a>::<a href="/usr/include/c++/5/bits/ios_base.h/code.html#line449">trunc</a> <a href="/usr/include/c++/5/bits/ios_base.h/code.html#line129">|</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/iosfwd/code.html#line132">ios</a>::<a href="/usr/include/c++/5/bits/ios_base.h/code.html#line446">out</a> <a href="/usr/include/c++/5/bits/ios_base.h/code.html#line129">|</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/iosfwd/code.html#line132">ios</a>::<a href="/usr/include/c++/5/bits/ios_base.h/code.html#line440">binary</a>);
+<b><a name="line43">43   </a></b>	    if (<a href="/usr/include/c++/5/bits/basic_ios.h/code.html#line125">!</a><a href="#line41">data_file</a>) {
+<b><a name="line44">44   </a></b>	        throw <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/stdexcept/code.html#line192">runtime_error</a>(&quot;failed to write to file!&quot;);
+<b><a name="line45">45   </a></b>	    }
+<b><a name="line46">46   </a></b>	    <a href="/usr/include/c++/5/bits/stl_algobase.h/code.html#line462">copy</a>(<a href="#line34">buffer</a>, <a href="#line34">buffer</a> + <a href="#line34">size</a>, <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stream_iterator.h/code.html#line154">ostream_iterator</a>&lt;<a href="/usr/include/stdint.h/code.html#line48">uint8_t</a>&gt;(<a href="#line41">data_file</a>));
+<b><a name="line47">47   </a></b>	}
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	template &lt;typename <b>It</b>&gt;
+<b><a name="line50">50   </a></b>	static <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stringfwd.h/code.html#line74">string</a> print_diffs(const <a href="#line49">It</a>&amp; <b>b1_begin</b>, const <a href="#line49">It</a>&amp; <b>b1_end</b>, const <a href="#line49">It</a>&amp; <b>b2_begin</b>,
+<b><a name="line51">51   </a></b>	                               <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>diff_limit</b> = 10) {
+<b><a name="line52">52   </a></b>	
+<b><a name="line53">53   </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/iosfwd/code.html#line153">ostringstream</a> <b>ss</b>;
+<b><a name="line54">54   </a></b>	    <a href="#line53">ss</a> <a href="/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;idx\t| expected\t| actual\n&quot; <a href="/usr/include/c++/5/ostream/code.html#line127">&lt;&lt;</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/ios_base.h/code.html#line1024">hex</a> <a href="/usr/include/c++/5/ostream/code.html#line127">&lt;&lt;</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/ios_base.h/code.html#line894">showbase</a>;
+<b><a name="line55">55   </a></b>	    unsigned <b>idx</b> = 0;
+<b><a name="line56">56   </a></b>	    unsigned <b>count</b> = 0;
+<b><a name="line57">57   </a></b>	    for (auto <b>it1</b> = <a href="#line50">b1_begin</a>, <b>it2</b> = <a href="#line50">b2_begin</a>;
+<b><a name="line58">58   </a></b>	            <a href="#line57">it1</a> <a href="/usr/include/c++/5/bits/stl_iterator.h/code.html#line841">!=</a> <a href="#line50">b1_end</a> &amp;&amp; <a href="#line56">count</a> &lt; <a href="#line51">diff_limit</a>;
+<b><a name="line59">59   </a></b>	            <a href="#line57">it1</a><a href="/usr/include/c++/5/bits/stl_iterator.h/code.html#line768">++</a>, <a href="#line57">it2</a><a href="/usr/include/c++/5/bits/stl_iterator.h/code.html#line768">++</a>, <a href="#line55">idx</a>++) {
+<b><a name="line60">60   </a></b>	        if (<a href="/usr/include/c++/5/bits/stl_iterator.h/code.html#line753">*</a><a href="#line57">it1</a> != <a href="/usr/include/c++/5/bits/stl_iterator.h/code.html#line753">*</a><a href="#line57">it2</a>) {
+<b><a name="line61">61   </a></b>	            <a href="#line53">ss</a> <a href="/usr/include/c++/5/ostream/code.html#line192">&lt;&lt;</a> <a href="#line55">idx</a> <a href="/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;:\t| &quot; <a href="/usr/include/c++/5/ostream/code.html#line192">&lt;&lt;</a> unsigned(<a href="/usr/include/c++/5/bits/stl_iterator.h/code.html#line753">*</a><a href="#line57">it1</a>) <a href="/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;\t\t| &quot; <a href="/usr/include/c++/5/ostream/code.html#line192">&lt;&lt;</a> unsigned(<a href="/usr/include/c++/5/bits/stl_iterator.h/code.html#line753">*</a><a href="#line57">it2</a>) <a href="/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;\n&quot;;
+<b><a name="line62">62   </a></b>	            <a href="#line56">count</a>++;
+<b><a name="line63">63   </a></b>	        }
+<b><a name="line64">64   </a></b>	    }
+<b><a name="line65">65   </a></b>	    return <a href="#line53">ss</a>.<a href="/usr/include/c++/5/sstream/code.html#line624">str</a>();
+<b><a name="line66">66   </a></b>	}
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	#define <b>EXPECT_HEX_EQ</b>(actual, expected) EXPECT_PRED_FORMAT2(hex_equal, (actual), (expected))
+<b><a name="line69">69   </a></b>	#define <b>ASSERT_HEX_EQ</b>(actual, expected) ASSERT_PRED_FORMAT2(hex_equal, (actual), (expected))
+<b><a name="line70">70   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

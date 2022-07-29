@@ -1,0 +1,102 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/mman.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Definitions for POSIX memory map interface.  Linux/x86_64 version.
+<b><a name="line2">2    </a></b>	   Copyright (C) 2001-2016 Free Software Foundation, Inc.
+<b><a name="line3">3    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line6">6    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line7">7    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line8">8    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line13">13   </a></b>	   Lesser General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line16">16   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line17">17   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	#ifndef <a href="../../sys/mman.h/code.html#line20">_SYS_MMAN_H</a>
+<b><a name="line20">20   </a></b>	# error &quot;Never use &lt;bits/mman.h&gt; directly; include &lt;sys/mman.h&gt; instead.&quot;
+<b><a name="line21">21   </a></b>	#endif
+<b><a name="line22">22   </a></b>	
+<b><a name="line23">23   </a></b>	/* The following definitions basically come from the kernel headers.
+<b><a name="line24">24   </a></b>	   But the kernel header is not namespace clean.  */
+<b><a name="line25">25   </a></b>	
+<b><a name="line26">26   </a></b>	/* Other flags.  */
+<b><a name="line27">27   </a></b>	#ifdef <a href="../../../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line28">28   </a></b>	# define <b>MAP_32BIT</b>	0x40		/* Only give out 32-bit addresses.  */
+<b><a name="line29">29   </a></b>	#endif
+<b><a name="line30">30   </a></b>	
+<b><a name="line31">31   </a></b>	/* These are Linux-specific.  */
+<b><a name="line32">32   </a></b>	#ifdef <a href="../../../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line33">33   </a></b>	# define <b>MAP_GROWSDOWN</b>	0x00100		/* Stack-like segment.  */
+<b><a name="line34">34   </a></b>	# define <b>MAP_DENYWRITE</b>	0x00800		/* ETXTBSY */
+<b><a name="line35">35   </a></b>	# define <b>MAP_EXECUTABLE</b>	0x01000		/* Mark it as an executable.  */
+<b><a name="line36">36   </a></b>	# define <b>MAP_LOCKED</b>	0x02000		/* Lock the mapping.  */
+<b><a name="line37">37   </a></b>	# define <b>MAP_NORESERVE</b>	0x04000		/* Don't check for reservations.  */
+<b><a name="line38">38   </a></b>	# define <b>MAP_POPULATE</b>	0x08000		/* Populate (prefault) pagetables.  */
+<b><a name="line39">39   </a></b>	# define <b>MAP_NONBLOCK</b>	0x10000		/* Do not block on IO.  */
+<b><a name="line40">40   </a></b>	# define <b>MAP_STACK</b>	0x20000		/* Allocation is for a stack.  */
+<b><a name="line41">41   </a></b>	# define <b>MAP_HUGETLB</b>	0x40000		/* Create huge page mapping.  */
+<b><a name="line42">42   </a></b>	#endif
+<b><a name="line43">43   </a></b>	
+<b><a name="line44">44   </a></b>	/* Include generic Linux declarations.  */
+<b><a name="line45">45   </a></b>	#include &lt;bits/mman-linux.h&gt;
+<b><a name="line46">46   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

@@ -1,0 +1,153 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/endian.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 1992-2016 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line5">5    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line6">6    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line7">7    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line10">10   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line11">11   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line12">12   </a></b>	   Lesser General Public License for more details.
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line15">15   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line16">16   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	#ifndef	_ENDIAN_H
+<b><a name="line19">19   </a></b>	#define	<b>_ENDIAN_H</b>	1
+<b><a name="line20">20   </a></b>	
+<b><a name="line21">21   </a></b>	#include &lt;features.h&gt;
+<b><a name="line22">22   </a></b>	
+<b><a name="line23">23   </a></b>	/* Definitions for byte order, according to significance of bytes,
+<b><a name="line24">24   </a></b>	   from low addresses to high addresses.  The value is what you get by
+<b><a name="line25">25   </a></b>	   putting '4' in the most significant byte, '3' in the second most
+<b><a name="line26">26   </a></b>	   significant byte, '2' in the second least significant byte, and '1'
+<b><a name="line27">27   </a></b>	   in the least significant byte, and then writing down one digit for
+<b><a name="line28">28   </a></b>	   each byte, starting with the byte at the lowest address at the left,
+<b><a name="line29">29   </a></b>	   and proceeding to the byte with the highest address at the right.  */
+<b><a name="line30">30   </a></b>	
+<b><a name="line31">31   </a></b>	#define	<b>__LITTLE_ENDIAN</b>	1234
+<b><a name="line32">32   </a></b>	#define	<b>__BIG_ENDIAN</b>	4321
+<b><a name="line33">33   </a></b>	#define	<b>__PDP_ENDIAN</b>	3412
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	/* This file defines `__BYTE_ORDER' for the particular machine.  */
+<b><a name="line36">36   </a></b>	#include &lt;bits/endian.h&gt;
+<b><a name="line37">37   </a></b>	
+<b><a name="line38">38   </a></b>	/* Some machines may need to use a different endianness for floating point
+<b><a name="line39">39   </a></b>	   values.  */
+<b><a name="line40">40   </a></b>	#ifndef __FLOAT_WORD_ORDER
+<b><a name="line41">41   </a></b>	# define <b>__FLOAT_WORD_ORDER</b> __BYTE_ORDER
+<b><a name="line42">42   </a></b>	#endif
+<b><a name="line43">43   </a></b>	
+<b><a name="line44">44   </a></b>	#ifdef	<a href="../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line45">45   </a></b>	# define <b>LITTLE_ENDIAN</b>	__LITTLE_ENDIAN
+<b><a name="line46">46   </a></b>	# define <b>BIG_ENDIAN</b>	__BIG_ENDIAN
+<b><a name="line47">47   </a></b>	# define <b>PDP_ENDIAN</b>	__PDP_ENDIAN
+<b><a name="line48">48   </a></b>	# define <b>BYTE_ORDER</b>	__BYTE_ORDER
+<b><a name="line49">49   </a></b>	#endif
+<b><a name="line50">50   </a></b>	
+<b><a name="line51">51   </a></b>	#if <a href="../x86_64-linux-gnu/bits/endian.h/code.html#line7">__BYTE_ORDER</a> == <a href="#line31">__LITTLE_ENDIAN</a>
+<b><a name="line52">52   </a></b>	# define <b>__LONG_LONG_PAIR</b>(HI, LO) LO, HI
+<b><a name="line53">53   </a></b>	#elif __BYTE_ORDER == __BIG_ENDIAN
+<b><a name="line54">54   </a></b>	# define __LONG_LONG_PAIR(HI, LO) HI, LO
+<b><a name="line55">55   </a></b>	#endif
+<b><a name="line56">56   </a></b>	
+<b><a name="line57">57   </a></b>	
+<b><a name="line58">58   </a></b>	#if defined <a href="../features.h/code.html#line317">__USE_MISC</a> &amp;&amp; !defined __ASSEMBLER__
+<b><a name="line59">59   </a></b>	/* Conversion interfaces.  */
+<b><a name="line60">60   </a></b>	# include &lt;bits/byteswap.h&gt;
+<b><a name="line61">61   </a></b>	
+<b><a name="line62">62   </a></b>	# if <a href="../x86_64-linux-gnu/bits/endian.h/code.html#line7">__BYTE_ORDER</a> == <a href="#line31">__LITTLE_ENDIAN</a>
+<b><a name="line63">63   </a></b>	#  define <b>htobe16</b>(x) __bswap_16 (x)
+<b><a name="line64">64   </a></b>	#  define <b>htole16</b>(x) (x)
+<b><a name="line65">65   </a></b>	#  define <b>be16toh</b>(x) __bswap_16 (x)
+<b><a name="line66">66   </a></b>	#  define <b>le16toh</b>(x) (x)
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	#  define <b>htobe32</b>(x) __bswap_32 (x)
+<b><a name="line69">69   </a></b>	#  define <b>htole32</b>(x) (x)
+<b><a name="line70">70   </a></b>	#  define <b>be32toh</b>(x) __bswap_32 (x)
+<b><a name="line71">71   </a></b>	#  define <b>le32toh</b>(x) (x)
+<b><a name="line72">72   </a></b>	
+<b><a name="line73">73   </a></b>	#  define <b>htobe64</b>(x) __bswap_64 (x)
+<b><a name="line74">74   </a></b>	#  define <b>htole64</b>(x) (x)
+<b><a name="line75">75   </a></b>	#  define <b>be64toh</b>(x) __bswap_64 (x)
+<b><a name="line76">76   </a></b>	#  define <b>le64toh</b>(x) (x)
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	# else
+<b><a name="line79">79   </a></b>	#  define htobe16(x) (x)
+<b><a name="line80">80   </a></b>	#  define htole16(x) __bswap_16 (x)
+<b><a name="line81">81   </a></b>	#  define be16toh(x) (x)
+<b><a name="line82">82   </a></b>	#  define le16toh(x) __bswap_16 (x)
+<b><a name="line83">83   </a></b>	
+<b><a name="line84">84   </a></b>	#  define htobe32(x) (x)
+<b><a name="line85">85   </a></b>	#  define htole32(x) __bswap_32 (x)
+<b><a name="line86">86   </a></b>	#  define be32toh(x) (x)
+<b><a name="line87">87   </a></b>	#  define le32toh(x) __bswap_32 (x)
+<b><a name="line88">88   </a></b>	
+<b><a name="line89">89   </a></b>	#  define htobe64(x) (x)
+<b><a name="line90">90   </a></b>	#  define htole64(x) __bswap_64 (x)
+<b><a name="line91">91   </a></b>	#  define be64toh(x) (x)
+<b><a name="line92">92   </a></b>	#  define le64toh(x) __bswap_64 (x)
+<b><a name="line93">93   </a></b>	# endif
+<b><a name="line94">94   </a></b>	#endif
+<b><a name="line95">95   </a></b>	
+<b><a name="line96">96   </a></b>	#endif	/* endian.h */
+<b><a name="line97">97   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

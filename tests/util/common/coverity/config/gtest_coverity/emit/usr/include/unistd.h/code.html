@@ -1,0 +1,1213 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/unistd.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 1991-2016 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line5">5    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line6">6    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line7">7    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line10">10   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line11">11   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line12">12   </a></b>	   Lesser General Public License for more details.
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line15">15   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line16">16   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	/*
+<b><a name="line19">19   </a></b>	 *	POSIX Standard: 2.10 Symbolic Constants		&lt;unistd.h&gt;
+<b><a name="line20">20   </a></b>	 */
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	#ifndef	_UNISTD_H
+<b><a name="line23">23   </a></b>	#define	<b>_UNISTD_H</b>	1
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	#include &lt;features.h&gt;
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line98">__BEGIN_DECLS</a>
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	/* These may be used to determine what facilities are present at compile time.
+<b><a name="line30">30   </a></b>	   Their values can be obtained at run time from `sysconf'.  */
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	#ifdef <a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line33">33   </a></b>	/* POSIX Standard approved as ISO/IEC 9945-1 as of September 2008.  */
+<b><a name="line34">34   </a></b>	# define <b>_POSIX_VERSION</b>	200809L
+<b><a name="line35">35   </a></b>	#elif defined __USE_XOPEN2K
+<b><a name="line36">36   </a></b>	/* POSIX Standard approved as ISO/IEC 9945-1 as of December 2001.  */
+<b><a name="line37">37   </a></b>	# define _POSIX_VERSION	200112L
+<b><a name="line38">38   </a></b>	#elif defined __USE_POSIX199506
+<b><a name="line39">39   </a></b>	/* POSIX Standard approved as ISO/IEC 9945-1 as of June 1995.  */
+<b><a name="line40">40   </a></b>	# define _POSIX_VERSION	199506L
+<b><a name="line41">41   </a></b>	#elif defined __USE_POSIX199309
+<b><a name="line42">42   </a></b>	/* POSIX Standard approved as ISO/IEC 9945-1 as of September 1993.  */
+<b><a name="line43">43   </a></b>	# define _POSIX_VERSION	199309L
+<b><a name="line44">44   </a></b>	#else
+<b><a name="line45">45   </a></b>	/* POSIX Standard approved as ISO/IEC 9945-1 as of September 1990.  */
+<b><a name="line46">46   </a></b>	# define _POSIX_VERSION	199009L
+<b><a name="line47">47   </a></b>	#endif
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	/* These are not #ifdef __USE_POSIX2 because they are
+<b><a name="line50">50   </a></b>	   in the theoretically application-owned namespace.  */
+<b><a name="line51">51   </a></b>	
+<b><a name="line52">52   </a></b>	#ifdef <a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line53">53   </a></b>	# define <b>__POSIX2_THIS_VERSION</b>	200809L
+<b><a name="line54">54   </a></b>	/* The utilities on GNU systems also correspond to this version.  */
+<b><a name="line55">55   </a></b>	#elif defined __USE_XOPEN2K
+<b><a name="line56">56   </a></b>	/* The utilities on GNU systems also correspond to this version.  */
+<b><a name="line57">57   </a></b>	# define __POSIX2_THIS_VERSION	200112L
+<b><a name="line58">58   </a></b>	#elif defined __USE_POSIX199506
+<b><a name="line59">59   </a></b>	/* The utilities on GNU systems also correspond to this version.  */
+<b><a name="line60">60   </a></b>	# define __POSIX2_THIS_VERSION	199506L
+<b><a name="line61">61   </a></b>	#else
+<b><a name="line62">62   </a></b>	/* The utilities on GNU systems also correspond to this version.  */
+<b><a name="line63">63   </a></b>	# define __POSIX2_THIS_VERSION	199209L
+<b><a name="line64">64   </a></b>	#endif
+<b><a name="line65">65   </a></b>	
+<b><a name="line66">66   </a></b>	/* The utilities on GNU systems also correspond to this version.  */
+<b><a name="line67">67   </a></b>	#define <b>_POSIX2_VERSION</b>	__POSIX2_THIS_VERSION
+<b><a name="line68">68   </a></b>	
+<b><a name="line69">69   </a></b>	/* This symbol was required until the 2001 edition of POSIX.  */
+<b><a name="line70">70   </a></b>	#define	<b>_POSIX2_C_VERSION</b>	__POSIX2_THIS_VERSION
+<b><a name="line71">71   </a></b>	
+<b><a name="line72">72   </a></b>	/* If defined, the implementation supports the
+<b><a name="line73">73   </a></b>	   C Language Bindings Option.  */
+<b><a name="line74">74   </a></b>	#define	<b>_POSIX2_C_BIND</b>	__POSIX2_THIS_VERSION
+<b><a name="line75">75   </a></b>	
+<b><a name="line76">76   </a></b>	/* If defined, the implementation supports the
+<b><a name="line77">77   </a></b>	   C Language Development Utilities Option.  */
+<b><a name="line78">78   </a></b>	#define	<b>_POSIX2_C_DEV</b>	__POSIX2_THIS_VERSION
+<b><a name="line79">79   </a></b>	
+<b><a name="line80">80   </a></b>	/* If defined, the implementation supports the
+<b><a name="line81">81   </a></b>	   Software Development Utilities Option.  */
+<b><a name="line82">82   </a></b>	#define	<b>_POSIX2_SW_DEV</b>	__POSIX2_THIS_VERSION
+<b><a name="line83">83   </a></b>	
+<b><a name="line84">84   </a></b>	/* If defined, the implementation supports the
+<b><a name="line85">85   </a></b>	   creation of locales with the localedef utility.  */
+<b><a name="line86">86   </a></b>	#define <b>_POSIX2_LOCALEDEF</b>       __POSIX2_THIS_VERSION
+<b><a name="line87">87   </a></b>	
+<b><a name="line88">88   </a></b>	/* X/Open version number to which the library conforms.  It is selectable.  */
+<b><a name="line89">89   </a></b>	#ifdef <a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line90">90   </a></b>	# define <b>_XOPEN_VERSION</b>	700
+<b><a name="line91">91   </a></b>	#elif defined __USE_XOPEN2K
+<b><a name="line92">92   </a></b>	# define _XOPEN_VERSION	600
+<b><a name="line93">93   </a></b>	#elif defined __USE_UNIX98
+<b><a name="line94">94   </a></b>	# define _XOPEN_VERSION	500
+<b><a name="line95">95   </a></b>	#else
+<b><a name="line96">96   </a></b>	# define _XOPEN_VERSION	4
+<b><a name="line97">97   </a></b>	#endif
+<b><a name="line98">98   </a></b>	
+<b><a name="line99">99   </a></b>	/* Commands and utilities from XPG4 are available.  */
+<b><a name="line100">100  </a></b>	#define <b>_XOPEN_XCU_VERSION</b>	4
+<b><a name="line101">101  </a></b>	
+<b><a name="line102">102  </a></b>	/* We are compatible with the old published standards as well.  */
+<b><a name="line103">103  </a></b>	#define <b>_XOPEN_XPG2</b>	1
+<b><a name="line104">104  </a></b>	#define <b>_XOPEN_XPG3</b>	1
+<b><a name="line105">105  </a></b>	#define <b>_XOPEN_XPG4</b>	1
+<b><a name="line106">106  </a></b>	
+<b><a name="line107">107  </a></b>	/* The X/Open Unix extensions are available.  */
+<b><a name="line108">108  </a></b>	#define <b>_XOPEN_UNIX</b>	1
+<b><a name="line109">109  </a></b>	
+<b><a name="line110">110  </a></b>	/* Encryption is present.  */
+<b><a name="line111">111  </a></b>	#define	<b>_XOPEN_CRYPT</b>	1
+<b><a name="line112">112  </a></b>	
+<b><a name="line113">113  </a></b>	/* The enhanced internationalization capabilities according to XPG4.2
+<b><a name="line114">114  </a></b>	   are present.  */
+<b><a name="line115">115  </a></b>	#define	<b>_XOPEN_ENH_I18N</b>	1
+<b><a name="line116">116  </a></b>	
+<b><a name="line117">117  </a></b>	/* The legacy interfaces are also available.  */
+<b><a name="line118">118  </a></b>	#define <b>_XOPEN_LEGACY</b>	1
+<b><a name="line119">119  </a></b>	
+<b><a name="line120">120  </a></b>	
+<b><a name="line121">121  </a></b>	/* Get values of POSIX options:
+<b><a name="line122">122  </a></b>	
+<b><a name="line123">123  </a></b>	   If these symbols are defined, the corresponding features are
+<b><a name="line124">124  </a></b>	   always available.  If not, they may be available sometimes.
+<b><a name="line125">125  </a></b>	   The current values can be obtained with `sysconf'.
+<b><a name="line126">126  </a></b>	
+<b><a name="line127">127  </a></b>	   _POSIX_JOB_CONTROL		Job control is supported.
+<b><a name="line128">128  </a></b>	   _POSIX_SAVED_IDS		Processes have a saved set-user-ID
+<b><a name="line129">129  </a></b>					and a saved set-group-ID.
+<b><a name="line130">130  </a></b>	   _POSIX_REALTIME_SIGNALS	Real-time, queued signals are supported.
+<b><a name="line131">131  </a></b>	   _POSIX_PRIORITY_SCHEDULING	Priority scheduling is supported.
+<b><a name="line132">132  </a></b>	   _POSIX_TIMERS		POSIX.4 clocks and timers are supported.
+<b><a name="line133">133  </a></b>	   _POSIX_ASYNCHRONOUS_IO	Asynchronous I/O is supported.
+<b><a name="line134">134  </a></b>	   _POSIX_PRIORITIZED_IO	Prioritized asynchronous I/O is supported.
+<b><a name="line135">135  </a></b>	   _POSIX_SYNCHRONIZED_IO	Synchronizing file data is supported.
+<b><a name="line136">136  </a></b>	   _POSIX_FSYNC			The fsync function is present.
+<b><a name="line137">137  </a></b>	   _POSIX_MAPPED_FILES		Mapping of files to memory is supported.
+<b><a name="line138">138  </a></b>	   _POSIX_MEMLOCK		Locking of all memory is supported.
+<b><a name="line139">139  </a></b>	   _POSIX_MEMLOCK_RANGE		Locking of ranges of memory is supported.
+<b><a name="line140">140  </a></b>	   _POSIX_MEMORY_PROTECTION	Setting of memory protections is supported.
+<b><a name="line141">141  </a></b>	   _POSIX_MESSAGE_PASSING	POSIX.4 message queues are supported.
+<b><a name="line142">142  </a></b>	   _POSIX_SEMAPHORES		POSIX.4 counting semaphores are supported.
+<b><a name="line143">143  </a></b>	   _POSIX_SHARED_MEMORY_OBJECTS	POSIX.4 shared memory objects are supported.
+<b><a name="line144">144  </a></b>	   _POSIX_THREADS		POSIX.1c pthreads are supported.
+<b><a name="line145">145  </a></b>	   _POSIX_THREAD_ATTR_STACKADDR	Thread stack address attribute option supported.
+<b><a name="line146">146  </a></b>	   _POSIX_THREAD_ATTR_STACKSIZE	Thread stack size attribute option supported.
+<b><a name="line147">147  </a></b>	   _POSIX_THREAD_SAFE_FUNCTIONS	Thread-safe functions are supported.
+<b><a name="line148">148  </a></b>	   _POSIX_THREAD_PRIORITY_SCHEDULING
+<b><a name="line149">149  </a></b>					POSIX.1c thread execution scheduling supported.
+<b><a name="line150">150  </a></b>	   _POSIX_THREAD_PRIO_INHERIT	Thread priority inheritance option supported.
+<b><a name="line151">151  </a></b>	   _POSIX_THREAD_PRIO_PROTECT	Thread priority protection option supported.
+<b><a name="line152">152  </a></b>	   _POSIX_THREAD_PROCESS_SHARED	Process-shared synchronization supported.
+<b><a name="line153">153  </a></b>	   _POSIX_PII			Protocol-independent interfaces are supported.
+<b><a name="line154">154  </a></b>	   _POSIX_PII_XTI		XTI protocol-indep. interfaces are supported.
+<b><a name="line155">155  </a></b>	   _POSIX_PII_SOCKET		Socket protocol-indep. interfaces are supported.
+<b><a name="line156">156  </a></b>	   _POSIX_PII_INTERNET		Internet family of protocols supported.
+<b><a name="line157">157  </a></b>	   _POSIX_PII_INTERNET_STREAM	Connection-mode Internet protocol supported.
+<b><a name="line158">158  </a></b>	   _POSIX_PII_INTERNET_DGRAM	Connectionless Internet protocol supported.
+<b><a name="line159">159  </a></b>	   _POSIX_PII_OSI		ISO/OSI family of protocols supported.
+<b><a name="line160">160  </a></b>	   _POSIX_PII_OSI_COTS		Connection-mode ISO/OSI service supported.
+<b><a name="line161">161  </a></b>	   _POSIX_PII_OSI_CLTS		Connectionless ISO/OSI service supported.
+<b><a name="line162">162  </a></b>	   _POSIX_POLL			Implementation supports `poll' function.
+<b><a name="line163">163  </a></b>	   _POSIX_SELECT		Implementation supports `select' and `pselect'.
+<b><a name="line164">164  </a></b>	
+<b><a name="line165">165  </a></b>	   _XOPEN_REALTIME		X/Open realtime support is available.
+<b><a name="line166">166  </a></b>	   _XOPEN_REALTIME_THREADS	X/Open realtime thread support is available.
+<b><a name="line167">167  </a></b>	   _XOPEN_SHM			Shared memory interface according to XPG4.2.
+<b><a name="line168">168  </a></b>	
+<b><a name="line169">169  </a></b>	   _XBS5_ILP32_OFF32		Implementation provides environment with 32-bit
+<b><a name="line170">170  </a></b>					int, long, pointer, and off_t types.
+<b><a name="line171">171  </a></b>	   _XBS5_ILP32_OFFBIG		Implementation provides environment with 32-bit
+<b><a name="line172">172  </a></b>					int, long, and pointer and off_t with at least
+<b><a name="line173">173  </a></b>					64 bits.
+<b><a name="line174">174  </a></b>	   _XBS5_LP64_OFF64		Implementation provides environment with 32-bit
+<b><a name="line175">175  </a></b>					int, and 64-bit long, pointer, and off_t types.
+<b><a name="line176">176  </a></b>	   _XBS5_LPBIG_OFFBIG		Implementation provides environment with at
+<b><a name="line177">177  </a></b>					least 32 bits int and long, pointer, and off_t
+<b><a name="line178">178  </a></b>					with at least 64 bits.
+<b><a name="line179">179  </a></b>	
+<b><a name="line180">180  </a></b>	   If any of these symbols is defined as -1, the corresponding option is not
+<b><a name="line181">181  </a></b>	   true for any file.  If any is defined as other than -1, the corresponding
+<b><a name="line182">182  </a></b>	   option is true for all files.  If a symbol is not defined at all, the value
+<b><a name="line183">183  </a></b>	   for a specific file can be obtained from `pathconf' and `fpathconf'.
+<b><a name="line184">184  </a></b>	
+<b><a name="line185">185  </a></b>	   _POSIX_CHOWN_RESTRICTED	Only the super user can use `chown' to change
+<b><a name="line186">186  </a></b>					the owner of a file.  `chown' can only be used
+<b><a name="line187">187  </a></b>					to change the group ID of a file to a group of
+<b><a name="line188">188  </a></b>					which the calling process is a member.
+<b><a name="line189">189  </a></b>	   _POSIX_NO_TRUNC		Pathname components longer than
+<b><a name="line190">190  </a></b>					NAME_MAX generate an error.
+<b><a name="line191">191  </a></b>	   _POSIX_VDISABLE		If defined, if the value of an element of the
+<b><a name="line192">192  </a></b>					`c_cc' member of `struct termios' is
+<b><a name="line193">193  </a></b>					_POSIX_VDISABLE, no character will have the
+<b><a name="line194">194  </a></b>					effect associated with that element.
+<b><a name="line195">195  </a></b>	   _POSIX_SYNC_IO		Synchronous I/O may be performed.
+<b><a name="line196">196  </a></b>	   _POSIX_ASYNC_IO		Asynchronous I/O may be performed.
+<b><a name="line197">197  </a></b>	   _POSIX_PRIO_IO		Prioritized Asynchronous I/O may be performed.
+<b><a name="line198">198  </a></b>	
+<b><a name="line199">199  </a></b>	   Support for the Large File Support interface is not generally available.
+<b><a name="line200">200  </a></b>	   If it is available the following constants are defined to one.
+<b><a name="line201">201  </a></b>	   _LFS64_LARGEFILE		Low-level I/O supports large files.
+<b><a name="line202">202  </a></b>	   _LFS64_STDIO			Standard I/O supports large files.
+<b><a name="line203">203  </a></b>	   */
+<b><a name="line204">204  </a></b>	
+<b><a name="line205">205  </a></b>	#include &lt;bits/posix_opt.h&gt;
+<b><a name="line206">206  </a></b>	
+<b><a name="line207">207  </a></b>	/* Get the environment definitions from Unix98.  */
+<b><a name="line208">208  </a></b>	#if defined <a href="../features.h/code.html#line282">__USE_UNIX98</a> || defined <a href="../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line209">209  </a></b>	# include &lt;bits/environments.h&gt;
+<b><a name="line210">210  </a></b>	#endif
+<b><a name="line211">211  </a></b>	
+<b><a name="line212">212  </a></b>	/* Standard file descriptors.  */
+<b><a name="line213">213  </a></b>	#define	<b>STDIN_FILENO</b>	0	/* Standard input.  */
+<b><a name="line214">214  </a></b>	#define	<b>STDOUT_FILENO</b>	1	/* Standard output.  */
+<b><a name="line215">215  </a></b>	#define	<b>STDERR_FILENO</b>	2	/* Standard error output.  */
+<b><a name="line216">216  </a></b>	
+<b><a name="line217">217  </a></b>	
+<b><a name="line218">218  </a></b>	/* All functions that are not declared anywhere else.  */
+<b><a name="line219">219  </a></b>	
+<b><a name="line220">220  </a></b>	#include &lt;bits/types.h&gt;
+<b><a name="line221">221  </a></b>	
+<b><a name="line222">222  </a></b>	#ifndef	<a href="../x86_64-linux-gnu/sys/types.h/code.html#line110">__ssize_t_defined</a>
+<b><a name="line223">223  </a></b>	typedef __ssize_t ssize_t;
+<b><a name="line224">224  </a></b>	# define __ssize_t_defined
+<b><a name="line225">225  </a></b>	#endif
+<b><a name="line226">226  </a></b>	
+<b><a name="line227">227  </a></b>	#define	<b>__need_size_t</b>
+<b><a name="line228">228  </a></b>	#define <b>__need_NULL</b>
+<b><a name="line229">229  </a></b>	#include &lt;stddef.h&gt;
+<b><a name="line230">230  </a></b>	
+<b><a name="line231">231  </a></b>	#if defined <a href="../features.h/code.html#line279">__USE_XOPEN</a> || defined <a href="../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line232">232  </a></b>	/* The Single Unix specification says that some more types are
+<b><a name="line233">233  </a></b>	   available here.  */
+<b><a name="line234">234  </a></b>	# ifndef <a href="../x86_64-linux-gnu/sys/types.h/code.html#line66">__gid_t_defined</a>
+<b><a name="line235">235  </a></b>	typedef __gid_t gid_t;
+<b><a name="line236">236  </a></b>	#  define __gid_t_defined
+<b><a name="line237">237  </a></b>	# endif
+<b><a name="line238">238  </a></b>	
+<b><a name="line239">239  </a></b>	# ifndef <a href="../x86_64-linux-gnu/sys/types.h/code.html#line81">__uid_t_defined</a>
+<b><a name="line240">240  </a></b>	typedef __uid_t uid_t;
+<b><a name="line241">241  </a></b>	#  define __uid_t_defined
+<b><a name="line242">242  </a></b>	# endif
+<b><a name="line243">243  </a></b>	
+<b><a name="line244">244  </a></b>	# ifndef <a href="../x86_64-linux-gnu/sys/types.h/code.html#line90">__off_t_defined</a>
+<b><a name="line245">245  </a></b>	#  ifndef __USE_FILE_OFFSET64
+<b><a name="line246">246  </a></b>	typedef __off_t off_t;
+<b><a name="line247">247  </a></b>	#  else
+<b><a name="line248">248  </a></b>	typedef __off64_t off_t;
+<b><a name="line249">249  </a></b>	#  endif
+<b><a name="line250">250  </a></b>	#  define __off_t_defined
+<b><a name="line251">251  </a></b>	# endif
+<b><a name="line252">252  </a></b>	# if defined <a href="../features.h/code.html#line309">__USE_LARGEFILE64</a> &amp;&amp; !defined <a href="../x86_64-linux-gnu/sys/types.h/code.html#line94">__off64_t_defined</a>
+<b><a name="line253">253  </a></b>	typedef __off64_t off64_t;
+<b><a name="line254">254  </a></b>	#  define __off64_t_defined
+<b><a name="line255">255  </a></b>	# endif
+<b><a name="line256">256  </a></b>	
+<b><a name="line257">257  </a></b>	# ifndef <a href="../x86_64-linux-gnu/sys/types.h/code.html#line137">__useconds_t_defined</a>
+<b><a name="line258">258  </a></b>	typedef __useconds_t useconds_t;
+<b><a name="line259">259  </a></b>	#  define __useconds_t_defined
+<b><a name="line260">260  </a></b>	# endif
+<b><a name="line261">261  </a></b>	
+<b><a name="line262">262  </a></b>	# ifndef <a href="../sched.h/code.html#line38">__pid_t_defined</a>
+<b><a name="line263">263  </a></b>	typedef __pid_t pid_t;
+<b><a name="line264">264  </a></b>	#  define __pid_t_defined
+<b><a name="line265">265  </a></b>	# endif
+<b><a name="line266">266  </a></b>	#endif	/* X/Open */
+<b><a name="line267">267  </a></b>	
+<b><a name="line268">268  </a></b>	#if defined <a href="../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a> || defined <a href="../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line269">269  </a></b>	# ifndef <a href="../stdint.h/code.html#line120">__intptr_t_defined</a>
+<b><a name="line270">270  </a></b>	typedef __intptr_t intptr_t;
+<b><a name="line271">271  </a></b>	#  define __intptr_t_defined
+<b><a name="line272">272  </a></b>	# endif
+<b><a name="line273">273  </a></b>	#endif
+<b><a name="line274">274  </a></b>	
+<b><a name="line275">275  </a></b>	#if defined <a href="../features.h/code.html#line317">__USE_MISC</a> || defined <a href="../features.h/code.html#line279">__USE_XOPEN</a>
+<b><a name="line276">276  </a></b>	# ifndef __socklen_t_defined
+<b><a name="line277">277  </a></b>	typedef <a href="../x86_64-linux-gnu/bits/types.h/code.html#line189">__socklen_t</a> <b>socklen_t</b>;
+<b><a name="line278">278  </a></b>	#  define <b>__socklen_t_defined</b>
+<b><a name="line279">279  </a></b>	# endif
+<b><a name="line280">280  </a></b>	#endif
+<b><a name="line281">281  </a></b>	
+<b><a name="line282">282  </a></b>	/* Values for the second argument to access.
+<b><a name="line283">283  </a></b>	   These may be OR'd together.  */
+<b><a name="line284">284  </a></b>	#define	<b>R_OK</b>	4		/* Test for read permission.  */
+<b><a name="line285">285  </a></b>	#define	<b>W_OK</b>	2		/* Test for write permission.  */
+<b><a name="line286">286  </a></b>	#define	<b>X_OK</b>	1		/* Test for execute permission.  */
+<b><a name="line287">287  </a></b>	#define	<b>F_OK</b>	0		/* Test for existence.  */
+<b><a name="line288">288  </a></b>	
+<b><a name="line289">289  </a></b>	/* Test for access to NAME using the real UID and real GID.  */
+<b><a name="line290">290  </a></b>	extern int access (const char *__name, int __type) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line291">291  </a></b>	
+<b><a name="line292">292  </a></b>	#ifdef <a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line293">293  </a></b>	/* Test for access to NAME using the effective UID and GID
+<b><a name="line294">294  </a></b>	   (as normal file operations use).  */
+<b><a name="line295">295  </a></b>	extern int euidaccess (const char *__name, int __type)
+<b><a name="line296">296  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line297">297  </a></b>	
+<b><a name="line298">298  </a></b>	/* An alias for `euidaccess', used by some other systems.  */
+<b><a name="line299">299  </a></b>	extern int eaccess (const char *__name, int __type)
+<b><a name="line300">300  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line301">301  </a></b>	#endif
+<b><a name="line302">302  </a></b>	
+<b><a name="line303">303  </a></b>	#ifdef <a href="../features.h/code.html#line321">__USE_ATFILE</a>
+<b><a name="line304">304  </a></b>	/* Test for access to FILE relative to the directory FD is open on.
+<b><a name="line305">305  </a></b>	   If AT_EACCESS is set in FLAG, then use effective IDs like `eaccess',
+<b><a name="line306">306  </a></b>	   otherwise use real IDs like `access'.  */
+<b><a name="line307">307  </a></b>	extern int faccessat (int __fd, const char *__file, int __type, int __flag)
+<b><a name="line308">308  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((2)) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line309">309  </a></b>	#endif /* Use GNU.  */
+<b><a name="line310">310  </a></b>	
+<b><a name="line311">311  </a></b>	
+<b><a name="line312">312  </a></b>	/* Values for the WHENCE argument to lseek.  */
+<b><a name="line313">313  </a></b>	#ifndef	<a href="../stdio.h/code.html#line26">_STDIO_H</a>		/* &lt;stdio.h&gt; has the same definitions.  */
+<b><a name="line314">314  </a></b>	# define SEEK_SET	0	/* Seek from beginning of file.  */
+<b><a name="line315">315  </a></b>	# define SEEK_CUR	1	/* Seek from current position.  */
+<b><a name="line316">316  </a></b>	# define SEEK_END	2	/* Seek from end of file.  */
+<b><a name="line317">317  </a></b>	# ifdef __USE_GNU
+<b><a name="line318">318  </a></b>	#  define SEEK_DATA	3	/* Seek to next data.  */
+<b><a name="line319">319  </a></b>	#  define SEEK_HOLE	4	/* Seek to next hole.  */
+<b><a name="line320">320  </a></b>	# endif
+<b><a name="line321">321  </a></b>	#endif
+<b><a name="line322">322  </a></b>	
+<b><a name="line323">323  </a></b>	#if defined <a href="../features.h/code.html#line317">__USE_MISC</a> &amp;&amp; !defined L_SET
+<b><a name="line324">324  </a></b>	/* Old BSD names for the same constants; just for compatibility.  */
+<b><a name="line325">325  </a></b>	# define <b>L_SET</b>		SEEK_SET
+<b><a name="line326">326  </a></b>	# define <b>L_INCR</b>		SEEK_CUR
+<b><a name="line327">327  </a></b>	# define <b>L_XTND</b>		SEEK_END
+<b><a name="line328">328  </a></b>	#endif
+<b><a name="line329">329  </a></b>	
+<b><a name="line330">330  </a></b>	
+<b><a name="line331">331  </a></b>	/* Move FD's file position to OFFSET bytes from the
+<b><a name="line332">332  </a></b>	   beginning of the file (if WHENCE is SEEK_SET),
+<b><a name="line333">333  </a></b>	   the current position (if WHENCE is SEEK_CUR),
+<b><a name="line334">334  </a></b>	   or the end of the file (if WHENCE is SEEK_END).
+<b><a name="line335">335  </a></b>	   Return the new file position.  */
+<b><a name="line336">336  </a></b>	#ifndef __USE_FILE_OFFSET64
+<b><a name="line337">337  </a></b>	extern <a href="../x86_64-linux-gnu/bits/types.h/code.html#line131">__off_t</a> lseek (int __fd, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line131">__off_t</a> __offset, int __whence) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line338">338  </a></b>	#else
+<b><a name="line339">339  </a></b>	# ifdef __REDIRECT_NTH
+<b><a name="line340">340  </a></b>	extern __off64_t __REDIRECT_NTH (lseek,
+<b><a name="line341">341  </a></b>					 (int __fd, __off64_t __offset, int __whence),
+<b><a name="line342">342  </a></b>					 lseek64);
+<b><a name="line343">343  </a></b>	# else
+<b><a name="line344">344  </a></b>	#  define lseek lseek64
+<b><a name="line345">345  </a></b>	# endif
+<b><a name="line346">346  </a></b>	#endif
+<b><a name="line347">347  </a></b>	#ifdef <a href="../features.h/code.html#line309">__USE_LARGEFILE64</a>
+<b><a name="line348">348  </a></b>	extern <a href="../x86_64-linux-gnu/bits/types.h/code.html#line132">__off64_t</a> lseek64 (int __fd, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line132">__off64_t</a> __offset, int __whence)
+<b><a name="line349">349  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line350">350  </a></b>	#endif
+<b><a name="line351">351  </a></b>	
+<b><a name="line352">352  </a></b>	/* Close the file descriptor FD.
+<b><a name="line353">353  </a></b>	
+<b><a name="line354">354  </a></b>	   This function is a cancellation point and therefore not marked with
+<b><a name="line355">355  </a></b>	   __THROW.  */
+<b><a name="line356">356  </a></b>	extern int close (int __fd);
+<b><a name="line357">357  </a></b>	
+<b><a name="line358">358  </a></b>	/* Read NBYTES into BUF from FD.  Return the
+<b><a name="line359">359  </a></b>	   number read, -1 for errors or 0 for EOF.
+<b><a name="line360">360  </a></b>	
+<b><a name="line361">361  </a></b>	   This function is a cancellation point and therefore not marked with
+<b><a name="line362">362  </a></b>	   __THROW.  */
+<b><a name="line363">363  </a></b>	extern <a href="../x86_64-linux-gnu/sys/types.h/code.html#line109">ssize_t</a> read (int __fd, void *__buf, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __nbytes) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line364">364  </a></b>	
+<b><a name="line365">365  </a></b>	/* Write N bytes of BUF to FD.  Return the number written, or -1.
+<b><a name="line366">366  </a></b>	
+<b><a name="line367">367  </a></b>	   This function is a cancellation point and therefore not marked with
+<b><a name="line368">368  </a></b>	   __THROW.  */
+<b><a name="line369">369  </a></b>	extern <a href="../x86_64-linux-gnu/sys/types.h/code.html#line109">ssize_t</a> write (int __fd, const void *__buf, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line370">370  </a></b>	
+<b><a name="line371">371  </a></b>	#if defined <a href="../features.h/code.html#line282">__USE_UNIX98</a> || defined <a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line372">372  </a></b>	# ifndef __USE_FILE_OFFSET64
+<b><a name="line373">373  </a></b>	/* Read NBYTES into BUF from FD at the given position OFFSET without
+<b><a name="line374">374  </a></b>	   changing the file pointer.  Return the number read, -1 for errors
+<b><a name="line375">375  </a></b>	   or 0 for EOF.
+<b><a name="line376">376  </a></b>	
+<b><a name="line377">377  </a></b>	   This function is a cancellation point and therefore not marked with
+<b><a name="line378">378  </a></b>	   __THROW.  */
+<b><a name="line379">379  </a></b>	extern <a href="../x86_64-linux-gnu/sys/types.h/code.html#line109">ssize_t</a> pread (int __fd, void *__buf, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __nbytes,
+<b><a name="line380">380  </a></b>			      <a href="../x86_64-linux-gnu/bits/types.h/code.html#line131">__off_t</a> __offset) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line381">381  </a></b>	
+<b><a name="line382">382  </a></b>	/* Write N bytes of BUF to FD at the given position OFFSET without
+<b><a name="line383">383  </a></b>	   changing the file pointer.  Return the number written, or -1.
+<b><a name="line384">384  </a></b>	
+<b><a name="line385">385  </a></b>	   This function is a cancellation point and therefore not marked with
+<b><a name="line386">386  </a></b>	   __THROW.  */
+<b><a name="line387">387  </a></b>	extern <a href="../x86_64-linux-gnu/sys/types.h/code.html#line109">ssize_t</a> pwrite (int __fd, const void *__buf, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n,
+<b><a name="line388">388  </a></b>			       <a href="../x86_64-linux-gnu/bits/types.h/code.html#line131">__off_t</a> __offset) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line389">389  </a></b>	# else
+<b><a name="line390">390  </a></b>	#  ifdef __REDIRECT
+<b><a name="line391">391  </a></b>	extern ssize_t __REDIRECT (pread, (int __fd, void *__buf, size_t __nbytes,
+<b><a name="line392">392  </a></b>					   __off64_t __offset),
+<b><a name="line393">393  </a></b>				   pread64) __wur;
+<b><a name="line394">394  </a></b>	extern ssize_t __REDIRECT (pwrite, (int __fd, const void *__buf,
+<b><a name="line395">395  </a></b>					    size_t __nbytes, __off64_t __offset),
+<b><a name="line396">396  </a></b>				   pwrite64) __wur;
+<b><a name="line397">397  </a></b>	#  else
+<b><a name="line398">398  </a></b>	#   define pread pread64
+<b><a name="line399">399  </a></b>	#   define pwrite pwrite64
+<b><a name="line400">400  </a></b>	#  endif
+<b><a name="line401">401  </a></b>	# endif
+<b><a name="line402">402  </a></b>	
+<b><a name="line403">403  </a></b>	# ifdef <a href="../features.h/code.html#line309">__USE_LARGEFILE64</a>
+<b><a name="line404">404  </a></b>	/* Read NBYTES into BUF from FD at the given position OFFSET without
+<b><a name="line405">405  </a></b>	   changing the file pointer.  Return the number read, -1 for errors
+<b><a name="line406">406  </a></b>	   or 0 for EOF.  */
+<b><a name="line407">407  </a></b>	extern <a href="../x86_64-linux-gnu/sys/types.h/code.html#line109">ssize_t</a> pread64 (int __fd, void *__buf, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __nbytes,
+<b><a name="line408">408  </a></b>				<a href="../x86_64-linux-gnu/bits/types.h/code.html#line132">__off64_t</a> __offset) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line409">409  </a></b>	/* Write N bytes of BUF to FD at the given position OFFSET without
+<b><a name="line410">410  </a></b>	   changing the file pointer.  Return the number written, or -1.  */
+<b><a name="line411">411  </a></b>	extern <a href="../x86_64-linux-gnu/sys/types.h/code.html#line109">ssize_t</a> pwrite64 (int __fd, const void *__buf, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __n,
+<b><a name="line412">412  </a></b>				 <a href="../x86_64-linux-gnu/bits/types.h/code.html#line132">__off64_t</a> __offset) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line413">413  </a></b>	# endif
+<b><a name="line414">414  </a></b>	#endif
+<b><a name="line415">415  </a></b>	
+<b><a name="line416">416  </a></b>	/* Create a one-way communication channel (pipe).
+<b><a name="line417">417  </a></b>	   If successful, two file descriptors are stored in PIPEDES;
+<b><a name="line418">418  </a></b>	   bytes written on PIPEDES[1] can be read from PIPEDES[0].
+<b><a name="line419">419  </a></b>	   Returns 0 if successful, -1 if not.  */
+<b><a name="line420">420  </a></b>	extern int pipe (int __pipedes[2]) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line421">421  </a></b>	
+<b><a name="line422">422  </a></b>	#ifdef <a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line423">423  </a></b>	/* Same as pipe but apply flags passed in FLAGS to the new file
+<b><a name="line424">424  </a></b>	   descriptors.  */
+<b><a name="line425">425  </a></b>	extern int pipe2 (int __pipedes[2], int __flags) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line426">426  </a></b>	#endif
+<b><a name="line427">427  </a></b>	
+<b><a name="line428">428  </a></b>	/* Schedule an alarm.  In SECONDS seconds, the process will get a SIGALRM.
+<b><a name="line429">429  </a></b>	   If SECONDS is zero, any currently scheduled alarm will be cancelled.
+<b><a name="line430">430  </a></b>	   The function returns the number of seconds remaining until the last
+<b><a name="line431">431  </a></b>	   alarm scheduled would have signaled, or zero if there wasn't one.
+<b><a name="line432">432  </a></b>	   There is no return value to indicate an error, but you can set `errno'
+<b><a name="line433">433  </a></b>	   to 0 and check its value after calling `alarm', and this might tell you.
+<b><a name="line434">434  </a></b>	   The signal may come late due to processor scheduling.  */
+<b><a name="line435">435  </a></b>	extern unsigned int alarm (unsigned int __seconds) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line436">436  </a></b>	
+<b><a name="line437">437  </a></b>	/* Make the process sleep for SECONDS seconds, or until a signal arrives
+<b><a name="line438">438  </a></b>	   and is not ignored.  The function returns the number of seconds less
+<b><a name="line439">439  </a></b>	   than SECONDS which it actually slept (thus zero if it slept the full time).
+<b><a name="line440">440  </a></b>	   If a signal handler does a `longjmp' or modifies the handling of the
+<b><a name="line441">441  </a></b>	   SIGALRM signal while inside `sleep' call, the handling of the SIGALRM
+<b><a name="line442">442  </a></b>	   signal afterwards is undefined.  There is no return value to indicate
+<b><a name="line443">443  </a></b>	   error, but if `sleep' returns SECONDS, it probably didn't work.
+<b><a name="line444">444  </a></b>	
+<b><a name="line445">445  </a></b>	   This function is a cancellation point and therefore not marked with
+<b><a name="line446">446  </a></b>	   __THROW.  */
+<b><a name="line447">447  </a></b>	extern unsigned int sleep (unsigned int __seconds);
+<b><a name="line448">448  </a></b>	
+<b><a name="line449">449  </a></b>	#if (defined <a href="../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a> &amp;&amp; !defined <a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>) \
+<b><a name="line450">450  </a></b>	    || defined <a href="../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line451">451  </a></b>	/* Set an alarm to go off (generating a SIGALRM signal) in VALUE
+<b><a name="line452">452  </a></b>	   microseconds.  If INTERVAL is nonzero, when the alarm goes off, the
+<b><a name="line453">453  </a></b>	   timer is reset to go off every INTERVAL microseconds thereafter.
+<b><a name="line454">454  </a></b>	   Returns the number of microseconds remaining before the alarm.  */
+<b><a name="line455">455  </a></b>	extern <a href="../x86_64-linux-gnu/bits/types.h/code.html#line140">__useconds_t</a> ualarm (<a href="../x86_64-linux-gnu/bits/types.h/code.html#line140">__useconds_t</a> __value, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line140">__useconds_t</a> __interval)
+<b><a name="line456">456  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line457">457  </a></b>	
+<b><a name="line458">458  </a></b>	/* Sleep USECONDS microseconds, or until a signal arrives that is not blocked
+<b><a name="line459">459  </a></b>	   or ignored.
+<b><a name="line460">460  </a></b>	
+<b><a name="line461">461  </a></b>	   This function is a cancellation point and therefore not marked with
+<b><a name="line462">462  </a></b>	   __THROW.  */
+<b><a name="line463">463  </a></b>	extern int usleep (<a href="../x86_64-linux-gnu/bits/types.h/code.html#line140">__useconds_t</a> __useconds);
+<b><a name="line464">464  </a></b>	#endif
+<b><a name="line465">465  </a></b>	
+<b><a name="line466">466  </a></b>	
+<b><a name="line467">467  </a></b>	/* Suspend the process until a signal arrives.
+<b><a name="line468">468  </a></b>	   This always returns -1 and sets `errno' to EINTR.
+<b><a name="line469">469  </a></b>	
+<b><a name="line470">470  </a></b>	   This function is a cancellation point and therefore not marked with
+<b><a name="line471">471  </a></b>	   __THROW.  */
+<b><a name="line472">472  </a></b>	extern int pause (void);
+<b><a name="line473">473  </a></b>	
+<b><a name="line474">474  </a></b>	
+<b><a name="line475">475  </a></b>	/* Change the owner and group of FILE.  */
+<b><a name="line476">476  </a></b>	extern int chown (const char *__file, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line125">__uid_t</a> __owner, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line126">__gid_t</a> __group)
+<b><a name="line477">477  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1)) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line478">478  </a></b>	
+<b><a name="line479">479  </a></b>	#if defined <a href="../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a> || defined <a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line480">480  </a></b>	/* Change the owner and group of the file that FD is open on.  */
+<b><a name="line481">481  </a></b>	extern int fchown (int __fd, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line125">__uid_t</a> __owner, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line126">__gid_t</a> __group) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line482">482  </a></b>	
+<b><a name="line483">483  </a></b>	
+<b><a name="line484">484  </a></b>	/* Change owner and group of FILE, if it is a symbolic
+<b><a name="line485">485  </a></b>	   link the ownership of the symbolic link is changed.  */
+<b><a name="line486">486  </a></b>	extern int lchown (const char *__file, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line125">__uid_t</a> __owner, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line126">__gid_t</a> __group)
+<b><a name="line487">487  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1)) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line488">488  </a></b>	
+<b><a name="line489">489  </a></b>	#endif /* Use X/Open Unix.  */
+<b><a name="line490">490  </a></b>	
+<b><a name="line491">491  </a></b>	#ifdef <a href="../features.h/code.html#line321">__USE_ATFILE</a>
+<b><a name="line492">492  </a></b>	/* Change the owner and group of FILE relative to the directory FD is open
+<b><a name="line493">493  </a></b>	   on.  */
+<b><a name="line494">494  </a></b>	extern int fchownat (int __fd, const char *__file, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line125">__uid_t</a> __owner,
+<b><a name="line495">495  </a></b>			     <a href="../x86_64-linux-gnu/bits/types.h/code.html#line126">__gid_t</a> __group, int __flag)
+<b><a name="line496">496  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((2)) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line497">497  </a></b>	#endif /* Use GNU.  */
+<b><a name="line498">498  </a></b>	
+<b><a name="line499">499  </a></b>	/* Change the process's working directory to PATH.  */
+<b><a name="line500">500  </a></b>	extern int chdir (const char *__path) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1)) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line501">501  </a></b>	
+<b><a name="line502">502  </a></b>	#if defined <a href="../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a> || defined <a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line503">503  </a></b>	/* Change the process's working directory to the one FD is open on.  */
+<b><a name="line504">504  </a></b>	extern int fchdir (int __fd) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line505">505  </a></b>	#endif
+<b><a name="line506">506  </a></b>	
+<b><a name="line507">507  </a></b>	/* Get the pathname of the current working directory,
+<b><a name="line508">508  </a></b>	   and put it in SIZE bytes of BUF.  Returns NULL if the
+<b><a name="line509">509  </a></b>	   directory couldn't be determined or SIZE was too small.
+<b><a name="line510">510  </a></b>	   If successful, returns BUF.  In GNU, if BUF is NULL,
+<b><a name="line511">511  </a></b>	   an array is allocated with `malloc'; the array is SIZE
+<b><a name="line512">512  </a></b>	   bytes long, unless SIZE == 0, in which case it is as
+<b><a name="line513">513  </a></b>	   big as necessary.  */
+<b><a name="line514">514  </a></b>	extern char *getcwd (char *__buf, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __size) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line515">515  </a></b>	
+<b><a name="line516">516  </a></b>	#ifdef	<a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line517">517  </a></b>	/* Return a malloc'd string containing the current directory name.
+<b><a name="line518">518  </a></b>	   If the environment variable `PWD' is set, and its value is correct,
+<b><a name="line519">519  </a></b>	   that value is used.  */
+<b><a name="line520">520  </a></b>	extern char *get_current_dir_name (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line521">521  </a></b>	#endif
+<b><a name="line522">522  </a></b>	
+<b><a name="line523">523  </a></b>	#if (defined <a href="../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a> &amp;&amp; !defined <a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>) \
+<b><a name="line524">524  </a></b>	    || defined <a href="../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line525">525  </a></b>	/* Put the absolute pathname of the current working directory in BUF.
+<b><a name="line526">526  </a></b>	   If successful, return BUF.  If not, put an error message in
+<b><a name="line527">527  </a></b>	   BUF and return NULL.  BUF should be at least PATH_MAX bytes long.  */
+<b><a name="line528">528  </a></b>	extern char *getwd (char *__buf)
+<b><a name="line529">529  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1)) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line254">__attribute_deprecated__</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line530">530  </a></b>	#endif
+<b><a name="line531">531  </a></b>	
+<b><a name="line532">532  </a></b>	
+<b><a name="line533">533  </a></b>	/* Duplicate FD, returning a new file descriptor on the same file.  */
+<b><a name="line534">534  </a></b>	extern int dup (int __fd) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line535">535  </a></b>	
+<b><a name="line536">536  </a></b>	/* Duplicate FD to FD2, closing FD2 and making it open on the same file.  */
+<b><a name="line537">537  </a></b>	extern int dup2 (int __fd, int __fd2) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line538">538  </a></b>	
+<b><a name="line539">539  </a></b>	#ifdef <a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line540">540  </a></b>	/* Duplicate FD to FD2, closing FD2 and making it open on the same
+<b><a name="line541">541  </a></b>	   file while setting flags according to FLAGS.  */
+<b><a name="line542">542  </a></b>	extern int dup3 (int __fd, int __fd2, int __flags) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line543">543  </a></b>	#endif
+<b><a name="line544">544  </a></b>	
+<b><a name="line545">545  </a></b>	/* NULL-terminated array of &quot;NAME=VALUE&quot; environment variables.  */
+<b><a name="line546">546  </a></b>	extern char **__environ;
+<b><a name="line547">547  </a></b>	#ifdef <a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line548">548  </a></b>	extern char **environ;
+<b><a name="line549">549  </a></b>	#endif
+<b><a name="line550">550  </a></b>	
+<b><a name="line551">551  </a></b>	
+<b><a name="line552">552  </a></b>	/* Replace the current process, executing PATH with arguments ARGV and
+<b><a name="line553">553  </a></b>	   environment ENVP.  ARGV and ENVP are terminated by NULL pointers.  */
+<b><a name="line554">554  </a></b>	extern int execve (const char *__path, char *const __argv[],
+<b><a name="line555">555  </a></b>			   char *const __envp[]) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line556">556  </a></b>	
+<b><a name="line557">557  </a></b>	#ifdef <a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line558">558  </a></b>	/* Execute the file FD refers to, overlaying the running program image.
+<b><a name="line559">559  </a></b>	   ARGV and ENVP are passed to the new program, as for `execve'.  */
+<b><a name="line560">560  </a></b>	extern int fexecve (int __fd, char *const __argv[], char *const __envp[])
+<b><a name="line561">561  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((2));
+<b><a name="line562">562  </a></b>	#endif
+<b><a name="line563">563  </a></b>	
+<b><a name="line564">564  </a></b>	
+<b><a name="line565">565  </a></b>	/* Execute PATH with arguments ARGV and environment from `environ'.  */
+<b><a name="line566">566  </a></b>	extern int execv (const char *__path, char *const __argv[])
+<b><a name="line567">567  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line568">568  </a></b>	
+<b><a name="line569">569  </a></b>	/* Execute PATH with all arguments after PATH until a NULL pointer,
+<b><a name="line570">570  </a></b>	   and the argument after that for environment.  */
+<b><a name="line571">571  </a></b>	extern int execle (const char *__path, const char *__arg, ...)
+<b><a name="line572">572  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line573">573  </a></b>	
+<b><a name="line574">574  </a></b>	/* Execute PATH with all arguments after PATH until
+<b><a name="line575">575  </a></b>	   a NULL pointer and environment from `environ'.  */
+<b><a name="line576">576  </a></b>	extern int execl (const char *__path, const char *__arg, ...)
+<b><a name="line577">577  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line578">578  </a></b>	
+<b><a name="line579">579  </a></b>	/* Execute FILE, searching in the `PATH' environment variable if it contains
+<b><a name="line580">580  </a></b>	   no slashes, with arguments ARGV and environment from `environ'.  */
+<b><a name="line581">581  </a></b>	extern int execvp (const char *__file, char *const __argv[])
+<b><a name="line582">582  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line583">583  </a></b>	
+<b><a name="line584">584  </a></b>	/* Execute FILE, searching in the `PATH' environment variable if
+<b><a name="line585">585  </a></b>	   it contains no slashes, with all arguments after FILE until a
+<b><a name="line586">586  </a></b>	   NULL pointer and environment from `environ'.  */
+<b><a name="line587">587  </a></b>	extern int execlp (const char *__file, const char *__arg, ...)
+<b><a name="line588">588  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line589">589  </a></b>	
+<b><a name="line590">590  </a></b>	#ifdef <a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line591">591  </a></b>	/* Execute FILE, searching in the `PATH' environment variable if it contains
+<b><a name="line592">592  </a></b>	   no slashes, with arguments ARGV and environment from `environ'.  */
+<b><a name="line593">593  </a></b>	extern int execvpe (const char *__file, char *const __argv[],
+<b><a name="line594">594  </a></b>			    char *const __envp[])
+<b><a name="line595">595  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line596">596  </a></b>	#endif
+<b><a name="line597">597  </a></b>	
+<b><a name="line598">598  </a></b>	
+<b><a name="line599">599  </a></b>	#if defined <a href="../features.h/code.html#line317">__USE_MISC</a> || defined <a href="../features.h/code.html#line279">__USE_XOPEN</a>
+<b><a name="line600">600  </a></b>	/* Add INC to priority of the current process.  */
+<b><a name="line601">601  </a></b>	extern int nice (int __inc) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line602">602  </a></b>	#endif
+<b><a name="line603">603  </a></b>	
+<b><a name="line604">604  </a></b>	
+<b><a name="line605">605  </a></b>	/* Terminate program execution with the low-order 8 bits of STATUS.  */
+<b><a name="line606">606  </a></b>	extern void _exit (int __status) __attribute__ ((__noreturn__));
+<b><a name="line607">607  </a></b>	
+<b><a name="line608">608  </a></b>	
+<b><a name="line609">609  </a></b>	/* Get the `_PC_*' symbols for the NAME argument to `pathconf' and `fpathconf';
+<b><a name="line610">610  </a></b>	   the `_SC_*' symbols for the NAME argument to `sysconf';
+<b><a name="line611">611  </a></b>	   and the `_CS_*' symbols for the NAME argument to `confstr'.  */
+<b><a name="line612">612  </a></b>	#include &lt;bits/confname.h&gt;
+<b><a name="line613">613  </a></b>	
+<b><a name="line614">614  </a></b>	/* Get file-specific configuration information about PATH.  */
+<b><a name="line615">615  </a></b>	extern long int pathconf (const char *__path, int __name)
+<b><a name="line616">616  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line617">617  </a></b>	
+<b><a name="line618">618  </a></b>	/* Get file-specific configuration about descriptor FD.  */
+<b><a name="line619">619  </a></b>	extern long int fpathconf (int __fd, int __name) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line620">620  </a></b>	
+<b><a name="line621">621  </a></b>	/* Get the value of the system variable NAME.  */
+<b><a name="line622">622  </a></b>	extern long int sysconf (int __name) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line623">623  </a></b>	
+<b><a name="line624">624  </a></b>	#ifdef	<a href="../features.h/code.html#line253">__USE_POSIX2</a>
+<b><a name="line625">625  </a></b>	/* Get the value of the string-valued system variable NAME.  */
+<b><a name="line626">626  </a></b>	extern <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> confstr (int __name, char *__buf, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __len) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line627">627  </a></b>	#endif
+<b><a name="line628">628  </a></b>	
+<b><a name="line629">629  </a></b>	
+<b><a name="line630">630  </a></b>	/* Get the process ID of the calling process.  */
+<b><a name="line631">631  </a></b>	extern <a href="../x86_64-linux-gnu/bits/types.h/code.html#line133">__pid_t</a> getpid (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line632">632  </a></b>	
+<b><a name="line633">633  </a></b>	/* Get the process ID of the calling process's parent.  */
+<b><a name="line634">634  </a></b>	extern <a href="../x86_64-linux-gnu/bits/types.h/code.html#line133">__pid_t</a> getppid (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line635">635  </a></b>	
+<b><a name="line636">636  </a></b>	/* Get the process group ID of the calling process.  */
+<b><a name="line637">637  </a></b>	extern <a href="../x86_64-linux-gnu/bits/types.h/code.html#line133">__pid_t</a> getpgrp (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line638">638  </a></b>	
+<b><a name="line639">639  </a></b>	/* Get the process group ID of process PID.  */
+<b><a name="line640">640  </a></b>	extern <a href="../x86_64-linux-gnu/bits/types.h/code.html#line133">__pid_t</a> __getpgid (<a href="../x86_64-linux-gnu/bits/types.h/code.html#line133">__pid_t</a> __pid) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line641">641  </a></b>	#if defined <a href="../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a> || defined <a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line642">642  </a></b>	extern <a href="../x86_64-linux-gnu/bits/types.h/code.html#line133">__pid_t</a> getpgid (<a href="../x86_64-linux-gnu/bits/types.h/code.html#line133">__pid_t</a> __pid) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line643">643  </a></b>	#endif
+<b><a name="line644">644  </a></b>	
+<b><a name="line645">645  </a></b>	
+<b><a name="line646">646  </a></b>	/* Set the process group ID of the process matching PID to PGID.
+<b><a name="line647">647  </a></b>	   If PID is zero, the current process's process group ID is set.
+<b><a name="line648">648  </a></b>	   If PGID is zero, the process ID of the process is used.  */
+<b><a name="line649">649  </a></b>	extern int setpgid (<a href="../x86_64-linux-gnu/bits/types.h/code.html#line133">__pid_t</a> __pid, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line133">__pid_t</a> __pgid) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line650">650  </a></b>	
+<b><a name="line651">651  </a></b>	#if defined <a href="../features.h/code.html#line317">__USE_MISC</a> || defined <a href="../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a>
+<b><a name="line652">652  </a></b>	/* Both System V and BSD have `setpgrp' functions, but with different
+<b><a name="line653">653  </a></b>	   calling conventions.  The BSD function is the same as POSIX.1 `setpgid'
+<b><a name="line654">654  </a></b>	   (above).  The System V function takes no arguments and puts the calling
+<b><a name="line655">655  </a></b>	   process in its on group like `setpgid (0, 0)'.
+<b><a name="line656">656  </a></b>	
+<b><a name="line657">657  </a></b>	   New programs should always use `setpgid' instead.
+<b><a name="line658">658  </a></b>	
+<b><a name="line659">659  </a></b>	   GNU provides the POSIX.1 function.  */
+<b><a name="line660">660  </a></b>	
+<b><a name="line661">661  </a></b>	/* Set the process group ID of the calling process to its own PID.
+<b><a name="line662">662  </a></b>	   This is exactly the same as `setpgid (0, 0)'.  */
+<b><a name="line663">663  </a></b>	extern int setpgrp (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line664">664  </a></b>	
+<b><a name="line665">665  </a></b>	#endif	/* Use misc or X/Open.  */
+<b><a name="line666">666  </a></b>	
+<b><a name="line667">667  </a></b>	/* Create a new session with the calling process as its leader.
+<b><a name="line668">668  </a></b>	   The process group IDs of the session and the calling process
+<b><a name="line669">669  </a></b>	   are set to the process ID of the calling process, which is returned.  */
+<b><a name="line670">670  </a></b>	extern <a href="../x86_64-linux-gnu/bits/types.h/code.html#line133">__pid_t</a> setsid (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line671">671  </a></b>	
+<b><a name="line672">672  </a></b>	#if defined <a href="../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a> || defined <a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line673">673  </a></b>	/* Return the session ID of the given process.  */
+<b><a name="line674">674  </a></b>	extern <a href="../x86_64-linux-gnu/bits/types.h/code.html#line133">__pid_t</a> getsid (<a href="../x86_64-linux-gnu/bits/types.h/code.html#line133">__pid_t</a> __pid) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line675">675  </a></b>	#endif
+<b><a name="line676">676  </a></b>	
+<b><a name="line677">677  </a></b>	/* Get the real user ID of the calling process.  */
+<b><a name="line678">678  </a></b>	extern <a href="../x86_64-linux-gnu/bits/types.h/code.html#line125">__uid_t</a> getuid (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line679">679  </a></b>	
+<b><a name="line680">680  </a></b>	/* Get the effective user ID of the calling process.  */
+<b><a name="line681">681  </a></b>	extern <a href="../x86_64-linux-gnu/bits/types.h/code.html#line125">__uid_t</a> geteuid (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line682">682  </a></b>	
+<b><a name="line683">683  </a></b>	/* Get the real group ID of the calling process.  */
+<b><a name="line684">684  </a></b>	extern <a href="../x86_64-linux-gnu/bits/types.h/code.html#line126">__gid_t</a> getgid (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line685">685  </a></b>	
+<b><a name="line686">686  </a></b>	/* Get the effective group ID of the calling process.  */
+<b><a name="line687">687  </a></b>	extern <a href="../x86_64-linux-gnu/bits/types.h/code.html#line126">__gid_t</a> getegid (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line688">688  </a></b>	
+<b><a name="line689">689  </a></b>	/* If SIZE is zero, return the number of supplementary groups
+<b><a name="line690">690  </a></b>	   the calling process is in.  Otherwise, fill in the group IDs
+<b><a name="line691">691  </a></b>	   of its supplementary groups in LIST and return the number written.  */
+<b><a name="line692">692  </a></b>	extern int getgroups (int __size, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line126">__gid_t</a> __list[]) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line693">693  </a></b>	
+<b><a name="line694">694  </a></b>	#ifdef	<a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line695">695  </a></b>	/* Return nonzero iff the calling process is in group GID.  */
+<b><a name="line696">696  </a></b>	extern int group_member (<a href="../x86_64-linux-gnu/bits/types.h/code.html#line126">__gid_t</a> __gid) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line697">697  </a></b>	#endif
+<b><a name="line698">698  </a></b>	
+<b><a name="line699">699  </a></b>	/* Set the user ID of the calling process to UID.
+<b><a name="line700">700  </a></b>	   If the calling process is the super-user, set the real
+<b><a name="line701">701  </a></b>	   and effective user IDs, and the saved set-user-ID to UID;
+<b><a name="line702">702  </a></b>	   if not, the effective user ID is set to UID.  */
+<b><a name="line703">703  </a></b>	extern int setuid (<a href="../x86_64-linux-gnu/bits/types.h/code.html#line125">__uid_t</a> __uid) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line704">704  </a></b>	
+<b><a name="line705">705  </a></b>	#if defined <a href="../features.h/code.html#line317">__USE_MISC</a> || defined <a href="../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a>
+<b><a name="line706">706  </a></b>	/* Set the real user ID of the calling process to RUID,
+<b><a name="line707">707  </a></b>	   and the effective user ID of the calling process to EUID.  */
+<b><a name="line708">708  </a></b>	extern int setreuid (<a href="../x86_64-linux-gnu/bits/types.h/code.html#line125">__uid_t</a> __ruid, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line125">__uid_t</a> __euid) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line709">709  </a></b>	#endif
+<b><a name="line710">710  </a></b>	
+<b><a name="line711">711  </a></b>	#ifdef <a href="../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line712">712  </a></b>	/* Set the effective user ID of the calling process to UID.  */
+<b><a name="line713">713  </a></b>	extern int seteuid (<a href="../x86_64-linux-gnu/bits/types.h/code.html#line125">__uid_t</a> __uid) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line714">714  </a></b>	#endif /* Use POSIX.1-2001.  */
+<b><a name="line715">715  </a></b>	
+<b><a name="line716">716  </a></b>	/* Set the group ID of the calling process to GID.
+<b><a name="line717">717  </a></b>	   If the calling process is the super-user, set the real
+<b><a name="line718">718  </a></b>	   and effective group IDs, and the saved set-group-ID to GID;
+<b><a name="line719">719  </a></b>	   if not, the effective group ID is set to GID.  */
+<b><a name="line720">720  </a></b>	extern int setgid (<a href="../x86_64-linux-gnu/bits/types.h/code.html#line126">__gid_t</a> __gid) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line721">721  </a></b>	
+<b><a name="line722">722  </a></b>	#if defined <a href="../features.h/code.html#line317">__USE_MISC</a> || defined <a href="../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a>
+<b><a name="line723">723  </a></b>	/* Set the real group ID of the calling process to RGID,
+<b><a name="line724">724  </a></b>	   and the effective group ID of the calling process to EGID.  */
+<b><a name="line725">725  </a></b>	extern int setregid (<a href="../x86_64-linux-gnu/bits/types.h/code.html#line126">__gid_t</a> __rgid, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line126">__gid_t</a> __egid) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line726">726  </a></b>	#endif
+<b><a name="line727">727  </a></b>	
+<b><a name="line728">728  </a></b>	#ifdef <a href="../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line729">729  </a></b>	/* Set the effective group ID of the calling process to GID.  */
+<b><a name="line730">730  </a></b>	extern int setegid (<a href="../x86_64-linux-gnu/bits/types.h/code.html#line126">__gid_t</a> __gid) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line731">731  </a></b>	#endif /* Use POSIX.1-2001.  */
+<b><a name="line732">732  </a></b>	
+<b><a name="line733">733  </a></b>	#ifdef <a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line734">734  </a></b>	/* Fetch the real user ID, effective user ID, and saved-set user ID,
+<b><a name="line735">735  </a></b>	   of the calling process.  */
+<b><a name="line736">736  </a></b>	extern int getresuid (<a href="../x86_64-linux-gnu/bits/types.h/code.html#line125">__uid_t</a> *__ruid, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line125">__uid_t</a> *__euid, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line125">__uid_t</a> *__suid)
+<b><a name="line737">737  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line738">738  </a></b>	
+<b><a name="line739">739  </a></b>	/* Fetch the real group ID, effective group ID, and saved-set group ID,
+<b><a name="line740">740  </a></b>	   of the calling process.  */
+<b><a name="line741">741  </a></b>	extern int getresgid (<a href="../x86_64-linux-gnu/bits/types.h/code.html#line126">__gid_t</a> *__rgid, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line126">__gid_t</a> *__egid, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line126">__gid_t</a> *__sgid)
+<b><a name="line742">742  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line743">743  </a></b>	
+<b><a name="line744">744  </a></b>	/* Set the real user ID, effective user ID, and saved-set user ID,
+<b><a name="line745">745  </a></b>	   of the calling process to RUID, EUID, and SUID, respectively.  */
+<b><a name="line746">746  </a></b>	extern int setresuid (<a href="../x86_64-linux-gnu/bits/types.h/code.html#line125">__uid_t</a> __ruid, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line125">__uid_t</a> __euid, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line125">__uid_t</a> __suid)
+<b><a name="line747">747  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line748">748  </a></b>	
+<b><a name="line749">749  </a></b>	/* Set the real group ID, effective group ID, and saved-set group ID,
+<b><a name="line750">750  </a></b>	   of the calling process to RGID, EGID, and SGID, respectively.  */
+<b><a name="line751">751  </a></b>	extern int setresgid (<a href="../x86_64-linux-gnu/bits/types.h/code.html#line126">__gid_t</a> __rgid, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line126">__gid_t</a> __egid, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line126">__gid_t</a> __sgid)
+<b><a name="line752">752  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line753">753  </a></b>	#endif
+<b><a name="line754">754  </a></b>	
+<b><a name="line755">755  </a></b>	
+<b><a name="line756">756  </a></b>	/* Clone the calling process, creating an exact copy.
+<b><a name="line757">757  </a></b>	   Return -1 for errors, 0 to the new process,
+<b><a name="line758">758  </a></b>	   and the process ID of the new process to the old process.  */
+<b><a name="line759">759  </a></b>	extern <a href="../x86_64-linux-gnu/bits/types.h/code.html#line133">__pid_t</a> fork (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line61">__THROWNL</a>;
+<b><a name="line760">760  </a></b>	
+<b><a name="line761">761  </a></b>	#if (defined <a href="../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a> &amp;&amp; !defined <a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>) \
+<b><a name="line762">762  </a></b>	    || defined <a href="../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line763">763  </a></b>	/* Clone the calling process, but without copying the whole address space.
+<b><a name="line764">764  </a></b>	   The calling process is suspended until the new process exits or is
+<b><a name="line765">765  </a></b>	   replaced by a call to `execve'.  Return -1 for errors, 0 to the new process,
+<b><a name="line766">766  </a></b>	   and the process ID of the new process to the old process.  */
+<b><a name="line767">767  </a></b>	extern <a href="../x86_64-linux-gnu/bits/types.h/code.html#line133">__pid_t</a> vfork (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line768">768  </a></b>	#endif /* Use misc or XPG &lt; 7. */
+<b><a name="line769">769  </a></b>	
+<b><a name="line770">770  </a></b>	
+<b><a name="line771">771  </a></b>	/* Return the pathname of the terminal FD is open on, or NULL on errors.
+<b><a name="line772">772  </a></b>	   The returned storage is good only until the next call to this function.  */
+<b><a name="line773">773  </a></b>	extern char *ttyname (int __fd) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line774">774  </a></b>	
+<b><a name="line775">775  </a></b>	/* Store at most BUFLEN characters of the pathname of the terminal FD is
+<b><a name="line776">776  </a></b>	   open on in BUF.  Return 0 on success, otherwise an error number.  */
+<b><a name="line777">777  </a></b>	extern int ttyname_r (int __fd, char *__buf, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __buflen)
+<b><a name="line778">778  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((2)) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line779">779  </a></b>	
+<b><a name="line780">780  </a></b>	/* Return 1 if FD is a valid descriptor associated
+<b><a name="line781">781  </a></b>	   with a terminal, zero if not.  */
+<b><a name="line782">782  </a></b>	extern int isatty (int __fd) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line783">783  </a></b>	
+<b><a name="line784">784  </a></b>	#if defined <a href="../features.h/code.html#line317">__USE_MISC</a> \
+<b><a name="line785">785  </a></b>	    || (defined <a href="../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a> &amp;&amp; !defined <a href="../features.h/code.html#line282">__USE_UNIX98</a>)
+<b><a name="line786">786  </a></b>	/* Return the index into the active-logins file (utmp) for
+<b><a name="line787">787  </a></b>	   the controlling terminal.  */
+<b><a name="line788">788  </a></b>	extern int ttyslot (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line789">789  </a></b>	#endif
+<b><a name="line790">790  </a></b>	
+<b><a name="line791">791  </a></b>	
+<b><a name="line792">792  </a></b>	/* Make a link to FROM named TO.  */
+<b><a name="line793">793  </a></b>	extern int link (const char *__from, const char *__to)
+<b><a name="line794">794  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2)) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line795">795  </a></b>	
+<b><a name="line796">796  </a></b>	#ifdef <a href="../features.h/code.html#line321">__USE_ATFILE</a>
+<b><a name="line797">797  </a></b>	/* Like link but relative paths in TO and FROM are interpreted relative
+<b><a name="line798">798  </a></b>	   to FROMFD and TOFD respectively.  */
+<b><a name="line799">799  </a></b>	extern int linkat (int __fromfd, const char *__from, int __tofd,
+<b><a name="line800">800  </a></b>			   const char *__to, int __flags)
+<b><a name="line801">801  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((2, 4)) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line802">802  </a></b>	#endif
+<b><a name="line803">803  </a></b>	
+<b><a name="line804">804  </a></b>	#if defined <a href="../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a> || defined <a href="../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line805">805  </a></b>	/* Make a symbolic link to FROM named TO.  */
+<b><a name="line806">806  </a></b>	extern int symlink (const char *__from, const char *__to)
+<b><a name="line807">807  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2)) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line808">808  </a></b>	
+<b><a name="line809">809  </a></b>	/* Read the contents of the symbolic link PATH into no more than
+<b><a name="line810">810  </a></b>	   LEN bytes of BUF.  The contents are not null-terminated.
+<b><a name="line811">811  </a></b>	   Returns the number of characters read, or -1 for errors.  */
+<b><a name="line812">812  </a></b>	extern <a href="../x86_64-linux-gnu/sys/types.h/code.html#line109">ssize_t</a> readlink (const char *__restrict __path,
+<b><a name="line813">813  </a></b>				 char *__restrict __buf, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __len)
+<b><a name="line814">814  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2)) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line815">815  </a></b>	#endif /* Use POSIX.1-2001.  */
+<b><a name="line816">816  </a></b>	
+<b><a name="line817">817  </a></b>	#ifdef <a href="../features.h/code.html#line321">__USE_ATFILE</a>
+<b><a name="line818">818  </a></b>	/* Like symlink but a relative path in TO is interpreted relative to TOFD.  */
+<b><a name="line819">819  </a></b>	extern int symlinkat (const char *__from, int __tofd,
+<b><a name="line820">820  </a></b>			      const char *__to) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 3)) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line821">821  </a></b>	
+<b><a name="line822">822  </a></b>	/* Like readlink but a relative PATH is interpreted relative to FD.  */
+<b><a name="line823">823  </a></b>	extern <a href="../x86_64-linux-gnu/sys/types.h/code.html#line109">ssize_t</a> readlinkat (int __fd, const char *__restrict __path,
+<b><a name="line824">824  </a></b>				   char *__restrict __buf, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __len)
+<b><a name="line825">825  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((2, 3)) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line826">826  </a></b>	#endif
+<b><a name="line827">827  </a></b>	
+<b><a name="line828">828  </a></b>	/* Remove the link NAME.  */
+<b><a name="line829">829  </a></b>	extern int unlink (const char *__name) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line830">830  </a></b>	
+<b><a name="line831">831  </a></b>	#ifdef <a href="../features.h/code.html#line321">__USE_ATFILE</a>
+<b><a name="line832">832  </a></b>	/* Remove the link NAME relative to FD.  */
+<b><a name="line833">833  </a></b>	extern int unlinkat (int __fd, const char *__name, int __flag)
+<b><a name="line834">834  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((2));
+<b><a name="line835">835  </a></b>	#endif
+<b><a name="line836">836  </a></b>	
+<b><a name="line837">837  </a></b>	/* Remove the directory PATH.  */
+<b><a name="line838">838  </a></b>	extern int rmdir (const char *__path) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line839">839  </a></b>	
+<b><a name="line840">840  </a></b>	
+<b><a name="line841">841  </a></b>	/* Return the foreground process group ID of FD.  */
+<b><a name="line842">842  </a></b>	extern <a href="../x86_64-linux-gnu/bits/types.h/code.html#line133">__pid_t</a> tcgetpgrp (int __fd) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line843">843  </a></b>	
+<b><a name="line844">844  </a></b>	/* Set the foreground process group ID of FD set PGRP_ID.  */
+<b><a name="line845">845  </a></b>	extern int tcsetpgrp (int __fd, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line133">__pid_t</a> __pgrp_id) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line846">846  </a></b>	
+<b><a name="line847">847  </a></b>	
+<b><a name="line848">848  </a></b>	/* Return the login name of the user.
+<b><a name="line849">849  </a></b>	
+<b><a name="line850">850  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line851">851  </a></b>	   marked with __THROW.  */
+<b><a name="line852">852  </a></b>	extern char *getlogin (void);
+<b><a name="line853">853  </a></b>	#if defined __USE_REENTRANT || defined <a href="../features.h/code.html#line261">__USE_POSIX199506</a>
+<b><a name="line854">854  </a></b>	/* Return at most NAME_LEN characters of the login name of the user in NAME.
+<b><a name="line855">855  </a></b>	   If it cannot be determined or some other error occurred, return the error
+<b><a name="line856">856  </a></b>	   code.  Otherwise return 0.
+<b><a name="line857">857  </a></b>	
+<b><a name="line858">858  </a></b>	   This function is a possible cancellation point and therefore not
+<b><a name="line859">859  </a></b>	   marked with __THROW.  */
+<b><a name="line860">860  </a></b>	extern int getlogin_r (char *__name, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __name_len) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line861">861  </a></b>	#endif
+<b><a name="line862">862  </a></b>	
+<b><a name="line863">863  </a></b>	#ifdef	<a href="../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line864">864  </a></b>	/* Set the login name returned by `getlogin'.  */
+<b><a name="line865">865  </a></b>	extern int setlogin (const char *__name) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line866">866  </a></b>	#endif
+<b><a name="line867">867  </a></b>	
+<b><a name="line868">868  </a></b>	
+<b><a name="line869">869  </a></b>	#ifdef	<a href="../features.h/code.html#line253">__USE_POSIX2</a>
+<b><a name="line870">870  </a></b>	/* Get definitions and prototypes for functions to process the
+<b><a name="line871">871  </a></b>	   arguments in ARGV (ARGC of them, minus the program name) for
+<b><a name="line872">872  </a></b>	   options given in OPTS.  */
+<b><a name="line873">873  </a></b>	# define <b>__need_getopt</b>
+<b><a name="line874">874  </a></b>	# include &lt;getopt.h&gt;
+<b><a name="line875">875  </a></b>	#endif
+<b><a name="line876">876  </a></b>	
+<b><a name="line877">877  </a></b>	
+<b><a name="line878">878  </a></b>	#if defined <a href="../features.h/code.html#line282">__USE_UNIX98</a> || defined <a href="../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line879">879  </a></b>	/* Put the name of the current host in no more than LEN bytes of NAME.
+<b><a name="line880">880  </a></b>	   The result is null-terminated if LEN is large enough for the full
+<b><a name="line881">881  </a></b>	   name and the terminator.  */
+<b><a name="line882">882  </a></b>	extern int gethostname (char *__name, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __len) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line883">883  </a></b>	#endif
+<b><a name="line884">884  </a></b>	
+<b><a name="line885">885  </a></b>	
+<b><a name="line886">886  </a></b>	#if defined <a href="../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line887">887  </a></b>	/* Set the name of the current host to NAME, which is LEN bytes long.
+<b><a name="line888">888  </a></b>	   This call is restricted to the super-user.  */
+<b><a name="line889">889  </a></b>	extern int sethostname (const char *__name, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __len)
+<b><a name="line890">890  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1)) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line891">891  </a></b>	
+<b><a name="line892">892  </a></b>	/* Set the current machine's Internet number to ID.
+<b><a name="line893">893  </a></b>	   This call is restricted to the super-user.  */
+<b><a name="line894">894  </a></b>	extern int sethostid (long int __id) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line895">895  </a></b>	
+<b><a name="line896">896  </a></b>	
+<b><a name="line897">897  </a></b>	/* Get and set the NIS (aka YP) domain name, if any.
+<b><a name="line898">898  </a></b>	   Called just like `gethostname' and `sethostname'.
+<b><a name="line899">899  </a></b>	   The NIS domain name is usually the empty string when not using NIS.  */
+<b><a name="line900">900  </a></b>	extern int getdomainname (char *__name, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __len)
+<b><a name="line901">901  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1)) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line902">902  </a></b>	extern int setdomainname (const char *__name, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __len)
+<b><a name="line903">903  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1)) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line904">904  </a></b>	
+<b><a name="line905">905  </a></b>	
+<b><a name="line906">906  </a></b>	/* Revoke access permissions to all processes currently communicating
+<b><a name="line907">907  </a></b>	   with the control terminal, and then send a SIGHUP signal to the process
+<b><a name="line908">908  </a></b>	   group of the control terminal.  */
+<b><a name="line909">909  </a></b>	extern int vhangup (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line910">910  </a></b>	
+<b><a name="line911">911  </a></b>	/* Revoke the access of all descriptors currently open on FILE.  */
+<b><a name="line912">912  </a></b>	extern int revoke (const char *__file) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1)) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line913">913  </a></b>	
+<b><a name="line914">914  </a></b>	
+<b><a name="line915">915  </a></b>	/* Enable statistical profiling, writing samples of the PC into at most
+<b><a name="line916">916  </a></b>	   SIZE bytes of SAMPLE_BUFFER; every processor clock tick while profiling
+<b><a name="line917">917  </a></b>	   is enabled, the system examines the user PC and increments
+<b><a name="line918">918  </a></b>	   SAMPLE_BUFFER[((PC - OFFSET) / 2) * SCALE / 65536].  If SCALE is zero,
+<b><a name="line919">919  </a></b>	   disable profiling.  Returns zero on success, -1 on error.  */
+<b><a name="line920">920  </a></b>	extern int profil (unsigned short int *__sample_buffer, <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __size,
+<b><a name="line921">921  </a></b>			   <a href="../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> __offset, unsigned int __scale)
+<b><a name="line922">922  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line923">923  </a></b>	
+<b><a name="line924">924  </a></b>	
+<b><a name="line925">925  </a></b>	/* Turn accounting on if NAME is an existing file.  The system will then write
+<b><a name="line926">926  </a></b>	   a record for each process as it terminates, to this file.  If NAME is NULL,
+<b><a name="line927">927  </a></b>	   turn accounting off.  This call is restricted to the super-user.  */
+<b><a name="line928">928  </a></b>	extern int acct (const char *__name) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line929">929  </a></b>	
+<b><a name="line930">930  </a></b>	
+<b><a name="line931">931  </a></b>	/* Successive calls return the shells listed in `/etc/shells'.  */
+<b><a name="line932">932  </a></b>	extern char *getusershell (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line933">933  </a></b>	extern void endusershell (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>; /* Discard cached info.  */
+<b><a name="line934">934  </a></b>	extern void setusershell (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>; /* Rewind and re-read the file.  */
+<b><a name="line935">935  </a></b>	
+<b><a name="line936">936  </a></b>	
+<b><a name="line937">937  </a></b>	/* Put the program in the background, and dissociate from the controlling
+<b><a name="line938">938  </a></b>	   terminal.  If NOCHDIR is zero, do `chdir (&quot;/&quot;)'.  If NOCLOSE is zero,
+<b><a name="line939">939  </a></b>	   redirects stdin, stdout, and stderr to /dev/null.  */
+<b><a name="line940">940  </a></b>	extern int daemon (int __nochdir, int __noclose) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line941">941  </a></b>	#endif /* Use misc.  */
+<b><a name="line942">942  </a></b>	
+<b><a name="line943">943  </a></b>	
+<b><a name="line944">944  </a></b>	#if defined <a href="../features.h/code.html#line317">__USE_MISC</a> || (defined <a href="../features.h/code.html#line279">__USE_XOPEN</a> &amp;&amp; !defined <a href="../features.h/code.html#line265">__USE_XOPEN2K</a>)
+<b><a name="line945">945  </a></b>	/* Make PATH be the root directory (the starting point for absolute paths).
+<b><a name="line946">946  </a></b>	   This call is restricted to the super-user.  */
+<b><a name="line947">947  </a></b>	extern int chroot (const char *__path) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1)) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line948">948  </a></b>	
+<b><a name="line949">949  </a></b>	/* Prompt with PROMPT and read a string from the terminal without echoing.
+<b><a name="line950">950  </a></b>	   Uses /dev/tty if possible; otherwise stderr and stdin.  */
+<b><a name="line951">951  </a></b>	extern char *getpass (const char *__prompt) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line952">952  </a></b>	#endif /* Use misc || X/Open.  */
+<b><a name="line953">953  </a></b>	
+<b><a name="line954">954  </a></b>	
+<b><a name="line955">955  </a></b>	/* Make all changes done to FD actually appear on disk.
+<b><a name="line956">956  </a></b>	
+<b><a name="line957">957  </a></b>	   This function is a cancellation point and therefore not marked with
+<b><a name="line958">958  </a></b>	   __THROW.  */
+<b><a name="line959">959  </a></b>	extern int fsync (int __fd);
+<b><a name="line960">960  </a></b>	
+<b><a name="line961">961  </a></b>	
+<b><a name="line962">962  </a></b>	#ifdef <a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line963">963  </a></b>	/* Make all changes done to all files on the file system associated
+<b><a name="line964">964  </a></b>	   with FD actually appear on disk.  */
+<b><a name="line965">965  </a></b>	extern int syncfs (int __fd) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line966">966  </a></b>	#endif
+<b><a name="line967">967  </a></b>	
+<b><a name="line968">968  </a></b>	
+<b><a name="line969">969  </a></b>	#if defined <a href="../features.h/code.html#line317">__USE_MISC</a> || defined <a href="../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a>
+<b><a name="line970">970  </a></b>	
+<b><a name="line971">971  </a></b>	/* Return identifier for the current host.  */
+<b><a name="line972">972  </a></b>	extern long int gethostid (void);
+<b><a name="line973">973  </a></b>	
+<b><a name="line974">974  </a></b>	/* Make all changes done to all files actually appear on disk.  */
+<b><a name="line975">975  </a></b>	extern void sync (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line976">976  </a></b>	
+<b><a name="line977">977  </a></b>	
+<b><a name="line978">978  </a></b>	# if defined <a href="../features.h/code.html#line317">__USE_MISC</a> || !defined <a href="../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line979">979  </a></b>	/* Return the number of bytes in a page.  This is the system's page size,
+<b><a name="line980">980  </a></b>	   which is not necessarily the same as the hardware page size.  */
+<b><a name="line981">981  </a></b>	extern int getpagesize (void)  <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> __attribute__ ((__const__));
+<b><a name="line982">982  </a></b>	
+<b><a name="line983">983  </a></b>	
+<b><a name="line984">984  </a></b>	/* Return the maximum number of file descriptors
+<b><a name="line985">985  </a></b>	   the current process could possibly have.  */
+<b><a name="line986">986  </a></b>	extern int getdtablesize (void) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line987">987  </a></b>	# endif
+<b><a name="line988">988  </a></b>	
+<b><a name="line989">989  </a></b>	#endif /* Use misc || X/Open Unix.  */
+<b><a name="line990">990  </a></b>	
+<b><a name="line991">991  </a></b>	
+<b><a name="line992">992  </a></b>	#if defined <a href="../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a> || defined <a href="../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line993">993  </a></b>	
+<b><a name="line994">994  </a></b>	/* Truncate FILE to LENGTH bytes.  */
+<b><a name="line995">995  </a></b>	# ifndef __USE_FILE_OFFSET64
+<b><a name="line996">996  </a></b>	extern int truncate (const char *__file, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line131">__off_t</a> __length)
+<b><a name="line997">997  </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1)) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line998">998  </a></b>	# else
+<b><a name="line999">999  </a></b>	#  ifdef __REDIRECT_NTH
+<b><a name="line1000">1000 </a></b>	extern int __REDIRECT_NTH (truncate,
+<b><a name="line1001">1001 </a></b>				   (const char *__file, __off64_t __length),
+<b><a name="line1002">1002 </a></b>				   truncate64) __nonnull ((1)) __wur;
+<b><a name="line1003">1003 </a></b>	#  else
+<b><a name="line1004">1004 </a></b>	#   define truncate truncate64
+<b><a name="line1005">1005 </a></b>	#  endif
+<b><a name="line1006">1006 </a></b>	# endif
+<b><a name="line1007">1007 </a></b>	# ifdef <a href="../features.h/code.html#line309">__USE_LARGEFILE64</a>
+<b><a name="line1008">1008 </a></b>	extern int truncate64 (const char *__file, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line132">__off64_t</a> __length)
+<b><a name="line1009">1009 </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1)) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line1010">1010 </a></b>	# endif
+<b><a name="line1011">1011 </a></b>	
+<b><a name="line1012">1012 </a></b>	#endif /* Use X/Open Unix || POSIX 2008.  */
+<b><a name="line1013">1013 </a></b>	
+<b><a name="line1014">1014 </a></b>	#if defined <a href="../features.h/code.html#line257">__USE_POSIX199309</a> \
+<b><a name="line1015">1015 </a></b>	    || defined <a href="../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a> || defined <a href="../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line1016">1016 </a></b>	
+<b><a name="line1017">1017 </a></b>	/* Truncate the file FD is open on to LENGTH bytes.  */
+<b><a name="line1018">1018 </a></b>	# ifndef __USE_FILE_OFFSET64
+<b><a name="line1019">1019 </a></b>	extern int ftruncate (int __fd, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line131">__off_t</a> __length) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line1020">1020 </a></b>	# else
+<b><a name="line1021">1021 </a></b>	#  ifdef __REDIRECT_NTH
+<b><a name="line1022">1022 </a></b>	extern int __REDIRECT_NTH (ftruncate, (int __fd, __off64_t __length),
+<b><a name="line1023">1023 </a></b>				   ftruncate64) __wur;
+<b><a name="line1024">1024 </a></b>	#  else
+<b><a name="line1025">1025 </a></b>	#   define ftruncate ftruncate64
+<b><a name="line1026">1026 </a></b>	#  endif
+<b><a name="line1027">1027 </a></b>	# endif
+<b><a name="line1028">1028 </a></b>	# ifdef <a href="../features.h/code.html#line309">__USE_LARGEFILE64</a>
+<b><a name="line1029">1029 </a></b>	extern int ftruncate64 (int __fd, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line132">__off64_t</a> __length) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line1030">1030 </a></b>	# endif
+<b><a name="line1031">1031 </a></b>	
+<b><a name="line1032">1032 </a></b>	#endif /* Use POSIX.1b || X/Open Unix || XPG6.  */
+<b><a name="line1033">1033 </a></b>	
+<b><a name="line1034">1034 </a></b>	
+<b><a name="line1035">1035 </a></b>	#if (defined <a href="../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a> &amp;&amp; !defined <a href="../features.h/code.html#line265">__USE_XOPEN2K</a>) \
+<b><a name="line1036">1036 </a></b>	    || defined <a href="../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line1037">1037 </a></b>	
+<b><a name="line1038">1038 </a></b>	/* Set the end of accessible data space (aka &quot;the break&quot;) to ADDR.
+<b><a name="line1039">1039 </a></b>	   Returns zero on success and -1 for errors (with errno set).  */
+<b><a name="line1040">1040 </a></b>	extern int brk (void *__addr) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line1041">1041 </a></b>	
+<b><a name="line1042">1042 </a></b>	/* Increase or decrease the end of accessible data space by DELTA bytes.
+<b><a name="line1043">1043 </a></b>	   If successful, returns the address the previous end of data space
+<b><a name="line1044">1044 </a></b>	   (i.e. the beginning of the new space, if DELTA &gt; 0);
+<b><a name="line1045">1045 </a></b>	   returns (void *) -1 for errors (with errno set).  */
+<b><a name="line1046">1046 </a></b>	extern void *sbrk (<a href="../stdint.h/code.html#line119">intptr_t</a> __delta) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line1047">1047 </a></b>	#endif
+<b><a name="line1048">1048 </a></b>	
+<b><a name="line1049">1049 </a></b>	
+<b><a name="line1050">1050 </a></b>	#ifdef <a href="../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line1051">1051 </a></b>	/* Invoke `system call' number SYSNO, passing it the remaining arguments.
+<b><a name="line1052">1052 </a></b>	   This is completely system-dependent, and not often useful.
+<b><a name="line1053">1053 </a></b>	
+<b><a name="line1054">1054 </a></b>	   In Unix, `syscall' sets `errno' for all errors and most calls return -1
+<b><a name="line1055">1055 </a></b>	   for errors; in many systems you cannot pass arguments or get return
+<b><a name="line1056">1056 </a></b>	   values for all system calls (`pipe', `fork', and `getppid' typically
+<b><a name="line1057">1057 </a></b>	   among them).
+<b><a name="line1058">1058 </a></b>	
+<b><a name="line1059">1059 </a></b>	   In Mach, all system calls take normal arguments and always return an
+<b><a name="line1060">1060 </a></b>	   error code (zero for success).  */
+<b><a name="line1061">1061 </a></b>	extern long int syscall (long int __sysno, ...) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a>;
+<b><a name="line1062">1062 </a></b>	
+<b><a name="line1063">1063 </a></b>	#endif	/* Use misc.  */
+<b><a name="line1064">1064 </a></b>	
+<b><a name="line1065">1065 </a></b>	
+<b><a name="line1066">1066 </a></b>	#if (defined <a href="../features.h/code.html#line317">__USE_MISC</a> || defined <a href="../features.h/code.html#line281">__USE_XOPEN_EXTENDED</a>) &amp;&amp; !defined <a href="../fcntl.h/code.html#line226">F_LOCK</a>
+<b><a name="line1067">1067 </a></b>	/* NOTE: These declarations also appear in &lt;fcntl.h&gt;; be sure to keep both
+<b><a name="line1068">1068 </a></b>	   files consistent.  Some systems have them there and some here, and some
+<b><a name="line1069">1069 </a></b>	   software depends on the macros being defined without including both.  */
+<b><a name="line1070">1070 </a></b>	
+<b><a name="line1071">1071 </a></b>	/* `lockf' is a simpler interface to the locking facilities of `fcntl'.
+<b><a name="line1072">1072 </a></b>	   LEN is always relative to the current file position.
+<b><a name="line1073">1073 </a></b>	   The CMD argument is one of the following.
+<b><a name="line1074">1074 </a></b>	
+<b><a name="line1075">1075 </a></b>	   This function is a cancellation point and therefore not marked with
+<b><a name="line1076">1076 </a></b>	   __THROW.  */
+<b><a name="line1077">1077 </a></b>	
+<b><a name="line1078">1078 </a></b>	# define <b>F_ULOCK</b> 0	/* Unlock a previously locked region.  */
+<b><a name="line1079">1079 </a></b>	# define <b>F_LOCK</b>  1	/* Lock a region for exclusive use.  */
+<b><a name="line1080">1080 </a></b>	# define <b>F_TLOCK</b> 2	/* Test and lock a region for exclusive use.  */
+<b><a name="line1081">1081 </a></b>	# define <b>F_TEST</b>  3	/* Test a region for other processes locks.  */
+<b><a name="line1082">1082 </a></b>	
+<b><a name="line1083">1083 </a></b>	# ifndef __USE_FILE_OFFSET64
+<b><a name="line1084">1084 </a></b>	extern int lockf (int __fd, int __cmd, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line131">__off_t</a> __len) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line1085">1085 </a></b>	# else
+<b><a name="line1086">1086 </a></b>	#  ifdef __REDIRECT
+<b><a name="line1087">1087 </a></b>	extern int __REDIRECT (lockf, (int __fd, int __cmd, __off64_t __len),
+<b><a name="line1088">1088 </a></b>			       lockf64) __wur;
+<b><a name="line1089">1089 </a></b>	#  else
+<b><a name="line1090">1090 </a></b>	#   define lockf lockf64
+<b><a name="line1091">1091 </a></b>	#  endif
+<b><a name="line1092">1092 </a></b>	# endif
+<b><a name="line1093">1093 </a></b>	# ifdef <a href="../features.h/code.html#line309">__USE_LARGEFILE64</a>
+<b><a name="line1094">1094 </a></b>	extern int lockf64 (int __fd, int __cmd, <a href="../x86_64-linux-gnu/bits/types.h/code.html#line132">__off64_t</a> __len) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line302">__wur</a>;
+<b><a name="line1095">1095 </a></b>	# endif
+<b><a name="line1096">1096 </a></b>	#endif /* Use misc and F_LOCK not already defined.  */
+<b><a name="line1097">1097 </a></b>	
+<b><a name="line1098">1098 </a></b>	
+<b><a name="line1099">1099 </a></b>	#ifdef <a href="../features.h/code.html#line325">__USE_GNU</a>
+<b><a name="line1100">1100 </a></b>	
+<b><a name="line1101">1101 </a></b>	/* Evaluate EXPRESSION, and repeat as long as it returns -1 with `errno'
+<b><a name="line1102">1102 </a></b>	   set to EINTR.  */
+<b><a name="line1103">1103 </a></b>	
+<b><a name="line1104">1104 </a></b>	# define <b>TEMP_FAILURE_RETRY</b>(expression) \
+<b><a name="line1105">1105 </a></b>	  (__extension__							      \
+<b><a name="line1106">1106 </a></b>	    ({ long int __result;						      \
+<b><a name="line1107">1107 </a></b>	       do __result = (long int) (expression);				      \
+<b><a name="line1108">1108 </a></b>	       while (__result == -1L &amp;&amp; errno == EINTR);			      \
+<b><a name="line1109">1109 </a></b>	       __result; }))
+<b><a name="line1110">1110 </a></b>	#endif
+<b><a name="line1111">1111 </a></b>	
+<b><a name="line1112">1112 </a></b>	#if defined <a href="../features.h/code.html#line257">__USE_POSIX199309</a> || defined <a href="../features.h/code.html#line282">__USE_UNIX98</a>
+<b><a name="line1113">1113 </a></b>	/* Synchronize at least the data part of a file with the underlying
+<b><a name="line1114">1114 </a></b>	   media.  */
+<b><a name="line1115">1115 </a></b>	extern int fdatasync (int __fildes);
+<b><a name="line1116">1116 </a></b>	#endif /* Use POSIX199309 */
+<b><a name="line1117">1117 </a></b>	
+<b><a name="line1118">1118 </a></b>	
+<b><a name="line1119">1119 </a></b>	/* XPG4.2 specifies that prototypes for the encryption functions must
+<b><a name="line1120">1120 </a></b>	   be defined here.  */
+<b><a name="line1121">1121 </a></b>	#ifdef	<a href="../features.h/code.html#line279">__USE_XOPEN</a>
+<b><a name="line1122">1122 </a></b>	/* Encrypt at most 8 characters from KEY using salt to perturb DES.  */
+<b><a name="line1123">1123 </a></b>	extern char *crypt (const char *__key, const char *__salt)
+<b><a name="line1124">1124 </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line1125">1125 </a></b>	
+<b><a name="line1126">1126 </a></b>	/* Encrypt data in BLOCK in place if EDFLAG is zero; otherwise decrypt
+<b><a name="line1127">1127 </a></b>	   block in place.  */
+<b><a name="line1128">1128 </a></b>	extern void encrypt (char *__glibc_block, int __edflag)
+<b><a name="line1129">1129 </a></b>	     <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1));
+<b><a name="line1130">1130 </a></b>	
+<b><a name="line1131">1131 </a></b>	
+<b><a name="line1132">1132 </a></b>	/* Swab pairs bytes in the first N bytes of the area pointed to by
+<b><a name="line1133">1133 </a></b>	   FROM and copy the result to TO.  The value of TO must not be in the
+<b><a name="line1134">1134 </a></b>	   range [FROM - N + 1, FROM - 1].  If N is odd the first byte in FROM
+<b><a name="line1135">1135 </a></b>	   is without partner.  */
+<b><a name="line1136">1136 </a></b>	extern void swab (const void *__restrict __from, void *__restrict __to,
+<b><a name="line1137">1137 </a></b>			  <a href="../x86_64-linux-gnu/sys/types.h/code.html#line109">ssize_t</a> __n) <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line60">__THROW</a> <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line285">__nonnull</a> ((1, 2));
+<b><a name="line1138">1138 </a></b>	#endif
+<b><a name="line1139">1139 </a></b>	
+<b><a name="line1140">1140 </a></b>	
+<b><a name="line1141">1141 </a></b>	/* The Single Unix specification demands this prototype to be here.
+<b><a name="line1142">1142 </a></b>	   It is also found in &lt;stdio.h&gt;.  */
+<b><a name="line1143">1143 </a></b>	#if defined <a href="../features.h/code.html#line279">__USE_XOPEN</a> &amp;&amp; !defined <a href="../features.h/code.html#line265">__USE_XOPEN2K</a>
+<b><a name="line1144">1144 </a></b>	/* Return the name of the controlling terminal.  */
+<b><a name="line1145">1145 </a></b>	extern char *ctermid (char *__s) __THROW;
+<b><a name="line1146">1146 </a></b>	#endif
+<b><a name="line1147">1147 </a></b>	
+<b><a name="line1148">1148 </a></b>	
+<b><a name="line1149">1149 </a></b>	/* Define some macros helping to catch buffer overflows.  */
+<b><a name="line1150">1150 </a></b>	#if <a href="../features.h/code.html#line340">__USE_FORTIFY_LEVEL</a> &gt; 0 &amp;&amp; defined <a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line343">__fortify_function</a>
+<b><a name="line1151">1151 </a></b>	# include &lt;bits/unistd.h&gt;
+<b><a name="line1152">1152 </a></b>	#endif
+<b><a name="line1153">1153 </a></b>	
+<b><a name="line1154">1154 </a></b>	<a href="../x86_64-linux-gnu/sys/cdefs.h/code.html#line99">__END_DECLS</a>
+<b><a name="line1155">1155 </a></b>	
+<b><a name="line1156">1156 </a></b>	#endif /* unistd.h  */
+<b><a name="line1157">1157 </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

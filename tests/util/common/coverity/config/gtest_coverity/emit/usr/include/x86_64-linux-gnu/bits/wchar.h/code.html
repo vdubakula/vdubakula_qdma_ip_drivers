@@ -1,0 +1,106 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/wchar.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* wchar_t type related definitions.
+<b><a name="line2">2    </a></b>	   Copyright (C) 2000-2016 Free Software Foundation, Inc.
+<b><a name="line3">3    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line6">6    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line7">7    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line8">8    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line13">13   </a></b>	   Lesser General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line16">16   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line17">17   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	#ifndef _BITS_WCHAR_H
+<b><a name="line20">20   </a></b>	#define <b>_BITS_WCHAR_H</b>	1
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	/* The fallback definitions, for when __WCHAR_MAX__ or __WCHAR_MIN__
+<b><a name="line23">23   </a></b>	   are not defined, give the right value and type as long as both int
+<b><a name="line24">24   </a></b>	   and wchar_t are 32-bit types.  Adding L'\0' to a constant value
+<b><a name="line25">25   </a></b>	   ensures that the type is correct; it is necessary to use (L'\0' +
+<b><a name="line26">26   </a></b>	   0) rather than just L'\0' so that the type in C++ is the promoted
+<b><a name="line27">27   </a></b>	   version of wchar_t rather than the distinct wchar_t type itself.
+<b><a name="line28">28   </a></b>	   Because wchar_t in preprocessor #if expressions is treated as
+<b><a name="line29">29   </a></b>	   intmax_t or uintmax_t, the expression (L'\0' - 1) would have the
+<b><a name="line30">30   </a></b>	   wrong value for WCHAR_MAX in such expressions and so cannot be used
+<b><a name="line31">31   </a></b>	   to define __WCHAR_MAX in the unsigned case.  */
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	#ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line51">__WCHAR_MAX__</a>
+<b><a name="line34">34   </a></b>	# define <b>__WCHAR_MAX</b>	__WCHAR_MAX__
+<b><a name="line35">35   </a></b>	#elif L'\0' - 1 &gt; 0
+<b><a name="line36">36   </a></b>	# define __WCHAR_MAX	(0xffffffffu + L'\0')
+<b><a name="line37">37   </a></b>	#else
+<b><a name="line38">38   </a></b>	# define __WCHAR_MAX	(0x7fffffff + L'\0')
+<b><a name="line39">39   </a></b>	#endif
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	#ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line165">__WCHAR_MIN__</a>
+<b><a name="line42">42   </a></b>	# define <b>__WCHAR_MIN</b>	__WCHAR_MIN__
+<b><a name="line43">43   </a></b>	#elif L'\0' - 1 &gt; 0
+<b><a name="line44">44   </a></b>	# define __WCHAR_MIN	(L'\0' + 0)
+<b><a name="line45">45   </a></b>	#else
+<b><a name="line46">46   </a></b>	# define __WCHAR_MIN	(-__WCHAR_MAX - 1)
+<b><a name="line47">47   </a></b>	#endif
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	#endif	/* bits/wchar.h */
+<b><a name="line50">50   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

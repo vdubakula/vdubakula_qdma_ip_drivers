@@ -1,0 +1,872 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/sstream</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// String based streams -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 1997-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file include/sstream
+<b><a name="line26">26   </a></b>	 *  This is a Standard C++ Library header.
+<b><a name="line27">27   </a></b>	 */
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	//
+<b><a name="line30">30   </a></b>	// ISO C++ 14882: 27.7  String-based streams
+<b><a name="line31">31   </a></b>	//
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	#ifndef _GLIBCXX_SSTREAM
+<b><a name="line34">34   </a></b>	#define <b>_GLIBCXX_SSTREAM</b> 1
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	#pragma GCC system_header
+<b><a name="line37">37   </a></b>	
+<b><a name="line38">38   </a></b>	#include &lt;istream&gt;
+<b><a name="line39">39   </a></b>	#include &lt;ostream&gt;
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	namespace <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line42">42   </a></b>	{
+<b><a name="line43">43   </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line44">44   </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line225">_GLIBCXX_BEGIN_NAMESPACE_CXX11</a>
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	  // [27.7.1] template class basic_stringbuf
+<b><a name="line47">47   </a></b>	  /**
+<b><a name="line48">48   </a></b>	   *  @brief  The actual work of input and output (for std::string).
+<b><a name="line49">49   </a></b>	   *  @ingroup io
+<b><a name="line50">50   </a></b>	   *
+<b><a name="line51">51   </a></b>	   *  @tparam _CharT  Type of character stream.
+<b><a name="line52">52   </a></b>	   *  @tparam _Traits  Traits for character type, defaults to
+<b><a name="line53">53   </a></b>	   *                   char_traits&lt;_CharT&gt;.
+<b><a name="line54">54   </a></b>	   *  @tparam _Alloc  Allocator type, defaults to allocator&lt;_CharT&gt;.
+<b><a name="line55">55   </a></b>	   *
+<b><a name="line56">56   </a></b>	   *  This class associates either or both of its input and output sequences
+<b><a name="line57">57   </a></b>	   *  with a sequence of characters, which can be initialized from, or made
+<b><a name="line58">58   </a></b>	   *  available as, a @c std::basic_string.  (Paraphrased from [27.7.1]/1.)
+<b><a name="line59">59   </a></b>	   *
+<b><a name="line60">60   </a></b>	   *  For this class, open modes (of type @c ios_base::openmode) have
+<b><a name="line61">61   </a></b>	   *  @c in set if the input sequence can be read, and @c out set if the
+<b><a name="line62">62   </a></b>	   *  output sequence can be written.
+<b><a name="line63">63   </a></b>	  */
+<b><a name="line64">64   </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>, typename <b>_Alloc</b>&gt;
+<b><a name="line65">65   </a></b>	    class <b>basic_stringbuf</b> : public <a href="../iosfwd/code.html#line80">basic_streambuf</a>&lt;<a href="#line64">_CharT</a>, <a href="#line64">_Traits</a>&gt;
+<b><a name="line66">66   </a></b>	    {
+<b><a name="line67">67   </a></b>	      struct __xfer_bufptrs;
+<b><a name="line68">68   </a></b>	    public:
+<b><a name="line69">69   </a></b>	      // Types:
+<b><a name="line70">70   </a></b>	      typedef <a href="#line64">_CharT</a> 					<b>char_type</b>;
+<b><a name="line71">71   </a></b>	      typedef <a href="#line64">_Traits</a> 					<b>traits_type</b>;
+<b><a name="line72">72   </a></b>	      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line73">73   </a></b>	      // 251. basic_stringbuf missing allocator_type
+<b><a name="line74">74   </a></b>	      typedef <a href="#line64">_Alloc</a>				       	<b>allocator_type</b>;
+<b><a name="line75">75   </a></b>	      typedef typename <a href="#line71">traits_type</a>::<a href="../bits/char_traits.h/code.html#line236">int_type</a> 		<b>int_type</b>;
+<b><a name="line76">76   </a></b>	      typedef typename <a href="#line71">traits_type</a>::<a href="../bits/char_traits.h/code.html#line237">pos_type</a> 		<b>pos_type</b>;
+<b><a name="line77">77   </a></b>	      typedef typename <a href="#line71">traits_type</a>::<a href="../bits/char_traits.h/code.html#line238">off_type</a> 		<b>off_type</b>;
+<b><a name="line78">78   </a></b>	
+<b><a name="line79">79   </a></b>	      typedef <a href="../iosfwd/code.html#line80">basic_streambuf</a>&lt;<a href="#line70">char_type</a>, <a href="#line71">traits_type</a>&gt;  	<b>__streambuf_type</b>;
+<b><a name="line80">80   </a></b>	      typedef <a href="../bits/stringfwd.h/code.html#line71">basic_string</a>&lt;<a href="#line70">char_type</a>, <a href="#line64">_Traits</a>, <a href="#line64">_Alloc</a>&gt; 	<b>__string_type</b>;
+<b><a name="line81">81   </a></b>	      typedef typename <a href="#line80">__string_type</a>::<a href="../bits/basic_string.h/code.html#line82">size_type</a>		<b>__size_type</b>;
+<b><a name="line82">82   </a></b>	
+<b><a name="line83">83   </a></b>	    protected:
+<b><a name="line84">84   </a></b>	      /// Place to stash in || out || in | out settings for current stringbuf.
+<b><a name="line85">85   </a></b>	      <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line429">openmode</a> 	<b>_M_mode</b>;
+<b><a name="line86">86   </a></b>	
+<b><a name="line87">87   </a></b>	      // Data Members:
+<b><a name="line88">88   </a></b>	      <a href="#line80">__string_type</a> 		<b>_M_string</b>;
+<b><a name="line89">89   </a></b>	
+<b><a name="line90">90   </a></b>	    public:
+<b><a name="line91">91   </a></b>	      // Constructors:
+<b><a name="line92">92   </a></b>	      /**
+<b><a name="line93">93   </a></b>	       *  @brief  Starts with an empty string buffer.
+<b><a name="line94">94   </a></b>	       *  @param  __mode  Whether the buffer can read, or write, or both.
+<b><a name="line95">95   </a></b>	       *
+<b><a name="line96">96   </a></b>	       *  The default constructor initializes the parent class using its
+<b><a name="line97">97   </a></b>	       *  own default ctor.
+<b><a name="line98">98   </a></b>	      */
+<b><a name="line99">99   </a></b>	      explicit
+<b><a name="line100">100  </a></b>	      basic_stringbuf(<a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line429">openmode</a> <b>__mode</b> = <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line443">in</a> <a href="../bits/ios_base.h/code.html#line129">|</a> <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line446">out</a>)
+<b><a name="line101">101  </a></b>	      : <a href="#line79">__streambuf_type</a>(), <a href="#line85">_M_mode</a>(<a href="#line100">__mode</a>), <a href="#line88">_M_string</a>()
+<b><a name="line102">102  </a></b>	      { }
+<b><a name="line103">103  </a></b>	
+<b><a name="line104">104  </a></b>	      /**
+<b><a name="line105">105  </a></b>	       *  @brief  Starts with an existing string buffer.
+<b><a name="line106">106  </a></b>	       *  @param  __str  A string to copy as a starting buffer.
+<b><a name="line107">107  </a></b>	       *  @param  __mode  Whether the buffer can read, or write, or both.
+<b><a name="line108">108  </a></b>	       *
+<b><a name="line109">109  </a></b>	       *  This constructor initializes the parent class using its
+<b><a name="line110">110  </a></b>	       *  own default ctor.
+<b><a name="line111">111  </a></b>	      */
+<b><a name="line112">112  </a></b>	      explicit
+<b><a name="line113">113  </a></b>	      basic_stringbuf(const <a href="#line80">__string_type</a>&amp; __str,
+<b><a name="line114">114  </a></b>			      <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line429">openmode</a> __mode = <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line443">in</a> <a href="../bits/ios_base.h/code.html#line129">|</a> <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line446">out</a>)
+<b><a name="line115">115  </a></b>	      : __streambuf_type(), _M_mode(), _M_string(__str.data(), __str.size())
+<b><a name="line116">116  </a></b>	      { _M_stringbuf_init(__mode); }
+<b><a name="line117">117  </a></b>	
+<b><a name="line118">118  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line119">119  </a></b>	      <b>basic_stringbuf</b>(const <a href="../iosfwd/code.html#line96">basic_stringbuf</a>&amp;) = delete;
+<b><a name="line120">120  </a></b>	
+<b><a name="line121">121  </a></b>	      basic_stringbuf(<a href="../iosfwd/code.html#line96">basic_stringbuf</a>&amp;&amp; __rhs)
+<b><a name="line122">122  </a></b>	      : basic_stringbuf(std::move(__rhs), __xfer_bufptrs(__rhs, this))
+<b><a name="line123">123  </a></b>	      { __rhs._M_sync(const_cast&lt;char_type*&gt;(__rhs._M_string.data()), 0, 0); }
+<b><a name="line124">124  </a></b>	
+<b><a name="line125">125  </a></b>	      // 27.8.2.2 Assign and swap:
+<b><a name="line126">126  </a></b>	
+<b><a name="line127">127  </a></b>	      <a href="../iosfwd/code.html#line96">basic_stringbuf</a>&amp;
+<b><a name="line128">128  </a></b>	      <b>operator=</b>(const <a href="../iosfwd/code.html#line96">basic_stringbuf</a>&amp;) = delete;
+<b><a name="line129">129  </a></b>	
+<b><a name="line130">130  </a></b>	      <a href="../iosfwd/code.html#line96">basic_stringbuf</a>&amp;
+<b><a name="line131">131  </a></b>	      operator=(<a href="../iosfwd/code.html#line96">basic_stringbuf</a>&amp;&amp; __rhs)
+<b><a name="line132">132  </a></b>	      {
+<b><a name="line133">133  </a></b>		__xfer_bufptrs __st{__rhs, this};
+<b><a name="line134">134  </a></b>		const __streambuf_type&amp; __base = __rhs;
+<b><a name="line135">135  </a></b>		__streambuf_type::operator=(__base);
+<b><a name="line136">136  </a></b>		this-&gt;pubimbue(__rhs.getloc());
+<b><a name="line137">137  </a></b>		_M_mode = __rhs._M_mode;
+<b><a name="line138">138  </a></b>		_M_string = std::move(__rhs._M_string);
+<b><a name="line139">139  </a></b>		__rhs._M_sync(const_cast&lt;char_type*&gt;(__rhs._M_string.data()), 0, 0);
+<b><a name="line140">140  </a></b>		return *this;
+<b><a name="line141">141  </a></b>	      }
+<b><a name="line142">142  </a></b>	
+<b><a name="line143">143  </a></b>	      void
+<b><a name="line144">144  </a></b>	      swap(<a href="../iosfwd/code.html#line96">basic_stringbuf</a>&amp; __rhs)
+<b><a name="line145">145  </a></b>	      {
+<b><a name="line146">146  </a></b>		__xfer_bufptrs __l_st{*this, std::__addressof(__rhs)};
+<b><a name="line147">147  </a></b>		__xfer_bufptrs __r_st{__rhs, this};
+<b><a name="line148">148  </a></b>		__streambuf_type&amp; __base = __rhs;
+<b><a name="line149">149  </a></b>		__streambuf_type::swap(__base);
+<b><a name="line150">150  </a></b>		__rhs.pubimbue(this-&gt;pubimbue(__rhs.getloc()));
+<b><a name="line151">151  </a></b>		std::swap(_M_mode, __rhs._M_mode);
+<b><a name="line152">152  </a></b>		std::swap(_M_string, __rhs._M_string);
+<b><a name="line153">153  </a></b>	      }
+<b><a name="line154">154  </a></b>	#endif
+<b><a name="line155">155  </a></b>	
+<b><a name="line156">156  </a></b>	      // Get and set:
+<b><a name="line157">157  </a></b>	      /**
+<b><a name="line158">158  </a></b>	       *  @brief  Copying out the string buffer.
+<b><a name="line159">159  </a></b>	       *  @return  A copy of one of the underlying sequences.
+<b><a name="line160">160  </a></b>	       *
+<b><a name="line161">161  </a></b>	       *  &lt;em&gt;If the buffer is only created in input mode, the underlying
+<b><a name="line162">162  </a></b>	       *  character sequence is equal to the input sequence; otherwise, it
+<b><a name="line163">163  </a></b>	       *  is equal to the output sequence.&lt;/em&gt; [27.7.1.2]/1
+<b><a name="line164">164  </a></b>	      */
+<b><a name="line165">165  </a></b>	      <a href="#line80">__string_type</a>
+<b><a name="line166">166  </a></b>	      str() const
+<b><a name="line167">167  </a></b>	      {
+<b><a name="line168">168  </a></b>		<a href="#line80">__string_type</a> <b>__ret</b>;
+<b><a name="line169">169  </a></b>		if (this-&gt;<a href="../streambuf/code.html#line532">pptr</a>())
+<b><a name="line170">170  </a></b>		  {
+<b><a name="line171">171  </a></b>		    // The current egptr() may not be the actual string end.
+<b><a name="line172">172  </a></b>		    if (this-&gt;<a href="../streambuf/code.html#line532">pptr</a>() &gt; this-&gt;<a href="../streambuf/code.html#line488">egptr</a>())
+<b><a name="line173">173  </a></b>		      <a href="#line168">__ret</a> <a href="../bits/basic_string.h/code.html#line587">=</a> <a href="#line80">__string_type</a>(this-&gt;<a href="../streambuf/code.html#line529">pbase</a>(), this-&gt;<a href="../streambuf/code.html#line532">pptr</a>());
+<b><a name="line174">174  </a></b>		    else
+<b><a name="line175">175  </a></b>	 	      <a href="#line168">__ret</a> <a href="../bits/basic_string.h/code.html#line587">=</a> <a href="#line80">__string_type</a>(this-&gt;<a href="../streambuf/code.html#line529">pbase</a>(), this-&gt;<a href="../streambuf/code.html#line488">egptr</a>());
+<b><a name="line176">176  </a></b>		  }
+<b><a name="line177">177  </a></b>		else
+<b><a name="line178">178  </a></b>		  <a href="#line168">__ret</a> <a href="../bits/basic_string.h/code.html#line550">=</a> <a href="#line88">_M_string</a>;
+<b><a name="line179">179  </a></b>		return <a href="#line168">__ret</a>;
+<b><a name="line180">180  </a></b>	      }
+<b><a name="line181">181  </a></b>	
+<b><a name="line182">182  </a></b>	      /**
+<b><a name="line183">183  </a></b>	       *  @brief  Setting a new buffer.
+<b><a name="line184">184  </a></b>	       *  @param  __s  The string to use as a new sequence.
+<b><a name="line185">185  </a></b>	       *
+<b><a name="line186">186  </a></b>	       *  Deallocates any previous stored sequence, then copies @a s to
+<b><a name="line187">187  </a></b>	       *  use as a new one.
+<b><a name="line188">188  </a></b>	      */
+<b><a name="line189">189  </a></b>	      void
+<b><a name="line190">190  </a></b>	      str(const <a href="#line80">__string_type</a>&amp; __s)
+<b><a name="line191">191  </a></b>	      {
+<b><a name="line192">192  </a></b>		// Cannot use _M_string = __s, since v3 strings are COW
+<b><a name="line193">193  </a></b>		// (not always true now but assign() always works).
+<b><a name="line194">194  </a></b>		_M_string.assign(__s.data(), __s.size());
+<b><a name="line195">195  </a></b>		_M_stringbuf_init(_M_mode);
+<b><a name="line196">196  </a></b>	      }
+<b><a name="line197">197  </a></b>	
+<b><a name="line198">198  </a></b>	    protected:
+<b><a name="line199">199  </a></b>	      // Common initialization code goes here.
+<b><a name="line200">200  </a></b>	      void
+<b><a name="line201">201  </a></b>	      _M_stringbuf_init(<a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line429">openmode</a> __mode)
+<b><a name="line202">202  </a></b>	      {
+<b><a name="line203">203  </a></b>		_M_mode = __mode;
+<b><a name="line204">204  </a></b>		__size_type __len = 0;
+<b><a name="line205">205  </a></b>		if (_M_mode &amp; (ios_base::ate | ios_base::app))
+<b><a name="line206">206  </a></b>		  __len = _M_string.size();
+<b><a name="line207">207  </a></b>		_M_sync(const_cast&lt;char_type*&gt;(_M_string.data()), 0, __len);
+<b><a name="line208">208  </a></b>	      }
+<b><a name="line209">209  </a></b>	
+<b><a name="line210">210  </a></b>	      virtual <a href="../bits/postypes.h/code.html#line98">streamsize</a>
+<b><a name="line211">211  </a></b>	      showmanyc()
+<b><a name="line212">212  </a></b>	      { 
+<b><a name="line213">213  </a></b>		<a href="../bits/postypes.h/code.html#line98">streamsize</a> <b>__ret</b> = -1;
+<b><a name="line214">214  </a></b>		if (<a href="#line85">_M_mode</a> <a href="../bits/ios_base.h/code.html#line125">&amp;</a> <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line443">in</a>)
+<b><a name="line215">215  </a></b>		  {
+<b><a name="line216">216  </a></b>		    <a href="#line278">_M_update_egptr</a>();
+<b><a name="line217">217  </a></b>		    <a href="#line213">__ret</a> = this-&gt;<a href="../streambuf/code.html#line488">egptr</a>() - this-&gt;<a href="../streambuf/code.html#line485">gptr</a>();
+<b><a name="line218">218  </a></b>		  }
+<b><a name="line219">219  </a></b>		return <a href="#line213">__ret</a>;
+<b><a name="line220">220  </a></b>	      }
+<b><a name="line221">221  </a></b>	
+<b><a name="line222">222  </a></b>	      virtual <a href="#line75">int_type</a>
+<b><a name="line223">223  </a></b>	      underflow();
+<b><a name="line224">224  </a></b>	
+<b><a name="line225">225  </a></b>	      virtual <a href="#line75">int_type</a>
+<b><a name="line226">226  </a></b>	      pbackfail(<a href="#line75">int_type</a> __c = <a href="#line71">traits_type</a>::eof());
+<b><a name="line227">227  </a></b>	
+<b><a name="line228">228  </a></b>	      virtual <a href="#line75">int_type</a>
+<b><a name="line229">229  </a></b>	      overflow(<a href="#line75">int_type</a> __c = <a href="#line71">traits_type</a>::eof());
+<b><a name="line230">230  </a></b>	
+<b><a name="line231">231  </a></b>	      /**
+<b><a name="line232">232  </a></b>	       *  @brief  Manipulates the buffer.
+<b><a name="line233">233  </a></b>	       *  @param  __s  Pointer to a buffer area.
+<b><a name="line234">234  </a></b>	       *  @param  __n  Size of @a __s.
+<b><a name="line235">235  </a></b>	       *  @return  @c this
+<b><a name="line236">236  </a></b>	       *
+<b><a name="line237">237  </a></b>	       *  If no buffer has already been created, and both @a __s and @a __n are
+<b><a name="line238">238  </a></b>	       *  non-zero, then @c __s is used as a buffer; see
+<b><a name="line239">239  </a></b>	       *  https://gcc.gnu.org/onlinedocs/libstdc++/manual/streambufs.html#io.streambuf.buffering
+<b><a name="line240">240  </a></b>	       *  for more.
+<b><a name="line241">241  </a></b>	      */
+<b><a name="line242">242  </a></b>	      virtual <a href="#line79">__streambuf_type</a>*
+<b><a name="line243">243  </a></b>	      setbuf(<a href="#line70">char_type</a>* <b>__s</b>, <a href="../bits/postypes.h/code.html#line98">streamsize</a> <b>__n</b>)
+<b><a name="line244">244  </a></b>	      {
+<b><a name="line245">245  </a></b>		if (<a href="#line243">__s</a> &amp;&amp; <a href="#line243">__n</a> &gt;= 0)
+<b><a name="line246">246  </a></b>		  {
+<b><a name="line247">247  </a></b>		    // This is implementation-defined behavior, and assumes
+<b><a name="line248">248  </a></b>		    // that an external char_type array of length __n exists
+<b><a name="line249">249  </a></b>		    // and has been pre-allocated. If this is not the case,
+<b><a name="line250">250  </a></b>		    // things will quickly blow up.
+<b><a name="line251">251  </a></b>		    
+<b><a name="line252">252  </a></b>		    // Step 1: Destroy the current internal array.
+<b><a name="line253">253  </a></b>		    <a href="#line88">_M_string</a>.<a href="../bits/basic_string.h/code.html#line808">clear</a>();
+<b><a name="line254">254  </a></b>		    
+<b><a name="line255">255  </a></b>		    // Step 2: Use the external array.
+<b><a name="line256">256  </a></b>		    <a href="#line273">_M_sync</a>(<a href="#line243">__s</a>, <a href="#line243">__n</a>, 0);
+<b><a name="line257">257  </a></b>		  }
+<b><a name="line258">258  </a></b>		return this;
+<b><a name="line259">259  </a></b>	      }
+<b><a name="line260">260  </a></b>	
+<b><a name="line261">261  </a></b>	      virtual <a href="#line76">pos_type</a>
+<b><a name="line262">262  </a></b>	      seekoff(<a href="#line77">off_type</a> __off, <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line461">seekdir</a> __way,
+<b><a name="line263">263  </a></b>		      <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line429">openmode</a> __mode = <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line443">in</a> <a href="../bits/ios_base.h/code.html#line129">|</a> <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line446">out</a>);
+<b><a name="line264">264  </a></b>	
+<b><a name="line265">265  </a></b>	      virtual <a href="#line76">pos_type</a>
+<b><a name="line266">266  </a></b>	      seekpos(<a href="#line76">pos_type</a> __sp,
+<b><a name="line267">267  </a></b>		      <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line429">openmode</a> __mode = <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line443">in</a> <a href="../bits/ios_base.h/code.html#line129">|</a> <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line446">out</a>);
+<b><a name="line268">268  </a></b>	
+<b><a name="line269">269  </a></b>	      // Internal function for correctly updating the internal buffer
+<b><a name="line270">270  </a></b>	      // for a particular _M_string, due to initialization or re-sizing
+<b><a name="line271">271  </a></b>	      // of an existing _M_string.
+<b><a name="line272">272  </a></b>	      void
+<b><a name="line273">273  </a></b>	      _M_sync(<a href="#line70">char_type</a>* __base, <a href="#line81">__size_type</a> __i, <a href="#line81">__size_type</a> __o);
+<b><a name="line274">274  </a></b>	
+<b><a name="line275">275  </a></b>	      // Internal function for correctly updating egptr() to the actual
+<b><a name="line276">276  </a></b>	      // string end.
+<b><a name="line277">277  </a></b>	      void
+<b><a name="line278">278  </a></b>	      _M_update_egptr()
+<b><a name="line279">279  </a></b>	      {
+<b><a name="line280">280  </a></b>		const bool <b>__testin</b> = <a href="#line85">_M_mode</a> <a href="../bits/ios_base.h/code.html#line125">&amp;</a> <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line443">in</a>;
+<b><a name="line281">281  </a></b>		if (this-&gt;<a href="../streambuf/code.html#line532">pptr</a>() &amp;&amp; this-&gt;<a href="../streambuf/code.html#line532">pptr</a>() &gt; this-&gt;<a href="../streambuf/code.html#line488">egptr</a>())
+<b><a name="line282">282  </a></b>		  {
+<b><a name="line283">283  </a></b>		    if (<a href="#line280">__testin</a>)
+<b><a name="line284">284  </a></b>		      this-&gt;<a href="../streambuf/code.html#line509">setg</a>(this-&gt;<a href="../streambuf/code.html#line482">eback</a>(), this-&gt;<a href="../streambuf/code.html#line485">gptr</a>(), this-&gt;<a href="../streambuf/code.html#line532">pptr</a>());
+<b><a name="line285">285  </a></b>		    else
+<b><a name="line286">286  </a></b>		      this-&gt;<a href="../streambuf/code.html#line509">setg</a>(this-&gt;<a href="../streambuf/code.html#line532">pptr</a>(), this-&gt;<a href="../streambuf/code.html#line532">pptr</a>(), this-&gt;<a href="../streambuf/code.html#line532">pptr</a>());
+<b><a name="line287">287  </a></b>		  }
+<b><a name="line288">288  </a></b>	      }
+<b><a name="line289">289  </a></b>	
+<b><a name="line290">290  </a></b>	      // Works around the issue with pbump, part of the protected
+<b><a name="line291">291  </a></b>	      // interface of basic_streambuf, taking just an int.
+<b><a name="line292">292  </a></b>	      void
+<b><a name="line293">293  </a></b>	      _M_pbump(<a href="#line70">char_type</a>* __pbeg, <a href="#line70">char_type</a>* __pend, <a href="#line77">off_type</a> __off);
+<b><a name="line294">294  </a></b>	
+<b><a name="line295">295  </a></b>	    private:
+<b><a name="line296">296  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line297">297  </a></b>	#if <a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line212">_GLIBCXX_USE_CXX11_ABI</a>
+<b><a name="line298">298  </a></b>	      // This type captures the state of the gptr / pptr pointers as offsets
+<b><a name="line299">299  </a></b>	      // so they can be restored in another object after moving the string.
+<b><a name="line300">300  </a></b>	      struct <a href="#line67">__xfer_bufptrs</a>
+<b><a name="line301">301  </a></b>	      {
+<b><a name="line302">302  </a></b>		__xfer_bufptrs(const <a href="../iosfwd/code.html#line96">basic_stringbuf</a>&amp; __from, <a href="../iosfwd/code.html#line96">basic_stringbuf</a>* __to)
+<b><a name="line303">303  </a></b>		: _M_to{__to}, _M_goff{-1, -1, -1}, _M_poff{-1, -1, -1}
+<b><a name="line304">304  </a></b>		{
+<b><a name="line305">305  </a></b>		  const _CharT* __str = __from._M_string.data();
+<b><a name="line306">306  </a></b>		  if (__from.eback())
+<b><a name="line307">307  </a></b>		    {
+<b><a name="line308">308  </a></b>		    _M_goff[0] = __from.eback() - __str;
+<b><a name="line309">309  </a></b>		    _M_goff[1] = __from.gptr() - __str;
+<b><a name="line310">310  </a></b>		    _M_goff[2] = __from.egptr() - __str;
+<b><a name="line311">311  </a></b>		    }
+<b><a name="line312">312  </a></b>		  if (__from.pbase())
+<b><a name="line313">313  </a></b>		    {
+<b><a name="line314">314  </a></b>		      _M_poff[0] = __from.pbase() - __str;
+<b><a name="line315">315  </a></b>		      _M_poff[1] = __from.pptr() - __from.pbase();
+<b><a name="line316">316  </a></b>		      _M_poff[2] = __from.epptr() - __str;
+<b><a name="line317">317  </a></b>		    }
+<b><a name="line318">318  </a></b>		}
+<b><a name="line319">319  </a></b>	
+<b><a name="line320">320  </a></b>		~__xfer_bufptrs()
+<b><a name="line321">321  </a></b>		{
+<b><a name="line322">322  </a></b>		  char_type* __str = const_cast&lt;char_type*&gt;(_M_to-&gt;_M_string.data());
+<b><a name="line323">323  </a></b>		  if (_M_goff[0] != -1)
+<b><a name="line324">324  </a></b>		    _M_to-&gt;setg(__str+_M_goff[0], __str+_M_goff[1], __str+_M_goff[2]);
+<b><a name="line325">325  </a></b>		  if (_M_poff[0] != -1)
+<b><a name="line326">326  </a></b>		    _M_to-&gt;_M_pbump(__str+_M_poff[0], __str+_M_poff[2], _M_poff[1]);
+<b><a name="line327">327  </a></b>		}
+<b><a name="line328">328  </a></b>	
+<b><a name="line329">329  </a></b>		<a href="../iosfwd/code.html#line96">basic_stringbuf</a>* <b>_M_to</b>;
+<b><a name="line330">330  </a></b>		<a href="#line77">off_type</a> <b>_M_goff</b>[3];
+<b><a name="line331">331  </a></b>		<a href="#line77">off_type</a> <b>_M_poff</b>[3];
+<b><a name="line332">332  </a></b>	      };
+<b><a name="line333">333  </a></b>	#else
+<b><a name="line334">334  </a></b>	      // This type does nothing when using Copy-On-Write strings.
+<b><a name="line335">335  </a></b>	      struct __xfer_bufptrs
+<b><a name="line336">336  </a></b>	      {
+<b><a name="line337">337  </a></b>		__xfer_bufptrs(const basic_stringbuf&amp;, basic_stringbuf*) { }
+<b><a name="line338">338  </a></b>	      };
+<b><a name="line339">339  </a></b>	#endif
+<b><a name="line340">340  </a></b>	
+<b><a name="line341">341  </a></b>	      // The move constructor initializes an __xfer_bufptrs temporary then
+<b><a name="line342">342  </a></b>	      // delegates to this constructor to performs moves during its lifetime.
+<b><a name="line343">343  </a></b>	      basic_stringbuf(<a href="../iosfwd/code.html#line96">basic_stringbuf</a>&amp;&amp; __rhs, <a href="#line67">__xfer_bufptrs</a>&amp;&amp;)
+<b><a name="line344">344  </a></b>	      : __streambuf_type(static_cast&lt;const __streambuf_type&amp;&gt;(__rhs)),
+<b><a name="line345">345  </a></b>	      _M_mode(__rhs._M_mode), _M_string(std::move(__rhs._M_string))
+<b><a name="line346">346  </a></b>	      { }
+<b><a name="line347">347  </a></b>	#endif
+<b><a name="line348">348  </a></b>	    };
+<b><a name="line349">349  </a></b>	
+<b><a name="line350">350  </a></b>	
+<b><a name="line351">351  </a></b>	  // [27.7.2] Template class basic_istringstream
+<b><a name="line352">352  </a></b>	  /**
+<b><a name="line353">353  </a></b>	   *  @brief  Controlling input for std::string.
+<b><a name="line354">354  </a></b>	   *  @ingroup io
+<b><a name="line355">355  </a></b>	   *
+<b><a name="line356">356  </a></b>	   *  @tparam _CharT  Type of character stream.
+<b><a name="line357">357  </a></b>	   *  @tparam _Traits  Traits for character type, defaults to
+<b><a name="line358">358  </a></b>	   *                   char_traits&lt;_CharT&gt;.
+<b><a name="line359">359  </a></b>	   *  @tparam _Alloc  Allocator type, defaults to allocator&lt;_CharT&gt;.
+<b><a name="line360">360  </a></b>	   *
+<b><a name="line361">361  </a></b>	   *  This class supports reading from objects of type std::basic_string,
+<b><a name="line362">362  </a></b>	   *  using the inherited functions from std::basic_istream.  To control
+<b><a name="line363">363  </a></b>	   *  the associated sequence, an instance of std::basic_stringbuf is used,
+<b><a name="line364">364  </a></b>	   *  which this page refers to as @c sb.
+<b><a name="line365">365  </a></b>	  */
+<b><a name="line366">366  </a></b>	  template&lt;typename <b>_CharT</b>, typename <b>_Traits</b>, typename <b>_Alloc</b>&gt;
+<b><a name="line367">367  </a></b>	    class <b>basic_istringstream</b> : public <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line366">_CharT</a>, <a href="#line366">_Traits</a>&gt;
+<b><a name="line368">368  </a></b>	    {
+<b><a name="line369">369  </a></b>	    public:
+<b><a name="line370">370  </a></b>	      // Types:
+<b><a name="line371">371  </a></b>	      typedef <a href="#line366">_CharT</a> 					<b>char_type</b>;
+<b><a name="line372">372  </a></b>	      typedef <a href="#line366">_Traits</a> 					<b>traits_type</b>;
+<b><a name="line373">373  </a></b>	      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line374">374  </a></b>	      // 251. basic_stringbuf missing allocator_type
+<b><a name="line375">375  </a></b>	      typedef <a href="#line366">_Alloc</a>				       	<b>allocator_type</b>;
+<b><a name="line376">376  </a></b>	      typedef typename <a href="#line372">traits_type</a>::<a href="../bits/char_traits.h/code.html#line236">int_type</a> 		<b>int_type</b>;
+<b><a name="line377">377  </a></b>	      typedef typename <a href="#line372">traits_type</a>::<a href="../bits/char_traits.h/code.html#line237">pos_type</a> 		<b>pos_type</b>;
+<b><a name="line378">378  </a></b>	      typedef typename <a href="#line372">traits_type</a>::<a href="../bits/char_traits.h/code.html#line238">off_type</a> 		<b>off_type</b>;
+<b><a name="line379">379  </a></b>	
+<b><a name="line380">380  </a></b>	      // Non-standard types:
+<b><a name="line381">381  </a></b>	      typedef <a href="../bits/stringfwd.h/code.html#line71">basic_string</a>&lt;<a href="#line366">_CharT</a>, <a href="#line366">_Traits</a>, <a href="#line366">_Alloc</a>&gt; 	<b>__string_type</b>;
+<b><a name="line382">382  </a></b>	      typedef <a href="../iosfwd/code.html#line96">basic_stringbuf</a>&lt;<a href="#line366">_CharT</a>, <a href="#line366">_Traits</a>, <a href="#line366">_Alloc</a>&gt; 	<b>__stringbuf_type</b>;
+<b><a name="line383">383  </a></b>	      typedef <a href="../iosfwd/code.html#line83">basic_istream</a>&lt;<a href="#line371">char_type</a>, <a href="#line372">traits_type</a>&gt;	<b>__istream_type</b>;
+<b><a name="line384">384  </a></b>	
+<b><a name="line385">385  </a></b>	    private:
+<b><a name="line386">386  </a></b>	      <a href="#line382">__stringbuf_type</a>	<b>_M_stringbuf</b>;
+<b><a name="line387">387  </a></b>	
+<b><a name="line388">388  </a></b>	    public:
+<b><a name="line389">389  </a></b>	      // Constructors:
+<b><a name="line390">390  </a></b>	      /**
+<b><a name="line391">391  </a></b>	       *  @brief  Default constructor starts with an empty string buffer.
+<b><a name="line392">392  </a></b>	       *  @param  __mode  Whether the buffer can read, or write, or both.
+<b><a name="line393">393  </a></b>	       *
+<b><a name="line394">394  </a></b>	       *  @c ios_base::in is automatically included in @a __mode.
+<b><a name="line395">395  </a></b>	       *
+<b><a name="line396">396  </a></b>	       *  Initializes @c sb using @c __mode|in, and passes @c &amp;sb to the base
+<b><a name="line397">397  </a></b>	       *  class initializer.  Does not allocate any buffer.
+<b><a name="line398">398  </a></b>	       *
+<b><a name="line399">399  </a></b>	       *  That's a lie.  We initialize the base class with NULL, because the
+<b><a name="line400">400  </a></b>	       *  string class does its own memory management.
+<b><a name="line401">401  </a></b>	      */
+<b><a name="line402">402  </a></b>	      explicit
+<b><a name="line403">403  </a></b>	      basic_istringstream(<a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line429">openmode</a> __mode = <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line443">in</a>)
+<b><a name="line404">404  </a></b>	      : __istream_type(), _M_stringbuf(__mode | ios_base::in)
+<b><a name="line405">405  </a></b>	      { this-&gt;init(&amp;_M_stringbuf); }
+<b><a name="line406">406  </a></b>	
+<b><a name="line407">407  </a></b>	      /**
+<b><a name="line408">408  </a></b>	       *  @brief  Starts with an existing string buffer.
+<b><a name="line409">409  </a></b>	       *  @param  __str  A string to copy as a starting buffer.
+<b><a name="line410">410  </a></b>	       *  @param  __mode  Whether the buffer can read, or write, or both.
+<b><a name="line411">411  </a></b>	       *
+<b><a name="line412">412  </a></b>	       *  @c ios_base::in is automatically included in @a mode.
+<b><a name="line413">413  </a></b>	       *
+<b><a name="line414">414  </a></b>	       *  Initializes @c sb using @a str and @c mode|in, and passes @c &amp;sb
+<b><a name="line415">415  </a></b>	       *  to the base class initializer.
+<b><a name="line416">416  </a></b>	       *
+<b><a name="line417">417  </a></b>	       *  That's a lie.  We initialize the base class with NULL, because the
+<b><a name="line418">418  </a></b>	       *  string class does its own memory management.
+<b><a name="line419">419  </a></b>	      */
+<b><a name="line420">420  </a></b>	      explicit
+<b><a name="line421">421  </a></b>	      basic_istringstream(const <a href="#line381">__string_type</a>&amp; __str,
+<b><a name="line422">422  </a></b>				  <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line429">openmode</a> __mode = <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line443">in</a>)
+<b><a name="line423">423  </a></b>	      : __istream_type(), _M_stringbuf(__str, __mode | ios_base::in)
+<b><a name="line424">424  </a></b>	      { this-&gt;init(&amp;_M_stringbuf); }
+<b><a name="line425">425  </a></b>	
+<b><a name="line426">426  </a></b>	      /**
+<b><a name="line427">427  </a></b>	       *  @brief  The destructor does nothing.
+<b><a name="line428">428  </a></b>	       *
+<b><a name="line429">429  </a></b>	       *  The buffer is deallocated by the stringbuf object, not the
+<b><a name="line430">430  </a></b>	       *  formatting stream.
+<b><a name="line431">431  </a></b>	      */
+<b><a name="line432">432  </a></b>	      ~basic_istringstream()
+<b><a name="line433">433  </a></b>	      { }
+<b><a name="line434">434  </a></b>	
+<b><a name="line435">435  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line436">436  </a></b>	      <b>basic_istringstream</b>(const <a href="../iosfwd/code.html#line100">basic_istringstream</a>&amp;) = delete;
+<b><a name="line437">437  </a></b>	
+<b><a name="line438">438  </a></b>	      basic_istringstream(<a href="../iosfwd/code.html#line100">basic_istringstream</a>&amp;&amp; __rhs)
+<b><a name="line439">439  </a></b>	      : __istream_type(std::move(__rhs)),
+<b><a name="line440">440  </a></b>	      _M_stringbuf(std::move(__rhs._M_stringbuf))
+<b><a name="line441">441  </a></b>	      { __istream_type::set_rdbuf(&amp;_M_stringbuf); }
+<b><a name="line442">442  </a></b>	
+<b><a name="line443">443  </a></b>	      // 27.8.3.2 Assign and swap:
+<b><a name="line444">444  </a></b>	
+<b><a name="line445">445  </a></b>	      <a href="../iosfwd/code.html#line100">basic_istringstream</a>&amp;
+<b><a name="line446">446  </a></b>	      <b>operator=</b>(const <a href="../iosfwd/code.html#line100">basic_istringstream</a>&amp;) = delete;
+<b><a name="line447">447  </a></b>	
+<b><a name="line448">448  </a></b>	      <a href="../iosfwd/code.html#line100">basic_istringstream</a>&amp;
+<b><a name="line449">449  </a></b>	      operator=(<a href="../iosfwd/code.html#line100">basic_istringstream</a>&amp;&amp; __rhs)
+<b><a name="line450">450  </a></b>	      {
+<b><a name="line451">451  </a></b>		__istream_type::operator=(std::move(__rhs));
+<b><a name="line452">452  </a></b>		_M_stringbuf = std::move(__rhs._M_stringbuf);
+<b><a name="line453">453  </a></b>		return *this;
+<b><a name="line454">454  </a></b>	      }
+<b><a name="line455">455  </a></b>	
+<b><a name="line456">456  </a></b>	      void
+<b><a name="line457">457  </a></b>	      swap(<a href="../iosfwd/code.html#line100">basic_istringstream</a>&amp; __rhs)
+<b><a name="line458">458  </a></b>	      {
+<b><a name="line459">459  </a></b>		__istream_type::swap(__rhs);
+<b><a name="line460">460  </a></b>		_M_stringbuf.swap(__rhs._M_stringbuf);
+<b><a name="line461">461  </a></b>	      }
+<b><a name="line462">462  </a></b>	#endif
+<b><a name="line463">463  </a></b>	
+<b><a name="line464">464  </a></b>	      // Members:
+<b><a name="line465">465  </a></b>	      /**
+<b><a name="line466">466  </a></b>	       *  @brief  Accessing the underlying buffer.
+<b><a name="line467">467  </a></b>	       *  @return  The current basic_stringbuf buffer.
+<b><a name="line468">468  </a></b>	       *
+<b><a name="line469">469  </a></b>	       *  This hides both signatures of std::basic_ios::rdbuf().
+<b><a name="line470">470  </a></b>	      */
+<b><a name="line471">471  </a></b>	      <a href="#line382">__stringbuf_type</a>*
+<b><a name="line472">472  </a></b>	      rdbuf() const
+<b><a name="line473">473  </a></b>	      { return const_cast&lt;__stringbuf_type*&gt;(&amp;_M_stringbuf); }
+<b><a name="line474">474  </a></b>	
+<b><a name="line475">475  </a></b>	      /**
+<b><a name="line476">476  </a></b>	       *  @brief  Copying out the string buffer.
+<b><a name="line477">477  </a></b>	       *  @return  @c rdbuf()-&gt;str()
+<b><a name="line478">478  </a></b>	      */
+<b><a name="line479">479  </a></b>	      <a href="#line381">__string_type</a>
+<b><a name="line480">480  </a></b>	      str() const
+<b><a name="line481">481  </a></b>	      { return _M_stringbuf.str(); }
+<b><a name="line482">482  </a></b>	
+<b><a name="line483">483  </a></b>	      /**
+<b><a name="line484">484  </a></b>	       *  @brief  Setting a new buffer.
+<b><a name="line485">485  </a></b>	       *  @param  __s  The string to use as a new sequence.
+<b><a name="line486">486  </a></b>	       *
+<b><a name="line487">487  </a></b>	       *  Calls @c rdbuf()-&gt;str(s).
+<b><a name="line488">488  </a></b>	      */
+<b><a name="line489">489  </a></b>	      void
+<b><a name="line490">490  </a></b>	      str(const <a href="#line381">__string_type</a>&amp; __s)
+<b><a name="line491">491  </a></b>	      { _M_stringbuf.str(__s); }
+<b><a name="line492">492  </a></b>	    };
+<b><a name="line493">493  </a></b>	
+<b><a name="line494">494  </a></b>	
+<b><a name="line495">495  </a></b>	  // [27.7.3] Template class basic_ostringstream
+<b><a name="line496">496  </a></b>	  /**
+<b><a name="line497">497  </a></b>	   *  @brief  Controlling output for std::string.
+<b><a name="line498">498  </a></b>	   *  @ingroup io
+<b><a name="line499">499  </a></b>	   *
+<b><a name="line500">500  </a></b>	   *  @tparam _CharT  Type of character stream.
+<b><a name="line501">501  </a></b>	   *  @tparam _Traits  Traits for character type, defaults to
+<b><a name="line502">502  </a></b>	   *                   char_traits&lt;_CharT&gt;.
+<b><a name="line503">503  </a></b>	   *  @tparam _Alloc  Allocator type, defaults to allocator&lt;_CharT&gt;.
+<b><a name="line504">504  </a></b>	   *
+<b><a name="line505">505  </a></b>	   *  This class supports writing to objects of type std::basic_string,
+<b><a name="line506">506  </a></b>	   *  using the inherited functions from std::basic_ostream.  To control
+<b><a name="line507">507  </a></b>	   *  the associated sequence, an instance of std::basic_stringbuf is used,
+<b><a name="line508">508  </a></b>	   *  which this page refers to as @c sb.
+<b><a name="line509">509  </a></b>	  */
+<b><a name="line510">510  </a></b>	  template &lt;typename <b>_CharT</b>, typename <b>_Traits</b>, typename <b>_Alloc</b>&gt;
+<b><a name="line511">511  </a></b>	    class <b>basic_ostringstream</b> : public <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line510">_CharT</a>, <a href="#line510">_Traits</a>&gt;
+<b><a name="line512">512  </a></b>	    {
+<b><a name="line513">513  </a></b>	    public:
+<b><a name="line514">514  </a></b>	      // Types:
+<b><a name="line515">515  </a></b>	      typedef <a href="#line510">_CharT</a> 					<b>char_type</b>;
+<b><a name="line516">516  </a></b>	      typedef <a href="#line510">_Traits</a> 					<b>traits_type</b>;
+<b><a name="line517">517  </a></b>	      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line518">518  </a></b>	      // 251. basic_stringbuf missing allocator_type
+<b><a name="line519">519  </a></b>	      typedef <a href="#line510">_Alloc</a>				       	<b>allocator_type</b>;
+<b><a name="line520">520  </a></b>	      typedef typename <a href="#line516">traits_type</a>::<a href="../bits/char_traits.h/code.html#line236">int_type</a> 		<b>int_type</b>;
+<b><a name="line521">521  </a></b>	      typedef typename <a href="#line516">traits_type</a>::<a href="../bits/char_traits.h/code.html#line237">pos_type</a> 		<b>pos_type</b>;
+<b><a name="line522">522  </a></b>	      typedef typename <a href="#line516">traits_type</a>::<a href="../bits/char_traits.h/code.html#line238">off_type</a> 		<b>off_type</b>;
+<b><a name="line523">523  </a></b>	
+<b><a name="line524">524  </a></b>	      // Non-standard types:
+<b><a name="line525">525  </a></b>	      typedef <a href="../bits/stringfwd.h/code.html#line71">basic_string</a>&lt;<a href="#line510">_CharT</a>, <a href="#line510">_Traits</a>, <a href="#line510">_Alloc</a>&gt; 	<b>__string_type</b>;
+<b><a name="line526">526  </a></b>	      typedef <a href="../iosfwd/code.html#line96">basic_stringbuf</a>&lt;<a href="#line510">_CharT</a>, <a href="#line510">_Traits</a>, <a href="#line510">_Alloc</a>&gt; 	<b>__stringbuf_type</b>;
+<b><a name="line527">527  </a></b>	      typedef <a href="../iosfwd/code.html#line86">basic_ostream</a>&lt;<a href="#line515">char_type</a>, <a href="#line516">traits_type</a>&gt;	<b>__ostream_type</b>;
+<b><a name="line528">528  </a></b>	
+<b><a name="line529">529  </a></b>	    private:
+<b><a name="line530">530  </a></b>	      <a href="#line526">__stringbuf_type</a>	<b>_M_stringbuf</b>;
+<b><a name="line531">531  </a></b>	
+<b><a name="line532">532  </a></b>	    public:
+<b><a name="line533">533  </a></b>	      // Constructors/destructor:
+<b><a name="line534">534  </a></b>	      /**
+<b><a name="line535">535  </a></b>	       *  @brief  Default constructor starts with an empty string buffer.
+<b><a name="line536">536  </a></b>	       *  @param  __mode  Whether the buffer can read, or write, or both.
+<b><a name="line537">537  </a></b>	       *
+<b><a name="line538">538  </a></b>	       *  @c ios_base::out is automatically included in @a mode.
+<b><a name="line539">539  </a></b>	       *
+<b><a name="line540">540  </a></b>	       *  Initializes @c sb using @c mode|out, and passes @c &amp;sb to the base
+<b><a name="line541">541  </a></b>	       *  class initializer.  Does not allocate any buffer.
+<b><a name="line542">542  </a></b>	       *
+<b><a name="line543">543  </a></b>	       *  That's a lie.  We initialize the base class with NULL, because the
+<b><a name="line544">544  </a></b>	       *  string class does its own memory management.
+<b><a name="line545">545  </a></b>	      */
+<b><a name="line546">546  </a></b>	      explicit
+<b><a name="line547">547  </a></b>	      basic_ostringstream(<a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line429">openmode</a> <b>__mode</b> = <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line446">out</a>)
+<b><a name="line548">548  </a></b>	      : <a href="#line527">__ostream_type</a>(), <a href="#line530">_M_stringbuf</a>(<a href="#line547">__mode</a> <a href="../bits/ios_base.h/code.html#line129">|</a> <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line446">out</a>)
+<b><a name="line549">549  </a></b>	      { this-&gt;<a href="../bits/basic_ios.h/code.html#line472">init</a>(&amp;<a href="#line530">_M_stringbuf</a>); }
+<b><a name="line550">550  </a></b>	
+<b><a name="line551">551  </a></b>	      /**
+<b><a name="line552">552  </a></b>	       *  @brief  Starts with an existing string buffer.
+<b><a name="line553">553  </a></b>	       *  @param  __str  A string to copy as a starting buffer.
+<b><a name="line554">554  </a></b>	       *  @param  __mode  Whether the buffer can read, or write, or both.
+<b><a name="line555">555  </a></b>	       *
+<b><a name="line556">556  </a></b>	       *  @c ios_base::out is automatically included in @a mode.
+<b><a name="line557">557  </a></b>	       *
+<b><a name="line558">558  </a></b>	       *  Initializes @c sb using @a str and @c mode|out, and passes @c &amp;sb
+<b><a name="line559">559  </a></b>	       *  to the base class initializer.
+<b><a name="line560">560  </a></b>	       *
+<b><a name="line561">561  </a></b>	       *  That's a lie.  We initialize the base class with NULL, because the
+<b><a name="line562">562  </a></b>	       *  string class does its own memory management.
+<b><a name="line563">563  </a></b>	      */
+<b><a name="line564">564  </a></b>	      explicit
+<b><a name="line565">565  </a></b>	      basic_ostringstream(const <a href="#line525">__string_type</a>&amp; __str,
+<b><a name="line566">566  </a></b>				  <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line429">openmode</a> __mode = <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line446">out</a>)
+<b><a name="line567">567  </a></b>	      : __ostream_type(), _M_stringbuf(__str, __mode | ios_base::out)
+<b><a name="line568">568  </a></b>	      { this-&gt;init(&amp;_M_stringbuf); }
+<b><a name="line569">569  </a></b>	
+<b><a name="line570">570  </a></b>	      /**
+<b><a name="line571">571  </a></b>	       *  @brief  The destructor does nothing.
+<b><a name="line572">572  </a></b>	       *
+<b><a name="line573">573  </a></b>	       *  The buffer is deallocated by the stringbuf object, not the
+<b><a name="line574">574  </a></b>	       *  formatting stream.
+<b><a name="line575">575  </a></b>	      */
+<b><a name="line576">576  </a></b>	      ~basic_ostringstream()
+<b><a name="line577">577  </a></b>	      { }
+<b><a name="line578">578  </a></b>	
+<b><a name="line579">579  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line580">580  </a></b>	      <b>basic_ostringstream</b>(const <a href="../iosfwd/code.html#line104">basic_ostringstream</a>&amp;) = delete;
+<b><a name="line581">581  </a></b>	
+<b><a name="line582">582  </a></b>	      basic_ostringstream(<a href="../iosfwd/code.html#line104">basic_ostringstream</a>&amp;&amp; __rhs)
+<b><a name="line583">583  </a></b>	      : __ostream_type(std::move(__rhs)),
+<b><a name="line584">584  </a></b>	      _M_stringbuf(std::move(__rhs._M_stringbuf))
+<b><a name="line585">585  </a></b>	      { __ostream_type::set_rdbuf(&amp;_M_stringbuf); }
+<b><a name="line586">586  </a></b>	
+<b><a name="line587">587  </a></b>	      // 27.8.3.2 Assign and swap:
+<b><a name="line588">588  </a></b>	
+<b><a name="line589">589  </a></b>	      <a href="../iosfwd/code.html#line104">basic_ostringstream</a>&amp;
+<b><a name="line590">590  </a></b>	      <b>operator=</b>(const <a href="../iosfwd/code.html#line104">basic_ostringstream</a>&amp;) = delete;
+<b><a name="line591">591  </a></b>	
+<b><a name="line592">592  </a></b>	      <a href="../iosfwd/code.html#line104">basic_ostringstream</a>&amp;
+<b><a name="line593">593  </a></b>	      operator=(<a href="../iosfwd/code.html#line104">basic_ostringstream</a>&amp;&amp; __rhs)
+<b><a name="line594">594  </a></b>	      {
+<b><a name="line595">595  </a></b>		__ostream_type::operator=(std::move(__rhs));
+<b><a name="line596">596  </a></b>		_M_stringbuf = std::move(__rhs._M_stringbuf);
+<b><a name="line597">597  </a></b>		return *this;
+<b><a name="line598">598  </a></b>	      }
+<b><a name="line599">599  </a></b>	
+<b><a name="line600">600  </a></b>	      void
+<b><a name="line601">601  </a></b>	      swap(<a href="../iosfwd/code.html#line104">basic_ostringstream</a>&amp; __rhs)
+<b><a name="line602">602  </a></b>	      {
+<b><a name="line603">603  </a></b>		__ostream_type::swap(__rhs);
+<b><a name="line604">604  </a></b>		_M_stringbuf.swap(__rhs._M_stringbuf);
+<b><a name="line605">605  </a></b>	      }
+<b><a name="line606">606  </a></b>	#endif
+<b><a name="line607">607  </a></b>	
+<b><a name="line608">608  </a></b>	      // Members:
+<b><a name="line609">609  </a></b>	      /**
+<b><a name="line610">610  </a></b>	       *  @brief  Accessing the underlying buffer.
+<b><a name="line611">611  </a></b>	       *  @return  The current basic_stringbuf buffer.
+<b><a name="line612">612  </a></b>	       *
+<b><a name="line613">613  </a></b>	       *  This hides both signatures of std::basic_ios::rdbuf().
+<b><a name="line614">614  </a></b>	      */
+<b><a name="line615">615  </a></b>	      <a href="#line526">__stringbuf_type</a>*
+<b><a name="line616">616  </a></b>	      rdbuf() const
+<b><a name="line617">617  </a></b>	      { return const_cast&lt;__stringbuf_type*&gt;(&amp;_M_stringbuf); }
+<b><a name="line618">618  </a></b>	
+<b><a name="line619">619  </a></b>	      /**
+<b><a name="line620">620  </a></b>	       *  @brief  Copying out the string buffer.
+<b><a name="line621">621  </a></b>	       *  @return  @c rdbuf()-&gt;str()
+<b><a name="line622">622  </a></b>	      */
+<b><a name="line623">623  </a></b>	      <a href="#line525">__string_type</a>
+<b><a name="line624">624  </a></b>	      str() const
+<b><a name="line625">625  </a></b>	      { return <a href="#line530">_M_stringbuf</a>.<a href="#line166">str</a>(); }
+<b><a name="line626">626  </a></b>	
+<b><a name="line627">627  </a></b>	      /**
+<b><a name="line628">628  </a></b>	       *  @brief  Setting a new buffer.
+<b><a name="line629">629  </a></b>	       *  @param  __s  The string to use as a new sequence.
+<b><a name="line630">630  </a></b>	       *
+<b><a name="line631">631  </a></b>	       *  Calls @c rdbuf()-&gt;str(s).
+<b><a name="line632">632  </a></b>	      */
+<b><a name="line633">633  </a></b>	      void
+<b><a name="line634">634  </a></b>	      str(const <a href="#line525">__string_type</a>&amp; __s)
+<b><a name="line635">635  </a></b>	      { _M_stringbuf.str(__s); }
+<b><a name="line636">636  </a></b>	    };
+<b><a name="line637">637  </a></b>	
+<b><a name="line638">638  </a></b>	
+<b><a name="line639">639  </a></b>	  // [27.7.4] Template class basic_stringstream
+<b><a name="line640">640  </a></b>	  /**
+<b><a name="line641">641  </a></b>	   *  @brief  Controlling input and output for std::string.
+<b><a name="line642">642  </a></b>	   *  @ingroup io
+<b><a name="line643">643  </a></b>	   *
+<b><a name="line644">644  </a></b>	   *  @tparam _CharT  Type of character stream.
+<b><a name="line645">645  </a></b>	   *  @tparam _Traits  Traits for character type, defaults to
+<b><a name="line646">646  </a></b>	   *                   char_traits&lt;_CharT&gt;.
+<b><a name="line647">647  </a></b>	   *  @tparam _Alloc  Allocator type, defaults to allocator&lt;_CharT&gt;.
+<b><a name="line648">648  </a></b>	   *
+<b><a name="line649">649  </a></b>	   *  This class supports reading from and writing to objects of type
+<b><a name="line650">650  </a></b>	   *  std::basic_string, using the inherited functions from
+<b><a name="line651">651  </a></b>	   *  std::basic_iostream.  To control the associated sequence, an instance
+<b><a name="line652">652  </a></b>	   *  of std::basic_stringbuf is used, which this page refers to as @c sb.
+<b><a name="line653">653  </a></b>	  */
+<b><a name="line654">654  </a></b>	  template &lt;typename <b>_CharT</b>, typename <b>_Traits</b>, typename <b>_Alloc</b>&gt;
+<b><a name="line655">655  </a></b>	    class <b>basic_stringstream</b> : public <a href="../iosfwd/code.html#line89">basic_iostream</a>&lt;<a href="#line654">_CharT</a>, <a href="#line654">_Traits</a>&gt;
+<b><a name="line656">656  </a></b>	    {
+<b><a name="line657">657  </a></b>	    public:
+<b><a name="line658">658  </a></b>	      // Types:
+<b><a name="line659">659  </a></b>	      typedef <a href="#line654">_CharT</a> 					<b>char_type</b>;
+<b><a name="line660">660  </a></b>	      typedef <a href="#line654">_Traits</a> 					<b>traits_type</b>;
+<b><a name="line661">661  </a></b>	      // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line662">662  </a></b>	      // 251. basic_stringbuf missing allocator_type
+<b><a name="line663">663  </a></b>	      typedef <a href="#line654">_Alloc</a>				       	<b>allocator_type</b>;
+<b><a name="line664">664  </a></b>	      typedef typename <a href="#line660">traits_type</a>::<a href="../bits/char_traits.h/code.html#line236">int_type</a> 		<b>int_type</b>;
+<b><a name="line665">665  </a></b>	      typedef typename <a href="#line660">traits_type</a>::<a href="../bits/char_traits.h/code.html#line237">pos_type</a> 		<b>pos_type</b>;
+<b><a name="line666">666  </a></b>	      typedef typename <a href="#line660">traits_type</a>::<a href="../bits/char_traits.h/code.html#line238">off_type</a> 		<b>off_type</b>;
+<b><a name="line667">667  </a></b>	
+<b><a name="line668">668  </a></b>	      // Non-standard Types:
+<b><a name="line669">669  </a></b>	      typedef <a href="../bits/stringfwd.h/code.html#line71">basic_string</a>&lt;<a href="#line654">_CharT</a>, <a href="#line654">_Traits</a>, <a href="#line654">_Alloc</a>&gt; 	<b>__string_type</b>;
+<b><a name="line670">670  </a></b>	      typedef <a href="../iosfwd/code.html#line96">basic_stringbuf</a>&lt;<a href="#line654">_CharT</a>, <a href="#line654">_Traits</a>, <a href="#line654">_Alloc</a>&gt; 	<b>__stringbuf_type</b>;
+<b><a name="line671">671  </a></b>	      typedef <a href="../iosfwd/code.html#line89">basic_iostream</a>&lt;<a href="#line659">char_type</a>, <a href="#line660">traits_type</a>&gt;	<b>__iostream_type</b>;
+<b><a name="line672">672  </a></b>	
+<b><a name="line673">673  </a></b>	    private:
+<b><a name="line674">674  </a></b>	      <a href="#line670">__stringbuf_type</a>	<b>_M_stringbuf</b>;
+<b><a name="line675">675  </a></b>	
+<b><a name="line676">676  </a></b>	    public:
+<b><a name="line677">677  </a></b>	      // Constructors/destructors
+<b><a name="line678">678  </a></b>	      /**
+<b><a name="line679">679  </a></b>	       *  @brief  Default constructor starts with an empty string buffer.
+<b><a name="line680">680  </a></b>	       *  @param  __m  Whether the buffer can read, or write, or both.
+<b><a name="line681">681  </a></b>	       *
+<b><a name="line682">682  </a></b>	       *  Initializes @c sb using the mode from @c __m, and passes @c
+<b><a name="line683">683  </a></b>	       *  &amp;sb to the base class initializer.  Does not allocate any
+<b><a name="line684">684  </a></b>	       *  buffer.
+<b><a name="line685">685  </a></b>	       *
+<b><a name="line686">686  </a></b>	       *  That's a lie.  We initialize the base class with NULL, because the
+<b><a name="line687">687  </a></b>	       *  string class does its own memory management.
+<b><a name="line688">688  </a></b>	      */
+<b><a name="line689">689  </a></b>	      explicit
+<b><a name="line690">690  </a></b>	      basic_stringstream(<a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line429">openmode</a> <b>__m</b> = <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line446">out</a> <a href="../bits/ios_base.h/code.html#line129">|</a> <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line443">in</a>)
+<b><a name="line691">691  </a></b>	      : <a href="#line671">__iostream_type</a>(), <a href="#line674">_M_stringbuf</a>(<a href="#line690">__m</a>)
+<b><a name="line692">692  </a></b>	      { this-&gt;<a href="../bits/basic_ios.h/code.html#line472">init</a>(&amp;<a href="#line674">_M_stringbuf</a>); }
+<b><a name="line693">693  </a></b>	
+<b><a name="line694">694  </a></b>	      /**
+<b><a name="line695">695  </a></b>	       *  @brief  Starts with an existing string buffer.
+<b><a name="line696">696  </a></b>	       *  @param  __str  A string to copy as a starting buffer.
+<b><a name="line697">697  </a></b>	       *  @param  __m  Whether the buffer can read, or write, or both.
+<b><a name="line698">698  </a></b>	       *
+<b><a name="line699">699  </a></b>	       *  Initializes @c sb using @a __str and @c __m, and passes @c &amp;sb
+<b><a name="line700">700  </a></b>	       *  to the base class initializer.
+<b><a name="line701">701  </a></b>	       *
+<b><a name="line702">702  </a></b>	       *  That's a lie.  We initialize the base class with NULL, because the
+<b><a name="line703">703  </a></b>	       *  string class does its own memory management.
+<b><a name="line704">704  </a></b>	      */
+<b><a name="line705">705  </a></b>	      explicit
+<b><a name="line706">706  </a></b>	      basic_stringstream(const <a href="#line669">__string_type</a>&amp; __str,
+<b><a name="line707">707  </a></b>				 <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line429">openmode</a> __m = <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line446">out</a> <a href="../bits/ios_base.h/code.html#line129">|</a> <a href="../iosfwd/code.html#line74">ios_base</a>::<a href="../bits/ios_base.h/code.html#line443">in</a>)
+<b><a name="line708">708  </a></b>	      : __iostream_type(), _M_stringbuf(__str, __m)
+<b><a name="line709">709  </a></b>	      { this-&gt;init(&amp;_M_stringbuf); }
+<b><a name="line710">710  </a></b>	
+<b><a name="line711">711  </a></b>	      /**
+<b><a name="line712">712  </a></b>	       *  @brief  The destructor does nothing.
+<b><a name="line713">713  </a></b>	       *
+<b><a name="line714">714  </a></b>	       *  The buffer is deallocated by the stringbuf object, not the
+<b><a name="line715">715  </a></b>	       *  formatting stream.
+<b><a name="line716">716  </a></b>	      */
+<b><a name="line717">717  </a></b>	      ~basic_stringstream()
+<b><a name="line718">718  </a></b>	      { }
+<b><a name="line719">719  </a></b>	
+<b><a name="line720">720  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line721">721  </a></b>	      <b>basic_stringstream</b>(const <a href="../iosfwd/code.html#line108">basic_stringstream</a>&amp;) = delete;
+<b><a name="line722">722  </a></b>	
+<b><a name="line723">723  </a></b>	      basic_stringstream(<a href="../iosfwd/code.html#line108">basic_stringstream</a>&amp;&amp; __rhs)
+<b><a name="line724">724  </a></b>	      : __iostream_type(std::move(__rhs)),
+<b><a name="line725">725  </a></b>	      _M_stringbuf(std::move(__rhs._M_stringbuf))
+<b><a name="line726">726  </a></b>	      { __iostream_type::set_rdbuf(&amp;_M_stringbuf); }
+<b><a name="line727">727  </a></b>	
+<b><a name="line728">728  </a></b>	      // 27.8.3.2 Assign and swap:
+<b><a name="line729">729  </a></b>	
+<b><a name="line730">730  </a></b>	      <a href="../iosfwd/code.html#line108">basic_stringstream</a>&amp;
+<b><a name="line731">731  </a></b>	      <b>operator=</b>(const <a href="../iosfwd/code.html#line108">basic_stringstream</a>&amp;) = delete;
+<b><a name="line732">732  </a></b>	
+<b><a name="line733">733  </a></b>	      <a href="../iosfwd/code.html#line108">basic_stringstream</a>&amp;
+<b><a name="line734">734  </a></b>	      operator=(<a href="../iosfwd/code.html#line108">basic_stringstream</a>&amp;&amp; __rhs)
+<b><a name="line735">735  </a></b>	      {
+<b><a name="line736">736  </a></b>		__iostream_type::operator=(std::move(__rhs));
+<b><a name="line737">737  </a></b>		_M_stringbuf = std::move(__rhs._M_stringbuf);
+<b><a name="line738">738  </a></b>		return *this;
+<b><a name="line739">739  </a></b>	      }
+<b><a name="line740">740  </a></b>	
+<b><a name="line741">741  </a></b>	      void
+<b><a name="line742">742  </a></b>	      swap(<a href="../iosfwd/code.html#line108">basic_stringstream</a>&amp; __rhs)
+<b><a name="line743">743  </a></b>	      {
+<b><a name="line744">744  </a></b>		__iostream_type::swap(__rhs);
+<b><a name="line745">745  </a></b>		_M_stringbuf.swap(__rhs._M_stringbuf);
+<b><a name="line746">746  </a></b>	      }
+<b><a name="line747">747  </a></b>	#endif
+<b><a name="line748">748  </a></b>	
+<b><a name="line749">749  </a></b>	      // Members:
+<b><a name="line750">750  </a></b>	      /**
+<b><a name="line751">751  </a></b>	       *  @brief  Accessing the underlying buffer.
+<b><a name="line752">752  </a></b>	       *  @return  The current basic_stringbuf buffer.
+<b><a name="line753">753  </a></b>	       *
+<b><a name="line754">754  </a></b>	       *  This hides both signatures of std::basic_ios::rdbuf().
+<b><a name="line755">755  </a></b>	      */
+<b><a name="line756">756  </a></b>	      <a href="#line670">__stringbuf_type</a>*
+<b><a name="line757">757  </a></b>	      rdbuf() const
+<b><a name="line758">758  </a></b>	      { return const_cast&lt;__stringbuf_type*&gt;(&amp;_M_stringbuf); }
+<b><a name="line759">759  </a></b>	
+<b><a name="line760">760  </a></b>	      /**
+<b><a name="line761">761  </a></b>	       *  @brief  Copying out the string buffer.
+<b><a name="line762">762  </a></b>	       *  @return  @c rdbuf()-&gt;str()
+<b><a name="line763">763  </a></b>	      */
+<b><a name="line764">764  </a></b>	      <a href="#line669">__string_type</a>
+<b><a name="line765">765  </a></b>	      str() const
+<b><a name="line766">766  </a></b>	      { return <a href="#line674">_M_stringbuf</a>.<a href="#line166">str</a>(); }
+<b><a name="line767">767  </a></b>	
+<b><a name="line768">768  </a></b>	      /**
+<b><a name="line769">769  </a></b>	       *  @brief  Setting a new buffer.
+<b><a name="line770">770  </a></b>	       *  @param  __s  The string to use as a new sequence.
+<b><a name="line771">771  </a></b>	       *
+<b><a name="line772">772  </a></b>	       *  Calls @c rdbuf()-&gt;str(s).
+<b><a name="line773">773  </a></b>	      */
+<b><a name="line774">774  </a></b>	      void
+<b><a name="line775">775  </a></b>	      str(const <a href="#line669">__string_type</a>&amp; __s)
+<b><a name="line776">776  </a></b>	      { _M_stringbuf.str(__s); }
+<b><a name="line777">777  </a></b>	    };
+<b><a name="line778">778  </a></b>	
+<b><a name="line779">779  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line780">780  </a></b>	  /// Swap specialization for stringbufs.
+<b><a name="line781">781  </a></b>	  template &lt;class <b>_CharT</b>, class <b>_Traits</b>, class <b>_Allocator</b>&gt;
+<b><a name="line782">782  </a></b>	    inline void
+<b><a name="line783">783  </a></b>	    <b>swap</b>(<a href="../iosfwd/code.html#line96">basic_stringbuf</a>&lt;<a href="#line781">_CharT</a>, <a href="#line781">_Traits</a>, <a href="#line781">_Allocator</a>&gt;&amp; __x,
+<b><a name="line784">784  </a></b>		 <a href="../iosfwd/code.html#line96">basic_stringbuf</a>&lt;<a href="#line781">_CharT</a>, <a href="#line781">_Traits</a>, <a href="#line781">_Allocator</a>&gt;&amp; __y)
+<b><a name="line785">785  </a></b>	    { __x.swap(__y); }
+<b><a name="line786">786  </a></b>	
+<b><a name="line787">787  </a></b>	  /// Swap specialization for istringstreams.
+<b><a name="line788">788  </a></b>	  template &lt;class <b>_CharT</b>, class <b>_Traits</b>, class <b>_Allocator</b>&gt;
+<b><a name="line789">789  </a></b>	    inline void
+<b><a name="line790">790  </a></b>	    <b>swap</b>(<a href="../iosfwd/code.html#line100">basic_istringstream</a>&lt;<a href="#line788">_CharT</a>, <a href="#line788">_Traits</a>, <a href="#line788">_Allocator</a>&gt;&amp; __x,
+<b><a name="line791">791  </a></b>		 <a href="../iosfwd/code.html#line100">basic_istringstream</a>&lt;<a href="#line788">_CharT</a>, <a href="#line788">_Traits</a>, <a href="#line788">_Allocator</a>&gt;&amp; __y)
+<b><a name="line792">792  </a></b>	    { __x.swap(__y); }
+<b><a name="line793">793  </a></b>	
+<b><a name="line794">794  </a></b>	  /// Swap specialization for ostringstreams.
+<b><a name="line795">795  </a></b>	  template &lt;class <b>_CharT</b>, class <b>_Traits</b>, class <b>_Allocator</b>&gt;
+<b><a name="line796">796  </a></b>	    inline void
+<b><a name="line797">797  </a></b>	    <b>swap</b>(<a href="../iosfwd/code.html#line104">basic_ostringstream</a>&lt;<a href="#line795">_CharT</a>, <a href="#line795">_Traits</a>, <a href="#line795">_Allocator</a>&gt;&amp; __x,
+<b><a name="line798">798  </a></b>		 <a href="../iosfwd/code.html#line104">basic_ostringstream</a>&lt;<a href="#line795">_CharT</a>, <a href="#line795">_Traits</a>, <a href="#line795">_Allocator</a>&gt;&amp; __y)
+<b><a name="line799">799  </a></b>	    { __x.swap(__y); }
+<b><a name="line800">800  </a></b>	
+<b><a name="line801">801  </a></b>	  /// Swap specialization for stringstreams.
+<b><a name="line802">802  </a></b>	  template &lt;class <b>_CharT</b>, class <b>_Traits</b>, class <b>_Allocator</b>&gt;
+<b><a name="line803">803  </a></b>	    inline void
+<b><a name="line804">804  </a></b>	    <b>swap</b>(<a href="../iosfwd/code.html#line108">basic_stringstream</a>&lt;<a href="#line802">_CharT</a>, <a href="#line802">_Traits</a>, <a href="#line802">_Allocator</a>&gt;&amp; __x,
+<b><a name="line805">805  </a></b>		 <a href="../iosfwd/code.html#line108">basic_stringstream</a>&lt;<a href="#line802">_CharT</a>, <a href="#line802">_Traits</a>, <a href="#line802">_Allocator</a>&gt;&amp; __y)
+<b><a name="line806">806  </a></b>	    { __x.swap(__y); }
+<b><a name="line807">807  </a></b>	#endif
+<b><a name="line808">808  </a></b>	
+<b><a name="line809">809  </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line226">_GLIBCXX_END_NAMESPACE_CXX11</a>
+<b><a name="line810">810  </a></b>	<a href="../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line811">811  </a></b>	} // namespace
+<b><a name="line812">812  </a></b>	
+<b><a name="line813">813  </a></b>	#include &lt;bits/sstream.tcc&gt;
+<b><a name="line814">814  </a></b>	
+<b><a name="line815">815  </a></b>	#endif /* _GLIBCXX_SSTREAM */
+<b><a name="line816">816  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

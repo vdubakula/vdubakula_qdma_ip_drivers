@@ -1,0 +1,139 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_debug.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2010-2014 Intel Corporation
+<b><a name="line3">3    </a></b>	 */
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	#ifndef _RTE_DEBUG_H_
+<b><a name="line6">6    </a></b>	#define <b>_RTE_DEBUG_H_</b>
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	/**
+<b><a name="line9">9    </a></b>	 * @file
+<b><a name="line10">10   </a></b>	 *
+<b><a name="line11">11   </a></b>	 * Debug Functions in RTE
+<b><a name="line12">12   </a></b>	 *
+<b><a name="line13">13   </a></b>	 * This file defines a generic API for debug operations. Part of
+<b><a name="line14">14   </a></b>	 * the implementation is architecture-specific.
+<b><a name="line15">15   </a></b>	 */
+<b><a name="line16">16   </a></b>	
+<b><a name="line17">17   </a></b>	#include &quot;rte_log.h&quot;
+<b><a name="line18">18   </a></b>	#include &quot;rte_branch_prediction.h&quot;
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	#ifdef __cplusplus
+<b><a name="line21">21   </a></b>	extern &quot;C&quot; {
+<b><a name="line22">22   </a></b>	#endif
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>	/**
+<b><a name="line25">25   </a></b>	 * Dump the stack of the calling core to the console.
+<b><a name="line26">26   </a></b>	 */
+<b><a name="line27">27   </a></b>	void rte_dump_stack(void);
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	/**
+<b><a name="line30">30   </a></b>	 * Dump the registers of the calling core to the console.
+<b><a name="line31">31   </a></b>	 *
+<b><a name="line32">32   </a></b>	 * Note: Not implemented in a userapp environment; use gdb instead.
+<b><a name="line33">33   </a></b>	 */
+<b><a name="line34">34   </a></b>	void rte_dump_registers(void);
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	/**
+<b><a name="line37">37   </a></b>	 * Provide notification of a critical non-recoverable error and terminate
+<b><a name="line38">38   </a></b>	 * execution abnormally.
+<b><a name="line39">39   </a></b>	 *
+<b><a name="line40">40   </a></b>	 * Display the format string and its expanded arguments (printf-like).
+<b><a name="line41">41   </a></b>	 *
+<b><a name="line42">42   </a></b>	 * In a linuxapp environment, this function dumps the stack and calls
+<b><a name="line43">43   </a></b>	 * abort() resulting in a core dump if enabled.
+<b><a name="line44">44   </a></b>	 *
+<b><a name="line45">45   </a></b>	 * The function never returns.
+<b><a name="line46">46   </a></b>	 *
+<b><a name="line47">47   </a></b>	 * @param ...
+<b><a name="line48">48   </a></b>	 *   The format string, followed by the variable list of arguments.
+<b><a name="line49">49   </a></b>	 */
+<b><a name="line50">50   </a></b>	#define <b>rte_panic</b>(...) rte_panic_(__func__, __VA_ARGS__, &quot;dummy&quot;)
+<b><a name="line51">51   </a></b>	#define <b>rte_panic_</b>(func, format, ...) __rte_panic(func, format &quot;%.0s&quot;, __VA_ARGS__)
+<b><a name="line52">52   </a></b>	
+<b><a name="line53">53   </a></b>	#ifdef RTE_ENABLE_ASSERT
+<b><a name="line54">54   </a></b>	#define RTE_ASSERT(exp)	RTE_VERIFY(exp)
+<b><a name="line55">55   </a></b>	#else
+<b><a name="line56">56   </a></b>	#define <b>RTE_ASSERT</b>(exp) do {} while (0)
+<b><a name="line57">57   </a></b>	#endif
+<b><a name="line58">58   </a></b>	#define	<b>RTE_VERIFY</b>(exp)	do {                                                  \
+<b><a name="line59">59   </a></b>		if (unlikely(!(exp)))                                                           \
+<b><a name="line60">60   </a></b>			rte_panic(&quot;line %d\tassert \&quot;%s\&quot; failed\n&quot;, __LINE__, #exp); \
+<b><a name="line61">61   </a></b>	} while (0)
+<b><a name="line62">62   </a></b>	
+<b><a name="line63">63   </a></b>	/*
+<b><a name="line64">64   </a></b>	 * Provide notification of a critical non-recoverable error and stop.
+<b><a name="line65">65   </a></b>	 *
+<b><a name="line66">66   </a></b>	 * This function should not be called directly. Refer to rte_panic() macro
+<b><a name="line67">67   </a></b>	 * documentation.
+<b><a name="line68">68   </a></b>	 */
+<b><a name="line69">69   </a></b>	void __rte_panic(const char *funcname , const char *format, ...)
+<b><a name="line70">70   </a></b>	#ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line240">__GNUC__</a>
+<b><a name="line71">71   </a></b>	#if (<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line240">__GNUC__</a> &gt; 4 || (<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line240">__GNUC__</a> == 4 &amp;&amp; <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line759">__GNUC_MINOR__</a> &gt; 2))
+<b><a name="line72">72   </a></b>		__attribute__((cold))
+<b><a name="line73">73   </a></b>	#endif
+<b><a name="line74">74   </a></b>	#endif
+<b><a name="line75">75   </a></b>		__attribute__((noreturn))
+<b><a name="line76">76   </a></b>		__attribute__((format(printf, 2, 3)));
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	#ifdef __cplusplus
+<b><a name="line79">79   </a></b>	}
+<b><a name="line80">80   </a></b>	#endif
+<b><a name="line81">81   </a></b>	
+<b><a name="line82">82   </a></b>	#endif /* _RTE_DEBUG_H_ */
+<b><a name="line83">83   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

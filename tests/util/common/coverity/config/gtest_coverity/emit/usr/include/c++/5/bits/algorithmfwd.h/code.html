@@ -1,0 +1,904 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/bits/algorithmfwd.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// &lt;algorithm&gt; Forward declarations  -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2007-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file bits/algorithmfwd.h
+<b><a name="line26">26   </a></b>	 *  This is an internal header file, included by other library headers.
+<b><a name="line27">27   </a></b>	 *  Do not attempt to use it directly. @headername{algorithm}
+<b><a name="line28">28   </a></b>	 */
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	#ifndef _GLIBCXX_ALGORITHMFWD_H
+<b><a name="line31">31   </a></b>	#define <b>_GLIBCXX_ALGORITHMFWD_H</b> 1
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	#pragma GCC system_header
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	#include &lt;bits/c++config.h&gt;
+<b><a name="line36">36   </a></b>	#include &lt;bits/stl_pair.h&gt;
+<b><a name="line37">37   </a></b>	#include &lt;bits/stl_iterator_base_types.h&gt;
+<b><a name="line38">38   </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line39">39   </a></b>	#include &lt;initializer_list&gt;
+<b><a name="line40">40   </a></b>	#endif
+<b><a name="line41">41   </a></b>	
+<b><a name="line42">42   </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line43">43   </a></b>	{
+<b><a name="line44">44   </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	  /*
+<b><a name="line47">47   </a></b>	    adjacent_find
+<b><a name="line48">48   </a></b>	    all_of (C++0x)
+<b><a name="line49">49   </a></b>	    any_of (C++0x)
+<b><a name="line50">50   </a></b>	    binary_search
+<b><a name="line51">51   </a></b>	    copy
+<b><a name="line52">52   </a></b>	    copy_backward
+<b><a name="line53">53   </a></b>	    copy_if (C++0x)
+<b><a name="line54">54   </a></b>	    copy_n (C++0x)
+<b><a name="line55">55   </a></b>	    count
+<b><a name="line56">56   </a></b>	    count_if
+<b><a name="line57">57   </a></b>	    equal
+<b><a name="line58">58   </a></b>	    equal_range
+<b><a name="line59">59   </a></b>	    fill
+<b><a name="line60">60   </a></b>	    fill_n
+<b><a name="line61">61   </a></b>	    find
+<b><a name="line62">62   </a></b>	    find_end
+<b><a name="line63">63   </a></b>	    find_first_of
+<b><a name="line64">64   </a></b>	    find_if
+<b><a name="line65">65   </a></b>	    find_if_not (C++0x)
+<b><a name="line66">66   </a></b>	    for_each
+<b><a name="line67">67   </a></b>	    generate
+<b><a name="line68">68   </a></b>	    generate_n
+<b><a name="line69">69   </a></b>	    includes
+<b><a name="line70">70   </a></b>	    inplace_merge
+<b><a name="line71">71   </a></b>	    is_heap (C++0x)
+<b><a name="line72">72   </a></b>	    is_heap_until (C++0x)
+<b><a name="line73">73   </a></b>	    is_partitioned (C++0x)
+<b><a name="line74">74   </a></b>	    is_sorted (C++0x)
+<b><a name="line75">75   </a></b>	    is_sorted_until (C++0x)
+<b><a name="line76">76   </a></b>	    iter_swap
+<b><a name="line77">77   </a></b>	    lexicographical_compare
+<b><a name="line78">78   </a></b>	    lower_bound
+<b><a name="line79">79   </a></b>	    make_heap
+<b><a name="line80">80   </a></b>	    max
+<b><a name="line81">81   </a></b>	    max_element
+<b><a name="line82">82   </a></b>	    merge
+<b><a name="line83">83   </a></b>	    min
+<b><a name="line84">84   </a></b>	    min_element
+<b><a name="line85">85   </a></b>	    minmax (C++0x)
+<b><a name="line86">86   </a></b>	    minmax_element (C++0x)
+<b><a name="line87">87   </a></b>	    mismatch
+<b><a name="line88">88   </a></b>	    next_permutation
+<b><a name="line89">89   </a></b>	    none_of (C++0x)
+<b><a name="line90">90   </a></b>	    nth_element
+<b><a name="line91">91   </a></b>	    partial_sort
+<b><a name="line92">92   </a></b>	    partial_sort_copy
+<b><a name="line93">93   </a></b>	    partition
+<b><a name="line94">94   </a></b>	    partition_copy (C++0x)
+<b><a name="line95">95   </a></b>	    partition_point (C++0x)
+<b><a name="line96">96   </a></b>	    pop_heap
+<b><a name="line97">97   </a></b>	    prev_permutation
+<b><a name="line98">98   </a></b>	    push_heap
+<b><a name="line99">99   </a></b>	    random_shuffle
+<b><a name="line100">100  </a></b>	    remove
+<b><a name="line101">101  </a></b>	    remove_copy
+<b><a name="line102">102  </a></b>	    remove_copy_if
+<b><a name="line103">103  </a></b>	    remove_if
+<b><a name="line104">104  </a></b>	    replace
+<b><a name="line105">105  </a></b>	    replace_copy
+<b><a name="line106">106  </a></b>	    replace_copy_if
+<b><a name="line107">107  </a></b>	    replace_if
+<b><a name="line108">108  </a></b>	    reverse
+<b><a name="line109">109  </a></b>	    reverse_copy
+<b><a name="line110">110  </a></b>	    rotate
+<b><a name="line111">111  </a></b>	    rotate_copy
+<b><a name="line112">112  </a></b>	    search
+<b><a name="line113">113  </a></b>	    search_n
+<b><a name="line114">114  </a></b>	    set_difference
+<b><a name="line115">115  </a></b>	    set_intersection
+<b><a name="line116">116  </a></b>	    set_symmetric_difference
+<b><a name="line117">117  </a></b>	    set_union
+<b><a name="line118">118  </a></b>	    shuffle (C++0x)
+<b><a name="line119">119  </a></b>	    sort
+<b><a name="line120">120  </a></b>	    sort_heap
+<b><a name="line121">121  </a></b>	    stable_partition
+<b><a name="line122">122  </a></b>	    stable_sort
+<b><a name="line123">123  </a></b>	    swap
+<b><a name="line124">124  </a></b>	    swap_ranges
+<b><a name="line125">125  </a></b>	    transform
+<b><a name="line126">126  </a></b>	    unique
+<b><a name="line127">127  </a></b>	    unique_copy
+<b><a name="line128">128  </a></b>	    upper_bound
+<b><a name="line129">129  </a></b>	  */
+<b><a name="line130">130  </a></b>	
+<b><a name="line131">131  </a></b>	  /**
+<b><a name="line132">132  </a></b>	   * @defgroup algorithms Algorithms
+<b><a name="line133">133  </a></b>	   *
+<b><a name="line134">134  </a></b>	   * Components for performing algorithmic operations. Includes
+<b><a name="line135">135  </a></b>	   * non-modifying sequence, modifying (mutating) sequence, sorting,
+<b><a name="line136">136  </a></b>	   * searching, merge, partition, heap, set, minima, maxima, and
+<b><a name="line137">137  </a></b>	   * permutation operations.
+<b><a name="line138">138  </a></b>	   */
+<b><a name="line139">139  </a></b>	
+<b><a name="line140">140  </a></b>	  /**
+<b><a name="line141">141  </a></b>	   * @defgroup mutating_algorithms Mutating
+<b><a name="line142">142  </a></b>	   * @ingroup algorithms
+<b><a name="line143">143  </a></b>	   */
+<b><a name="line144">144  </a></b>	
+<b><a name="line145">145  </a></b>	  /**
+<b><a name="line146">146  </a></b>	   * @defgroup non_mutating_algorithms Non-Mutating
+<b><a name="line147">147  </a></b>	   * @ingroup algorithms
+<b><a name="line148">148  </a></b>	   */
+<b><a name="line149">149  </a></b>	
+<b><a name="line150">150  </a></b>	  /**
+<b><a name="line151">151  </a></b>	   * @defgroup sorting_algorithms Sorting
+<b><a name="line152">152  </a></b>	   * @ingroup algorithms
+<b><a name="line153">153  </a></b>	   */
+<b><a name="line154">154  </a></b>	
+<b><a name="line155">155  </a></b>	  /**
+<b><a name="line156">156  </a></b>	   * @defgroup set_algorithms Set Operation
+<b><a name="line157">157  </a></b>	   * @ingroup sorting_algorithms
+<b><a name="line158">158  </a></b>	   *
+<b><a name="line159">159  </a></b>	   * These algorithms are common set operations performed on sequences
+<b><a name="line160">160  </a></b>	   * that are already sorted. The number of comparisons will be
+<b><a name="line161">161  </a></b>	   * linear.
+<b><a name="line162">162  </a></b>	   */
+<b><a name="line163">163  </a></b>	
+<b><a name="line164">164  </a></b>	  /**
+<b><a name="line165">165  </a></b>	   * @defgroup binary_search_algorithms Binary Search
+<b><a name="line166">166  </a></b>	   * @ingroup sorting_algorithms
+<b><a name="line167">167  </a></b>	   *
+<b><a name="line168">168  </a></b>	   * These algorithms are variations of a classic binary search, and
+<b><a name="line169">169  </a></b>	   * all assume that the sequence being searched is already sorted.
+<b><a name="line170">170  </a></b>	   * 
+<b><a name="line171">171  </a></b>	   * The number of comparisons will be logarithmic (and as few as
+<b><a name="line172">172  </a></b>	   * possible).  The number of steps through the sequence will be
+<b><a name="line173">173  </a></b>	   * logarithmic for random-access iterators (e.g., pointers), and
+<b><a name="line174">174  </a></b>	   * linear otherwise.
+<b><a name="line175">175  </a></b>	   * 
+<b><a name="line176">176  </a></b>	   * The LWG has passed Defect Report 270, which notes: &lt;em&gt;The
+<b><a name="line177">177  </a></b>	   * proposed resolution reinterprets binary search. Instead of
+<b><a name="line178">178  </a></b>	   * thinking about searching for a value in a sorted range, we view
+<b><a name="line179">179  </a></b>	   * that as an important special case of a more general algorithm:
+<b><a name="line180">180  </a></b>	   * searching for the partition point in a partitioned range.  We
+<b><a name="line181">181  </a></b>	   * also add a guarantee that the old wording did not: we ensure that
+<b><a name="line182">182  </a></b>	   * the upper bound is no earlier than the lower bound, that the pair
+<b><a name="line183">183  </a></b>	   * returned by equal_range is a valid range, and that the first part
+<b><a name="line184">184  </a></b>	   * of that pair is the lower bound.&lt;/em&gt;
+<b><a name="line185">185  </a></b>	   *
+<b><a name="line186">186  </a></b>	   * The actual effect of the first sentence is that a comparison
+<b><a name="line187">187  </a></b>	   * functor passed by the user doesn't necessarily need to induce a
+<b><a name="line188">188  </a></b>	   * strict weak ordering relation.  Rather, it partitions the range.
+<b><a name="line189">189  </a></b>	   */
+<b><a name="line190">190  </a></b>	
+<b><a name="line191">191  </a></b>	  // adjacent_find
+<b><a name="line192">192  </a></b>	
+<b><a name="line193">193  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line194">194  </a></b>	  template&lt;typename <b>_IIter</b>, typename <b>_Predicate</b>&gt;
+<b><a name="line195">195  </a></b>	    bool
+<b><a name="line196">196  </a></b>	    all_of(<a href="#line194">_IIter</a>, <a href="#line194">_IIter</a>, <a href="#line194">_Predicate</a>);
+<b><a name="line197">197  </a></b>	
+<b><a name="line198">198  </a></b>	  template&lt;typename <b>_IIter</b>, typename <b>_Predicate</b>&gt;
+<b><a name="line199">199  </a></b>	    bool
+<b><a name="line200">200  </a></b>	    any_of(<a href="#line198">_IIter</a>, <a href="#line198">_IIter</a>, <a href="#line198">_Predicate</a>);
+<b><a name="line201">201  </a></b>	#endif
+<b><a name="line202">202  </a></b>	
+<b><a name="line203">203  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_Tp</b>&gt;
+<b><a name="line204">204  </a></b>	    bool 
+<b><a name="line205">205  </a></b>	    binary_search(<a href="#line203">_FIter</a>, <a href="#line203">_FIter</a>, const <a href="#line203">_Tp</a>&amp;);
+<b><a name="line206">206  </a></b>	
+<b><a name="line207">207  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_Tp</b>, typename <b>_Compare</b>&gt;
+<b><a name="line208">208  </a></b>	    bool 
+<b><a name="line209">209  </a></b>	    binary_search(<a href="#line207">_FIter</a>, <a href="#line207">_FIter</a>, const <a href="#line207">_Tp</a>&amp;, <a href="#line207">_Compare</a>);
+<b><a name="line210">210  </a></b>	
+<b><a name="line211">211  </a></b>	  template&lt;typename <b>_IIter</b>, typename <b>_OIter</b>&gt;
+<b><a name="line212">212  </a></b>	    <a href="#line211">_OIter</a> 
+<b><a name="line213">213  </a></b>	    <a href="../stl_algobase.h/code.html#line462">copy</a>(<a href="#line211">_IIter</a>, <a href="#line211">_IIter</a>, <a href="#line211">_OIter</a>);
+<b><a name="line214">214  </a></b>	
+<b><a name="line215">215  </a></b>	  template&lt;typename <b>_BIter1</b>, typename <b>_BIter2</b>&gt;
+<b><a name="line216">216  </a></b>	    <a href="#line215">_BIter2</a>
+<b><a name="line217">217  </a></b>	    <a href="../stl_algobase.h/code.html#line638">copy_backward</a>(<a href="#line215">_BIter1</a>, <a href="#line215">_BIter1</a>, <a href="#line215">_BIter2</a>);
+<b><a name="line218">218  </a></b>	
+<b><a name="line219">219  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line220">220  </a></b>	  template&lt;typename <b>_IIter</b>, typename <b>_OIter</b>, typename <b>_Predicate</b>&gt;
+<b><a name="line221">221  </a></b>	    <a href="#line220">_OIter</a>
+<b><a name="line222">222  </a></b>	    copy_if(<a href="#line220">_IIter</a>, <a href="#line220">_IIter</a>, <a href="#line220">_OIter</a>, <a href="#line220">_Predicate</a>);
+<b><a name="line223">223  </a></b>	
+<b><a name="line224">224  </a></b>	  template&lt;typename <b>_IIter</b>, typename <b>_Size</b>, typename <b>_OIter</b>&gt;
+<b><a name="line225">225  </a></b>	    <a href="#line224">_OIter</a>
+<b><a name="line226">226  </a></b>	    copy_n(<a href="#line224">_IIter</a>, <a href="#line224">_Size</a>, <a href="#line224">_OIter</a>);
+<b><a name="line227">227  </a></b>	#endif
+<b><a name="line228">228  </a></b>	
+<b><a name="line229">229  </a></b>	  // count
+<b><a name="line230">230  </a></b>	  // count_if
+<b><a name="line231">231  </a></b>	
+<b><a name="line232">232  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_Tp</b>&gt;
+<b><a name="line233">233  </a></b>	    <a href="../stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line232">_FIter</a>, <a href="#line232">_FIter</a>&gt;
+<b><a name="line234">234  </a></b>	    equal_range(<a href="#line232">_FIter</a>, <a href="#line232">_FIter</a>, const <a href="#line232">_Tp</a>&amp;);
+<b><a name="line235">235  </a></b>	
+<b><a name="line236">236  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_Tp</b>, typename <b>_Compare</b>&gt;
+<b><a name="line237">237  </a></b>	    <a href="../stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line236">_FIter</a>, <a href="#line236">_FIter</a>&gt;
+<b><a name="line238">238  </a></b>	    equal_range(<a href="#line236">_FIter</a>, <a href="#line236">_FIter</a>, const <a href="#line236">_Tp</a>&amp;, <a href="#line236">_Compare</a>);
+<b><a name="line239">239  </a></b>	
+<b><a name="line240">240  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_Tp</b>&gt;
+<b><a name="line241">241  </a></b>	    void 
+<b><a name="line242">242  </a></b>	    <a href="../stl_algobase.h/code.html#line740">fill</a>(<a href="#line240">_FIter</a>, <a href="#line240">_FIter</a>, const <a href="#line240">_Tp</a>&amp;);
+<b><a name="line243">243  </a></b>	
+<b><a name="line244">244  </a></b>	  template&lt;typename <b>_OIter</b>, typename <b>_Size</b>, typename <b>_Tp</b>&gt;
+<b><a name="line245">245  </a></b>	    <a href="#line244">_OIter</a>
+<b><a name="line246">246  </a></b>	    <a href="../stl_algobase.h/code.html#line800">fill_n</a>(<a href="#line244">_OIter</a>, <a href="#line244">_Size</a>, const <a href="#line244">_Tp</a>&amp;);
+<b><a name="line247">247  </a></b>	
+<b><a name="line248">248  </a></b>	  // find
+<b><a name="line249">249  </a></b>	
+<b><a name="line250">250  </a></b>	  template&lt;typename <b>_FIter1</b>, typename <b>_FIter2</b>&gt;
+<b><a name="line251">251  </a></b>	    <a href="#line250">_FIter1</a>
+<b><a name="line252">252  </a></b>	    find_end(<a href="#line250">_FIter1</a>, <a href="#line250">_FIter1</a>, <a href="#line250">_FIter2</a>, <a href="#line250">_FIter2</a>);
+<b><a name="line253">253  </a></b>	
+<b><a name="line254">254  </a></b>	  template&lt;typename <b>_FIter1</b>, typename <b>_FIter2</b>, typename <b>_BinaryPredicate</b>&gt;
+<b><a name="line255">255  </a></b>	    <a href="#line254">_FIter1</a>
+<b><a name="line256">256  </a></b>	    find_end(<a href="#line254">_FIter1</a>, <a href="#line254">_FIter1</a>, <a href="#line254">_FIter2</a>, <a href="#line254">_FIter2</a>, <a href="#line254">_BinaryPredicate</a>);
+<b><a name="line257">257  </a></b>	
+<b><a name="line258">258  </a></b>	  // find_first_of
+<b><a name="line259">259  </a></b>	  // find_if
+<b><a name="line260">260  </a></b>	
+<b><a name="line261">261  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line262">262  </a></b>	  template&lt;typename <b>_IIter</b>, typename <b>_Predicate</b>&gt;
+<b><a name="line263">263  </a></b>	    <a href="#line262">_IIter</a>
+<b><a name="line264">264  </a></b>	    find_if_not(<a href="#line262">_IIter</a>, <a href="#line262">_IIter</a>, <a href="#line262">_Predicate</a>);
+<b><a name="line265">265  </a></b>	#endif
+<b><a name="line266">266  </a></b>	
+<b><a name="line267">267  </a></b>	  // for_each
+<b><a name="line268">268  </a></b>	  // generate
+<b><a name="line269">269  </a></b>	  // generate_n
+<b><a name="line270">270  </a></b>	
+<b><a name="line271">271  </a></b>	  template&lt;typename <b>_IIter1</b>, typename <b>_IIter2</b>&gt;
+<b><a name="line272">272  </a></b>	    bool 
+<b><a name="line273">273  </a></b>	    includes(<a href="#line271">_IIter1</a>, <a href="#line271">_IIter1</a>, <a href="#line271">_IIter2</a>, <a href="#line271">_IIter2</a>);
+<b><a name="line274">274  </a></b>	
+<b><a name="line275">275  </a></b>	  template&lt;typename <b>_IIter1</b>, typename <b>_IIter2</b>, typename <b>_Compare</b>&gt;
+<b><a name="line276">276  </a></b>	    bool 
+<b><a name="line277">277  </a></b>	    includes(<a href="#line275">_IIter1</a>, <a href="#line275">_IIter1</a>, <a href="#line275">_IIter2</a>, <a href="#line275">_IIter2</a>, <a href="#line275">_Compare</a>);
+<b><a name="line278">278  </a></b>	
+<b><a name="line279">279  </a></b>	  template&lt;typename <b>_BIter</b>&gt;
+<b><a name="line280">280  </a></b>	    void 
+<b><a name="line281">281  </a></b>	    inplace_merge(<a href="#line279">_BIter</a>, <a href="#line279">_BIter</a>, <a href="#line279">_BIter</a>);
+<b><a name="line282">282  </a></b>	
+<b><a name="line283">283  </a></b>	  template&lt;typename <b>_BIter</b>, typename <b>_Compare</b>&gt;
+<b><a name="line284">284  </a></b>	    void 
+<b><a name="line285">285  </a></b>	    inplace_merge(<a href="#line283">_BIter</a>, <a href="#line283">_BIter</a>, <a href="#line283">_BIter</a>, <a href="#line283">_Compare</a>);
+<b><a name="line286">286  </a></b>	
+<b><a name="line287">287  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line288">288  </a></b>	  template&lt;typename <b>_RAIter</b>&gt;
+<b><a name="line289">289  </a></b>	    bool 
+<b><a name="line290">290  </a></b>	    is_heap(<a href="#line288">_RAIter</a>, <a href="#line288">_RAIter</a>);
+<b><a name="line291">291  </a></b>	
+<b><a name="line292">292  </a></b>	  template&lt;typename <b>_RAIter</b>, typename <b>_Compare</b>&gt;
+<b><a name="line293">293  </a></b>	    bool 
+<b><a name="line294">294  </a></b>	    is_heap(<a href="#line292">_RAIter</a>, <a href="#line292">_RAIter</a>, <a href="#line292">_Compare</a>);
+<b><a name="line295">295  </a></b>	
+<b><a name="line296">296  </a></b>	  template&lt;typename <b>_RAIter</b>&gt;
+<b><a name="line297">297  </a></b>	    <a href="#line296">_RAIter</a> 
+<b><a name="line298">298  </a></b>	    is_heap_until(<a href="#line296">_RAIter</a>, <a href="#line296">_RAIter</a>);
+<b><a name="line299">299  </a></b>	
+<b><a name="line300">300  </a></b>	  template&lt;typename <b>_RAIter</b>, typename <b>_Compare</b>&gt;
+<b><a name="line301">301  </a></b>	    <a href="#line300">_RAIter</a> 
+<b><a name="line302">302  </a></b>	    is_heap_until(<a href="#line300">_RAIter</a>, <a href="#line300">_RAIter</a>, <a href="#line300">_Compare</a>);
+<b><a name="line303">303  </a></b>	
+<b><a name="line304">304  </a></b>	  template&lt;typename <b>_IIter</b>, typename <b>_Predicate</b>&gt;
+<b><a name="line305">305  </a></b>	    bool
+<b><a name="line306">306  </a></b>	    is_partitioned(<a href="#line304">_IIter</a>, <a href="#line304">_IIter</a>, <a href="#line304">_Predicate</a>);
+<b><a name="line307">307  </a></b>	
+<b><a name="line308">308  </a></b>	  template&lt;typename <b>_FIter1</b>, typename <b>_FIter2</b>&gt;
+<b><a name="line309">309  </a></b>	    bool
+<b><a name="line310">310  </a></b>	    is_permutation(<a href="#line308">_FIter1</a>, <a href="#line308">_FIter1</a>, <a href="#line308">_FIter2</a>);
+<b><a name="line311">311  </a></b>	
+<b><a name="line312">312  </a></b>	  template&lt;typename <b>_FIter1</b>, typename <b>_FIter2</b>,
+<b><a name="line313">313  </a></b>		   typename <b>_BinaryPredicate</b>&gt;
+<b><a name="line314">314  </a></b>	    bool
+<b><a name="line315">315  </a></b>	    is_permutation(<a href="#line312">_FIter1</a>, <a href="#line312">_FIter1</a>, <a href="#line312">_FIter2</a>, <a href="#line313">_BinaryPredicate</a>);
+<b><a name="line316">316  </a></b>	
+<b><a name="line317">317  </a></b>	  template&lt;typename <b>_FIter</b>&gt;
+<b><a name="line318">318  </a></b>	    bool 
+<b><a name="line319">319  </a></b>	    is_sorted(<a href="#line317">_FIter</a>, <a href="#line317">_FIter</a>);
+<b><a name="line320">320  </a></b>	
+<b><a name="line321">321  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_Compare</b>&gt;
+<b><a name="line322">322  </a></b>	    bool 
+<b><a name="line323">323  </a></b>	    is_sorted(<a href="#line321">_FIter</a>, <a href="#line321">_FIter</a>, <a href="#line321">_Compare</a>);
+<b><a name="line324">324  </a></b>	
+<b><a name="line325">325  </a></b>	  template&lt;typename <b>_FIter</b>&gt;
+<b><a name="line326">326  </a></b>	    <a href="#line325">_FIter</a> 
+<b><a name="line327">327  </a></b>	    is_sorted_until(<a href="#line325">_FIter</a>, <a href="#line325">_FIter</a>);
+<b><a name="line328">328  </a></b>	
+<b><a name="line329">329  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_Compare</b>&gt;
+<b><a name="line330">330  </a></b>	    <a href="#line329">_FIter</a> 
+<b><a name="line331">331  </a></b>	    is_sorted_until(<a href="#line329">_FIter</a>, <a href="#line329">_FIter</a>, <a href="#line329">_Compare</a>);
+<b><a name="line332">332  </a></b>	#endif
+<b><a name="line333">333  </a></b>	
+<b><a name="line334">334  </a></b>	  template&lt;typename <b>_FIter1</b>, typename <b>_FIter2</b>&gt;
+<b><a name="line335">335  </a></b>	    void 
+<b><a name="line336">336  </a></b>	    <a href="../stl_algobase.h/code.html#line120">iter_swap</a>(<a href="#line334">_FIter1</a>, <a href="#line334">_FIter2</a>);
+<b><a name="line337">337  </a></b>	
+<b><a name="line338">338  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_Tp</b>&gt;
+<b><a name="line339">339  </a></b>	    <a href="#line338">_FIter</a> 
+<b><a name="line340">340  </a></b>	    <a href="../stl_algobase.h/code.html#line1000">lower_bound</a>(<a href="#line338">_FIter</a>, <a href="#line338">_FIter</a>, const <a href="#line338">_Tp</a>&amp;);
+<b><a name="line341">341  </a></b>	
+<b><a name="line342">342  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_Tp</b>, typename <b>_Compare</b>&gt;
+<b><a name="line343">343  </a></b>	    <a href="#line342">_FIter</a> 
+<b><a name="line344">344  </a></b>	    lower_bound(<a href="#line342">_FIter</a>, <a href="#line342">_FIter</a>, const <a href="#line342">_Tp</a>&amp;, <a href="#line342">_Compare</a>);
+<b><a name="line345">345  </a></b>	
+<b><a name="line346">346  </a></b>	  template&lt;typename <b>_RAIter</b>&gt;
+<b><a name="line347">347  </a></b>	    void 
+<b><a name="line348">348  </a></b>	    make_heap(<a href="#line346">_RAIter</a>, <a href="#line346">_RAIter</a>);
+<b><a name="line349">349  </a></b>	
+<b><a name="line350">350  </a></b>	  template&lt;typename <b>_RAIter</b>, typename <b>_Compare</b>&gt;
+<b><a name="line351">351  </a></b>	    void 
+<b><a name="line352">352  </a></b>	    make_heap(<a href="#line350">_RAIter</a>, <a href="#line350">_RAIter</a>, <a href="#line350">_Compare</a>);
+<b><a name="line353">353  </a></b>	
+<b><a name="line354">354  </a></b>	  template&lt;typename <b>_Tp</b>&gt; 
+<b><a name="line355">355  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line110">_GLIBCXX14_CONSTEXPR</a>
+<b><a name="line356">356  </a></b>	    const <a href="#line354">_Tp</a>&amp; 
+<b><a name="line357">357  </a></b>	    <a href="../stl_algobase.h/code.html#line219">max</a>(const <a href="#line354">_Tp</a>&amp;, const <a href="#line354">_Tp</a>&amp;);
+<b><a name="line358">358  </a></b>	
+<b><a name="line359">359  </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Compare</b>&gt;
+<b><a name="line360">360  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line110">_GLIBCXX14_CONSTEXPR</a>
+<b><a name="line361">361  </a></b>	    const <a href="#line359">_Tp</a>&amp; 
+<b><a name="line362">362  </a></b>	    <a href="../stl_algobase.h/code.html#line265">max</a>(const <a href="#line359">_Tp</a>&amp;, const <a href="#line359">_Tp</a>&amp;, <a href="#line359">_Compare</a>);
+<b><a name="line363">363  </a></b>	
+<b><a name="line364">364  </a></b>	  // max_element
+<b><a name="line365">365  </a></b>	  // merge
+<b><a name="line366">366  </a></b>	
+<b><a name="line367">367  </a></b>	  template&lt;typename <b>_Tp</b>&gt; 
+<b><a name="line368">368  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line110">_GLIBCXX14_CONSTEXPR</a>
+<b><a name="line369">369  </a></b>	    const <a href="#line367">_Tp</a>&amp; 
+<b><a name="line370">370  </a></b>	    <a href="../stl_algobase.h/code.html#line195">min</a>(const <a href="#line367">_Tp</a>&amp;, const <a href="#line367">_Tp</a>&amp;);
+<b><a name="line371">371  </a></b>	
+<b><a name="line372">372  </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Compare</b>&gt;
+<b><a name="line373">373  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line110">_GLIBCXX14_CONSTEXPR</a>
+<b><a name="line374">374  </a></b>	    const <a href="#line372">_Tp</a>&amp; 
+<b><a name="line375">375  </a></b>	    <a href="../stl_algobase.h/code.html#line243">min</a>(const <a href="#line372">_Tp</a>&amp;, const <a href="#line372">_Tp</a>&amp;, <a href="#line372">_Compare</a>);
+<b><a name="line376">376  </a></b>	
+<b><a name="line377">377  </a></b>	  // min_element
+<b><a name="line378">378  </a></b>	
+<b><a name="line379">379  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line380">380  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line381">381  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line110">_GLIBCXX14_CONSTEXPR</a>
+<b><a name="line382">382  </a></b>	    <a href="../stl_pair.h/code.html#line96">pair</a>&lt;const <a href="#line380">_Tp</a>&amp;, const <a href="#line380">_Tp</a>&amp;&gt; 
+<b><a name="line383">383  </a></b>	    minmax(const <a href="#line380">_Tp</a>&amp;, const <a href="#line380">_Tp</a>&amp;);
+<b><a name="line384">384  </a></b>	
+<b><a name="line385">385  </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Compare</b>&gt;
+<b><a name="line386">386  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line110">_GLIBCXX14_CONSTEXPR</a>
+<b><a name="line387">387  </a></b>	    <a href="../stl_pair.h/code.html#line96">pair</a>&lt;const <a href="#line385">_Tp</a>&amp;, const <a href="#line385">_Tp</a>&amp;&gt;
+<b><a name="line388">388  </a></b>	    minmax(const <a href="#line385">_Tp</a>&amp;, const <a href="#line385">_Tp</a>&amp;, <a href="#line385">_Compare</a>);
+<b><a name="line389">389  </a></b>	
+<b><a name="line390">390  </a></b>	  template&lt;typename <b>_FIter</b>&gt;
+<b><a name="line391">391  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line110">_GLIBCXX14_CONSTEXPR</a>
+<b><a name="line392">392  </a></b>	    <a href="../stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line390">_FIter</a>, <a href="#line390">_FIter</a>&gt;
+<b><a name="line393">393  </a></b>	    minmax_element(<a href="#line390">_FIter</a>, <a href="#line390">_FIter</a>);
+<b><a name="line394">394  </a></b>	
+<b><a name="line395">395  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_Compare</b>&gt;
+<b><a name="line396">396  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line110">_GLIBCXX14_CONSTEXPR</a>
+<b><a name="line397">397  </a></b>	    <a href="../stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line395">_FIter</a>, <a href="#line395">_FIter</a>&gt;
+<b><a name="line398">398  </a></b>	    minmax_element(<a href="#line395">_FIter</a>, <a href="#line395">_FIter</a>, <a href="#line395">_Compare</a>);
+<b><a name="line399">399  </a></b>	
+<b><a name="line400">400  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line401">401  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line110">_GLIBCXX14_CONSTEXPR</a>
+<b><a name="line402">402  </a></b>	    <a href="#line400">_Tp</a>
+<b><a name="line403">403  </a></b>	    min(<a href="../../initializer_list/code.html#line47">initializer_list</a>&lt;<a href="#line400">_Tp</a>&gt;);
+<b><a name="line404">404  </a></b>	
+<b><a name="line405">405  </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Compare</b>&gt;
+<b><a name="line406">406  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line110">_GLIBCXX14_CONSTEXPR</a>
+<b><a name="line407">407  </a></b>	    <a href="#line405">_Tp</a>
+<b><a name="line408">408  </a></b>	    min(<a href="../../initializer_list/code.html#line47">initializer_list</a>&lt;<a href="#line405">_Tp</a>&gt;, <a href="#line405">_Compare</a>);
+<b><a name="line409">409  </a></b>	
+<b><a name="line410">410  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line411">411  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line110">_GLIBCXX14_CONSTEXPR</a>
+<b><a name="line412">412  </a></b>	    <a href="#line410">_Tp</a>
+<b><a name="line413">413  </a></b>	    max(<a href="../../initializer_list/code.html#line47">initializer_list</a>&lt;<a href="#line410">_Tp</a>&gt;);
+<b><a name="line414">414  </a></b>	
+<b><a name="line415">415  </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Compare</b>&gt;
+<b><a name="line416">416  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line110">_GLIBCXX14_CONSTEXPR</a>
+<b><a name="line417">417  </a></b>	    <a href="#line415">_Tp</a>
+<b><a name="line418">418  </a></b>	    max(<a href="../../initializer_list/code.html#line47">initializer_list</a>&lt;<a href="#line415">_Tp</a>&gt;, <a href="#line415">_Compare</a>);
+<b><a name="line419">419  </a></b>	
+<b><a name="line420">420  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line421">421  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line110">_GLIBCXX14_CONSTEXPR</a>
+<b><a name="line422">422  </a></b>	    <a href="../stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line420">_Tp</a>, <a href="#line420">_Tp</a>&gt;
+<b><a name="line423">423  </a></b>	    minmax(<a href="../../initializer_list/code.html#line47">initializer_list</a>&lt;<a href="#line420">_Tp</a>&gt;);
+<b><a name="line424">424  </a></b>	
+<b><a name="line425">425  </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Compare</b>&gt;
+<b><a name="line426">426  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line110">_GLIBCXX14_CONSTEXPR</a>
+<b><a name="line427">427  </a></b>	    <a href="../stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line425">_Tp</a>, <a href="#line425">_Tp</a>&gt;
+<b><a name="line428">428  </a></b>	    minmax(<a href="../../initializer_list/code.html#line47">initializer_list</a>&lt;<a href="#line425">_Tp</a>&gt;, <a href="#line425">_Compare</a>);
+<b><a name="line429">429  </a></b>	#endif
+<b><a name="line430">430  </a></b>	
+<b><a name="line431">431  </a></b>	  // mismatch
+<b><a name="line432">432  </a></b>	
+<b><a name="line433">433  </a></b>	  template&lt;typename <b>_BIter</b>&gt;
+<b><a name="line434">434  </a></b>	    bool 
+<b><a name="line435">435  </a></b>	    next_permutation(<a href="#line433">_BIter</a>, <a href="#line433">_BIter</a>);
+<b><a name="line436">436  </a></b>	
+<b><a name="line437">437  </a></b>	  template&lt;typename <b>_BIter</b>, typename <b>_Compare</b>&gt;
+<b><a name="line438">438  </a></b>	    bool 
+<b><a name="line439">439  </a></b>	    next_permutation(<a href="#line437">_BIter</a>, <a href="#line437">_BIter</a>, <a href="#line437">_Compare</a>);
+<b><a name="line440">440  </a></b>	
+<b><a name="line441">441  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line442">442  </a></b>	  template&lt;typename <b>_IIter</b>, typename <b>_Predicate</b>&gt;
+<b><a name="line443">443  </a></b>	    bool
+<b><a name="line444">444  </a></b>	    none_of(<a href="#line442">_IIter</a>, <a href="#line442">_IIter</a>, <a href="#line442">_Predicate</a>);
+<b><a name="line445">445  </a></b>	#endif
+<b><a name="line446">446  </a></b>	
+<b><a name="line447">447  </a></b>	  // nth_element
+<b><a name="line448">448  </a></b>	  // partial_sort
+<b><a name="line449">449  </a></b>	
+<b><a name="line450">450  </a></b>	  template&lt;typename <b>_IIter</b>, typename <b>_RAIter</b>&gt;
+<b><a name="line451">451  </a></b>	    <a href="#line450">_RAIter</a>
+<b><a name="line452">452  </a></b>	    partial_sort_copy(<a href="#line450">_IIter</a>, <a href="#line450">_IIter</a>, <a href="#line450">_RAIter</a>, <a href="#line450">_RAIter</a>);
+<b><a name="line453">453  </a></b>	
+<b><a name="line454">454  </a></b>	  template&lt;typename <b>_IIter</b>, typename <b>_RAIter</b>, typename <b>_Compare</b>&gt;
+<b><a name="line455">455  </a></b>	    <a href="#line454">_RAIter</a>
+<b><a name="line456">456  </a></b>	    partial_sort_copy(<a href="#line454">_IIter</a>, <a href="#line454">_IIter</a>, <a href="#line454">_RAIter</a>, <a href="#line454">_RAIter</a>, <a href="#line454">_Compare</a>);
+<b><a name="line457">457  </a></b>	
+<b><a name="line458">458  </a></b>	  // partition
+<b><a name="line459">459  </a></b>	
+<b><a name="line460">460  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line461">461  </a></b>	  template&lt;typename <b>_IIter</b>, typename <b>_OIter1</b>,
+<b><a name="line462">462  </a></b>		   typename <b>_OIter2</b>, typename <b>_Predicate</b>&gt;
+<b><a name="line463">463  </a></b>	    <a href="../stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line461">_OIter1</a>, <a href="#line462">_OIter2</a>&gt;
+<b><a name="line464">464  </a></b>	    partition_copy(<a href="#line461">_IIter</a>, <a href="#line461">_IIter</a>, <a href="#line461">_OIter1</a>, <a href="#line462">_OIter2</a>, <a href="#line462">_Predicate</a>);
+<b><a name="line465">465  </a></b>	
+<b><a name="line466">466  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_Predicate</b>&gt;
+<b><a name="line467">467  </a></b>	    <a href="#line466">_FIter</a>
+<b><a name="line468">468  </a></b>	    partition_point(<a href="#line466">_FIter</a>, <a href="#line466">_FIter</a>, <a href="#line466">_Predicate</a>);
+<b><a name="line469">469  </a></b>	#endif
+<b><a name="line470">470  </a></b>	
+<b><a name="line471">471  </a></b>	  template&lt;typename <b>_RAIter</b>&gt;
+<b><a name="line472">472  </a></b>	    void 
+<b><a name="line473">473  </a></b>	    pop_heap(<a href="#line471">_RAIter</a>, <a href="#line471">_RAIter</a>);
+<b><a name="line474">474  </a></b>	
+<b><a name="line475">475  </a></b>	  template&lt;typename <b>_RAIter</b>, typename <b>_Compare</b>&gt;
+<b><a name="line476">476  </a></b>	    void 
+<b><a name="line477">477  </a></b>	    pop_heap(<a href="#line475">_RAIter</a>, <a href="#line475">_RAIter</a>, <a href="#line475">_Compare</a>);
+<b><a name="line478">478  </a></b>	
+<b><a name="line479">479  </a></b>	  template&lt;typename <b>_BIter</b>&gt;
+<b><a name="line480">480  </a></b>	    bool 
+<b><a name="line481">481  </a></b>	    prev_permutation(<a href="#line479">_BIter</a>, <a href="#line479">_BIter</a>);
+<b><a name="line482">482  </a></b>	
+<b><a name="line483">483  </a></b>	  template&lt;typename <b>_BIter</b>, typename <b>_Compare</b>&gt;
+<b><a name="line484">484  </a></b>	    bool 
+<b><a name="line485">485  </a></b>	    prev_permutation(<a href="#line483">_BIter</a>, <a href="#line483">_BIter</a>, <a href="#line483">_Compare</a>);
+<b><a name="line486">486  </a></b>	
+<b><a name="line487">487  </a></b>	  template&lt;typename <b>_RAIter</b>&gt;
+<b><a name="line488">488  </a></b>	    void 
+<b><a name="line489">489  </a></b>	    push_heap(<a href="#line487">_RAIter</a>, <a href="#line487">_RAIter</a>);
+<b><a name="line490">490  </a></b>	
+<b><a name="line491">491  </a></b>	  template&lt;typename <b>_RAIter</b>, typename <b>_Compare</b>&gt;
+<b><a name="line492">492  </a></b>	    void 
+<b><a name="line493">493  </a></b>	    push_heap(<a href="#line491">_RAIter</a>, <a href="#line491">_RAIter</a>, <a href="#line491">_Compare</a>);
+<b><a name="line494">494  </a></b>	
+<b><a name="line495">495  </a></b>	  // random_shuffle
+<b><a name="line496">496  </a></b>	
+<b><a name="line497">497  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_Tp</b>&gt;
+<b><a name="line498">498  </a></b>	    <a href="#line497">_FIter</a> 
+<b><a name="line499">499  </a></b>	    remove(<a href="#line497">_FIter</a>, <a href="#line497">_FIter</a>, const <a href="#line497">_Tp</a>&amp;);
+<b><a name="line500">500  </a></b>	
+<b><a name="line501">501  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_Predicate</b>&gt;
+<b><a name="line502">502  </a></b>	    <a href="#line501">_FIter</a> 
+<b><a name="line503">503  </a></b>	    remove_if(<a href="#line501">_FIter</a>, <a href="#line501">_FIter</a>, <a href="#line501">_Predicate</a>);
+<b><a name="line504">504  </a></b>	
+<b><a name="line505">505  </a></b>	  template&lt;typename <b>_IIter</b>, typename <b>_OIter</b>, typename <b>_Tp</b>&gt;
+<b><a name="line506">506  </a></b>	    <a href="#line505">_OIter</a> 
+<b><a name="line507">507  </a></b>	    remove_copy(<a href="#line505">_IIter</a>, <a href="#line505">_IIter</a>, <a href="#line505">_OIter</a>, const <a href="#line505">_Tp</a>&amp;);
+<b><a name="line508">508  </a></b>	
+<b><a name="line509">509  </a></b>	  template&lt;typename <b>_IIter</b>, typename <b>_OIter</b>, typename <b>_Predicate</b>&gt;
+<b><a name="line510">510  </a></b>	    <a href="#line509">_OIter</a> 
+<b><a name="line511">511  </a></b>	    remove_copy_if(<a href="#line509">_IIter</a>, <a href="#line509">_IIter</a>, <a href="#line509">_OIter</a>, <a href="#line509">_Predicate</a>);
+<b><a name="line512">512  </a></b>	
+<b><a name="line513">513  </a></b>	  // replace
+<b><a name="line514">514  </a></b>	
+<b><a name="line515">515  </a></b>	  template&lt;typename <b>_IIter</b>, typename <b>_OIter</b>, typename <b>_Tp</b>&gt;
+<b><a name="line516">516  </a></b>	    <a href="#line515">_OIter</a> 
+<b><a name="line517">517  </a></b>	    replace_copy(<a href="#line515">_IIter</a>, <a href="#line515">_IIter</a>, <a href="#line515">_OIter</a>, const <a href="#line515">_Tp</a>&amp;, const <a href="#line515">_Tp</a>&amp;);
+<b><a name="line518">518  </a></b>	
+<b><a name="line519">519  </a></b>	  template&lt;typename <b>_Iter</b>, typename <b>_OIter</b>, typename <b>_Predicate</b>, typename <b>_Tp</b>&gt;
+<b><a name="line520">520  </a></b>	    <a href="#line519">_OIter</a> 
+<b><a name="line521">521  </a></b>	    replace_copy_if(<a href="#line519">_Iter</a>, <a href="#line519">_Iter</a>, <a href="#line519">_OIter</a>, <a href="#line519">_Predicate</a>, const <a href="#line519">_Tp</a>&amp;);
+<b><a name="line522">522  </a></b>	
+<b><a name="line523">523  </a></b>	  // replace_if
+<b><a name="line524">524  </a></b>	
+<b><a name="line525">525  </a></b>	  template&lt;typename <b>_BIter</b>&gt;
+<b><a name="line526">526  </a></b>	    void 
+<b><a name="line527">527  </a></b>	    reverse(<a href="#line525">_BIter</a>, <a href="#line525">_BIter</a>);
+<b><a name="line528">528  </a></b>	
+<b><a name="line529">529  </a></b>	  template&lt;typename <b>_BIter</b>, typename <b>_OIter</b>&gt;
+<b><a name="line530">530  </a></b>	    <a href="#line529">_OIter</a> 
+<b><a name="line531">531  </a></b>	    reverse_copy(<a href="#line529">_BIter</a>, <a href="#line529">_BIter</a>, <a href="#line529">_OIter</a>);
+<b><a name="line532">532  </a></b>	
+<b><a name="line533">533  </a></b>	  inline namespace <b>_V2</b>
+<b><a name="line534">534  </a></b>	  {
+<b><a name="line535">535  </a></b>	    template&lt;typename <b>_FIter</b>&gt;
+<b><a name="line536">536  </a></b>	      <a href="#line535">_FIter</a>
+<b><a name="line537">537  </a></b>	      rotate(<a href="#line535">_FIter</a>, <a href="#line535">_FIter</a>, <a href="#line535">_FIter</a>);
+<b><a name="line538">538  </a></b>	  }
+<b><a name="line539">539  </a></b>	
+<b><a name="line540">540  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_OIter</b>&gt;
+<b><a name="line541">541  </a></b>	    <a href="#line540">_OIter</a> 
+<b><a name="line542">542  </a></b>	    rotate_copy(<a href="#line540">_FIter</a>, <a href="#line540">_FIter</a>, <a href="#line540">_FIter</a>, <a href="#line540">_OIter</a>);
+<b><a name="line543">543  </a></b>	
+<b><a name="line544">544  </a></b>	  // search
+<b><a name="line545">545  </a></b>	  // search_n
+<b><a name="line546">546  </a></b>	  // set_difference
+<b><a name="line547">547  </a></b>	  // set_intersection
+<b><a name="line548">548  </a></b>	  // set_symmetric_difference
+<b><a name="line549">549  </a></b>	  // set_union
+<b><a name="line550">550  </a></b>	
+<b><a name="line551">551  </a></b>	#if (__cplusplus &gt;= 201103L) &amp;&amp; defined(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line1347">_GLIBCXX_USE_C99_STDINT_TR1</a>)
+<b><a name="line552">552  </a></b>	  template&lt;typename <b>_RAIter</b>, typename <b>_UGenerator</b>&gt;
+<b><a name="line553">553  </a></b>	    void
+<b><a name="line554">554  </a></b>	    shuffle(<a href="#line552">_RAIter</a>, <a href="#line552">_RAIter</a>, <a href="#line552">_UGenerator</a>&amp;&amp;);
+<b><a name="line555">555  </a></b>	#endif
+<b><a name="line556">556  </a></b>	
+<b><a name="line557">557  </a></b>	  template&lt;typename <b>_RAIter</b>&gt;
+<b><a name="line558">558  </a></b>	    void 
+<b><a name="line559">559  </a></b>	    sort_heap(<a href="#line557">_RAIter</a>, <a href="#line557">_RAIter</a>);
+<b><a name="line560">560  </a></b>	
+<b><a name="line561">561  </a></b>	  template&lt;typename <b>_RAIter</b>, typename <b>_Compare</b>&gt;
+<b><a name="line562">562  </a></b>	    void 
+<b><a name="line563">563  </a></b>	    sort_heap(<a href="#line561">_RAIter</a>, <a href="#line561">_RAIter</a>, <a href="#line561">_Compare</a>);
+<b><a name="line564">564  </a></b>	
+<b><a name="line565">565  </a></b>	  template&lt;typename <b>_BIter</b>, typename <b>_Predicate</b>&gt;
+<b><a name="line566">566  </a></b>	    <a href="#line565">_BIter</a> 
+<b><a name="line567">567  </a></b>	    stable_partition(<a href="#line565">_BIter</a>, <a href="#line565">_BIter</a>, <a href="#line565">_Predicate</a>);
+<b><a name="line568">568  </a></b>	
+<b><a name="line569">569  </a></b>	  template&lt;typename <b>_Tp</b>&gt; 
+<b><a name="line570">570  </a></b>	    void 
+<b><a name="line571">571  </a></b>	    <a href="../move.h/code.html#line176">swap</a>(<a href="#line569">_Tp</a>&amp;, <a href="#line569">_Tp</a>&amp;)
+<b><a name="line572">572  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line573">573  </a></b>	    noexcept(<a href="../../type_traits/code.html#line124">__and_</a>&lt;<a href="../../type_traits/code.html#line1211">is_nothrow_move_constructible</a>&lt;<a href="#line569">_Tp</a>&gt;,
+<b><a name="line574">574  </a></b>		            <a href="../../type_traits/code.html#line1317">is_nothrow_move_assignable</a>&lt;<a href="#line569">_Tp</a>&gt;&gt;::value)
+<b><a name="line575">575  </a></b>	#endif
+<b><a name="line576">576  </a></b>	    ;
+<b><a name="line577">577  </a></b>	
+<b><a name="line578">578  </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>_Nm</b>&gt;
+<b><a name="line579">579  </a></b>	    void
+<b><a name="line580">580  </a></b>	    <a href="../move.h/code.html#line195">swap</a>(<a href="#line578">_Tp</a> (&amp;__a)[<a href="#line578">_Nm</a>], <a href="#line578">_Tp</a> (&amp;__b)[<a href="#line578">_Nm</a>])
+<b><a name="line581">581  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line582">582  </a></b>	    noexcept(noexcept(swap(*__a, *__b)))
+<b><a name="line583">583  </a></b>	#endif
+<b><a name="line584">584  </a></b>	    ;
+<b><a name="line585">585  </a></b>	
+<b><a name="line586">586  </a></b>	  template&lt;typename <b>_FIter1</b>, typename <b>_FIter2</b>&gt;
+<b><a name="line587">587  </a></b>	    <a href="#line586">_FIter2</a> 
+<b><a name="line588">588  </a></b>	    <a href="../stl_algobase.h/code.html#line166">swap_ranges</a>(<a href="#line586">_FIter1</a>, <a href="#line586">_FIter1</a>, <a href="#line586">_FIter2</a>);
+<b><a name="line589">589  </a></b>	
+<b><a name="line590">590  </a></b>	  // transform
+<b><a name="line591">591  </a></b>	
+<b><a name="line592">592  </a></b>	  template&lt;typename <b>_FIter</b>&gt;
+<b><a name="line593">593  </a></b>	    <a href="#line592">_FIter</a> 
+<b><a name="line594">594  </a></b>	    unique(<a href="#line592">_FIter</a>, <a href="#line592">_FIter</a>);
+<b><a name="line595">595  </a></b>	
+<b><a name="line596">596  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_BinaryPredicate</b>&gt;
+<b><a name="line597">597  </a></b>	    <a href="#line596">_FIter</a> 
+<b><a name="line598">598  </a></b>	    unique(<a href="#line596">_FIter</a>, <a href="#line596">_FIter</a>, <a href="#line596">_BinaryPredicate</a>);
+<b><a name="line599">599  </a></b>	
+<b><a name="line600">600  </a></b>	  // unique_copy
+<b><a name="line601">601  </a></b>	
+<b><a name="line602">602  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_Tp</b>&gt;
+<b><a name="line603">603  </a></b>	    <a href="#line602">_FIter</a> 
+<b><a name="line604">604  </a></b>	    upper_bound(<a href="#line602">_FIter</a>, <a href="#line602">_FIter</a>, const <a href="#line602">_Tp</a>&amp;);
+<b><a name="line605">605  </a></b>	
+<b><a name="line606">606  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_Tp</b>, typename <b>_Compare</b>&gt;
+<b><a name="line607">607  </a></b>	    <a href="#line606">_FIter</a> 
+<b><a name="line608">608  </a></b>	    upper_bound(<a href="#line606">_FIter</a>, <a href="#line606">_FIter</a>, const <a href="#line606">_Tp</a>&amp;, <a href="#line606">_Compare</a>);
+<b><a name="line609">609  </a></b>	
+<b><a name="line610">610  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line611">611  </a></b>	
+<b><a name="line612">612  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line372">_GLIBCXX_BEGIN_NAMESPACE_ALGO</a>
+<b><a name="line613">613  </a></b>	
+<b><a name="line614">614  </a></b>	  template&lt;typename <b>_FIter</b>&gt;
+<b><a name="line615">615  </a></b>	    <a href="#line614">_FIter</a> 
+<b><a name="line616">616  </a></b>	    adjacent_find(<a href="#line614">_FIter</a>, <a href="#line614">_FIter</a>);
+<b><a name="line617">617  </a></b>	
+<b><a name="line618">618  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_BinaryPredicate</b>&gt;
+<b><a name="line619">619  </a></b>	    <a href="#line618">_FIter</a> 
+<b><a name="line620">620  </a></b>	    adjacent_find(<a href="#line618">_FIter</a>, <a href="#line618">_FIter</a>, <a href="#line618">_BinaryPredicate</a>);
+<b><a name="line621">621  </a></b>	
+<b><a name="line622">622  </a></b>	  template&lt;typename <b>_IIter</b>, typename <b>_Tp</b>&gt;
+<b><a name="line623">623  </a></b>	    typename <a href="../stl_iterator_base_types.h/code.html#line162">iterator_traits</a>&lt;<a href="#line622">_IIter</a>&gt;::difference_type
+<b><a name="line624">624  </a></b>	    count(<a href="#line622">_IIter</a>, <a href="#line622">_IIter</a>, const <a href="#line622">_Tp</a>&amp;);
+<b><a name="line625">625  </a></b>	
+<b><a name="line626">626  </a></b>	  template&lt;typename <b>_IIter</b>, typename <b>_Predicate</b>&gt;
+<b><a name="line627">627  </a></b>	    typename <a href="../stl_iterator_base_types.h/code.html#line162">iterator_traits</a>&lt;<a href="#line626">_IIter</a>&gt;::difference_type
+<b><a name="line628">628  </a></b>	    count_if(<a href="#line626">_IIter</a>, <a href="#line626">_IIter</a>, <a href="#line626">_Predicate</a>);
+<b><a name="line629">629  </a></b>	
+<b><a name="line630">630  </a></b>	  template&lt;typename <b>_IIter1</b>, typename <b>_IIter2</b>&gt;
+<b><a name="line631">631  </a></b>	    bool 
+<b><a name="line632">632  </a></b>	    <a href="../stl_algobase.h/code.html#line1057">equal</a>(<a href="#line630">_IIter1</a>, <a href="#line630">_IIter1</a>, <a href="#line630">_IIter2</a>);
+<b><a name="line633">633  </a></b>	
+<b><a name="line634">634  </a></b>	  template&lt;typename <b>_IIter1</b>, typename <b>_IIter2</b>, typename <b>_BinaryPredicate</b>&gt;
+<b><a name="line635">635  </a></b>	    bool 
+<b><a name="line636">636  </a></b>	    <a href="../stl_algobase.h/code.html#line1089">equal</a>(<a href="#line634">_IIter1</a>, <a href="#line634">_IIter1</a>, <a href="#line634">_IIter2</a>, <a href="#line634">_BinaryPredicate</a>);
+<b><a name="line637">637  </a></b>	
+<b><a name="line638">638  </a></b>	  template&lt;typename <b>_IIter</b>, typename <b>_Tp</b>&gt;
+<b><a name="line639">639  </a></b>	    <a href="#line638">_IIter</a> 
+<b><a name="line640">640  </a></b>	    find(<a href="#line638">_IIter</a>, <a href="#line638">_IIter</a>, const <a href="#line638">_Tp</a>&amp;);
+<b><a name="line641">641  </a></b>	
+<b><a name="line642">642  </a></b>	  template&lt;typename <b>_FIter1</b>, typename <b>_FIter2</b>&gt;
+<b><a name="line643">643  </a></b>	    <a href="#line642">_FIter1</a>
+<b><a name="line644">644  </a></b>	    find_first_of(<a href="#line642">_FIter1</a>, <a href="#line642">_FIter1</a>, <a href="#line642">_FIter2</a>, <a href="#line642">_FIter2</a>);
+<b><a name="line645">645  </a></b>	
+<b><a name="line646">646  </a></b>	  template&lt;typename <b>_FIter1</b>, typename <b>_FIter2</b>, typename <b>_BinaryPredicate</b>&gt;
+<b><a name="line647">647  </a></b>	    <a href="#line646">_FIter1</a>
+<b><a name="line648">648  </a></b>	    find_first_of(<a href="#line646">_FIter1</a>, <a href="#line646">_FIter1</a>, <a href="#line646">_FIter2</a>, <a href="#line646">_FIter2</a>, <a href="#line646">_BinaryPredicate</a>);
+<b><a name="line649">649  </a></b>	
+<b><a name="line650">650  </a></b>	  template&lt;typename <b>_IIter</b>, typename <b>_Predicate</b>&gt;
+<b><a name="line651">651  </a></b>	    <a href="#line650">_IIter</a>
+<b><a name="line652">652  </a></b>	    find_if(<a href="#line650">_IIter</a>, <a href="#line650">_IIter</a>, <a href="#line650">_Predicate</a>);
+<b><a name="line653">653  </a></b>	
+<b><a name="line654">654  </a></b>	  template&lt;typename <b>_IIter</b>, typename <b>_Funct</b>&gt;
+<b><a name="line655">655  </a></b>	    <a href="#line654">_Funct</a> 
+<b><a name="line656">656  </a></b>	    for_each(<a href="#line654">_IIter</a>, <a href="#line654">_IIter</a>, <a href="#line654">_Funct</a>);
+<b><a name="line657">657  </a></b>	
+<b><a name="line658">658  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_Generator</b>&gt;
+<b><a name="line659">659  </a></b>	    void 
+<b><a name="line660">660  </a></b>	    generate(<a href="#line658">_FIter</a>, <a href="#line658">_FIter</a>, <a href="#line658">_Generator</a>);
+<b><a name="line661">661  </a></b>	
+<b><a name="line662">662  </a></b>	  template&lt;typename <b>_OIter</b>, typename <b>_Size</b>, typename <b>_Generator</b>&gt;
+<b><a name="line663">663  </a></b>	    <a href="#line662">_OIter</a>
+<b><a name="line664">664  </a></b>	    generate_n(<a href="#line662">_OIter</a>, <a href="#line662">_Size</a>, <a href="#line662">_Generator</a>);
+<b><a name="line665">665  </a></b>	
+<b><a name="line666">666  </a></b>	  template&lt;typename <b>_IIter1</b>, typename <b>_IIter2</b>&gt;
+<b><a name="line667">667  </a></b>	    bool 
+<b><a name="line668">668  </a></b>	    <a href="../stl_algobase.h/code.html#line1217">lexicographical_compare</a>(<a href="#line666">_IIter1</a>, <a href="#line666">_IIter1</a>, <a href="#line666">_IIter2</a>, <a href="#line666">_IIter2</a>);
+<b><a name="line669">669  </a></b>	
+<b><a name="line670">670  </a></b>	  template&lt;typename <b>_IIter1</b>, typename <b>_IIter2</b>, typename <b>_Compare</b>&gt;
+<b><a name="line671">671  </a></b>	    bool 
+<b><a name="line672">672  </a></b>	    <a href="../stl_algobase.h/code.html#line1253">lexicographical_compare</a>(<a href="#line670">_IIter1</a>, <a href="#line670">_IIter1</a>, <a href="#line670">_IIter2</a>, <a href="#line670">_IIter2</a>, <a href="#line670">_Compare</a>);
+<b><a name="line673">673  </a></b>	
+<b><a name="line674">674  </a></b>	  template&lt;typename <b>_FIter</b>&gt;
+<b><a name="line675">675  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line110">_GLIBCXX14_CONSTEXPR</a>
+<b><a name="line676">676  </a></b>	    <a href="#line674">_FIter</a> 
+<b><a name="line677">677  </a></b>	    max_element(<a href="#line674">_FIter</a>, <a href="#line674">_FIter</a>);
+<b><a name="line678">678  </a></b>	
+<b><a name="line679">679  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_Compare</b>&gt;
+<b><a name="line680">680  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line110">_GLIBCXX14_CONSTEXPR</a>
+<b><a name="line681">681  </a></b>	    <a href="#line679">_FIter</a> 
+<b><a name="line682">682  </a></b>	    max_element(<a href="#line679">_FIter</a>, <a href="#line679">_FIter</a>, <a href="#line679">_Compare</a>);
+<b><a name="line683">683  </a></b>	
+<b><a name="line684">684  </a></b>	  template&lt;typename <b>_IIter1</b>, typename <b>_IIter2</b>, typename <b>_OIter</b>&gt;
+<b><a name="line685">685  </a></b>	    <a href="#line684">_OIter</a> 
+<b><a name="line686">686  </a></b>	    merge(<a href="#line684">_IIter1</a>, <a href="#line684">_IIter1</a>, <a href="#line684">_IIter2</a>, <a href="#line684">_IIter2</a>, <a href="#line684">_OIter</a>);
+<b><a name="line687">687  </a></b>	
+<b><a name="line688">688  </a></b>	  template&lt;typename <b>_IIter1</b>, typename <b>_IIter2</b>, typename <b>_OIter</b>, 
+<b><a name="line689">689  </a></b>		   typename <b>_Compare</b>&gt;
+<b><a name="line690">690  </a></b>	    <a href="#line688">_OIter</a> 
+<b><a name="line691">691  </a></b>	    merge(<a href="#line688">_IIter1</a>, <a href="#line688">_IIter1</a>, <a href="#line688">_IIter2</a>, <a href="#line688">_IIter2</a>, <a href="#line688">_OIter</a>, <a href="#line689">_Compare</a>);
+<b><a name="line692">692  </a></b>	
+<b><a name="line693">693  </a></b>	  template&lt;typename <b>_FIter</b>&gt;
+<b><a name="line694">694  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line110">_GLIBCXX14_CONSTEXPR</a>
+<b><a name="line695">695  </a></b>	    <a href="#line693">_FIter</a> 
+<b><a name="line696">696  </a></b>	    min_element(<a href="#line693">_FIter</a>, <a href="#line693">_FIter</a>);
+<b><a name="line697">697  </a></b>	
+<b><a name="line698">698  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_Compare</b>&gt;
+<b><a name="line699">699  </a></b>	    <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line110">_GLIBCXX14_CONSTEXPR</a>
+<b><a name="line700">700  </a></b>	    <a href="#line698">_FIter</a> 
+<b><a name="line701">701  </a></b>	    min_element(<a href="#line698">_FIter</a>, <a href="#line698">_FIter</a>, <a href="#line698">_Compare</a>);
+<b><a name="line702">702  </a></b>	
+<b><a name="line703">703  </a></b>	  template&lt;typename <b>_IIter1</b>, typename <b>_IIter2</b>&gt;
+<b><a name="line704">704  </a></b>	    <a href="../stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line703">_IIter1</a>, <a href="#line703">_IIter2</a>&gt;
+<b><a name="line705">705  </a></b>	    <a href="../stl_algobase.h/code.html#line1296">mismatch</a>(<a href="#line703">_IIter1</a>, <a href="#line703">_IIter1</a>, <a href="#line703">_IIter2</a>);
+<b><a name="line706">706  </a></b>	
+<b><a name="line707">707  </a></b>	  template&lt;typename <b>_IIter1</b>, typename <b>_IIter2</b>, typename <b>_BinaryPredicate</b>&gt;
+<b><a name="line708">708  </a></b>	    <a href="../stl_pair.h/code.html#line96">pair</a>&lt;<a href="#line707">_IIter1</a>, <a href="#line707">_IIter2</a>&gt;
+<b><a name="line709">709  </a></b>	    <a href="../stl_algobase.h/code.html#line1330">mismatch</a>(<a href="#line707">_IIter1</a>, <a href="#line707">_IIter1</a>, <a href="#line707">_IIter2</a>, <a href="#line707">_BinaryPredicate</a>);
+<b><a name="line710">710  </a></b>	
+<b><a name="line711">711  </a></b>	  template&lt;typename <b>_RAIter</b>&gt;
+<b><a name="line712">712  </a></b>	    void 
+<b><a name="line713">713  </a></b>	    nth_element(<a href="#line711">_RAIter</a>, <a href="#line711">_RAIter</a>, <a href="#line711">_RAIter</a>);
+<b><a name="line714">714  </a></b>	
+<b><a name="line715">715  </a></b>	  template&lt;typename <b>_RAIter</b>, typename <b>_Compare</b>&gt;
+<b><a name="line716">716  </a></b>	    void 
+<b><a name="line717">717  </a></b>	    nth_element(<a href="#line715">_RAIter</a>, <a href="#line715">_RAIter</a>, <a href="#line715">_RAIter</a>, <a href="#line715">_Compare</a>);
+<b><a name="line718">718  </a></b>	
+<b><a name="line719">719  </a></b>	  template&lt;typename <b>_RAIter</b>&gt;
+<b><a name="line720">720  </a></b>	    void 
+<b><a name="line721">721  </a></b>	    partial_sort(<a href="#line719">_RAIter</a>, <a href="#line719">_RAIter</a>, <a href="#line719">_RAIter</a>);
+<b><a name="line722">722  </a></b>	
+<b><a name="line723">723  </a></b>	  template&lt;typename <b>_RAIter</b>, typename <b>_Compare</b>&gt;
+<b><a name="line724">724  </a></b>	    void 
+<b><a name="line725">725  </a></b>	    partial_sort(<a href="#line723">_RAIter</a>, <a href="#line723">_RAIter</a>, <a href="#line723">_RAIter</a>, <a href="#line723">_Compare</a>);
+<b><a name="line726">726  </a></b>	
+<b><a name="line727">727  </a></b>	  template&lt;typename <b>_BIter</b>, typename <b>_Predicate</b>&gt;
+<b><a name="line728">728  </a></b>	    <a href="#line727">_BIter</a> 
+<b><a name="line729">729  </a></b>	    partition(<a href="#line727">_BIter</a>, <a href="#line727">_BIter</a>, <a href="#line727">_Predicate</a>);
+<b><a name="line730">730  </a></b>	
+<b><a name="line731">731  </a></b>	  template&lt;typename <b>_RAIter</b>&gt;
+<b><a name="line732">732  </a></b>	    void 
+<b><a name="line733">733  </a></b>	    random_shuffle(<a href="#line731">_RAIter</a>, <a href="#line731">_RAIter</a>);
+<b><a name="line734">734  </a></b>	
+<b><a name="line735">735  </a></b>	  template&lt;typename <b>_RAIter</b>, typename <b>_Generator</b>&gt;
+<b><a name="line736">736  </a></b>	    void 
+<b><a name="line737">737  </a></b>	    random_shuffle(<a href="#line735">_RAIter</a>, <a href="#line735">_RAIter</a>,
+<b><a name="line738">738  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line739">739  </a></b>			   <a href="#line735">_Generator</a>&amp;&amp;);
+<b><a name="line740">740  </a></b>	#else
+<b><a name="line741">741  </a></b>			   _Generator&amp;);
+<b><a name="line742">742  </a></b>	#endif
+<b><a name="line743">743  </a></b>	
+<b><a name="line744">744  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_Tp</b>&gt;
+<b><a name="line745">745  </a></b>	    void 
+<b><a name="line746">746  </a></b>	    replace(<a href="#line744">_FIter</a>, <a href="#line744">_FIter</a>, const <a href="#line744">_Tp</a>&amp;, const <a href="#line744">_Tp</a>&amp;);
+<b><a name="line747">747  </a></b>	
+<b><a name="line748">748  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_Predicate</b>, typename <b>_Tp</b>&gt;
+<b><a name="line749">749  </a></b>	    void 
+<b><a name="line750">750  </a></b>	    replace_if(<a href="#line748">_FIter</a>, <a href="#line748">_FIter</a>, <a href="#line748">_Predicate</a>, const <a href="#line748">_Tp</a>&amp;);
+<b><a name="line751">751  </a></b>	
+<b><a name="line752">752  </a></b>	  template&lt;typename <b>_FIter1</b>, typename <b>_FIter2</b>&gt;
+<b><a name="line753">753  </a></b>	    <a href="#line752">_FIter1</a> 
+<b><a name="line754">754  </a></b>	    search(<a href="#line752">_FIter1</a>, <a href="#line752">_FIter1</a>, <a href="#line752">_FIter2</a>, <a href="#line752">_FIter2</a>);
+<b><a name="line755">755  </a></b>	
+<b><a name="line756">756  </a></b>	  template&lt;typename <b>_FIter1</b>, typename <b>_FIter2</b>, typename <b>_BinaryPredicate</b>&gt;
+<b><a name="line757">757  </a></b>	    <a href="#line756">_FIter1</a> 
+<b><a name="line758">758  </a></b>	    search(<a href="#line756">_FIter1</a>, <a href="#line756">_FIter1</a>, <a href="#line756">_FIter2</a>, <a href="#line756">_FIter2</a>, <a href="#line756">_BinaryPredicate</a>);
+<b><a name="line759">759  </a></b>	
+<b><a name="line760">760  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_Size</b>, typename <b>_Tp</b>&gt;
+<b><a name="line761">761  </a></b>	    <a href="#line760">_FIter</a> 
+<b><a name="line762">762  </a></b>	    search_n(<a href="#line760">_FIter</a>, <a href="#line760">_FIter</a>, <a href="#line760">_Size</a>, const <a href="#line760">_Tp</a>&amp;);
+<b><a name="line763">763  </a></b>	
+<b><a name="line764">764  </a></b>	  template&lt;typename <b>_FIter</b>, typename <b>_Size</b>, typename <b>_Tp</b>, 
+<b><a name="line765">765  </a></b>		   typename <b>_BinaryPredicate</b>&gt;
+<b><a name="line766">766  </a></b>	    <a href="#line764">_FIter</a> 
+<b><a name="line767">767  </a></b>	    search_n(<a href="#line764">_FIter</a>, <a href="#line764">_FIter</a>, <a href="#line764">_Size</a>, const <a href="#line764">_Tp</a>&amp;, <a href="#line765">_BinaryPredicate</a>);
+<b><a name="line768">768  </a></b>	
+<b><a name="line769">769  </a></b>	  template&lt;typename <b>_IIter1</b>, typename <b>_IIter2</b>, typename <b>_OIter</b>&gt;
+<b><a name="line770">770  </a></b>	    <a href="#line769">_OIter</a> 
+<b><a name="line771">771  </a></b>	    set_difference(<a href="#line769">_IIter1</a>, <a href="#line769">_IIter1</a>, <a href="#line769">_IIter2</a>, <a href="#line769">_IIter2</a>, <a href="#line769">_OIter</a>);
+<b><a name="line772">772  </a></b>	
+<b><a name="line773">773  </a></b>	  template&lt;typename <b>_IIter1</b>, typename <b>_IIter2</b>, typename <b>_OIter</b>, 
+<b><a name="line774">774  </a></b>		   typename <b>_Compare</b>&gt;
+<b><a name="line775">775  </a></b>	    <a href="#line773">_OIter</a> 
+<b><a name="line776">776  </a></b>	    set_difference(<a href="#line773">_IIter1</a>, <a href="#line773">_IIter1</a>, <a href="#line773">_IIter2</a>, <a href="#line773">_IIter2</a>, <a href="#line773">_OIter</a>, <a href="#line774">_Compare</a>);
+<b><a name="line777">777  </a></b>	
+<b><a name="line778">778  </a></b>	  template&lt;typename <b>_IIter1</b>, typename <b>_IIter2</b>, typename <b>_OIter</b>&gt;
+<b><a name="line779">779  </a></b>	    <a href="#line778">_OIter</a> 
+<b><a name="line780">780  </a></b>	    set_intersection(<a href="#line778">_IIter1</a>, <a href="#line778">_IIter1</a>, <a href="#line778">_IIter2</a>, <a href="#line778">_IIter2</a>, <a href="#line778">_OIter</a>);
+<b><a name="line781">781  </a></b>	
+<b><a name="line782">782  </a></b>	  template&lt;typename <b>_IIter1</b>, typename <b>_IIter2</b>, typename <b>_OIter</b>,
+<b><a name="line783">783  </a></b>		   typename <b>_Compare</b>&gt;
+<b><a name="line784">784  </a></b>	    <a href="#line782">_OIter</a> 
+<b><a name="line785">785  </a></b>	    set_intersection(<a href="#line782">_IIter1</a>, <a href="#line782">_IIter1</a>, <a href="#line782">_IIter2</a>, <a href="#line782">_IIter2</a>, <a href="#line782">_OIter</a>, <a href="#line783">_Compare</a>);
+<b><a name="line786">786  </a></b>	
+<b><a name="line787">787  </a></b>	  template&lt;typename <b>_IIter1</b>, typename <b>_IIter2</b>, typename <b>_OIter</b>&gt;
+<b><a name="line788">788  </a></b>	    <a href="#line787">_OIter</a>
+<b><a name="line789">789  </a></b>	    set_symmetric_difference(<a href="#line787">_IIter1</a>, <a href="#line787">_IIter1</a>, <a href="#line787">_IIter2</a>, <a href="#line787">_IIter2</a>, <a href="#line787">_OIter</a>);
+<b><a name="line790">790  </a></b>	
+<b><a name="line791">791  </a></b>	  template&lt;typename <b>_IIter1</b>, typename <b>_IIter2</b>, typename <b>_OIter</b>, 
+<b><a name="line792">792  </a></b>		   typename <b>_Compare</b>&gt;
+<b><a name="line793">793  </a></b>	    <a href="#line791">_OIter</a>
+<b><a name="line794">794  </a></b>	    set_symmetric_difference(<a href="#line791">_IIter1</a>, <a href="#line791">_IIter1</a>, <a href="#line791">_IIter2</a>, <a href="#line791">_IIter2</a>, 
+<b><a name="line795">795  </a></b>				     <a href="#line791">_OIter</a>, <a href="#line792">_Compare</a>);
+<b><a name="line796">796  </a></b>	
+<b><a name="line797">797  </a></b>	  template&lt;typename <b>_IIter1</b>, typename <b>_IIter2</b>, typename <b>_OIter</b>&gt;
+<b><a name="line798">798  </a></b>	    <a href="#line797">_OIter</a> 
+<b><a name="line799">799  </a></b>	    set_union(<a href="#line797">_IIter1</a>, <a href="#line797">_IIter1</a>, <a href="#line797">_IIter2</a>, <a href="#line797">_IIter2</a>, <a href="#line797">_OIter</a>);
+<b><a name="line800">800  </a></b>	
+<b><a name="line801">801  </a></b>	  template&lt;typename <b>_IIter1</b>, typename <b>_IIter2</b>, typename <b>_OIter</b>,
+<b><a name="line802">802  </a></b>		   typename <b>_Compare</b>&gt;
+<b><a name="line803">803  </a></b>	    <a href="#line801">_OIter</a> 
+<b><a name="line804">804  </a></b>	    set_union(<a href="#line801">_IIter1</a>, <a href="#line801">_IIter1</a>, <a href="#line801">_IIter2</a>, <a href="#line801">_IIter2</a>, <a href="#line801">_OIter</a>, <a href="#line802">_Compare</a>);
+<b><a name="line805">805  </a></b>	
+<b><a name="line806">806  </a></b>	  template&lt;typename <b>_RAIter</b>&gt;
+<b><a name="line807">807  </a></b>	    void 
+<b><a name="line808">808  </a></b>	    sort(<a href="#line806">_RAIter</a>, <a href="#line806">_RAIter</a>);
+<b><a name="line809">809  </a></b>	
+<b><a name="line810">810  </a></b>	  template&lt;typename <b>_RAIter</b>, typename <b>_Compare</b>&gt;
+<b><a name="line811">811  </a></b>	    void 
+<b><a name="line812">812  </a></b>	    sort(<a href="#line810">_RAIter</a>, <a href="#line810">_RAIter</a>, <a href="#line810">_Compare</a>);
+<b><a name="line813">813  </a></b>	
+<b><a name="line814">814  </a></b>	  template&lt;typename <b>_RAIter</b>&gt;
+<b><a name="line815">815  </a></b>	    void 
+<b><a name="line816">816  </a></b>	    stable_sort(<a href="#line814">_RAIter</a>, <a href="#line814">_RAIter</a>);
+<b><a name="line817">817  </a></b>	
+<b><a name="line818">818  </a></b>	  template&lt;typename <b>_RAIter</b>, typename <b>_Compare</b>&gt;
+<b><a name="line819">819  </a></b>	    void 
+<b><a name="line820">820  </a></b>	    stable_sort(<a href="#line818">_RAIter</a>, <a href="#line818">_RAIter</a>, <a href="#line818">_Compare</a>);
+<b><a name="line821">821  </a></b>	
+<b><a name="line822">822  </a></b>	  template&lt;typename <b>_IIter</b>, typename <b>_OIter</b>, typename <b>_UnaryOperation</b>&gt;
+<b><a name="line823">823  </a></b>	    <a href="#line822">_OIter</a> 
+<b><a name="line824">824  </a></b>	    transform(<a href="#line822">_IIter</a>, <a href="#line822">_IIter</a>, <a href="#line822">_OIter</a>, <a href="#line822">_UnaryOperation</a>);
+<b><a name="line825">825  </a></b>	
+<b><a name="line826">826  </a></b>	  template&lt;typename <b>_IIter1</b>, typename <b>_IIter2</b>, typename <b>_OIter</b>, 
+<b><a name="line827">827  </a></b>		   typename <b>_BinaryOperation</b>&gt;
+<b><a name="line828">828  </a></b>	    <a href="#line826">_OIter</a> 
+<b><a name="line829">829  </a></b>	    transform(<a href="#line826">_IIter1</a>, <a href="#line826">_IIter1</a>, <a href="#line826">_IIter2</a>, <a href="#line826">_OIter</a>, <a href="#line827">_BinaryOperation</a>);
+<b><a name="line830">830  </a></b>	
+<b><a name="line831">831  </a></b>	  template&lt;typename <b>_IIter</b>, typename <b>_OIter</b>&gt;
+<b><a name="line832">832  </a></b>	    <a href="#line831">_OIter</a> 
+<b><a name="line833">833  </a></b>	    unique_copy(<a href="#line831">_IIter</a>, <a href="#line831">_IIter</a>, <a href="#line831">_OIter</a>);
+<b><a name="line834">834  </a></b>	
+<b><a name="line835">835  </a></b>	  template&lt;typename <b>_IIter</b>, typename <b>_OIter</b>, typename <b>_BinaryPredicate</b>&gt;
+<b><a name="line836">836  </a></b>	    <a href="#line835">_OIter</a> 
+<b><a name="line837">837  </a></b>	    unique_copy(<a href="#line835">_IIter</a>, <a href="#line835">_IIter</a>, <a href="#line835">_OIter</a>, <a href="#line835">_BinaryPredicate</a>);
+<b><a name="line838">838  </a></b>	
+<b><a name="line839">839  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line376">_GLIBCXX_END_NAMESPACE_ALGO</a>
+<b><a name="line840">840  </a></b>	} // namespace std
+<b><a name="line841">841  </a></b>	
+<b><a name="line842">842  </a></b>	#ifdef _GLIBCXX_PARALLEL
+<b><a name="line843">843  </a></b>	# include &lt;parallel/algorithmfwd.h&gt;
+<b><a name="line844">844  </a></b>	#endif
+<b><a name="line845">845  </a></b>	
+<b><a name="line846">846  </a></b>	#endif
+<b><a name="line847">847  </a></b>	
+<b><a name="line848">848  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

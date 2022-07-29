@@ -1,0 +1,115 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/gtest/gtest_prod.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Copyright 2006, Google Inc.
+<b><a name="line2">2    </a></b>	// All rights reserved.
+<b><a name="line3">3    </a></b>	//
+<b><a name="line4">4    </a></b>	// Redistribution and use in source and binary forms, with or without
+<b><a name="line5">5    </a></b>	// modification, are permitted provided that the following conditions are
+<b><a name="line6">6    </a></b>	// met:
+<b><a name="line7">7    </a></b>	//
+<b><a name="line8">8    </a></b>	//     * Redistributions of source code must retain the above copyright
+<b><a name="line9">9    </a></b>	// notice, this list of conditions and the following disclaimer.
+<b><a name="line10">10   </a></b>	//     * Redistributions in binary form must reproduce the above
+<b><a name="line11">11   </a></b>	// copyright notice, this list of conditions and the following disclaimer
+<b><a name="line12">12   </a></b>	// in the documentation and/or other materials provided with the
+<b><a name="line13">13   </a></b>	// distribution.
+<b><a name="line14">14   </a></b>	//     * Neither the name of Google Inc. nor the names of its
+<b><a name="line15">15   </a></b>	// contributors may be used to endorse or promote products derived from
+<b><a name="line16">16   </a></b>	// this software without specific prior written permission.
+<b><a name="line17">17   </a></b>	//
+<b><a name="line18">18   </a></b>	// THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+<b><a name="line19">19   </a></b>	// &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+<b><a name="line20">20   </a></b>	// LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+<b><a name="line21">21   </a></b>	// A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+<b><a name="line22">22   </a></b>	// OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+<b><a name="line23">23   </a></b>	// SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+<b><a name="line24">24   </a></b>	// LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+<b><a name="line25">25   </a></b>	// DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+<b><a name="line26">26   </a></b>	// THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+<b><a name="line27">27   </a></b>	// (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+<b><a name="line28">28   </a></b>	// OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+<b><a name="line29">29   </a></b>	//
+<b><a name="line30">30   </a></b>	// Author: wan@google.com (Zhanyong Wan)
+<b><a name="line31">31   </a></b>	//
+<b><a name="line32">32   </a></b>	// Google C++ Testing Framework definitions useful in production code.
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	#ifndef GTEST_INCLUDE_GTEST_GTEST_PROD_H_
+<b><a name="line35">35   </a></b>	#define <b>GTEST_INCLUDE_GTEST_GTEST_PROD_H_</b>
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	// When you need to test the private or protected members of a class,
+<b><a name="line38">38   </a></b>	// use the FRIEND_TEST macro to declare your tests as friends of the
+<b><a name="line39">39   </a></b>	// class.  For example:
+<b><a name="line40">40   </a></b>	//
+<b><a name="line41">41   </a></b>	// class MyClass {
+<b><a name="line42">42   </a></b>	//  private:
+<b><a name="line43">43   </a></b>	//   void MyMethod();
+<b><a name="line44">44   </a></b>	//   FRIEND_TEST(MyClassTest, MyMethod);
+<b><a name="line45">45   </a></b>	// };
+<b><a name="line46">46   </a></b>	//
+<b><a name="line47">47   </a></b>	// class MyClassTest : public testing::Test {
+<b><a name="line48">48   </a></b>	//   // ...
+<b><a name="line49">49   </a></b>	// };
+<b><a name="line50">50   </a></b>	//
+<b><a name="line51">51   </a></b>	// TEST_F(MyClassTest, MyMethod) {
+<b><a name="line52">52   </a></b>	//   // Can call MyClass::MyMethod() here.
+<b><a name="line53">53   </a></b>	// }
+<b><a name="line54">54   </a></b>	
+<b><a name="line55">55   </a></b>	#define <b>FRIEND_TEST</b>(test_case_name, test_name)\
+<b><a name="line56">56   </a></b>	friend class test_case_name##_##test_name##_Test
+<b><a name="line57">57   </a></b>	
+<b><a name="line58">58   </a></b>	#endif  // GTEST_INCLUDE_GTEST_GTEST_PROD_H_
+<b><a name="line59">59   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

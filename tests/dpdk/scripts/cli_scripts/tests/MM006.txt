@@ -1,0 +1,48 @@
+port_init 0 4 0 1024 4096
+port_init 1 4 0 1024 4096
+port_init 2 4 0 1024 4096
+port_init 3 4 0 1024 4096
+dma_to_device 0 4 mm_datafile_1MB.bin 0 32768 0
+dma_from_device 0 4 MM006_port0_qcount4_size32768.bin 0 32768 0
+dma_to_device 0 4 mm_datafile_1MB.bin 0 65536 0
+dma_from_device 0 4 MM006_port0_qcount4_size65536.bin 0 65536 0
+dma_to_device 0 4 mm_datafile_1MB.bin 0 131072 0
+dma_from_device 0 4 MM006_port0_qcount4_size131072.bin 0 131072 0
+dma_to_device 0 4 mm_datafile_1MB.bin 0 262144 0
+dma_from_device 0 4 MM006_port0_qcount4_size262144.bin 0 262144 0
+dma_to_device 0 4 mm_datafile_1MB.bin 0 524288 0
+dma_from_device 0 4 MM006_port0_qcount4_size524288.bin 0 524288 0
+dma_to_device 1 4 mm_datafile_1MB.bin 0 32768 0
+dma_from_device 1 4 MM006_port1_qcount4_size32768.bin 0 32768 0
+dma_to_device 1 4 mm_datafile_1MB.bin 0 65536 0
+dma_from_device 1 4 MM006_port1_qcount4_size65536.bin 0 65536 0
+dma_to_device 1 4 mm_datafile_1MB.bin 0 131072 0
+dma_from_device 1 4 MM006_port1_qcount4_size131072.bin 0 131072 0
+dma_to_device 1 4 mm_datafile_1MB.bin 0 262144 0
+dma_from_device 1 4 MM006_port1_qcount4_size262144.bin 0 262144 0
+dma_to_device 1 4 mm_datafile_1MB.bin 0 524288 0
+dma_from_device 1 4 MM006_port1_qcount4_size524288.bin 0 524288 0
+dma_to_device 2 4 mm_datafile_1MB.bin 0 32768 0
+dma_from_device 2 4 MM006_port2_qcount4_size32768.bin 0 32768 0
+dma_to_device 2 4 mm_datafile_1MB.bin 0 65536 0
+dma_from_device 2 4 MM006_port2_qcount4_size65536.bin 0 65536 0
+dma_to_device 2 4 mm_datafile_1MB.bin 0 131072 0
+dma_from_device 2 4 MM006_port2_qcount4_size131072.bin 0 131072 0
+dma_to_device 2 4 mm_datafile_1MB.bin 0 262144 0
+dma_from_device 2 4 MM006_port2_qcount4_size262144.bin 0 262144 0
+dma_to_device 2 4 mm_datafile_1MB.bin 0 524288 0
+dma_from_device 2 4 MM006_port2_qcount4_size524288.bin 0 524288 0
+dma_to_device 3 4 mm_datafile_1MB.bin 0 32768 0
+dma_from_device 3 4 MM006_port3_qcount4_size32768.bin 0 32768 0
+dma_to_device 3 4 mm_datafile_1MB.bin 0 65536 0
+dma_from_device 3 4 MM006_port3_qcount4_size65536.bin 0 65536 0
+dma_to_device 3 4 mm_datafile_1MB.bin 0 131072 0
+dma_from_device 3 4 MM006_port3_qcount4_size131072.bin 0 131072 0
+dma_to_device 3 4 mm_datafile_1MB.bin 0 262144 0
+dma_from_device 3 4 MM006_port3_qcount4_size262144.bin 0 262144 0
+dma_to_device 3 4 mm_datafile_1MB.bin 0 524288 0
+dma_from_device 3 4 MM006_port3_qcount4_size524288.bin 0 524288 0
+port_close 0
+port_close 1
+port_close 2
+port_close 3

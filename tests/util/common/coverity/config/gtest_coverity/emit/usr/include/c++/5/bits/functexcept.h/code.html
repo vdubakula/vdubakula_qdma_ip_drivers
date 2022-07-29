@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/bits/functexcept.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Function-Based Exception Support -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2001-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file bits/functexcept.h
+<b><a name="line26">26   </a></b>	 *  This is an internal header file, included by other library headers.
+<b><a name="line27">27   </a></b>	 *  Do not attempt to use it directly. @headername{exception}
+<b><a name="line28">28   </a></b>	 *
+<b><a name="line29">29   </a></b>	 *  This header provides support for -fno-exceptions.
+<b><a name="line30">30   </a></b>	 */
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	//
+<b><a name="line33">33   </a></b>	// ISO C++ 14882: 19.1  Exception classes
+<b><a name="line34">34   </a></b>	//
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	#ifndef _FUNCTEXCEPT_H
+<b><a name="line37">37   </a></b>	#define <b>_FUNCTEXCEPT_H</b> 1
+<b><a name="line38">38   </a></b>	
+<b><a name="line39">39   </a></b>	#include &lt;bits/c++config.h&gt;
+<b><a name="line40">40   </a></b>	#include &lt;bits/exception_defines.h&gt;
+<b><a name="line41">41   </a></b>	
+<b><a name="line42">42   </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line43">43   </a></b>	{
+<b><a name="line44">44   </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	  // Helper for exception objects in &lt;except&gt;
+<b><a name="line47">47   </a></b>	  void
+<b><a name="line48">48   </a></b>	  __throw_bad_exception(void) __attribute__((__noreturn__));
+<b><a name="line49">49   </a></b>	
+<b><a name="line50">50   </a></b>	  // Helper for exception objects in &lt;new&gt;
+<b><a name="line51">51   </a></b>	  void
+<b><a name="line52">52   </a></b>	  __throw_bad_alloc(void) __attribute__((__noreturn__));
+<b><a name="line53">53   </a></b>	
+<b><a name="line54">54   </a></b>	  // Helper for exception objects in &lt;typeinfo&gt;
+<b><a name="line55">55   </a></b>	  void
+<b><a name="line56">56   </a></b>	  __throw_bad_cast(void) __attribute__((__noreturn__));
+<b><a name="line57">57   </a></b>	
+<b><a name="line58">58   </a></b>	  void
+<b><a name="line59">59   </a></b>	  __throw_bad_typeid(void) __attribute__((__noreturn__));
+<b><a name="line60">60   </a></b>	
+<b><a name="line61">61   </a></b>	  // Helpers for exception objects in &lt;stdexcept&gt;
+<b><a name="line62">62   </a></b>	  void
+<b><a name="line63">63   </a></b>	  __throw_logic_error(const char*) __attribute__((__noreturn__));
+<b><a name="line64">64   </a></b>	
+<b><a name="line65">65   </a></b>	  void
+<b><a name="line66">66   </a></b>	  __throw_domain_error(const char*) __attribute__((__noreturn__));
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	  void
+<b><a name="line69">69   </a></b>	  __throw_invalid_argument(const char*) __attribute__((__noreturn__));
+<b><a name="line70">70   </a></b>	
+<b><a name="line71">71   </a></b>	  void
+<b><a name="line72">72   </a></b>	  __throw_length_error(const char*) __attribute__((__noreturn__));
+<b><a name="line73">73   </a></b>	
+<b><a name="line74">74   </a></b>	  void
+<b><a name="line75">75   </a></b>	  __throw_out_of_range(const char*) __attribute__((__noreturn__));
+<b><a name="line76">76   </a></b>	
+<b><a name="line77">77   </a></b>	  void
+<b><a name="line78">78   </a></b>	  __throw_out_of_range_fmt(const char*, ...) __attribute__((__noreturn__))
+<b><a name="line79">79   </a></b>	    __attribute__((__format__(__gnu_printf__, 1, 2)));
+<b><a name="line80">80   </a></b>	
+<b><a name="line81">81   </a></b>	  void
+<b><a name="line82">82   </a></b>	  __throw_runtime_error(const char*) __attribute__((__noreturn__));
+<b><a name="line83">83   </a></b>	
+<b><a name="line84">84   </a></b>	  void
+<b><a name="line85">85   </a></b>	  __throw_range_error(const char*) __attribute__((__noreturn__));
+<b><a name="line86">86   </a></b>	
+<b><a name="line87">87   </a></b>	  void
+<b><a name="line88">88   </a></b>	  __throw_overflow_error(const char*) __attribute__((__noreturn__));
+<b><a name="line89">89   </a></b>	
+<b><a name="line90">90   </a></b>	  void
+<b><a name="line91">91   </a></b>	  __throw_underflow_error(const char*) __attribute__((__noreturn__));
+<b><a name="line92">92   </a></b>	
+<b><a name="line93">93   </a></b>	  // Helpers for exception objects in &lt;ios&gt;
+<b><a name="line94">94   </a></b>	  void
+<b><a name="line95">95   </a></b>	  __throw_ios_failure(const char*) __attribute__((__noreturn__));
+<b><a name="line96">96   </a></b>	
+<b><a name="line97">97   </a></b>	  void
+<b><a name="line98">98   </a></b>	  __throw_system_error(int) __attribute__((__noreturn__));
+<b><a name="line99">99   </a></b>	
+<b><a name="line100">100  </a></b>	  void
+<b><a name="line101">101  </a></b>	  __throw_future_error(int) __attribute__((__noreturn__));
+<b><a name="line102">102  </a></b>	
+<b><a name="line103">103  </a></b>	  // Helpers for exception objects in &lt;functional&gt;
+<b><a name="line104">104  </a></b>	  void
+<b><a name="line105">105  </a></b>	  __throw_bad_function_call() __attribute__((__noreturn__));
+<b><a name="line106">106  </a></b>	
+<b><a name="line107">107  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line108">108  </a></b>	} // namespace
+<b><a name="line109">109  </a></b>	
+<b><a name="line110">110  </a></b>	#endif
+<b><a name="line111">111  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

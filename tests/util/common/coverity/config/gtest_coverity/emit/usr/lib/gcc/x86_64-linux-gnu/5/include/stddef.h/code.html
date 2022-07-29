@@ -1,0 +1,500 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 1989-2015 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	This file is part of GCC.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	GCC is free software; you can redistribute it and/or modify
+<b><a name="line6">6    </a></b>	it under the terms of the GNU General Public License as published by
+<b><a name="line7">7    </a></b>	the Free Software Foundation; either version 3, or (at your option)
+<b><a name="line8">8    </a></b>	any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	GCC is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line13">13   </a></b>	GNU General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line16">16   </a></b>	permissions described in the GCC Runtime Library Exception, version
+<b><a name="line17">17   </a></b>	3.1, as published by the Free Software Foundation.
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	You should have received a copy of the GNU General Public License and
+<b><a name="line20">20   </a></b>	a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line21">21   </a></b>	see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line22">22   </a></b>	&lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>	/*
+<b><a name="line25">25   </a></b>	 * ISO C Standard:  7.17  Common definitions  &lt;stddef.h&gt;
+<b><a name="line26">26   </a></b>	 */
+<b><a name="line27">27   </a></b>	#if (!defined(<a href="#line39">_STDDEF_H</a>) &amp;&amp; !defined(<a href="#line40">_STDDEF_H_</a>) &amp;&amp; !defined(<a href="#line42">_ANSI_STDDEF_H</a>) \
+<b><a name="line28">28   </a></b>	     &amp;&amp; !defined(__STDDEF_H__)) \
+<b><a name="line29">29   </a></b>	    || defined(<a href="../../../../../../include/stdlib.h/code.html#line29">__need_wchar_t</a>) || defined(<a href="../../../../../../include/_G_config.h/code.html#line10">__need_size_t</a>) \
+<b><a name="line30">30   </a></b>	    || defined(__need_ptrdiff_t) || defined(<a href="../../../../../../include/_G_config.h/code.html#line14">__need_NULL</a>) \
+<b><a name="line31">31   </a></b>	    || defined(<a href="../../../../../../include/wchar.h/code.html#line50">__need_wint_t</a>)
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	/* Any one of these symbols __need_* means that GNU libc
+<b><a name="line34">34   </a></b>	   wants us just to define one data type.  So don't define
+<b><a name="line35">35   </a></b>	   the symbols that indicate this file's entire job has been done.  */
+<b><a name="line36">36   </a></b>	#if (!defined(<a href="../../../../../../include/stdlib.h/code.html#line29">__need_wchar_t</a>) &amp;&amp; !defined(<a href="../../../../../../include/_G_config.h/code.html#line10">__need_size_t</a>)	\
+<b><a name="line37">37   </a></b>	     &amp;&amp; !defined(__need_ptrdiff_t) &amp;&amp; !defined(<a href="../../../../../../include/_G_config.h/code.html#line14">__need_NULL</a>)	\
+<b><a name="line38">38   </a></b>	     &amp;&amp; !defined(<a href="../../../../../../include/wchar.h/code.html#line50">__need_wint_t</a>))
+<b><a name="line39">39   </a></b>	#define <b>_STDDEF_H</b>
+<b><a name="line40">40   </a></b>	#define <b>_STDDEF_H_</b>
+<b><a name="line41">41   </a></b>	/* snaroff@next.com says the NeXT needs this.  */
+<b><a name="line42">42   </a></b>	#define <b>_ANSI_STDDEF_H</b>
+<b><a name="line43">43   </a></b>	#endif
+<b><a name="line44">44   </a></b>	
+<b><a name="line45">45   </a></b>	#ifndef __sys_stdtypes_h
+<b><a name="line46">46   </a></b>	/* This avoids lossage on SunOS but only if stdtypes.h comes first.
+<b><a name="line47">47   </a></b>	   There's no way to win with the other order!  Sun lossage.  */
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	/* On 4.3bsd-net2, make sure ansi.h is included, so we have
+<b><a name="line50">50   </a></b>	   one less case to deal with in the following.  */
+<b><a name="line51">51   </a></b>	#if defined (__BSD_NET2__) || defined (____386BSD____) || (defined (__FreeBSD__) &amp;&amp; (__FreeBSD__ &lt; 5)) || defined(__NetBSD__)
+<b><a name="line52">52   </a></b>	#include &lt;machine/ansi.h&gt;
+<b><a name="line53">53   </a></b>	#endif
+<b><a name="line54">54   </a></b>	/* On FreeBSD 5, machine/ansi.h does not exist anymore... */
+<b><a name="line55">55   </a></b>	#if defined (__FreeBSD__) &amp;&amp; (__FreeBSD__ &gt;= 5)
+<b><a name="line56">56   </a></b>	#include &lt;sys/_types.h&gt;
+<b><a name="line57">57   </a></b>	#endif
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	/* In 4.3bsd-net2, machine/ansi.h defines these symbols, which are
+<b><a name="line60">60   </a></b>	   defined if the corresponding type is *not* defined.
+<b><a name="line61">61   </a></b>	   FreeBSD-2.1 defines _MACHINE_ANSI_H_ instead of _ANSI_H_.
+<b><a name="line62">62   </a></b>	   NetBSD defines _I386_ANSI_H_ and _X86_64_ANSI_H_ instead of _ANSI_H_ */
+<b><a name="line63">63   </a></b>	#if defined(_ANSI_H_) || defined(_MACHINE_ANSI_H_) || defined(_X86_64_ANSI_H_)  || defined(_I386_ANSI_H_)
+<b><a name="line64">64   </a></b>	#if !defined(_SIZE_T_) &amp;&amp; !defined(_BSD_SIZE_T_)
+<b><a name="line65">65   </a></b>	#define _SIZE_T
+<b><a name="line66">66   </a></b>	#endif
+<b><a name="line67">67   </a></b>	#if !defined(_PTRDIFF_T_) &amp;&amp; !defined(_BSD_PTRDIFF_T_)
+<b><a name="line68">68   </a></b>	#define _PTRDIFF_T
+<b><a name="line69">69   </a></b>	#endif
+<b><a name="line70">70   </a></b>	/* On BSD/386 1.1, at least, machine/ansi.h defines _BSD_WCHAR_T_
+<b><a name="line71">71   </a></b>	   instead of _WCHAR_T_. */
+<b><a name="line72">72   </a></b>	#if !defined(_WCHAR_T_) &amp;&amp; !defined(_BSD_WCHAR_T_)
+<b><a name="line73">73   </a></b>	#ifndef _BSD_WCHAR_T_
+<b><a name="line74">74   </a></b>	#define _WCHAR_T
+<b><a name="line75">75   </a></b>	#endif
+<b><a name="line76">76   </a></b>	#endif
+<b><a name="line77">77   </a></b>	/* Undef _FOO_T_ if we are supposed to define foo_t.  */
+<b><a name="line78">78   </a></b>	#if defined (__need_ptrdiff_t) || defined (_STDDEF_H_)
+<b><a name="line79">79   </a></b>	#undef _PTRDIFF_T_
+<b><a name="line80">80   </a></b>	#undef _BSD_PTRDIFF_T_
+<b><a name="line81">81   </a></b>	#endif
+<b><a name="line82">82   </a></b>	#if defined (__need_size_t) || defined (_STDDEF_H_)
+<b><a name="line83">83   </a></b>	#undef _SIZE_T_
+<b><a name="line84">84   </a></b>	#undef _BSD_SIZE_T_
+<b><a name="line85">85   </a></b>	#endif
+<b><a name="line86">86   </a></b>	#if defined (__need_wchar_t) || defined (_STDDEF_H_)
+<b><a name="line87">87   </a></b>	#undef _WCHAR_T_
+<b><a name="line88">88   </a></b>	#undef _BSD_WCHAR_T_
+<b><a name="line89">89   </a></b>	#endif
+<b><a name="line90">90   </a></b>	#endif /* defined(_ANSI_H_) || defined(_MACHINE_ANSI_H_) || defined(_X86_64_ANSI_H_) || defined(_I386_ANSI_H_) */
+<b><a name="line91">91   </a></b>	
+<b><a name="line92">92   </a></b>	/* Sequent's header files use _PTRDIFF_T_ in some conflicting way.
+<b><a name="line93">93   </a></b>	   Just ignore it.  */
+<b><a name="line94">94   </a></b>	#if defined (__sequent__) &amp;&amp; defined (<a href="#line141">_PTRDIFF_T_</a>)
+<b><a name="line95">95   </a></b>	#undef _PTRDIFF_T_
+<b><a name="line96">96   </a></b>	#endif
+<b><a name="line97">97   </a></b>	
+<b><a name="line98">98   </a></b>	/* On VxWorks, &lt;type/vxTypesBase.h&gt; may have defined macros like
+<b><a name="line99">99   </a></b>	   _TYPE_size_t which will typedef size_t.  fixincludes patched the
+<b><a name="line100">100  </a></b>	   vxTypesBase.h so that this macro is only defined if _GCC_SIZE_T is
+<b><a name="line101">101  </a></b>	   not defined, and so that defining this macro defines _GCC_SIZE_T.
+<b><a name="line102">102  </a></b>	   If we find that the macros are still defined at this point, we must
+<b><a name="line103">103  </a></b>	   invoke them so that the type is defined as expected.  */
+<b><a name="line104">104  </a></b>	#if defined (_TYPE_ptrdiff_t) &amp;&amp; (defined (__need_ptrdiff_t) || defined (<a href="#line40">_STDDEF_H_</a>))
+<b><a name="line105">105  </a></b>	_TYPE_ptrdiff_t;
+<b><a name="line106">106  </a></b>	#undef _TYPE_ptrdiff_t
+<b><a name="line107">107  </a></b>	#endif
+<b><a name="line108">108  </a></b>	#if defined (_TYPE_size_t) &amp;&amp; (defined (<a href="../../../../../../include/_G_config.h/code.html#line10">__need_size_t</a>) || defined (<a href="#line40">_STDDEF_H_</a>))
+<b><a name="line109">109  </a></b>	_TYPE_size_t;
+<b><a name="line110">110  </a></b>	#undef _TYPE_size_t
+<b><a name="line111">111  </a></b>	#endif
+<b><a name="line112">112  </a></b>	#if defined (_TYPE_wchar_t) &amp;&amp; (defined (<a href="../../../../../../include/stdlib.h/code.html#line29">__need_wchar_t</a>) || defined (<a href="#line40">_STDDEF_H_</a>))
+<b><a name="line113">113  </a></b>	_TYPE_wchar_t;
+<b><a name="line114">114  </a></b>	#undef _TYPE_wchar_t
+<b><a name="line115">115  </a></b>	#endif
+<b><a name="line116">116  </a></b>	
+<b><a name="line117">117  </a></b>	/* In case nobody has defined these types, but we aren't running under
+<b><a name="line118">118  </a></b>	   GCC 2.00, make sure that __PTRDIFF_TYPE__, __SIZE_TYPE__, and
+<b><a name="line119">119  </a></b>	   __WCHAR_TYPE__ have reasonable values.  This can happen if the
+<b><a name="line120">120  </a></b>	   parts of GCC is compiled by an older compiler, that actually
+<b><a name="line121">121  </a></b>	   include gstddef.h, such as collect2.  */
+<b><a name="line122">122  </a></b>	
+<b><a name="line123">123  </a></b>	/* Signed type of difference of two pointers.  */
+<b><a name="line124">124  </a></b>	
+<b><a name="line125">125  </a></b>	/* Define this type if we are doing the whole job,
+<b><a name="line126">126  </a></b>	   or if we want this type in particular.  */
+<b><a name="line127">127  </a></b>	#if defined (<a href="#line39">_STDDEF_H</a>) || defined (__need_ptrdiff_t)
+<b><a name="line128">128  </a></b>	#ifndef <a href="#line137">_PTRDIFF_T</a>	/* in case &lt;sys/types.h&gt; has defined it. */
+<b><a name="line129">129  </a></b>	#ifndef _T_PTRDIFF_
+<b><a name="line130">130  </a></b>	#ifndef _T_PTRDIFF
+<b><a name="line131">131  </a></b>	#ifndef __PTRDIFF_T
+<b><a name="line132">132  </a></b>	#ifndef _PTRDIFF_T_
+<b><a name="line133">133  </a></b>	#ifndef _BSD_PTRDIFF_T_
+<b><a name="line134">134  </a></b>	#ifndef ___int_ptrdiff_t_h
+<b><a name="line135">135  </a></b>	#ifndef _GCC_PTRDIFF_T
+<b><a name="line136">136  </a></b>	#ifndef _PTRDIFF_T_DECLARED /* DragonFly */
+<b><a name="line137">137  </a></b>	#define <b>_PTRDIFF_T</b>
+<b><a name="line138">138  </a></b>	#define <b>_T_PTRDIFF_</b>
+<b><a name="line139">139  </a></b>	#define <b>_T_PTRDIFF</b>
+<b><a name="line140">140  </a></b>	#define <b>__PTRDIFF_T</b>
+<b><a name="line141">141  </a></b>	#define <b>_PTRDIFF_T_</b>
+<b><a name="line142">142  </a></b>	#define <b>_BSD_PTRDIFF_T_</b>
+<b><a name="line143">143  </a></b>	#define <b>___int_ptrdiff_t_h</b>
+<b><a name="line144">144  </a></b>	#define <b>_GCC_PTRDIFF_T</b>
+<b><a name="line145">145  </a></b>	#define <b>_PTRDIFF_T_DECLARED</b>
+<b><a name="line146">146  </a></b>	#ifndef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line789">__PTRDIFF_TYPE__</a>
+<b><a name="line147">147  </a></b>	#define __PTRDIFF_TYPE__ long int
+<b><a name="line148">148  </a></b>	#endif
+<b><a name="line149">149  </a></b>	typedef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line789">__PTRDIFF_TYPE__</a> <b>ptrdiff_t</b>;
+<b><a name="line150">150  </a></b>	#endif /* _PTRDIFF_T_DECLARED */
+<b><a name="line151">151  </a></b>	#endif /* _GCC_PTRDIFF_T */
+<b><a name="line152">152  </a></b>	#endif /* ___int_ptrdiff_t_h */
+<b><a name="line153">153  </a></b>	#endif /* _BSD_PTRDIFF_T_ */
+<b><a name="line154">154  </a></b>	#endif /* _PTRDIFF_T_ */
+<b><a name="line155">155  </a></b>	#endif /* __PTRDIFF_T */
+<b><a name="line156">156  </a></b>	#endif /* _T_PTRDIFF */
+<b><a name="line157">157  </a></b>	#endif /* _T_PTRDIFF_ */
+<b><a name="line158">158  </a></b>	#endif /* _PTRDIFF_T */
+<b><a name="line159">159  </a></b>	
+<b><a name="line160">160  </a></b>	/* If this symbol has done its job, get rid of it.  */
+<b><a name="line161">161  </a></b>	#undef	__need_ptrdiff_t
+<b><a name="line162">162  </a></b>	
+<b><a name="line163">163  </a></b>	#endif /* _STDDEF_H or __need_ptrdiff_t.  */
+<b><a name="line164">164  </a></b>	
+<b><a name="line165">165  </a></b>	/* Unsigned type of `sizeof' something.  */
+<b><a name="line166">166  </a></b>	
+<b><a name="line167">167  </a></b>	/* Define this type if we are doing the whole job,
+<b><a name="line168">168  </a></b>	   or if we want this type in particular.  */
+<b><a name="line169">169  </a></b>	#if defined (<a href="#line39">_STDDEF_H</a>) || defined (<a href="../../../../../../include/_G_config.h/code.html#line10">__need_size_t</a>)
+<b><a name="line170">170  </a></b>	#ifndef <a href="#line187">__size_t__</a>	/* BeOS */
+<b><a name="line171">171  </a></b>	#ifndef __SIZE_T__	/* Cray Unicos/Mk */
+<b><a name="line172">172  </a></b>	#ifndef _SIZE_T	/* in case &lt;sys/types.h&gt; has defined it. */
+<b><a name="line173">173  </a></b>	#ifndef _SYS_SIZE_T_H
+<b><a name="line174">174  </a></b>	#ifndef _T_SIZE_
+<b><a name="line175">175  </a></b>	#ifndef _T_SIZE
+<b><a name="line176">176  </a></b>	#ifndef __SIZE_T
+<b><a name="line177">177  </a></b>	#ifndef _SIZE_T_
+<b><a name="line178">178  </a></b>	#ifndef _BSD_SIZE_T_
+<b><a name="line179">179  </a></b>	#ifndef _SIZE_T_DEFINED_
+<b><a name="line180">180  </a></b>	#ifndef _SIZE_T_DEFINED
+<b><a name="line181">181  </a></b>	#ifndef _BSD_SIZE_T_DEFINED_	/* Darwin */
+<b><a name="line182">182  </a></b>	#ifndef _SIZE_T_DECLARED	/* FreeBSD 5 */
+<b><a name="line183">183  </a></b>	#ifndef ___int_size_t_h
+<b><a name="line184">184  </a></b>	#ifndef _GCC_SIZE_T
+<b><a name="line185">185  </a></b>	#ifndef _SIZET_
+<b><a name="line186">186  </a></b>	#ifndef __size_t
+<b><a name="line187">187  </a></b>	#define <b>__size_t__</b>	/* BeOS */
+<b><a name="line188">188  </a></b>	#define <b>__SIZE_T__</b>	/* Cray Unicos/Mk */
+<b><a name="line189">189  </a></b>	#define <b>_SIZE_T</b>
+<b><a name="line190">190  </a></b>	#define <b>_SYS_SIZE_T_H</b>
+<b><a name="line191">191  </a></b>	#define <b>_T_SIZE_</b>
+<b><a name="line192">192  </a></b>	#define <b>_T_SIZE</b>
+<b><a name="line193">193  </a></b>	#define <b>__SIZE_T</b>
+<b><a name="line194">194  </a></b>	#define <b>_SIZE_T_</b>
+<b><a name="line195">195  </a></b>	#define <b>_BSD_SIZE_T_</b>
+<b><a name="line196">196  </a></b>	#define <b>_SIZE_T_DEFINED_</b>
+<b><a name="line197">197  </a></b>	#define <b>_SIZE_T_DEFINED</b>
+<b><a name="line198">198  </a></b>	#define <b>_BSD_SIZE_T_DEFINED_</b>	/* Darwin */
+<b><a name="line199">199  </a></b>	#define <b>_SIZE_T_DECLARED</b>	/* FreeBSD 5 */
+<b><a name="line200">200  </a></b>	#define <b>___int_size_t_h</b>
+<b><a name="line201">201  </a></b>	#define <b>_GCC_SIZE_T</b>
+<b><a name="line202">202  </a></b>	#define <b>_SIZET_</b>
+<b><a name="line203">203  </a></b>	#if (defined (__FreeBSD__) &amp;&amp; (__FreeBSD__ &gt;= 5)) \
+<b><a name="line204">204  </a></b>	  || defined(__DragonFly__) \
+<b><a name="line205">205  </a></b>	  || defined(__FreeBSD_kernel__)
+<b><a name="line206">206  </a></b>	/* __size_t is a typedef on FreeBSD 5, must not trash it. */
+<b><a name="line207">207  </a></b>	#elif defined (__VMS__)
+<b><a name="line208">208  </a></b>	/* __size_t is also a typedef on VMS.  */
+<b><a name="line209">209  </a></b>	#else
+<b><a name="line210">210  </a></b>	#define <b>__size_t</b>
+<b><a name="line211">211  </a></b>	#endif
+<b><a name="line212">212  </a></b>	#ifndef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line447">__SIZE_TYPE__</a>
+<b><a name="line213">213  </a></b>	#define __SIZE_TYPE__ long unsigned int
+<b><a name="line214">214  </a></b>	#endif
+<b><a name="line215">215  </a></b>	#if !(defined (<a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line330">__GNUG__</a>) &amp;&amp; defined (size_t))
+<b><a name="line216">216  </a></b>	typedef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line447">__SIZE_TYPE__</a> <b>size_t</b>;
+<b><a name="line217">217  </a></b>	#ifdef __BEOS__
+<b><a name="line218">218  </a></b>	typedef long ssize_t;
+<b><a name="line219">219  </a></b>	#endif /* __BEOS__ */
+<b><a name="line220">220  </a></b>	#endif /* !(defined (__GNUG__) &amp;&amp; defined (size_t)) */
+<b><a name="line221">221  </a></b>	#endif /* __size_t */
+<b><a name="line222">222  </a></b>	#endif /* _SIZET_ */
+<b><a name="line223">223  </a></b>	#endif /* _GCC_SIZE_T */
+<b><a name="line224">224  </a></b>	#endif /* ___int_size_t_h */
+<b><a name="line225">225  </a></b>	#endif /* _SIZE_T_DECLARED */
+<b><a name="line226">226  </a></b>	#endif /* _BSD_SIZE_T_DEFINED_ */
+<b><a name="line227">227  </a></b>	#endif /* _SIZE_T_DEFINED */
+<b><a name="line228">228  </a></b>	#endif /* _SIZE_T_DEFINED_ */
+<b><a name="line229">229  </a></b>	#endif /* _BSD_SIZE_T_ */
+<b><a name="line230">230  </a></b>	#endif /* _SIZE_T_ */
+<b><a name="line231">231  </a></b>	#endif /* __SIZE_T */
+<b><a name="line232">232  </a></b>	#endif /* _T_SIZE */
+<b><a name="line233">233  </a></b>	#endif /* _T_SIZE_ */
+<b><a name="line234">234  </a></b>	#endif /* _SYS_SIZE_T_H */
+<b><a name="line235">235  </a></b>	#endif /* _SIZE_T */
+<b><a name="line236">236  </a></b>	#endif /* __SIZE_T__ */
+<b><a name="line237">237  </a></b>	#endif /* __size_t__ */
+<b><a name="line238">238  </a></b>	#undef	<a href="../../../../../../include/_G_config.h/code.html#line10">__need_size_t</a>
+<b><a name="line239">239  </a></b>	#endif /* _STDDEF_H or __need_size_t.  */
+<b><a name="line240">240  </a></b>	
+<b><a name="line241">241  </a></b>	
+<b><a name="line242">242  </a></b>	/* Wide character type.
+<b><a name="line243">243  </a></b>	   Locale-writers should change this as necessary to
+<b><a name="line244">244  </a></b>	   be big enough to hold unique values not between 0 and 127,
+<b><a name="line245">245  </a></b>	   and not (wchar_t) -1, for each defined multibyte character.  */
+<b><a name="line246">246  </a></b>	
+<b><a name="line247">247  </a></b>	/* Define this type if we are doing the whole job,
+<b><a name="line248">248  </a></b>	   or if we want this type in particular.  */
+<b><a name="line249">249  </a></b>	#if defined (<a href="#line39">_STDDEF_H</a>) || defined (<a href="../../../../../../include/stdlib.h/code.html#line29">__need_wchar_t</a>)
+<b><a name="line250">250  </a></b>	#ifndef <a href="#line267">__wchar_t__</a>	/* BeOS */
+<b><a name="line251">251  </a></b>	#ifndef __WCHAR_T__	/* Cray Unicos/Mk */
+<b><a name="line252">252  </a></b>	#ifndef _WCHAR_T
+<b><a name="line253">253  </a></b>	#ifndef _T_WCHAR_
+<b><a name="line254">254  </a></b>	#ifndef _T_WCHAR
+<b><a name="line255">255  </a></b>	#ifndef __WCHAR_T
+<b><a name="line256">256  </a></b>	#ifndef _WCHAR_T_
+<b><a name="line257">257  </a></b>	#ifndef _BSD_WCHAR_T_
+<b><a name="line258">258  </a></b>	#ifndef _BSD_WCHAR_T_DEFINED_    /* Darwin */
+<b><a name="line259">259  </a></b>	#ifndef _BSD_RUNE_T_DEFINED_	/* Darwin */
+<b><a name="line260">260  </a></b>	#ifndef _WCHAR_T_DECLARED /* FreeBSD 5 */
+<b><a name="line261">261  </a></b>	#ifndef _WCHAR_T_DEFINED_
+<b><a name="line262">262  </a></b>	#ifndef _WCHAR_T_DEFINED
+<b><a name="line263">263  </a></b>	#ifndef _WCHAR_T_H
+<b><a name="line264">264  </a></b>	#ifndef ___int_wchar_t_h
+<b><a name="line265">265  </a></b>	#ifndef __INT_WCHAR_T_H
+<b><a name="line266">266  </a></b>	#ifndef _GCC_WCHAR_T
+<b><a name="line267">267  </a></b>	#define <b>__wchar_t__</b>	/* BeOS */
+<b><a name="line268">268  </a></b>	#define <b>__WCHAR_T__</b>	/* Cray Unicos/Mk */
+<b><a name="line269">269  </a></b>	#define <b>_WCHAR_T</b>
+<b><a name="line270">270  </a></b>	#define <b>_T_WCHAR_</b>
+<b><a name="line271">271  </a></b>	#define <b>_T_WCHAR</b>
+<b><a name="line272">272  </a></b>	#define <b>__WCHAR_T</b>
+<b><a name="line273">273  </a></b>	#define <b>_WCHAR_T_</b>
+<b><a name="line274">274  </a></b>	#define <b>_BSD_WCHAR_T_</b>
+<b><a name="line275">275  </a></b>	#define <b>_WCHAR_T_DEFINED_</b>
+<b><a name="line276">276  </a></b>	#define <b>_WCHAR_T_DEFINED</b>
+<b><a name="line277">277  </a></b>	#define <b>_WCHAR_T_H</b>
+<b><a name="line278">278  </a></b>	#define <b>___int_wchar_t_h</b>
+<b><a name="line279">279  </a></b>	#define <b>__INT_WCHAR_T_H</b>
+<b><a name="line280">280  </a></b>	#define <b>_GCC_WCHAR_T</b>
+<b><a name="line281">281  </a></b>	#define <b>_WCHAR_T_DECLARED</b>
+<b><a name="line282">282  </a></b>	
+<b><a name="line283">283  </a></b>	/* On BSD/386 1.1, at least, machine/ansi.h defines _BSD_WCHAR_T_
+<b><a name="line284">284  </a></b>	   instead of _WCHAR_T_, and _BSD_RUNE_T_ (which, unlike the other
+<b><a name="line285">285  </a></b>	   symbols in the _FOO_T_ family, stays defined even after its
+<b><a name="line286">286  </a></b>	   corresponding type is defined).  If we define wchar_t, then we
+<b><a name="line287">287  </a></b>	   must undef _WCHAR_T_; for BSD/386 1.1 (and perhaps others), if
+<b><a name="line288">288  </a></b>	   we undef _WCHAR_T_, then we must also define rune_t, since 
+<b><a name="line289">289  </a></b>	   headers like runetype.h assume that if machine/ansi.h is included,
+<b><a name="line290">290  </a></b>	   and _BSD_WCHAR_T_ is not defined, then rune_t is available.
+<b><a name="line291">291  </a></b>	   machine/ansi.h says, &quot;Note that _WCHAR_T_ and _RUNE_T_ must be of
+<b><a name="line292">292  </a></b>	   the same type.&quot; */
+<b><a name="line293">293  </a></b>	#ifdef <a href="#line274">_BSD_WCHAR_T_</a>
+<b><a name="line294">294  </a></b>	#undef <a href="#line274">_BSD_WCHAR_T_</a>
+<b><a name="line295">295  </a></b>	#ifdef _BSD_RUNE_T_
+<b><a name="line296">296  </a></b>	#if !defined (_ANSI_SOURCE) &amp;&amp; !defined (_POSIX_SOURCE)
+<b><a name="line297">297  </a></b>	typedef _BSD_RUNE_T_ rune_t;
+<b><a name="line298">298  </a></b>	#define _BSD_WCHAR_T_DEFINED_
+<b><a name="line299">299  </a></b>	#define _BSD_RUNE_T_DEFINED_	/* Darwin */
+<b><a name="line300">300  </a></b>	#if defined (__FreeBSD__) &amp;&amp; (__FreeBSD__ &lt; 5)
+<b><a name="line301">301  </a></b>	/* Why is this file so hard to maintain properly?  In contrast to
+<b><a name="line302">302  </a></b>	   the comment above regarding BSD/386 1.1, on FreeBSD for as long
+<b><a name="line303">303  </a></b>	   as the symbol has existed, _BSD_RUNE_T_ must not stay defined or
+<b><a name="line304">304  </a></b>	   redundant typedefs will occur when stdlib.h is included after this file. */
+<b><a name="line305">305  </a></b>	#undef _BSD_RUNE_T_
+<b><a name="line306">306  </a></b>	#endif
+<b><a name="line307">307  </a></b>	#endif
+<b><a name="line308">308  </a></b>	#endif
+<b><a name="line309">309  </a></b>	#endif
+<b><a name="line310">310  </a></b>	/* FreeBSD 5 can't be handled well using &quot;traditional&quot; logic above
+<b><a name="line311">311  </a></b>	   since it no longer defines _BSD_RUNE_T_ yet still desires to export
+<b><a name="line312">312  </a></b>	   rune_t in some cases... */
+<b><a name="line313">313  </a></b>	#if defined (__FreeBSD__) &amp;&amp; (__FreeBSD__ &gt;= 5)
+<b><a name="line314">314  </a></b>	#if !defined (_ANSI_SOURCE) &amp;&amp; !defined (_POSIX_SOURCE)
+<b><a name="line315">315  </a></b>	#if __BSD_VISIBLE
+<b><a name="line316">316  </a></b>	#ifndef _RUNE_T_DECLARED
+<b><a name="line317">317  </a></b>	typedef __rune_t        rune_t;
+<b><a name="line318">318  </a></b>	#define _RUNE_T_DECLARED
+<b><a name="line319">319  </a></b>	#endif
+<b><a name="line320">320  </a></b>	#endif
+<b><a name="line321">321  </a></b>	#endif
+<b><a name="line322">322  </a></b>	#endif
+<b><a name="line323">323  </a></b>	
+<b><a name="line324">324  </a></b>	#ifndef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line594">__WCHAR_TYPE__</a>
+<b><a name="line325">325  </a></b>	#define __WCHAR_TYPE__ int
+<b><a name="line326">326  </a></b>	#endif
+<b><a name="line327">327  </a></b>	#ifndef __cplusplus
+<b><a name="line328">328  </a></b>	typedef __WCHAR_TYPE__ wchar_t;
+<b><a name="line329">329  </a></b>	#endif
+<b><a name="line330">330  </a></b>	#endif
+<b><a name="line331">331  </a></b>	#endif
+<b><a name="line332">332  </a></b>	#endif
+<b><a name="line333">333  </a></b>	#endif
+<b><a name="line334">334  </a></b>	#endif
+<b><a name="line335">335  </a></b>	#endif
+<b><a name="line336">336  </a></b>	#endif /* _WCHAR_T_DECLARED */
+<b><a name="line337">337  </a></b>	#endif /* _BSD_RUNE_T_DEFINED_ */
+<b><a name="line338">338  </a></b>	#endif
+<b><a name="line339">339  </a></b>	#endif
+<b><a name="line340">340  </a></b>	#endif
+<b><a name="line341">341  </a></b>	#endif
+<b><a name="line342">342  </a></b>	#endif
+<b><a name="line343">343  </a></b>	#endif
+<b><a name="line344">344  </a></b>	#endif
+<b><a name="line345">345  </a></b>	#endif /* __WCHAR_T__ */
+<b><a name="line346">346  </a></b>	#endif /* __wchar_t__ */
+<b><a name="line347">347  </a></b>	#undef	<a href="../../../../../../include/stdlib.h/code.html#line29">__need_wchar_t</a>
+<b><a name="line348">348  </a></b>	#endif /* _STDDEF_H or __need_wchar_t.  */
+<b><a name="line349">349  </a></b>	
+<b><a name="line350">350  </a></b>	#if defined (<a href="../../../../../../include/wchar.h/code.html#line50">__need_wint_t</a>)
+<b><a name="line351">351  </a></b>	#ifndef _WINT_T
+<b><a name="line352">352  </a></b>	#define <b>_WINT_T</b>
+<b><a name="line353">353  </a></b>	
+<b><a name="line354">354  </a></b>	#ifndef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line648">__WINT_TYPE__</a>
+<b><a name="line355">355  </a></b>	#define __WINT_TYPE__ unsigned int
+<b><a name="line356">356  </a></b>	#endif
+<b><a name="line357">357  </a></b>	typedef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line648">__WINT_TYPE__</a> <b>wint_t</b>;
+<b><a name="line358">358  </a></b>	#endif
+<b><a name="line359">359  </a></b>	#undef <a href="../../../../../../include/wchar.h/code.html#line50">__need_wint_t</a>
+<b><a name="line360">360  </a></b>	#endif
+<b><a name="line361">361  </a></b>	
+<b><a name="line362">362  </a></b>	/*  In 4.3bsd-net2, leave these undefined to indicate that size_t, etc.
+<b><a name="line363">363  </a></b>	    are already defined.  */
+<b><a name="line364">364  </a></b>	/*  BSD/OS 3.1 and FreeBSD [23].x require the MACHINE_ANSI_H check here.  */
+<b><a name="line365">365  </a></b>	/*  NetBSD 5 requires the I386_ANSI_H and X86_64_ANSI_H checks here.  */
+<b><a name="line366">366  </a></b>	#if defined(_ANSI_H_) || defined(_MACHINE_ANSI_H_) || defined(_X86_64_ANSI_H_) || defined(_I386_ANSI_H_)
+<b><a name="line367">367  </a></b>	/*  The references to _GCC_PTRDIFF_T_, _GCC_SIZE_T_, and _GCC_WCHAR_T_
+<b><a name="line368">368  </a></b>	    are probably typos and should be removed before 2.8 is released.  */
+<b><a name="line369">369  </a></b>	#ifdef _GCC_PTRDIFF_T_
+<b><a name="line370">370  </a></b>	#undef _PTRDIFF_T_
+<b><a name="line371">371  </a></b>	#undef _BSD_PTRDIFF_T_
+<b><a name="line372">372  </a></b>	#endif
+<b><a name="line373">373  </a></b>	#ifdef _GCC_SIZE_T_
+<b><a name="line374">374  </a></b>	#undef _SIZE_T_
+<b><a name="line375">375  </a></b>	#undef _BSD_SIZE_T_
+<b><a name="line376">376  </a></b>	#endif
+<b><a name="line377">377  </a></b>	#ifdef _GCC_WCHAR_T_
+<b><a name="line378">378  </a></b>	#undef _WCHAR_T_
+<b><a name="line379">379  </a></b>	#undef _BSD_WCHAR_T_
+<b><a name="line380">380  </a></b>	#endif
+<b><a name="line381">381  </a></b>	/*  The following ones are the real ones.  */
+<b><a name="line382">382  </a></b>	#ifdef _GCC_PTRDIFF_T
+<b><a name="line383">383  </a></b>	#undef _PTRDIFF_T_
+<b><a name="line384">384  </a></b>	#undef _BSD_PTRDIFF_T_
+<b><a name="line385">385  </a></b>	#endif
+<b><a name="line386">386  </a></b>	#ifdef _GCC_SIZE_T
+<b><a name="line387">387  </a></b>	#undef _SIZE_T_
+<b><a name="line388">388  </a></b>	#undef _BSD_SIZE_T_
+<b><a name="line389">389  </a></b>	#endif
+<b><a name="line390">390  </a></b>	#ifdef _GCC_WCHAR_T
+<b><a name="line391">391  </a></b>	#undef _WCHAR_T_
+<b><a name="line392">392  </a></b>	#undef _BSD_WCHAR_T_
+<b><a name="line393">393  </a></b>	#endif
+<b><a name="line394">394  </a></b>	#endif /* _ANSI_H_ || _MACHINE_ANSI_H_ || _X86_64_ANSI_H_ || _I386_ANSI_H_ */
+<b><a name="line395">395  </a></b>	
+<b><a name="line396">396  </a></b>	#endif /* __sys_stdtypes_h */
+<b><a name="line397">397  </a></b>	
+<b><a name="line398">398  </a></b>	/* A null pointer constant.  */
+<b><a name="line399">399  </a></b>	
+<b><a name="line400">400  </a></b>	#if defined (<a href="#line39">_STDDEF_H</a>) || defined (<a href="../../../../../../include/_G_config.h/code.html#line14">__need_NULL</a>)
+<b><a name="line401">401  </a></b>	#undef <a href="#line403">NULL</a>		/* in case &lt;stdio.h&gt; has defined it. */
+<b><a name="line402">402  </a></b>	#ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line330">__GNUG__</a>
+<b><a name="line403">403  </a></b>	#define <b>NULL</b> __null
+<b><a name="line404">404  </a></b>	#else   /* G++ */
+<b><a name="line405">405  </a></b>	#ifndef __cplusplus
+<b><a name="line406">406  </a></b>	#define NULL ((void *)0)
+<b><a name="line407">407  </a></b>	#else   /* C++ */
+<b><a name="line408">408  </a></b>	#define NULL 0
+<b><a name="line409">409  </a></b>	#endif  /* C++ */
+<b><a name="line410">410  </a></b>	#endif  /* G++ */
+<b><a name="line411">411  </a></b>	#endif	/* NULL not defined and &lt;stddef.h&gt; or need NULL.  */
+<b><a name="line412">412  </a></b>	#undef	<a href="../../../../../../include/_G_config.h/code.html#line14">__need_NULL</a>
+<b><a name="line413">413  </a></b>	
+<b><a name="line414">414  </a></b>	#ifdef <a href="#line39">_STDDEF_H</a>
+<b><a name="line415">415  </a></b>	
+<b><a name="line416">416  </a></b>	/* Offset of member MEMBER in a struct of type TYPE. */
+<b><a name="line417">417  </a></b>	#define <b>offsetof</b>(TYPE, MEMBER) __builtin_offsetof (TYPE, MEMBER)
+<b><a name="line418">418  </a></b>	
+<b><a name="line419">419  </a></b>	#if (defined (__STDC_VERSION__) &amp;&amp; __STDC_VERSION__ &gt;= 201112L) \
+<b><a name="line420">420  </a></b>	  || (defined(__cplusplus) &amp;&amp; __cplusplus &gt;= 201103L)
+<b><a name="line421">421  </a></b>	#ifndef <a href="#line422">_GCC_MAX_ALIGN_T</a>
+<b><a name="line422">422  </a></b>	#define <b>_GCC_MAX_ALIGN_T</b>
+<b><a name="line423">423  </a></b>	/* Type whose alignment is supported in every context and is at least
+<b><a name="line424">424  </a></b>	   as great as that of any standard type not using alignment
+<b><a name="line425">425  </a></b>	   specifiers.  */
+<b><a name="line426">426  </a></b>	typedef struct {
+<b><a name="line427">427  </a></b>	  long long <b>__max_align_ll</b> __attribute__((__aligned__(__alignof__(long long))));
+<b><a name="line428">428  </a></b>	  long double <b>__max_align_ld</b> __attribute__((__aligned__(__alignof__(long double))));
+<b><a name="line429">429  </a></b>	} <b>max_align_t</b>;
+<b><a name="line430">430  </a></b>	#endif
+<b><a name="line431">431  </a></b>	#endif /* C11 or C++11.  */
+<b><a name="line432">432  </a></b>	
+<b><a name="line433">433  </a></b>	#if defined(__cplusplus) &amp;&amp; __cplusplus &gt;= 201103L
+<b><a name="line434">434  </a></b>	#ifndef <a href="#line435">_GXX_NULLPTR_T</a>
+<b><a name="line435">435  </a></b>	#define <b>_GXX_NULLPTR_T</b>
+<b><a name="line436">436  </a></b>	  typedef decltype(nullptr) <b>nullptr_t</b>;
+<b><a name="line437">437  </a></b>	#endif
+<b><a name="line438">438  </a></b>	#endif /* C++11.  */
+<b><a name="line439">439  </a></b>	
+<b><a name="line440">440  </a></b>	#endif /* _STDDEF_H was defined this time */
+<b><a name="line441">441  </a></b>	
+<b><a name="line442">442  </a></b>	#endif /* !_STDDEF_H &amp;&amp; !_STDDEF_H_ &amp;&amp; !_ANSI_STDDEF_H &amp;&amp; !__STDDEF_H__
+<b><a name="line443">443  </a></b>		  || __need_XXX was not defined before */
+<b><a name="line444">444  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

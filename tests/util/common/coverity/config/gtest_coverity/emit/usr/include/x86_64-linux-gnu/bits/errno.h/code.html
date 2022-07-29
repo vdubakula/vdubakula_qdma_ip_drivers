@@ -1,0 +1,123 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/errno.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Error constants.  Linux specific version.
+<b><a name="line2">2    </a></b>	   Copyright (C) 1996-2016 Free Software Foundation, Inc.
+<b><a name="line3">3    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line6">6    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line7">7    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line8">8    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line13">13   </a></b>	   Lesser General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line16">16   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line17">17   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	#ifdef <a href="../../../errno.h/code.html#line27">_ERRNO_H</a>
+<b><a name="line20">20   </a></b>	
+<b><a name="line21">21   </a></b>	# undef EDOM
+<b><a name="line22">22   </a></b>	# undef EILSEQ
+<b><a name="line23">23   </a></b>	# undef ERANGE
+<b><a name="line24">24   </a></b>	# include &lt;linux/errno.h&gt;
+<b><a name="line25">25   </a></b>	
+<b><a name="line26">26   </a></b>	/* Linux has no ENOTSUP error code.  */
+<b><a name="line27">27   </a></b>	# define <b>ENOTSUP</b> EOPNOTSUPP
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	/* Older Linux versions also had no ECANCELED error code.  */
+<b><a name="line30">30   </a></b>	# ifndef <a href="../../../asm-generic/errno.h/code.html#line108">ECANCELED</a>
+<b><a name="line31">31   </a></b>	#  define ECANCELED	125
+<b><a name="line32">32   </a></b>	# endif
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	/* Support for error codes to support robust mutexes was added later, too.  */
+<b><a name="line35">35   </a></b>	# ifndef <a href="../../../asm-generic/errno.h/code.html#line115">EOWNERDEAD</a>
+<b><a name="line36">36   </a></b>	#  define EOWNERDEAD		130
+<b><a name="line37">37   </a></b>	#  define ENOTRECOVERABLE	131
+<b><a name="line38">38   </a></b>	# endif
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	# ifndef <a href="../../../asm-generic/errno.h/code.html#line118">ERFKILL</a>
+<b><a name="line41">41   </a></b>	#  define ERFKILL		132
+<b><a name="line42">42   </a></b>	# endif
+<b><a name="line43">43   </a></b>	
+<b><a name="line44">44   </a></b>	# ifndef <a href="../../../asm-generic/errno.h/code.html#line120">EHWPOISON</a>
+<b><a name="line45">45   </a></b>	#  define EHWPOISON		133
+<b><a name="line46">46   </a></b>	# endif
+<b><a name="line47">47   </a></b>	
+<b><a name="line48">48   </a></b>	# ifndef __ASSEMBLER__
+<b><a name="line49">49   </a></b>	/* Function to get address of global `errno' variable.  */
+<b><a name="line50">50   </a></b>	extern int *__errno_location (void) <a href="../../sys/cdefs.h/code.html#line60">__THROW</a> __attribute__ ((__const__));
+<b><a name="line51">51   </a></b>	
+<b><a name="line52">52   </a></b>	#  if !defined _LIBC || defined _LIBC_REENTRANT
+<b><a name="line53">53   </a></b>	/* When using threads, errno is a per-thread value.  */
+<b><a name="line54">54   </a></b>	#   define <b>errno</b> (*__errno_location ())
+<b><a name="line55">55   </a></b>	#  endif
+<b><a name="line56">56   </a></b>	# endif /* !__ASSEMBLER__ */
+<b><a name="line57">57   </a></b>	#endif /* _ERRNO_H */
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	#if !defined <a href="../../../errno.h/code.html#line27">_ERRNO_H</a> &amp;&amp; defined __need_Emath
+<b><a name="line60">60   </a></b>	/* This is ugly but the kernel header is not clean enough.  We must
+<b><a name="line61">61   </a></b>	   define only the values EDOM, EILSEQ and ERANGE in case __need_Emath is
+<b><a name="line62">62   </a></b>	   defined.  */
+<b><a name="line63">63   </a></b>	# define EDOM	33	/* Math argument out of domain of function.  */
+<b><a name="line64">64   </a></b>	# define EILSEQ	84	/* Illegal byte sequence.  */
+<b><a name="line65">65   </a></b>	# define ERANGE	34	/* Math result not representable.  */
+<b><a name="line66">66   </a></b>	#endif /* !_ERRNO_H &amp;&amp; __need_Emath */
+<b><a name="line67">67   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

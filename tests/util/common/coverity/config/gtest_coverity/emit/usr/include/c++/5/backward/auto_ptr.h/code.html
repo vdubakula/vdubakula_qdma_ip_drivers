@@ -1,0 +1,386 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/backward/auto_ptr.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// auto_ptr implementation -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2007-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file backward/auto_ptr.h
+<b><a name="line26">26   </a></b>	 *  This is an internal header file, included by other library headers.
+<b><a name="line27">27   </a></b>	 *  Do not attempt to use it directly. @headername{memory}
+<b><a name="line28">28   </a></b>	 */
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	#ifndef _BACKWARD_AUTO_PTR_H
+<b><a name="line31">31   </a></b>	#define <b>_BACKWARD_AUTO_PTR_H</b> 1
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	#include &lt;bits/c++config.h&gt;
+<b><a name="line34">34   </a></b>	#include &lt;debug/debug.h&gt;
+<b><a name="line35">35   </a></b>	
+<b><a name="line36">36   </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line37">37   </a></b>	{
+<b><a name="line38">38   </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	  /**
+<b><a name="line41">41   </a></b>	   *  A wrapper class to provide auto_ptr with reference semantics.
+<b><a name="line42">42   </a></b>	   *  For example, an auto_ptr can be assigned (or constructed from)
+<b><a name="line43">43   </a></b>	   *  the result of a function which returns an auto_ptr by value.
+<b><a name="line44">44   </a></b>	   *
+<b><a name="line45">45   </a></b>	   *  All the auto_ptr_ref stuff should happen behind the scenes.
+<b><a name="line46">46   </a></b>	   */
+<b><a name="line47">47   </a></b>	  template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line48">48   </a></b>	    struct <b>auto_ptr_ref</b>
+<b><a name="line49">49   </a></b>	    {
+<b><a name="line50">50   </a></b>	      <a href="#line47">_Tp1</a>* <b>_M_ptr</b>;
+<b><a name="line51">51   </a></b>	      
+<b><a name="line52">52   </a></b>	      explicit
+<b><a name="line53">53   </a></b>	      <b>auto_ptr_ref</b>(<a href="#line47">_Tp1</a>* __p): _M_ptr(__p) { }
+<b><a name="line54">54   </a></b>	    } <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line82">_GLIBCXX_DEPRECATED</a>;
+<b><a name="line55">55   </a></b>	
+<b><a name="line56">56   </a></b>	
+<b><a name="line57">57   </a></b>	  /**
+<b><a name="line58">58   </a></b>	   *  @brief  A simple smart pointer providing strict ownership semantics.
+<b><a name="line59">59   </a></b>	   *
+<b><a name="line60">60   </a></b>	   *  The Standard says:
+<b><a name="line61">61   </a></b>	   *  &lt;pre&gt;
+<b><a name="line62">62   </a></b>	   *  An @c auto_ptr owns the object it holds a pointer to.  Copying
+<b><a name="line63">63   </a></b>	   *  an @c auto_ptr copies the pointer and transfers ownership to the
+<b><a name="line64">64   </a></b>	   *  destination.  If more than one @c auto_ptr owns the same object
+<b><a name="line65">65   </a></b>	   *  at the same time the behavior of the program is undefined.
+<b><a name="line66">66   </a></b>	   *
+<b><a name="line67">67   </a></b>	   *  The uses of @c auto_ptr include providing temporary
+<b><a name="line68">68   </a></b>	   *  exception-safety for dynamically allocated memory, passing
+<b><a name="line69">69   </a></b>	   *  ownership of dynamically allocated memory to a function, and
+<b><a name="line70">70   </a></b>	   *  returning dynamically allocated memory from a function.  @c
+<b><a name="line71">71   </a></b>	   *  auto_ptr does not meet the CopyConstructible and Assignable
+<b><a name="line72">72   </a></b>	   *  requirements for Standard Library &lt;a
+<b><a name="line73">73   </a></b>	   *  href=&quot;tables.html#65&quot;&gt;container&lt;/a&gt; elements and thus
+<b><a name="line74">74   </a></b>	   *  instantiating a Standard Library container with an @c auto_ptr
+<b><a name="line75">75   </a></b>	   *  results in undefined behavior.
+<b><a name="line76">76   </a></b>	   *  &lt;/pre&gt;
+<b><a name="line77">77   </a></b>	   *  Quoted from [20.4.5]/3.
+<b><a name="line78">78   </a></b>	   *
+<b><a name="line79">79   </a></b>	   *  Good examples of what can and cannot be done with auto_ptr can
+<b><a name="line80">80   </a></b>	   *  be found in the libstdc++ testsuite.
+<b><a name="line81">81   </a></b>	   *
+<b><a name="line82">82   </a></b>	   *  _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line83">83   </a></b>	   *  127.  auto_ptr&lt;&gt; conversion issues
+<b><a name="line84">84   </a></b>	   *  These resolutions have all been incorporated.
+<b><a name="line85">85   </a></b>	   */
+<b><a name="line86">86   </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line87">87   </a></b>	    class auto_ptr
+<b><a name="line88">88   </a></b>	    {
+<b><a name="line89">89   </a></b>	    private:
+<b><a name="line90">90   </a></b>	      <a href="#line86">_Tp</a>* <b>_M_ptr</b>;
+<b><a name="line91">91   </a></b>	      
+<b><a name="line92">92   </a></b>	    public:
+<b><a name="line93">93   </a></b>	      /// The pointed-to type.
+<b><a name="line94">94   </a></b>	      typedef <a href="#line86">_Tp</a> <b>element_type</b>;
+<b><a name="line95">95   </a></b>	      
+<b><a name="line96">96   </a></b>	      /**
+<b><a name="line97">97   </a></b>	       *  @brief  An %auto_ptr is usually constructed from a raw pointer.
+<b><a name="line98">98   </a></b>	       *  @param  __p  A pointer (defaults to NULL).
+<b><a name="line99">99   </a></b>	       *
+<b><a name="line100">100  </a></b>	       *  This object now @e owns the object pointed to by @a __p.
+<b><a name="line101">101  </a></b>	       */
+<b><a name="line102">102  </a></b>	      explicit
+<b><a name="line103">103  </a></b>	      <b>auto_ptr</b>(<a href="#line94">element_type</a>* __p = 0) throw() : _M_ptr(__p) { }
+<b><a name="line104">104  </a></b>	
+<b><a name="line105">105  </a></b>	      /**
+<b><a name="line106">106  </a></b>	       *  @brief  An %auto_ptr can be constructed from another %auto_ptr.
+<b><a name="line107">107  </a></b>	       *  @param  __a  Another %auto_ptr of the same type.
+<b><a name="line108">108  </a></b>	       *
+<b><a name="line109">109  </a></b>	       *  This object now @e owns the object previously owned by @a __a,
+<b><a name="line110">110  </a></b>	       *  which has given up ownership.
+<b><a name="line111">111  </a></b>	       */
+<b><a name="line112">112  </a></b>	      <b>auto_ptr</b>(<a href="../../bits/unique_ptr.h/code.html#line49">auto_ptr</a>&amp; __a) throw() : _M_ptr(__a.release()) { }
+<b><a name="line113">113  </a></b>	
+<b><a name="line114">114  </a></b>	      /**
+<b><a name="line115">115  </a></b>	       *  @brief  An %auto_ptr can be constructed from another %auto_ptr.
+<b><a name="line116">116  </a></b>	       *  @param  __a  Another %auto_ptr of a different but related type.
+<b><a name="line117">117  </a></b>	       *
+<b><a name="line118">118  </a></b>	       *  A pointer-to-Tp1 must be convertible to a
+<b><a name="line119">119  </a></b>	       *  pointer-to-Tp/element_type.
+<b><a name="line120">120  </a></b>	       *
+<b><a name="line121">121  </a></b>	       *  This object now @e owns the object previously owned by @a __a,
+<b><a name="line122">122  </a></b>	       *  which has given up ownership.
+<b><a name="line123">123  </a></b>	       */
+<b><a name="line124">124  </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line125">125  </a></b>	        <b>auto_ptr</b>(<a href="../../bits/unique_ptr.h/code.html#line49">auto_ptr</a>&lt;<a href="#line124">_Tp1</a>&gt;&amp; __a) throw() : _M_ptr(__a.release()) { }
+<b><a name="line126">126  </a></b>	
+<b><a name="line127">127  </a></b>	      /**
+<b><a name="line128">128  </a></b>	       *  @brief  %auto_ptr assignment operator.
+<b><a name="line129">129  </a></b>	       *  @param  __a  Another %auto_ptr of the same type.
+<b><a name="line130">130  </a></b>	       *
+<b><a name="line131">131  </a></b>	       *  This object now @e owns the object previously owned by @a __a,
+<b><a name="line132">132  </a></b>	       *  which has given up ownership.  The object that this one @e
+<b><a name="line133">133  </a></b>	       *  used to own and track has been deleted.
+<b><a name="line134">134  </a></b>	       */
+<b><a name="line135">135  </a></b>	      <a href="../../bits/unique_ptr.h/code.html#line49">auto_ptr</a>&amp;
+<b><a name="line136">136  </a></b>	      <b>operator=</b>(<a href="../../bits/unique_ptr.h/code.html#line49">auto_ptr</a>&amp; __a) throw()
+<b><a name="line137">137  </a></b>	      {
+<b><a name="line138">138  </a></b>		reset(__a.release());
+<b><a name="line139">139  </a></b>		return *this;
+<b><a name="line140">140  </a></b>	      }
+<b><a name="line141">141  </a></b>	
+<b><a name="line142">142  </a></b>	      /**
+<b><a name="line143">143  </a></b>	       *  @brief  %auto_ptr assignment operator.
+<b><a name="line144">144  </a></b>	       *  @param  __a  Another %auto_ptr of a different but related type.
+<b><a name="line145">145  </a></b>	       *
+<b><a name="line146">146  </a></b>	       *  A pointer-to-Tp1 must be convertible to a pointer-to-Tp/element_type.
+<b><a name="line147">147  </a></b>	       *
+<b><a name="line148">148  </a></b>	       *  This object now @e owns the object previously owned by @a __a,
+<b><a name="line149">149  </a></b>	       *  which has given up ownership.  The object that this one @e
+<b><a name="line150">150  </a></b>	       *  used to own and track has been deleted.
+<b><a name="line151">151  </a></b>	       */
+<b><a name="line152">152  </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line153">153  </a></b>	        <a href="../../bits/unique_ptr.h/code.html#line49">auto_ptr</a>&amp;
+<b><a name="line154">154  </a></b>	        <b>operator=</b>(<a href="../../bits/unique_ptr.h/code.html#line49">auto_ptr</a>&lt;<a href="#line152">_Tp1</a>&gt;&amp; __a) throw()
+<b><a name="line155">155  </a></b>	        {
+<b><a name="line156">156  </a></b>		  reset(__a.release());
+<b><a name="line157">157  </a></b>		  return *this;
+<b><a name="line158">158  </a></b>		}
+<b><a name="line159">159  </a></b>	
+<b><a name="line160">160  </a></b>	      /**
+<b><a name="line161">161  </a></b>	       *  When the %auto_ptr goes out of scope, the object it owns is
+<b><a name="line162">162  </a></b>	       *  deleted.  If it no longer owns anything (i.e., @c get() is
+<b><a name="line163">163  </a></b>	       *  @c NULL), then this has no effect.
+<b><a name="line164">164  </a></b>	       *
+<b><a name="line165">165  </a></b>	       *  The C++ standard says there is supposed to be an empty throw
+<b><a name="line166">166  </a></b>	       *  specification here, but omitting it is standard conforming.  Its
+<b><a name="line167">167  </a></b>	       *  presence can be detected only if _Tp::~_Tp() throws, but this is
+<b><a name="line168">168  </a></b>	       *  prohibited.  [17.4.3.6]/2
+<b><a name="line169">169  </a></b>	       */
+<b><a name="line170">170  </a></b>	      <b>~auto_ptr</b>() { delete _M_ptr; }
+<b><a name="line171">171  </a></b>	      
+<b><a name="line172">172  </a></b>	      /**
+<b><a name="line173">173  </a></b>	       *  @brief  Smart pointer dereferencing.
+<b><a name="line174">174  </a></b>	       *
+<b><a name="line175">175  </a></b>	       *  If this %auto_ptr no longer owns anything, then this
+<b><a name="line176">176  </a></b>	       *  operation will crash.  (For a smart pointer, &lt;em&gt;no longer owns
+<b><a name="line177">177  </a></b>	       *  anything&lt;/em&gt; is the same as being a null pointer, and you know
+<b><a name="line178">178  </a></b>	       *  what happens when you dereference one of those...)
+<b><a name="line179">179  </a></b>	       */
+<b><a name="line180">180  </a></b>	      <a href="#line94">element_type</a>&amp;
+<b><a name="line181">181  </a></b>	      <b>operator*</b>() const throw() 
+<b><a name="line182">182  </a></b>	      {
+<b><a name="line183">183  </a></b>		<a href="../../debug/debug.h/code.html#line61">_GLIBCXX_DEBUG_ASSERT</a>(_M_ptr != 0);
+<b><a name="line184">184  </a></b>		return *_M_ptr; 
+<b><a name="line185">185  </a></b>	      }
+<b><a name="line186">186  </a></b>	      
+<b><a name="line187">187  </a></b>	      /**
+<b><a name="line188">188  </a></b>	       *  @brief  Smart pointer dereferencing.
+<b><a name="line189">189  </a></b>	       *
+<b><a name="line190">190  </a></b>	       *  This returns the pointer itself, which the language then will
+<b><a name="line191">191  </a></b>	       *  automatically cause to be dereferenced.
+<b><a name="line192">192  </a></b>	       */
+<b><a name="line193">193  </a></b>	      <a href="#line94">element_type</a>*
+<b><a name="line194">194  </a></b>	      <b>operator-&gt;</b>() const throw() 
+<b><a name="line195">195  </a></b>	      {
+<b><a name="line196">196  </a></b>		<a href="../../debug/debug.h/code.html#line61">_GLIBCXX_DEBUG_ASSERT</a>(_M_ptr != 0);
+<b><a name="line197">197  </a></b>		return _M_ptr; 
+<b><a name="line198">198  </a></b>	      }
+<b><a name="line199">199  </a></b>	      
+<b><a name="line200">200  </a></b>	      /**
+<b><a name="line201">201  </a></b>	       *  @brief  Bypassing the smart pointer.
+<b><a name="line202">202  </a></b>	       *  @return  The raw pointer being managed.
+<b><a name="line203">203  </a></b>	       *
+<b><a name="line204">204  </a></b>	       *  You can get a copy of the pointer that this object owns, for
+<b><a name="line205">205  </a></b>	       *  situations such as passing to a function which only accepts
+<b><a name="line206">206  </a></b>	       *  a raw pointer.
+<b><a name="line207">207  </a></b>	       *
+<b><a name="line208">208  </a></b>	       *  @note  This %auto_ptr still owns the memory.
+<b><a name="line209">209  </a></b>	       */
+<b><a name="line210">210  </a></b>	      <a href="#line94">element_type</a>*
+<b><a name="line211">211  </a></b>	      <b>get</b>() const throw() { return _M_ptr; }
+<b><a name="line212">212  </a></b>	      
+<b><a name="line213">213  </a></b>	      /**
+<b><a name="line214">214  </a></b>	       *  @brief  Bypassing the smart pointer.
+<b><a name="line215">215  </a></b>	       *  @return  The raw pointer being managed.
+<b><a name="line216">216  </a></b>	       *
+<b><a name="line217">217  </a></b>	       *  You can get a copy of the pointer that this object owns, for
+<b><a name="line218">218  </a></b>	       *  situations such as passing to a function which only accepts
+<b><a name="line219">219  </a></b>	       *  a raw pointer.
+<b><a name="line220">220  </a></b>	       *
+<b><a name="line221">221  </a></b>	       *  @note  This %auto_ptr no longer owns the memory.  When this object
+<b><a name="line222">222  </a></b>	       *  goes out of scope, nothing will happen.
+<b><a name="line223">223  </a></b>	       */
+<b><a name="line224">224  </a></b>	      <a href="#line94">element_type</a>*
+<b><a name="line225">225  </a></b>	      <b>release</b>() throw()
+<b><a name="line226">226  </a></b>	      {
+<b><a name="line227">227  </a></b>		element_type* __tmp = _M_ptr;
+<b><a name="line228">228  </a></b>		_M_ptr = 0;
+<b><a name="line229">229  </a></b>		return __tmp;
+<b><a name="line230">230  </a></b>	      }
+<b><a name="line231">231  </a></b>	      
+<b><a name="line232">232  </a></b>	      /**
+<b><a name="line233">233  </a></b>	       *  @brief  Forcibly deletes the managed object.
+<b><a name="line234">234  </a></b>	       *  @param  __p  A pointer (defaults to NULL).
+<b><a name="line235">235  </a></b>	       *
+<b><a name="line236">236  </a></b>	       *  This object now @e owns the object pointed to by @a __p.  The
+<b><a name="line237">237  </a></b>	       *  previous object has been deleted.
+<b><a name="line238">238  </a></b>	       */
+<b><a name="line239">239  </a></b>	      void
+<b><a name="line240">240  </a></b>	      <b>reset</b>(<a href="#line94">element_type</a>* __p = 0) throw()
+<b><a name="line241">241  </a></b>	      {
+<b><a name="line242">242  </a></b>		if (__p != _M_ptr)
+<b><a name="line243">243  </a></b>		  {
+<b><a name="line244">244  </a></b>		    delete _M_ptr;
+<b><a name="line245">245  </a></b>		    _M_ptr = __p;
+<b><a name="line246">246  </a></b>		  }
+<b><a name="line247">247  </a></b>	      }
+<b><a name="line248">248  </a></b>	      
+<b><a name="line249">249  </a></b>	      /** 
+<b><a name="line250">250  </a></b>	       *  @brief  Automatic conversions
+<b><a name="line251">251  </a></b>	       *
+<b><a name="line252">252  </a></b>	       *  These operations convert an %auto_ptr into and from an auto_ptr_ref
+<b><a name="line253">253  </a></b>	       *  automatically as needed.  This allows constructs such as
+<b><a name="line254">254  </a></b>	       *  @code
+<b><a name="line255">255  </a></b>	       *    auto_ptr&lt;Derived&gt;  func_returning_auto_ptr(.....);
+<b><a name="line256">256  </a></b>	       *    ...
+<b><a name="line257">257  </a></b>	       *    auto_ptr&lt;Base&gt; ptr = func_returning_auto_ptr(.....);
+<b><a name="line258">258  </a></b>	       *  @endcode
+<b><a name="line259">259  </a></b>	       */
+<b><a name="line260">260  </a></b>	      <b>auto_ptr</b>(<a href="#line48">auto_ptr_ref</a>&lt;<a href="#line94">element_type</a>&gt; __ref) throw()
+<b><a name="line261">261  </a></b>	      : _M_ptr(__ref._M_ptr) { }
+<b><a name="line262">262  </a></b>	      
+<b><a name="line263">263  </a></b>	      <a href="../../bits/unique_ptr.h/code.html#line49">auto_ptr</a>&amp;
+<b><a name="line264">264  </a></b>	      <b>operator=</b>(<a href="#line48">auto_ptr_ref</a>&lt;<a href="#line94">element_type</a>&gt; __ref) throw()
+<b><a name="line265">265  </a></b>	      {
+<b><a name="line266">266  </a></b>		if (__ref._M_ptr != this-&gt;get())
+<b><a name="line267">267  </a></b>		  {
+<b><a name="line268">268  </a></b>		    delete _M_ptr;
+<b><a name="line269">269  </a></b>		    _M_ptr = __ref._M_ptr;
+<b><a name="line270">270  </a></b>		  }
+<b><a name="line271">271  </a></b>		return *this;
+<b><a name="line272">272  </a></b>	      }
+<b><a name="line273">273  </a></b>	      
+<b><a name="line274">274  </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line275">275  </a></b>	        operator <a href="#line48">auto_ptr_ref</a>&lt;<a href="#line274">_Tp1</a>&gt;() throw()
+<b><a name="line276">276  </a></b>	        { return auto_ptr_ref&lt;_Tp1&gt;(this-&gt;release()); }
+<b><a name="line277">277  </a></b>	
+<b><a name="line278">278  </a></b>	      template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line279">279  </a></b>	        operator <a href="../../bits/unique_ptr.h/code.html#line49">auto_ptr</a>&lt;<a href="#line278">_Tp1</a>&gt;() throw()
+<b><a name="line280">280  </a></b>	        { return auto_ptr&lt;_Tp1&gt;(this-&gt;release()); }
+<b><a name="line281">281  </a></b>	    } <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line82">_GLIBCXX_DEPRECATED</a>;
+<b><a name="line282">282  </a></b>	
+<b><a name="line283">283  </a></b>	  // _GLIBCXX_RESOLVE_LIB_DEFECTS
+<b><a name="line284">284  </a></b>	  // 541. shared_ptr template assignment and void
+<b><a name="line285">285  </a></b>	  template&lt;&gt;
+<b><a name="line286">286  </a></b>	    class <b>auto_ptr</b>&lt;void&gt;
+<b><a name="line287">287  </a></b>	    {
+<b><a name="line288">288  </a></b>	    public:
+<b><a name="line289">289  </a></b>	      typedef void <b>element_type</b>;
+<b><a name="line290">290  </a></b>	    } <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line82">_GLIBCXX_DEPRECATED</a>;
+<b><a name="line291">291  </a></b>	
+<b><a name="line292">292  </a></b>	#if __cplusplus &gt;= 201103L
+<b><a name="line293">293  </a></b>	  template&lt;<a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line294">294  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line295">295  </a></b>	    inline
+<b><a name="line296">296  </a></b>	    <a href="../../bits/shared_ptr_base.h/code.html#line360">__shared_count</a>&lt;<a href="#line293">_Lp</a>&gt;::<b>__shared_count</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../bits/unique_ptr.h/code.html#line49">auto_ptr</a>&lt;<a href="#line294">_Tp</a>&gt;&amp;&amp; __r)
+<b><a name="line297">297  </a></b>	    : _M_pi(new _Sp_counted_ptr&lt;_Tp*, _Lp&gt;(__r.get()))
+<b><a name="line298">298  </a></b>	    { __r.release(); }
+<b><a name="line299">299  </a></b>	
+<b><a name="line300">300  </a></b>	  template&lt;typename <b>_Tp</b>, <a href="../../ext/concurrence.h/code.html#line49">_Lock_policy</a> <b>_Lp</b>&gt;
+<b><a name="line301">301  </a></b>	  template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line302">302  </a></b>	    inline
+<b><a name="line303">303  </a></b>	    <a href="../../bits/shared_ptr_base.h/code.html#line336">__shared_ptr</a>&lt;<a href="#line300">_Tp</a>, <a href="#line300">_Lp</a>&gt;::<b>__shared_ptr</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../bits/unique_ptr.h/code.html#line49">auto_ptr</a>&lt;<a href="#line301">_Tp1</a>&gt;&amp;&amp; __r)
+<b><a name="line304">304  </a></b>	    : _M_ptr(__r.get()), _M_refcount()
+<b><a name="line305">305  </a></b>	    {
+<b><a name="line306">306  </a></b>	      <a href="../../bits/concept_check.h/code.html#line47">__glibcxx_function_requires</a>(_ConvertibleConcept&lt;_Tp1*, _Tp*&gt;)
+<b><a name="line307">307  </a></b>	      static_assert( sizeof(_Tp1) &gt; 0, &quot;incomplete type&quot; );
+<b><a name="line308">308  </a></b>	      _Tp1* __tmp = __r.get();
+<b><a name="line309">309  </a></b>	      _M_refcount = __shared_count&lt;_Lp&gt;(std::move(__r));
+<b><a name="line310">310  </a></b>	      __enable_shared_from_this_helper(_M_refcount, __tmp, __tmp);
+<b><a name="line311">311  </a></b>	    }
+<b><a name="line312">312  </a></b>	
+<b><a name="line313">313  </a></b>	  template&lt;typename <b>_Tp</b>&gt;
+<b><a name="line314">314  </a></b>	  template&lt;typename <b>_Tp1</b>&gt;
+<b><a name="line315">315  </a></b>	    inline
+<b><a name="line316">316  </a></b>	    <a href="../../bits/shared_ptr_base.h/code.html#line345">shared_ptr</a>&lt;<a href="#line313">_Tp</a>&gt;::<b>shared_ptr</b>(<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../../bits/unique_ptr.h/code.html#line49">auto_ptr</a>&lt;<a href="#line314">_Tp1</a>&gt;&amp;&amp; __r)
+<b><a name="line317">317  </a></b>	    : __shared_ptr&lt;_Tp&gt;(std::move(__r)) { }
+<b><a name="line318">318  </a></b>	
+<b><a name="line319">319  </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Dp</b>&gt;
+<b><a name="line320">320  </a></b>	  template&lt;typename <b>_Up</b>, typename&gt;
+<b><a name="line321">321  </a></b>	    inline
+<b><a name="line322">322  </a></b>	    <a href="../../bits/unique_ptr.h/code.html#line129">unique_ptr</a>&lt;<a href="#line319">_Tp</a>, <a href="#line319">_Dp</a>&gt;::<b>unique_ptr</b>(<a href="../../bits/unique_ptr.h/code.html#line49">auto_ptr</a>&lt;<a href="#line320">_Up</a>&gt;&amp;&amp; __u) noexcept
+<b><a name="line323">323  </a></b>	    : _M_t(__u.release(), deleter_type()) { }
+<b><a name="line324">324  </a></b>	#endif
+<b><a name="line325">325  </a></b>	
+<b><a name="line326">326  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line327">327  </a></b>	} // namespace
+<b><a name="line328">328  </a></b>	
+<b><a name="line329">329  </a></b>	#endif /* _BACKWARD_AUTO_PTR_H */
+<b><a name="line330">330  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

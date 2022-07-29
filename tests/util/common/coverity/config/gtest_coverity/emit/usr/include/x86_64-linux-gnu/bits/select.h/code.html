@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/select.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 1997-2016 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line5">5    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line6">6    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line7">7    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line10">10   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line11">11   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line12">12   </a></b>	   Lesser General Public License for more details.
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line15">15   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line16">16   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	#ifndef <a href="../../sys/select.h/code.html#line22">_SYS_SELECT_H</a>
+<b><a name="line19">19   </a></b>	# error &quot;Never use &lt;bits/select.h&gt; directly; include &lt;sys/select.h&gt; instead.&quot;
+<b><a name="line20">20   </a></b>	#endif
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	#include &lt;bits/wordsize.h&gt;
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	#if defined <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line240">__GNUC__</a> &amp;&amp; <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line240">__GNUC__</a> &gt;= 2
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>	# if <a href="../wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line28">28   </a></b>	#  define <b>__FD_ZERO_STOS</b> &quot;stosq&quot;
+<b><a name="line29">29   </a></b>	# else
+<b><a name="line30">30   </a></b>	#  define __FD_ZERO_STOS &quot;stosl&quot;
+<b><a name="line31">31   </a></b>	# endif
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	# define <b>__FD_ZERO</b>(fdsp) \
+<b><a name="line34">34   </a></b>	  do {									      \
+<b><a name="line35">35   </a></b>	    int __d0, __d1;							      \
+<b><a name="line36">36   </a></b>	    __asm__ __volatile__ (&quot;cld; rep; &quot; __FD_ZERO_STOS			      \
+<b><a name="line37">37   </a></b>				  : &quot;=c&quot; (__d0), &quot;=D&quot; (__d1)			      \
+<b><a name="line38">38   </a></b>				  : &quot;a&quot; (0), &quot;0&quot; (sizeof (fd_set)		      \
+<b><a name="line39">39   </a></b>						  / sizeof (__fd_mask)),	      \
+<b><a name="line40">40   </a></b>				    &quot;1&quot; (&amp;__FDS_BITS (fdsp)[0])			      \
+<b><a name="line41">41   </a></b>				  : &quot;memory&quot;);					      \
+<b><a name="line42">42   </a></b>	  } while (0)
+<b><a name="line43">43   </a></b>	
+<b><a name="line44">44   </a></b>	#else	/* ! GNU CC */
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	/* We don't use `memset' because this would require a prototype and
+<b><a name="line47">47   </a></b>	   the array isn't too big.  */
+<b><a name="line48">48   </a></b>	# define __FD_ZERO(set)  \
+<b><a name="line49">49   </a></b>	  do {									      \
+<b><a name="line50">50   </a></b>	    unsigned int __i;							      \
+<b><a name="line51">51   </a></b>	    fd_set *__arr = (set);						      \
+<b><a name="line52">52   </a></b>	    for (__i = 0; __i &lt; sizeof (fd_set) / sizeof (__fd_mask); ++__i)	      \
+<b><a name="line53">53   </a></b>	      __FDS_BITS (__arr)[__i] = 0;					      \
+<b><a name="line54">54   </a></b>	  } while (0)
+<b><a name="line55">55   </a></b>	
+<b><a name="line56">56   </a></b>	#endif	/* GNU CC */
+<b><a name="line57">57   </a></b>	
+<b><a name="line58">58   </a></b>	#define <b>__FD_SET</b>(d, set) \
+<b><a name="line59">59   </a></b>	  ((void) (__FDS_BITS (set)[__FD_ELT (d)] |= __FD_MASK (d)))
+<b><a name="line60">60   </a></b>	#define <b>__FD_CLR</b>(d, set) \
+<b><a name="line61">61   </a></b>	  ((void) (__FDS_BITS (set)[__FD_ELT (d)] &amp;= ~__FD_MASK (d)))
+<b><a name="line62">62   </a></b>	#define <b>__FD_ISSET</b>(d, set) \
+<b><a name="line63">63   </a></b>	  ((__FDS_BITS (set)[__FD_ELT (d)] &amp; __FD_MASK (d)) != 0)
+<b><a name="line64">64   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

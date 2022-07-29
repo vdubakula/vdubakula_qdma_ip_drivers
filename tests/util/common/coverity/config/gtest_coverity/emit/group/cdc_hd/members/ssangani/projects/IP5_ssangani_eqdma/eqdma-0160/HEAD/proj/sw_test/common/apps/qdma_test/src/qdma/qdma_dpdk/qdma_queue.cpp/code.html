@@ -1,0 +1,526 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_dpdk/qdma_queue.cpp</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	#include &lt;algorithm&gt;
+<b><a name="line2">2    </a></b>	#include &lt;sstream&gt;
+<b><a name="line3">3    </a></b>	#include &quot;qdma_queue.h&quot;
+<b><a name="line4">4    </a></b>	#include &quot;qdma_instance.h&quot;
+<b><a name="line5">5    </a></b>	
+<b><a name="line6">6    </a></b>	namespace <a href="../../qdma_common/qdma_queue_abs.h/code.html#line17">qdma</a> {
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	int <b>do_recv_mm</b>(int <b>portid</b>, void *<b>buffer</b>, int <b>queueid</b>, int <b>ld_size</b>, int <b>tot_num_desc</b>, <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>buf_size</b>, <a href="/usr/include/stdint.h/code.html#line49">uint16_t</a> <b>rx_burst_size</b>)
+<b><a name="line9">9    </a></b>	{
+<b><a name="line10">10   </a></b>		struct <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line474">rte_mbuf</a> *<b>pkts</b>[<a href="../qdma_instance.h/code.html#line9">NUM_RX_PKTS</a>] = { <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a> };
+<b><a name="line11">11   </a></b>		int <b>nb_rx</b> = 0, <b>i</b> = 0, <b>num_pkts</b>;
+<b><a name="line12">12   </a></b>		int <b>tdesc</b>;
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>		if(<a href="#line8">tot_num_desc</a> == 0) {
+<b><a name="line15">15   </a></b>				<a href="/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: tot_num_desc : invalid value\n&quot;);
+<b><a name="line16">16   </a></b>				return 0;
+<b><a name="line17">17   </a></b>		}
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>		//printf(&quot;recv start: num-desc: %d, with data-len: %d, last-desc-size:%d\n&quot;, tot_num_desc, buf_size, ld_size);
+<b><a name="line20">20   </a></b>		<a href="#line12">tdesc</a> = <a href="#line8">tot_num_desc</a>;
+<b><a name="line21">21   </a></b>		if (<a href="#line8">ld_size</a>)
+<b><a name="line22">22   </a></b>			<a href="#line12">tdesc</a>--;
+<b><a name="line23">23   </a></b>	
+<b><a name="line24">24   </a></b>		while (<a href="#line12">tdesc</a>) {
+<b><a name="line25">25   </a></b>			if (<a href="#line12">tdesc</a> &gt; <a href="#line8">rx_burst_size</a>)
+<b><a name="line26">26   </a></b>				<a href="#line11">num_pkts</a> = <a href="#line8">rx_burst_size</a>;
+<b><a name="line27">27   </a></b>			else
+<b><a name="line28">28   </a></b>				<a href="#line11">num_pkts</a> = <a href="#line12">tdesc</a>;
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>			/* try to receive RX_BURST_SZ packets */
+<b><a name="line31">31   </a></b>			<a href="#line11">nb_rx</a> = <a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line3864">rte_eth_rx_burst</a>(<a href="#line8">portid</a>, <a href="#line8">queueid</a>, <a href="#line10">pkts</a>, <a href="#line11">num_pkts</a>);
+<b><a name="line32">32   </a></b>			if (<a href="#line11">nb_rx</a> == 0) {
+<b><a name="line33">33   </a></b>				<a href="/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: dma_from_device failed to receive packets\n&quot;);
+<b><a name="line34">34   </a></b>				return 0;
+<b><a name="line35">35   </a></b>			}
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>			for (<a href="#line11">i</a> = 0; <a href="#line11">i</a> &lt; <a href="#line11">nb_rx</a>; <a href="#line11">i</a>++) {
+<b><a name="line38">38   </a></b>				struct <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line474">rte_mbuf</a> *<b>mb</b> = <a href="#line10">pkts</a>[<a href="#line11">i</a>];
+<b><a name="line39">39   </a></b>				<a href="../../../../logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line208">memcpy</a>(<a href="#line8">buffer</a>, <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1905">rte_pktmbuf_mtod</a>(mb, void*), <a href="#line8">buf_size</a>);
+<b><a name="line40">40   </a></b>				<a href="#line8">buffer</a> = static_cast&lt;char*&gt;(<a href="#line8">buffer</a>) + <a href="#line8">buf_size</a>;
+<b><a name="line41">41   </a></b>				<a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1743">rte_pktmbuf_free</a>(<a href="#line38">mb</a>);
+<b><a name="line42">42   </a></b>			}
+<b><a name="line43">43   </a></b>	
+<b><a name="line44">44   </a></b>			<a href="#line12">tdesc</a> = <a href="#line12">tdesc</a> - <a href="#line11">nb_rx</a>;
+<b><a name="line45">45   </a></b>		}
+<b><a name="line46">46   </a></b>	
+<b><a name="line47">47   </a></b>		if (<a href="#line8">ld_size</a>) {
+<b><a name="line48">48   </a></b>			struct <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line474">rte_mbuf</a> *<b>mb</b>;
+<b><a name="line49">49   </a></b>			<a href="#line11">nb_rx</a> = <a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line3864">rte_eth_rx_burst</a>(<a href="#line8">portid</a>, <a href="#line8">queueid</a>, <a href="#line10">pkts</a>, 1);
+<b><a name="line50">50   </a></b>			<a href="#line48">mb</a> = <a href="#line10">pkts</a>[0];
+<b><a name="line51">51   </a></b>			if(<a href="#line11">nb_rx</a> != 0) {
+<b><a name="line52">52   </a></b>				<a href="../../../../logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line208">memcpy</a>(<a href="#line8">buffer</a>, <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1905">rte_pktmbuf_mtod</a>(mb, void*), <a href="#line8">ld_size</a>);
+<b><a name="line53">53   </a></b>				<a href="#line8">buffer</a> = static_cast&lt;char*&gt;(<a href="#line8">buffer</a>) + <a href="#line8">ld_size</a>;
+<b><a name="line54">54   </a></b>				<a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1743">rte_pktmbuf_free</a>(<a href="#line48">mb</a>);
+<b><a name="line55">55   </a></b>			}
+<b><a name="line56">56   </a></b>		}
+<b><a name="line57">57   </a></b>	
+<b><a name="line58">58   </a></b>		//printf(&quot;\nDMA received number of packets: %d, on queue-id:%d\n&quot;, nb_rx, queueid);
+<b><a name="line59">59   </a></b>		return 0;
+<b><a name="line60">60   </a></b>	}
+<b><a name="line61">61   </a></b>	
+<b><a name="line62">62   </a></b>	int <b>do_recv_st</b>(int <b>portid</b>, void *<b>buffer</b>, int <b>queueid</b>, int <b>input_size</b>)
+<b><a name="line63">63   </a></b>	{
+<b><a name="line64">64   </a></b>		struct <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line474">rte_mbuf</a> *<b>pkts</b>[<a href="../qdma_instance.h/code.html#line9">NUM_RX_PKTS</a>] = { <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a> };
+<b><a name="line65">65   </a></b>		int <b>nb_rx</b> = 0, <b>i</b>, <b>ret</b> = 0,<b>tmp</b> = 0, <b>num_pkts</b>, <b>nb_pkts</b>, <b>num_pkts_recv</b> = 0, <b>bytes</b>	= 0;
+<b><a name="line66">66   </a></b>		int <b>reg_val</b>;
+<b><a name="line67">67   </a></b>		int <b>user_bar_idx</b>, <b>dma_bar_idx</b>, <b>bypass_bar_idx</b>, <b>en_imm</b>;
+<b><a name="line68">68   </a></b>		struct <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line474">rte_mbuf</a> *<b>nxtmb</b>;
+<b><a name="line69">69   </a></b>		unsigned int <b>max_rx_retry</b>;
+<b><a name="line70">70   </a></b>	
+<b><a name="line71">71   </a></b>	
+<b><a name="line72">72   </a></b>	#ifdef DUMP_MEMPOOL_USAGE_STATS
+<b><a name="line73">73   </a></b>		char	mem_pool[RTE_MEMPOOL_NAMESIZE];
+<b><a name="line74">74   </a></b>		int q_dir = 1;
+<b><a name="line75">75   </a></b>	
+<b><a name="line76">76   </a></b>		snprintf(mem_pool, RTE_MEMPOOL_NAMESIZE, MBUF_POOL_NAME_PORT_QUEUE_DIR, portid, queueid, q_dir);
+<b><a name="line77">77   </a></b>		struct rte_mempool *mp;
+<b><a name="line78">78   </a></b>	
+<b><a name="line79">79   </a></b>		/* get the mempool from which to acquire buffers */
+<b><a name="line80">80   </a></b>		if ((mp = rte_mempool_lookup(mem_pool)) == NULL)
+<b><a name="line81">81   </a></b>			throw std::runtime_error(&quot;Could not find mempool&quot;);
+<b><a name="line82">82   </a></b>	#endif //DUMP_MEMPOOL_USAGE_STATS
+<b><a name="line83">83   </a></b>		<a href="#line65">ret</a> = <a href="../../../../include/qdma_dpdk.h/code.html#line207">rte_pmd_qdma_get_bar_details</a>(<a href="#line62">portid</a>, &amp;(<a href="#line67">dma_bar_idx</a>),
+<b><a name="line84">84   </a></b>				&amp;(<a href="#line67">user_bar_idx</a>), &amp;(<a href="#line67">bypass_bar_idx</a>));
+<b><a name="line85">85   </a></b>		if (<a href="#line65">ret</a> &lt; 0)
+<b><a name="line86">86   </a></b>			throw <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/stdexcept/code.html#line192">runtime_error</a>(&quot;rte_pmd_qdma_get_bar_details failed&quot;);
+<b><a name="line87">87   </a></b>		<a href="#line65">ret</a> = <a href="../../../../include/qdma_dpdk.h/code.html#line212">rte_pmd_qdma_get_immediate_data_state</a>(<a href="#line62">portid</a>, <a href="#line62">queueid</a>, &amp;(<a href="#line67">en_imm</a>));
+<b><a name="line88">88   </a></b>		if (<a href="#line65">ret</a> &lt; 0)
+<b><a name="line89">89   </a></b>			throw <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/stdexcept/code.html#line192">runtime_error</a>(&quot;rte_pmd_qdma_get_immediate_data_state failed&quot;);
+<b><a name="line90">90   </a></b>	
+<b><a name="line91">91   </a></b>		/* As per  hardware design a single writeback will point to atmost 7 descriptors.
+<b><a name="line92">92   </a></b>		 * So If the size of the buffer in descriptor is 4KB, then a single writeback which
+<b><a name="line93">93   </a></b>		 * corresponds a packet can give you atmost 28KB data.
+<b><a name="line94">94   </a></b>		 *
+<b><a name="line95">95   </a></b>		 * As per this when testing sizes beyond 28KB, one needs to split it up in chunks of 28KB,
+<b><a name="line96">96   </a></b>		 * example : to test 56KB data size, set 28KB as packet length in USER BAR 0x04 register
+<b><a name="line97">97   </a></b>		 * and no of packets as 2 in user BAR 0x20 register this would give you writebacks or packets,
+<b><a name="line98">98   </a></b>		 * which needs to be combined as one in application.
+<b><a name="line99">99   </a></b>		*/
+<b><a name="line100">100  </a></b>	
+<b><a name="line101">101  </a></b>		/* Calculate the number of packets to receive and programming the user bar */
+<b><a name="line102">102  </a></b>		if(<a href="#line62">input_size</a> == 0) /* zerobyte support uses one descriptor */
+<b><a name="line103">103  </a></b>			<a href="#line65">num_pkts</a> = 1;
+<b><a name="line104">104  </a></b>		else
+<b><a name="line105">105  </a></b>			<a href="#line65">num_pkts</a> = <a href="../../../../include/qdma_dpdk.h/code.html#line197">qdma_pci_read_reg</a>(&amp;<a href="/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line639">rte_eth_devices</a>[<a href="#line62">portid</a>], <a href="#line67">user_bar_idx</a>, <a href="../qdma_instance.h/code.html#line26">C2H_PACKET_COUNT_REG</a>);
+<b><a name="line106">106  </a></b>	/*	else if(input_size % MAX_WRITEBACK_SIZE != 0)
+<b><a name="line107">107  </a></b>			num_pkts = input_size/MAX_WRITEBACK_SIZE + 1;
+<b><a name="line108">108  </a></b>		else
+<b><a name="line109">109  </a></b>			num_pkts = input_size/MAX_WRITEBACK_SIZE;*/
+<b><a name="line110">110  </a></b>		<a href="#line66">reg_val</a> = <a href="../../../../include/qdma_dpdk.h/code.html#line197">qdma_pci_read_reg</a>(&amp;<a href="/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line639">rte_eth_devices</a>[<a href="#line62">portid</a>], <a href="#line67">user_bar_idx</a>, <a href="../qdma_instance.h/code.html#line19">C2H_CONTROL_REG</a>);
+<b><a name="line111">111  </a></b>		//reg_val &amp;= C2H_CONTROL_REG_MASK;
+<b><a name="line112">112  </a></b>		if (<a href="#line66">reg_val</a> &amp; <a href="../qdma_instance.h/code.html#line20">ST_LOOPBACK_EN</a>){
+<b><a name="line113">113  </a></b>			do{
+<b><a name="line114">114  </a></b>				<a href="#line65">nb_rx</a> = <a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line3864">rte_eth_rx_burst</a>(<a href="#line62">portid</a>, <a href="#line62">queueid</a>, <a href="#line64">pkts</a>, <a href="../qdma_instance.h/code.html#line9">NUM_RX_PKTS</a>);
+<b><a name="line115">115  </a></b>				for (<a href="#line65">i</a> = 0; <a href="#line65">i</a> &lt; <a href="#line65">nb_rx</a>; <a href="#line65">i</a>++) {
+<b><a name="line116">116  </a></b>					struct <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line474">rte_mbuf</a> *<b>mb</b> = <a href="#line64">pkts</a>[<a href="#line65">i</a>];
+<b><a name="line117">117  </a></b>					<a href="#line65">ret</a> = 0;
+<b><a name="line118">118  </a></b>					while (<a href="#line116">mb</a> != <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>){
+<b><a name="line119">119  </a></b>						<a href="../../../../logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line208">memcpy</a>(<a href="#line62">buffer</a>, <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1905">rte_pktmbuf_mtod</a>(mb, void*), <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1953">rte_pktmbuf_data_len</a>(mb));
+<b><a name="line120">120  </a></b>						<a href="#line65">ret</a> += <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1953">rte_pktmbuf_data_len</a>(mb);
+<b><a name="line121">121  </a></b>						<a href="#line62">buffer</a> = static_cast&lt;char*&gt;(<a href="#line62">buffer</a>) + <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1953">rte_pktmbuf_data_len</a>(mb);
+<b><a name="line122">122  </a></b>						<a href="#line68">nxtmb</a> = <a href="#line116">mb</a>-&gt;<a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line621">next</a>;
+<b><a name="line123">123  </a></b>						<a href="#line116">mb</a> = <a href="#line68">nxtmb</a>;
+<b><a name="line124">124  </a></b>					}
+<b><a name="line125">125  </a></b>					<a href="#line116">mb</a> = <a href="#line64">pkts</a>[<a href="#line65">i</a>];
+<b><a name="line126">126  </a></b>					<a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1743">rte_pktmbuf_free</a>(<a href="#line116">mb</a>);
+<b><a name="line127">127  </a></b>					//printf(&quot;recv count: %d, with data-len: %d\n&quot;, i, ret);
+<b><a name="line128">128  </a></b>					<a href="#line65">bytes</a> += <a href="#line65">ret</a>;
+<b><a name="line129">129  </a></b>				}
+<b><a name="line130">130  </a></b>			}while(<a href="#line65">bytes</a> &lt; <a href="#line62">input_size</a>);
+<b><a name="line131">131  </a></b>			return <a href="#line65">bytes</a>;
+<b><a name="line132">132  </a></b>		}
+<b><a name="line133">133  </a></b>	
+<b><a name="line134">134  </a></b>		while (<a href="#line65">num_pkts</a>) {
+<b><a name="line135">135  </a></b>			if (<a href="#line65">num_pkts</a> &gt; <a href="../qdma_instance.h/code.html#line9">NUM_RX_PKTS</a>)
+<b><a name="line136">136  </a></b>				<a href="#line65">nb_pkts</a> = <a href="../qdma_instance.h/code.html#line9">NUM_RX_PKTS</a>;
+<b><a name="line137">137  </a></b>			else
+<b><a name="line138">138  </a></b>				<a href="#line65">nb_pkts</a> = <a href="#line65">num_pkts</a>;
+<b><a name="line139">139  </a></b>	
+<b><a name="line140">140  </a></b>			<a href="#line65">num_pkts_recv</a> = <a href="#line65">nb_pkts</a>;
+<b><a name="line141">141  </a></b>			<a href="#line69">max_rx_retry</a> = <a href="../../../../include/qdma_dpdk.h/code.html#line89">RX_TX_MAX_RETRY</a>;
+<b><a name="line142">142  </a></b>	
+<b><a name="line143">143  </a></b>			if(<a href="#line67">en_imm</a>) { /* Immediate data Enabled*/
+<b><a name="line144">144  </a></b>				/* payload received is zero for the immediate data case. Therefore , no need
+<b><a name="line145">145  </a></b>				 * to call the rx_burst function again in this case and set the num_pkts to nb_rx
+<b><a name="line146">146  </a></b>				 * which is always Zero.
+<b><a name="line147">147  </a></b>				 */
+<b><a name="line148">148  </a></b>				<a href="#line65">nb_rx</a> = <a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line3864">rte_eth_rx_burst</a>(<a href="#line62">portid</a>, <a href="#line62">queueid</a>, <a href="#line64">pkts</a>, <a href="#line65">nb_pkts</a>);
+<b><a name="line149">149  </a></b>				<a href="#line65">num_pkts</a> = 0;
+<b><a name="line150">150  </a></b>			}
+<b><a name="line151">151  </a></b>			else {
+<b><a name="line152">152  </a></b>				/* try to receive RX_BURST_SZ packets */
+<b><a name="line153">153  </a></b>	
+<b><a name="line154">154  </a></b>				<a href="#line65">nb_rx</a> = <a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line3864">rte_eth_rx_burst</a>(<a href="#line62">portid</a>, <a href="#line62">queueid</a>, <a href="#line64">pkts</a>, <a href="#line65">nb_pkts</a>);
+<b><a name="line155">155  </a></b>				<a href="#line65">tmp</a> = <a href="#line65">nb_rx</a>;
+<b><a name="line156">156  </a></b>				if(<a href="#line62">input_size</a> == 0)
+<b><a name="line157">157  </a></b>					break;
+<b><a name="line158">158  </a></b>				while((<a href="#line65">nb_rx</a> &lt; <a href="#line65">nb_pkts</a>) &amp;&amp; <a href="#line69">max_rx_retry</a>) {
+<b><a name="line159">159  </a></b>					/*printf(&quot;Couldn't receive all the packets:	 Expected = %d Received = %d. \n&quot;
+<b><a name="line160">160  </a></b>					&quot;Calling rte_eth_rx_burst again\n&quot;, nb_pkts , nb_rx);*/
+<b><a name="line161">161  </a></b>					<a href="/usr/include/unistd.h/code.html#line463">usleep</a>(1);
+<b><a name="line162">162  </a></b>					<a href="#line65">nb_pkts</a> -= <a href="#line65">nb_rx</a>;
+<b><a name="line163">163  </a></b>					<a href="#line65">nb_rx</a> = <a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line3864">rte_eth_rx_burst</a>(<a href="#line62">portid</a>, <a href="#line62">queueid</a>, &amp;<a href="#line64">pkts</a>[<a href="#line65">tmp</a>], <a href="#line65">nb_pkts</a>);
+<b><a name="line164">164  </a></b>					<a href="#line65">tmp</a> += <a href="#line65">nb_rx</a>;
+<b><a name="line165">165  </a></b>					<a href="#line69">max_rx_retry</a>--;
+<b><a name="line166">166  </a></b>				}
+<b><a name="line167">167  </a></b>	
+<b><a name="line168">168  </a></b>				<a href="#line65">num_pkts_recv</a> = <a href="#line65">tmp</a>;
+<b><a name="line169">169  </a></b>				if((<a href="#line69">max_rx_retry</a> == 0) &amp;&amp; (<a href="#line65">tmp</a> == 0)) {
+<b><a name="line170">170  </a></b>						<a href="/usr/include/stdio.h/code.html#line362">printf</a>(&quot;ERROR: rte_eth_rx_burst failed\n&quot;);
+<b><a name="line171">171  </a></b>						break;
+<b><a name="line172">172  </a></b>				}
+<b><a name="line173">173  </a></b>	
+<b><a name="line174">174  </a></b>	#ifdef DUMP_MEMPOOL_USAGE_STATS
+<b><a name="line175">175  </a></b>				printf(&quot;%s(): %d: queue id = %d, mbuf_avail_count = %d, mbuf_in_use_count = %d\n&quot;,
+<b><a name="line176">176  </a></b>					__func__, __LINE__, queueid, rte_mempool_avail_count(mp), rte_mempool_in_use_count(mp));
+<b><a name="line177">177  </a></b>	#endif //DUMP_MEMPOOL_USAGE_STATS
+<b><a name="line178">178  </a></b>				for (<a href="#line65">i</a> = 0; <a href="#line65">i</a> &lt; <a href="#line65">num_pkts_recv</a>; <a href="#line65">i</a>++) {
+<b><a name="line179">179  </a></b>					struct <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line474">rte_mbuf</a> *<b>mb</b> = <a href="#line64">pkts</a>[<a href="#line65">i</a>];
+<b><a name="line180">180  </a></b>					while (<a href="#line179">mb</a> != <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>){
+<b><a name="line181">181  </a></b>						<a href="../../../../logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line208">memcpy</a>(<a href="#line62">buffer</a>, <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1905">rte_pktmbuf_mtod</a>(mb, void*), <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1953">rte_pktmbuf_data_len</a>(mb));
+<b><a name="line182">182  </a></b>						<a href="#line65">ret</a> += <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1953">rte_pktmbuf_data_len</a>(mb);
+<b><a name="line183">183  </a></b>						<a href="#line62">buffer</a> = static_cast&lt;char*&gt;(<a href="#line62">buffer</a>) + <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1953">rte_pktmbuf_data_len</a>(mb);
+<b><a name="line184">184  </a></b>						<a href="#line68">nxtmb</a> = <a href="#line179">mb</a>-&gt;<a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line621">next</a>;
+<b><a name="line185">185  </a></b>						<a href="#line179">mb</a> = <a href="#line68">nxtmb</a>;
+<b><a name="line186">186  </a></b>					}
+<b><a name="line187">187  </a></b>	
+<b><a name="line188">188  </a></b>					<a href="#line179">mb</a> = <a href="#line64">pkts</a>[<a href="#line65">i</a>];
+<b><a name="line189">189  </a></b>					<a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1743">rte_pktmbuf_free</a>(<a href="#line179">mb</a>);
+<b><a name="line190">190  </a></b>					//printf(&quot;recv count: %d, with data-len: %d\n&quot;, i, ret);
+<b><a name="line191">191  </a></b>					<a href="#line65">ret</a> = 0;
+<b><a name="line192">192  </a></b>				}
+<b><a name="line193">193  </a></b>	#ifdef DUMP_MEMPOOL_USAGE_STATS
+<b><a name="line194">194  </a></b>				printf(&quot;%s(): %d: queue id = %d, mbuf_avail_count = %d, mbuf_in_use_count = %d, num_pkts_recv = %d\n&quot;,
+<b><a name="line195">195  </a></b>					__func__, __LINE__, queueid, rte_mempool_avail_count(mp), rte_mempool_in_use_count(mp), num_pkts_recv);
+<b><a name="line196">196  </a></b>	#endif //DUMP_MEMPOOL_USAGE_STATS
+<b><a name="line197">197  </a></b>				<a href="#line65">num_pkts</a> = <a href="#line65">num_pkts</a> - <a href="#line65">num_pkts_recv</a>;
+<b><a name="line198">198  </a></b>			}
+<b><a name="line199">199  </a></b>		}
+<b><a name="line200">200  </a></b>	
+<b><a name="line201">201  </a></b>		//printf(&quot;\nDMA received number of packets: %d, on queue-id:%d\n&quot;, num_pkts, queueid);
+<b><a name="line202">202  </a></b>	
+<b><a name="line203">203  </a></b>		return 0;
+<b><a name="line204">204  </a></b>	}
+<b><a name="line205">205  </a></b>	
+<b><a name="line206">206  </a></b>	
+<b><a name="line207">207  </a></b>	int <b>do_xmit</b>(int <b>portid</b>, void * <b>buffer</b>, int <b>queueid</b>, int <b>ld_size</b>, int <b>tot_num_desc</b>, int <b>zbyte</b>, <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>buf_size</b>, <a href="/usr/include/stdint.h/code.html#line49">uint16_t</a> <b>tx_burst_size</b>)
+<b><a name="line208">208  </a></b>	{
+<b><a name="line209">209  </a></b>		struct <a href="/usr/local/include/dpdk/rte_mempool.h/code.html#line135">rte_mempool</a> *<b>mp</b>;
+<b><a name="line210">210  </a></b>		struct <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line474">rte_mbuf</a> *<b>mb</b>[<a href="../qdma_instance.h/code.html#line9">NUM_RX_PKTS</a>] = { <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a> };
+<b><a name="line211">211  </a></b>		int <b>nb_tx</b> = 0, <b>i</b> = 0, <b>tdesc</b>, <b>num_pkts</b> = 0, <b>tmp</b> = 0, <b>nb_pkts</b> = 0;
+<b><a name="line212">212  </a></b>		<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>max_tx_retry</b>;
+<b><a name="line213">213  </a></b>		char	<b>mem_pool</b>[<a href="/usr/local/include/dpdk/rte_mempool.h/code.html#line106">RTE_MEMPOOL_NAMESIZE</a>];
+<b><a name="line214">214  </a></b>		int	<b>q_dir</b> = 0;
+<b><a name="line215">215  </a></b>		int <b>loop_cnt</b> = 5;
+<b><a name="line216">216  </a></b>		<a href="/usr/include/stdint.h/code.html#line49">uint16_t</a> <b>burst_size</b> = <a href="#line207">tx_burst_size</a>;
+<b><a name="line217">217  </a></b>	
+<b><a name="line218">218  </a></b>		<a href="/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line213">mem_pool</a>, <a href="/usr/local/include/dpdk/rte_mempool.h/code.html#line106">RTE_MEMPOOL_NAMESIZE</a>, <a href="../qdma_instance.h/code.html#line12">MBUF_POOL_NAME_PORT_QUEUE_DIR</a>, <a href="#line207">portid</a>, <a href="#line207">queueid</a>, <a href="#line214">q_dir</a>);
+<b><a name="line219">219  </a></b>	
+<b><a name="line220">220  </a></b>		while (((<a href="#line209">mp</a> = <a href="/usr/local/include/dpdk/rte_mempool.h/code.html#line1663">rte_mempool_lookup</a>(<a href="#line213">mem_pool</a>)) == <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>) &amp;&amp; <a href="#line215">loop_cnt</a> &gt;= 0)
+<b><a name="line221">221  </a></b>		{
+<b><a name="line222">222  </a></b>			<a href="/usr/include/unistd.h/code.html#line463">usleep</a>(100);
+<b><a name="line223">223  </a></b>			<a href="#line215">loop_cnt</a>--;
+<b><a name="line224">224  </a></b>		}
+<b><a name="line225">225  </a></b>	
+<b><a name="line226">226  </a></b>		if (<a href="#line209">mp</a> == <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>) {
+<b><a name="line227">227  </a></b>			<a href="/usr/include/stdio.h/code.html#line362">printf</a>(&quot;do_xmit : Could not find mempool with name: %s\n&quot;, <a href="#line213">mem_pool</a>);
+<b><a name="line228">228  </a></b>			throw <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/stdexcept/code.html#line192">runtime_error</a>(&quot;do_xmit : Could not find mempool with name:\n&quot;);
+<b><a name="line229">229  </a></b>		}
+<b><a name="line230">230  </a></b>		<a href="#line211">tdesc</a> = <a href="#line207">tot_num_desc</a>;
+<b><a name="line231">231  </a></b>		if (<a href="#line207">ld_size</a>)
+<b><a name="line232">232  </a></b>			<a href="#line211">tdesc</a> --;
+<b><a name="line233">233  </a></b>	
+<b><a name="line234">234  </a></b>		while (<a href="#line211">tdesc</a>) {
+<b><a name="line235">235  </a></b>			if (<a href="#line211">tdesc</a> &gt; <a href="#line216">burst_size</a>)
+<b><a name="line236">236  </a></b>				<a href="#line211">num_pkts</a> = <a href="#line216">burst_size</a>;
+<b><a name="line237">237  </a></b>			else
+<b><a name="line238">238  </a></b>				<a href="#line211">num_pkts</a> = <a href="#line211">tdesc</a>;
+<b><a name="line239">239  </a></b>	
+<b><a name="line240">240  </a></b>			<a href="#line212">max_tx_retry</a> = <a href="../../../../include/qdma_dpdk.h/code.html#line89">RX_TX_MAX_RETRY</a>;
+<b><a name="line241">241  </a></b>	#ifdef DUMP_MEMPOOL_USAGE_STATS
+<b><a name="line242">242  </a></b>			printf(&quot;%s(): %d: queue id %d, mbuf_avail_count = %d, mbuf_in_use_count = %d\n&quot;,
+<b><a name="line243">243  </a></b>				__func__, __LINE__, queueid, rte_mempool_avail_count(mp), rte_mempool_in_use_count(mp));
+<b><a name="line244">244  </a></b>	#endif //DUMP_MEMPOOL_USAGE_STATS
+<b><a name="line245">245  </a></b>			for (<a href="#line211">i</a>=0; <a href="#line211">i</a>&lt;<a href="#line211">num_pkts</a>; <a href="#line211">i</a>++) {
+<b><a name="line246">246  </a></b>				<a href="#line210">mb</a>[<a href="#line211">i</a>] = <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1324">rte_pktmbuf_alloc</a>(<a href="#line209">mp</a>);
+<b><a name="line247">247  </a></b>				if (<a href="#line210">mb</a>[<a href="#line211">i</a>] == <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>) {
+<b><a name="line248">248  </a></b>						throw <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/stdexcept/code.html#line192">runtime_error</a>(&quot; #####Cannot allocate mbuf packet &quot;);
+<b><a name="line249">249  </a></b>				}
+<b><a name="line250">250  </a></b>				if (!<a href="#line207">zbyte</a>){
+<b><a name="line251">251  </a></b>					<a href="../../../../logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line208">memcpy</a>(<a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1905">rte_pktmbuf_mtod</a>(mb[i], void *), <a href="#line207">buffer</a> , <a href="#line207">buf_size</a>);
+<b><a name="line252">252  </a></b>					<a href="#line207">buffer</a> = static_cast&lt;char*&gt;(<a href="#line207">buffer</a>) + <a href="#line207">buf_size</a>;
+<b><a name="line253">253  </a></b>				}
+<b><a name="line254">254  </a></b>				<a href="#line210">mb</a>[<a href="#line211">i</a>]-&gt;<a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line508">nb_segs</a> = 1;
+<b><a name="line255">255  </a></b>				<a href="#line210">mb</a>[<a href="#line211">i</a>]-&gt;<a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line621">next</a> = <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>;
+<b><a name="line256">256  </a></b>				<a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1953">rte_pktmbuf_data_len</a>(mb[i]) = (!<a href="#line207">zbyte</a>) ? (<a href="/usr/include/stdint.h/code.html#line49">uint16_t</a>)<a href="#line207">buf_size</a> : 0;
+<b><a name="line257">257  </a></b>				<a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1943">rte_pktmbuf_pkt_len</a>(mb[i])	= (!<a href="#line207">zbyte</a>) ? (<a href="/usr/include/stdint.h/code.html#line49">uint16_t</a>)<a href="#line207">buf_size</a> : 0;
+<b><a name="line258">258  </a></b>			}
+<b><a name="line259">259  </a></b>	
+<b><a name="line260">260  </a></b>	#ifdef DUMP_MEMPOOL_USAGE_STATS
+<b><a name="line261">261  </a></b>			printf(&quot;%s(): %d: queue id %d, mbuf_avail_count = %d, mbuf_in_use_count = %d, num_pkts_tx = %d\n&quot;,
+<b><a name="line262">262  </a></b>				__func__, __LINE__, queueid, rte_mempool_avail_count(mp), rte_mempool_in_use_count(mp), num_pkts);
+<b><a name="line263">263  </a></b>	#endif //DUMP_MEMPOOL_USAGE_STATS
+<b><a name="line264">264  </a></b>	
+<b><a name="line265">265  </a></b>			/* try to transmit TX_BURST_SZ packets */
+<b><a name="line266">266  </a></b>			<a href="#line211">nb_pkts</a> = <a href="#line211">num_pkts</a>;
+<b><a name="line267">267  </a></b>			<a href="#line211">nb_tx</a> = <a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line4131">rte_eth_tx_burst</a>(<a href="#line207">portid</a>, <a href="#line207">queueid</a>, <a href="#line210">mb</a>, <a href="#line211">num_pkts</a>);
+<b><a name="line268">268  </a></b>			<a href="#line211">tmp</a> = <a href="#line211">nb_tx</a>;
+<b><a name="line269">269  </a></b>			while((<a href="#line211">nb_tx</a> &lt; <a href="#line211">num_pkts</a>) &amp;&amp; <a href="#line212">max_tx_retry</a>) {
+<b><a name="line270">270  </a></b>				/*printf(&quot;Couldn't transmit all the packets: queueid=%d	 Expected = %d Transmitted = %d. \n&quot;
+<b><a name="line271">271  </a></b>						&quot;Calling rte_eth_tx_burst again\n&quot;,queueid, num_pkts , nb_tx);*/
+<b><a name="line272">272  </a></b>				<a href="/usr/include/unistd.h/code.html#line463">usleep</a>(1);
+<b><a name="line273">273  </a></b>				<a href="#line211">num_pkts</a> -= <a href="#line211">nb_tx</a>;
+<b><a name="line274">274  </a></b>				<a href="#line211">nb_tx</a> = <a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line4131">rte_eth_tx_burst</a>(<a href="#line207">portid</a>, <a href="#line207">queueid</a>, &amp;<a href="#line210">mb</a>[<a href="#line211">tmp</a>], <a href="#line211">num_pkts</a>);
+<b><a name="line275">275  </a></b>				<a href="#line211">tmp</a> += <a href="#line211">nb_tx</a>;
+<b><a name="line276">276  </a></b>				<a href="#line212">max_tx_retry</a>--;
+<b><a name="line277">277  </a></b>			}
+<b><a name="line278">278  </a></b>			if((<a href="#line212">max_tx_retry</a> == 0)) {
+<b><a name="line279">279  </a></b>				for (<a href="#line211">i</a> = <a href="#line211">tmp</a>; <a href="#line211">i</a> &lt; <a href="#line211">nb_pkts</a>; <a href="#line211">i</a>++)
+<b><a name="line280">280  </a></b>					<a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1743">rte_pktmbuf_free</a>(<a href="#line210">mb</a>[<a href="#line211">i</a>]);
+<b><a name="line281">281  </a></b>				if (<a href="#line211">tmp</a> == 0) {
+<b><a name="line282">282  </a></b>					<a href="/usr/include/stdio.h/code.html#line362">printf</a>(&quot;ERROR: rte_eth_tx_burst failed \n&quot;);
+<b><a name="line283">283  </a></b>					break;
+<b><a name="line284">284  </a></b>				}
+<b><a name="line285">285  </a></b>			}
+<b><a name="line286">286  </a></b>	
+<b><a name="line287">287  </a></b>			<a href="#line211">tdesc</a> = <a href="#line211">tdesc</a> - <a href="#line211">tmp</a>;
+<b><a name="line288">288  </a></b>		}
+<b><a name="line289">289  </a></b>	
+<b><a name="line290">290  </a></b>		if (<a href="#line207">ld_size</a>) {
+<b><a name="line291">291  </a></b>			<a href="#line210">mb</a>[0] = <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1324">rte_pktmbuf_alloc</a>(<a href="#line209">mp</a>);
+<b><a name="line292">292  </a></b>			if (<a href="#line210">mb</a>[0] == <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>) {
+<b><a name="line293">293  </a></b>					throw <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/stdexcept/code.html#line192">runtime_error</a>(&quot; #####Cannot allocate mbuf packet&quot;);
+<b><a name="line294">294  </a></b>			}
+<b><a name="line295">295  </a></b>			<a href="../../../../logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line208">memcpy</a>(<a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1905">rte_pktmbuf_mtod</a>(mb[0], void *), <a href="#line207">buffer</a>, <a href="#line207">ld_size</a>);
+<b><a name="line296">296  </a></b>			<a href="#line207">buffer</a> = static_cast&lt;char*&gt;(<a href="#line207">buffer</a>) + <a href="#line207">ld_size</a>;
+<b><a name="line297">297  </a></b>			<a href="#line210">mb</a>[0]-&gt;<a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line508">nb_segs</a> = 1;
+<b><a name="line298">298  </a></b>			<a href="#line210">mb</a>[0]-&gt;<a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line621">next</a> = <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>;
+<b><a name="line299">299  </a></b>			<a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1953">rte_pktmbuf_data_len</a>(mb[0]) = (<a href="/usr/include/stdint.h/code.html#line49">uint16_t</a>)<a href="#line207">ld_size</a>;
+<b><a name="line300">300  </a></b>			<a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1943">rte_pktmbuf_pkt_len</a>(mb[0])	= (<a href="/usr/include/stdint.h/code.html#line49">uint16_t</a>)<a href="#line207">ld_size</a>;
+<b><a name="line301">301  </a></b>			<a href="#line211">nb_tx</a> = <a href="/usr/local/include/dpdk/rte_ethdev.h/code.html#line4131">rte_eth_tx_burst</a>(<a href="#line207">portid</a>, <a href="#line207">queueid</a>, <a href="#line210">mb</a>, 1);
+<b><a name="line302">302  </a></b>			if(<a href="#line211">nb_tx</a> == 0)
+<b><a name="line303">303  </a></b>				<a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1743">rte_pktmbuf_free</a>(<a href="#line210">mb</a>[0]);
+<b><a name="line304">304  </a></b>		}
+<b><a name="line305">305  </a></b>		//printf(&quot;\nDMA transmitted number of packets: %d, on Queue-id:%d\n&quot;, nb_pkts, queueid);
+<b><a name="line306">306  </a></b>		return 0;
+<b><a name="line307">307  </a></b>	}
+<b><a name="line308">308  </a></b>	
+<b><a name="line309">309  </a></b>	<a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<b>queue_ext</b>(<a href="../../qdma_common/qdma_queue_abs.h/code.html#line19">instance</a>&amp; <b>drv</b>, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>dev_id</b>, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>q_id</b>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line21">queue</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line24">mode</a> <b>mode</b>,
+<b><a name="line310">310  </a></b>				 <a href="../../qdma_common/qdma_queue_abs.h/code.html#line21">queue</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line29">direction</a> <b>dir</b>, const <a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../qdma_queue.h/code.html#line14">config</a>&amp; <b>qcfg</b>){
+<b><a name="line311">311  </a></b>	
+<b><a name="line312">312  </a></b>		<a href="../../qdma_common/qdma_queue_abs.h/code.html#line50">m_drv</a> = &amp;<a href="#line309">drv</a>;
+<b><a name="line313">313  </a></b>		<a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a> = <a href="#line309">dev_id</a>;
+<b><a name="line314">314  </a></b>		<a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a> = <a href="#line309">q_id</a>;
+<b><a name="line315">315  </a></b>		<a href="../qdma_queue.h/code.html#line48">m_mode</a> = <a href="#line309">mode</a>;
+<b><a name="line316">316  </a></b>		<a href="../../qdma_common/qdma_queue_abs.h/code.html#line55">m_dir</a> = <a href="#line310">dir</a>;
+<b><a name="line317">317  </a></b>		<a href="../../qdma_common/qdma_queue_abs.h/code.html#line53">m_buff_sz</a> = <a href="#line310">qcfg</a>.<a href="../qdma_queue.h/code.html#line16">idx_bufsz</a>;
+<b><a name="line318">318  </a></b>		<a href="../../qdma_common/qdma_queue_abs.h/code.html#line54">m_burst_size</a> = <a href="#line310">qcfg</a>.<a href="../qdma_queue.h/code.html#line33">burst_size</a>;
+<b><a name="line319">319  </a></b>		char	<b>mem_pool</b>[<a href="/usr/local/include/dpdk/rte_mempool.h/code.html#line106">RTE_MEMPOOL_NAMESIZE</a>];
+<b><a name="line320">320  </a></b>		<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a>		<b>nb_buff</b>;
+<b><a name="line321">321  </a></b>		struct <a href="/usr/local/include/dpdk/rte_mempool.h/code.html#line135">rte_mempool</a>	*<b>mbuf_pool</b>;
+<b><a name="line322">322  </a></b>	
+<b><a name="line323">323  </a></b>		/** Mbuf packet pool **/
+<b><a name="line324">324  </a></b>		<a href="#line320">nb_buff</a> = ((<a href="#line310">qcfg</a>.<a href="../qdma_queue.h/code.html#line15">idx_rngsz</a>));
+<b><a name="line325">325  </a></b>	
+<b><a name="line326">326  </a></b>		<a href="#line320">nb_buff</a> += <a href="../qdma_instance.h/code.html#line9">NUM_RX_PKTS</a>;
+<b><a name="line327">327  </a></b>	
+<b><a name="line328">328  </a></b>		<a href="#line320">nb_buff</a> = <a href="/usr/local/include/dpdk/rte_common.h/code.html#line424">RTE_MAX</a>(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 1.5));
+<b><a name="line329">329  </a></b>		if (<a href="#line310">dir</a> == <a href="../../qdma_common/qdma_queue_abs.h/code.html#line17">qdma</a>::<a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line29">direction</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line32">both</a>){
+<b><a name="line330">330  </a></b>			<a href="/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line319">mem_pool</a>, <a href="/usr/local/include/dpdk/rte_mempool.h/code.html#line106">RTE_MEMPOOL_NAMESIZE</a>, <a href="../qdma_instance.h/code.html#line12">MBUF_POOL_NAME_PORT_QUEUE_DIR</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, (int)<a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line29">direction</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line30">host_to_card</a>);
+<b><a name="line331">331  </a></b>			<a href="#line321">mbuf_pool</a> = <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1182">rte_pktmbuf_pool_create</a>(<a href="#line319">mem_pool</a>, <a href="#line320">nb_buff</a>, <a href="../qdma_instance.h/code.html#line10">MP_CACHE_SZ</a>,
+<b><a name="line332">332  </a></b>					0, <a href="#line310">qcfg</a>.<a href="../qdma_queue.h/code.html#line16">idx_bufsz</a> + <a href="/usr/local/include/dpdk/rte_config.h/code.html#line419">RTE_PKTMBUF_HEADROOM</a>, <a href="/usr/local/include/dpdk/rte_lcore.h/code.html#line132">rte_socket_id</a>());
+<b><a name="line333">333  </a></b>			if (<a href="#line321">mbuf_pool</a> == <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>)
+<b><a name="line334">334  </a></b>				<a href="/usr/local/include/dpdk/rte_common.h/code.html#line614">rte_exit</a>(<a href="/usr/include/stdlib.h/code.html#line133">EXIT_FAILURE</a>, &quot; Cannot create mbuf pkt-pool for h2c-qid: %d, error: %s\n&quot;, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, <a href="/usr/local/include/dpdk/rte_errno.h/code.html#line42">rte_strerror</a>(<a href="/usr/local/include/dpdk/rte_errno.h/code.html#line29">rte_errno</a>));
+<b><a name="line335">335  </a></b>			<a href="/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line319">mem_pool</a>, <a href="/usr/local/include/dpdk/rte_mempool.h/code.html#line106">RTE_MEMPOOL_NAMESIZE</a>, <a href="../qdma_instance.h/code.html#line12">MBUF_POOL_NAME_PORT_QUEUE_DIR</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, (int)<a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line29">direction</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line31">card_to_host</a>);
+<b><a name="line336">336  </a></b>			<a href="#line321">mbuf_pool</a> = <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1182">rte_pktmbuf_pool_create</a>(<a href="#line319">mem_pool</a>, <a href="#line320">nb_buff</a>, <a href="../qdma_instance.h/code.html#line10">MP_CACHE_SZ</a>,
+<b><a name="line337">337  </a></b>					0, <a href="#line310">qcfg</a>.<a href="../qdma_queue.h/code.html#line16">idx_bufsz</a> + <a href="/usr/local/include/dpdk/rte_config.h/code.html#line419">RTE_PKTMBUF_HEADROOM</a>, <a href="/usr/local/include/dpdk/rte_lcore.h/code.html#line132">rte_socket_id</a>());
+<b><a name="line338">338  </a></b>	
+<b><a name="line339">339  </a></b>			if (<a href="#line321">mbuf_pool</a> == <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>)
+<b><a name="line340">340  </a></b>				<a href="/usr/local/include/dpdk/rte_common.h/code.html#line614">rte_exit</a>(<a href="/usr/include/stdlib.h/code.html#line133">EXIT_FAILURE</a>, &quot; Cannot create mbuf pkt-pool for c2h-qid: %d, error: %s\n&quot;, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, <a href="/usr/local/include/dpdk/rte_errno.h/code.html#line42">rte_strerror</a>(<a href="/usr/local/include/dpdk/rte_errno.h/code.html#line29">rte_errno</a>));
+<b><a name="line341">341  </a></b>			<a href="../../qdma_common/qdma_queue_abs.h/code.html#line50">m_drv</a>-&gt;<a href="../../qdma_common/qdma_instance_abs.h/code.html#line37">add_queue</a>(<a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, 1, <a href="#line309">mode</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line17">qdma</a>::<a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line29">direction</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line30">host_to_card</a>, <a href="#line310">qcfg</a>);
+<b><a name="line342">342  </a></b>			<a href="../../qdma_common/qdma_queue_abs.h/code.html#line50">m_drv</a>-&gt;<a href="../../qdma_common/qdma_instance_abs.h/code.html#line37">add_queue</a>(<a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, 1, <a href="#line309">mode</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line17">qdma</a>::<a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line29">direction</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line31">card_to_host</a>, <a href="#line310">qcfg</a>);
+<b><a name="line343">343  </a></b>			<a href="../../qdma_common/qdma_queue_abs.h/code.html#line50">m_drv</a>-&gt;<a href="../../qdma_common/qdma_instance_abs.h/code.html#line32">start_queue</a>(<a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, <a href="#line309">mode</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line17">qdma</a>::<a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line29">direction</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line30">host_to_card</a>, <a href="#line310">qcfg</a>);
+<b><a name="line344">344  </a></b>			<a href="../../qdma_common/qdma_queue_abs.h/code.html#line50">m_drv</a>-&gt;<a href="../../qdma_common/qdma_instance_abs.h/code.html#line32">start_queue</a>(<a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, <a href="#line309">mode</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line17">qdma</a>::<a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line29">direction</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line31">card_to_host</a>, <a href="#line310">qcfg</a>);
+<b><a name="line345">345  </a></b>		}
+<b><a name="line346">346  </a></b>		else{
+<b><a name="line347">347  </a></b>			<a href="/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line319">mem_pool</a>, <a href="/usr/local/include/dpdk/rte_mempool.h/code.html#line106">RTE_MEMPOOL_NAMESIZE</a>, <a href="../qdma_instance.h/code.html#line12">MBUF_POOL_NAME_PORT_QUEUE_DIR</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, (int)<a href="../../qdma_common/qdma_queue_abs.h/code.html#line55">m_dir</a>);
+<b><a name="line348">348  </a></b>			<a href="#line321">mbuf_pool</a> = <a href="/usr/local/include/dpdk/rte_mbuf.h/code.html#line1182">rte_pktmbuf_pool_create</a>(<a href="#line319">mem_pool</a>, <a href="#line320">nb_buff</a>, <a href="../qdma_instance.h/code.html#line10">MP_CACHE_SZ</a>,
+<b><a name="line349">349  </a></b>					0, <a href="#line310">qcfg</a>.<a href="../qdma_queue.h/code.html#line16">idx_bufsz</a> + <a href="/usr/local/include/dpdk/rte_config.h/code.html#line419">RTE_PKTMBUF_HEADROOM</a>, <a href="/usr/local/include/dpdk/rte_lcore.h/code.html#line132">rte_socket_id</a>());
+<b><a name="line350">350  </a></b>	
+<b><a name="line351">351  </a></b>			if (<a href="#line321">mbuf_pool</a> == <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>)
+<b><a name="line352">352  </a></b>				<a href="/usr/local/include/dpdk/rte_common.h/code.html#line614">rte_exit</a>(<a href="/usr/include/stdlib.h/code.html#line133">EXIT_FAILURE</a>, &quot; Cannot create mbuf pkt-pool for qid: %d,  direction: %d, error: %s\n&quot;, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, (int)<a href="../../qdma_common/qdma_queue_abs.h/code.html#line55">m_dir</a>, <a href="/usr/local/include/dpdk/rte_errno.h/code.html#line42">rte_strerror</a>(<a href="/usr/local/include/dpdk/rte_errno.h/code.html#line29">rte_errno</a>));
+<b><a name="line353">353  </a></b>			<a href="../../qdma_common/qdma_queue_abs.h/code.html#line50">m_drv</a>-&gt;<a href="../../qdma_common/qdma_instance_abs.h/code.html#line37">add_queue</a>(<a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, 1, <a href="#line309">mode</a>, <a href="#line310">dir</a>, <a href="#line310">qcfg</a>);
+<b><a name="line354">354  </a></b>			<a href="../../qdma_common/qdma_queue_abs.h/code.html#line50">m_drv</a>-&gt;<a href="../../qdma_common/qdma_instance_abs.h/code.html#line32">start_queue</a>(<a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, <a href="#line309">mode</a>, <a href="#line310">dir</a>, <a href="#line310">qcfg</a>);
+<b><a name="line355">355  </a></b>		}
+<b><a name="line356">356  </a></b>	}
+<b><a name="line357">357  </a></b>	
+<b><a name="line358">358  </a></b>	<a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<b>~queue_ext</b>() {
+<b><a name="line359">359  </a></b>		char <b>mem_pool</b>[<a href="/usr/local/include/dpdk/rte_mempool.h/code.html#line106">RTE_MEMPOOL_NAMESIZE</a>];
+<b><a name="line360">360  </a></b>		struct <a href="/usr/local/include/dpdk/rte_mempool.h/code.html#line135">rte_mempool</a> *<b>mp</b>;
+<b><a name="line361">361  </a></b>		int <b>loop_cnt</b>;
+<b><a name="line362">362  </a></b>	
+<b><a name="line363">363  </a></b>		if (<a href="../../qdma_common/qdma_queue_abs.h/code.html#line50">m_drv</a>) {
+<b><a name="line364">364  </a></b>			if (<a href="../../qdma_common/qdma_queue_abs.h/code.html#line55">m_dir</a> == <a href="../../qdma_common/qdma_queue_abs.h/code.html#line17">qdma</a>::<a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line29">direction</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line32">both</a>){
+<b><a name="line365">365  </a></b>				<a href="../../qdma_common/qdma_queue_abs.h/code.html#line50">m_drv</a>-&gt;<a href="../../qdma_common/qdma_instance_abs.h/code.html#line35">stop_queue</a>(<a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line17">qdma</a>::<a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line29">direction</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line30">host_to_card</a>);
+<b><a name="line366">366  </a></b>				<a href="../../qdma_common/qdma_queue_abs.h/code.html#line50">m_drv</a>-&gt;<a href="../../qdma_common/qdma_instance_abs.h/code.html#line35">stop_queue</a>(<a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line17">qdma</a>::<a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line29">direction</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line31">card_to_host</a>);
+<b><a name="line367">367  </a></b>				<a href="/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line359">mem_pool</a>, <a href="/usr/local/include/dpdk/rte_mempool.h/code.html#line106">RTE_MEMPOOL_NAMESIZE</a>, <a href="../qdma_instance.h/code.html#line12">MBUF_POOL_NAME_PORT_QUEUE_DIR</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, (int)<a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line29">direction</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line30">host_to_card</a>);
+<b><a name="line368">368  </a></b>				<a href="#line361">loop_cnt</a> = 5;
+<b><a name="line369">369  </a></b>				while (((<a href="#line360">mp</a> = <a href="/usr/local/include/dpdk/rte_mempool.h/code.html#line1663">rte_mempool_lookup</a>(<a href="#line359">mem_pool</a>)) == <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>) &amp;&amp; <a href="#line361">loop_cnt</a> &gt;= 0)
+<b><a name="line370">370  </a></b>				{
+<b><a name="line371">371  </a></b>					<a href="/usr/include/unistd.h/code.html#line463">usleep</a>(100);
+<b><a name="line372">372  </a></b>					<a href="#line361">loop_cnt</a>--;
+<b><a name="line373">373  </a></b>				}
+<b><a name="line374">374  </a></b>	
+<b><a name="line375">375  </a></b>				if (<a href="#line360">mp</a> != <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>)
+<b><a name="line376">376  </a></b>					<a href="/usr/local/include/dpdk/rte_mempool.h/code.html#line1003">rte_mempool_free</a>(<a href="#line360">mp</a>);
+<b><a name="line377">377  </a></b>				<a href="/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line359">mem_pool</a>, <a href="/usr/local/include/dpdk/rte_mempool.h/code.html#line106">RTE_MEMPOOL_NAMESIZE</a>, <a href="../qdma_instance.h/code.html#line12">MBUF_POOL_NAME_PORT_QUEUE_DIR</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, (int)<a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line29">direction</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line31">card_to_host</a>);
+<b><a name="line378">378  </a></b>				<a href="#line361">loop_cnt</a> = 5;
+<b><a name="line379">379  </a></b>				while (((<a href="#line360">mp</a> = <a href="/usr/local/include/dpdk/rte_mempool.h/code.html#line1663">rte_mempool_lookup</a>(<a href="#line359">mem_pool</a>)) == <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>) &amp;&amp; <a href="#line361">loop_cnt</a> &gt;= 0)
+<b><a name="line380">380  </a></b>				{
+<b><a name="line381">381  </a></b>					<a href="/usr/include/unistd.h/code.html#line463">usleep</a>(100);
+<b><a name="line382">382  </a></b>					<a href="#line361">loop_cnt</a>--;
+<b><a name="line383">383  </a></b>				}
+<b><a name="line384">384  </a></b>				if (<a href="#line360">mp</a> != <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>)
+<b><a name="line385">385  </a></b>					<a href="/usr/local/include/dpdk/rte_mempool.h/code.html#line1003">rte_mempool_free</a>(<a href="#line360">mp</a>);
+<b><a name="line386">386  </a></b>			} else {
+<b><a name="line387">387  </a></b>				<a href="../../qdma_common/qdma_queue_abs.h/code.html#line50">m_drv</a>-&gt;<a href="../../qdma_common/qdma_instance_abs.h/code.html#line35">stop_queue</a>(<a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line55">m_dir</a>);
+<b><a name="line388">388  </a></b>				<a href="/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line359">mem_pool</a>, <a href="/usr/local/include/dpdk/rte_mempool.h/code.html#line106">RTE_MEMPOOL_NAMESIZE</a>, <a href="../qdma_instance.h/code.html#line12">MBUF_POOL_NAME_PORT_QUEUE_DIR</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, (int)<a href="../../qdma_common/qdma_queue_abs.h/code.html#line55">m_dir</a>);
+<b><a name="line389">389  </a></b>				<a href="#line361">loop_cnt</a> = 5;
+<b><a name="line390">390  </a></b>				while (((<a href="#line360">mp</a> = <a href="/usr/local/include/dpdk/rte_mempool.h/code.html#line1663">rte_mempool_lookup</a>(<a href="#line359">mem_pool</a>)) == <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>) &amp;&amp; <a href="#line361">loop_cnt</a> &gt;= 0)
+<b><a name="line391">391  </a></b>				{
+<b><a name="line392">392  </a></b>					<a href="/usr/include/unistd.h/code.html#line463">usleep</a>(100);
+<b><a name="line393">393  </a></b>					<a href="#line361">loop_cnt</a>--;
+<b><a name="line394">394  </a></b>				}
+<b><a name="line395">395  </a></b>				if (<a href="#line360">mp</a> != <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>)
+<b><a name="line396">396  </a></b>					<a href="/usr/local/include/dpdk/rte_mempool.h/code.html#line1003">rte_mempool_free</a>(<a href="#line360">mp</a>);
+<b><a name="line397">397  </a></b>			}
+<b><a name="line398">398  </a></b>		}
+<b><a name="line399">399  </a></b>	}
+<b><a name="line400">400  </a></b>	
+<b><a name="line401">401  </a></b>	<a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<b>queue_ext</b>(<a href="../qdma_queue.h/code.html#line11">queue_ext</a> &amp;&amp; <b>rhs</b>) {
+<b><a name="line402">402  </a></b>		*this <a href="../qdma_queue.h/code.html#line43">=</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/move.h/code.html#line101">move</a>(<a href="#line401">rhs</a>);
+<b><a name="line403">403  </a></b>	}
+<b><a name="line404">404  </a></b>	
+<b><a name="line405">405  </a></b>	<a href="../qdma_queue.h/code.html#line11">queue_ext</a>&amp; <a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<b>operator=</b>(<a href="../qdma_queue.h/code.html#line11">queue_ext</a>&amp;&amp; <b>rhs</b>) {
+<b><a name="line406">406  </a></b>		if (this != &amp;<a href="#line405">rhs</a>) {
+<b><a name="line407">407  </a></b>	
+<b><a name="line408">408  </a></b>			//pilfer
+<b><a name="line409">409  </a></b>			<a href="../../qdma_common/qdma_queue_abs.h/code.html#line50">m_drv</a> = <a href="#line405">rhs</a>.<a href="../../qdma_common/qdma_queue_abs.h/code.html#line50">m_drv</a>;
+<b><a name="line410">410  </a></b>			<a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a> = <a href="#line405">rhs</a>.<a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a>;
+<b><a name="line411">411  </a></b>			<a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a> = <a href="#line405">rhs</a>.<a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>;
+<b><a name="line412">412  </a></b>			<a href="../../qdma_common/qdma_queue_abs.h/code.html#line55">m_dir</a> = <a href="#line405">rhs</a>.<a href="../../qdma_common/qdma_queue_abs.h/code.html#line55">m_dir</a>;
+<b><a name="line413">413  </a></b>			<a href="../qdma_queue.h/code.html#line48">m_mode</a> = <a href="#line405">rhs</a>.<a href="../qdma_queue.h/code.html#line48">m_mode</a>;
+<b><a name="line414">414  </a></b>	
+<b><a name="line415">415  </a></b>			//reset
+<b><a name="line416">416  </a></b>			<a href="../../qdma_common/qdma_queue_abs.h/code.html#line50">m_drv</a> = nullptr;
+<b><a name="line417">417  </a></b>		}
+<b><a name="line418">418  </a></b>		return *this;
+<b><a name="line419">419  </a></b>	}
+<b><a name="line420">420  </a></b>	
+<b><a name="line421">421  </a></b>	<a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<b>write</b>(void* <b>buffer</b>, const <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>size</b>, const long <b>device_offset</b>, bool <b>throw_err</b>) {
+<b><a name="line422">422  </a></b>	
+<b><a name="line423">423  </a></b>		unsigned <b>tot_num_desc</b> = 1, <b>ld_size</b> = 0;
+<b><a name="line424">424  </a></b>	
+<b><a name="line425">425  </a></b>		(void)<a href="#line421">throw_err</a>;
+<b><a name="line426">426  </a></b>		if(<a href="#line421">size</a> != 0)
+<b><a name="line427">427  </a></b>			<a href="#line423">tot_num_desc</a> = (<a href="#line421">size</a>/ <a href="../../qdma_common/qdma_queue_abs.h/code.html#line53">m_buff_sz</a>) + ((<a href="#line421">size</a> % <a href="../../qdma_common/qdma_queue_abs.h/code.html#line53">m_buff_sz</a>) ? 1 : 0);
+<b><a name="line428">428  </a></b>		<a href="#line423">ld_size</a> = <a href="#line421">size</a> % <a href="../../qdma_common/qdma_queue_abs.h/code.html#line53">m_buff_sz</a>;
+<b><a name="line429">429  </a></b>	
+<b><a name="line430">430  </a></b>		if (<a href="../qdma_queue.h/code.html#line48">m_mode</a> == <a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line24">mode</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line25">memory_mapped</a>)
+<b><a name="line431">431  </a></b>			<a href="../../../../include/qdma_dpdk.h/code.html#line218">rte_pmd_qdma_set_mm_endpoint_addr</a>(<a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, <a href="../../../../include/qdma_dpdk.h/code.html#line48">RTE_PMD_QDMA_TX</a>, <a href="#line421">device_offset</a>);
+<b><a name="line432">432  </a></b>	
+<b><a name="line433">433  </a></b>		return <a href="#line207">do_xmit</a>(<a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a>, <a href="#line421">buffer</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, <a href="#line423">ld_size</a>, <a href="#line423">tot_num_desc</a>, (<a href="#line421">size</a> == 0) ? 1 : 0, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line53">m_buff_sz</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line54">m_burst_size</a>);
+<b><a name="line434">434  </a></b>	}
+<b><a name="line435">435  </a></b>	
+<b><a name="line436">436  </a></b>	<a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<b>read</b>(void* <b>buffer</b>, const <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>size</b>, const long <b>device_offset</b>, bool <b>throw_err</b>) {
+<b><a name="line437">437  </a></b>	
+<b><a name="line438">438  </a></b>		unsigned <b>mm_tdesc</b>, <b>mm_ld_size</b> = 0;
+<b><a name="line439">439  </a></b>	
+<b><a name="line440">440  </a></b>		(void)<a href="#line436">throw_err</a>;
+<b><a name="line441">441  </a></b>		if (<a href="#line436">size</a> &gt;= <a href="../../qdma_common/qdma_queue_abs.h/code.html#line53">m_buff_sz</a>) {
+<b><a name="line442">442  </a></b>	
+<b><a name="line443">443  </a></b>			if (<a href="#line436">size</a> % <a href="../../qdma_common/qdma_queue_abs.h/code.html#line53">m_buff_sz</a>) {
+<b><a name="line444">444  </a></b>				<a href="#line438">mm_tdesc</a> = (<a href="#line436">size</a> / <a href="../../qdma_common/qdma_queue_abs.h/code.html#line53">m_buff_sz</a>) + 1;
+<b><a name="line445">445  </a></b>				<a href="#line438">mm_ld_size</a> = <a href="#line436">size</a> % <a href="../../qdma_common/qdma_queue_abs.h/code.html#line53">m_buff_sz</a>;
+<b><a name="line446">446  </a></b>			}
+<b><a name="line447">447  </a></b>			else
+<b><a name="line448">448  </a></b>				<a href="#line438">mm_tdesc</a> = (<a href="#line436">size</a> / <a href="../../qdma_common/qdma_queue_abs.h/code.html#line53">m_buff_sz</a>);
+<b><a name="line449">449  </a></b>		}
+<b><a name="line450">450  </a></b>		else {
+<b><a name="line451">451  </a></b>			<a href="#line438">mm_tdesc</a> = 1;
+<b><a name="line452">452  </a></b>			<a href="#line438">mm_ld_size</a> = <a href="#line436">size</a> % <a href="../../qdma_common/qdma_queue_abs.h/code.html#line53">m_buff_sz</a>;
+<b><a name="line453">453  </a></b>		}
+<b><a name="line454">454  </a></b>	
+<b><a name="line455">455  </a></b>		if (<a href="../qdma_queue.h/code.html#line48">m_mode</a> == <a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line24">mode</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line26">streaming</a>){
+<b><a name="line456">456  </a></b>			return <a href="#line62">do_recv_st</a>(<a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a>, <a href="#line436">buffer</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, <a href="#line436">size</a>);
+<b><a name="line457">457  </a></b>		}
+<b><a name="line458">458  </a></b>		else {
+<b><a name="line459">459  </a></b>	
+<b><a name="line460">460  </a></b>			if (<a href="../qdma_queue.h/code.html#line48">m_mode</a> == <a href="../qdma_queue.h/code.html#line11">queue_ext</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line24">mode</a>::<a href="../../qdma_common/qdma_queue_abs.h/code.html#line25">memory_mapped</a>)
+<b><a name="line461">461  </a></b>				<a href="../../../../include/qdma_dpdk.h/code.html#line218">rte_pmd_qdma_set_mm_endpoint_addr</a>(<a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, <a href="../../../../include/qdma_dpdk.h/code.html#line49">RTE_PMD_QDMA_RX</a>, <a href="#line436">device_offset</a>);
+<b><a name="line462">462  </a></b>	
+<b><a name="line463">463  </a></b>			return <a href="#line8">do_recv_mm</a>(<a href="../../qdma_common/qdma_queue_abs.h/code.html#line51">m_dev_id</a>, <a href="#line436">buffer</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line52">m_qid</a>, <a href="#line438">mm_ld_size</a>, <a href="#line438">mm_tdesc</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line53">m_buff_sz</a>, <a href="../../qdma_common/qdma_queue_abs.h/code.html#line54">m_burst_size</a>);
+<b><a name="line464">464  </a></b>		}
+<b><a name="line465">465  </a></b>	
+<b><a name="line466">466  </a></b>	}
+<b><a name="line467">467  </a></b>	
+<b><a name="line468">468  </a></b>	} // namespace qdma
+<b><a name="line469">469  </a></b>	
+<b><a name="line470">470  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

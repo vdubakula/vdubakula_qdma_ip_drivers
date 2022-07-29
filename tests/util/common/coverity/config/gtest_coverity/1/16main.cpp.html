@@ -1,0 +1,1562 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/main.cpp</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/*
+<b><a name="line2">2    </a></b>	 * main.cpp
+<b><a name="line3">3    </a></b>	 *
+<b><a name="line4">4    </a></b>	 *  Created on: Mar 1, 2018
+<b><a name="line5">5    </a></b>	 *      Author: alexande
+<b><a name="line6">6    </a></b>	 */
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	#include &lt;gtest/gtest.h&gt;
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	#include &quot;example_design_ctrl.h&quot;
+<b><a name="line11">11   </a></b>	#include &quot;test_env.h&quot;
+<b><a name="line12">12   </a></b>	#include &lt;getopt.h&gt;
+<b><a name="line13">13   </a></b>	#include &lt;stdio.h&gt;
+<b><a name="line14">14   </a></b>	#include &lt;stdlib.h&gt;
+<b><a name="line15">15   </a></b>	#include &lt;string.h&gt;
+<b><a name="line16">16   </a></b>	
+<b><a name="line17">17   </a></b>	#include &lt;fstream&gt;
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	#ifdef _WIN32
+<b><a name="line20">20   </a></b>	#include &lt;win_helper.h&gt;
+<b><a name="line21">21   </a></b>	#else
+<b><a name="line22">22   </a></b>	#include &lt;err.h&gt;
+<b><a name="line23">23   </a></b>	#endif
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>	#ifdef DPDK
+<b><a name="line28">28   </a></b>	#define <b>CMD_LINE_OPT_CONFIG</b>	&quot;config&quot;
+<b><a name="line29">29   </a></b>	#define <b>CMD_LINE_OPT_BIND_DRV</b>	&quot;bind_driver&quot;
+<b><a name="line30">30   </a></b>	#define <b>BIND_DRV_VFIO_PCI</b>	&quot;vfio-pci&quot;
+<b><a name="line31">31   </a></b>	#define <b>BIND_DRV_IGB_UIO</b>	&quot;igb_uio&quot;
+<b><a name="line32">32   </a></b>	char <b>bind_drv</b>[30];
+<b><a name="line33">33   </a></b>	#endif
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	// global object for storing test environment which are common across all tests:
+<b><a name="line36">36   </a></b>	//  - handle to qdma driver ctrl
+<b><a name="line37">37   </a></b>	//  - number of qdma devices
+<b><a name="line38">38   </a></b>	//  - seed for random number generator
+<b><a name="line39">39   </a></b>	//  - bram size of bitstream
+<b><a name="line40">40   </a></b>	// To use this just reference as:
+<b><a name="line41">41   </a></b>	//      extern qdma_test_env env;
+<b><a name="line42">42   </a></b>	// in the test cpp file of your choice.
+<b><a name="line43">43   </a></b>	<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line58">test_env</a> <b>env</b>;
+<b><a name="line44">44   </a></b>	
+<b><a name="line45">45   </a></b>	static struct <a href="../emit/usr/include/getopt.h/code.html#line104">option</a> const <b>long_opts</b>[] = {
+<b><a name="line46">46   </a></b>	    {&quot;cfg_name&quot;, <a href="../emit/usr/include/getopt.h/code.html#line118">optional_argument</a>, <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>, 'f'},
+<b><a name="line47">47   </a></b>	    {&quot;gtest_repeat&quot;, <a href="../emit/usr/include/getopt.h/code.html#line118">optional_argument</a>, <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>, 0},
+<b><a name="line48">48   </a></b>	    {&quot;gtest_filter&quot;, <a href="../emit/usr/include/getopt.h/code.html#line118">optional_argument</a>, <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>, 0},
+<b><a name="line49">49   </a></b>	    {&quot;gtest_output&quot;, <a href="../emit/usr/include/getopt.h/code.html#line118">optional_argument</a>, <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>, 0},
+<b><a name="line50">50   </a></b>		{&quot;gtest_list_tests&quot;, <a href="../emit/usr/include/getopt.h/code.html#line118">optional_argument</a>, <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>, 0},
+<b><a name="line51">51   </a></b>	#ifdef DPDK
+<b><a name="line52">52   </a></b>	    {&quot;core mask&quot;, <a href="../emit/usr/include/getopt.h/code.html#line117">required_argument</a>, <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>, 'c'},
+<b><a name="line53">53   </a></b>	    {&quot;number of memory channels&quot;, <a href="../emit/usr/include/getopt.h/code.html#line117">required_argument</a>, <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>, 'n'},
+<b><a name="line54">54   </a></b>	    {&quot;filename&quot;, 1, 0, 0},
+<b><a name="line55">55   </a></b>	    {<a href="#line28">CMD_LINE_OPT_CONFIG</a>, 1, 0, 0},
+<b><a name="line56">56   </a></b>	    {<a href="#line29">CMD_LINE_OPT_BIND_DRV</a>, 1, 0, 0},
+<b><a name="line57">57   </a></b>	#endif
+<b><a name="line58">58   </a></b>	    {0, 0, 0, 0}
+<b><a name="line59">59   </a></b>	};
+<b><a name="line60">60   </a></b>	
+<b><a name="line61">61   </a></b>	static void <b>usage</b>(const char *<b>name</b>)
+<b><a name="line62">62   </a></b>	{
+<b><a name="line63">63   </a></b>	#ifdef DPDK
+<b><a name="line64">64   </a></b>	    <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;%s [EAL options] --&quot;
+<b><a name="line65">65   </a></b>	        &quot; --config (totalqueues)&quot;,
+<b><a name="line66">66   </a></b>	        <a href="#line61">name</a>);
+<b><a name="line67">67   </a></b>	#else
+<b><a name="line68">68   </a></b>	    int i = 0;
+<b><a name="line69">69   </a></b>	    fprintf(stdout, &quot;%s\n\n&quot;, name);
+<b><a name="line70">70   </a></b>	    fprintf(stdout, &quot;usage: %s [OPTIONS]\n\n&quot;, name);
+<b><a name="line71">71   </a></b>	
+<b><a name="line72">72   </a></b>	    fprintf(stdout, &quot;  -%c (--%s) config file that has configration for system setup\n&quot;,
+<b><a name="line73">73   </a></b>	        long_opts[i].val, long_opts[i].name);
+<b><a name="line74">74   </a></b>	    i++;
+<b><a name="line75">75   </a></b>	#endif
+<b><a name="line76">76   </a></b>	}
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	#ifdef DPDK
+<b><a name="line79">79   </a></b>	int <b>config_max_queues</b>;
+<b><a name="line80">80   </a></b>	
+<b><a name="line81">81   </a></b>	static int
+<b><a name="line82">82   </a></b>	<b>parse_dpdk_config</b>(const char *<b>q_arg</b>)
+<b><a name="line83">83   </a></b>	{
+<b><a name="line84">84   </a></b>		char <b>s</b>[256];
+<b><a name="line85">85   </a></b>		const char *<b>p</b>, *<b>p0</b> = <a href="#line82">q_arg</a>;
+<b><a name="line86">86   </a></b>		char *<b>end</b>;
+<b><a name="line87">87   </a></b>		enum <b>fieldnames</b> {
+<b><a name="line88">88   </a></b>			<b>FLD_NUM_QUEUES</b> = 0,
+<b><a name="line89">89   </a></b>			<b>_NUM_FLD</b>
+<b><a name="line90">90   </a></b>		};
+<b><a name="line91">91   </a></b>		unsigned long <b>int_fld</b>[<a href="#line89">_NUM_FLD</a>];
+<b><a name="line92">92   </a></b>		char *<b>str_fld</b>[<a href="#line89">_NUM_FLD</a>];
+<b><a name="line93">93   </a></b>		int <b>i</b>;
+<b><a name="line94">94   </a></b>		unsigned <b>size</b>;
+<b><a name="line95">95   </a></b>	
+<b><a name="line96">96   </a></b>		while ((<a href="#line85">p</a> = <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line245">strchr</a>(<a href="#line85">p0</a>,'(')) != <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>) {
+<b><a name="line97">97   </a></b>			++<a href="#line85">p</a>;
+<b><a name="line98">98   </a></b>			if((<a href="#line85">p0</a> = <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line245">strchr</a>(<a href="#line85">p</a>,')')) == <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>)
+<b><a name="line99">99   </a></b>				return -1;
+<b><a name="line100">100  </a></b>	
+<b><a name="line101">101  </a></b>			<a href="#line94">size</a> = <a href="#line85">p0</a> - <a href="#line85">p</a>;
+<b><a name="line102">102  </a></b>			if(<a href="#line94">size</a> &gt;= sizeof(<a href="#line84">s</a>))
+<b><a name="line103">103  </a></b>				return -1;
+<b><a name="line104">104  </a></b>	
+<b><a name="line105">105  </a></b>			<a href="../emit/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line84">s</a>, sizeof(<a href="#line84">s</a>), &quot;%.*s&quot;, <a href="#line94">size</a>, <a href="#line85">p</a>);
+<b><a name="line106">106  </a></b>			if (<a href="../emit/usr/local/include/dpdk/rte_string_fns.h/code.html#line48">rte_strsplit</a>(<a href="#line84">s</a>, sizeof(<a href="#line84">s</a>), <a href="#line92">str_fld</a>, <a href="#line89">_NUM_FLD</a>, ',') != <a href="#line89">_NUM_FLD</a>)
+<b><a name="line107">107  </a></b>				return -1;
+<b><a name="line108">108  </a></b>			for (<a href="#line93">i</a> = 0; <a href="#line93">i</a> &lt; <a href="#line89">_NUM_FLD</a>; <a href="#line93">i</a>++){
+<b><a name="line109">109  </a></b>				<a href="../emit/usr/include/x86_64-linux-gnu/bits/errno.h/code.html#line54">errno</a> = 0;
+<b><a name="line110">110  </a></b>				<a href="#line91">int_fld</a>[<a href="#line93">i</a>] = <a href="../emit/usr/include/stdlib.h/code.html#line187">strtoul</a>(<a href="#line92">str_fld</a>[<a href="#line93">i</a>], &amp;<a href="#line86">end</a>, 0);
+<b><a name="line111">111  </a></b>				if (<a href="../emit/usr/include/x86_64-linux-gnu/bits/errno.h/code.html#line54">errno</a> != 0 || <a href="#line86">end</a> == <a href="#line92">str_fld</a>[<a href="#line93">i</a>])
+<b><a name="line112">112  </a></b>					return -1;
+<b><a name="line113">113  </a></b>			}
+<b><a name="line114">114  </a></b>	
+<b><a name="line115">115  </a></b>			<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_dpdk/qdma_device.h/code.html#line16">config_max_queues</a> = (unsigned int)<a href="#line91">int_fld</a>[<a href="#line88">FLD_NUM_QUEUES</a>];
+<b><a name="line116">116  </a></b>			if(<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_dpdk/qdma_device.h/code.html#line16">config_max_queues</a> &gt; <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_dpdk/qdma_instance.h/code.html#line7">MAX_NUM_QUEUES</a>)
+<b><a name="line117">117  </a></b>			{
+<b><a name="line118">118  </a></b>				<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Invalid number of Queues\n&quot;);
+<b><a name="line119">119  </a></b>				return -1;
+<b><a name="line120">120  </a></b>			}
+<b><a name="line121">121  </a></b>		}
+<b><a name="line122">122  </a></b>		return 0;
+<b><a name="line123">123  </a></b>	}
+<b><a name="line124">124  </a></b>	
+<b><a name="line125">125  </a></b>	int <b>parse_cmdline</b>(int <b>argc</b>, char **<b>argv</b>)
+<b><a name="line126">126  </a></b>	{
+<b><a name="line127">127  </a></b>		int <b>cmd_opt</b>, <b>ret</b>;
+<b><a name="line128">128  </a></b>		int <b>option_index</b>;
+<b><a name="line129">129  </a></b>		const char *<b>str5</b> = &quot;Invalid config&quot;;
+<b><a name="line130">130  </a></b>		char *<b>prgname</b> = <a href="#line125">argv</a>[0];
+<b><a name="line131">131  </a></b>		char **<b>argvopt</b>;
+<b><a name="line132">132  </a></b>	
+<b><a name="line133">133  </a></b>		/* Default driver is igb_uio */
+<b><a name="line134">134  </a></b>		<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line217">strncpy</a>(<a href="#line32">bind_drv</a>, <a href="#line31">BIND_DRV_IGB_UIO</a>, <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line269">strlen</a>(<a href="#line31">BIND_DRV_IGB_UIO</a>));
+<b><a name="line135">135  </a></b>		<a href="#line131">argvopt</a> = <a href="#line125">argv</a>;
+<b><a name="line136">136  </a></b>		while ((<a href="#line127">cmd_opt</a> = <a href="../emit/usr/include/getopt.h/code.html#line173">getopt_long</a>(<a href="#line125">argc</a>, <a href="#line131">argvopt</a>, &quot;c:n:&quot;, <a href="#line45">long_opts</a>, &amp;<a href="#line128">option_index</a>)) != <a href="../emit/usr/include/libio.h/code.html#line62">EOF</a>) {
+<b><a name="line137">137  </a></b>			switch (<a href="#line127">cmd_opt</a>)
+<b><a name="line138">138  </a></b>			{
+<b><a name="line139">139  </a></b>				case 'c':
+<b><a name="line140">140  </a></b>					/* eal option */
+<b><a name="line141">141  </a></b>					break;
+<b><a name="line142">142  </a></b>				case 'n':
+<b><a name="line143">143  </a></b>					/* eal option */
+<b><a name="line144">144  </a></b>					break;
+<b><a name="line145">145  </a></b>				case 'b':
+<b><a name="line146">146  </a></b>					/* eal option */
+<b><a name="line147">147  </a></b>					break;
+<b><a name="line148">148  </a></b>				case 0:
+<b><a name="line149">149  </a></b>					if (!<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line235">strncmp</a>(<a href="#line45">long_opts</a>[<a href="#line128">option_index</a>].<a href="../emit/usr/include/getopt.h/code.html#line106">name</a>,
+<b><a name="line150">150  </a></b>								<a href="#line28">CMD_LINE_OPT_CONFIG</a>,
+<b><a name="line151">151  </a></b>								sizeof(<a href="#line28">CMD_LINE_OPT_CONFIG</a>))) {
+<b><a name="line152">152  </a></b>	
+<b><a name="line153">153  </a></b>						<a href="#line127">ret</a> = <a href="#line82">parse_dpdk_config</a>(<a href="../emit/usr/include/getopt.h/code.html#line57">optarg</a>);
+<b><a name="line154">154  </a></b>						if (<a href="#line127">ret</a>) {
+<b><a name="line155">155  </a></b>							<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;%s\n&quot;, <a href="#line129">str5</a>);
+<b><a name="line156">156  </a></b>							<a href="#line61">usage</a>(<a href="#line130">prgname</a>);
+<b><a name="line157">157  </a></b>							return -1;
+<b><a name="line158">158  </a></b>						}
+<b><a name="line159">159  </a></b>					}
+<b><a name="line160">160  </a></b>	
+<b><a name="line161">161  </a></b>					if (!<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line235">strncmp</a>(<a href="#line45">long_opts</a>[<a href="#line128">option_index</a>].<a href="../emit/usr/include/getopt.h/code.html#line106">name</a>,
+<b><a name="line162">162  </a></b>								<a href="#line29">CMD_LINE_OPT_BIND_DRV</a>,
+<b><a name="line163">163  </a></b>								sizeof(<a href="#line29">CMD_LINE_OPT_BIND_DRV</a>))) {
+<b><a name="line164">164  </a></b>	
+<b><a name="line165">165  </a></b>						<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line217">strncpy</a>(<a href="#line32">bind_drv</a>, <a href="../emit/usr/include/getopt.h/code.html#line57">optarg</a>, <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line269">strlen</a>(<a href="../emit/usr/include/getopt.h/code.html#line57">optarg</a>));
+<b><a name="line166">166  </a></b>					}
+<b><a name="line167">167  </a></b>	
+<b><a name="line168">168  </a></b>					break;
+<b><a name="line169">169  </a></b>				/*default:
+<b><a name="line170">170  </a></b>					printf(&quot;please pass valid parameters as follows:\n&quot;);
+<b><a name="line171">171  </a></b>					return -1;*/
+<b><a name="line172">172  </a></b>			}
+<b><a name="line173">173  </a></b>		}
+<b><a name="line174">174  </a></b>	
+<b><a name="line175">175  </a></b>		return 0;
+<b><a name="line176">176  </a></b>	}
+<b><a name="line177">177  </a></b>	#endif
+<b><a name="line178">178  </a></b>	
+<b><a name="line179">179  </a></b>	static unsigned int <b>num_trailing_blanks</b>(char *<b>word</b>)
+<b><a name="line180">180  </a></b>	{
+<b><a name="line181">181  </a></b>	    unsigned int <b>i</b> = 0;
+<b><a name="line182">182  </a></b>	    <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>slen</b> = <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line269">strlen</a>(<a href="#line179">word</a>);
+<b><a name="line183">183  </a></b>	
+<b><a name="line184">184  </a></b>	    if (!<a href="#line182">slen</a>) return 0;
+<b><a name="line185">185  </a></b>	    while (<a href="../emit/usr/include/ctype.h/code.html#line118">isspace</a>(<a href="#line179">word</a>[<a href="#line182">slen</a> - <a href="#line181">i</a> - 1])) {
+<b><a name="line186">186  </a></b>	        <a href="#line181">i</a>++;
+<b><a name="line187">187  </a></b>	    }
+<b><a name="line188">188  </a></b>	
+<b><a name="line189">189  </a></b>	    return <a href="#line181">i</a>;
+<b><a name="line190">190  </a></b>	}
+<b><a name="line191">191  </a></b>	
+<b><a name="line192">192  </a></b>	static char * <b>strip_blanks</b>(char *<b>word</b>, <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> *<b>blanks</b>)
+<b><a name="line193">193  </a></b>	{
+<b><a name="line194">194  </a></b>	    char *<b>p</b> = <a href="#line192">word</a>;
+<b><a name="line195">195  </a></b>	    unsigned int <b>i</b> = 0;
+<b><a name="line196">196  </a></b>	
+<b><a name="line197">197  </a></b>	    while (<a href="../emit/usr/include/ctype.h/code.html#line136">isblank</a>(<a href="#line194">p</a>[0])) {
+<b><a name="line198">198  </a></b>	        <a href="#line194">p</a>++;
+<b><a name="line199">199  </a></b>	        <a href="#line195">i</a>++;
+<b><a name="line200">200  </a></b>	    }
+<b><a name="line201">201  </a></b>	    if (<a href="#line192">blanks</a>)
+<b><a name="line202">202  </a></b>	        *<a href="#line192">blanks</a> = <a href="#line195">i</a>;
+<b><a name="line203">203  </a></b>	
+<b><a name="line204">204  </a></b>	    return <a href="#line194">p</a>;
+<b><a name="line205">205  </a></b>	}
+<b><a name="line206">206  </a></b>	
+<b><a name="line207">207  </a></b>	static char * <b>strip_comments</b>(char *<b>word</b>)
+<b><a name="line208">208  </a></b>	{
+<b><a name="line209">209  </a></b>	    <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>numblanks</b>;
+<b><a name="line210">210  </a></b>	    char *<b>p</b> = <a href="#line192">strip_blanks</a>(<a href="#line207">word</a>, &amp;<a href="#line209">numblanks</a>);
+<b><a name="line211">211  </a></b>	
+<b><a name="line212">212  </a></b>	    if (<a href="#line210">p</a>[0] == '#')
+<b><a name="line213">213  </a></b>	        return <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>;
+<b><a name="line214">214  </a></b>	    else
+<b><a name="line215">215  </a></b>	        <a href="#line210">p</a> = <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line263">strtok</a>(<a href="#line207">word</a>, &quot;#&quot;);
+<b><a name="line216">216  </a></b>	
+<b><a name="line217">217  </a></b>	    return <a href="#line210">p</a>;
+<b><a name="line218">218  </a></b>	}
+<b><a name="line219">219  </a></b>	
+<b><a name="line220">220  </a></b>	static int <b>arg_read_int</b>(char *<b>s</b>, unsigned int *<b>v</b>)
+<b><a name="line221">221  </a></b>	{
+<b><a name="line222">222  </a></b>	    char *<b>p</b> = <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>;
+<b><a name="line223">223  </a></b>	
+<b><a name="line224">224  </a></b>	
+<b><a name="line225">225  </a></b>	    *<a href="#line220">v</a> = <a href="../emit/usr/include/stdlib.h/code.html#line187">strtoul</a>(<a href="#line220">s</a>, &amp;<a href="#line222">p</a>, 0);
+<b><a name="line226">226  </a></b>	    if (*<a href="#line222">p</a> &amp;&amp; (*<a href="#line222">p</a> != '\n') &amp;&amp; !<a href="../emit/usr/include/ctype.h/code.html#line136">isblank</a>(*<a href="#line222">p</a>)) {
+<b><a name="line227">227  </a></b>	    <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: something not right%s %s %s&quot;,<a href="#line220">s</a>, <a href="#line222">p</a>, <a href="../emit/usr/include/ctype.h/code.html#line136">isblank</a>(*<a href="#line222">p</a>)? &quot;true&quot;: &quot;false&quot;);
+<b><a name="line228">228  </a></b>	        return -<a href="../emit/usr/include/asm-generic/errno-base.h/code.html#line25">EINVAL</a>;
+<b><a name="line229">229  </a></b>	    }
+<b><a name="line230">230  </a></b>	    return 0;
+<b><a name="line231">231  </a></b>	}
+<b><a name="line232">232  </a></b>	
+<b><a name="line233">233  </a></b>	static int <b>arg_read_int_array</b>(char *<b>s</b>, unsigned int *<b>v</b>, unsigned int <b>max_arr_size</b>)
+<b><a name="line234">234  </a></b>	{
+<b><a name="line235">235  </a></b>	    <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>slen</b> = <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line269">strlen</a>(<a href="#line233">s</a>);
+<b><a name="line236">236  </a></b>	    unsigned int <b>trail_blanks</b> = <a href="#line179">num_trailing_blanks</a>(<a href="#line233">s</a>);
+<b><a name="line237">237  </a></b>	    char *<b>str</b> = (char *)<a href="../emit/usr/include/stdlib.h/code.html#line466">malloc</a>(<a href="#line235">slen</a> - <a href="#line236">trail_blanks</a> + 1);
+<b><a name="line238">238  </a></b>	    char *<b>elem</b>;
+<b><a name="line239">239  </a></b>	    int <b>cnt</b> = 0;
+<b><a name="line240">240  </a></b>	    int <b>ret</b>;
+<b><a name="line241">241  </a></b>	
+<b><a name="line242">242  </a></b>	    <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line266">memset</a>(<a href="#line237">str</a>, '\0', <a href="#line235">slen</a> + 1);
+<b><a name="line243">243  </a></b>	    <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line217">strncpy</a>(<a href="#line237">str</a>, <a href="#line233">s</a> + 1, <a href="#line235">slen</a> - <a href="#line236">trail_blanks</a> - 2);
+<b><a name="line244">244  </a></b>	    <a href="#line237">str</a>[<a href="#line235">slen</a>] = '\0';
+<b><a name="line245">245  </a></b>	
+<b><a name="line246">246  </a></b>	    <a href="#line238">elem</a> = <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line263">strtok</a>(<a href="#line237">str</a>, &quot; ,&quot;);/* space or comma separated */
+<b><a name="line247">247  </a></b>	    while (<a href="#line238">elem</a> != <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>) {
+<b><a name="line248">248  </a></b>	        <a href="#line240">ret</a> = <a href="#line220">arg_read_int</a>(<a href="#line238">elem</a>, &amp;<a href="#line233">v</a>[<a href="#line239">cnt</a>]);
+<b><a name="line249">249  </a></b>	        if (<a href="#line240">ret</a> &lt; 0) {
+<b><a name="line250">250  </a></b>	            <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;ERROR: Invalid array element %sin %s\n&quot;, <a href="#line238">elem</a>, <a href="#line233">s</a>);
+<b><a name="line251">251  </a></b>	            <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(0);
+<b><a name="line252">252  </a></b>	        }
+<b><a name="line253">253  </a></b>	        <a href="#line239">cnt</a>++;
+<b><a name="line254">254  </a></b>	        <a href="#line238">elem</a> = <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line263">strtok</a>(<a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>, &quot; ,&quot;);
+<b><a name="line255">255  </a></b>	        if (<a href="#line239">cnt</a> &gt; (int)<a href="#line233">max_arr_size</a>) { /* to avoid out of bounds */
+<b><a name="line256">256  </a></b>	            <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;ERROR: More than expected number of elements in %s - expected = %u\n&quot;,
+<b><a name="line257">257  </a></b>	                   <a href="#line237">str</a>, <a href="#line233">max_arr_size</a>);
+<b><a name="line258">258  </a></b>	            <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(0);
+<b><a name="line259">259  </a></b>	        }
+<b><a name="line260">260  </a></b>	    }
+<b><a name="line261">261  </a></b>	    <a href="../emit/usr/include/stdlib.h/code.html#line483">free</a>(<a href="#line237">str</a>);
+<b><a name="line262">262  </a></b>	
+<b><a name="line263">263  </a></b>	    return <a href="#line239">cnt</a>;
+<b><a name="line264">264  </a></b>	}
+<b><a name="line265">265  </a></b>	
+<b><a name="line266">266  </a></b>	static int <b>arg_read_hex</b>(char *<b>s</b>, unsigned int *<b>v</b>)
+<b><a name="line267">267  </a></b>	{
+<b><a name="line268">268  </a></b>	    char *<b>p</b> = <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>;
+<b><a name="line269">269  </a></b>	
+<b><a name="line270">270  </a></b>	
+<b><a name="line271">271  </a></b>	    *<a href="#line266">v</a> = <a href="../emit/usr/include/stdlib.h/code.html#line187">strtoul</a>(<a href="#line266">s</a>, &amp;<a href="#line268">p</a>, 16);
+<b><a name="line272">272  </a></b>	    if (*<a href="#line268">p</a> &amp;&amp; (*<a href="#line268">p</a> != '\n') &amp;&amp; !<a href="../emit/usr/include/ctype.h/code.html#line136">isblank</a>(*<a href="#line268">p</a>)) {
+<b><a name="line273">273  </a></b>	    <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: something not right%s %s %s&quot;,<a href="#line266">s</a>, <a href="#line268">p</a>, <a href="../emit/usr/include/ctype.h/code.html#line136">isblank</a>(*<a href="#line268">p</a>)? &quot;true&quot;: &quot;false&quot;);
+<b><a name="line274">274  </a></b>	        return -<a href="../emit/usr/include/asm-generic/errno-base.h/code.html#line25">EINVAL</a>;
+<b><a name="line275">275  </a></b>	    }
+<b><a name="line276">276  </a></b>	    return 0;
+<b><a name="line277">277  </a></b>	}
+<b><a name="line278">278  </a></b>	
+<b><a name="line279">279  </a></b>	static int <b>arg_read_hex_array</b>(char *<b>s</b>, unsigned int *<b>v</b>, unsigned int <b>max_arr_size</b>)
+<b><a name="line280">280  </a></b>	{
+<b><a name="line281">281  </a></b>	    <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>slen</b> = <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line269">strlen</a>(<a href="#line279">s</a>);
+<b><a name="line282">282  </a></b>	    unsigned int <b>trail_blanks</b> = <a href="#line179">num_trailing_blanks</a>(<a href="#line279">s</a>);
+<b><a name="line283">283  </a></b>	    char *<b>str</b> = (char *)<a href="../emit/usr/include/stdlib.h/code.html#line466">malloc</a>(<a href="#line281">slen</a> - <a href="#line282">trail_blanks</a> + 1);
+<b><a name="line284">284  </a></b>	    char *<b>elem</b>;
+<b><a name="line285">285  </a></b>	    int <b>cnt</b> = 0;
+<b><a name="line286">286  </a></b>	    int <b>ret</b>;
+<b><a name="line287">287  </a></b>	
+<b><a name="line288">288  </a></b>	    <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line266">memset</a>(<a href="#line283">str</a>, '\0', <a href="#line281">slen</a> + 1);
+<b><a name="line289">289  </a></b>	    <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line217">strncpy</a>(<a href="#line283">str</a>, <a href="#line279">s</a> + 1, <a href="#line281">slen</a> - <a href="#line282">trail_blanks</a> - 2);
+<b><a name="line290">290  </a></b>	    <a href="#line283">str</a>[<a href="#line281">slen</a>] = '\0';
+<b><a name="line291">291  </a></b>	
+<b><a name="line292">292  </a></b>	    <a href="#line284">elem</a> = <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line263">strtok</a>(<a href="#line283">str</a>, &quot; ,&quot;);/* space or comma separated */
+<b><a name="line293">293  </a></b>	    while (<a href="#line284">elem</a> != <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>) {
+<b><a name="line294">294  </a></b>	        <a href="#line286">ret</a> = <a href="#line266">arg_read_hex</a>(<a href="#line284">elem</a>, &amp;<a href="#line279">v</a>[<a href="#line285">cnt</a>]);
+<b><a name="line295">295  </a></b>	        if (<a href="#line286">ret</a> &lt; 0) {
+<b><a name="line296">296  </a></b>	            <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;ERROR: Invalid array element %sin %s\n&quot;, <a href="#line284">elem</a>, <a href="#line279">s</a>);
+<b><a name="line297">297  </a></b>	            <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(0);
+<b><a name="line298">298  </a></b>	        }
+<b><a name="line299">299  </a></b>	        <a href="#line285">cnt</a>++;
+<b><a name="line300">300  </a></b>	        <a href="#line284">elem</a> = <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line263">strtok</a>(<a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>, &quot; ,&quot;);
+<b><a name="line301">301  </a></b>	        if (<a href="#line285">cnt</a> &gt; (int)<a href="#line279">max_arr_size</a>) { /* to avoid out of bounds */
+<b><a name="line302">302  </a></b>	            <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;ERROR: More than expected number of elements in %s - expected = %u\n&quot;,
+<b><a name="line303">303  </a></b>	                   <a href="#line283">str</a>, <a href="#line279">max_arr_size</a>);
+<b><a name="line304">304  </a></b>	            <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(0);
+<b><a name="line305">305  </a></b>	        }
+<b><a name="line306">306  </a></b>	    }
+<b><a name="line307">307  </a></b>	    <a href="../emit/usr/include/stdlib.h/code.html#line483">free</a>(<a href="#line283">str</a>);
+<b><a name="line308">308  </a></b>	
+<b><a name="line309">309  </a></b>	    return <a href="#line285">cnt</a>;
+<b><a name="line310">310  </a></b>	}
+<b><a name="line311">311  </a></b>	
+<b><a name="line312">312  </a></b>	static int <b>get_array_len</b>(char *<b>s</b>)
+<b><a name="line313">313  </a></b>	{
+<b><a name="line314">314  </a></b>	    int <b>i</b>, <b>len</b> = 0;
+<b><a name="line315">315  </a></b>	
+<b><a name="line316">316  </a></b>	    if (<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line269">strlen</a>(<a href="#line312">s</a>) &lt; 2)
+<b><a name="line317">317  </a></b>	        return -<a href="../emit/usr/include/asm-generic/errno-base.h/code.html#line25">EINVAL</a>;
+<b><a name="line318">318  </a></b>	    if ((<a href="#line312">s</a>[0] != '(') &amp;&amp; (<a href="#line312">s</a>[<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line269">strlen</a>(<a href="#line312">s</a>) - 1] != ')'))
+<b><a name="line319">319  </a></b>	        return -<a href="../emit/usr/include/asm-generic/errno-base.h/code.html#line25">EINVAL</a>;
+<b><a name="line320">320  </a></b>	    if ((<a href="#line312">s</a>[0] == '(') &amp;&amp; (<a href="#line312">s</a>[1] == ')'))
+<b><a name="line321">321  </a></b>	        return 0;
+<b><a name="line322">322  </a></b>	    for (<a href="#line314">i</a> = 0; <a href="#line314">i</a> &lt; (int)<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line269">strlen</a>(<a href="#line312">s</a>); <a href="#line314">i</a>++) {
+<b><a name="line323">323  </a></b>	        if ((<a href="#line312">s</a>[<a href="#line314">i</a>] == ' ') || (<a href="#line312">s</a>[<a href="#line314">i</a>] == ',')) /* space or comma separated */
+<b><a name="line324">324  </a></b>	                <a href="#line314">len</a>++;
+<b><a name="line325">325  </a></b>	        if (<a href="#line312">s</a>[<a href="#line314">i</a>] == ')')
+<b><a name="line326">326  </a></b>	            break;
+<b><a name="line327">327  </a></b>	    }
+<b><a name="line328">328  </a></b>	
+<b><a name="line329">329  </a></b>	    return (<a href="#line314">len</a> + 1);
+<b><a name="line330">330  </a></b>	}
+<b><a name="line331">331  </a></b>	
+<b><a name="line332">332  </a></b>	static void <b>parse_config_file</b>(const char *<b>cfg_fname</b>)
+<b><a name="line333">333  </a></b>	{
+<b><a name="line334">334  </a></b>	    char *<b>realbuf</b>;
+<b><a name="line335">335  </a></b>	    <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>linelen</b> = 0;
+<b><a name="line336">336  </a></b>	    <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>numblanks</b>;
+<b><a name="line337">337  </a></b>	    char *<b>config</b>, *<b>value</b>;
+<b><a name="line338">338  </a></b>	
+<b><a name="line339">339  </a></b>	    <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/iosfwd/code.html#line162">ifstream</a> <b>infile</b>;
+<b><a name="line340">340  </a></b>	    auto <b>filestate</b> = <a href="#line339">infile</a>.<a href="../emit/usr/include/c++/5/bits/basic_ios.h/code.html#line222">exceptions</a>();
+<b><a name="line341">341  </a></b>	    <a href="#line339">infile</a>.<a href="../emit/usr/include/c++/5/bits/basic_ios.h/code.html#line257">exceptions</a>(<a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/iosfwd/code.html#line162">ifstream</a>::<a href="../emit/usr/include/c++/5/bits/ios_base.h/code.html#line410">failbit</a> <a href="../emit/usr/include/c++/5/bits/ios_base.h/code.html#line169">|</a> <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/iosfwd/code.html#line162">ifstream</a>::<a href="../emit/usr/include/c++/5/bits/ios_base.h/code.html#line402">badbit</a>);
+<b><a name="line342">342  </a></b>	
+<b><a name="line343">343  </a></b>	    try {
+<b><a name="line344">344  </a></b>	        <a href="#line339">infile</a>.<a href="../emit/usr/include/c++/5/fstream/code.html#line595">open</a>(<a href="#line332">cfg_fname</a>, <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/iosfwd/code.html#line74">ios_base</a>::<a href="../emit/usr/include/c++/5/bits/ios_base.h/code.html#line443">in</a>);
+<b><a name="line345">345  </a></b>	    }
+<b><a name="line346">346  </a></b>	    catch (<a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/iosfwd/code.html#line162">ifstream</a>::<a href="../emit/usr/include/c++/5/bits/ios_base.h/code.html#line255">failure</a>&amp; <b>e</b>) {
+<b><a name="line347">347  </a></b>	        <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/iostream/code.html#line62">cerr</a> <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;Exception happened: &quot; <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> <a href="#line346">e</a>.<a href="../emit/usr/include/c++/5/bits/ios_base.h/code.html#line273">what</a>() <a href="../emit/usr/include/c++/5/ostream/code.html#line108">&lt;&lt;</a> <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/ostream/code.html#line590">endl</a>;
+<b><a name="line348">348  </a></b>	        <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/iostream/code.html#line61">cout</a> <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;libc error #&quot; <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;: &quot; <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> ::<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line272">strerror</a>(<a href="../emit/usr/include/x86_64-linux-gnu/bits/errno.h/code.html#line54">errno</a>) <a href="../emit/usr/include/c++/5/ostream/code.html#line108">&lt;&lt;</a> <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/ostream/code.html#line590">endl</a>;
+<b><a name="line349">349  </a></b>	        <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/iostream/code.html#line61">cout</a> <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;handled&quot; <a href="../emit/usr/include/c++/5/ostream/code.html#line108">&lt;&lt;</a> <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/ostream/code.html#line590">endl</a>;
+<b><a name="line350">350  </a></b>	        <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(<a href="../emit/usr/include/stdlib.h/code.html#line133">EXIT_FAILURE</a>);
+<b><a name="line351">351  </a></b>	    }
+<b><a name="line352">352  </a></b>	
+<b><a name="line353">353  </a></b>	    <a href="#line339">infile</a>.<a href="../emit/usr/include/c++/5/bits/basic_ios.h/code.html#line257">exceptions</a>(<a href="#line340">filestate</a>);
+<b><a name="line354">354  </a></b>	
+<b><a name="line355">355  </a></b>	    for (<a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/bits/stringfwd.h/code.html#line74">string</a> <b>line</b>; <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/bits/basic_string.h/code.html#line5212">getline</a>(<a href="#line339">infile</a>, line); ) {
+<b><a name="line356">356  </a></b>	        char *<b>linebuf</b> = new char[<a href="#line355">line</a>.<a href="../emit/usr/include/c++/5/bits/basic_string.h/code.html#line721">length</a>() + 1];
+<b><a name="line357">357  </a></b>	        <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/bits/unique_ptr.h/code.html#line129">unique_ptr</a>&lt;char&gt; <b>smart_ptr</b>(<a href="#line356">linebuf</a>);
+<b><a name="line358">358  </a></b>	
+<b><a name="line359">359  </a></b>	        <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line214">strcpy</a>(<a href="#line356">linebuf</a>, <a href="#line355">line</a>.<a href="../emit/usr/include/c++/5/bits/basic_string.h/code.html#line1887">c_str</a>());
+<b><a name="line360">360  </a></b>	        <a href="#line335">linelen</a> = <a href="#line355">line</a>.<a href="../emit/usr/include/c++/5/bits/basic_string.h/code.html#line721">length</a>();
+<b><a name="line361">361  </a></b>	
+<b><a name="line362">362  </a></b>	        <a href="#line356">linebuf</a> = <a href="#line207">strip_comments</a>(<a href="#line356">linebuf</a>);
+<b><a name="line363">363  </a></b>	        if (!<a href="#line356">linebuf</a>)
+<b><a name="line364">364  </a></b>	            continue;
+<b><a name="line365">365  </a></b>	
+<b><a name="line366">366  </a></b>	        <a href="#line334">realbuf</a> = <a href="#line192">strip_blanks</a>(<a href="#line356">linebuf</a>, &amp;<a href="#line336">numblanks</a>);
+<b><a name="line367">367  </a></b>	        <a href="#line335">linelen</a> -= <a href="#line336">numblanks</a>;
+<b><a name="line368">368  </a></b>	        if (0 == <a href="#line335">linelen</a>) {
+<b><a name="line369">369  </a></b>	            continue;
+<b><a name="line370">370  </a></b>	        }
+<b><a name="line371">371  </a></b>	        if (<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line269">strlen</a>(<a href="#line334">realbuf</a>) == 0) {
+<b><a name="line372">372  </a></b>	            continue;
+<b><a name="line373">373  </a></b>	        }
+<b><a name="line374">374  </a></b>	
+<b><a name="line375">375  </a></b>	        <a href="#line337">config</a> = <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line263">strtok</a>(<a href="#line334">realbuf</a>, &quot;=&quot;);
+<b><a name="line376">376  </a></b>	        <a href="#line337">value</a> = <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line263">strtok</a>(<a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>, &quot;=&quot;);
+<b><a name="line377">377  </a></b>	        if (!<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line235">strncmp</a>(<a href="#line337">config</a>, &quot;master_pf&quot;, 8)) {
+<b><a name="line378">378  </a></b>	            if (<a href="#line220">arg_read_int</a>(<a href="#line337">value</a>, &amp;<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line22">master_pf</a>)) {
+<b><a name="line379">379  </a></b>	                <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: Invalid master_pf:%s\n&quot;, <a href="#line337">value</a>);
+<b><a name="line380">380  </a></b>	                <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line381">381  </a></b>	            }
+<b><a name="line382">382  </a></b>	        } else if (!<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line235">strncmp</a>(<a href="#line337">config</a>, &quot;qmaxvfs&quot;, 7)) {
+<b><a name="line383">383  </a></b>	                if (<a href="#line220">arg_read_int</a>(<a href="#line337">value</a>, &amp;<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line28">qmaxvfs</a>)) {
+<b><a name="line384">384  </a></b>	                    <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: Invalid qmaxvfs:%s\n&quot;, <a href="#line337">value</a>);
+<b><a name="line385">385  </a></b>	                    <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line386">386  </a></b>	                }
+<b><a name="line387">387  </a></b>	        } else if (!<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line235">strncmp</a>(<a href="#line337">config</a>, &quot;pf_qmax_cfg_en&quot;, 14)) {
+<b><a name="line388">388  </a></b>	            int <b>arr_len</b> = <a href="#line312">get_array_len</a>(<a href="#line337">value</a>);
+<b><a name="line389">389  </a></b>	            int <b>ret</b>;
+<b><a name="line390">390  </a></b>	
+<b><a name="line391">391  </a></b>	            if (<a href="#line388">arr_len</a> &lt; 0) {
+<b><a name="line392">392  </a></b>	                <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;ERROR: Invalid pf_qmax_cfg_en - %s\n&quot;, <a href="#line337">value</a>);
+<b><a name="line393">393  </a></b>	                <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line394">394  </a></b>	            }
+<b><a name="line395">395  </a></b>	            <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line23">num_pf</a> = <a href="#line388">arr_len</a>;
+<b><a name="line396">396  </a></b>	            if (<a href="#line388">arr_len</a>) {
+<b><a name="line397">397  </a></b>	                <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line24">pf_qmax_cfg_en</a> = (unsigned int *)<a href="../emit/usr/include/stdlib.h/code.html#line468">calloc</a>(<a href="#line388">arr_len</a>, sizeof(unsigned int));
+<b><a name="line398">398  </a></b>	                <a href="#line389">ret</a> = <a href="#line233">arg_read_int_array</a>(<a href="#line337">value</a>, <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line24">pf_qmax_cfg_en</a>, <a href="#line388">arr_len</a>);
+<b><a name="line399">399  </a></b>	                if (<a href="#line389">ret</a> &lt;= 0) {
+<b><a name="line400">400  </a></b>	                    <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: Invalid pf_qmax_cfg_en:%s\n&quot;, <a href="#line337">value</a>);
+<b><a name="line401">401  </a></b>	                    <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line402">402  </a></b>	                }
+<b><a name="line403">403  </a></b>	            }
+<b><a name="line404">404  </a></b>	        } else if (!<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line235">strncmp</a>(<a href="#line337">config</a>, &quot;pf_qmax&quot;, 7)) {
+<b><a name="line405">405  </a></b>	            int <b>arr_len</b> = <a href="#line312">get_array_len</a>(<a href="#line337">value</a>);
+<b><a name="line406">406  </a></b>	            int <b>ret</b>;
+<b><a name="line407">407  </a></b>	
+<b><a name="line408">408  </a></b>	            if ((<a href="#line405">arr_len</a> &lt; 0) || (<a href="#line405">arr_len</a> != (int)<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line23">num_pf</a>)) {
+<b><a name="line409">409  </a></b>	                <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;ERROR: Invalid number of entries in pf_qmax - %s\n&quot;, <a href="#line337">value</a>);
+<b><a name="line410">410  </a></b>	                <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line411">411  </a></b>	            }
+<b><a name="line412">412  </a></b>	            if (<a href="#line405">arr_len</a>) {
+<b><a name="line413">413  </a></b>	                <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line25">pf_qmax_lst</a> = (unsigned int *)<a href="../emit/usr/include/stdlib.h/code.html#line468">calloc</a>(<a href="#line405">arr_len</a>, sizeof(unsigned int));
+<b><a name="line414">414  </a></b>	                <a href="#line406">ret</a> = <a href="#line233">arg_read_int_array</a>(<a href="#line337">value</a>, <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line25">pf_qmax_lst</a>, <a href="#line405">arr_len</a>);
+<b><a name="line415">415  </a></b>	                if (<a href="#line406">ret</a> &lt;= 0) {
+<b><a name="line416">416  </a></b>	                    <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: Invalid pf_qmax_lst:%s\n&quot;, <a href="#line337">value</a>);
+<b><a name="line417">417  </a></b>	                    <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line418">418  </a></b>	                }
+<b><a name="line419">419  </a></b>	            }
+<b><a name="line420">420  </a></b>	        } else if (!<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line235">strncmp</a>(<a href="#line337">config</a>, &quot;pf_nvf&quot;, 6)) {
+<b><a name="line421">421  </a></b>	            int <b>arr_len</b> = <a href="#line312">get_array_len</a>(<a href="#line337">value</a>);
+<b><a name="line422">422  </a></b>	            int <b>ret</b>, <b>i</b>;
+<b><a name="line423">423  </a></b>	
+<b><a name="line424">424  </a></b>	            if ((<a href="#line421">arr_len</a> &lt; 0) || (<a href="#line421">arr_len</a> != (int)<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line23">num_pf</a>)) {
+<b><a name="line425">425  </a></b>	                <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;ERROR: Invalid number of entries in pf_nvf_lst - %s\n&quot;, <a href="#line337">value</a>);
+<b><a name="line426">426  </a></b>	                <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line427">427  </a></b>	            }
+<b><a name="line428">428  </a></b>	            if (<a href="#line421">arr_len</a>) {
+<b><a name="line429">429  </a></b>	                <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line26">pf_nvf_lst</a> = (unsigned int *)<a href="../emit/usr/include/stdlib.h/code.html#line468">calloc</a>(<a href="#line421">arr_len</a>, sizeof(unsigned int));
+<b><a name="line430">430  </a></b>	                <a href="#line422">ret</a> = <a href="#line233">arg_read_int_array</a>(<a href="#line337">value</a>, <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line26">pf_nvf_lst</a>, <a href="#line421">arr_len</a>);
+<b><a name="line431">431  </a></b>	                if (<a href="#line422">ret</a> &lt;= 0) {
+<b><a name="line432">432  </a></b>	                    <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: Invalid pf_nvf_lst:%s\n&quot;, <a href="#line337">value</a>);
+<b><a name="line433">433  </a></b>	                    <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line434">434  </a></b>	                }
+<b><a name="line435">435  </a></b>	            }
+<b><a name="line436">436  </a></b>	            <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line27">vf_pf_qmax_lst</a> = (unsigned int **)<a href="../emit/usr/include/stdlib.h/code.html#line468">calloc</a>(<a href="#line421">arr_len</a>, sizeof(unsigned int *));
+<b><a name="line437">437  </a></b>	            for (<a href="#line422">i</a> = 0; <a href="#line422">i</a> &lt; <a href="#line421">arr_len</a>; <a href="#line422">i</a>++)
+<b><a name="line438">438  </a></b>	                <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line27">vf_pf_qmax_lst</a>[<a href="#line422">i</a>] = (unsigned int *)<a href="../emit/usr/include/stdlib.h/code.html#line468">calloc</a>(<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line26">pf_nvf_lst</a>[<a href="#line422">i</a>], sizeof(unsigned int));
+<b><a name="line439">439  </a></b>	        } else if (!<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line235">strncmp</a>(<a href="#line337">config</a>, &quot;vf_pf&quot;, 5)) {
+<b><a name="line440">440  </a></b>	            <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>slen</b> = <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line269">strlen</a>(<a href="#line337">config</a>);
+<b><a name="line441">441  </a></b>	            char *<b>str</b>;
+<b><a name="line442">442  </a></b>	            int <b>arr_len</b>;
+<b><a name="line443">443  </a></b>	            int <b>ret</b>;
+<b><a name="line444">444  </a></b>	            int <b>pf</b> = 0;
+<b><a name="line445">445  </a></b>	
+<b><a name="line446">446  </a></b>	            if (<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line235">strncmp</a>(<a href="#line337">config</a>+<a href="#line440">slen</a>-5, &quot;_qmax&quot;, 5)) {
+<b><a name="line447">447  </a></b>	                <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;ERROR: unknown config param %s\n&quot;, <a href="#line337">config</a>);
+<b><a name="line448">448  </a></b>	                <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line449">449  </a></b>	            }
+<b><a name="line450">450  </a></b>	            if (!<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line26">pf_nvf_lst</a>) {
+<b><a name="line451">451  </a></b>	                <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;ERROR: set pf_nvf_lst before vf_pf*_qmax\n&quot;);
+<b><a name="line452">452  </a></b>	                <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line453">453  </a></b>	            }
+<b><a name="line454">454  </a></b>	            <a href="#line441">str</a> = <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line263">strtok</a>(<a href="#line337">config</a>+5, &quot;_&quot;);
+<b><a name="line455">455  </a></b>	            if (<a href="#line441">str</a> != <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>) {
+<b><a name="line456">456  </a></b>	                int <b>r</b> = <a href="#line220">arg_read_int</a>(<a href="#line441">str</a>, (unsigned int *)&amp;<a href="#line444">pf</a>);
+<b><a name="line457">457  </a></b>	
+<b><a name="line458">458  </a></b>	                if (<a href="#line456">r</a> &lt; 0) {
+<b><a name="line459">459  </a></b>	                    <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;ERROR: Invalid PF number %s in %s\n&quot;, <a href="#line441">str</a>, <a href="#line337">config</a>);
+<b><a name="line460">460  </a></b>	                    <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line461">461  </a></b>	                }
+<b><a name="line462">462  </a></b>	                if (<a href="#line444">pf</a> &gt; (int)<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line23">num_pf</a>) {
+<b><a name="line463">463  </a></b>	                    <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;%d PF number does not exist. Invalid %s config\n&quot;, <a href="#line444">pf</a>, <a href="#line337">config</a>);
+<b><a name="line464">464  </a></b>	                    <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line465">465  </a></b>	                }
+<b><a name="line466">466  </a></b>	
+<b><a name="line467">467  </a></b>	            }
+<b><a name="line468">468  </a></b>	            <a href="#line442">arr_len</a> = <a href="#line312">get_array_len</a>(<a href="#line337">value</a>);
+<b><a name="line469">469  </a></b>	            if ((<a href="#line442">arr_len</a> &lt; 0) || (<a href="#line442">arr_len</a> &gt; (int)<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line26">pf_nvf_lst</a>[<a href="#line444">pf</a>])) {
+<b><a name="line470">470  </a></b>	                <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;ERROR: Invalid number of entries in vf_pf%d_qmax - %s\n&quot;, <a href="#line444">pf</a>, <a href="#line337">value</a>);
+<b><a name="line471">471  </a></b>	                <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line472">472  </a></b>	            }
+<b><a name="line473">473  </a></b>	            if (<a href="#line442">arr_len</a>) {
+<b><a name="line474">474  </a></b>	                <a href="#line443">ret</a> = <a href="#line233">arg_read_int_array</a>(<a href="#line337">value</a>, <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line27">vf_pf_qmax_lst</a>[<a href="#line444">pf</a>], <a href="#line442">arr_len</a>);
+<b><a name="line475">475  </a></b>	                if (<a href="#line443">ret</a> &lt;= 0) {
+<b><a name="line476">476  </a></b>	                    <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: Invalid vf_pf%d_qmax:%s\n&quot;, <a href="#line444">pf</a>, <a href="#line337">value</a>);
+<b><a name="line477">477  </a></b>	                    <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line478">478  </a></b>	                }
+<b><a name="line479">479  </a></b>	            }
+<b><a name="line480">480  </a></b>	        } else if (!<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line235">strncmp</a>(<a href="#line337">config</a>, &quot;pci_bus&quot;, 7)) {
+<b><a name="line481">481  </a></b>	            int <b>arr_len</b> = <a href="#line312">get_array_len</a>(<a href="#line337">value</a>);
+<b><a name="line482">482  </a></b>	            int <b>ret</b>;
+<b><a name="line483">483  </a></b>	
+<b><a name="line484">484  </a></b>	            if (<a href="#line481">arr_len</a> &lt; 0) {
+<b><a name="line485">485  </a></b>	                <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;ERROR: Invalid pci_bus - %s\n&quot;, <a href="#line337">value</a>);
+<b><a name="line486">486  </a></b>	                <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line487">487  </a></b>	            }
+<b><a name="line488">488  </a></b>	            <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line29">num_cards</a> = <a href="#line481">arr_len</a>;
+<b><a name="line489">489  </a></b>	            if (<a href="#line481">arr_len</a>) {
+<b><a name="line490">490  </a></b>	                <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line30">pci_bus</a> = (unsigned int *)<a href="../emit/usr/include/stdlib.h/code.html#line468">calloc</a>(<a href="#line481">arr_len</a>, sizeof(unsigned int));
+<b><a name="line491">491  </a></b>	                <a href="#line482">ret</a> = <a href="#line279">arg_read_hex_array</a>(<a href="#line337">value</a>, <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line30">pci_bus</a>, <a href="#line481">arr_len</a>);
+<b><a name="line492">492  </a></b>	                if (<a href="#line482">ret</a> &lt;= 0) {
+<b><a name="line493">493  </a></b>	                    <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: Invalid pci_bus:%s\n&quot;, <a href="#line337">value</a>);
+<b><a name="line494">494  </a></b>	                    <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line495">495  </a></b>	                }
+<b><a name="line496">496  </a></b>	            }
+<b><a name="line497">497  </a></b>	        } else if (!<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line235">strncmp</a>(<a href="#line337">config</a>, &quot;pci_dev&quot;, 7)) {
+<b><a name="line498">498  </a></b>	            int <b>arr_len</b> = <a href="#line312">get_array_len</a>(<a href="#line337">value</a>);
+<b><a name="line499">499  </a></b>	            int <b>ret</b>;
+<b><a name="line500">500  </a></b>	
+<b><a name="line501">501  </a></b>	            if (<a href="#line498">arr_len</a> &lt; 0) {
+<b><a name="line502">502  </a></b>	                <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;ERROR: Invalid pci_dev - %s\n&quot;, <a href="#line337">value</a>);
+<b><a name="line503">503  </a></b>	                <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line504">504  </a></b>	            }
+<b><a name="line505">505  </a></b>	            if (<a href="#line498">arr_len</a>) {
+<b><a name="line506">506  </a></b>	                <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line31">pci_dev</a> = (unsigned int *)<a href="../emit/usr/include/stdlib.h/code.html#line468">calloc</a>(<a href="#line498">arr_len</a>, sizeof(unsigned int));
+<b><a name="line507">507  </a></b>	                <a href="#line499">ret</a> = <a href="#line233">arg_read_int_array</a>(<a href="#line337">value</a>, <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line31">pci_dev</a>, <a href="#line498">arr_len</a>);
+<b><a name="line508">508  </a></b>	                if (<a href="#line499">ret</a> &lt;= 0) {
+<b><a name="line509">509  </a></b>	                    <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: Invalid pci_dev:%s\n&quot;, <a href="#line337">value</a>);
+<b><a name="line510">510  </a></b>	                    <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line511">511  </a></b>	                }
+<b><a name="line512">512  </a></b>	            }
+<b><a name="line513">513  </a></b>	        } else if(!<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line235">strncmp</a>(<a href="#line337">config</a>, &quot;multiple_apps&quot;, 7)) {
+<b><a name="line514">514  </a></b>				if (<a href="#line220">arg_read_int</a>(<a href="#line337">value</a>, &amp;<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line21">multiple_apps</a>)) {
+<b><a name="line515">515  </a></b>	                <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: Invalid master_pf:%s\n&quot;, <a href="#line337">value</a>);
+<b><a name="line516">516  </a></b>	                <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line517">517  </a></b>	            }
+<b><a name="line518">518  </a></b>			}
+<b><a name="line519">519  </a></b>	        else {
+<b><a name="line520">520  </a></b>	            <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;WARNING: Unknown parameter '%s'\n&quot;, <a href="#line337">config</a>);
+<b><a name="line521">521  </a></b>	        }
+<b><a name="line522">522  </a></b>	    }
+<b><a name="line523">523  </a></b>	
+<b><a name="line524">524  </a></b>	    <a href="#line339">infile</a>.<a href="../emit/usr/include/c++/5/fstream/code.html#line633">close</a>();
+<b><a name="line525">525  </a></b>	}
+<b><a name="line526">526  </a></b>	
+<b><a name="line527">527  </a></b>	#define <b>DISPLAY_CONFIG_INFO</b> 0
+<b><a name="line528">528  </a></b>	#if <a href="#line527">DISPLAY_CONFIG_INFO</a>
+<b><a name="line529">529  </a></b>	static void dump_setp_config(void)
+<b><a name="line530">530  </a></b>	{
+<b><a name="line531">531  </a></b>	    int i, j;
+<b><a name="line532">532  </a></b>	
+<b><a name="line533">533  </a></b>	    printf(&quot;master_pf = %u\n&quot;, env.sys_cfg.master_pf);
+<b><a name="line534">534  </a></b>	    printf(&quot;num_pf = %u\n&quot;, env.sys_cfg.num_pf);
+<b><a name="line535">535  </a></b>	    printf(&quot;pf_qmax_cfg_en = (&quot;);
+<b><a name="line536">536  </a></b>	    for (i = 0; i &lt; (int)env.sys_cfg.num_pf; i++)
+<b><a name="line537">537  </a></b>	        printf(&quot; %u&quot;, env.sys_cfg.pf_qmax_cfg_en[i]);
+<b><a name="line538">538  </a></b>	    printf(&quot;)\n&quot;);
+<b><a name="line539">539  </a></b>	    printf(&quot;pf_qmax = (&quot;);
+<b><a name="line540">540  </a></b>	    for (i = 0; i &lt; (int)env.sys_cfg.num_pf; i++)
+<b><a name="line541">541  </a></b>	        printf(&quot; %u&quot;, env.sys_cfg.pf_qmax_lst[i]);
+<b><a name="line542">542  </a></b>	    printf(&quot;)\n&quot;);
+<b><a name="line543">543  </a></b>	    printf(&quot;pf_nvf = (&quot;);
+<b><a name="line544">544  </a></b>	    for (i = 0; i &lt; (int)env.sys_cfg.num_pf; i++)
+<b><a name="line545">545  </a></b>	        printf(&quot; %u&quot;, env.sys_cfg.pf_nvf_lst[i]);
+<b><a name="line546">546  </a></b>	    printf(&quot;)\n&quot;);
+<b><a name="line547">547  </a></b>	    printf(&quot;pf_nvf = (&quot;);
+<b><a name="line548">548  </a></b>	    for (i = 0; i &lt; (int)env.sys_cfg.num_pf; i++)
+<b><a name="line549">549  </a></b>	        printf(&quot; %u&quot;, env.sys_cfg.pf_nvf_lst[i]);
+<b><a name="line550">550  </a></b>	    printf(&quot;)\n&quot;);
+<b><a name="line551">551  </a></b>	    printf(&quot;qdmaxvfs = %u\n&quot;, env.sys_cfg.qmaxvfs);
+<b><a name="line552">552  </a></b>	    for (i = 0; i &lt; (int)env.sys_cfg.num_pf; i++) {
+<b><a name="line553">553  </a></b>	        printf(&quot;vf_pf%d_qmax = (&quot;, i);
+<b><a name="line554">554  </a></b>	        for (j = 0; j &lt; (int)env.sys_cfg.pf_nvf_lst[i]; j++) {
+<b><a name="line555">555  </a></b>	            printf(&quot; %u&quot;, env.sys_cfg.vf_pf_qmax_lst[i][j]);
+<b><a name="line556">556  </a></b>	        }
+<b><a name="line557">557  </a></b>	        printf(&quot;)\n&quot;);
+<b><a name="line558">558  </a></b>	    }
+<b><a name="line559">559  </a></b>	}
+<b><a name="line560">560  </a></b>	#endif
+<b><a name="line561">561  </a></b>	
+<b><a name="line562">562  </a></b>	#ifndef _WIN32
+<b><a name="line563">563  </a></b>	static void <b>validate_config</b>(void)
+<b><a name="line564">564  </a></b>	{
+<b><a name="line565">565  </a></b>	#ifndef TEST_VF_ALONE
+<b><a name="line566">566  </a></b>	    unsigned int <b>num_vf</b>;
+<b><a name="line567">567  </a></b>	    int <b>i</b>, <b>j</b>;
+<b><a name="line568">568  </a></b>	    char <b>filename</b>[100] = {'\0'};
+<b><a name="line569">569  </a></b>	    char <b>totalvf_str</b>[10] = {'\0'};
+<b><a name="line570">570  </a></b>	
+<b><a name="line571">571  </a></b>		for (<a href="#line567">i</a> = 0; <a href="#line567">i</a> &lt; (int)<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line29">num_cards</a>; <a href="#line567">i</a>++) {
+<b><a name="line572">572  </a></b>			for (<a href="#line567">j</a> = 0; <a href="#line567">j</a> &lt; (int)<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line23">num_pf</a>; <a href="#line567">j</a>++) {
+<b><a name="line573">573  </a></b>				if (<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line26">pf_nvf_lst</a>[<a href="#line567">j</a>] &gt; 0) {
+<b><a name="line574">574  </a></b>					<a href="../emit/usr/include/stdio.h/code.html#line48">FILE</a> *<b>fp</b>;
+<b><a name="line575">575  </a></b>	
+<b><a name="line576">576  </a></b>					<a href="../emit/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line568">filename</a>, 100, &quot;/sys/bus/pci/devices/0000:%02x:%02x.%01x/sriov_totalvfs&quot;, <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line30">pci_bus</a>[<a href="#line567">i</a>],
+<b><a name="line577">577  </a></b>							 <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line31">pci_dev</a>[<a href="#line567">i</a>], <a href="#line567">j</a>);
+<b><a name="line578">578  </a></b>					<a href="#line574">fp</a> = <a href="../emit/usr/include/stdio.h/code.html#line272">fopen</a>(<a href="#line568">filename</a>, &quot;r&quot;);
+<b><a name="line579">579  </a></b>					if (<a href="#line574">fp</a> == <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>) {
+<b><a name="line580">580  </a></b>						<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: %s - No such file\n&quot;, <a href="#line568">filename</a>);
+<b><a name="line581">581  </a></b>						<a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line582">582  </a></b>					}
+<b><a name="line583">583  </a></b>					<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line266">memset</a>(<a href="#line568">filename</a>, '\0', 100);
+<b><a name="line584">584  </a></b>					if ( <a href="../emit/usr/include/stdio.h/code.html#line622">fgets</a> (<a href="#line569">totalvf_str</a> , 10 , <a href="#line574">fp</a>) != <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a> )
+<b><a name="line585">585  </a></b>						<a href="../emit/usr/include/stdio.h/code.html#line433">sscanf</a>(<a href="#line569">totalvf_str</a>, &quot;%u&quot;, &amp;<a href="#line566">num_vf</a>);
+<b><a name="line586">586  </a></b>					else {
+<b><a name="line587">587  </a></b>						<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: %s - could not read file\n&quot;, <a href="#line568">filename</a>);
+<b><a name="line588">588  </a></b>						<a href="../emit/usr/include/stdio.h/code.html#line237">fclose</a>(<a href="#line574">fp</a>);
+<b><a name="line589">589  </a></b>						<a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line590">590  </a></b>					}
+<b><a name="line591">591  </a></b>					<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line266">memset</a>(<a href="#line569">totalvf_str</a>, '\0', 10);
+<b><a name="line592">592  </a></b>					if (<a href="#line566">num_vf</a> &lt; <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line26">pf_nvf_lst</a>[<a href="#line567">j</a>]) {
+<b><a name="line593">593  </a></b>						<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: Invalid configuration - pf_nvf[%d]\n&quot;, <a href="#line567">j</a>);
+<b><a name="line594">594  </a></b>						<a href="../emit/usr/include/stdio.h/code.html#line237">fclose</a>(<a href="#line574">fp</a>);
+<b><a name="line595">595  </a></b>						<a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line596">596  </a></b>					}
+<b><a name="line597">597  </a></b>					<a href="../emit/usr/include/stdio.h/code.html#line237">fclose</a>(<a href="#line574">fp</a>);
+<b><a name="line598">598  </a></b>				}
+<b><a name="line599">599  </a></b>			}
+<b><a name="line600">600  </a></b>		}
+<b><a name="line601">601  </a></b>	#endif
+<b><a name="line602">602  </a></b>	
+<b><a name="line603">603  </a></b>	}
+<b><a name="line604">604  </a></b>	#endif
+<b><a name="line605">605  </a></b>	
+<b><a name="line606">606  </a></b>	#ifdef _WIN32
+<b><a name="line607">607  </a></b>	static void platform_init(int argc, char** argv)
+<b><a name="line608">608  </a></b>	{
+<b><a name="line609">609  </a></b>	    /* Nothing to init */
+<b><a name="line610">610  </a></b>	}
+<b><a name="line611">611  </a></b>	
+<b><a name="line612">612  </a></b>	static void setup_env(void)
+<b><a name="line613">613  </a></b>	{
+<b><a name="line614">614  </a></b>	    /* Nothing to setup */
+<b><a name="line615">615  </a></b>	}
+<b><a name="line616">616  </a></b>	
+<b><a name="line617">617  </a></b>	#elif DPDK
+<b><a name="line618">618  </a></b>	static void <b>platform_init</b>(int <b>argc</b>, char** <b>argv</b>)
+<b><a name="line619">619  </a></b>	{
+<b><a name="line620">620  </a></b>		int <b>ret</b> = 0;
+<b><a name="line621">621  </a></b>	
+<b><a name="line622">622  </a></b>		<a href="#line620">ret</a> = <a href="../emit/usr/local/include/dpdk/rte_eal.h/code.html#line174">rte_eal_init</a>(<a href="#line618">argc</a>, <a href="#line618">argv</a>);
+<b><a name="line623">623  </a></b>		if (<a href="#line620">ret</a> &lt; 0)
+<b><a name="line624">624  </a></b>			<a href="../emit/usr/local/include/dpdk/rte_common.h/code.html#line614">rte_exit</a>(<a href="../emit/usr/include/stdlib.h/code.html#line133">EXIT_FAILURE</a>, &quot;Error with EAL initialization\n&quot;);
+<b><a name="line625">625  </a></b>		// rte_log_set_global_level(RTE_LOG_ERR); // uncomment this if the global log level needed to be set to ERROR
+<b><a name="line626">626  </a></b>		<a href="../emit/usr/local/include/dpdk/rte_log.h/code.html#line166">rte_log_set_level</a>(<a href="../emit/usr/local/include/dpdk/rte_log.h/code.html#line48">RTE_LOGTYPE_PMD</a>, <a href="../emit/usr/local/include/dpdk/rte_log.h/code.html#line82">RTE_LOG_ERR</a>); // Set the PMD log level to error
+<b><a name="line627">627  </a></b>	}
+<b><a name="line628">628  </a></b>	
+<b><a name="line629">629  </a></b>	static void <b>setup_env</b>(void)
+<b><a name="line630">630  </a></b>	{
+<b><a name="line631">631  </a></b>		char *<b>cmd</b> = 0;
+<b><a name="line632">632  </a></b>		int <b>ret</b> = 0;
+<b><a name="line633">633  </a></b>		<a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/bits/stringfwd.h/code.html#line74">string</a> <b>cmd_out</b>;
+<b><a name="line634">634  </a></b>		char *<b>path</b>;
+<b><a name="line635">635  </a></b>		int <b>i</b>, <b>j</b>;
+<b><a name="line636">636  </a></b>	
+<b><a name="line637">637  </a></b>		<a href="#line634">path</a> = <a href="../emit/usr/include/stdlib.h/code.html#line564">getenv</a>(&quot;RTE_SDK&quot;);
+<b><a name="line638">638  </a></b>		if (!<a href="#line634">path</a>){
+<b><a name="line639">639  </a></b>			<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;RTE_SDK not defined\n&quot;);
+<b><a name="line640">640  </a></b>			<a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line641">641  </a></b>		}
+<b><a name="line642">642  </a></b>	
+<b><a name="line643">643  </a></b>		<a href="#line631">cmd</a> = new char[10000];
+<b><a name="line644">644  </a></b>	#ifndef TEST_VF_ALONE
+<b><a name="line645">645  </a></b>		for (<a href="#line635">i</a> = 0; <a href="#line635">i</a> &lt; (int)<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line29">num_cards</a>; <a href="#line635">i</a>++) {
+<b><a name="line646">646  </a></b>			for (<a href="#line635">j</a> = 0; <a href="#line635">j</a> &lt; (int)<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line23">num_pf</a>; <a href="#line635">j</a>++) {
+<b><a name="line647">647  </a></b>				if (<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line24">pf_qmax_cfg_en</a>[<a href="#line635">j</a>]) {
+<b><a name="line648">648  </a></b>					if(!<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line235">strncmp</a>(<a href="#line32">bind_drv</a>, <a href="#line30">BIND_DRV_VFIO_PCI</a>, <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line269">strlen</a>(<a href="#line30">BIND_DRV_VFIO_PCI</a>))){
+<b><a name="line649">649  </a></b>						<a href="../emit/usr/include/stdlib.h/code.html#line716">system</a>(&quot;modprobe vfio-pci&quot;);
+<b><a name="line650">650  </a></b>						<a href="../emit/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line631">cmd</a>, 10000, &quot;%s/usertools/dpdk-devbind.py -b %s %02x:%02x.%01x&quot;,<a href="#line634">path</a>, <a href="#line31">BIND_DRV_IGB_UIO</a>, <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line30">pci_bus</a>[<a href="#line635">i</a>], <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line31">pci_dev</a>[<a href="#line635">i</a>], <a href="#line635">j</a>);
+<b><a name="line651">651  </a></b>						<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;%s\n&quot;, <a href="#line631">cmd</a>);
+<b><a name="line652">652  </a></b>						<a href="#line632">ret</a> = <a href="../emit/usr/include/stdlib.h/code.html#line716">system</a>(<a href="#line631">cmd</a>);
+<b><a name="line653">653  </a></b>						if (<a href="#line632">ret</a> != 0) {
+<b><a name="line654">654  </a></b>							<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: %s - Failed with errcode = %d\n&quot;, <a href="#line631">cmd</a>, <a href="#line632">ret</a>);
+<b><a name="line655">655  </a></b>							<a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line656">656  </a></b>						}
+<b><a name="line657">657  </a></b>						if (<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line26">pf_nvf_lst</a>[<a href="#line635">j</a>]) {
+<b><a name="line658">658  </a></b>							<a href="../emit/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line631">cmd</a>, 1000, &quot;echo %u &gt; /sys/bus/pci/devices/0000\\:%02x\\:%02x.%01x/max_vfs&quot;,
+<b><a name="line659">659  </a></b>									<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line26">pf_nvf_lst</a>[<a href="#line635">j</a>], <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line30">pci_bus</a>[<a href="#line635">i</a>], <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line31">pci_dev</a>[<a href="#line635">i</a>], <a href="#line635">j</a>);
+<b><a name="line660">660  </a></b>	
+<b><a name="line661">661  </a></b>							<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;%s\n&quot;, <a href="#line631">cmd</a>);
+<b><a name="line662">662  </a></b>							<a href="#line632">ret</a> = <a href="../emit/usr/include/stdlib.h/code.html#line716">system</a>(<a href="#line631">cmd</a>);
+<b><a name="line663">663  </a></b>							if (<a href="#line632">ret</a> != 0) {
+<b><a name="line664">664  </a></b>								<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: %s - Failed with errcode = %d\n&quot;, <a href="#line631">cmd</a>, <a href="#line632">ret</a>);
+<b><a name="line665">665  </a></b>								<a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line666">666  </a></b>							}
+<b><a name="line667">667  </a></b>						}
+<b><a name="line668">668  </a></b>						<a href="../emit/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line631">cmd</a>, 10000, &quot;%s/usertools/dpdk-devbind.py -u %02x:%02x.%01x&quot;,<a href="#line634">path</a>,<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line30">pci_bus</a>[<a href="#line635">i</a>], <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line31">pci_dev</a>[<a href="#line635">i</a>], <a href="#line635">j</a>);
+<b><a name="line669">669  </a></b>						<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;%s\n&quot;, <a href="#line631">cmd</a>);
+<b><a name="line670">670  </a></b>						<a href="#line632">ret</a> = <a href="../emit/usr/include/stdlib.h/code.html#line716">system</a>(<a href="#line631">cmd</a>);
+<b><a name="line671">671  </a></b>						if (<a href="#line632">ret</a> != 0) {
+<b><a name="line672">672  </a></b>							<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: %s - Failed with errcode = %d\n&quot;, <a href="#line631">cmd</a>, <a href="#line632">ret</a>);
+<b><a name="line673">673  </a></b>							<a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line674">674  </a></b>						}
+<b><a name="line675">675  </a></b>	
+<b><a name="line676">676  </a></b>						<a href="../emit/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line631">cmd</a>, 10000, &quot;%s/usertools/dpdk-devbind.py -b %s %02x:%02x.%01x&quot;,<a href="#line634">path</a>, <a href="#line30">BIND_DRV_VFIO_PCI</a>, <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line30">pci_bus</a>[<a href="#line635">i</a>], <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line31">pci_dev</a>[<a href="#line635">i</a>], <a href="#line635">j</a>);
+<b><a name="line677">677  </a></b>						<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;%s\n&quot;, <a href="#line631">cmd</a>);
+<b><a name="line678">678  </a></b>						<a href="#line632">ret</a> = <a href="../emit/usr/include/stdlib.h/code.html#line716">system</a>(<a href="#line631">cmd</a>);
+<b><a name="line679">679  </a></b>						if (<a href="#line632">ret</a> != 0) {
+<b><a name="line680">680  </a></b>							<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: %s - Failed with errcode = %d\n&quot;, <a href="#line631">cmd</a>, <a href="#line632">ret</a>);
+<b><a name="line681">681  </a></b>							<a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line682">682  </a></b>						}
+<b><a name="line683">683  </a></b>					} else {
+<b><a name="line684">684  </a></b>						<a href="../emit/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line631">cmd</a>, 10000, &quot;%s/usertools/dpdk-devbind.py -b %s  %02x:%02x.%01x&quot;,<a href="#line634">path</a>, <a href="#line31">BIND_DRV_IGB_UIO</a>, <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line30">pci_bus</a>[<a href="#line635">i</a>], <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line31">pci_dev</a>[<a href="#line635">i</a>], <a href="#line635">j</a>);
+<b><a name="line685">685  </a></b>						<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;%s\n&quot;, <a href="#line631">cmd</a>);
+<b><a name="line686">686  </a></b>						<a href="#line632">ret</a> = <a href="../emit/usr/include/stdlib.h/code.html#line716">system</a>(<a href="#line631">cmd</a>);
+<b><a name="line687">687  </a></b>						if (<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line26">pf_nvf_lst</a>[<a href="#line635">j</a>]) {
+<b><a name="line688">688  </a></b>							<a href="../emit/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line631">cmd</a>, 1000, &quot;echo %u &gt; /sys/bus/pci/devices/0000\\:%02x\\:%02x.%01x/max_vfs&quot;,
+<b><a name="line689">689  </a></b>									<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line26">pf_nvf_lst</a>[<a href="#line635">j</a>], <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line30">pci_bus</a>[<a href="#line635">i</a>], <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line31">pci_dev</a>[<a href="#line635">i</a>], <a href="#line635">j</a>);
+<b><a name="line690">690  </a></b>	
+<b><a name="line691">691  </a></b>							<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;%s\n&quot;, <a href="#line631">cmd</a>);
+<b><a name="line692">692  </a></b>							<a href="#line632">ret</a> = <a href="../emit/usr/include/stdlib.h/code.html#line716">system</a>(<a href="#line631">cmd</a>);
+<b><a name="line693">693  </a></b>							if (<a href="#line632">ret</a> != 0) {
+<b><a name="line694">694  </a></b>								<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: %s - Failed with errcode = %d\n&quot;, <a href="#line631">cmd</a>, <a href="#line632">ret</a>);
+<b><a name="line695">695  </a></b>								<a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line696">696  </a></b>							}
+<b><a name="line697">697  </a></b>						}
+<b><a name="line698">698  </a></b>	
+<b><a name="line699">699  </a></b>					}
+<b><a name="line700">700  </a></b>					<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line266">memset</a>(<a href="#line631">cmd</a>, '\0', 10000);
+<b><a name="line701">701  </a></b>				}
+<b><a name="line702">702  </a></b>			}
+<b><a name="line703">703  </a></b>		}
+<b><a name="line704">704  </a></b>	
+<b><a name="line705">705  </a></b>	#endif
+<b><a name="line706">706  </a></b>	
+<b><a name="line707">707  </a></b>		/*
+<b><a name="line708">708  </a></b>			1. lspci | grep -i xilinx  -- Gives the list of Xilinx PCI devices
+<b><a name="line709">709  </a></b>				Ex : xhdipdslab42:~% lspci | grep -i xilinx
+<b><a name="line710">710  </a></b>					81:00.0 Memory controller: Xilinx Corporation Device 903f
+<b><a name="line711">711  </a></b>					81:00.1 Memory controller: Xilinx Corporation Device 913f
+<b><a name="line712">712  </a></b>					81:00.2 Memory controller: Xilinx Corporation Device 923f
+<b><a name="line713">713  </a></b>					81:00.3 Memory controller: Xilinx Corporation Device 933f
+<b><a name="line714">714  </a></b>					81:00.4 Memory controller: Xilinx Corporation Device a03f
+<b><a name="line715">715  </a></b>					81:00.5 Memory controller: Xilinx Corporation Device a13f
+<b><a name="line716">716  </a></b>					81:00.6 Memory controller: Xilinx Corporation Device a23f
+<b><a name="line717">717  </a></b>					81:00.7 Memory controller: Xilinx Corporation Device a33f
+<b><a name="line718">718  </a></b>	
+<b><a name="line719">719  </a></b>			2. awk -F &quot; &quot; 'NR&gt;%d{print $1}'
+<b><a name="line720">720  </a></b>				  i. This command reads the pipe output from above command line by line (like a loop)
+<b><a name="line721">721  </a></b>				 ii. Separates the strings by a space &quot; &quot; (-F &quot; &quot; option)
+<b><a name="line722">722  </a></b>				iii. Prints first string (81:00.4) to the console (print $1) only if the NR(No of Records) &gt; #num_pf
+<b><a name="line723">723  </a></b>	
+<b><a name="line724">724  </a></b>				Ex : xhdipdslab42:~% lspci | grep -i xilinx | awk -F &quot; &quot; 'NR&gt;4{print $1}'
+<b><a name="line725">725  </a></b>					81:00.4
+<b><a name="line726">726  </a></b>					81:00.5
+<b><a name="line727">727  </a></b>					81:00.6
+<b><a name="line728">728  </a></b>					81:00.7
+<b><a name="line729">729  </a></b>			3. tr -t &quot;\n&quot; &quot; &quot;
+<b><a name="line730">730  </a></b>				i. Translate(tr) command replaces new line(&quot;\n&quot;) with a space(&quot; &quot;)
+<b><a name="line731">731  </a></b>	
+<b><a name="line732">732  </a></b>				Ex : xhdipdslab42:~% lspci | grep -i xilinx | awk -F &quot; &quot; 'NR&gt;4{print $1}' | tr -t &quot;\n&quot; &quot; &quot;
+<b><a name="line733">733  </a></b>					81:00.4 81:00.5 81:00.6 81:00.7
+<b><a name="line734">734  </a></b>	
+<b><a name="line735">735  </a></b>			4. Finally, the command extracts all the VF BDF info into a single string that can be used to bind VFs
+<b><a name="line736">736  </a></b>		*/
+<b><a name="line737">737  </a></b>		//snprintf(cmd, 100000, &quot;lspci | grep -i xilinx|awk -F \&quot; \&quot; \'NR&gt;%d{print $1}\'| tr -t \&quot;\n\&quot; \&quot; \&quot; &quot;, (int)env.sys_cfg.num_pf);
+<b><a name="line738">738  </a></b>		<a href="../emit/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line631">cmd</a>, 10000, &quot;lspci | grep -i xilinx | awk -F \&quot; \&quot; \'(($7 &gt; \&quot;a000\&quot; &amp;&amp; $7&lt; \&quot;b000\&quot;) || ($7 &gt; \&quot;c000\&quot; &amp;&amp; $7&lt; \&quot;d000\&quot;)) {print $1}\' | tr -t \&quot;\n\&quot; \&quot; \&quot; &quot;);
+<b><a name="line739">739  </a></b>		//cmd_out = xlnx::os::execute_command(&quot;lspci | grep -i xilinx|awk -F \&quot; \&quot; \'NR&gt;4{print $1}\'| tr -t \&quot;\n\&quot; \&quot; \&quot; &quot;);
+<b><a name="line740">740  </a></b>		<a href="#line633">cmd_out</a> <a href="../emit/usr/include/c++/5/bits/basic_string.h/code.html#line587">=</a> <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/xlnx/xlnx_common/xlnx_os.h/code.html#line12">xlnx</a>::<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/xlnx/xlnx_common/xlnx_os.h/code.html#line13">os</a>::<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/xlnx/xlnx_common/xlnx_os.h/code.html#line17">execute_command</a>(<a href="#line631">cmd</a>);
+<b><a name="line741">741  </a></b>	
+<b><a name="line742">742  </a></b>		<a href="../emit/usr/include/c++/5/new/code.html#line117">delete[]</a> <a href="#line631">cmd</a>;
+<b><a name="line743">743  </a></b>	
+<b><a name="line744">744  </a></b>		if (<a href="#line633">cmd_out</a> <a href="../emit/usr/include/c++/5/bits/basic_string.h/code.html#line4974">!=</a> &quot;&quot;){
+<b><a name="line745">745  </a></b>	
+<b><a name="line746">746  </a></b>			<a href="#line631">cmd</a> = new char[<a href="#line633">cmd_out</a>.<a href="../emit/usr/include/c++/5/bits/basic_string.h/code.html#line715">size</a>() + 1000];
+<b><a name="line747">747  </a></b>	
+<b><a name="line748">748  </a></b>	#ifdef TEST_VF_ALONE
+<b><a name="line749">749  </a></b>			if(!strncmp(bind_drv, BIND_DRV_VFIO_PCI, strlen(BIND_DRV_VFIO_PCI)))
+<b><a name="line750">750  </a></b>				system(&quot;echo 1 &gt; /sys/module/vfio/parameters/enable_unsafe_noiommu_mode&quot;);
+<b><a name="line751">751  </a></b>	#endif
+<b><a name="line752">752  </a></b>	
+<b><a name="line753">753  </a></b>			<a href="../emit/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line631">cmd</a>, <a href="#line633">cmd_out</a>.<a href="../emit/usr/include/c++/5/bits/basic_string.h/code.html#line715">size</a>()+1000, &quot;%s/usertools/dpdk-devbind.py -b %s  %s&quot;,<a href="#line634">path</a>, <a href="#line32">bind_drv</a>, <a href="#line633">cmd_out</a>.<a href="../emit/usr/include/c++/5/bits/basic_string.h/code.html#line1887">c_str</a>());
+<b><a name="line754">754  </a></b>			<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;cmd_out : %s\n&quot;, <a href="#line633">cmd_out</a>.<a href="../emit/usr/include/c++/5/bits/basic_string.h/code.html#line1887">c_str</a>());
+<b><a name="line755">755  </a></b>			<a href="#line632">ret</a> = <a href="../emit/usr/include/stdlib.h/code.html#line716">system</a>(<a href="#line631">cmd</a>);
+<b><a name="line756">756  </a></b>	
+<b><a name="line757">757  </a></b>			if (<a href="#line632">ret</a> != 0) {
+<b><a name="line758">758  </a></b>				<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: %s - Failed with errcode = %d\n&quot;, <a href="#line631">cmd</a>, <a href="#line632">ret</a>);
+<b><a name="line759">759  </a></b>				<a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line760">760  </a></b>			}
+<b><a name="line761">761  </a></b>			<a href="../emit/usr/include/c++/5/new/code.html#line117">delete[]</a> <a href="#line631">cmd</a>;
+<b><a name="line762">762  </a></b>		}
+<b><a name="line763">763  </a></b>	}
+<b><a name="line764">764  </a></b>	
+<b><a name="line765">765  </a></b>	static void <b>cleanup_env</b>(void)
+<b><a name="line766">766  </a></b>	{
+<b><a name="line767">767  </a></b>		char *<b>cmd</b> = 0;
+<b><a name="line768">768  </a></b>		int <b>ret</b> = 0;
+<b><a name="line769">769  </a></b>		unsigned int <b>i</b>, <b>j</b>;
+<b><a name="line770">770  </a></b>		<a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/bits/stringfwd.h/code.html#line74">string</a> <b>cmd_out</b>;
+<b><a name="line771">771  </a></b>		char *<b>path</b>;
+<b><a name="line772">772  </a></b>		<a href="#line767">cmd</a> = new char[10000];
+<b><a name="line773">773  </a></b>	
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="red">
+<a name="error:0"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(1) Event tainted_string_return_content</b>: </font></td>
+<td><font color="red">&quot;getenv&quot; returns tainted string content.</font></td>
+</tr>
+<tr><td><font color="red">
+<a name="error:1"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(2) Event var_assign</b>: </font></td>
+<td><font color="red">Assigning: &quot;path&quot; = &quot;getenv(&quot;RTE_SDK&quot;)&quot;, which taints &quot;path&quot;.</font></td>
+</tr>
+<tr><td><font color="red">Also see events: </font></td>
+<td><font color="red">[<a href="#error:36">vararg_transitive</a>][<a href="#error:37">tainted_string</a>]</font></td></tr>
+</table>
+<pre><b><a name="line774">774  </a></b>		<a href="#line771">path</a> = <a href="../emit/usr/include/stdlib.h/code.html#line564">getenv</a>(&quot;RTE_SDK&quot;);
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="green">
+<a name="error:2"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(3) Event cond_false</b>: </font></td>
+<td><font color="green">Condition &quot;!path&quot;, taking false branch</font></td>
+</tr>
+</table>
+<pre><b><a name="line775">775  </a></b>		if (!<a href="#line771">path</a>){
+<b><a name="line776">776  </a></b>			<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;RTE_SDK not defined\n&quot;);
+<b><a name="line777">777  </a></b>			<a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="green">
+<a name="error:3"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(4) Event if_end</b>: </font></td>
+<td><font color="green">End of if statement</font></td>
+</tr>
+</table>
+<pre><b><a name="line778">778  </a></b>		}
+<b><a name="line779">779  </a></b>		// detaching all the PF and VF devices
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="green">
+<a name="error:4"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(5) Event cond_true</b>: </font></td>
+<td><font color="green">Condition &quot;env.pfs.empty()&quot;, taking true branch</font></td>
+</tr>
+<tr><td><font color="green">
+<a name="error:5"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(6) Event cond_false</b>: </font></td>
+<td><font color="green">Condition &quot;env.vfs.empty()&quot;, taking false branch</font></td>
+</tr>
+</table>
+<pre><b><a name="line780">780  </a></b>		if (<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line366">pfs</a>.<a href="../emit/usr/include/c++/5/bits/stl_vector.h/code.html#line743">empty</a>() &amp;&amp; <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line367">vfs</a>.<a href="../emit/usr/include/c++/5/bits/stl_vector.h/code.html#line743">empty</a>()) {
+<b><a name="line781">781  </a></b>			<a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/iostream/code.html#line62">cerr</a> <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;Error: Failed to find any QDMA devices!\n&quot;;
+<b><a name="line782">782  </a></b>			<a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(-1);
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="green">
+<a name="error:6"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(7) Event if_end</b>: </font></td>
+<td><font color="green">End of if statement</font></td>
+</tr>
+</table>
+<pre><b><a name="line783">783  </a></b>		}
+<b><a name="line784">784  </a></b>	
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="green">
+<a name="error:7"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(8) Event cond_true</b>: </font></td>
+<td><font color="green">Condition &quot;i &lt; env.vfs.size()&quot;, taking true branch</font></td>
+</tr>
+<tr><td><font color="green">
+<a name="error:10"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(11) Event loop_begin</b>: </font></td>
+<td><font color="green">Jumped back to beginning of loop</font></td>
+</tr>
+<tr><td><font color="green">
+<a name="error:11"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(12) Event cond_true</b>: </font></td>
+<td><font color="green">Condition &quot;i &lt; env.vfs.size()&quot;, taking true branch</font></td>
+</tr>
+<tr><td><font color="green">
+<a name="error:14"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(15) Event loop_begin</b>: </font></td>
+<td><font color="green">Jumped back to beginning of loop</font></td>
+</tr>
+<tr><td><font color="green">
+<a name="error:15"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(16) Event cond_false</b>: </font></td>
+<td><font color="green">Condition &quot;i &lt; env.vfs.size()&quot;, taking false branch</font></td>
+</tr>
+</table>
+<pre><b><a name="line785">785  </a></b>		for (<a href="#line769">i</a> = 0; <a href="#line769">i</a> &lt; <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line367">vfs</a>.<a href="../emit/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>(); <a href="#line769">i</a>++) {
+<b><a name="line786">786  </a></b>			struct <a href="../emit/usr/local/include/dpdk/rte_dev.h/code.html#line156">rte_device</a> *<b>dev</b>;
+<b><a name="line787">787  </a></b>			auto&amp; <b>vf</b> = <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line367">vfs</a>[<a href="#line769">i</a>];
+<b><a name="line788">788  </a></b>			<a href="#line786">dev</a> = <a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line639">rte_eth_devices</a>[<a href="#line787">vf</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_dpdk/qdma_device.h/code.html#line53">dev_id</a>].<a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line550">device</a>;
+<b><a name="line789">789  </a></b>			<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Removing VF device with dev id %d\n&quot;, <a href="#line787">vf</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_dpdk/qdma_device.h/code.html#line53">dev_id</a>);
+<b><a name="line790">790  </a></b>			/*Detach the device, it will invoke device remove/uninit */
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="green">
+<a name="error:8"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(9) Event cond_true</b>: </font></td>
+<td><font color="green">Condition &quot;rte_dev_remove(dev)&quot;, taking true branch</font></td>
+</tr>
+<tr><td><font color="green">
+<a name="error:12"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(13) Event cond_true</b>: </font></td>
+<td><font color="green">Condition &quot;rte_dev_remove(dev)&quot;, taking true branch</font></td>
+</tr>
+</table>
+<pre><b><a name="line791">791  </a></b>			if (<a href="../emit/usr/local/include/dpdk/rte_dev.h/code.html#line237">rte_dev_remove</a>(<a href="#line786">dev</a>))
+<b><a name="line792">792  </a></b>				<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Failed to detach port '%d'\n&quot;, <a href="#line787">vf</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_dpdk/qdma_device.h/code.html#line53">dev_id</a>);
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="green">
+<a name="error:9"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(10) Event loop</b>: </font></td>
+<td><font color="green">Jumping back to the beginning of the loop</font></td>
+</tr>
+<tr><td><font color="green">
+<a name="error:13"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(14) Event loop</b>: </font></td>
+<td><font color="green">Jumping back to the beginning of the loop</font></td>
+</tr>
+<tr><td><font color="green">
+<a name="error:16"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(17) Event loop_end</b>: </font></td>
+<td><font color="green">Reached end of loop</font></td>
+</tr>
+</table>
+<pre><b><a name="line793">793  </a></b>		}
+<b><a name="line794">794  </a></b>	
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="green">
+<a name="error:17"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(18) Event cond_true</b>: </font></td>
+<td><font color="green">Condition &quot;i &lt; env.pfs.size()&quot;, taking true branch</font></td>
+</tr>
+<tr><td><font color="green">
+<a name="error:20"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(21) Event loop_begin</b>: </font></td>
+<td><font color="green">Jumped back to beginning of loop</font></td>
+</tr>
+<tr><td><font color="green">
+<a name="error:21"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(22) Event cond_true</b>: </font></td>
+<td><font color="green">Condition &quot;i &lt; env.pfs.size()&quot;, taking true branch</font></td>
+</tr>
+<tr><td><font color="green">
+<a name="error:24"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(25) Event loop_begin</b>: </font></td>
+<td><font color="green">Jumped back to beginning of loop</font></td>
+</tr>
+<tr><td><font color="green">
+<a name="error:25"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(26) Event cond_false</b>: </font></td>
+<td><font color="green">Condition &quot;i &lt; env.pfs.size()&quot;, taking false branch</font></td>
+</tr>
+</table>
+<pre><b><a name="line795">795  </a></b>		for (<a href="#line769">i</a> = 0; <a href="#line769">i</a> &lt; <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line366">pfs</a>.<a href="../emit/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>(); <a href="#line769">i</a>++) {
+<b><a name="line796">796  </a></b>			struct <a href="../emit/usr/local/include/dpdk/rte_dev.h/code.html#line156">rte_device</a> *<b>dev</b>;
+<b><a name="line797">797  </a></b>			auto&amp; <b>pf</b> = <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line366">pfs</a>[<a href="#line769">i</a>];
+<b><a name="line798">798  </a></b>			<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Removing PF device with dev id %d\n&quot;, <a href="#line797">pf</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_dpdk/qdma_device.h/code.html#line53">dev_id</a>);
+<b><a name="line799">799  </a></b>			<a href="#line796">dev</a> = <a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line639">rte_eth_devices</a>[<a href="#line797">pf</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_dpdk/qdma_device.h/code.html#line53">dev_id</a>].<a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line550">device</a>;
+<b><a name="line800">800  </a></b>			/*Detach the device, it will invoke device remove/uninit */
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="green">
+<a name="error:18"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(19) Event cond_true</b>: </font></td>
+<td><font color="green">Condition &quot;rte_dev_remove(dev)&quot;, taking true branch</font></td>
+</tr>
+<tr><td><font color="green">
+<a name="error:22"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(23) Event cond_true</b>: </font></td>
+<td><font color="green">Condition &quot;rte_dev_remove(dev)&quot;, taking true branch</font></td>
+</tr>
+</table>
+<pre><b><a name="line801">801  </a></b>			if (<a href="../emit/usr/local/include/dpdk/rte_dev.h/code.html#line237">rte_dev_remove</a>(<a href="#line796">dev</a>))
+<b><a name="line802">802  </a></b>				<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Failed to detach port '%d'\n&quot;, <a href="#line797">pf</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_dpdk/qdma_device.h/code.html#line53">dev_id</a>);
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="green">
+<a name="error:19"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(20) Event loop</b>: </font></td>
+<td><font color="green">Jumping back to the beginning of the loop</font></td>
+</tr>
+<tr><td><font color="green">
+<a name="error:23"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(24) Event loop</b>: </font></td>
+<td><font color="green">Jumping back to the beginning of the loop</font></td>
+</tr>
+<tr><td><font color="green">
+<a name="error:26"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(27) Event loop_end</b>: </font></td>
+<td><font color="green">Reached end of loop</font></td>
+</tr>
+</table>
+<pre><b><a name="line803">803  </a></b>		}
+<b><a name="line804">804  </a></b>	
+<b><a name="line805">805  </a></b>		<a href="../emit/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line767">cmd</a>, 10000, &quot;lspci | grep -i xilinx | awk -F \&quot; \&quot; \'(($7 &gt; \&quot;a000\&quot; &amp;&amp; $7&lt; \&quot;b000\&quot;) || ($7 &gt; \&quot;c000\&quot; &amp;&amp; $7&lt; \&quot;d000\&quot;)) {print $1}\' | tr -t \&quot;\n\&quot; \&quot; \&quot; &quot;);
+<b><a name="line806">806  </a></b>		<a href="#line770">cmd_out</a> <a href="../emit/usr/include/c++/5/bits/basic_string.h/code.html#line587">=</a> <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/xlnx/xlnx_common/xlnx_os.h/code.html#line12">xlnx</a>::<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/xlnx/xlnx_common/xlnx_os.h/code.html#line13">os</a>::<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/xlnx/xlnx_common/xlnx_os.h/code.html#line17">execute_command</a>(<a href="#line767">cmd</a>);
+<b><a name="line807">807  </a></b>	
+<b><a name="line808">808  </a></b>		<a href="../emit/usr/include/c++/5/new/code.html#line117">delete[]</a> <a href="#line767">cmd</a>;
+<b><a name="line809">809  </a></b>	
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="green">
+<a name="error:27"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(28) Event cond_true</b>: </font></td>
+<td><font color="green">Condition &quot;cmd_out != &quot;&quot;&quot;, taking true branch</font></td>
+</tr>
+</table>
+<pre><b><a name="line810">810  </a></b>		if (<a href="#line770">cmd_out</a> <a href="../emit/usr/include/c++/5/bits/basic_string.h/code.html#line4974">!=</a> &quot;&quot;){
+<b><a name="line811">811  </a></b>			<a href="#line767">cmd</a> = new char[<a href="#line770">cmd_out</a>.<a href="../emit/usr/include/c++/5/bits/basic_string.h/code.html#line715">size</a>() + 1000];
+<b><a name="line812">812  </a></b>	
+<b><a name="line813">813  </a></b>			<a href="../emit/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line767">cmd</a>, <a href="#line770">cmd_out</a>.<a href="../emit/usr/include/c++/5/bits/basic_string.h/code.html#line715">size</a>()+1000, &quot;%s/usertools/dpdk-devbind.py -u %s&quot;,<a href="#line771">path</a>, <a href="#line770">cmd_out</a>.<a href="../emit/usr/include/c++/5/bits/basic_string.h/code.html#line1887">c_str</a>());
+<b><a name="line814">814  </a></b>	
+<b><a name="line815">815  </a></b>			<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;cmd_out : %s\n&quot;, <a href="#line770">cmd_out</a>.<a href="../emit/usr/include/c++/5/bits/basic_string.h/code.html#line1887">c_str</a>());
+<b><a name="line816">816  </a></b>	
+<b><a name="line817">817  </a></b>			<a href="#line768">ret</a> = <a href="../emit/usr/include/stdlib.h/code.html#line716">system</a>(<a href="#line767">cmd</a>);
+<b><a name="line818">818  </a></b>	
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="green">
+<a name="error:28"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(29) Event cond_false</b>: </font></td>
+<td><font color="green">Condition &quot;ret != 0&quot;, taking false branch</font></td>
+</tr>
+</table>
+<pre><b><a name="line819">819  </a></b>			if (<a href="#line768">ret</a> != 0) {
+<b><a name="line820">820  </a></b>				<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: %s - Failed with errcode = %d\n&quot;, <a href="#line767">cmd</a>, <a href="#line768">ret</a>);
+<b><a name="line821">821  </a></b>				<a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="green">
+<a name="error:29"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(30) Event if_end</b>: </font></td>
+<td><font color="green">End of if statement</font></td>
+</tr>
+</table>
+<pre><b><a name="line822">822  </a></b>			}
+<b><a name="line823">823  </a></b>	
+<b><a name="line824">824  </a></b>	
+<b><a name="line825">825  </a></b>			<a href="../emit/usr/include/c++/5/new/code.html#line117">delete[]</a> <a href="#line767">cmd</a>;
+<b><a name="line826">826  </a></b>		}
+<b><a name="line827">827  </a></b>	
+<b><a name="line828">828  </a></b>	#ifndef TEST_VF_ALONE
+<b><a name="line829">829  </a></b>		<a href="#line767">cmd</a> = new char[10000];
+<b><a name="line830">830  </a></b>	
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="green">
+<a name="error:30"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(31) Event cond_true</b>: </font></td>
+<td><font color="green">Condition &quot;i &lt; env.sys_cfg.num_cards&quot;, taking true branch</font></td>
+</tr>
+</table>
+<pre><b><a name="line831">831  </a></b>		for (<a href="#line769">i</a> = 0; <a href="#line769">i</a> &lt; <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line29">num_cards</a>; <a href="#line769">i</a>++) {
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="green">
+<a name="error:31"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(32) Event cond_true</b>: </font></td>
+<td><font color="green">Condition &quot;j &lt; env.sys_cfg.num_pf&quot;, taking true branch</font></td>
+</tr>
+</table>
+<pre><b><a name="line832">832  </a></b>			for (<a href="#line769">j</a> = 0; <a href="#line769">j</a> &lt; <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line23">num_pf</a>; <a href="#line769">j</a>++) {
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="green">
+<a name="error:32"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(33) Event cond_true</b>: </font></td>
+<td><font color="green">Condition &quot;env.sys_cfg.pf_qmax_cfg_en[j]&quot;, taking true branch</font></td>
+</tr>
+</table>
+<pre><b><a name="line833">833  </a></b>				if (<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line24">pf_qmax_cfg_en</a>[<a href="#line769">j</a>]) {
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="green">
+<a name="error:33"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(34) Event cond_true</b>: </font></td>
+<td><font color="green">Condition &quot;!strncmp(bind_drv, &quot;vfio-pci&quot;, strlen(&quot;vfio-pci&quot;))&quot;, taking true branch</font></td>
+</tr>
+</table>
+<pre><b><a name="line834">834  </a></b>					if (!<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line235">strncmp</a>(<a href="#line32">bind_drv</a>, <a href="#line30">BIND_DRV_VFIO_PCI</a>, <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line269">strlen</a>(<a href="#line30">BIND_DRV_VFIO_PCI</a>))){
+<b><a name="line835">835  </a></b>						<a href="../emit/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line767">cmd</a>, 10000, &quot;%s/usertools/dpdk-devbind.py -u %02x:%02x.%01x&quot;,<a href="#line771">path</a>,<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line30">pci_bus</a>[<a href="#line769">i</a>], <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line31">pci_dev</a>[<a href="#line769">i</a>], <a href="#line769">j</a>);
+<b><a name="line836">836  </a></b>						<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;%s\n&quot;, <a href="#line767">cmd</a>);
+<b><a name="line837">837  </a></b>						<a href="#line768">ret</a> = <a href="../emit/usr/include/stdlib.h/code.html#line716">system</a>(<a href="#line767">cmd</a>);
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="green">
+<a name="error:34"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(35) Event cond_false</b>: </font></td>
+<td><font color="green">Condition &quot;ret != 0&quot;, taking false branch</font></td>
+</tr>
+</table>
+<pre><b><a name="line838">838  </a></b>						if (<a href="#line768">ret</a> != 0) {
+<b><a name="line839">839  </a></b>							<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: %s - Failed with errcode = %d\n&quot;, <a href="#line767">cmd</a>, <a href="#line768">ret</a>);
+<b><a name="line840">840  </a></b>							<a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="green">
+<a name="error:35"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(36) Event if_end</b>: </font></td>
+<td><font color="green">End of if statement</font></td>
+</tr>
+</table>
+<pre><b><a name="line841">841  </a></b>						}
+<b><a name="line842">842  </a></b>	
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="red">
+<a name="error:36"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(37) Event vararg_transitive</b>: </font></td>
+<td><font color="red">Call to &quot;snprintf&quot; with tainted argument &quot;path&quot; taints &quot;cmd&quot;.</font></td>
+</tr>
+<tr><td><font color="red">Also see events: </font></td>
+<td><font color="red">[<a href="#error:0">tainted_string_return_content</a>][<a href="#error:1">var_assign</a>][<a href="#error:37">tainted_string</a>]</font></td></tr>
+</table>
+<pre><b><a name="line843">843  </a></b>						<a href="../emit/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line767">cmd</a>, 10000, &quot;%s/usertools/dpdk-devbind.py -b %s  %02x:%02x.%01x&quot;,<a href="#line771">path</a>, <a href="#line31">BIND_DRV_IGB_UIO</a>, <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line30">pci_bus</a>[<a href="#line769">i</a>], <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line31">pci_dev</a>[<a href="#line769">i</a>], <a href="#line769">j</a>);
+<b><a name="line844">844  </a></b>						<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;%s\n&quot;, <a href="#line767">cmd</a>);
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="red">
+<a name="error:37"></a>
+<a name="error"></a>
+<!-- merge-key 0384e2bf9ad10364840fa2c6d8eb8d0b -->
+<b>(38) Event tainted_string</b>: </font></td>
+<td><font color="red">Passing tainted string &quot;cmd&quot; to &quot;system&quot;, which cannot accept tainted data.</font></td>
+</tr>
+<tr><td><font color="red">Also see events: </font></td>
+<td><font color="red">[<a href="#error:0">tainted_string_return_content</a>][<a href="#error:1">var_assign</a>][<a href="#error:36">vararg_transitive</a>]</font></td></tr>
+</table>
+<pre><b><a name="line845">845  </a></b>						<a href="#line768">ret</a> = <a href="../emit/usr/include/stdlib.h/code.html#line716">system</a>(<a href="#line767">cmd</a>);
+<b><a name="line846">846  </a></b>						if (<a href="#line768">ret</a> != 0) {
+<b><a name="line847">847  </a></b>							<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: %s - Failed with errcode = %d\n&quot;, <a href="#line767">cmd</a>, <a href="#line768">ret</a>);
+<b><a name="line848">848  </a></b>							<a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line849">849  </a></b>						}
+<b><a name="line850">850  </a></b>					}
+<b><a name="line851">851  </a></b>					if (<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line26">pf_nvf_lst</a>[<a href="#line769">j</a>]) {
+<b><a name="line852">852  </a></b>						<a href="../emit/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line767">cmd</a>, 1000, &quot;echo 0 &gt; /sys/bus/pci/devices/0000\\:%02x\\:%02x.%01x/max_vfs&quot;,
+<b><a name="line853">853  </a></b>								<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line30">pci_bus</a>[<a href="#line769">i</a>], <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line31">pci_dev</a>[<a href="#line769">i</a>], <a href="#line769">j</a>);
+<b><a name="line854">854  </a></b>	
+<b><a name="line855">855  </a></b>						<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;%s\n&quot;, <a href="#line767">cmd</a>);
+<b><a name="line856">856  </a></b>						<a href="#line768">ret</a> = <a href="../emit/usr/include/stdlib.h/code.html#line716">system</a>(<a href="#line767">cmd</a>);
+<b><a name="line857">857  </a></b>						if (<a href="#line768">ret</a> != 0) {
+<b><a name="line858">858  </a></b>							<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: %s - Failed with errcode = %d\n&quot;, <a href="#line767">cmd</a>, <a href="#line768">ret</a>);
+<b><a name="line859">859  </a></b>							<a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line860">860  </a></b>						}
+<b><a name="line861">861  </a></b>					}
+<b><a name="line862">862  </a></b>					<a href="../emit/usr/include/stdio.h/code.html#line386">snprintf</a>(<a href="#line767">cmd</a>, 10000, &quot;%s/usertools/dpdk-devbind.py -u %02x:%02x.%01x&quot;,<a href="#line771">path</a>,<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line30">pci_bus</a>[<a href="#line769">i</a>], <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line31">pci_dev</a>[<a href="#line769">i</a>], <a href="#line769">j</a>);
+<b><a name="line863">863  </a></b>					<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;%s\n&quot;, <a href="#line767">cmd</a>);
+<b><a name="line864">864  </a></b>					<a href="#line768">ret</a> = <a href="../emit/usr/include/stdlib.h/code.html#line716">system</a>(<a href="#line767">cmd</a>);
+<b><a name="line865">865  </a></b>					if (<a href="#line768">ret</a> != 0) {
+<b><a name="line866">866  </a></b>						<a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Error: %s - Failed with errcode = %d\n&quot;, <a href="#line767">cmd</a>, <a href="#line768">ret</a>);
+<b><a name="line867">867  </a></b>						<a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(1);
+<b><a name="line868">868  </a></b>					}
+<b><a name="line869">869  </a></b>					<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line266">memset</a>(<a href="#line767">cmd</a>, '\0', 10000);
+<b><a name="line870">870  </a></b>				}
+<b><a name="line871">871  </a></b>			}
+<b><a name="line872">872  </a></b>		}
+<b><a name="line873">873  </a></b>	
+<b><a name="line874">874  </a></b>		<a href="../emit/usr/include/c++/5/new/code.html#line117">delete[]</a> <a href="#line767">cmd</a>;
+<b><a name="line875">875  </a></b>	#endif
+<b><a name="line876">876  </a></b>	
+<b><a name="line877">877  </a></b>	}
+<b><a name="line878">878  </a></b>	#else
+<b><a name="line879">879  </a></b>	static void platform_init(int argc, char** argv)
+<b><a name="line880">880  </a></b>	{
+<b><a name="line881">881  </a></b>	    char cmd[100] = {'\0'};
+<b><a name="line882">882  </a></b>	    int ret = 0;
+<b><a name="line883">883  </a></b>	
+<b><a name="line884">884  </a></b>	    snprintf(cmd, 100, &quot;dma-ctl dev list&quot;);
+<b><a name="line885">885  </a></b>	
+<b><a name="line886">886  </a></b>	    printf(&quot;%s\n&quot;, cmd);
+<b><a name="line887">887  </a></b>	    ret = system(cmd);
+<b><a name="line888">888  </a></b>	    if (WIFSIGNALED(ret) &amp;&amp;
+<b><a name="line889">889  </a></b>	        (WTERMSIG(ret) == SIGINT || WTERMSIG(ret) == SIGQUIT)) {
+<b><a name="line890">890  </a></b>	        printf(&quot;Error: %s - Failed with errcode = %d\n&quot;, cmd, ret);
+<b><a name="line891">891  </a></b>	        exit(1);
+<b><a name="line892">892  </a></b>	    }
+<b><a name="line893">893  </a></b>	    system(&quot;ulimit -n 1048576&quot;); /* This is to allow more file descriptors to be open at a time */
+<b><a name="line894">894  </a></b>	}
+<b><a name="line895">895  </a></b>	
+<b><a name="line896">896  </a></b>	static void setup_env(void)
+<b><a name="line897">897  </a></b>	{
+<b><a name="line898">898  </a></b>	    char cmd[100] = {'\0'};
+<b><a name="line899">899  </a></b>	    int ret = 0;
+<b><a name="line900">900  </a></b>	    int i, j, k;
+<b><a name="line901">901  </a></b>	
+<b><a name="line902">902  </a></b>	#ifdef TEST_VF_ALONE
+<b><a name="line903">903  </a></b>	    char command[200];
+<b><a name="line904">904  </a></b>	    std::string cmd_out;
+<b><a name="line905">905  </a></b>	
+<b><a name="line906">906  </a></b>	#endif
+<b><a name="line907">907  </a></b>	
+<b><a name="line908">908  </a></b>	#ifndef TEST_VF_ALONE
+<b><a name="line909">909  </a></b>		for (i = 0; i &lt; (int)env.sys_cfg.num_cards; i++) {
+<b><a name="line910">910  </a></b>			for (j = 0; j &lt; (int)env.sys_cfg.num_pf; j++) {
+<b><a name="line911">911  </a></b>				if (env.sys_cfg.pf_nvf_lst[j] &gt; 0) {
+<b><a name="line912">912  </a></b>					snprintf(cmd, 100, &quot;echo %u &gt; /sys/bus/pci/devices/0000:%02x:%02x.%01x/sriov_numvfs&quot;,
+<b><a name="line913">913  </a></b>							 env.sys_cfg.pf_nvf_lst[j], env.sys_cfg.pci_bus[i], env.sys_cfg.pci_dev[i], j);
+<b><a name="line914">914  </a></b>	
+<b><a name="line915">915  </a></b>					printf(&quot;%s\n&quot;, cmd);
+<b><a name="line916">916  </a></b>					ret = system(cmd);
+<b><a name="line917">917  </a></b>					if (ret != 0) {
+<b><a name="line918">918  </a></b>						printf(&quot;Error: %s - Failed with errcode = %d\n&quot;, cmd, ret);
+<b><a name="line919">919  </a></b>						exit(1);
+<b><a name="line920">920  </a></b>					}
+<b><a name="line921">921  </a></b>					memset(cmd, '\0', 100);
+<b><a name="line922">922  </a></b>				}
+<b><a name="line923">923  </a></b>			}
+<b><a name="line924">924  </a></b>			sleep(1);
+<b><a name="line925">925  </a></b>			for (j = 0; j &lt; (int)env.sys_cfg.num_pf; j++) {
+<b><a name="line926">926  </a></b>				if (env.sys_cfg.pf_qmax_cfg_en[j]) {
+<b><a name="line927">927  </a></b>					snprintf(cmd, 100, &quot;echo %u &gt; /sys/bus/pci/devices/0000:%02x:%02x.%01x/qdma/qmax&quot;,
+<b><a name="line928">928  </a></b>						 env.sys_cfg.pf_qmax_lst[j], env.sys_cfg.pci_bus[i], env.sys_cfg.pci_dev[i], j);
+<b><a name="line929">929  </a></b>	
+<b><a name="line930">930  </a></b>					printf(&quot;%s\n&quot;, cmd);
+<b><a name="line931">931  </a></b>					ret = system(cmd);
+<b><a name="line932">932  </a></b>					if (ret != 0) {
+<b><a name="line933">933  </a></b>						printf(&quot;Error: %s - Failed with errcode = %d\n&quot;, cmd, ret);
+<b><a name="line934">934  </a></b>						exit(1);
+<b><a name="line935">935  </a></b>					}
+<b><a name="line936">936  </a></b>					memset(cmd, '\0', 100);
+<b><a name="line937">937  </a></b>				}
+<b><a name="line938">938  </a></b>			}
+<b><a name="line939">939  </a></b>		}
+<b><a name="line940">940  </a></b>	#endif
+<b><a name="line941">941  </a></b>	
+<b><a name="line942">942  </a></b>	    printf(&quot;In setup_env before virtfn echo : %d\n&quot;, env.vfs.empty());
+<b><a name="line943">943  </a></b>	#ifdef TEST_VF_ALONE
+<b><a name="line944">944  </a></b>		int pf_vfs_bdf_field = 0;
+<b><a name="line945">945  </a></b>		for (i = 0; i &lt; (int)env.sys_cfg.num_pf; i++) {
+<b><a name="line946">946  </a></b>			for (j = 0; j &lt; (int)env.sys_cfg.pf_nvf_lst[i]; j++) {
+<b><a name="line947">947  </a></b>				/*
+<b><a name="line948">948  </a></b>				1. 'lspci | grep -i xilinx' Lists all Xilinx PCI devices
+<b><a name="line949">949  </a></b>					Ex : xhdipdslab42:~% lspci | grep -i xilinx
+<b><a name="line950">950  </a></b>						81:00.0 Memory controller: Xilinx Corporation Device 903f
+<b><a name="line951">951  </a></b>						81:00.1 Memory controller: Xilinx Corporation Device 913f
+<b><a name="line952">952  </a></b>						81:00.2 Memory controller: Xilinx Corporation Device 923f
+<b><a name="line953">953  </a></b>						81:00.3 Memory controller: Xilinx Corporation Device 933f
+<b><a name="line954">954  </a></b>						81:00.4 Memory controller: Xilinx Corporation Device a03f
+<b><a name="line955">955  </a></b>						81:00.5 Memory controller: Xilinx Corporation Device a13f
+<b><a name="line956">956  </a></b>						81:00.6 Memory controller: Xilinx Corporation Device a23f
+<b><a name="line957">957  </a></b>						81:00.7 Memory controller: Xilinx Corporation Device a33f
+<b><a name="line958">958  </a></b>	
+<b><a name="line959">959  </a></b>				2. 'lspci | grep -i xilinx | awk -F \&quot; \&quot; \'$7 &gt; \&quot;a000\&quot; {print $1}' filters
+<b><a name="line960">960  </a></b>				    the PCI xilinx devices which has device ID greater than 0xA000 and prints their BDFs
+<b><a name="line961">961  </a></b>					Ex : xhdipdslab42:~% lspci | grep -i xilinx | awk -F &quot; &quot; 'NR&gt;4{print $1}'
+<b><a name="line962">962  </a></b>						81:00.4
+<b><a name="line963">963  </a></b>						81:00.5
+<b><a name="line964">964  </a></b>						81:00.6
+<b><a name="line965">965  </a></b>						81:00.7
+<b><a name="line966">966  </a></b>				3. 'lspci | grep -i xilinx | awk -F \&quot; \&quot; \'$7 &gt; \&quot;a000\&quot; {print $1} | tr -t \&quot;\\n\&quot; \&quot; \&quot;'
+<b><a name="line967">967  </a></b>				    replaces '\n' with a space
+<b><a name="line968">968  </a></b>					Ex : xhdipdslab42:~% lspci | grep -i xilinx | awk -F &quot; &quot; 'NR&gt;4{print $1}' | tr -t &quot;\n&quot; &quot; &quot;
+<b><a name="line969">969  </a></b>						81:00.4 81:00.5 81:00.6 81:00.7
+<b><a name="line970">970  </a></b>	
+<b><a name="line971">971  </a></b>				4. 'lspci | grep -i xilinx | awk -F \&quot; \&quot; \'$7 &gt; \&quot;a000\&quot; {print $1} | tr -t \&quot;\\n\&quot; \&quot; \&quot; | cut -d\' \' -f%d'
+<b><a name="line972">972  </a></b>				   cuts the bigger string into smaller strings delimited by a space
+<b><a name="line973">973  </a></b>					Ex : xhdipdslab42:~% lspci | grep -i xilinx | awk -F &quot; &quot; 'NR&gt;4{print $1}' | tr -t &quot;\n&quot; &quot; | cut -d\' \' -f1 &quot;
+<b><a name="line974">974  </a></b>						81:00.4
+<b><a name="line975">975  </a></b>					Ex : xhdipdslab42:~% lspci | grep -i xilinx | awk -F &quot; &quot; 'NR&gt;4{print $1}' | tr -t &quot;\n&quot; &quot; | cut -d\' \' -f2 &quot;
+<b><a name="line976">976  </a></b>						81:00.5
+<b><a name="line977">977  </a></b>				*/
+<b><a name="line978">978  </a></b>				snprintf(command, 200, \
+<b><a name="line979">979  </a></b>					&quot;lspci | grep -i xilinx | awk -F \&quot; \&quot; \'$7 &gt; \&quot;a000\&quot; &quot;
+<b><a name="line980">980  </a></b>					&quot;{print $1}\' | tr -t \&quot;\\n\&quot; \&quot; \&quot; | cut -d\' \' -f%d&quot;, ++pf_vfs_bdf_field);
+<b><a name="line981">981  </a></b>	
+<b><a name="line982">982  </a></b>				printf(&quot;Commmand : %s\n&quot;, command);
+<b><a name="line983">983  </a></b>	
+<b><a name="line984">984  </a></b>				cmd_out = xlnx::os::execute_command(command);
+<b><a name="line985">985  </a></b>	
+<b><a name="line986">986  </a></b>				if (cmd_out != &quot;&quot;) {
+<b><a name="line987">987  </a></b>					cmd_out.erase(std::remove(cmd_out.begin(), cmd_out.end(), '\n'), cmd_out.end());
+<b><a name="line988">988  </a></b>	
+<b><a name="line989">989  </a></b>					printf(&quot;cmd_out : %s\n&quot;, cmd_out.c_str());
+<b><a name="line990">990  </a></b>	
+<b><a name="line991">991  </a></b>					snprintf(cmd, 100, &quot;echo %u &gt; /sys/bus/pci/devices/0000:%s/qdma/qmax&quot;,
+<b><a name="line992">992  </a></b>						 env.sys_cfg.vf_pf_qmax_lst[i][j], cmd_out.c_str());
+<b><a name="line993">993  </a></b>					printf(&quot;%s\n&quot;, cmd);
+<b><a name="line994">994  </a></b>	
+<b><a name="line995">995  </a></b>					ret = system(cmd);
+<b><a name="line996">996  </a></b>					if (ret != 0) {
+<b><a name="line997">997  </a></b>						printf(&quot;Error: %s - Failed with errcode = %d\n&quot;, cmd, ret);
+<b><a name="line998">998  </a></b>						exit(1);
+<b><a name="line999">999  </a></b>					}
+<b><a name="line1000">1000 </a></b>					memset(cmd, '\0', 100);
+<b><a name="line1001">1001 </a></b>				}
+<b><a name="line1002">1002 </a></b>			}
+<b><a name="line1003">1003 </a></b>		}
+<b><a name="line1004">1004 </a></b>	#else
+<b><a name="line1005">1005 </a></b>		for (i = 0; i &lt; (int)env.sys_cfg.num_cards; i++) {
+<b><a name="line1006">1006 </a></b>			for (j = 0; j &lt; (int)env.sys_cfg.num_pf; j++) {
+<b><a name="line1007">1007 </a></b>				for (k = 0; k &lt; (int)env.sys_cfg.pf_nvf_lst[j]; k++) {
+<b><a name="line1008">1008 </a></b>					snprintf(cmd, 100, &quot;echo %u &gt; /sys/bus/pci/devices/0000:%02x:%02x.%01x/virtfn%d/qdma/qmax&quot;,
+<b><a name="line1009">1009 </a></b>							 env.sys_cfg.vf_pf_qmax_lst[j][k], env.sys_cfg.pci_bus[i], env.sys_cfg.pci_dev[i], j, k);
+<b><a name="line1010">1010 </a></b>	
+<b><a name="line1011">1011 </a></b>					printf(&quot;%s\n&quot;, cmd);
+<b><a name="line1012">1012 </a></b>	
+<b><a name="line1013">1013 </a></b>					ret = system(cmd);
+<b><a name="line1014">1014 </a></b>					if (ret != 0) {
+<b><a name="line1015">1015 </a></b>						printf(&quot;Error: %s - Failed with errcode = %d\n&quot;, cmd, ret);
+<b><a name="line1016">1016 </a></b>						exit(1);
+<b><a name="line1017">1017 </a></b>					}
+<b><a name="line1018">1018 </a></b>					memset(cmd, '\0', 100);
+<b><a name="line1019">1019 </a></b>				}
+<b><a name="line1020">1020 </a></b>			}
+<b><a name="line1021">1021 </a></b>		}
+<b><a name="line1022">1022 </a></b>	#endif
+<b><a name="line1023">1023 </a></b>	}
+<b><a name="line1024">1024 </a></b>	#endif
+<b><a name="line1025">1025 </a></b>	
+<b><a name="line1026">1026 </a></b>	static void <b>cleanup</b>(void)
+<b><a name="line1027">1027 </a></b>	{
+<b><a name="line1028">1028 </a></b>	    int <b>i</b>;
+<b><a name="line1029">1029 </a></b>	
+<b><a name="line1030">1030 </a></b>	#ifdef DPDK
+<b><a name="line1031">1031 </a></b>		<a href="#line765">cleanup_env</a>();
+<b><a name="line1032">1032 </a></b>	#endif
+<b><a name="line1033">1033 </a></b>	
+<b><a name="line1034">1034 </a></b>	    for (<a href="#line1028">i</a> = 0; <a href="#line1028">i</a> &lt; (int)<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line23">num_pf</a>; <a href="#line1028">i</a>++){
+<b><a name="line1035">1035 </a></b>			if(<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line27">vf_pf_qmax_lst</a>[<a href="#line1028">i</a>] != <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>)
+<b><a name="line1036">1036 </a></b>				<a href="../emit/usr/include/stdlib.h/code.html#line483">free</a>(<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line27">vf_pf_qmax_lst</a>[<a href="#line1028">i</a>]);
+<b><a name="line1037">1037 </a></b>		}
+<b><a name="line1038">1038 </a></b>		<a href="../emit/usr/include/stdlib.h/code.html#line483">free</a>(<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line27">vf_pf_qmax_lst</a>);
+<b><a name="line1039">1039 </a></b>		<a href="../emit/usr/include/stdlib.h/code.html#line483">free</a>(<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line26">pf_nvf_lst</a>);
+<b><a name="line1040">1040 </a></b>		<a href="../emit/usr/include/stdlib.h/code.html#line483">free</a>(<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line25">pf_qmax_lst</a>);
+<b><a name="line1041">1041 </a></b>		<a href="../emit/usr/include/stdlib.h/code.html#line483">free</a>(<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line24">pf_qmax_cfg_en</a>);
+<b><a name="line1042">1042 </a></b>	
+<b><a name="line1043">1043 </a></b>	}
+<b><a name="line1044">1044 </a></b>	
+<b><a name="line1045">1045 </a></b>	int <b>main</b> (int <b>argc</b>, char* <b>argv</b>[])
+<b><a name="line1046">1046 </a></b>	{
+<b><a name="line1047">1047 </a></b>	    int <b>cmd_opt</b>;
+<b><a name="line1048">1048 </a></b>	    char *<b>cfg_fname</b> = <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>;
+<b><a name="line1049">1049 </a></b>	    int <b>option_index</b>;
+<b><a name="line1050">1050 </a></b>	
+<b><a name="line1051">1051 </a></b>	    int <b>dpdk_argc</b>=1;
+<b><a name="line1052">1052 </a></b>	#ifdef DPDK
+<b><a name="line1053">1053 </a></b>	    struct <a href="../emit/usr/local/include/dpdk/rte_bus_pci.h/code.html#line37">rte_pci_device</a> *<b>vf_pci_dev</b>;
+<b><a name="line1054">1054 </a></b>	    <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>i</b>, <b>j</b>, <b>pf_idx</b>;
+<b><a name="line1055">1055 </a></b>	#endif
+<b><a name="line1056">1056 </a></b>	
+<b><a name="line1057">1057 </a></b>	    while ((<a href="#line1047">cmd_opt</a> = <a href="../emit/usr/include/getopt.h/code.html#line173">getopt_long</a>(<a href="#line1045">argc</a>, <a href="#line1045">argv</a>, &quot;f:c:n:gtest_repeat:gtest_output:gtest_filter:gtest_list_tests:config:bind_driver&quot;, <a href="#line45">long_opts</a>, &amp;<a href="#line1049">option_index</a>)) != -1) {
+<b><a name="line1058">1058 </a></b>	        switch (<a href="#line1047">cmd_opt</a>)
+<b><a name="line1059">1059 </a></b>	        {
+<b><a name="line1060">1060 </a></b>	        case 'f':
+<b><a name="line1061">1061 </a></b>	            /* config file name */
+<b><a name="line1062">1062 </a></b>	            <a href="#line1048">cfg_fname</a> = <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line281">strdup</a>(<a href="../emit/usr/include/getopt.h/code.html#line57">optarg</a>);
+<b><a name="line1063">1063 </a></b>	            break;
+<b><a name="line1064">1064 </a></b>	#ifdef DPDK
+<b><a name="line1065">1065 </a></b>	        case 'c':
+<b><a name="line1066">1066 </a></b>	    		<a href="#line1051">dpdk_argc</a>+= 2;
+<b><a name="line1067">1067 </a></b>	           break;
+<b><a name="line1068">1068 </a></b>	        case 'n':
+<b><a name="line1069">1069 </a></b>	    		<a href="#line1051">dpdk_argc</a> += 2;
+<b><a name="line1070">1070 </a></b>	            break;
+<b><a name="line1071">1071 </a></b>	        case 0:
+<b><a name="line1072">1072 </a></b>	            break;
+<b><a name="line1073">1073 </a></b>	#else
+<b><a name="line1074">1074 </a></b>	        case 0:
+<b><a name="line1075">1075 </a></b>	            /* long option */
+<b><a name="line1076">1076 </a></b>	
+<b><a name="line1077">1077 </a></b>	            break;
+<b><a name="line1078">1078 </a></b>	#endif
+<b><a name="line1079">1079 </a></b>	        default:
+<b><a name="line1080">1080 </a></b>	            <a href="#line61">usage</a>(<a href="#line1045">argv</a>[0]);
+<b><a name="line1081">1081 </a></b>	            break;
+<b><a name="line1082">1082 </a></b>	        }
+<b><a name="line1083">1083 </a></b>	    }
+<b><a name="line1084">1084 </a></b>	#ifdef DPDK
+<b><a name="line1085">1085 </a></b>	    <a href="#line125">parse_cmdline</a>(<a href="#line1045">argc</a>, <a href="#line1045">argv</a>);
+<b><a name="line1086">1086 </a></b>	#endif
+<b><a name="line1087">1087 </a></b>	    if (<a href="#line1048">cfg_fname</a>) {
+<b><a name="line1088">1088 </a></b>	        <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Parsing config file %s\n&quot;, <a href="#line1048">cfg_fname</a>);
+<b><a name="line1089">1089 </a></b>	        <a href="#line332">parse_config_file</a>(<a href="#line1048">cfg_fname</a>);
+<b><a name="line1090">1090 </a></b>	        <a href="../emit/usr/include/stdlib.h/code.html#line519">atexit</a>(<a href="#line1026">cleanup</a>);
+<b><a name="line1091">1091 </a></b>	#if <a href="#line527">DISPLAY_CONFIG_INFO</a>
+<b><a name="line1092">1092 </a></b>	        dump_setp_config();
+<b><a name="line1093">1093 </a></b>	        exit(1);
+<b><a name="line1094">1094 </a></b>	#endif
+<b><a name="line1095">1095 </a></b>	#ifndef _WIN32
+<b><a name="line1096">1096 </a></b>	        <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;Validating config\n&quot;);
+<b><a name="line1097">1097 </a></b>	        <a href="#line563">validate_config</a>();
+<b><a name="line1098">1098 </a></b>	#endif
+<b><a name="line1099">1099 </a></b>	        <a href="../emit/usr/include/stdio.h/code.html#line362">printf</a>(&quot;setting up environment\n&quot;);
+<b><a name="line1100">1100 </a></b>	        <a href="#line629">setup_env</a>();
+<b><a name="line1101">1101 </a></b>	
+<b><a name="line1102">1102 </a></b>	        <a href="../emit/usr/include/unistd.h/code.html#line447">sleep</a>(1);
+<b><a name="line1103">1103 </a></b>	    }
+<b><a name="line1104">1104 </a></b>	
+<b><a name="line1105">1105 </a></b>	    <a href="#line618">platform_init</a>(<a href="#line1051">dpdk_argc</a>, <a href="#line1045">argv</a>);
+<b><a name="line1106">1106 </a></b>	
+<b><a name="line1107">1107 </a></b>	    <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line332">update</a>();
+<b><a name="line1108">1108 </a></b>	
+<b><a name="line1109">1109 </a></b>	    if (<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line366">pfs</a>.<a href="../emit/usr/include/c++/5/bits/stl_vector.h/code.html#line743">empty</a>() &amp;&amp; <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line367">vfs</a>.<a href="../emit/usr/include/c++/5/bits/stl_vector.h/code.html#line743">empty</a>()) {
+<b><a name="line1110">1110 </a></b>	        <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/iostream/code.html#line62">cerr</a> <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;Error: Failed to find any QDMA devices!\n&quot;;
+<b><a name="line1111">1111 </a></b>	        <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(-1);
+<b><a name="line1112">1112 </a></b>	    }
+<b><a name="line1113">1113 </a></b>	
+<b><a name="line1114">1114 </a></b>	#ifdef DPDK
+<b><a name="line1115">1115 </a></b>	    if (<a href="#line1048">cfg_fname</a> != <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>){
+<b><a name="line1116">1116 </a></b>	
+<b><a name="line1117">1117 </a></b>			<a href="#line1054">pf_idx</a> = 0;
+<b><a name="line1118">1118 </a></b>			for (<a href="#line1054">i</a> = 0; <a href="#line1054">i</a> &lt; <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line29">num_cards</a>; <a href="#line1054">i</a>++) {
+<b><a name="line1119">1119 </a></b>				for (<a href="#line1054">j</a> = 0; <a href="#line1054">j</a> &lt; <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line23">num_pf</a>; <a href="#line1054">j</a>++) {
+<b><a name="line1120">1120 </a></b>	#ifndef TEST_VF_ALONE
+<b><a name="line1121">1121 </a></b>					if (<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line24">pf_qmax_cfg_en</a>[<a href="#line1054">j</a>]) {
+<b><a name="line1122">1122 </a></b>						auto&amp; <b>pf</b> = <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line366">pfs</a>[<a href="#line1054">pf_idx</a>];
+<b><a name="line1123">1123 </a></b>						<a href="#line1122">pf</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a> = <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line25">pf_qmax_lst</a>[<a href="#line1054">j</a>];
+<b><a name="line1124">1124 </a></b>					}
+<b><a name="line1125">1125 </a></b>	#endif
+<b><a name="line1126">1126 </a></b>					<a href="#line1054">pf_idx</a>++;
+<b><a name="line1127">1127 </a></b>				}
+<b><a name="line1128">1128 </a></b>			}
+<b><a name="line1129">1129 </a></b>	
+<b><a name="line1130">1130 </a></b>			for (<a href="#line1054">i</a> = 0, <a href="#line1054">j</a>=0; <a href="#line1054">i</a> &lt; <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line367">vfs</a>.<a href="../emit/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>(); <a href="#line1054">i</a>++) {
+<b><a name="line1131">1131 </a></b>				auto&amp; <b>vf</b> = <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line367">vfs</a>[<a href="#line1054">i</a>];
+<b><a name="line1132">1132 </a></b>				<a href="#line1053">vf_pci_dev</a> = <a href="../emit/usr/local/include/dpdk/rte_bus_pci.h/code.html#line82">RTE_ETH_DEV_TO_PCI</a>(&amp;rte_eth_devices[vf.dev_id]);
+<b><a name="line1133">1133 </a></b>	
+<b><a name="line1134">1134 </a></b>				auto <b>pf</b> = ((<a href="#line1053">vf_pci_dev</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_bus_pci.h/code.html#line61">id</a>.<a href="../emit/usr/local/include/dpdk/rte_pci.h/code.html#line53">device_id</a>) &gt;&gt; 8) &amp; 0x0F;
+<b><a name="line1135">1135 </a></b>	
+<b><a name="line1136">1136 </a></b>				<a href="../emit/usr/include/stdint.h/code.html#line48">uint8_t</a> <b>num_vf_pf</b> = <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line26">pf_nvf_lst</a>[<a href="#line1134">pf</a>];
+<b><a name="line1137">1137 </a></b>				<a href="#line1131">vf</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a> = <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line373">sys_cfg</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line27">vf_pf_qmax_lst</a>[<a href="#line1134">pf</a>][<a href="#line1054">j</a>];
+<b><a name="line1138">1138 </a></b>				<a href="#line1054">j</a>++;
+<b><a name="line1139">1139 </a></b>				if( <a href="#line1054">j</a> &gt;= <a href="#line1136">num_vf_pf</a>)
+<b><a name="line1140">1140 </a></b>					<a href="#line1054">j</a>=0;
+<b><a name="line1141">1141 </a></b>			}
+<b><a name="line1142">1142 </a></b>		}
+<b><a name="line1143">1143 </a></b>	#endif
+<b><a name="line1144">1144 </a></b>	
+<b><a name="line1145">1145 </a></b>	    if (!<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line366">pfs</a>.<a href="../emit/usr/include/c++/5/bits/stl_vector.h/code.html#line743">empty</a>())
+<b><a name="line1146">1146 </a></b>	    	<a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/iostream/code.html#line61">cout</a> <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;num_pfs=&quot; <a href="../emit/usr/include/c++/5/ostream/code.html#line170">&lt;&lt;</a> <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line366">pfs</a>.<a href="../emit/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>() <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;\n&quot;;
+<b><a name="line1147">1147 </a></b>	    if (!<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line367">vfs</a>.<a href="../emit/usr/include/c++/5/bits/stl_vector.h/code.html#line743">empty</a>())
+<b><a name="line1148">1148 </a></b>	    	<a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/iostream/code.html#line61">cout</a> <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;num_vfs=&quot; <a href="../emit/usr/include/c++/5/ostream/code.html#line170">&lt;&lt;</a> <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line367">vfs</a>.<a href="../emit/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>() <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;\n&quot;;
+<b><a name="line1149">1149 </a></b>	
+<b><a name="line1150">1150 </a></b>	    <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/iostream/code.html#line61">cout</a> <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;bram_size=&quot; <a href="../emit/usr/include/c++/5/ostream/code.html#line170">&lt;&lt;</a> <a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_common/example_design_ctrl.h/code.html#line32">example_design_ctrl</a>::<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_common/example_design_ctrl.h/code.html#line35">bram_size</a> <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;\n&quot;;
+<b><a name="line1151">1151 </a></b>	    <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/iostream/code.html#line61">cout</a> <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;random_seed=&quot; <a href="../emit/usr/include/c++/5/ostream/code.html#line192">&lt;&lt;</a> <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line371">random_seed</a> <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;\n&quot;;
+<b><a name="line1152">1152 </a></b>	    if (!<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line366">pfs</a>.<a href="../emit/usr/include/c++/5/bits/stl_vector.h/code.html#line743">empty</a>()) {
+<b><a name="line1153">1153 </a></b>	        for (<a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>i</b> = 0; i &lt; <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line366">pfs</a>.<a href="../emit/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>(); i++) {
+<b><a name="line1154">1154 </a></b>	            const auto&amp; <b>pf</b> = <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line366">pfs</a>[<a href="#line1153">i</a>];
+<b><a name="line1155">1155 </a></b>	            <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/iostream/code.html#line61">cout</a> <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;PF&quot; <a href="../emit/usr/include/c++/5/ostream/code.html#line170">&lt;&lt;</a> <a href="#line1153">i</a> <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;: &quot; <a href="../emit/usr/include/c++/5/ostream/code.html#line192">&lt;&lt;</a>  <a href="#line1154">pf</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a> <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot; queues\n&quot;;
+<b><a name="line1156">1156 </a></b>	            if(<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line459">get_device_type</a>(<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line366">pfs</a>[<a href="#line1153">i</a>].<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_dpdk/qdma_device.h/code.html#line53">dev_id</a>, <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line366">pfs</a>) == -1) {
+<b><a name="line1157">1157 </a></b>	                <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/iostream/code.html#line61">cout</a> <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;Invalid device type&quot; <a href="../emit/usr/include/c++/5/ostream/code.html#line108">&lt;&lt;</a> <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/ostream/code.html#line590">endl</a>;
+<b><a name="line1158">1158 </a></b>	                       <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(-1);
+<b><a name="line1159">1159 </a></b>	            }
+<b><a name="line1160">1160 </a></b>	        }
+<b><a name="line1161">1161 </a></b>	
+<b><a name="line1162">1162 </a></b>	    }
+<b><a name="line1163">1163 </a></b>	    if (!<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line367">vfs</a>.<a href="../emit/usr/include/c++/5/bits/stl_vector.h/code.html#line743">empty</a>()) {
+<b><a name="line1164">1164 </a></b>	        for (<a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>i</b> = 0; i &lt; <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line367">vfs</a>.<a href="../emit/usr/include/c++/5/bits/stl_vector.h/code.html#line654">size</a>(); i++) {
+<b><a name="line1165">1165 </a></b>	            const auto&amp; <b>vf</b> = <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line367">vfs</a>[<a href="#line1164">i</a>];
+<b><a name="line1166">1166 </a></b>	#ifdef DPDK
+<b><a name="line1167">1167 </a></b>	            <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/iostream/code.html#line61">cout</a> <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;VF&quot; <a href="../emit/usr/include/c++/5/ostream/code.html#line170">&lt;&lt;</a> <a href="#line1164">i</a> <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;: &quot; <a href="../emit/usr/include/c++/5/ostream/code.html#line192">&lt;&lt;</a> <a href="#line1165">vf</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_dpdk/qdma_device.h/code.html#line50">max_num_queues</a> <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot; queues&quot; <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a>&quot;\n&quot;;
+<b><a name="line1168">1168 </a></b>	#else
+<b><a name="line1169">1169 </a></b>	            std::cout &lt;&lt; &quot;VF&quot; &lt;&lt; i &lt;&lt; &quot;: &quot; &lt;&lt; vf.max_num_queues &lt;&lt; &quot; queues&quot; &lt;&lt;&quot;, q_base = &quot; &lt;&lt; vf.qbase_start &lt;&lt;&quot;\n&quot;;
+<b><a name="line1170">1170 </a></b>	#endif
+<b><a name="line1171">1171 </a></b>	            if(<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line459">get_device_type</a>(<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line367">vfs</a>[<a href="#line1164">i</a>].<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/qdma/qdma_dpdk/qdma_device.h/code.html#line53">dev_id</a>, <a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line367">vfs</a>) == -1) {
+<b><a name="line1172">1172 </a></b>	                <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/iostream/code.html#line61">cout</a> <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;Invalid device type&quot; <a href="../emit/usr/include/c++/5/ostream/code.html#line108">&lt;&lt;</a> <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/ostream/code.html#line590">endl</a>;
+<b><a name="line1173">1173 </a></b>	                <a href="../emit/usr/include/stdlib.h/code.html#line543">exit</a>(-1);
+<b><a name="line1174">1174 </a></b>	            }
+<b><a name="line1175">1175 </a></b>	        }
+<b><a name="line1176">1176 </a></b>	    }
+<b><a name="line1177">1177 </a></b>	
+<b><a name="line1178">1178 </a></b>	    ::<a href="../emit/usr/local/include/gtest/internal/gtest-port.h/code.html#line988">testing</a>::<a href="../emit/usr/local/include/gtest/gtest.h/code.html#line1363">InitGoogleTest</a>(&amp;<a href="#line1045">argc</a>, <a href="#line1045">argv</a>);
+<b><a name="line1179">1179 </a></b>	
+<b><a name="line1180">1180 </a></b>	    // don't test VF if no VF devices are enabled
+<b><a name="line1181">1181 </a></b>	    if (<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line367">vfs</a>.<a href="../emit/usr/include/c++/5/bits/stl_vector.h/code.html#line743">empty</a>()) {
+<b><a name="line1182">1182 </a></b>	        <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/iostream/code.html#line61">cout</a> <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;Filtered out VF test cases since no VF devices have been detected.\n&quot;;
+<b><a name="line1183">1183 </a></b>	        auto&amp; <b>filter_str</b> = <a href="../emit/usr/local/include/gtest/internal/gtest-port.h/code.html#line988">testing</a>::<a href="../emit/usr/local/include/gtest/internal/gtest-port.h/code.html#line2504">GTEST_FLAG</a>(filter);
+<b><a name="line1184">1184 </a></b>	        if (<a href="#line1183">filter_str</a>.<a href="../emit/usr/include/c++/5/bits/basic_string.h/code.html#line2152">find_last_of</a>('-') != <a href="#line1183">filter_str</a>.<a href="../emit/usr/include/c++/5/bits/basic_string.h/code.html#line95">npos</a> ){
+<b><a name="line1185">1185 </a></b>	            <a href="#line1183">filter_str</a> <a href="../emit/usr/include/c++/5/bits/basic_string.h/code.html#line950">+=</a> &quot;:*VF*&quot;;
+<b><a name="line1186">1186 </a></b>	        } else {
+<b><a name="line1187">1187 </a></b>	            <a href="#line1183">filter_str</a> <a href="../emit/usr/include/c++/5/bits/basic_string.h/code.html#line950">+=</a> &quot;-*VF*&quot;;
+<b><a name="line1188">1188 </a></b>	        }
+<b><a name="line1189">1189 </a></b>	    }
+<b><a name="line1190">1190 </a></b>	
+<b><a name="line1191">1191 </a></b>	    // don't test PF if no PF devices are enabled
+<b><a name="line1192">1192 </a></b>	    if (<a href="#line43">env</a>.<a href="../emit/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/test_env.h/code.html#line366">pfs</a>.<a href="../emit/usr/include/c++/5/bits/stl_vector.h/code.html#line743">empty</a>()) {
+<b><a name="line1193">1193 </a></b>	        <a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/iostream/code.html#line61">cout</a> <a href="../emit/usr/include/c++/5/ostream/code.html#line556">&lt;&lt;</a> &quot;Filtered out PF test cases since no PF devices have been detected.\n&quot;;
+<b><a name="line1194">1194 </a></b>		auto&amp; <b>filter_str</b> = <a href="../emit/usr/local/include/gtest/internal/gtest-port.h/code.html#line988">testing</a>::<a href="../emit/usr/local/include/gtest/internal/gtest-port.h/code.html#line2504">GTEST_FLAG</a>(filter);
+<b><a name="line1195">1195 </a></b>		<a href="../emit/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="../emit/usr/include/c++/5/bits/stringfwd.h/code.html#line74">string</a> <b>gen_str</b> (&quot;*VF*&quot;);
+<b><a name="line1196">1196 </a></b>	
+<b><a name="line1197">1197 </a></b>		<a href="#line1194">filter_str</a>.<a href="../emit/usr/include/c++/5/bits/basic_string.h/code.html#line1327">insert</a>(0, <a href="#line1195">gen_str</a>);
+<b><a name="line1198">1198 </a></b>	    }
+<b><a name="line1199">1199 </a></b>	
+<b><a name="line1200">1200 </a></b>	    return <a href="../emit/usr/local/include/gtest/gtest.h/code.html#line2230">RUN_ALL_TESTS</a>();
+<b><a name="line1201">1201 </a></b>	
+<b><a name="line1202">1202 </a></b>	}
+<b><a name="line1203">1203 </a></b>	
+<b><a name="line1204">1204 </a></b>	
+<b><a name="line1205">1205 </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

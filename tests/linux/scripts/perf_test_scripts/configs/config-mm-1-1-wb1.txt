@@ -1,0 +1,14 @@
+name=mm_1_1_wb1
+mode=mm #mode
+dir=bi #dir
+pf_range=0:0 #no spaces
+q_range=0:0 #no spaces
+flags= #no spaces
+wb_acc=1
+rngidx=5
+ram_width=29 #31 bits - 2^31 = 2GB
+runtime=30
+ioengine=sync
+num_threads=1
+bidir_en=1
+#please leave this comment here

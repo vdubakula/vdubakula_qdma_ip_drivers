@@ -1,0 +1,251 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/types.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* bits/types.h -- definitions of __*_t types underlying *_t types.
+<b><a name="line2">2    </a></b>	   Copyright (C) 2002-2016 Free Software Foundation, Inc.
+<b><a name="line3">3    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line6">6    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line7">7    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line8">8    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line13">13   </a></b>	   Lesser General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line16">16   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line17">17   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	/*
+<b><a name="line20">20   </a></b>	 * Never include this file directly; use &lt;sys/types.h&gt; instead.
+<b><a name="line21">21   </a></b>	 */
+<b><a name="line22">22   </a></b>	
+<b><a name="line23">23   </a></b>	#ifndef	_BITS_TYPES_H
+<b><a name="line24">24   </a></b>	#define	<b>_BITS_TYPES_H</b>	1
+<b><a name="line25">25   </a></b>	
+<b><a name="line26">26   </a></b>	#include &lt;features.h&gt;
+<b><a name="line27">27   </a></b>	#include &lt;bits/wordsize.h&gt;
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	/* Convenience types.  */
+<b><a name="line30">30   </a></b>	typedef unsigned char <b>__u_char</b>;
+<b><a name="line31">31   </a></b>	typedef unsigned short int <b>__u_short</b>;
+<b><a name="line32">32   </a></b>	typedef unsigned int <b>__u_int</b>;
+<b><a name="line33">33   </a></b>	typedef unsigned long int <b>__u_long</b>;
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	/* Fixed-size types, underlying types depend on word size and compiler.  */
+<b><a name="line36">36   </a></b>	typedef signed char <b>__int8_t</b>;
+<b><a name="line37">37   </a></b>	typedef unsigned char <b>__uint8_t</b>;
+<b><a name="line38">38   </a></b>	typedef signed short int <b>__int16_t</b>;
+<b><a name="line39">39   </a></b>	typedef unsigned short int <b>__uint16_t</b>;
+<b><a name="line40">40   </a></b>	typedef signed int <b>__int32_t</b>;
+<b><a name="line41">41   </a></b>	typedef unsigned int <b>__uint32_t</b>;
+<b><a name="line42">42   </a></b>	#if <a href="../wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line43">43   </a></b>	typedef signed long int <b>__int64_t</b>;
+<b><a name="line44">44   </a></b>	typedef unsigned long int <b>__uint64_t</b>;
+<b><a name="line45">45   </a></b>	#else
+<b><a name="line46">46   </a></b>	__extension__ typedef signed long long int __int64_t;
+<b><a name="line47">47   </a></b>	__extension__ typedef unsigned long long int __uint64_t;
+<b><a name="line48">48   </a></b>	#endif
+<b><a name="line49">49   </a></b>	
+<b><a name="line50">50   </a></b>	/* quad_t is also 64 bits.  */
+<b><a name="line51">51   </a></b>	#if <a href="../wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line52">52   </a></b>	typedef long int <b>__quad_t</b>;
+<b><a name="line53">53   </a></b>	typedef unsigned long int <b>__u_quad_t</b>;
+<b><a name="line54">54   </a></b>	#else
+<b><a name="line55">55   </a></b>	__extension__ typedef long long int __quad_t;
+<b><a name="line56">56   </a></b>	__extension__ typedef unsigned long long int __u_quad_t;
+<b><a name="line57">57   </a></b>	#endif
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	
+<b><a name="line60">60   </a></b>	/* The machine-dependent file &lt;bits/typesizes.h&gt; defines __*_T_TYPE
+<b><a name="line61">61   </a></b>	   macros for each of the OS types we define below.  The definitions
+<b><a name="line62">62   </a></b>	   of those macros must use the following macros for underlying types.
+<b><a name="line63">63   </a></b>	   We define __S&lt;SIZE&gt;_TYPE and __U&lt;SIZE&gt;_TYPE for the signed and unsigned
+<b><a name="line64">64   </a></b>	   variants of each of the following integer types on this machine.
+<b><a name="line65">65   </a></b>	
+<b><a name="line66">66   </a></b>		16		-- &quot;natural&quot; 16-bit type (always short)
+<b><a name="line67">67   </a></b>		32		-- &quot;natural&quot; 32-bit type (always int)
+<b><a name="line68">68   </a></b>		64		-- &quot;natural&quot; 64-bit type (long or long long)
+<b><a name="line69">69   </a></b>		LONG32		-- 32-bit type, traditionally long
+<b><a name="line70">70   </a></b>		QUAD		-- 64-bit type, always long long
+<b><a name="line71">71   </a></b>		WORD		-- natural type of __WORDSIZE bits (int or long)
+<b><a name="line72">72   </a></b>		LONGWORD	-- type of __WORDSIZE bits, traditionally long
+<b><a name="line73">73   </a></b>	
+<b><a name="line74">74   </a></b>	   We distinguish WORD/LONGWORD, 32/LONG32, and 64/QUAD so that the
+<b><a name="line75">75   </a></b>	   conventional uses of `long' or `long long' type modifiers match the
+<b><a name="line76">76   </a></b>	   types we define, even when a less-adorned type would be the same size.
+<b><a name="line77">77   </a></b>	   This matters for (somewhat) portably writing printf/scanf formats for
+<b><a name="line78">78   </a></b>	   these types, where using the appropriate l or ll format modifiers can
+<b><a name="line79">79   </a></b>	   make the typedefs and the formats match up across all GNU platforms.  If
+<b><a name="line80">80   </a></b>	   we used `long' when it's 64 bits where `long long' is expected, then the
+<b><a name="line81">81   </a></b>	   compiler would warn about the formats not matching the argument types,
+<b><a name="line82">82   </a></b>	   and the programmer changing them to shut up the compiler would break the
+<b><a name="line83">83   </a></b>	   program's portability.
+<b><a name="line84">84   </a></b>	
+<b><a name="line85">85   </a></b>	   Here we assume what is presently the case in all the GCC configurations
+<b><a name="line86">86   </a></b>	   we support: long long is always 64 bits, long is always word/address size,
+<b><a name="line87">87   </a></b>	   and int is always 32 bits.  */
+<b><a name="line88">88   </a></b>	
+<b><a name="line89">89   </a></b>	#define	<b>__S16_TYPE</b>		short int
+<b><a name="line90">90   </a></b>	#define <b>__U16_TYPE</b>		unsigned short int
+<b><a name="line91">91   </a></b>	#define	<b>__S32_TYPE</b>		int
+<b><a name="line92">92   </a></b>	#define <b>__U32_TYPE</b>		unsigned int
+<b><a name="line93">93   </a></b>	#define <b>__SLONGWORD_TYPE</b>	long int
+<b><a name="line94">94   </a></b>	#define <b>__ULONGWORD_TYPE</b>	unsigned long int
+<b><a name="line95">95   </a></b>	#if <a href="../wordsize.h/code.html#line4">__WORDSIZE</a> == 32
+<b><a name="line96">96   </a></b>	# define __SQUAD_TYPE		__quad_t
+<b><a name="line97">97   </a></b>	# define __UQUAD_TYPE		__u_quad_t
+<b><a name="line98">98   </a></b>	# define __SWORD_TYPE		int
+<b><a name="line99">99   </a></b>	# define __UWORD_TYPE		unsigned int
+<b><a name="line100">100  </a></b>	# define __SLONG32_TYPE		long int
+<b><a name="line101">101  </a></b>	# define __ULONG32_TYPE		unsigned long int
+<b><a name="line102">102  </a></b>	# define __S64_TYPE		__quad_t
+<b><a name="line103">103  </a></b>	# define __U64_TYPE		__u_quad_t
+<b><a name="line104">104  </a></b>	/* We want __extension__ before typedef's that use nonstandard base types
+<b><a name="line105">105  </a></b>	   such as `long long' in C89 mode.  */
+<b><a name="line106">106  </a></b>	# define __STD_TYPE		__extension__ typedef
+<b><a name="line107">107  </a></b>	#elif <a href="../wordsize.h/code.html#line4">__WORDSIZE</a> == 64
+<b><a name="line108">108  </a></b>	# define <b>__SQUAD_TYPE</b>		long int
+<b><a name="line109">109  </a></b>	# define <b>__UQUAD_TYPE</b>		unsigned long int
+<b><a name="line110">110  </a></b>	# define <b>__SWORD_TYPE</b>		long int
+<b><a name="line111">111  </a></b>	# define <b>__UWORD_TYPE</b>		unsigned long int
+<b><a name="line112">112  </a></b>	# define <b>__SLONG32_TYPE</b>		int
+<b><a name="line113">113  </a></b>	# define <b>__ULONG32_TYPE</b>		unsigned int
+<b><a name="line114">114  </a></b>	# define <b>__S64_TYPE</b>		long int
+<b><a name="line115">115  </a></b>	# define <b>__U64_TYPE</b>		unsigned long int
+<b><a name="line116">116  </a></b>	/* No need to mark the typedef with __extension__.   */
+<b><a name="line117">117  </a></b>	# define <b>__STD_TYPE</b>		typedef
+<b><a name="line118">118  </a></b>	#else
+<b><a name="line119">119  </a></b>	# error
+<b><a name="line120">120  </a></b>	#endif
+<b><a name="line121">121  </a></b>	#include &lt;bits/typesizes.h&gt;	/* Defines __*_T_TYPE macros.  */
+<b><a name="line122">122  </a></b>	
+<b><a name="line123">123  </a></b>	
+<b><a name="line124">124  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line38">__DEV_T_TYPE</a> <b>__dev_t</b>;	/* Type of device numbers.  */
+<b><a name="line125">125  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line39">__UID_T_TYPE</a> <b>__uid_t</b>;	/* Type of user identifications.  */
+<b><a name="line126">126  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line40">__GID_T_TYPE</a> <b>__gid_t</b>;	/* Type of group identifications.  */
+<b><a name="line127">127  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line41">__INO_T_TYPE</a> <b>__ino_t</b>;	/* Type of file serial numbers.  */
+<b><a name="line128">128  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line42">__INO64_T_TYPE</a> <b>__ino64_t</b>;	/* Type of file serial numbers (LFS).*/
+<b><a name="line129">129  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line43">__MODE_T_TYPE</a> <b>__mode_t</b>;	/* Type of file attribute bitmasks.  */
+<b><a name="line130">130  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line45">__NLINK_T_TYPE</a> <b>__nlink_t</b>;	/* Type of file link counts.  */
+<b><a name="line131">131  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line51">__OFF_T_TYPE</a> <b>__off_t</b>;	/* Type of file sizes and offsets.  */
+<b><a name="line132">132  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line52">__OFF64_T_TYPE</a> <b>__off64_t</b>;	/* Type of file sizes and offsets (LFS).  */
+<b><a name="line133">133  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line53">__PID_T_TYPE</a> <b>__pid_t</b>;	/* Type of process identifications.  */
+<b><a name="line134">134  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line72">__FSID_T_TYPE</a> <b>__fsid_t</b>;	/* Type of file system IDs.  */
+<b><a name="line135">135  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line63">__CLOCK_T_TYPE</a> <b>__clock_t</b>;	/* Type of CPU usage counts.  */
+<b><a name="line136">136  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line54">__RLIM_T_TYPE</a> <b>__rlim_t</b>;	/* Type for resource measurement.  */
+<b><a name="line137">137  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line55">__RLIM64_T_TYPE</a> <b>__rlim64_t</b>;	/* Type for resource measurement (LFS).  */
+<b><a name="line138">138  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line62">__ID_T_TYPE</a> <b>__id_t</b>;		/* General type for IDs.  */
+<b><a name="line139">139  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line64">__TIME_T_TYPE</a> <b>__time_t</b>;	/* Seconds since the Epoch.  */
+<b><a name="line140">140  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line65">__USECONDS_T_TYPE</a> <b>__useconds_t</b>; /* Count of microseconds.  */
+<b><a name="line141">141  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line66">__SUSECONDS_T_TYPE</a> <b>__suseconds_t</b>; /* Signed count of microseconds.  */
+<b><a name="line142">142  </a></b>	
+<b><a name="line143">143  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line67">__DADDR_T_TYPE</a> <b>__daddr_t</b>;	/* The type of a disk address.  */
+<b><a name="line144">144  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line68">__KEY_T_TYPE</a> <b>__key_t</b>;	/* Type of an IPC key.  */
+<b><a name="line145">145  </a></b>	
+<b><a name="line146">146  </a></b>	/* Clock ID used in clock and timer functions.  */
+<b><a name="line147">147  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line69">__CLOCKID_T_TYPE</a> <b>__clockid_t</b>;
+<b><a name="line148">148  </a></b>	
+<b><a name="line149">149  </a></b>	/* Timer ID returned by `timer_create'.  */
+<b><a name="line150">150  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line70">__TIMER_T_TYPE</a> <b>__timer_t</b>;
+<b><a name="line151">151  </a></b>	
+<b><a name="line152">152  </a></b>	/* Type to represent block size.  */
+<b><a name="line153">153  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line71">__BLKSIZE_T_TYPE</a> <b>__blksize_t</b>;
+<b><a name="line154">154  </a></b>	
+<b><a name="line155">155  </a></b>	/* Types from the Large File Support interface.  */
+<b><a name="line156">156  </a></b>	
+<b><a name="line157">157  </a></b>	/* Type to count number of disk blocks.  */
+<b><a name="line158">158  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line56">__BLKCNT_T_TYPE</a> <b>__blkcnt_t</b>;
+<b><a name="line159">159  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line57">__BLKCNT64_T_TYPE</a> <b>__blkcnt64_t</b>;
+<b><a name="line160">160  </a></b>	
+<b><a name="line161">161  </a></b>	/* Type to count file system blocks.  */
+<b><a name="line162">162  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line58">__FSBLKCNT_T_TYPE</a> <b>__fsblkcnt_t</b>;
+<b><a name="line163">163  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line59">__FSBLKCNT64_T_TYPE</a> <b>__fsblkcnt64_t</b>;
+<b><a name="line164">164  </a></b>	
+<b><a name="line165">165  </a></b>	/* Type to count file system nodes.  */
+<b><a name="line166">166  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line60">__FSFILCNT_T_TYPE</a> <b>__fsfilcnt_t</b>;
+<b><a name="line167">167  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line61">__FSFILCNT64_T_TYPE</a> <b>__fsfilcnt64_t</b>;
+<b><a name="line168">168  </a></b>	
+<b><a name="line169">169  </a></b>	/* Type of miscellaneous file system fields.  */
+<b><a name="line170">170  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line46">__FSWORD_T_TYPE</a> <b>__fsword_t</b>;
+<b><a name="line171">171  </a></b>	
+<b><a name="line172">172  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line73">__SSIZE_T_TYPE</a> <b>__ssize_t</b>; /* Type of a byte count, or error.  */
+<b><a name="line173">173  </a></b>	
+<b><a name="line174">174  </a></b>	/* Signed long type used in system calls.  */
+<b><a name="line175">175  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line34">__SYSCALL_SLONG_TYPE</a> <b>__syscall_slong_t</b>;
+<b><a name="line176">176  </a></b>	/* Unsigned long type used in system calls.  */
+<b><a name="line177">177  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="../typesizes.h/code.html#line35">__SYSCALL_ULONG_TYPE</a> <b>__syscall_ulong_t</b>;
+<b><a name="line178">178  </a></b>	
+<b><a name="line179">179  </a></b>	/* These few don't really vary by system, they always correspond
+<b><a name="line180">180  </a></b>	   to one of the other defined types.  */
+<b><a name="line181">181  </a></b>	typedef <a href="#line132">__off64_t</a> <b>__loff_t</b>;	/* Type of file sizes and offsets (LFS).  */
+<b><a name="line182">182  </a></b>	typedef <a href="#line52">__quad_t</a> *<b>__qaddr_t</b>;
+<b><a name="line183">183  </a></b>	typedef char *<b>__caddr_t</b>;
+<b><a name="line184">184  </a></b>	
+<b><a name="line185">185  </a></b>	/* Duplicates info from stdint.h but this is used in unistd.h.  */
+<b><a name="line186">186  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="#line110">__SWORD_TYPE</a> <b>__intptr_t</b>;
+<b><a name="line187">187  </a></b>	
+<b><a name="line188">188  </a></b>	/* Duplicate info from sys/socket.h.  */
+<b><a name="line189">189  </a></b>	<a href="#line117">__STD_TYPE</a> <a href="#line92">__U32_TYPE</a> <b>__socklen_t</b>;
+<b><a name="line190">190  </a></b>	
+<b><a name="line191">191  </a></b>	
+<b><a name="line192">192  </a></b>	#undef <a href="#line117">__STD_TYPE</a>
+<b><a name="line193">193  </a></b>	
+<b><a name="line194">194  </a></b>	#endif /* bits/types.h */
+<b><a name="line195">195  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

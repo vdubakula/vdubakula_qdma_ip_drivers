@@ -1,0 +1,177 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/util/xlnx_util.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	#pragma once
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	#include &lt;algorithm&gt;
+<b><a name="line4">4    </a></b>	#include &lt;cstring&gt;
+<b><a name="line5">5    </a></b>	#include &lt;vector&gt;
+<b><a name="line6">6    </a></b>	
+<b><a name="line7">7    </a></b>	#include &quot;xlnx_os.h&quot;
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	//======================== Bit manipulations =======================================================
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	static constexpr <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>bit</b>(<a href="/usr/include/stdint.h/code.html#line55">uint64_t</a> <b>n</b>) {
+<b><a name="line12">12   </a></b>	    return (1ull &lt;&lt; <a href="#line11">n</a>);
+<b><a name="line13">13   </a></b>	}
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	static constexpr bool <b>is_bit_set</b>(<a href="/usr/include/stdint.h/code.html#line55">uint64_t</a> <b>x</b>, <a href="/usr/include/stdint.h/code.html#line55">uint64_t</a> <b>n</b>) {
+<b><a name="line16">16   </a></b>	    return (<a href="#line15">x</a> &amp; <a href="#line11">bit</a>(<a href="#line15">n</a>)) == <a href="#line11">bit</a>(<a href="#line15">n</a>);
+<b><a name="line17">17   </a></b>	}
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	static constexpr <a href="/usr/include/stdint.h/code.html#line55">uint64_t</a> <b>create_mask</b>(<a href="/usr/include/stdint.h/code.html#line55">uint64_t</a> <b>n</b>, <a href="/usr/include/stdint.h/code.html#line55">uint64_t</a> <b>l</b>) {
+<b><a name="line20">20   </a></b>	    return ((1ull &lt;&lt; <a href="#line19">l</a>) - 1ull) &lt;&lt; <a href="#line19">n</a>;
+<b><a name="line21">21   </a></b>	}
+<b><a name="line22">22   </a></b>	
+<b><a name="line23">23   </a></b>	static constexpr <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>get_bits</b>(<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>value</b>, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>bit_index</b>, <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> <b>len</b>) {
+<b><a name="line24">24   </a></b>	    return ((<a href="#line23">value</a> &amp; <a href="#line19">create_mask</a>(<a href="#line23">bit_index</a>, <a href="#line23">len</a>)) &gt;&gt; <a href="#line23">bit_index</a>);
+<b><a name="line25">25   </a></b>	}
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>	//======================== literal suffix operators ================================================
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	constexpr <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> operator&quot;&quot; _kB(const unsigned long long <b>num</b>) {
+<b><a name="line30">30   </a></b>	    return static_cast&lt;<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a>&gt;(<a href="#line29">num</a>) * 1024UL;
+<b><a name="line31">31   </a></b>	}
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>	constexpr <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> operator&quot;&quot; _MB(const unsigned long long <b>num</b>) {
+<b><a name="line34">34   </a></b>	    return static_cast&lt;<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a>&gt;(<a href="#line33">num</a>) * 1024UL * 1_kB;
+<b><a name="line35">35   </a></b>	}
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	constexpr <a href="/usr/include/stdint.h/code.html#line51">uint32_t</a> operator&quot;&quot; _GB(const unsigned long long <b>num</b>) {
+<b><a name="line38">38   </a></b>	    return static_cast&lt;<a href="/usr/include/stdint.h/code.html#line51">uint32_t</a>&gt;(<a href="#line37">num</a>) * 1024UL * 1_MB;
+<b><a name="line39">39   </a></b>	}
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	//======================== memory ==================================================================
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	/// allocator which uses _aligned_malloc to ensure allocations are aligned to a specified alignment.
+<b><a name="line44">44   </a></b>	/// is page aligned (4096 Bytes) by default.
+<b><a name="line45">45   </a></b>	/// can be used by std containers such as vector. e.g:
+<b><a name="line46">46   </a></b>	/// @code
+<b><a name="line47">47   </a></b>	/// - std::vector&lt;int, aligned_allocator&lt;int, 64&gt;&gt; my_aligned_vec; // vector with internal data alignment of 64 bytes.
+<b><a name="line48">48   </a></b>	/// - std::vector&lt;int, aligned_allocator&lt;int&gt;&gt; my_aligned_vec; // vector with internal data alignment of 4096 bytes.
+<b><a name="line49">49   </a></b>	template&lt;typename <b>T</b>, <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>Alignment</b> = 4096&gt;
+<b><a name="line50">50   </a></b>	struct aligned_allocator {
+<b><a name="line51">51   </a></b>	
+<b><a name="line52">52   </a></b>	    typedef <a href="#line49">T</a> <b>value_type</b>;
+<b><a name="line53">53   </a></b>	
+<b><a name="line54">54   </a></b>	    aligned_allocator() noexcept {} //default ctor not required by STL
+<b><a name="line55">55   </a></b>	    // A converting copy constructor:  
+<b><a name="line56">56   </a></b>	    template&lt;class <b>U</b>&gt; 
+<b><a name="line57">57   </a></b>	    <b>aligned_allocator</b>(const <a href="#line50">aligned_allocator</a>&lt;<a href="#line56">U</a>, <a href="#line49">Alignment</a>&gt;&amp;) noexcept {}
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	    template&lt;class <b>U</b>&gt; 
+<b><a name="line60">60   </a></b>	    bool <b>operator==</b>(const <a href="#line50">aligned_allocator</a>&lt;<a href="#line59">U</a>&gt;&amp;) const noexcept
+<b><a name="line61">61   </a></b>	    {
+<b><a name="line62">62   </a></b>	        return true;
+<b><a name="line63">63   </a></b>	    }
+<b><a name="line64">64   </a></b>	    template&lt;class <b>U</b>&gt; 
+<b><a name="line65">65   </a></b>	    bool <b>operator!=</b>(const <a href="#line50">aligned_allocator</a>&lt;<a href="#line64">U</a>&gt;&amp;) const noexcept
+<b><a name="line66">66   </a></b>	    {
+<b><a name="line67">67   </a></b>	        return false;
+<b><a name="line68">68   </a></b>	    }
+<b><a name="line69">69   </a></b>	
+<b><a name="line70">70   </a></b>	    <a href="#line49">T</a>* allocate(const <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a> <b>num</b>) {
+<b><a name="line71">71   </a></b>	        if (<a href="#line70">num</a> == 0) {
+<b><a name="line72">72   </a></b>	            return nullptr;
+<b><a name="line73">73   </a></b>	        }
+<b><a name="line74">74   </a></b>	
+<b><a name="line75">75   </a></b>	        void* const <b>ptr</b> = <a href="../../xlnx/xlnx_common/xlnx_os.h/code.html#line12">xlnx</a>::<a href="../../xlnx/xlnx_common/xlnx_os.h/code.html#line13">os</a>::<a href="../../xlnx/xlnx_common/xlnx_os.h/code.html#line15">aligned_alloc</a>(<a href="#line70">num</a> * sizeof(<a href="#line49">T</a>), <a href="#line49">Alignment</a>);
+<b><a name="line76">76   </a></b>	        if (<a href="#line75">ptr</a> == nullptr) {
+<b><a name="line77">77   </a></b>	            throw <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/new/code.html#line54">bad_alloc</a>();
+<b><a name="line78">78   </a></b>	        }
+<b><a name="line79">79   </a></b>	        return static_cast&lt;<a href="#line49">T</a>*&gt;(<a href="#line75">ptr</a>);
+<b><a name="line80">80   </a></b>	    }
+<b><a name="line81">81   </a></b>	    void deallocate(<a href="#line49">T</a>* const <b>p</b>, <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line196">size_t</a>) {
+<b><a name="line82">82   </a></b>	        if (<a href="#line81">p</a>) {
+<b><a name="line83">83   </a></b>	            <a href="../../xlnx/xlnx_common/xlnx_os.h/code.html#line12">xlnx</a>::<a href="../../xlnx/xlnx_common/xlnx_os.h/code.html#line13">os</a>::<a href="../../xlnx/xlnx_common/xlnx_os.h/code.html#line16">aligned_free</a>(<a href="#line81">p</a>);
+<b><a name="line84">84   </a></b>	        }
+<b><a name="line85">85   </a></b>	    }
+<b><a name="line86">86   </a></b>	
+<b><a name="line87">87   </a></b>	    template&lt;typename <b>T2</b>&gt;
+<b><a name="line88">88   </a></b>	    struct rebind {
+<b><a name="line89">89   </a></b>	        typedef <a href="#line50">aligned_allocator</a>&lt;<a href="#line87">T2</a>, <a href="#line49">Alignment</a>&gt; <b>other</b>;
+<b><a name="line90">90   </a></b>	    };
+<b><a name="line91">91   </a></b>	};
+<b><a name="line92">92   </a></b>	
+<b><a name="line93">93   </a></b>	template&lt;typename <b>T</b>, <a href="/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>N</b> = 4096&gt;
+<b><a name="line94">94   </a></b>	using aligned_vector = <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="#line93">T</a>, <a href="#line50">aligned_allocator</a>&lt;<a href="#line93">T</a>, <a href="#line93">N</a>&gt;&gt;;
+<b><a name="line95">95   </a></b>	
+<b><a name="line96">96   </a></b>	//======================== string manipulation =================================
+<b><a name="line97">97   </a></b>	
+<b><a name="line98">98   </a></b>	inline <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stringfwd.h/code.html#line74">string</a>&gt; <b>split</b>(const char *<b>str</b>, char <b>c</b> = ' ') {
+<b><a name="line99">99   </a></b>	    <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line214">vector</a>&lt;<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stringfwd.h/code.html#line74">string</a>&gt; <b>result</b>;
+<b><a name="line100">100  </a></b>	
+<b><a name="line101">101  </a></b>	    auto <b>begin</b> = <a href="#line98">str</a>;
+<b><a name="line102">102  </a></b>	    const auto <b>end</b> = <a href="#line98">str</a> + <a href="../../../logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-compiler-compat.h/code.html#line269">strlen</a>(<a href="#line98">str</a>);
+<b><a name="line103">103  </a></b>	    while (<a href="#line101">begin</a> != <a href="#line102">end</a>) {
+<b><a name="line104">104  </a></b>	        auto <b>it</b> = <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/algorithmfwd.h/code.html#line640">find</a>(<a href="#line101">begin</a>, <a href="#line102">end</a>, <a href="#line98">c</a>);
+<b><a name="line105">105  </a></b>	        <a href="#line99">result</a>.<a href="/usr/include/c++/5/bits/stl_vector.h/code.html#line936">emplace_back</a>(<a href="#line101">begin</a>, <a href="#line104">it</a>);
+<b><a name="line106">106  </a></b>	        <a href="#line101">begin</a> = <a href="#line104">it</a> + 1;
+<b><a name="line107">107  </a></b>	    }
+<b><a name="line108">108  </a></b>	
+<b><a name="line109">109  </a></b>	    return <a href="#line99">result</a>;
+<b><a name="line110">110  </a></b>	}
+<b><a name="line111">111  </a></b>	
+<b><a name="line112">112  </a></b>	inline <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stringfwd.h/code.html#line74">string</a> <b>int_to_hex</b>(int <b>num</b>) {
+<b><a name="line113">113  </a></b>	
+<b><a name="line114">114  </a></b>		<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/iosfwd/code.html#line156">stringstream</a> <b>sstream</b>;
+<b><a name="line115">115  </a></b>		<a href="#line114">sstream</a> <a href="/usr/include/c++/5/ostream/code.html#line127">&lt;&lt;</a> <a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/ios_base.h/code.html#line1024">hex</a> <a href="/usr/include/c++/5/ostream/code.html#line189">&lt;&lt;</a> <a href="#line112">num</a>;
+<b><a name="line116">116  </a></b>		<a href="/usr/include/x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a>::<a href="/usr/include/c++/5/bits/stringfwd.h/code.html#line74">string</a> <b>num_hex</b> = <a href="#line114">sstream</a>.<a href="/usr/include/c++/5/sstream/code.html#line765">str</a>();
+<b><a name="line117">117  </a></b>	
+<b><a name="line118">118  </a></b>		return <a href="#line116">num_hex</a>;
+<b><a name="line119">119  </a></b>	}
+<b><a name="line120">120  </a></b>	
+<b><a name="line121">121  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

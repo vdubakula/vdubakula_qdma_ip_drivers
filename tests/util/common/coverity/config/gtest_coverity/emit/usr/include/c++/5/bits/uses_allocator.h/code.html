@@ -1,0 +1,161 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/c++/5/bits/uses_allocator.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Uses-allocator Construction -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2010-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	#ifndef _USES_ALLOCATOR_H
+<b><a name="line26">26   </a></b>	#define <b>_USES_ALLOCATOR_H</b> 1
+<b><a name="line27">27   </a></b>	
+<b><a name="line28">28   </a></b>	#if __cplusplus &lt; 201103L
+<b><a name="line29">29   </a></b>	# include &lt;bits/c++0x_warning.h&gt;
+<b><a name="line30">30   </a></b>	#else
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	#include &lt;type_traits&gt;
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	namespace <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line194">std</a> <a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line35">35   </a></b>	{
+<b><a name="line36">36   </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line37">37   </a></b>	
+<b><a name="line38">38   </a></b>	  /// [allocator.tag]
+<b><a name="line39">39   </a></b>	  struct <b>allocator_arg_t</b> { };
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	  constexpr <a href="#line39">allocator_arg_t</a> <b>allocator_arg</b> = <a href="#line39">allocator_arg_t</a>();
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Alloc</b>, typename = <a href="../../type_traits/code.html#line2407">__void_t</a>&lt;&gt;&gt;
+<b><a name="line44">44   </a></b>	    struct <b>__uses_allocator_helper</b>
+<b><a name="line45">45   </a></b>	    : <a href="../../type_traits/code.html#line90">false_type</a> { };
+<b><a name="line46">46   </a></b>	
+<b><a name="line47">47   </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Alloc</b>&gt;
+<b><a name="line48">48   </a></b>	    struct <b>__uses_allocator_helper</b>&lt;<a href="#line47">_Tp</a>, <a href="#line47">_Alloc</a>,
+<b><a name="line49">49   </a></b>					   <a href="../../type_traits/code.html#line2407">__void_t</a>&lt;typename <a href="#line47">_Tp</a>::allocator_type&gt;&gt;
+<b><a name="line50">50   </a></b>	    : <a href="../../type_traits/code.html#line1491">is_convertible</a>&lt;<a href="#line47">_Alloc</a>, typename <a href="#line47">_Tp</a>::allocator_type&gt;::type
+<b><a name="line51">51   </a></b>	    { };
+<b><a name="line52">52   </a></b>	
+<b><a name="line53">53   </a></b>	  /// [allocator.uses.trait]
+<b><a name="line54">54   </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Alloc</b>&gt;
+<b><a name="line55">55   </a></b>	    struct <b>uses_allocator</b>
+<b><a name="line56">56   </a></b>	    : <a href="#line44">__uses_allocator_helper</a>&lt;<a href="#line54">_Tp</a>, <a href="#line54">_Alloc</a>&gt;::type
+<b><a name="line57">57   </a></b>	    { };
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	  struct <b>__uses_alloc_base</b> { };
+<b><a name="line60">60   </a></b>	
+<b><a name="line61">61   </a></b>	  struct <b>__uses_alloc0</b> : <a href="#line59">__uses_alloc_base</a>
+<b><a name="line62">62   </a></b>	  {
+<b><a name="line63">63   </a></b>	    struct <b>_Sink</b> { void <b>operator=</b>(const void*) { } } <b>_M_a</b>;
+<b><a name="line64">64   </a></b>	  };
+<b><a name="line65">65   </a></b>	
+<b><a name="line66">66   </a></b>	  template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line67">67   </a></b>	    struct <b>__uses_alloc1</b> : <a href="#line59">__uses_alloc_base</a> { const <a href="#line66">_Alloc</a>* <b>_M_a</b>; };
+<b><a name="line68">68   </a></b>	
+<b><a name="line69">69   </a></b>	  template&lt;typename <b>_Alloc</b>&gt;
+<b><a name="line70">70   </a></b>	    struct <b>__uses_alloc2</b> : <a href="#line59">__uses_alloc_base</a> { const <a href="#line69">_Alloc</a>* <b>_M_a</b>; };
+<b><a name="line71">71   </a></b>	
+<b><a name="line72">72   </a></b>	  template&lt;bool, typename <b>_Tp</b>, typename <b>_Alloc</b>, typename... <b>_Args</b>&gt;
+<b><a name="line73">73   </a></b>	    struct __uses_alloc;
+<b><a name="line74">74   </a></b>	
+<b><a name="line75">75   </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Alloc</b>, typename... <b>_Args</b>&gt;
+<b><a name="line76">76   </a></b>	    struct <b>__uses_alloc</b>&lt;true, <a href="#line75">_Tp</a>, <a href="#line75">_Alloc</a>, <a href="#line75">_Args</a>...&gt;
+<b><a name="line77">77   </a></b>	    : <a href="../../type_traits/code.html#line98">conditional</a>&lt;
+<b><a name="line78">78   </a></b>	        <a href="../../type_traits/code.html#line1089">is_constructible</a>&lt;<a href="#line75">_Tp</a>, <a href="#line39">allocator_arg_t</a>, <a href="#line75">_Alloc</a>, <a href="#line75">_Args</a>...&gt;::value,
+<b><a name="line79">79   </a></b>	        <a href="#line67">__uses_alloc1</a>&lt;<a href="#line75">_Alloc</a>&gt;,
+<b><a name="line80">80   </a></b>	       	<a href="#line70">__uses_alloc2</a>&lt;<a href="#line75">_Alloc</a>&gt;&gt;::type
+<b><a name="line81">81   </a></b>	    { };
+<b><a name="line82">82   </a></b>	
+<b><a name="line83">83   </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Alloc</b>, typename... <b>_Args</b>&gt;
+<b><a name="line84">84   </a></b>	    struct <b>__uses_alloc</b>&lt;false, <a href="#line83">_Tp</a>, <a href="#line83">_Alloc</a>, <a href="#line83">_Args</a>...&gt;
+<b><a name="line85">85   </a></b>	    : <a href="#line61">__uses_alloc0</a> { };
+<b><a name="line86">86   </a></b>	
+<b><a name="line87">87   </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Alloc</b>, typename... <b>_Args</b>&gt;
+<b><a name="line88">88   </a></b>	    using <b>__uses_alloc_t</b> =
+<b><a name="line89">89   </a></b>	      <a href="#line73">__uses_alloc</a>&lt;<a href="../memoryfwd.h/code.html#line71">uses_allocator</a>&lt;<a href="#line87">_Tp</a>, <a href="#line87">_Alloc</a>&gt;::value, <a href="#line87">_Tp</a>, <a href="#line87">_Alloc</a>, <a href="#line87">_Args</a>...&gt;;
+<b><a name="line90">90   </a></b>	
+<b><a name="line91">91   </a></b>	  template&lt;typename <b>_Tp</b>, typename <b>_Alloc</b>, typename... <b>_Args</b>&gt;
+<b><a name="line92">92   </a></b>	    inline <a href="#line88">__uses_alloc_t</a>&lt;<a href="#line91">_Tp</a>, <a href="#line91">_Alloc</a>, <a href="#line91">_Args</a>...&gt;
+<b><a name="line93">93   </a></b>	    <b>__use_alloc</b>(const <a href="#line91">_Alloc</a>&amp; __a)
+<b><a name="line94">94   </a></b>	    {
+<b><a name="line95">95   </a></b>	      __uses_alloc_t&lt;_Tp, _Alloc, _Args...&gt; __ret;
+<b><a name="line96">96   </a></b>	      __ret._M_a = &amp;__a;
+<b><a name="line97">97   </a></b>	      return __ret;
+<b><a name="line98">98   </a></b>	    }
+<b><a name="line99">99   </a></b>	
+<b><a name="line100">100  </a></b>	<a href="../../../../x86_64-linux-gnu/c++/5/bits/c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line101">101  </a></b>	} // namespace std
+<b><a name="line102">102  </a></b>	
+<b><a name="line103">103  </a></b>	#endif
+<b><a name="line104">104  </a></b>	#endif
+<b><a name="line105">105  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

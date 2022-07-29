@@ -1,0 +1,205 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_launch.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2010-2014 Intel Corporation
+<b><a name="line3">3    </a></b>	 */
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	#ifndef _RTE_LAUNCH_H_
+<b><a name="line6">6    </a></b>	#define <b>_RTE_LAUNCH_H_</b>
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	/**
+<b><a name="line9">9    </a></b>	 * @file
+<b><a name="line10">10   </a></b>	 *
+<b><a name="line11">11   </a></b>	 * Launch tasks on other lcores
+<b><a name="line12">12   </a></b>	 */
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	#ifdef __cplusplus
+<b><a name="line15">15   </a></b>	extern &quot;C&quot; {
+<b><a name="line16">16   </a></b>	#endif
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	/**
+<b><a name="line19">19   </a></b>	 * State of an lcore.
+<b><a name="line20">20   </a></b>	 */
+<b><a name="line21">21   </a></b>	enum <b>rte_lcore_state_t</b> {
+<b><a name="line22">22   </a></b>		<b>WAIT</b>,       /**&lt; waiting a new command */
+<b><a name="line23">23   </a></b>		<b>RUNNING</b>,    /**&lt; executing command */
+<b><a name="line24">24   </a></b>		<b>FINISHED</b>,   /**&lt; command executed */
+<b><a name="line25">25   </a></b>	};
+<b><a name="line26">26   </a></b>	
+<b><a name="line27">27   </a></b>	/**
+<b><a name="line28">28   </a></b>	 * Definition of a remote launch function.
+<b><a name="line29">29   </a></b>	 */
+<b><a name="line30">30   </a></b>	typedef int (<b>lcore_function_t</b>)(void *);
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	/**
+<b><a name="line33">33   </a></b>	 * Launch a function on another lcore.
+<b><a name="line34">34   </a></b>	 *
+<b><a name="line35">35   </a></b>	 * To be executed on the MASTER lcore only.
+<b><a name="line36">36   </a></b>	 *
+<b><a name="line37">37   </a></b>	 * Sends a message to a slave lcore (identified by the slave_id) that
+<b><a name="line38">38   </a></b>	 * is in the WAIT state (this is true after the first call to
+<b><a name="line39">39   </a></b>	 * rte_eal_init()). This can be checked by first calling
+<b><a name="line40">40   </a></b>	 * rte_eal_wait_lcore(slave_id).
+<b><a name="line41">41   </a></b>	 *
+<b><a name="line42">42   </a></b>	 * When the remote lcore receives the message, it switches to
+<b><a name="line43">43   </a></b>	 * the RUNNING state, then calls the function f with argument arg. Once the
+<b><a name="line44">44   </a></b>	 * execution is done, the remote lcore switches to a FINISHED state and
+<b><a name="line45">45   </a></b>	 * the return value of f is stored in a local variable to be read using
+<b><a name="line46">46   </a></b>	 * rte_eal_wait_lcore().
+<b><a name="line47">47   </a></b>	 *
+<b><a name="line48">48   </a></b>	 * The MASTER lcore returns as soon as the message is sent and knows
+<b><a name="line49">49   </a></b>	 * nothing about the completion of f.
+<b><a name="line50">50   </a></b>	 *
+<b><a name="line51">51   </a></b>	 * Note: This function is not designed to offer optimum
+<b><a name="line52">52   </a></b>	 * performance. It is just a practical way to launch a function on
+<b><a name="line53">53   </a></b>	 * another lcore at initialization time.
+<b><a name="line54">54   </a></b>	 *
+<b><a name="line55">55   </a></b>	 * @param f
+<b><a name="line56">56   </a></b>	 *   The function to be called.
+<b><a name="line57">57   </a></b>	 * @param arg
+<b><a name="line58">58   </a></b>	 *   The argument for the function.
+<b><a name="line59">59   </a></b>	 * @param slave_id
+<b><a name="line60">60   </a></b>	 *   The identifier of the lcore on which the function should be executed.
+<b><a name="line61">61   </a></b>	 * @return
+<b><a name="line62">62   </a></b>	 *   - 0: Success. Execution of function f started on the remote lcore.
+<b><a name="line63">63   </a></b>	 *   - (-EBUSY): The remote lcore is not in a WAIT state.
+<b><a name="line64">64   </a></b>	 */
+<b><a name="line65">65   </a></b>	int rte_eal_remote_launch(<a href="#line30">lcore_function_t</a> *f, void *arg, unsigned slave_id);
+<b><a name="line66">66   </a></b>	
+<b><a name="line67">67   </a></b>	/**
+<b><a name="line68">68   </a></b>	 * This enum indicates whether the master core must execute the handler
+<b><a name="line69">69   </a></b>	 * launched on all logical cores.
+<b><a name="line70">70   </a></b>	 */
+<b><a name="line71">71   </a></b>	enum <b>rte_rmt_call_master_t</b> {
+<b><a name="line72">72   </a></b>		<b>SKIP_MASTER</b> = 0, /**&lt; lcore handler not executed by master core. */
+<b><a name="line73">73   </a></b>		<b>CALL_MASTER</b>,     /**&lt; lcore handler executed by master core. */
+<b><a name="line74">74   </a></b>	};
+<b><a name="line75">75   </a></b>	
+<b><a name="line76">76   </a></b>	/**
+<b><a name="line77">77   </a></b>	 * Launch a function on all lcores.
+<b><a name="line78">78   </a></b>	 *
+<b><a name="line79">79   </a></b>	 * Check that each SLAVE lcore is in a WAIT state, then call
+<b><a name="line80">80   </a></b>	 * rte_eal_remote_launch() for each lcore.
+<b><a name="line81">81   </a></b>	 *
+<b><a name="line82">82   </a></b>	 * @param f
+<b><a name="line83">83   </a></b>	 *   The function to be called.
+<b><a name="line84">84   </a></b>	 * @param arg
+<b><a name="line85">85   </a></b>	 *   The argument for the function.
+<b><a name="line86">86   </a></b>	 * @param call_master
+<b><a name="line87">87   </a></b>	 *   If call_master set to SKIP_MASTER, the MASTER lcore does not call
+<b><a name="line88">88   </a></b>	 *   the function. If call_master is set to CALL_MASTER, the function
+<b><a name="line89">89   </a></b>	 *   is also called on master before returning. In any case, the master
+<b><a name="line90">90   </a></b>	 *   lcore returns as soon as it finished its job and knows nothing
+<b><a name="line91">91   </a></b>	 *   about the completion of f on the other lcores.
+<b><a name="line92">92   </a></b>	 * @return
+<b><a name="line93">93   </a></b>	 *   - 0: Success. Execution of function f started on all remote lcores.
+<b><a name="line94">94   </a></b>	 *   - (-EBUSY): At least one remote lcore is not in a WAIT state. In this
+<b><a name="line95">95   </a></b>	 *     case, no message is sent to any of the lcores.
+<b><a name="line96">96   </a></b>	 */
+<b><a name="line97">97   </a></b>	int rte_eal_mp_remote_launch(<a href="#line30">lcore_function_t</a> *f, void *arg,
+<b><a name="line98">98   </a></b>				     enum <a href="#line71">rte_rmt_call_master_t</a> call_master);
+<b><a name="line99">99   </a></b>	
+<b><a name="line100">100  </a></b>	/**
+<b><a name="line101">101  </a></b>	 * Get the state of the lcore identified by slave_id.
+<b><a name="line102">102  </a></b>	 *
+<b><a name="line103">103  </a></b>	 * To be executed on the MASTER lcore only.
+<b><a name="line104">104  </a></b>	 *
+<b><a name="line105">105  </a></b>	 * @param slave_id
+<b><a name="line106">106  </a></b>	 *   The identifier of the lcore.
+<b><a name="line107">107  </a></b>	 * @return
+<b><a name="line108">108  </a></b>	 *   The state of the lcore.
+<b><a name="line109">109  </a></b>	 */
+<b><a name="line110">110  </a></b>	enum <a href="#line21">rte_lcore_state_t</a> rte_eal_get_lcore_state(unsigned slave_id);
+<b><a name="line111">111  </a></b>	
+<b><a name="line112">112  </a></b>	/**
+<b><a name="line113">113  </a></b>	 * Wait until an lcore finishes its job.
+<b><a name="line114">114  </a></b>	 *
+<b><a name="line115">115  </a></b>	 * To be executed on the MASTER lcore only.
+<b><a name="line116">116  </a></b>	 *
+<b><a name="line117">117  </a></b>	 * If the slave lcore identified by the slave_id is in a FINISHED state,
+<b><a name="line118">118  </a></b>	 * switch to the WAIT state. If the lcore is in RUNNING state, wait until
+<b><a name="line119">119  </a></b>	 * the lcore finishes its job and moves to the FINISHED state.
+<b><a name="line120">120  </a></b>	 *
+<b><a name="line121">121  </a></b>	 * @param slave_id
+<b><a name="line122">122  </a></b>	 *   The identifier of the lcore.
+<b><a name="line123">123  </a></b>	 * @return
+<b><a name="line124">124  </a></b>	 *   - 0: If the lcore identified by the slave_id is in a WAIT state.
+<b><a name="line125">125  </a></b>	 *   - The value that was returned by the previous remote launch
+<b><a name="line126">126  </a></b>	 *     function call if the lcore identified by the slave_id was in a
+<b><a name="line127">127  </a></b>	 *     FINISHED or RUNNING state. In this case, it changes the state
+<b><a name="line128">128  </a></b>	 *     of the lcore to WAIT.
+<b><a name="line129">129  </a></b>	 */
+<b><a name="line130">130  </a></b>	int rte_eal_wait_lcore(unsigned slave_id);
+<b><a name="line131">131  </a></b>	
+<b><a name="line132">132  </a></b>	/**
+<b><a name="line133">133  </a></b>	 * Wait until all lcores finish their jobs.
+<b><a name="line134">134  </a></b>	 *
+<b><a name="line135">135  </a></b>	 * To be executed on the MASTER lcore only. Issue an
+<b><a name="line136">136  </a></b>	 * rte_eal_wait_lcore() for every lcore. The return values are
+<b><a name="line137">137  </a></b>	 * ignored.
+<b><a name="line138">138  </a></b>	 *
+<b><a name="line139">139  </a></b>	 * After a call to rte_eal_mp_wait_lcore(), the caller can assume
+<b><a name="line140">140  </a></b>	 * that all slave lcores are in a WAIT state.
+<b><a name="line141">141  </a></b>	 */
+<b><a name="line142">142  </a></b>	void rte_eal_mp_wait_lcore(void);
+<b><a name="line143">143  </a></b>	
+<b><a name="line144">144  </a></b>	#ifdef __cplusplus
+<b><a name="line145">145  </a></b>	}
+<b><a name="line146">146  </a></b>	#endif
+<b><a name="line147">147  </a></b>	
+<b><a name="line148">148  </a></b>	#endif /* _RTE_LAUNCH_H_ */
+<b><a name="line149">149  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

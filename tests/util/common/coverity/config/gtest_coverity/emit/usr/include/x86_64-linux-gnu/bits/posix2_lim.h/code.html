@@ -1,0 +1,147 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/posix2_lim.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 1991-2016 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line5">5    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line6">6    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line7">7    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line10">10   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line11">11   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line12">12   </a></b>	   Lesser General Public License for more details.
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line15">15   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line16">16   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	/*
+<b><a name="line19">19   </a></b>	 * Never include this file directly; include &lt;limits.h&gt; instead.
+<b><a name="line20">20   </a></b>	 */
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	#ifndef	_BITS_POSIX2_LIM_H
+<b><a name="line23">23   </a></b>	#define	<b>_BITS_POSIX2_LIM_H</b>	1
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	
+<b><a name="line26">26   </a></b>	/* The maximum `ibase' and `obase' values allowed by the `bc' utility.  */
+<b><a name="line27">27   </a></b>	#define	<b>_POSIX2_BC_BASE_MAX</b>		99
+<b><a name="line28">28   </a></b>	
+<b><a name="line29">29   </a></b>	/* The maximum number of elements allowed in an array by the `bc' utility.  */
+<b><a name="line30">30   </a></b>	#define	<b>_POSIX2_BC_DIM_MAX</b>		2048
+<b><a name="line31">31   </a></b>	
+<b><a name="line32">32   </a></b>	/* The maximum `scale' value allowed by the `bc' utility.  */
+<b><a name="line33">33   </a></b>	#define	<b>_POSIX2_BC_SCALE_MAX</b>		99
+<b><a name="line34">34   </a></b>	
+<b><a name="line35">35   </a></b>	/* The maximum length of a string constant accepted by the `bc' utility.  */
+<b><a name="line36">36   </a></b>	#define	<b>_POSIX2_BC_STRING_MAX</b>		1000
+<b><a name="line37">37   </a></b>	
+<b><a name="line38">38   </a></b>	/* The maximum number of weights that can be assigned to an entry of
+<b><a name="line39">39   </a></b>	   the LC_COLLATE `order' keyword in the locale definition file.  */
+<b><a name="line40">40   </a></b>	#define	<b>_POSIX2_COLL_WEIGHTS_MAX</b>	2
+<b><a name="line41">41   </a></b>	
+<b><a name="line42">42   </a></b>	/* The maximum number of expressions that can be nested
+<b><a name="line43">43   </a></b>	   within parentheses by the `expr' utility.  */
+<b><a name="line44">44   </a></b>	#define	<b>_POSIX2_EXPR_NEST_MAX</b>		32
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	/* The maximum length, in bytes, of an input line.  */
+<b><a name="line47">47   </a></b>	#define	<b>_POSIX2_LINE_MAX</b>		2048
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	/* The maximum number of repeated occurrences of a regular expression
+<b><a name="line50">50   </a></b>	   permitted when using the interval notation `\{M,N\}'.  */
+<b><a name="line51">51   </a></b>	#define	<b>_POSIX2_RE_DUP_MAX</b>		255
+<b><a name="line52">52   </a></b>	
+<b><a name="line53">53   </a></b>	/* The maximum number of bytes in a character class name.  We have no
+<b><a name="line54">54   </a></b>	   fixed limit, 2048 is a high number.  */
+<b><a name="line55">55   </a></b>	#define	<b>_POSIX2_CHARCLASS_NAME_MAX</b>	14
+<b><a name="line56">56   </a></b>	
+<b><a name="line57">57   </a></b>	
+<b><a name="line58">58   </a></b>	/* These values are implementation-specific,
+<b><a name="line59">59   </a></b>	   and may vary within the implementation.
+<b><a name="line60">60   </a></b>	   Their precise values can be obtained from sysconf.  */
+<b><a name="line61">61   </a></b>	
+<b><a name="line62">62   </a></b>	#ifndef	BC_BASE_MAX
+<b><a name="line63">63   </a></b>	#define	<b>BC_BASE_MAX</b>		_POSIX2_BC_BASE_MAX
+<b><a name="line64">64   </a></b>	#endif
+<b><a name="line65">65   </a></b>	#ifndef	BC_DIM_MAX
+<b><a name="line66">66   </a></b>	#define	<b>BC_DIM_MAX</b>		_POSIX2_BC_DIM_MAX
+<b><a name="line67">67   </a></b>	#endif
+<b><a name="line68">68   </a></b>	#ifndef	BC_SCALE_MAX
+<b><a name="line69">69   </a></b>	#define	<b>BC_SCALE_MAX</b>		_POSIX2_BC_SCALE_MAX
+<b><a name="line70">70   </a></b>	#endif
+<b><a name="line71">71   </a></b>	#ifndef	BC_STRING_MAX
+<b><a name="line72">72   </a></b>	#define	<b>BC_STRING_MAX</b>		_POSIX2_BC_STRING_MAX
+<b><a name="line73">73   </a></b>	#endif
+<b><a name="line74">74   </a></b>	#ifndef	COLL_WEIGHTS_MAX
+<b><a name="line75">75   </a></b>	#define	<b>COLL_WEIGHTS_MAX</b>	255
+<b><a name="line76">76   </a></b>	#endif
+<b><a name="line77">77   </a></b>	#ifndef	EXPR_NEST_MAX
+<b><a name="line78">78   </a></b>	#define	<b>EXPR_NEST_MAX</b>		_POSIX2_EXPR_NEST_MAX
+<b><a name="line79">79   </a></b>	#endif
+<b><a name="line80">80   </a></b>	#ifndef	LINE_MAX
+<b><a name="line81">81   </a></b>	#define	<b>LINE_MAX</b>		_POSIX2_LINE_MAX
+<b><a name="line82">82   </a></b>	#endif
+<b><a name="line83">83   </a></b>	#ifndef	CHARCLASS_NAME_MAX
+<b><a name="line84">84   </a></b>	#define	<b>CHARCLASS_NAME_MAX</b>	2048
+<b><a name="line85">85   </a></b>	#endif
+<b><a name="line86">86   </a></b>	
+<b><a name="line87">87   </a></b>	/* This value is defined like this in regex.h.  */
+<b><a name="line88">88   </a></b>	#define	<b>RE_DUP_MAX</b> (0x7fff)
+<b><a name="line89">89   </a></b>	
+<b><a name="line90">90   </a></b>	#endif	/* bits/posix2_lim.h */
+<b><a name="line91">91   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

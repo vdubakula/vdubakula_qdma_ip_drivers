@@ -1,0 +1,135 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/sigaction.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* The proper definitions for Linux's sigaction.
+<b><a name="line2">2    </a></b>	   Copyright (C) 1993-2016 Free Software Foundation, Inc.
+<b><a name="line3">3    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line6">6    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line7">7    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line8">8    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line13">13   </a></b>	   Lesser General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line16">16   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line17">17   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	#ifndef <a href="../../../signal.h/code.html#line25">_SIGNAL_H</a>
+<b><a name="line20">20   </a></b>	# error &quot;Never include &lt;bits/sigaction.h&gt; directly; use &lt;signal.h&gt; instead.&quot;
+<b><a name="line21">21   </a></b>	#endif
+<b><a name="line22">22   </a></b>	
+<b><a name="line23">23   </a></b>	/* Structure describing the action to be taken when a signal arrives.  */
+<b><a name="line24">24   </a></b>	struct <b>sigaction</b>
+<b><a name="line25">25   </a></b>	  {
+<b><a name="line26">26   </a></b>	    /* Signal handler.  */
+<b><a name="line27">27   </a></b>	#ifdef <a href="../../../features.h/code.html#line257">__USE_POSIX199309</a>
+<b><a name="line28">28   </a></b>	    union
+<b><a name="line29">29   </a></b>	      {
+<b><a name="line30">30   </a></b>		/* Used if SA_SIGINFO is not set.  */
+<b><a name="line31">31   </a></b>		<a href="../../../signal.h/code.html#line85">__sighandler_t</a> <b>sa_handler</b>;
+<b><a name="line32">32   </a></b>		/* Used if SA_SIGINFO is set.  */
+<b><a name="line33">33   </a></b>		void (*<b>sa_sigaction</b>) (int, <a href="../siginfo.h/code.html#line133">siginfo_t</a> *, void *);
+<b><a name="line34">34   </a></b>	      }
+<b><a name="line35">35   </a></b>	    <b>__sigaction_handler</b>;
+<b><a name="line36">36   </a></b>	# define <b>sa_handler</b>	__sigaction_handler.sa_handler
+<b><a name="line37">37   </a></b>	# define <b>sa_sigaction</b>	__sigaction_handler.sa_sigaction
+<b><a name="line38">38   </a></b>	#else
+<b><a name="line39">39   </a></b>	    __sighandler_t sa_handler;
+<b><a name="line40">40   </a></b>	#endif
+<b><a name="line41">41   </a></b>	
+<b><a name="line42">42   </a></b>	    /* Additional set of signals to be blocked.  */
+<b><a name="line43">43   </a></b>	    <a href="../sigset.h/code.html#line30">__sigset_t</a> <b>sa_mask</b>;
+<b><a name="line44">44   </a></b>	
+<b><a name="line45">45   </a></b>	    /* Special flags.  */
+<b><a name="line46">46   </a></b>	    int <b>sa_flags</b>;
+<b><a name="line47">47   </a></b>	
+<b><a name="line48">48   </a></b>	    /* Restore handler.  */
+<b><a name="line49">49   </a></b>	    void (*<b>sa_restorer</b>) (void);
+<b><a name="line50">50   </a></b>	  };
+<b><a name="line51">51   </a></b>	
+<b><a name="line52">52   </a></b>	/* Bits in `sa_flags'.  */
+<b><a name="line53">53   </a></b>	#define	<b>SA_NOCLDSTOP</b>  1		 /* Don't send SIGCHLD when children stop.  */
+<b><a name="line54">54   </a></b>	#define <b>SA_NOCLDWAIT</b>  2		 /* Don't create zombie on child death.  */
+<b><a name="line55">55   </a></b>	#define <b>SA_SIGINFO</b>    4		 /* Invoke signal-catching function with
+<b><a name="line56">56   </a></b>					    three arguments instead of one.  */
+<b><a name="line57">57   </a></b>	#if defined <a href="../../../features.h/code.html#line282">__USE_UNIX98</a> || defined <a href="../../../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line58">58   </a></b>	# define <b>SA_ONSTACK</b>   0x08000000 /* Use signal stack by using `sa_restorer'. */
+<b><a name="line59">59   </a></b>	#endif
+<b><a name="line60">60   </a></b>	#if defined <a href="../../../features.h/code.html#line282">__USE_UNIX98</a> || defined <a href="../../../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line61">61   </a></b>	# define <b>SA_RESTART</b>   0x10000000 /* Restart syscall on signal return.  */
+<b><a name="line62">62   </a></b>	# define <b>SA_NODEFER</b>   0x40000000 /* Don't automatically block the signal when
+<b><a name="line63">63   </a></b>					    its handler is being executed.  */
+<b><a name="line64">64   </a></b>	# define <b>SA_RESETHAND</b> 0x80000000 /* Reset to SIG_DFL on entry to handler.  */
+<b><a name="line65">65   </a></b>	#endif
+<b><a name="line66">66   </a></b>	#ifdef <a href="../../../features.h/code.html#line317">__USE_MISC</a>
+<b><a name="line67">67   </a></b>	# define <b>SA_INTERRUPT</b> 0x20000000 /* Historical no-op.  */
+<b><a name="line68">68   </a></b>	
+<b><a name="line69">69   </a></b>	/* Some aliases for the SA_ constants.  */
+<b><a name="line70">70   </a></b>	# define <b>SA_NOMASK</b>    SA_NODEFER
+<b><a name="line71">71   </a></b>	# define <b>SA_ONESHOT</b>   SA_RESETHAND
+<b><a name="line72">72   </a></b>	# define <b>SA_STACK</b>     SA_ONSTACK
+<b><a name="line73">73   </a></b>	#endif
+<b><a name="line74">74   </a></b>	
+<b><a name="line75">75   </a></b>	/* Values for the HOW argument to `sigprocmask'.  */
+<b><a name="line76">76   </a></b>	#define	<b>SIG_BLOCK</b>     0		 /* Block signals.  */
+<b><a name="line77">77   </a></b>	#define	<b>SIG_UNBLOCK</b>   1		 /* Unblock signals.  */
+<b><a name="line78">78   </a></b>	#define	<b>SIG_SETMASK</b>   2		 /* Set the set of blocked signals.  */
+<b><a name="line79">79   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

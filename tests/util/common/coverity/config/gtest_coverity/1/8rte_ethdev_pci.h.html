@@ -1,0 +1,278 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_ethdev_pci.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/*-
+<b><a name="line2">2    </a></b>	 *   BSD LICENSE
+<b><a name="line3">3    </a></b>	 *
+<b><a name="line4">4    </a></b>	 *   Copyright(c) 2017 Brocade Communications Systems, Inc.
+<b><a name="line5">5    </a></b>	 *   Author: Jan Blunck &lt;jblunck@infradead.org&gt;
+<b><a name="line6">6    </a></b>	 *
+<b><a name="line7">7    </a></b>	 *   Redistribution and use in source and binary forms, with or without
+<b><a name="line8">8    </a></b>	 *   modification, are permitted provided that the following conditions
+<b><a name="line9">9    </a></b>	 *   are met:
+<b><a name="line10">10   </a></b>	 *
+<b><a name="line11">11   </a></b>	 *     * Redistributions of source code must retain the above copyright
+<b><a name="line12">12   </a></b>	 *       notice, this list of conditions and the following disclaimer.
+<b><a name="line13">13   </a></b>	 *     * Redistributions in binary form must reproduce the above copyright
+<b><a name="line14">14   </a></b>	 *       notice, this list of conditions and the following disclaimer in
+<b><a name="line15">15   </a></b>	 *       the documentation and/or other materials provided with the
+<b><a name="line16">16   </a></b>	 *       distribution.
+<b><a name="line17">17   </a></b>	 *     * Neither the name of the copyright holder nor the names of its
+<b><a name="line18">18   </a></b>	 *       contributors may be used to endorse or promote products derived
+<b><a name="line19">19   </a></b>	 *       from this software without specific prior written permission.
+<b><a name="line20">20   </a></b>	 *
+<b><a name="line21">21   </a></b>	 *   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+<b><a name="line22">22   </a></b>	 *   &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+<b><a name="line23">23   </a></b>	 *   LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
+<b><a name="line24">24   </a></b>	 *   A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+<b><a name="line25">25   </a></b>	 *   OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+<b><a name="line26">26   </a></b>	 *   SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+<b><a name="line27">27   </a></b>	 *   LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+<b><a name="line28">28   </a></b>	 *   DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+<b><a name="line29">29   </a></b>	 *   THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+<b><a name="line30">30   </a></b>	 *   (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+<b><a name="line31">31   </a></b>	 *   OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+<b><a name="line32">32   </a></b>	 */
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	#ifndef _RTE_ETHDEV_PCI_H_
+<b><a name="line35">35   </a></b>	#define <b>_RTE_ETHDEV_PCI_H_</b>
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	#include &lt;rte_malloc.h&gt;
+<b><a name="line38">38   </a></b>	#include &lt;rte_pci.h&gt;
+<b><a name="line39">39   </a></b>	#include &lt;rte_bus_pci.h&gt;
+<b><a name="line40">40   </a></b>	#include &lt;rte_config.h&gt;
+<b><a name="line41">41   </a></b>	#include &lt;rte_ethdev_driver.h&gt;
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	/**
+<b><a name="line44">44   </a></b>	 * Copy pci device info to the Ethernet device data.
+<b><a name="line45">45   </a></b>	 *
+<b><a name="line46">46   </a></b>	 * @param eth_dev
+<b><a name="line47">47   </a></b>	 * The *eth_dev* pointer is the address of the *rte_eth_dev* structure.
+<b><a name="line48">48   </a></b>	 * @param pci_dev
+<b><a name="line49">49   </a></b>	 * The *pci_dev* pointer is the address of the *rte_pci_device* structure.
+<b><a name="line50">50   </a></b>	 */
+<b><a name="line51">51   </a></b>	static inline void
+<b><a name="line52">52   </a></b>	<b>rte_eth_copy_pci_info</b>(struct <a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line29">rte_eth_dev</a> *<b>eth_dev</b>,
+<b><a name="line53">53   </a></b>		struct <a href="../emit/usr/local/include/dpdk/rte_bus_pci.h/code.html#line37">rte_pci_device</a> *<b>pci_dev</b>)
+<b><a name="line54">54   </a></b>	{
+<b><a name="line55">55   </a></b>		if ((<a href="#line52">eth_dev</a> == <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>) || (<a href="#line53">pci_dev</a> == <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>)) {
+<b><a name="line56">56   </a></b>			<a href="../emit/usr/local/include/dpdk/rte_ethdev.h/code.html#line164">RTE_ETHDEV_LOG</a>(ERR, &quot;NULL pointer eth_dev=%p pci_dev=%p&quot;,
+<b><a name="line57">57   </a></b>				(void *)eth_dev, (void *)pci_dev);
+<b><a name="line58">58   </a></b>			return;
+<b><a name="line59">59   </a></b>		}
+<b><a name="line60">60   </a></b>	
+<b><a name="line61">61   </a></b>		<a href="#line52">eth_dev</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line551">intr_handle</a> = &amp;<a href="#line53">pci_dev</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_bus_pci.h/code.html#line64">intr_handle</a>;
+<b><a name="line62">62   </a></b>	
+<b><a name="line63">63   </a></b>		<a href="#line52">eth_dev</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line547">data</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line622">dev_flags</a> = 0;
+<b><a name="line64">64   </a></b>		if (<a href="#line53">pci_dev</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_bus_pci.h/code.html#line65">driver</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_bus_pci.h/code.html#line126">drv_flags</a> &amp; <a href="../emit/usr/local/include/dpdk/rte_bus_pci.h/code.html#line145">RTE_PCI_DRV_INTR_LSC</a>)
+<b><a name="line65">65   </a></b>			<a href="#line52">eth_dev</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line547">data</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line622">dev_flags</a> |= <a href="../emit/usr/local/include/dpdk/rte_ethdev.h/code.html#line1338">RTE_ETH_DEV_INTR_LSC</a>;
+<b><a name="line66">66   </a></b>		if (<a href="#line53">pci_dev</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_bus_pci.h/code.html#line65">driver</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_bus_pci.h/code.html#line126">drv_flags</a> &amp; <a href="../emit/usr/local/include/dpdk/rte_bus_pci.h/code.html#line147">RTE_PCI_DRV_INTR_RMV</a>)
+<b><a name="line67">67   </a></b>			<a href="#line52">eth_dev</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line547">data</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line622">dev_flags</a> |= <a href="../emit/usr/local/include/dpdk/rte_ethdev.h/code.html#line1342">RTE_ETH_DEV_INTR_RMV</a>;
+<b><a name="line68">68   </a></b>	
+<b><a name="line69">69   </a></b>		<a href="#line52">eth_dev</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line547">data</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line623">kdrv</a> = <a href="#line53">pci_dev</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_bus_pci.h/code.html#line67">kdrv</a>;
+<b><a name="line70">70   </a></b>		<a href="#line52">eth_dev</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line547">data</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line624">numa_node</a> = <a href="#line53">pci_dev</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_bus_pci.h/code.html#line59">device</a>.<a href="../emit/usr/local/include/dpdk/rte_dev.h/code.html#line161">numa_node</a>;
+<b><a name="line71">71   </a></b>	}
+<b><a name="line72">72   </a></b>	
+<b><a name="line73">73   </a></b>	static inline int
+</pre>
+<table summary="events" bgcolor=#e0e0e0>
+<tr><td><font color="red">
+<a name="error:0"></a>
+<!-- merge-key fa55e5edfc3f55c626d1f58a44a41f77 -->
+<b>(1) Event routine_not_emitted</b>: </font></td>
+<td><font color="red">function &quot;eth_dev_pci_specific_init&quot; not emitted, consider modeling it or review parse diagnostics to improve fidelity</font></td>
+</tr>
+<tr><td><font color="red">
+<a name="error:1"></a>
+<!-- merge-key fa55e5edfc3f55c626d1f58a44a41f77 -->
+<b>(2) Event primary_file</b>: </font></td>
+<td><font color="red">During compilation of file '/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/src/main.cpp'</font></td>
+</tr>
+<tr><td><font color="red">
+<a name="error:2"></a>
+<a name="error"></a>
+<!-- merge-key fa55e5edfc3f55c626d1f58a44a41f77 -->
+<b>(3) Event caretline</b>: </font></td>
+<td><font color="red">^</font></td>
+</tr>
+</table>
+<pre><b><a name="line74">74   </a></b>	<b>eth_dev_pci_specific_init</b>(struct <a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line29">rte_eth_dev</a> *<b>eth_dev</b>, void *<b>bus_device</b>) {
+<b><a name="line75">75   </a></b>		struct <a href="../emit/usr/local/include/dpdk/rte_bus_pci.h/code.html#line37">rte_pci_device</a> *<b>pci_dev</b> = <a href="#line74">bus_device</a>;
+<b><a name="line76">76   </a></b>	
+<b><a name="line77">77   </a></b>		if (!<a href="#line75">pci_dev</a>)
+<b><a name="line78">78   </a></b>			return -<a href="../emit/usr/include/asm-generic/errno-base.h/code.html#line22">ENODEV</a>;
+<b><a name="line79">79   </a></b>	
+<b><a name="line80">80   </a></b>		<a href="#line52">rte_eth_copy_pci_info</a>(<a href="#line74">eth_dev</a>, <a href="#line75">pci_dev</a>);
+<b><a name="line81">81   </a></b>	
+<b><a name="line82">82   </a></b>		return 0;
+<b><a name="line83">83   </a></b>	}
+<b><a name="line84">84   </a></b>	
+<b><a name="line85">85   </a></b>	/**
+<b><a name="line86">86   </a></b>	 * @internal
+<b><a name="line87">87   </a></b>	 * Allocates a new ethdev slot for an ethernet device and returns the pointer
+<b><a name="line88">88   </a></b>	 * to that slot for the driver to use.
+<b><a name="line89">89   </a></b>	 *
+<b><a name="line90">90   </a></b>	 * @param dev
+<b><a name="line91">91   </a></b>	 *	Pointer to the PCI device
+<b><a name="line92">92   </a></b>	 *
+<b><a name="line93">93   </a></b>	 * @param private_data_size
+<b><a name="line94">94   </a></b>	 *	Size of private data structure
+<b><a name="line95">95   </a></b>	 *
+<b><a name="line96">96   </a></b>	 * @return
+<b><a name="line97">97   </a></b>	 *	A pointer to a rte_eth_dev or NULL if allocation failed.
+<b><a name="line98">98   </a></b>	 */
+<b><a name="line99">99   </a></b>	static inline struct <a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line29">rte_eth_dev</a> *
+<b><a name="line100">100  </a></b>	<b>rte_eth_dev_pci_allocate</b>(struct <a href="../emit/usr/local/include/dpdk/rte_bus_pci.h/code.html#line37">rte_pci_device</a> *<b>dev</b>, <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>private_data_size</b>)
+<b><a name="line101">101  </a></b>	{
+<b><a name="line102">102  </a></b>		struct <a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line29">rte_eth_dev</a> *<b>eth_dev</b>;
+<b><a name="line103">103  </a></b>		const char *<b>name</b>;
+<b><a name="line104">104  </a></b>	
+<b><a name="line105">105  </a></b>		if (!<a href="#line100">dev</a>)
+<b><a name="line106">106  </a></b>			return <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>;
+<b><a name="line107">107  </a></b>	
+<b><a name="line108">108  </a></b>		<a href="#line103">name</a> = <a href="#line100">dev</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_bus_pci.h/code.html#line59">device</a>.<a href="../emit/usr/local/include/dpdk/rte_dev.h/code.html#line158">name</a>;
+<b><a name="line109">109  </a></b>	
+<b><a name="line110">110  </a></b>		if (<a href="../emit/usr/local/include/dpdk/rte_eal.h/code.html#line103">rte_eal_process_type</a>() == <a href="../emit/usr/local/include/dpdk/rte_eal.h/code.html#line48">RTE_PROC_PRIMARY</a>) {
+<b><a name="line111">111  </a></b>			<a href="#line102">eth_dev</a> = <a href="../emit/usr/local/include/dpdk/rte_ethdev_driver.h/code.html#line44">rte_eth_dev_allocate</a>(<a href="#line103">name</a>);
+<b><a name="line112">112  </a></b>			if (!<a href="#line102">eth_dev</a>)
+<b><a name="line113">113  </a></b>				return <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>;
+<b><a name="line114">114  </a></b>	
+<b><a name="line115">115  </a></b>			if (<a href="#line100">private_data_size</a>) {
+<b><a name="line116">116  </a></b>				<a href="#line102">eth_dev</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line547">data</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line588">dev_private</a> = <a href="../emit/usr/local/include/dpdk/rte_malloc.h/code.html#line186">rte_zmalloc_socket</a>(<a href="#line103">name</a>,
+<b><a name="line117">117  </a></b>					<a href="#line100">private_data_size</a>, <a href="../emit/usr/local/include/dpdk/rte_config.h/code.html#line19">RTE_CACHE_LINE_SIZE</a>,
+<b><a name="line118">118  </a></b>					<a href="#line100">dev</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_bus_pci.h/code.html#line59">device</a>.<a href="../emit/usr/local/include/dpdk/rte_dev.h/code.html#line161">numa_node</a>);
+<b><a name="line119">119  </a></b>				if (!<a href="#line102">eth_dev</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line547">data</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line588">dev_private</a>) {
+<b><a name="line120">120  </a></b>					<a href="../emit/usr/local/include/dpdk/rte_ethdev_driver.h/code.html#line75">rte_eth_dev_release_port</a>(<a href="#line102">eth_dev</a>);
+<b><a name="line121">121  </a></b>					return <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>;
+<b><a name="line122">122  </a></b>				}
+<b><a name="line123">123  </a></b>			}
+<b><a name="line124">124  </a></b>		} else {
+<b><a name="line125">125  </a></b>			<a href="#line102">eth_dev</a> = <a href="../emit/usr/local/include/dpdk/rte_ethdev_driver.h/code.html#line57">rte_eth_dev_attach_secondary</a>(<a href="#line103">name</a>);
+<b><a name="line126">126  </a></b>			if (!<a href="#line102">eth_dev</a>)
+<b><a name="line127">127  </a></b>				return <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>;
+<b><a name="line128">128  </a></b>		}
+<b><a name="line129">129  </a></b>	
+<b><a name="line130">130  </a></b>		<a href="#line102">eth_dev</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line550">device</a> = &amp;<a href="#line100">dev</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_bus_pci.h/code.html#line59">device</a>;
+<b><a name="line131">131  </a></b>		<a href="#line52">rte_eth_copy_pci_info</a>(<a href="#line102">eth_dev</a>, <a href="#line100">dev</a>);
+<b><a name="line132">132  </a></b>		return <a href="#line102">eth_dev</a>;
+<b><a name="line133">133  </a></b>	}
+<b><a name="line134">134  </a></b>	
+<b><a name="line135">135  </a></b>	static inline void
+<b><a name="line136">136  </a></b>	<b>rte_eth_dev_pci_release</b>(struct <a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line29">rte_eth_dev</a> *<b>eth_dev</b>)
+<b><a name="line137">137  </a></b>	{
+<b><a name="line138">138  </a></b>		<a href="#line136">eth_dev</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line550">device</a> = <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>;
+<b><a name="line139">139  </a></b>		<a href="#line136">eth_dev</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line551">intr_handle</a> = <a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line403">NULL</a>;
+<b><a name="line140">140  </a></b>	
+<b><a name="line141">141  </a></b>		/* free ether device */
+<b><a name="line142">142  </a></b>		<a href="../emit/usr/local/include/dpdk/rte_ethdev_driver.h/code.html#line75">rte_eth_dev_release_port</a>(<a href="#line136">eth_dev</a>);
+<b><a name="line143">143  </a></b>	}
+<b><a name="line144">144  </a></b>	
+<b><a name="line145">145  </a></b>	typedef int (*<b>eth_dev_pci_callback_t</b>)(struct <a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line29">rte_eth_dev</a> *eth_dev);
+<b><a name="line146">146  </a></b>	
+<b><a name="line147">147  </a></b>	/**
+<b><a name="line148">148  </a></b>	 * @internal
+<b><a name="line149">149  </a></b>	 * Wrapper for use by pci drivers in a .probe function to attach to a ethdev
+<b><a name="line150">150  </a></b>	 * interface.
+<b><a name="line151">151  </a></b>	 */
+<b><a name="line152">152  </a></b>	static inline int
+<b><a name="line153">153  </a></b>	<b>rte_eth_dev_pci_generic_probe</b>(struct <a href="../emit/usr/local/include/dpdk/rte_bus_pci.h/code.html#line37">rte_pci_device</a> *<b>pci_dev</b>,
+<b><a name="line154">154  </a></b>		<a href="../emit/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>private_data_size</b>, <a href="#line145">eth_dev_pci_callback_t</a> <b>dev_init</b>)
+<b><a name="line155">155  </a></b>	{
+<b><a name="line156">156  </a></b>		struct <a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line29">rte_eth_dev</a> *<b>eth_dev</b>;
+<b><a name="line157">157  </a></b>		int <b>ret</b>;
+<b><a name="line158">158  </a></b>	
+<b><a name="line159">159  </a></b>		<a href="#line156">eth_dev</a> = <a href="#line100">rte_eth_dev_pci_allocate</a>(<a href="#line153">pci_dev</a>, <a href="#line154">private_data_size</a>);
+<b><a name="line160">160  </a></b>		if (!<a href="#line156">eth_dev</a>)
+<b><a name="line161">161  </a></b>			return -<a href="../emit/usr/include/asm-generic/errno-base.h/code.html#line15">ENOMEM</a>;
+<b><a name="line162">162  </a></b>	
+<b><a name="line163">163  </a></b>		<a href="../emit/usr/local/include/dpdk/rte_dev.h/code.html#line95">RTE_FUNC_PTR_OR_ERR_RET</a>(*dev_init, -EINVAL);
+<b><a name="line164">164  </a></b>		<a href="#line157">ret</a> = <a href="#line154">dev_init</a>(<a href="#line156">eth_dev</a>);
+<b><a name="line165">165  </a></b>		if (<a href="#line157">ret</a>)
+<b><a name="line166">166  </a></b>			<a href="#line136">rte_eth_dev_pci_release</a>(<a href="#line156">eth_dev</a>);
+<b><a name="line167">167  </a></b>		else
+<b><a name="line168">168  </a></b>			<a href="../emit/usr/local/include/dpdk/rte_ethdev_driver.h/code.html#line122">rte_eth_dev_probing_finish</a>(<a href="#line156">eth_dev</a>);
+<b><a name="line169">169  </a></b>	
+<b><a name="line170">170  </a></b>		return <a href="#line157">ret</a>;
+<b><a name="line171">171  </a></b>	}
+<b><a name="line172">172  </a></b>	
+<b><a name="line173">173  </a></b>	/**
+<b><a name="line174">174  </a></b>	 * @internal
+<b><a name="line175">175  </a></b>	 * Wrapper for use by pci drivers in a .remove function to detach a ethdev
+<b><a name="line176">176  </a></b>	 * interface.
+<b><a name="line177">177  </a></b>	 */
+<b><a name="line178">178  </a></b>	static inline int
+<b><a name="line179">179  </a></b>	<b>rte_eth_dev_pci_generic_remove</b>(struct <a href="../emit/usr/local/include/dpdk/rte_bus_pci.h/code.html#line37">rte_pci_device</a> *<b>pci_dev</b>,
+<b><a name="line180">180  </a></b>		<a href="#line145">eth_dev_pci_callback_t</a> <b>dev_uninit</b>)
+<b><a name="line181">181  </a></b>	{
+<b><a name="line182">182  </a></b>		struct <a href="../emit/usr/local/include/dpdk/rte_ethdev_core.h/code.html#line29">rte_eth_dev</a> *<b>eth_dev</b>;
+<b><a name="line183">183  </a></b>		int <b>ret</b>;
+<b><a name="line184">184  </a></b>	
+<b><a name="line185">185  </a></b>		<a href="#line182">eth_dev</a> = <a href="../emit/usr/local/include/dpdk/rte_ethdev_driver.h/code.html#line33">rte_eth_dev_allocated</a>(<a href="#line179">pci_dev</a>-&gt;<a href="../emit/usr/local/include/dpdk/rte_bus_pci.h/code.html#line59">device</a>.<a href="../emit/usr/local/include/dpdk/rte_dev.h/code.html#line158">name</a>);
+<b><a name="line186">186  </a></b>		if (!<a href="#line182">eth_dev</a>)
+<b><a name="line187">187  </a></b>			return -<a href="../emit/usr/include/asm-generic/errno-base.h/code.html#line22">ENODEV</a>;
+<b><a name="line188">188  </a></b>	
+<b><a name="line189">189  </a></b>		if (<a href="#line180">dev_uninit</a>) {
+<b><a name="line190">190  </a></b>			<a href="#line183">ret</a> = <a href="#line180">dev_uninit</a>(<a href="#line182">eth_dev</a>);
+<b><a name="line191">191  </a></b>			if (<a href="#line183">ret</a>)
+<b><a name="line192">192  </a></b>				return <a href="#line183">ret</a>;
+<b><a name="line193">193  </a></b>		}
+<b><a name="line194">194  </a></b>	
+<b><a name="line195">195  </a></b>		<a href="#line136">rte_eth_dev_pci_release</a>(<a href="#line182">eth_dev</a>);
+<b><a name="line196">196  </a></b>		return 0;
+<b><a name="line197">197  </a></b>	}
+<b><a name="line198">198  </a></b>	
+<b><a name="line199">199  </a></b>	#endif /* _RTE_ETHDEV_PCI_H_ */
+<b><a name="line200">200  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

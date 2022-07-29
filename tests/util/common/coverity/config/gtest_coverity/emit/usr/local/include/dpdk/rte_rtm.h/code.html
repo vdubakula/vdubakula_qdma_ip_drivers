@@ -1,0 +1,119 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_rtm.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2012,2013 Intel Corporation
+<b><a name="line3">3    </a></b>	 */
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	#ifndef _RTE_RTM_H_
+<b><a name="line6">6    </a></b>	#define <b>_RTE_RTM_H_</b> 1
+<b><a name="line7">7    </a></b>	
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	/* Official RTM intrinsics interface matching gcc/icc, but works
+<b><a name="line10">10   </a></b>	   on older gcc compatible compilers and binutils. */
+<b><a name="line11">11   </a></b>	
+<b><a name="line12">12   </a></b>	#include &lt;rte_common.h&gt;
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	#ifdef __cplusplus
+<b><a name="line15">15   </a></b>	extern &quot;C&quot; {
+<b><a name="line16">16   </a></b>	#endif
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	#define <b>RTE_XBEGIN_STARTED</b>		(~0u)
+<b><a name="line20">20   </a></b>	#define <b>RTE_XABORT_EXPLICIT</b>		(1 &lt;&lt; 0)
+<b><a name="line21">21   </a></b>	#define <b>RTE_XABORT_RETRY</b>		(1 &lt;&lt; 1)
+<b><a name="line22">22   </a></b>	#define <b>RTE_XABORT_CONFLICT</b>		(1 &lt;&lt; 2)
+<b><a name="line23">23   </a></b>	#define <b>RTE_XABORT_CAPACITY</b>		(1 &lt;&lt; 3)
+<b><a name="line24">24   </a></b>	#define <b>RTE_XABORT_DEBUG</b>		(1 &lt;&lt; 4)
+<b><a name="line25">25   </a></b>	#define <b>RTE_XABORT_NESTED</b>		(1 &lt;&lt; 5)
+<b><a name="line26">26   </a></b>	#define <b>RTE_XABORT_CODE</b>(x)		(((x) &gt;&gt; 24) &amp; 0xff)
+<b><a name="line27">27   </a></b>	
+<b><a name="line28">28   </a></b>	static __attribute__((__always_inline__)) inline
+<b><a name="line29">29   </a></b>	unsigned int <b>rte_xbegin</b>(void)
+<b><a name="line30">30   </a></b>	{
+<b><a name="line31">31   </a></b>		unsigned int <b>ret</b> = <a href="#line19">RTE_XBEGIN_STARTED</a>;
+<b><a name="line32">32   </a></b>	
+<b><a name="line33">33   </a></b>		<a href="../rte_common.h/code.html#line32">asm</a> volatile(&quot;.byte 0xc7,0xf8 ; .long 0&quot; : &quot;+a&quot; (<a href="#line31">ret</a>) :: &quot;memory&quot;);
+<b><a name="line34">34   </a></b>		return <a href="#line31">ret</a>;
+<b><a name="line35">35   </a></b>	}
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	static __attribute__((__always_inline__)) inline
+<b><a name="line38">38   </a></b>	void <b>rte_xend</b>(void)
+<b><a name="line39">39   </a></b>	{
+<b><a name="line40">40   </a></b>		 <a href="../rte_common.h/code.html#line32">asm</a> volatile(&quot;.byte 0x0f,0x01,0xd5&quot; ::: &quot;memory&quot;);
+<b><a name="line41">41   </a></b>	}
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	/* not an inline function to workaround a clang bug with -O0 */
+<b><a name="line44">44   </a></b>	#define <b>rte_xabort</b>(status) do { \
+<b><a name="line45">45   </a></b>		asm volatile(&quot;.byte 0xc6,0xf8,%P0&quot; :: &quot;i&quot; (status) : &quot;memory&quot;); \
+<b><a name="line46">46   </a></b>	} while (0)
+<b><a name="line47">47   </a></b>	
+<b><a name="line48">48   </a></b>	static __attribute__((__always_inline__)) inline
+<b><a name="line49">49   </a></b>	int <b>rte_xtest</b>(void)
+<b><a name="line50">50   </a></b>	{
+<b><a name="line51">51   </a></b>		unsigned char <b>out</b>;
+<b><a name="line52">52   </a></b>	
+<b><a name="line53">53   </a></b>		<a href="../rte_common.h/code.html#line32">asm</a> volatile(&quot;.byte 0x0f,0x01,0xd6 ; setnz %0&quot; :
+<b><a name="line54">54   </a></b>			&quot;=r&quot; (<a href="#line51">out</a>) :: &quot;memory&quot;);
+<b><a name="line55">55   </a></b>		return <a href="#line51">out</a>;
+<b><a name="line56">56   </a></b>	}
+<b><a name="line57">57   </a></b>	
+<b><a name="line58">58   </a></b>	#ifdef __cplusplus
+<b><a name="line59">59   </a></b>	}
+<b><a name="line60">60   </a></b>	#endif
+<b><a name="line61">61   </a></b>	
+<b><a name="line62">62   </a></b>	#endif /* _RTE_RTM_H_ */
+<b><a name="line63">63   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

@@ -1,0 +1,162 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/local/include/dpdk/rte_string_fns.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* SPDX-License-Identifier: BSD-3-Clause
+<b><a name="line2">2    </a></b>	 * Copyright(c) 2010-2014 Intel Corporation
+<b><a name="line3">3    </a></b>	 */
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	/**
+<b><a name="line6">6    </a></b>	 * @file
+<b><a name="line7">7    </a></b>	 *
+<b><a name="line8">8    </a></b>	 * String-related functions as replacement for libc equivalents
+<b><a name="line9">9    </a></b>	 */
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	#ifndef _RTE_STRING_FNS_H_
+<b><a name="line12">12   </a></b>	#define <b>_RTE_STRING_FNS_H_</b>
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	#ifdef __cplusplus
+<b><a name="line15">15   </a></b>	extern &quot;C&quot; {
+<b><a name="line16">16   </a></b>	#endif
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	#include &lt;stdio.h&gt;
+<b><a name="line19">19   </a></b>	#include &lt;string.h&gt;
+<b><a name="line20">20   </a></b>	
+<b><a name="line21">21   </a></b>	/**
+<b><a name="line22">22   </a></b>	 * Takes string &quot;string&quot; parameter and splits it at character &quot;delim&quot;
+<b><a name="line23">23   </a></b>	 * up to maxtokens-1 times - to give &quot;maxtokens&quot; resulting tokens. Like
+<b><a name="line24">24   </a></b>	 * strtok or strsep functions, this modifies its input string, by replacing
+<b><a name="line25">25   </a></b>	 * instances of &quot;delim&quot; with '\\0'. All resultant tokens are returned in the
+<b><a name="line26">26   </a></b>	 * &quot;tokens&quot; array which must have enough entries to hold &quot;maxtokens&quot;.
+<b><a name="line27">27   </a></b>	 *
+<b><a name="line28">28   </a></b>	 * @param string
+<b><a name="line29">29   </a></b>	 *   The input string to be split into tokens
+<b><a name="line30">30   </a></b>	 *
+<b><a name="line31">31   </a></b>	 * @param stringlen
+<b><a name="line32">32   </a></b>	 *   The max length of the input buffer
+<b><a name="line33">33   </a></b>	 *
+<b><a name="line34">34   </a></b>	 * @param tokens
+<b><a name="line35">35   </a></b>	 *   The array to hold the pointers to the tokens in the string
+<b><a name="line36">36   </a></b>	 *
+<b><a name="line37">37   </a></b>	 * @param maxtokens
+<b><a name="line38">38   </a></b>	 *   The number of elements in the tokens array. At most, maxtokens-1 splits
+<b><a name="line39">39   </a></b>	 *   of the string will be done.
+<b><a name="line40">40   </a></b>	 *
+<b><a name="line41">41   </a></b>	 * @param delim
+<b><a name="line42">42   </a></b>	 *   The character on which the split of the data will be done
+<b><a name="line43">43   </a></b>	 *
+<b><a name="line44">44   </a></b>	 * @return
+<b><a name="line45">45   </a></b>	 *   The number of tokens in the tokens array.
+<b><a name="line46">46   </a></b>	 */
+<b><a name="line47">47   </a></b>	int
+<b><a name="line48">48   </a></b>	rte_strsplit(char *string, int stringlen,
+<b><a name="line49">49   </a></b>	             char **tokens, int maxtokens, char delim);
+<b><a name="line50">50   </a></b>	
+<b><a name="line51">51   </a></b>	/**
+<b><a name="line52">52   </a></b>	 * @internal
+<b><a name="line53">53   </a></b>	 * DPDK-specific version of strlcpy for systems without
+<b><a name="line54">54   </a></b>	 * libc or libbsd copies of the function
+<b><a name="line55">55   </a></b>	 */
+<b><a name="line56">56   </a></b>	static inline <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a>
+<b><a name="line57">57   </a></b>	<b>rte_strlcpy</b>(char *<b>dst</b>, const char *<b>src</b>, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> <b>size</b>)
+<b><a name="line58">58   </a></b>	{
+<b><a name="line59">59   </a></b>		return (<a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a>)<a href="../../../../include/stdio.h/code.html#line386">snprintf</a>(<a href="#line57">dst</a>, <a href="#line57">size</a>, &quot;%s&quot;, <a href="#line57">src</a>);
+<b><a name="line60">60   </a></b>	}
+<b><a name="line61">61   </a></b>	
+<b><a name="line62">62   </a></b>	/* pull in a strlcpy function */
+<b><a name="line63">63   </a></b>	#ifdef RTE_EXEC_ENV_BSDAPP
+<b><a name="line64">64   </a></b>	#ifndef __BSD_VISIBLE /* non-standard functions are hidden */
+<b><a name="line65">65   </a></b>	#define strlcpy(dst, src, size) rte_strlcpy(dst, src, size)
+<b><a name="line66">66   </a></b>	#endif
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	#else /* non-BSD platforms */
+<b><a name="line69">69   </a></b>	#ifdef RTE_USE_LIBBSD
+<b><a name="line70">70   </a></b>	#include &lt;bsd/string.h&gt;
+<b><a name="line71">71   </a></b>	
+<b><a name="line72">72   </a></b>	#else /* no BSD header files, create own */
+<b><a name="line73">73   </a></b>	#define <b>strlcpy</b>(dst, src, size) rte_strlcpy(dst, src, size)
+<b><a name="line74">74   </a></b>	
+<b><a name="line75">75   </a></b>	#endif /* RTE_USE_LIBBSD */
+<b><a name="line76">76   </a></b>	#endif /* BSDAPP */
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	/**
+<b><a name="line79">79   </a></b>	 * Copy string src to buffer dst of size dsize.
+<b><a name="line80">80   </a></b>	 * At most dsize-1 chars will be copied.
+<b><a name="line81">81   </a></b>	 * Always NUL-terminates, unless (dsize == 0).
+<b><a name="line82">82   </a></b>	 * Returns number of bytes copied (terminating NUL-byte excluded) on success ;
+<b><a name="line83">83   </a></b>	 * negative errno on error.
+<b><a name="line84">84   </a></b>	 *
+<b><a name="line85">85   </a></b>	 * @param dst
+<b><a name="line86">86   </a></b>	 *   The destination string.
+<b><a name="line87">87   </a></b>	 *
+<b><a name="line88">88   </a></b>	 * @param src
+<b><a name="line89">89   </a></b>	 *   The input string to be copied.
+<b><a name="line90">90   </a></b>	 *
+<b><a name="line91">91   </a></b>	 * @param dsize
+<b><a name="line92">92   </a></b>	 *   Length in bytes of the destination buffer.
+<b><a name="line93">93   </a></b>	 *
+<b><a name="line94">94   </a></b>	 * @return
+<b><a name="line95">95   </a></b>	 *   The number of bytes copied on success
+<b><a name="line96">96   </a></b>	 *   -E2BIG if the destination buffer is too small.
+<b><a name="line97">97   </a></b>	 */
+<b><a name="line98">98   </a></b>	<a href="../../../../include/x86_64-linux-gnu/sys/types.h/code.html#line109">ssize_t</a>
+<b><a name="line99">99   </a></b>	rte_strscpy(char *dst, const char *src, <a href="../../../../lib/gcc/x86_64-linux-gnu/5/include/stddef.h/code.html#line216">size_t</a> dsize);
+<b><a name="line100">100  </a></b>	
+<b><a name="line101">101  </a></b>	#ifdef __cplusplus
+<b><a name="line102">102  </a></b>	}
+<b><a name="line103">103  </a></b>	#endif
+<b><a name="line104">104  </a></b>	
+<b><a name="line105">105  </a></b>	#endif /* RTE_STRING_FNS_H */
+<b><a name="line106">106  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

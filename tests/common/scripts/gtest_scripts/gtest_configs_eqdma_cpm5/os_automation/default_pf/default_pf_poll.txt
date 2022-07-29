@@ -1,0 +1,11 @@
+name=default_pf
+test_mask=0x2 #bit 0 - auto mode, 1 - poll mode, bit 2 - intr mode, bit 3 - aggr mode
+repeat=2 #number of iterations
+filter=-*ST016_64B_desc*:*DMACTL*:*DEBUGFS*:*MM009*:*ST018*:*PCIE003*
+master_pf=0
+run_gtest=1
+pf_qmax_cfg_en=(1 0 0 0)
+pf_qmax=(251 0 0 0)
+pf_nvf=(0 0 0 0) #number of VFs in PF
+valid_drv=(linux dpdk)
+#necessary dummy line

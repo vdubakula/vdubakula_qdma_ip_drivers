@@ -1,0 +1,133 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/c++/5/bits/ctype_inline.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	// Locale support -*- C++ -*-
+<b><a name="line2">2    </a></b>	
+<b><a name="line3">3    </a></b>	// Copyright (C) 2000-2015 Free Software Foundation, Inc.
+<b><a name="line4">4    </a></b>	//
+<b><a name="line5">5    </a></b>	// This file is part of the GNU ISO C++ Library.  This library is free
+<b><a name="line6">6    </a></b>	// software; you can redistribute it and/or modify it under the
+<b><a name="line7">7    </a></b>	// terms of the GNU General Public License as published by the
+<b><a name="line8">8    </a></b>	// Free Software Foundation; either version 3, or (at your option)
+<b><a name="line9">9    </a></b>	// any later version.
+<b><a name="line10">10   </a></b>	
+<b><a name="line11">11   </a></b>	// This library is distributed in the hope that it will be useful,
+<b><a name="line12">12   </a></b>	// but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line13">13   </a></b>	// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<b><a name="line14">14   </a></b>	// GNU General Public License for more details.
+<b><a name="line15">15   </a></b>	
+<b><a name="line16">16   </a></b>	// Under Section 7 of GPL version 3, you are granted additional
+<b><a name="line17">17   </a></b>	// permissions described in the GCC Runtime Library Exception, version
+<b><a name="line18">18   </a></b>	// 3.1, as published by the Free Software Foundation.
+<b><a name="line19">19   </a></b>	
+<b><a name="line20">20   </a></b>	// You should have received a copy of the GNU General Public License and
+<b><a name="line21">21   </a></b>	// a copy of the GCC Runtime Library Exception along with this program;
+<b><a name="line22">22   </a></b>	// see the files COPYING3 and COPYING.RUNTIME respectively.  If not, see
+<b><a name="line23">23   </a></b>	// &lt;http://www.gnu.org/licenses/&gt;.
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/** @file bits/ctype_inline.h
+<b><a name="line26">26   </a></b>	 *  This is an internal header file, included by other library headers.
+<b><a name="line27">27   </a></b>	 *  Do not attempt to use it directly. @headername{locale}
+<b><a name="line28">28   </a></b>	 */
+<b><a name="line29">29   </a></b>	
+<b><a name="line30">30   </a></b>	//
+<b><a name="line31">31   </a></b>	// ISO C++ 14882: 22.1  Locales
+<b><a name="line32">32   </a></b>	//
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	// ctype bits to be inlined go here. Non-inlinable (ie virtual do_*)
+<b><a name="line35">35   </a></b>	// functions go in ctype.cc
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	namespace <a href="../c++config.h/code.html#line194">std</a> <a href="../c++config.h/code.html#line67">_GLIBCXX_VISIBILITY</a>(default)
+<b><a name="line38">38   </a></b>	{
+<b><a name="line39">39   </a></b>	<a href="../c++config.h/code.html#line279">_GLIBCXX_BEGIN_NAMESPACE_VERSION</a>
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	  bool
+<b><a name="line42">42   </a></b>	  <a href="../../../../../c++/5/bits/localefwd.h/code.html#line127">ctype</a>&lt;char&gt;::
+<b><a name="line43">43   </a></b>	  <b>is</b>(<a href="../ctype_base.h/code.html#line48">mask</a> <b>__m</b>, char <b>__c</b>) const
+<b><a name="line44">44   </a></b>	  { return <a href="../../../../../c++/5/bits/locale_facets.h/code.html#line694">_M_table</a>[static_cast&lt;unsigned char&gt;(<a href="#line43">__c</a>)] &amp; <a href="#line43">__m</a>; }
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	  const char*
+<b><a name="line47">47   </a></b>	  <a href="../../../../../c++/5/bits/localefwd.h/code.html#line127">ctype</a>&lt;char&gt;::
+<b><a name="line48">48   </a></b>	  <b>is</b>(const char* <b>__low</b>, const char* <b>__high</b>, <a href="../ctype_base.h/code.html#line48">mask</a>* <b>__vec</b>) const
+<b><a name="line49">49   </a></b>	  {
+<b><a name="line50">50   </a></b>	    while (<a href="#line48">__low</a> &lt; <a href="#line48">__high</a>)
+<b><a name="line51">51   </a></b>	      *<a href="#line48">__vec</a>++ = <a href="../../../../../c++/5/bits/locale_facets.h/code.html#line694">_M_table</a>[static_cast&lt;unsigned char&gt;(*<a href="#line48">__low</a>++)];
+<b><a name="line52">52   </a></b>	    return <a href="#line48">__high</a>;
+<b><a name="line53">53   </a></b>	  }
+<b><a name="line54">54   </a></b>	
+<b><a name="line55">55   </a></b>	  const char*
+<b><a name="line56">56   </a></b>	  <a href="../../../../../c++/5/bits/localefwd.h/code.html#line127">ctype</a>&lt;char&gt;::
+<b><a name="line57">57   </a></b>	  <b>scan_is</b>(<a href="../ctype_base.h/code.html#line48">mask</a> <b>__m</b>, const char* <b>__low</b>, const char* <b>__high</b>) const
+<b><a name="line58">58   </a></b>	  {
+<b><a name="line59">59   </a></b>	    while (<a href="#line57">__low</a> &lt; <a href="#line57">__high</a>
+<b><a name="line60">60   </a></b>		   &amp;&amp; !(<a href="../../../../../c++/5/bits/locale_facets.h/code.html#line694">_M_table</a>[static_cast&lt;unsigned char&gt;(*<a href="#line57">__low</a>)] &amp; <a href="#line57">__m</a>))
+<b><a name="line61">61   </a></b>	      ++<a href="#line57">__low</a>;
+<b><a name="line62">62   </a></b>	    return <a href="#line57">__low</a>;
+<b><a name="line63">63   </a></b>	  }
+<b><a name="line64">64   </a></b>	
+<b><a name="line65">65   </a></b>	  const char*
+<b><a name="line66">66   </a></b>	  <a href="../../../../../c++/5/bits/localefwd.h/code.html#line127">ctype</a>&lt;char&gt;::
+<b><a name="line67">67   </a></b>	  <b>scan_not</b>(<a href="../ctype_base.h/code.html#line48">mask</a> <b>__m</b>, const char* <b>__low</b>, const char* <b>__high</b>) const
+<b><a name="line68">68   </a></b>	  {
+<b><a name="line69">69   </a></b>	    while (<a href="#line67">__low</a> &lt; <a href="#line67">__high</a>
+<b><a name="line70">70   </a></b>		   &amp;&amp; (<a href="../../../../../c++/5/bits/locale_facets.h/code.html#line694">_M_table</a>[static_cast&lt;unsigned char&gt;(*<a href="#line67">__low</a>)] &amp; <a href="#line67">__m</a>) != 0)
+<b><a name="line71">71   </a></b>	      ++<a href="#line67">__low</a>;
+<b><a name="line72">72   </a></b>	    return <a href="#line67">__low</a>;
+<b><a name="line73">73   </a></b>	  }
+<b><a name="line74">74   </a></b>	
+<b><a name="line75">75   </a></b>	<a href="../c++config.h/code.html#line280">_GLIBCXX_END_NAMESPACE_VERSION</a>
+<b><a name="line76">76   </a></b>	} // namespace
+<b><a name="line77">77   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

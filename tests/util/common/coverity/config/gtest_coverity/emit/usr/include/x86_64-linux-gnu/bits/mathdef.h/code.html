@@ -1,0 +1,116 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/mathdef.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Copyright (C) 2001-2016 Free Software Foundation, Inc.
+<b><a name="line2">2    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line3">3    </a></b>	
+<b><a name="line4">4    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line5">5    </a></b>	   modify it under the terms of the GNU Lesser General Public
+<b><a name="line6">6    </a></b>	   License as published by the Free Software Foundation; either
+<b><a name="line7">7    </a></b>	   version 2.1 of the License, or (at your option) any later version.
+<b><a name="line8">8    </a></b>	
+<b><a name="line9">9    </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line10">10   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line11">11   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line12">12   </a></b>	   Lesser General Public License for more details.
+<b><a name="line13">13   </a></b>	
+<b><a name="line14">14   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line15">15   </a></b>	   License along with the GNU C Library; if not, see
+<b><a name="line16">16   </a></b>	   &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line17">17   </a></b>	
+<b><a name="line18">18   </a></b>	#if !defined <a href="../../../math.h/code.html#line24">_MATH_H</a> &amp;&amp; !defined _COMPLEX_H
+<b><a name="line19">19   </a></b>	# error &quot;Never use &lt;bits/mathdef.h&gt; directly; include &lt;math.h&gt; instead&quot;
+<b><a name="line20">20   </a></b>	#endif
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	#if defined <a href="../../../features.h/code.html#line295">__USE_ISOC99</a> &amp;&amp; defined <a href="../../../math.h/code.html#line24">_MATH_H</a> &amp;&amp; !defined _MATH_H_MATHDEF
+<b><a name="line23">23   </a></b>	# define <b>_MATH_H_MATHDEF</b>	1
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	# if defined <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line486">__x86_64__</a> || (defined <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line75">__FLT_EVAL_METHOD__</a> &amp;&amp; <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line75">__FLT_EVAL_METHOD__</a> == 0)
+<b><a name="line26">26   </a></b>	/* The x86-64 architecture computes values with the precission of the
+<b><a name="line27">27   </a></b>	   used type.  Similarly for -m32 -mfpmath=sse.  */
+<b><a name="line28">28   </a></b>	typedef float <b>float_t</b>;		/* `float' expressions are evaluated as `float'.  */
+<b><a name="line29">29   </a></b>	typedef double <b>double_t</b>;	/* `double' expressions are evaluated
+<b><a name="line30">30   </a></b>					   as `double'.  */
+<b><a name="line31">31   </a></b>	# else
+<b><a name="line32">32   </a></b>	/* The ix87 FPUs evaluate all values in the 80 bit floating-point format
+<b><a name="line33">33   </a></b>	   which is also available for the user as `long double'.  Therefore we
+<b><a name="line34">34   </a></b>	   define:  */
+<b><a name="line35">35   </a></b>	typedef long double float_t;	/* `float' expressions are evaluated as
+<b><a name="line36">36   </a></b>					   `long double'.  */
+<b><a name="line37">37   </a></b>	typedef long double double_t;	/* `double' expressions are evaluated as
+<b><a name="line38">38   </a></b>					   `long double'.  */
+<b><a name="line39">39   </a></b>	# endif
+<b><a name="line40">40   </a></b>	
+<b><a name="line41">41   </a></b>	/* The values returned by `ilogb' for 0 and NaN respectively.  */
+<b><a name="line42">42   </a></b>	# define <b>FP_ILOGB0</b>	(-2147483647 - 1)
+<b><a name="line43">43   </a></b>	# define <b>FP_ILOGBNAN</b>	(-2147483647 - 1)
+<b><a name="line44">44   </a></b>	
+<b><a name="line45">45   </a></b>	/* The GCC 4.6 compiler will define __FP_FAST_FMA{,F,L} if the fma{,f,l}
+<b><a name="line46">46   </a></b>	   builtins are supported.  */
+<b><a name="line47">47   </a></b>	# ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line732">__FP_FAST_FMA</a>
+<b><a name="line48">48   </a></b>	#  define <b>FP_FAST_FMA</b> 1
+<b><a name="line49">49   </a></b>	# endif
+<b><a name="line50">50   </a></b>	
+<b><a name="line51">51   </a></b>	# ifdef <a href="/group/cdc_hd/members/ssangani/projects/IP5_ssangani_eqdma/eqdma-0160/HEAD/proj/sw_test/common/apps/qdma_test/logs/emit/xhdipdslab42/config/ae3d82e1eb5f506daebbe505304762cf/g++-config-0/coverity-macro-compat.h/code.html#line360">__FP_FAST_FMAF</a>
+<b><a name="line52">52   </a></b>	#  define <b>FP_FAST_FMAF</b> 1
+<b><a name="line53">53   </a></b>	# endif
+<b><a name="line54">54   </a></b>	
+<b><a name="line55">55   </a></b>	# ifdef __FP_FAST_FMAL
+<b><a name="line56">56   </a></b>	#  define FP_FAST_FMAL 1
+<b><a name="line57">57   </a></b>	# endif
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	#endif	/* ISO C99 */
+<b><a name="line60">60   </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>

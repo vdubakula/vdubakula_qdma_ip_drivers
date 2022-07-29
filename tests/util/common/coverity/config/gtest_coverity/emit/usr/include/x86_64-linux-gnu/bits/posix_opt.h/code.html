@@ -1,0 +1,248 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+"http://www.w3.org/TR/html4/loose.dtd">
+<html><head><title>Coverity error reader: /usr/include/x86_64-linux-gnu/bits/posix_opt.h</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<body link="#000000" vlink="#000000"><pre>
+<b><a name="line1">1    </a></b>	/* Define POSIX options for Linux.
+<b><a name="line2">2    </a></b>	   Copyright (C) 1996-2016 Free Software Foundation, Inc.
+<b><a name="line3">3    </a></b>	   This file is part of the GNU C Library.
+<b><a name="line4">4    </a></b>	
+<b><a name="line5">5    </a></b>	   The GNU C Library is free software; you can redistribute it and/or
+<b><a name="line6">6    </a></b>	   modify it under the terms of the GNU Lesser General Public License as
+<b><a name="line7">7    </a></b>	   published by the Free Software Foundation; either version 2.1 of the
+<b><a name="line8">8    </a></b>	   License, or (at your option) any later version.
+<b><a name="line9">9    </a></b>	
+<b><a name="line10">10   </a></b>	   The GNU C Library is distributed in the hope that it will be useful,
+<b><a name="line11">11   </a></b>	   but WITHOUT ANY WARRANTY; without even the implied warranty of
+<b><a name="line12">12   </a></b>	   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+<b><a name="line13">13   </a></b>	   Lesser General Public License for more details.
+<b><a name="line14">14   </a></b>	
+<b><a name="line15">15   </a></b>	   You should have received a copy of the GNU Lesser General Public
+<b><a name="line16">16   </a></b>	   License along with the GNU C Library; see the file COPYING.LIB.  If
+<b><a name="line17">17   </a></b>	   not, see &lt;http://www.gnu.org/licenses/&gt;.  */
+<b><a name="line18">18   </a></b>	
+<b><a name="line19">19   </a></b>	#ifndef	_BITS_POSIX_OPT_H
+<b><a name="line20">20   </a></b>	#define	<b>_BITS_POSIX_OPT_H</b>	1
+<b><a name="line21">21   </a></b>	
+<b><a name="line22">22   </a></b>	/* Job control is supported.  */
+<b><a name="line23">23   </a></b>	#define	<b>_POSIX_JOB_CONTROL</b>	1
+<b><a name="line24">24   </a></b>	
+<b><a name="line25">25   </a></b>	/* Processes have a saved set-user-ID and a saved set-group-ID.  */
+<b><a name="line26">26   </a></b>	#define	<b>_POSIX_SAVED_IDS</b>	1
+<b><a name="line27">27   </a></b>	
+<b><a name="line28">28   </a></b>	/* Priority scheduling is supported.  */
+<b><a name="line29">29   </a></b>	#define	<b>_POSIX_PRIORITY_SCHEDULING</b>	200809L
+<b><a name="line30">30   </a></b>	
+<b><a name="line31">31   </a></b>	/* Synchronizing file data is supported.  */
+<b><a name="line32">32   </a></b>	#define	<b>_POSIX_SYNCHRONIZED_IO</b>	200809L
+<b><a name="line33">33   </a></b>	
+<b><a name="line34">34   </a></b>	/* The fsync function is present.  */
+<b><a name="line35">35   </a></b>	#define	<b>_POSIX_FSYNC</b>	200809L
+<b><a name="line36">36   </a></b>	
+<b><a name="line37">37   </a></b>	/* Mapping of files to memory is supported.  */
+<b><a name="line38">38   </a></b>	#define	<b>_POSIX_MAPPED_FILES</b>	200809L
+<b><a name="line39">39   </a></b>	
+<b><a name="line40">40   </a></b>	/* Locking of all memory is supported.  */
+<b><a name="line41">41   </a></b>	#define	<b>_POSIX_MEMLOCK</b>	200809L
+<b><a name="line42">42   </a></b>	
+<b><a name="line43">43   </a></b>	/* Locking of ranges of memory is supported.  */
+<b><a name="line44">44   </a></b>	#define	<b>_POSIX_MEMLOCK_RANGE</b>	200809L
+<b><a name="line45">45   </a></b>	
+<b><a name="line46">46   </a></b>	/* Setting of memory protections is supported.  */
+<b><a name="line47">47   </a></b>	#define	<b>_POSIX_MEMORY_PROTECTION</b>	200809L
+<b><a name="line48">48   </a></b>	
+<b><a name="line49">49   </a></b>	/* Some filesystems allow all users to change file ownership.  */
+<b><a name="line50">50   </a></b>	#define	<b>_POSIX_CHOWN_RESTRICTED</b>	0
+<b><a name="line51">51   </a></b>	
+<b><a name="line52">52   </a></b>	/* `c_cc' member of 'struct termios' structure can be disabled by
+<b><a name="line53">53   </a></b>	   using the value _POSIX_VDISABLE.  */
+<b><a name="line54">54   </a></b>	#define	<b>_POSIX_VDISABLE</b>	'\0'
+<b><a name="line55">55   </a></b>	
+<b><a name="line56">56   </a></b>	/* Filenames are not silently truncated.  */
+<b><a name="line57">57   </a></b>	#define	<b>_POSIX_NO_TRUNC</b>	1
+<b><a name="line58">58   </a></b>	
+<b><a name="line59">59   </a></b>	/* X/Open realtime support is available.  */
+<b><a name="line60">60   </a></b>	#define <b>_XOPEN_REALTIME</b>	1
+<b><a name="line61">61   </a></b>	
+<b><a name="line62">62   </a></b>	/* X/Open thread realtime support is available.  */
+<b><a name="line63">63   </a></b>	#define <b>_XOPEN_REALTIME_THREADS</b>	1
+<b><a name="line64">64   </a></b>	
+<b><a name="line65">65   </a></b>	/* XPG4.2 shared memory is supported.  */
+<b><a name="line66">66   </a></b>	#define	<b>_XOPEN_SHM</b>	1
+<b><a name="line67">67   </a></b>	
+<b><a name="line68">68   </a></b>	/* Tell we have POSIX threads.  */
+<b><a name="line69">69   </a></b>	#define <b>_POSIX_THREADS</b>	200809L
+<b><a name="line70">70   </a></b>	
+<b><a name="line71">71   </a></b>	/* We have the reentrant functions described in POSIX.  */
+<b><a name="line72">72   </a></b>	#define <b>_POSIX_REENTRANT_FUNCTIONS</b>      1
+<b><a name="line73">73   </a></b>	#define <b>_POSIX_THREAD_SAFE_FUNCTIONS</b>	200809L
+<b><a name="line74">74   </a></b>	
+<b><a name="line75">75   </a></b>	/* We provide priority scheduling for threads.  */
+<b><a name="line76">76   </a></b>	#define <b>_POSIX_THREAD_PRIORITY_SCHEDULING</b>	200809L
+<b><a name="line77">77   </a></b>	
+<b><a name="line78">78   </a></b>	/* We support user-defined stack sizes.  */
+<b><a name="line79">79   </a></b>	#define <b>_POSIX_THREAD_ATTR_STACKSIZE</b>	200809L
+<b><a name="line80">80   </a></b>	
+<b><a name="line81">81   </a></b>	/* We support user-defined stacks.  */
+<b><a name="line82">82   </a></b>	#define <b>_POSIX_THREAD_ATTR_STACKADDR</b>	200809L
+<b><a name="line83">83   </a></b>	
+<b><a name="line84">84   </a></b>	/* We support priority inheritence.  */
+<b><a name="line85">85   </a></b>	#define <b>_POSIX_THREAD_PRIO_INHERIT</b>	200809L
+<b><a name="line86">86   </a></b>	
+<b><a name="line87">87   </a></b>	/* We support priority protection, though only for non-robust
+<b><a name="line88">88   </a></b>	   mutexes.  */
+<b><a name="line89">89   </a></b>	#define <b>_POSIX_THREAD_PRIO_PROTECT</b>	200809L
+<b><a name="line90">90   </a></b>	
+<b><a name="line91">91   </a></b>	#ifdef <a href="../../../features.h/code.html#line273">__USE_XOPEN2K8</a>
+<b><a name="line92">92   </a></b>	/* We support priority inheritence for robust mutexes.  */
+<b><a name="line93">93   </a></b>	# define <b>_POSIX_THREAD_ROBUST_PRIO_INHERIT</b>	200809L
+<b><a name="line94">94   </a></b>	
+<b><a name="line95">95   </a></b>	/* We do not support priority protection for robust mutexes.  */
+<b><a name="line96">96   </a></b>	# define <b>_POSIX_THREAD_ROBUST_PRIO_PROTECT</b>	-1
+<b><a name="line97">97   </a></b>	#endif
+<b><a name="line98">98   </a></b>	
+<b><a name="line99">99   </a></b>	/* We support POSIX.1b semaphores.  */
+<b><a name="line100">100  </a></b>	#define <b>_POSIX_SEMAPHORES</b>	200809L
+<b><a name="line101">101  </a></b>	
+<b><a name="line102">102  </a></b>	/* Real-time signals are supported.  */
+<b><a name="line103">103  </a></b>	#define <b>_POSIX_REALTIME_SIGNALS</b>	200809L
+<b><a name="line104">104  </a></b>	
+<b><a name="line105">105  </a></b>	/* We support asynchronous I/O.  */
+<b><a name="line106">106  </a></b>	#define <b>_POSIX_ASYNCHRONOUS_IO</b>	200809L
+<b><a name="line107">107  </a></b>	#define <b>_POSIX_ASYNC_IO</b>		1
+<b><a name="line108">108  </a></b>	/* Alternative name for Unix98.  */
+<b><a name="line109">109  </a></b>	#define <b>_LFS_ASYNCHRONOUS_IO</b>	1
+<b><a name="line110">110  </a></b>	/* Support for prioritization is also available.  */
+<b><a name="line111">111  </a></b>	#define <b>_POSIX_PRIORITIZED_IO</b>	200809L
+<b><a name="line112">112  </a></b>	
+<b><a name="line113">113  </a></b>	/* The LFS support in asynchronous I/O is also available.  */
+<b><a name="line114">114  </a></b>	#define <b>_LFS64_ASYNCHRONOUS_IO</b>	1
+<b><a name="line115">115  </a></b>	
+<b><a name="line116">116  </a></b>	/* The rest of the LFS is also available.  */
+<b><a name="line117">117  </a></b>	#define <b>_LFS_LARGEFILE</b>		1
+<b><a name="line118">118  </a></b>	#define <b>_LFS64_LARGEFILE</b>	1
+<b><a name="line119">119  </a></b>	#define <b>_LFS64_STDIO</b>		1
+<b><a name="line120">120  </a></b>	
+<b><a name="line121">121  </a></b>	/* POSIX shared memory objects are implemented.  */
+<b><a name="line122">122  </a></b>	#define <b>_POSIX_SHARED_MEMORY_OBJECTS</b>	200809L
+<b><a name="line123">123  </a></b>	
+<b><a name="line124">124  </a></b>	/* CPU-time clocks support needs to be checked at runtime.  */
+<b><a name="line125">125  </a></b>	#define <b>_POSIX_CPUTIME</b>	0
+<b><a name="line126">126  </a></b>	
+<b><a name="line127">127  </a></b>	/* Clock support in threads must be also checked at runtime.  */
+<b><a name="line128">128  </a></b>	#define <b>_POSIX_THREAD_CPUTIME</b>	0
+<b><a name="line129">129  </a></b>	
+<b><a name="line130">130  </a></b>	/* GNU libc provides regular expression handling.  */
+<b><a name="line131">131  </a></b>	#define <b>_POSIX_REGEXP</b>	1
+<b><a name="line132">132  </a></b>	
+<b><a name="line133">133  </a></b>	/* Reader/Writer locks are available.  */
+<b><a name="line134">134  </a></b>	#define <b>_POSIX_READER_WRITER_LOCKS</b>	200809L
+<b><a name="line135">135  </a></b>	
+<b><a name="line136">136  </a></b>	/* We have a POSIX shell.  */
+<b><a name="line137">137  </a></b>	#define <b>_POSIX_SHELL</b>	1
+<b><a name="line138">138  </a></b>	
+<b><a name="line139">139  </a></b>	/* We support the Timeouts option.  */
+<b><a name="line140">140  </a></b>	#define <b>_POSIX_TIMEOUTS</b>	200809L
+<b><a name="line141">141  </a></b>	
+<b><a name="line142">142  </a></b>	/* We support spinlocks.  */
+<b><a name="line143">143  </a></b>	#define <b>_POSIX_SPIN_LOCKS</b>	200809L
+<b><a name="line144">144  </a></b>	
+<b><a name="line145">145  </a></b>	/* The `spawn' function family is supported.  */
+<b><a name="line146">146  </a></b>	#define <b>_POSIX_SPAWN</b>	200809L
+<b><a name="line147">147  </a></b>	
+<b><a name="line148">148  </a></b>	/* We have POSIX timers.  */
+<b><a name="line149">149  </a></b>	#define <b>_POSIX_TIMERS</b>	200809L
+<b><a name="line150">150  </a></b>	
+<b><a name="line151">151  </a></b>	/* The barrier functions are available.  */
+<b><a name="line152">152  </a></b>	#define <b>_POSIX_BARRIERS</b>	200809L
+<b><a name="line153">153  </a></b>	
+<b><a name="line154">154  </a></b>	/* POSIX message queues are available.  */
+<b><a name="line155">155  </a></b>	#define	<b>_POSIX_MESSAGE_PASSING</b>	200809L
+<b><a name="line156">156  </a></b>	
+<b><a name="line157">157  </a></b>	/* Thread process-shared synchronization is supported.  */
+<b><a name="line158">158  </a></b>	#define <b>_POSIX_THREAD_PROCESS_SHARED</b>	200809L
+<b><a name="line159">159  </a></b>	
+<b><a name="line160">160  </a></b>	/* The monotonic clock might be available.  */
+<b><a name="line161">161  </a></b>	#define <b>_POSIX_MONOTONIC_CLOCK</b>	0
+<b><a name="line162">162  </a></b>	
+<b><a name="line163">163  </a></b>	/* The clock selection interfaces are available.  */
+<b><a name="line164">164  </a></b>	#define <b>_POSIX_CLOCK_SELECTION</b>	200809L
+<b><a name="line165">165  </a></b>	
+<b><a name="line166">166  </a></b>	/* Advisory information interfaces are available.  */
+<b><a name="line167">167  </a></b>	#define <b>_POSIX_ADVISORY_INFO</b>	200809L
+<b><a name="line168">168  </a></b>	
+<b><a name="line169">169  </a></b>	/* IPv6 support is available.  */
+<b><a name="line170">170  </a></b>	#define <b>_POSIX_IPV6</b>	200809L
+<b><a name="line171">171  </a></b>	
+<b><a name="line172">172  </a></b>	/* Raw socket support is available.  */
+<b><a name="line173">173  </a></b>	#define <b>_POSIX_RAW_SOCKETS</b>	200809L
+<b><a name="line174">174  </a></b>	
+<b><a name="line175">175  </a></b>	/* We have at least one terminal.  */
+<b><a name="line176">176  </a></b>	#define <b>_POSIX2_CHAR_TERM</b>	200809L
+<b><a name="line177">177  </a></b>	
+<b><a name="line178">178  </a></b>	/* Neither process nor thread sporadic server interfaces is available.  */
+<b><a name="line179">179  </a></b>	#define <b>_POSIX_SPORADIC_SERVER</b>	-1
+<b><a name="line180">180  </a></b>	#define <b>_POSIX_THREAD_SPORADIC_SERVER</b>	-1
+<b><a name="line181">181  </a></b>	
+<b><a name="line182">182  </a></b>	/* trace.h is not available.  */
+<b><a name="line183">183  </a></b>	#define <b>_POSIX_TRACE</b>	-1
+<b><a name="line184">184  </a></b>	#define <b>_POSIX_TRACE_EVENT_FILTER</b>	-1
+<b><a name="line185">185  </a></b>	#define <b>_POSIX_TRACE_INHERIT</b>	-1
+<b><a name="line186">186  </a></b>	#define <b>_POSIX_TRACE_LOG</b>	-1
+<b><a name="line187">187  </a></b>	
+<b><a name="line188">188  </a></b>	/* Typed memory objects are not available.  */
+<b><a name="line189">189  </a></b>	#define <b>_POSIX_TYPED_MEMORY_OBJECTS</b>	-1
+<b><a name="line190">190  </a></b>	
+<b><a name="line191">191  </a></b>	#endif /* bits/posix_opt.h */
+<b><a name="line192">192  </a></b>	
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</pre></body>
+</html>
