@@ -1,0 +1,98 @@
+[apps/dma-latency/dmalat.c:]: (style) Condition '!force_exit' is always true
+[apps/dma-latency/dmalat.c:] -> [apps/dma-latency/dmalat.c:867]: (performance) Buffer 'rng_sz_path' is being written before its old content has been used.
+[apps/dma-latency/dmalat.c:] -> [apps/dma-latency/dmalat.c:1044]: (performance) Buffer 'reg_cmd' is being written before its old content has been used.
+[apps/dma-latency/dmalat.c:]: (style) Variable 'qparm' is assigned a value that is never used.
+[apps/dma-perf/dmaperf.c:] -> [apps/dma-perf/dmaperf.c:1040]: (style) Variable 'node' is reassigned a value before the old one has been used.
+[apps/dma-perf/dmaperf.c:] -> [apps/dma-perf/dmaperf.c:1060]: (style) Variable 'node' is reassigned a value before the old one has been used.
+[apps/dma-perf/dmaperf.c:] -> [apps/dma-perf/dmaperf.c:1067]: (style) Variable 'prev_node' is reassigned a value before the old one has been used.
+[apps/dma-perf/dmaperf.c:] -> [apps/dma-perf/dmaperf.c:1197]: (style) Variable 'events' is reassigned a value before the old one has been used.
+[apps/dma-perf/dmaperf.c:]: (style) Variable 'qparm' is assigned a value that is never used.
+[apps/dma-utils/dmactl_reg.c:]: (warning) %u in format string (no. 2) requires 'unsigned int' but the argument type is 'signed int'.
+[apps/dma-utils/dmaxfer.c:] -> [apps/dma-utils/dmaxfer.c:322]: (style) Variable 'node' is reassigned a value before the old one has been used.
+[apps/dma-utils/dmaxfer.c:] -> [apps/dma-utils/dmaxfer.c:343]: (style) Variable 'node' is reassigned a value before the old one has been used.
+[apps/dma-utils/dmaxfer.c:] -> [apps/dma-utils/dmaxfer.c:464]: (style) Variable 'events' is reassigned a value before the old one has been used.
+[driver/libqdma/libqdma_export.c:]: (error) Uninitialized variable: cb
+[driver/libqdma/libqdma_export.c:]: (error) Uninitialized variable: tmp
+[driver/libqdma/qdma_access/qdma_resource_mgmt.c:] -> [driver/libqdma/qdma_access/qdma_resource_mgmt.c:275]: (style) Variable 'new_entry' is reassigned a value before the old one has been used.
+[driver/libqdma/qdma_access/qdma_resource_mgmt.c:] -> [driver/libqdma/qdma_access/qdma_resource_mgmt.c:292]: (style) Variable 'new_entry' is reassigned a value before the old one has been used.
+[driver/libqdma/qdma_access/qdma_resource_mgmt.c:] -> [driver/libqdma/qdma_access/qdma_resource_mgmt.c:308]: (style) Variable 'new_entry' is reassigned a value before the old one has been used.
+[driver/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:]: (style) struct member 'Anonymous0::busy' is never used.
+[driver/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:]: (style) struct member 'Anonymous0::rsvd' is never used.
+[driver/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:]: (error) Shifting 32-bit value by 38 bits is undefined behaviour
+[driver/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:]: (error) Shifting 32-bit value by 38 bits is undefined behaviour
+[driver/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:]: (error) Shifting 32-bit value by 35 bits is undefined behaviour
+[driver/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:]: (error) Shifting 32-bit value by 61 bits is undefined behaviour
+[driver/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:]: (error) Shifting 32-bit value by 35 bits is undefined behaviour
+[driver/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:]: (error) Shifting 32-bit value by 61 bits is undefined behaviour
+[driver/libqdma/qdma_context.c:] -> [driver/libqdma/qdma_context.c:143]: (style) Variable 'xdev' is reassigned a value before the old one has been used.
+[driver/libqdma/qdma_debugfs.c:] -> [driver/libqdma/qdma_debugfs.c:40]: (style) Variable 'debugfs_root' is reassigned a value before the old one has been used.
+[driver/libqdma/qdma_debugfs.c:] -> [driver/libqdma/qdma_debugfs.c:46]: (style) Variable 'debugfs_root' is reassigned a value before the old one has been used.
+[driver/libqdma/qdma_debugfs_dev.c:] -> [driver/libqdma/qdma_debugfs_dev.c:257]: (style) Variable 'buf' is reassigned a value before the old one has been used.
+[driver/libqdma/qdma_debugfs_dev.c:] -> [driver/libqdma/qdma_debugfs_dev.c:326]: (style) Variable 'buf' is reassigned a value before the old one has been used.
+[driver/libqdma/qdma_debugfs_dev.c:] -> [driver/libqdma/qdma_debugfs_dev.c:772]: (style) Variable 'dbgfs_intr_ring' is reassigned a value before the old one has been used.
+[driver/libqdma/qdma_debugfs_queue.c:] -> [driver/libqdma/qdma_debugfs_queue.c:538]: (style) Variable 'buf' is reassigned a value before the old one has been used.
+[driver/libqdma/qdma_debugfs_queue.c:] -> [driver/libqdma/qdma_debugfs_queue.c:579]: (style) Variable 'descq' is reassigned a value before the old one has been used.
+[driver/libqdma/qdma_intr.c:]: (error) Uninitialized variable: entry
+[driver/libqdma/qdma_intr.c:]: (error) Uninitialized variable: tmp
+[driver/libqdma/qdma_intr.c:]: (error) Uninitialized variable: entry
+[driver/libqdma/qdma_intr.c:]: (error) Uninitialized variable: tmp
+[driver/libqdma/thread.c:]: (error) Uninitialized variable: work_item
+[driver/libqdma/thread.c:]: (error) Uninitialized variable: next
+[driver/libqdma/thread.c:]: (error) Uninitialized variable: work_item
+[driver/libqdma/thread.c:]: (error) Uninitialized variable: next
+[driver/libqdma/xdev.c:] -> [driver/libqdma/xdev.c:914]: (style) Variable 'm' is reassigned a value before the old one has been used.
+[driver/libqdma/xdev.c:]: (error) Uninitialized variable: xdev
+[driver/libqdma/xdev.c:]: (error) Uninitialized variable: tmp
+[driver/libqdma/xdev.c:]: (error) Uninitialized variable: _xdev
+[driver/libqdma/xdev.c:]: (error) Uninitialized variable: tmp
+[driver/libqdma/xdev.c:]: (error) Uninitialized variable: xdev
+[driver/libqdma/xdev.c:]: (error) Uninitialized variable: tmp
+[driver/libqdma/xdev.c:]: (error) Uninitialized variable: xdev
+[driver/libqdma/xdev.c:]: (error) Uninitialized variable: tmp
+[driver/src/cdev.c:]: (portability) %lu in format string (no. 2) requires 'unsigned long' but the argument type is 'size_t {aka unsigned long}'.
+[driver/src/cdev.c:]: (error) Uninitialized variable: phy_dev
+[driver/src/cdev.c:]: (error) Uninitialized variable: tmp
+[driver/src/cdev.c:]: (error) Uninitialized variable: phy_dev
+[driver/src/cdev.c:]: (error) Uninitialized variable: tmp
+[driver/src/qdma_mod.c:]: (error) Uninitialized variable: xpdev
+[driver/src/qdma_mod.c:]: (error) Uninitialized variable: tmp
+[driver/src/qdma_mod.c:]: (error) Uninitialized variable: _xpdev
+[driver/src/qdma_mod.c:]: (error) Uninitialized variable: tmp
+[driver/src/qdma_mod.c:]: (error) Uninitialized variable: xpdev
+[driver/src/qdma_mod.c:]: (error) Uninitialized variable: tmp
+[apps/dma-utils/dmaxfer.c:]: (style) The function 'dmaxfer_perf_run' is never used.
+[apps/dma-utils/dmaxfer.c:]: (style) The function 'dmaxfer_perf_stop' is never used.
+[apps/dma-latency/dmalat.c:]: (style) The function 'dump_thrd_info' is never used.
+[driver/libqdma/qdma_access/qdma_access_common.c:]: (style) The function 'qdma_acc_context_buf_len' is never used.
+[driver/libqdma/qdma_access/qdma_access_common.c:]: (style) The function 'qdma_acc_dump_config_reg_list' is never used.
+[driver/libqdma/qdma_access/qdma_access_common.c:]: (style) The function 'qdma_acc_dump_config_regs' is never used.
+[driver/libqdma/qdma_access/qdma_access_common.c:]: (style) The function 'qdma_acc_dump_queue_context' is never used.
+[driver/libqdma/qdma_access/qdma_access_common.c:]: (style) The function 'qdma_acc_read_dump_queue_context' is never used.
+[driver/libqdma/qdma_regs.c:]: (style) The function 'qdma_device_flr_quirk_check' is never used.
+[driver/libqdma/qdma_regs.c:]: (style) The function 'qdma_device_flr_quirk_set' is never used.
+[driver/libqdma/xdev.c:]: (style) The function 'qdma_device_set_config' is never used.
+[driver/libqdma/qdma_sriov.c:]: (style) The function 'qdma_device_sriov_config' is never used.
+[driver/libqdma/qdma_regs.c:]: (style) The function 'qdma_global_csr_set' is never used.
+[driver/libqdma/thread.c:]: (style) The function 'qdma_kthread_dump' is never used.
+[driver/libqdma/qdma_access/qdma_mbox_protocol.c:]: (style) The function 'qdma_mbox_compose_vf_intr_ctxt_clear' is never used.
+[driver/libqdma/qdma_context.c:]: (style) The function 'qdma_prog_intr_context' is never used.
+[driver/libqdma/qdma_descq.c:]: (style) The function 'qdma_q_desc_get' is never used.
+[apps/dma-utils/dmactl.c:]: (style) The function 'qdma_q_get_state' is never used.
+[driver/libqdma/qdma_descq.c:]: (style) The function 'qdma_q_init_pointers' is never used.
+[driver/libqdma/qdma_descq.c:]: (style) The function 'qdma_queue_avail_desc' is never used.
+[driver/libqdma/qdma_st_c2h.c:]: (style) The function 'qdma_queue_c2h_peek' is never used.
+[driver/libqdma/qdma_regs.c:]: (style) The function 'qdma_queue_cmpl_ctrl' is never used.
+[driver/libqdma/qdma_st_c2h.c:]: (style) The function 'qdma_queue_packet_read' is never used.
+[driver/libqdma/qdma_descq.c:]: (style) The function 'qdma_queue_packet_write' is never used.
+[driver/libqdma/qdma_intr.c:]: (style) The function 'qdma_queue_service' is never used.
+[driver/libqdma/qdma_descq.c:]: (style) The function 'qdma_queue_update_pointers' is never used.
+[driver/libqdma/qdma_regs.c:]: (style) The function 'qdma_set_ring_sizes' is never used.
+[driver/libqdma/libqdma_export.c:]: (style) The function 'qdma_software_version_info' is never used.
+[apps/dma-utils/dmactl_reg.c:]: (style) The function 'reg_dump_range' is never used.
+[driver/libqdma/xdev.c:]: (style) The function 'xdev_find_by_idx' is never used.
+[driver/libqdma/xdev.c:]: (style) The function 'xdev_list_dump' is never used.
+[driver/libqdma/xdev.c:]: (style) The function 'xdev_list_first' is never used.
+[driver/libqdma/xdev.c:]: (style) The function 'xdev_list_next' is never used.
+[driver/libqdma/qdma_sriov.c:]: (style) The function 'xdev_sriov_vf_fmap' is never used.
+[apps/dma-utils/dmactl.c:]: (style) The function 'xnl_msg_add_str_attr' is never used.
+(information) Cppcheck cannot find all the include files (use --check-config for details)

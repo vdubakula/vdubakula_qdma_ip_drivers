@@ -1,0 +1,61 @@
+[qdma_access/qdma_resource_mgmt.c:] -> [qdma_access/qdma_resource_mgmt.c:263]: (style) Variable 'new_entry' is reassigned a value before the old one has been used.
+[qdma_access/qdma_resource_mgmt.c:] -> [qdma_access/qdma_resource_mgmt.c:280]: (style) Variable 'new_entry' is reassigned a value before the old one has been used.
+[qdma_access/qdma_resource_mgmt.c:] -> [qdma_access/qdma_resource_mgmt.c:296]: (style) Variable 'new_entry' is reassigned a value before the old one has been used.
+[qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:]: (style) struct member 'Anonymous0::busy' is never used.
+[qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:]: (style) struct member 'Anonymous0::rsvd' is never used.
+[qdma_access/qdma_soft_access/qdma_soft_access.c:]: (error) Shifting 32-bit value by 38 bits is undefined behaviour
+[qdma_access/qdma_soft_access/qdma_soft_access.c:]: (error) Shifting 32-bit value by 38 bits is undefined behaviour
+[qdma_access/qdma_soft_access/qdma_soft_access.c:]: (error) Shifting 32-bit value by 35 bits is undefined behaviour
+[qdma_access/qdma_soft_access/qdma_soft_access.c:]: (error) Shifting 32-bit value by 61 bits is undefined behaviour
+[qdma_access/qdma_soft_access/qdma_soft_access.c:]: (error) Shifting 32-bit value by 35 bits is undefined behaviour
+[qdma_access/qdma_soft_access/qdma_soft_access.c:]: (error) Shifting 32-bit value by 61 bits is undefined behaviour
+[qdma_access/eqdma_soft_access/EQDMA_register_dump.c:]: (style) The function 'eqdma_config_num_regs_get' is never used.
+[qdma_access/eqdma_soft_access/EQDMA_register_dump.c:]: (style) The function 'eqdma_config_regs_get' is never used.
+[qdma_access/eqdma_soft_access/eqdma_soft_access.c:]: (style) The function 'eqdma_global_csr_conf' is never used.
+[qdma_access/eqdma_soft_access/eqdma_soft_access.c:]: (style) The function 'eqdma_global_writeback_interval_conf' is never used.
+[qdma_access/eqdma_soft_access/eqdma_soft_access.c:]: (style) The function 'eqdma_mm_channel_conf' is never used.
+[qdma_access/qdma_resource_mgmt.c:]: (style) The function 'qdma_get_active_queue_count' is never used.
+[qdma_access/qdma_mbox_protocol.c:]: (style) The function 'qdma_mbox_compose_vf_get_device_active_qcnt' is never used.
+[qdma_access/qdma_mbox_protocol.c:]: (style) The function 'qdma_mbox_compose_vf_intr_ctxt_clear' is never used.
+[qdma_access/qdma_mbox_protocol.c:]: (style) The function 'qdma_mbox_compose_vf_intr_ctxt_invalidate' is never used.
+[qdma_access/qdma_mbox_protocol.c:]: (style) The function 'qdma_mbox_compose_vf_intr_ctxt_read' is never used.
+[qdma_access/qdma_mbox_protocol.c:]: (style) The function 'qdma_mbox_compose_vf_intr_ctxt_write' is never used.
+[qdma_access/qdma_mbox_protocol.c:]: (style) The function 'qdma_mbox_compose_vf_qctxt_clear' is never used.
+[qdma_access/qdma_mbox_protocol.c:]: (style) The function 'qdma_mbox_compose_vf_reset_offline' is never used.
+[qdma_access/qdma_mbox_protocol.c:]: (style) The function 'qdma_mbox_out_status' is never used.
+[qdma_access/qdma_mbox_protocol.c:]: (style) The function 'qdma_mbox_vf_active_queues_get' is never used.
+[qdma_access/qdma_mbox_protocol.c:]: (style) The function 'qdma_mbox_vf_intr_context_get' is never used.
+[qdma_access/qdma_mbox_protocol.c:]: (style) The function 'qdma_mbox_vf_parent_func_id_get' is never used.
+[qdma_common.c:]: (style) The function 'qdma_pci_read_reg' is never used.
+[qdma_common.c:]: (style) The function 'qdma_pci_write_reg' is never used.
+[qdma_common.c:]: (style) The function 'qdma_read_reg' is never used.
+[qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:]: (style) The function 'qdma_s80_hard_global_csr_conf' is never used.
+[qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:]: (style) The function 'qdma_s80_hard_global_writeback_interval_conf' is never used.
+[qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:]: (style) The function 'qdma_s80_hard_mm_channel_conf' is never used.
+[qdma_common.c:]: (style) The function 'qdma_write_reg' is never used.
+[rte_pmd_qdma.c:]: (style) The function 'rte_pmd_qdma_configure_rx_bypass' is never used.
+[rte_pmd_qdma.c:]: (style) The function 'rte_pmd_qdma_configure_tx_bypass' is never used.
+[qdma_xdebug.c:]: (style) The function 'rte_pmd_qdma_dbg_qdesc' is never used.
+[qdma_xdebug.c:]: (style) The function 'rte_pmd_qdma_dbg_qdevice' is never used.
+[qdma_xdebug.c:]: (style) The function 'rte_pmd_qdma_dbg_qinfo' is never used.
+[qdma_xdebug.c:]: (style) The function 'rte_pmd_qdma_dbg_regdump' is never used.
+[rte_pmd_qdma.c:]: (style) The function 'rte_pmd_qdma_dev_cmptq_setup' is never used.
+[rte_pmd_qdma.c:]: (style) The function 'rte_pmd_qdma_dev_cmptq_start' is never used.
+[rte_pmd_qdma.c:]: (style) The function 'rte_pmd_qdma_dev_cmptq_stop' is never used.
+[rte_pmd_qdma.c:]: (style) The function 'rte_pmd_qdma_get_bar_details' is never used.
+[rte_pmd_qdma.c:]: (style) The function 'rte_pmd_qdma_get_device_capabilities' is never used.
+[rte_pmd_qdma.c:]: (style) The function 'rte_pmd_qdma_get_immediate_data_state' is never used.
+[rte_pmd_qdma.c:]: (style) The function 'rte_pmd_qdma_get_pci_func_type' is never used.
+[rte_pmd_qdma.c:]: (style) The function 'rte_pmd_qdma_get_queue_base' is never used.
+[rte_pmd_qdma.c:]: (style) The function 'rte_pmd_qdma_mm_cmpt_process' is never used.
+[rte_pmd_qdma.c:]: (style) The function 'rte_pmd_qdma_set_c2h_descriptor_prefetch' is never used.
+[rte_pmd_qdma.c:]: (style) The function 'rte_pmd_qdma_set_cmpt_descriptor_size' is never used.
+[rte_pmd_qdma.c:]: (style) The function 'rte_pmd_qdma_set_cmpt_overflow_check' is never used.
+[rte_pmd_qdma.c:]: (style) The function 'rte_pmd_qdma_set_cmpt_timer' is never used.
+[rte_pmd_qdma.c:]: (style) The function 'rte_pmd_qdma_set_cmpt_trigger_mode' is never used.
+[rte_pmd_qdma.c:]: (style) The function 'rte_pmd_qdma_set_immediate_data_state' is never used.
+[rte_pmd_qdma.c:]: (style) The function 'rte_pmd_qdma_set_mm_endpoint_addr' is never used.
+[rte_pmd_qdma.c:]: (style) The function 'rte_pmd_qdma_set_queue_mode' is never used.
+[qdma_access/qdma_s80_hard_access/s80_register_dump.c:]: (style) The function 's80_config_num_regs_get' is never used.
+[qdma_access/qdma_s80_hard_access/s80_register_dump.c:]: (style) The function 's80_config_regs_get' is never used.
+(information) Cppcheck cannot find all the include files (use --check-config for details)

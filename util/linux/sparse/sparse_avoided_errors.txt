@@ -1,0 +1,350 @@
+/proj/sw_host/linux/driver/src/cdev.c:: warning: incorrect type in argument 1 (different address spaces)
+/proj/sw_host/linux/driver/src/cdev.c::    expected void const volatile [noderef] <asn:1>*<noident>
+/proj/sw_host/linux/driver/src/cdev.c::    got unsigned char *<noident>
+/proj/sw_host/linux/driver/src/cdev.c:: warning: incorrect type in initializer (different address spaces)
+/proj/sw_host/linux/driver/src/cdev.c::    expected char *buf
+/proj/sw_host/linux/driver/src/cdev.c::    got void [noderef] <asn:1>*buf
+/proj/sw_host/linux/driver/src/cdev.c:: warning: cast removes address space of expression
+/proj/sw_host/linux/driver/src/cdev.c:: warning: incorrect type in argument 2 (different address spaces)
+/proj/sw_host/linux/driver/src/cdev.c::    expected char [noderef] <asn:1>*buf
+/proj/sw_host/linux/driver/src/cdev.c::    got char *<noident>
+/proj/sw_host/linux/driver/src/cdev.c:: warning: cast removes address space of expression
+/proj/sw_host/linux/driver/src/cdev.c:: warning: incorrect type in argument 2 (different address spaces)
+/proj/sw_host/linux/driver/src/cdev.c::    expected char [noderef] <asn:1>*buf
+/proj/sw_host/linux/driver/src/cdev.c::    got char *<noident>
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_platform.c:: warning: context imbalance in 'qdma_reg_access_lock' - wrong count at exit
+/proj/sw_host/linux/driver/src/libqdma/qdma_platform.c:: warning: context imbalance in 'qdma_reg_access_release' - unexpected unlock
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_intr.h:: error: invalid bitfield specifier for type restricted __be64.
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_s80_hard_access/qdma_s80_hard_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/qdma_soft_access/qdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
+/proj/sw_host/linux/driver/src/libqdma/qdma_access/eqdma_soft_access/eqdma_soft_access.c:: warning: constant 0xFFFFFFFFFFFFFFFF is so big it is unsigned long
