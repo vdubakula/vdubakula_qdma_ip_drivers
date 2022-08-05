@@ -86,7 +86,7 @@ def prog_board() {
 		ignore_error({run_as_sudo('update-grub2')})
 
         echo "removing pci devices..."
-        dir('HEAD/proj/util/common/scripts') { script {
+        dir('util/common/scripts') { script {
              ignore_error({run_as_sudo("./pci_remove_device.csh ${PCI_ID}")})
         }}
 
@@ -95,18 +95,18 @@ def prog_board() {
             bitfile_dir ="${env.WORKSPACE}/${BITFILE}"
             echo "${bitfile_dir}" // BITFILE can be set via jenkins job parameter
 			if ("$DEVICETYPE" == "VERSAL_H10") {
-                run_as_sudo('python3.6 HEAD/proj/util/common/scripts/pdu_auto_login.py -u ${PDU_IP} -a 5 -r ${PDU_RELAY}')
+                run_as_sudo('python3.6 util/common/scripts/pdu_auto_login.py -u ${PDU_IP} -a 5 -r ${PDU_RELAY}')
                 sleep 5
-                run_as_sudo('sh HEAD/proj/util/common/scripts/program_versal_h10_pdi.sh ${TARGET_IDX} ${BITFILE}')
+                run_as_sudo('sh util/common/scripts/program_versal_h10_pdi.sh ${TARGET_IDX} ${BITFILE}')
             }else if ("$DEVICETYPE" == "VERSAL") {
-				run_as_sudo('sh HEAD/proj/util/common/scripts/program_versal_pdi.sh ${TARGET_IDX} HEAD/proj/util/common/scripts/spi2vjtag.tcl ${BITFILE} HEAD/proj/util/common/scripts/qdma_versal_mm_st_4pf_252vf.tcl HEAD/proj/util/common/scripts/qdma_versal_msix.tcl')
+				run_as_sudo('sh util/common/scripts/program_versal_pdi.sh ${TARGET_IDX} util/common/scripts/spi2vjtag.tcl ${BITFILE} util/common/scripts/qdma_versal_mm_st_4pf_252vf.tcl util/common/scripts/qdma_versal_msix.tcl')
             }
 	    else if ("$DEVICETYPE" == "VERSAL_ES2") {
-				run_as_sudo('sh HEAD/proj/util/common/scripts/program_versal_es2_pdi.sh ${TARGET_IDX} HEAD/proj/util/common/scripts/versal_es2_jtag_boot.tcl ${BITFILE}')
+				run_as_sudo('sh util/common/scripts/program_versal_es2_pdi.sh ${TARGET_IDX} util/common/scripts/versal_es2_jtag_boot.tcl ${BITFILE}')
             }
             else {
-                run_as_sudo('sh HEAD/proj/util/common/scripts/program_qdma_bitstream.sh ${TARGET_IDX} ${BITFILE}')
-				//run_as_sudo('/proj/xbuilds/2019.2_daily_latest/installs/lin64/Vivado/2019.2/bin/vivado -nolog -nojournal -mode batch -source HEAD/proj/util/common/scripts/program_bitstream.tcl -tclargs 0 0 ${BITFILE}')
+                run_as_sudo('sh util/common/scripts/program_qdma_bitstream.sh ${TARGET_IDX} ${BITFILE}')
+				//run_as_sudo('/proj/xbuilds/2019.2_daily_latest/installs/lin64/Vivado/2019.2/bin/vivado -nolog -nojournal -mode batch -source util/common/scripts/program_bitstream.tcl -tclargs 0 0 ${BITFILE}')
             }
         }}
     }
@@ -141,7 +141,7 @@ pipeline {
         stage('Static Analysis') { steps { script {
             if ("${STATIC_ANALYSIS}" == "1") {
 	            node("${NODE_ADDRESS}") {    
-	                dir("HEAD/proj/util/common/scripts/") {
+	                dir("util/common/scripts/") {
 	                    run_as_sudo('chmod +x ./run_static_analysis.sh')
 	                    run_as_sudo('./run_static_analysis.sh ../../../../../${DRIVER_PATH} ${COMPILE_FLAGS}')
 	                }
@@ -167,10 +167,10 @@ pipeline {
                         run_as_sudo('chmod +x ./*.sh')
                         run_as_sudo('chmod +x ./*.py')
 			if ("$DEVICETYPE" == "VERSAL_H10") {
-				run_as_sudo('./gtest_top.sh ${PCI_BBDDF} ../../../../../../${GTEST_CONFIG_PATH} ../../../../../../${DRIVER_PATH} ../../../../../../${TEST_APP_PATH} pf_vf linux ${CONFIG_BAR} ${COMPILE_FLAGS} CPM5')
+				run_as_sudo('./gtest_top.sh ${PCI_BBDDF} ../../../../${GTEST_CONFIG_PATH} ../../../../${DRIVER_PATH} ../../../../${TEST_APP_PATH} pf_vf linux ${CONFIG_BAR} ${COMPILE_FLAGS} CPM5')
 			}
 			else {
-				run_as_sudo('./gtest_top.sh ${PCI_BBDDF} ../../../../../../${GTEST_CONFIG_PATH} ../../../../../../${DRIVER_PATH} ../../../../../../${TEST_APP_PATH} pf_vf linux ${CONFIG_BAR} ${COMPILE_FLAGS}')
+				run_as_sudo('./gtest_top.sh ${PCI_BBDDF} ../../../../${GTEST_CONFIG_PATH} ../../../../${DRIVER_PATH} ../../../../${TEST_APP_PATH} pf_vf linux ${CONFIG_BAR} ${COMPILE_FLAGS}')
 				
 			}
                     }
