@@ -219,8 +219,10 @@ auto instance_ext::dev_info(unsigned dev_id) -> device::info {
 	info.dev_cap.ip_type = QDMA_LINUX_VERSAL_SOFT_IP;
     } else if (strstr(ip_type, "Versal Hard IP") != NULL) {
 	info.dev_cap.ip_type = QDMA_LINUX_VERSAL_HARD_IP;
-    } else if (strstr(ip_type, "EQDMA Soft IP") != NULL) {
-	info.dev_cap.ip_type = EQDMA_LINUX_SOFT_IP;
+    } else if (strstr(ip_type, "EQDMA4.0 Soft IP") != NULL) {
+        info.dev_cap.ip_type = EQDMA_LINUX_SOFT_IP;
+    } else if (strstr(ip_type, "EQDMA5.0 Soft IP") != NULL) {
+        info.dev_cap.ip_type = EQDMA_LINUX_SOFT_IP;
     } else if (strstr(ip_type, "QDMA Soft IP") != NULL) {
 	info.dev_cap.ip_type = QDMA_LINUX_SOFT_IP;
     } else {
