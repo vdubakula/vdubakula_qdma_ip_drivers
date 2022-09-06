@@ -45,7 +45,7 @@ kill_dmesg_dump()
 	kill -9 ${dm_pid}
 }
 
-cd ../../../../sw_host/linux/
+cd ../../../../drivers/linux/
 ./make_libqdma.sh clean
 ./make_libqdma.sh
 make install-apps
@@ -107,6 +107,6 @@ if (( mode_mask & 0x01 )); then
 	echo "************         FLR Tests Tests for Auto Mode End                  ************"
 fi
 
-cd ../../../../sw_host/linux/
+cd ../../../../drivers/linux/
 make uninstall-mods
 cd -
