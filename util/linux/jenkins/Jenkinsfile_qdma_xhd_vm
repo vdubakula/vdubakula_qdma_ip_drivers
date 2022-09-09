@@ -186,7 +186,7 @@ pipeline {
                              vm_cfg = "\"${VM_1_CONFIG}\" \"${VM_2_CONFIG}\" \"${VM_3_CONFIG}\" \"${VM_4_CONFIG}\" \"${VM_5_CONFIG}\" \"${VM_6_CONFIG}\" \"${VM_7_CONFIG}\" \"${VM_8_CONFIG}\" \"${VM_9_CONFIG}\" \"${VM_10_CONFIG}\""			 
                              
                         echo "vm config ${vm_cfg}"     
-						run_as_sudo("python vm_automation.py \"/home/dpdk/${SCRIPT_PATH}/gtest_scripts/\"  \"./gtest_top.sh ${PCI_BBDDF} ../../../../../../${GTEST_CONFIG_PATH} ../../../../../../${DRIVER_PATH} ../../../../../../${TEST_APP_PATH} vf linux ${CONFIG_BAR} ${COMPILE_FLAGS}\"  \"../../../../../../${DRIVER_PATH}/\" linux ${PCI_BBDDF} ${VM_IMAGE_PATH} ${VM_COUNT} ../../../../../../${GTEST_CONFIG_PATH} default_vf.txt ${VM_RAM} ${NUM_PFS} ${NUM_QUEUES} ${vm_cfg} vfio-pci ${CONFIG_BAR}")
+						run_as_sudo("python vm_automation.py \"/home/dpdk/${SCRIPT_PATH}/gtest_scripts/\"  \"./gtest_top.sh ${PCI_BBDDF} ../../../../${GTEST_CONFIG_PATH} ../../../../${DRIVER_PATH} ../../../../${TEST_APP_PATH} vf linux ${CONFIG_BAR} ${COMPILE_FLAGS}\"  \"../../../../${DRIVER_PATH}/\" linux ${PCI_BBDDF} ${VM_IMAGE_PATH} ${VM_COUNT} ../../../../${GTEST_CONFIG_PATH} default_vf.txt ${VM_RAM} ${NUM_PFS} ${NUM_QUEUES} ${vm_cfg} vfio-pci ${CONFIG_BAR}")
                     }
 					ignore_error({run_as_sudo('rm -rf ${TEST_APP_PATH}/build_linux_pf_vf')})
 					ignore_error({run_as_sudo('rm -rf ${TEST_APP_PATH}/logs')})
