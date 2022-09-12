@@ -1,4 +1,4 @@
-! /usr/bin/env groovy
+#! /usr/bin/env groovy
 
 def get_changes_string() {
     MAX_MSG_LEN = 100
