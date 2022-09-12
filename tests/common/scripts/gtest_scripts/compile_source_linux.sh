@@ -1,6 +1,6 @@
 #!/bin/bash
 
-src_dir=${PWD}/../../../../sw_host/linux
+src_dir=${PWD}/../../../../drivers/linux
 test_dir=${PWD}/../../apps/qdma_test
 compile_flags=
 target="pf_vf"

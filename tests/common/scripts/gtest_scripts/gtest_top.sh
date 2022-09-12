@@ -3,7 +3,7 @@
 pci_bbddf=02000
 cfg_dir=gtest_configs_qdma_soft/default
 drv="linux"
-src_dir=../../../../sw_host/linux
+src_dir=../../../../drivers/linux
 test_dir=../../apps/qdma_test
 config_bar=0
 compile_flags=

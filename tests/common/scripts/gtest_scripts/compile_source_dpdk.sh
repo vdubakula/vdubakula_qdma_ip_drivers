@@ -5,8 +5,8 @@ if [[ $EUID -ne 0 ]]; then
    exit 1
 fi
 
-src_dir=${PWD}/../../../../../sw_host/dpdk
-test_dir=${PWD}/../../../apps/qdma_test
+src_dir=${PWD}/../../../../drivers/dpdk
+test_dir=${PWD}/../../apps/qdma_test
 target="pf_vf"
 compile_flags=
 config_bar=0
