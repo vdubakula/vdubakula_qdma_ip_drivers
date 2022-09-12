@@ -87,7 +87,7 @@ def prog_board() {
 		ignore_error({run_as_sudo('update-grub2')})
 
         echo "removing pci devices..."
-         dir('HEAD/proj/util/common/scripts') { script {
+         dir('util/common/scripts') { script {
              ignore_error({run_as_sudo("./pci_remove_device.csh ${PCI_ID}")})
         }}
 
