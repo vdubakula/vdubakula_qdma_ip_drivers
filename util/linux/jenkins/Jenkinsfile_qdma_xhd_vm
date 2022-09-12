@@ -141,7 +141,7 @@ pipeline {
 	            node("${NODE_ADDRESS}") {    
 	                dir("${SCRIPT_PATH}/../linux") {
 	                    run_as_sudo('chmod +x ./run_static_analysis.sh')
-	                    run_as_sudo('./run_static_analysis.sh ../../../../../../${DRIVER_PATH} ${COMPILE_FLAGS}')
+	                    run_as_sudo('./run_static_analysis.sh ../../../../${DRIVER_PATH} ${COMPILE_FLAGS}')
 	                }
 	            }
             }

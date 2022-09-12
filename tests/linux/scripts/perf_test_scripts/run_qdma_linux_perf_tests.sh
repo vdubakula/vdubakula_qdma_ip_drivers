@@ -8,9 +8,9 @@ if [ ! -z $1 ]; then
 fi;
 pci_bus=${bbddf:0:2}
 
-src_dir=${PWD}../../../../../../sw_host/linux/
+src_dir=${PWD}../../../../drivers/linux/
 if [ ! -z $2 ]; then
-	src_dir=${PWD}/../../../../../../$2 #path w.r.t HEAD
+	src_dir=${PWD}/../../../../$2 #path w.r.t HEAD
 fi;
 
 cfg_dir="dmaperf_configs"
