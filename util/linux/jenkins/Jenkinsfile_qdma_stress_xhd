@@ -1,0 +1,178 @@
+#! /usr/bin/env groovy
+
+def get_changes_string() {
+    MAX_MSG_LEN = 100
+
+    def change_sets = currentBuild.changeSets.unique()
+    if (change_sets.size() == 0) {
+        return " - No new changes"
+    }
+
+    def change_string = ""
+    for (entry in change_sets[0].items) {
+        change_string += "${entry.commitId} [${entry.author}]:<br/>- ${entry.msg}<br/>"
+    }
+
+    return change_string
+}
+
+def run_as_sudo(shell_command) {
+    sh 'echo "#ces#2022#dsamd#" | sudo -S ' + shell_command
+}
+
+def reboot_target(target_hostname) {
+    try {
+        timeout(20) { //minutes
+            // assume running on master node
+            sh "ssh -o StrictHostKeyChecking=no -l cadman ${target_hostname} /usr/bin/sudo -S /sbin/reboot" //schedule reboot in 1 min
+        }
+    } catch (e) {        
+        sleep 300 // seconds, give some time for reboot
+        waitUntil { // wait until ssh port is open
+            def ret = sh script: "nc -w 20 -z ${target_hostname} 22 > /dev/null", returnStatus: true
+            return (ret == 0)
+        }
+    }
+
+    node(target_hostname) { // confirm jenkins slave is up
+        sh 'uptime; echo $(hostname) ONLINE'
+    }    
+}
+
+def ignore_error(func, err_msg = "ignored error") {
+    try {
+        func()
+    } catch (err) {
+        echo "$err_msg"
+    }
+}
+
+def send_build_result_email(recipients) {
+    emailext(to: "${recipients}",
+        mimeType: 'text/html',
+        from: 'jenkinsrobot@xilinx.com',
+        subject: "${currentBuild.fullDisplayName}: ${currentBuild.currentResult}",
+        attachmentsPattern: '**/*.xlsx',
+        body: """<p>Project: ${currentBuild.fullDisplayName}<br/>
+                Result: ${currentBuild.currentResult}<br/>
+                Bitfile: ${BITFILE}<br/>
+                Config: ${GTEST_CONFIG_PATH}<br/>
+                Changes:<br/>
+                ${get_changes_string()}<br/>
+                <br/>
+                For more details please go to <a href=${env.JOB_URL}>${env.JOB_NAME}</a></p>""");
+}
+
+def remove_drivers() {
+    node("${NODE_ADDRESS}") {
+        ignore_error({run_as_sudo('/sbin/rmmod qdma')})
+            ignore_error({run_as_sudo('/sbin/rmmod qdma_vf')})
+    }
+}
+
+def prog_board() {
+
+    echo "programming HW"
+
+    node("${NODE_ADDRESS}") {
+        echo "Remove any previous driver (if needed)"
+        dir("${DRIVER_PATH}") { script {
+            remove_drivers()
+        }}
+
+        echo "removing pci devices..."
+        dir('util/common/scripts') { script {
+             ignore_error({run_as_sudo("./pci_remove_device.csh ${PCI_ID}")})
+        }}
+
+        echo "uploading bitstream..."
+        dir('.') { script {
+            bitfile_dir ="${env.WORKSPACE}/${BITFILE}"
+            echo "${bitfile_dir}" // BITFILE can be set via jenkins job parameter
+			if ("$DEVICETYPE" == "VERSAL") {
+				run_as_sudo('sh util/common/scripts/program_versal_pdi.sh ${TARGET_IDX} util/common/scripts/spi2vjtag.tcl ${BITFILE} util/common/scripts/qdma_versal_mm_st_4pf_252vf.tcl util/common/scripts/qdma_versal_msix.tcl')
+            }
+            else {
+                run_as_sudo('sh util/common/scripts/program_qdma_bitstream.sh ${TARGET_IDX} ${BITFILE}')
+				//run_as_sudo('"${VIVADO_PATH}" -nolog -nojournal -mode batch -source HEAD/proj/util/common/scripts/program_bitstream.tcl -tclargs ${BOARD_IDX} 0 ${BITFILE}')
+            }
+        }}
+    }
+
+    script { // on master node
+        echo "rebooting target machine..."
+        reboot_target("${NODE_ADDRESS}")
+    }
+    
+    node("${NODE_ADDRESS}") {
+        echo "make BAR resources accessible for jenkins user"
+        run_as_sudo("chmod a+rw /sys/bus/pci/devices/0000:${PCI_ID}/resource*") 
+    }
+    
+    echo "HW programming done"
+}
+
+pipeline {
+    agent { node { label 'master' } }
+    options {
+        disableConcurrentBuilds()
+        skipDefaultCheckout(true)
+    }
+    stages {
+        stage('Checkout') { steps { // 
+            node("${NODE_ADDRESS}") {
+                //deleteDir()
+                checkout scm
+            }
+        }}
+        
+        stage('Static Analysis') { steps { script {
+            if ("${STATIC_ANALYSIS}" == "1") {
+	            node("${NODE_ADDRESS}") {    
+	                dir("util/common/scripts/") {
+	                    run_as_sudo('chmod +x ./run_static_analysis.sh')
+	                    run_as_sudo('./run_static_analysis.sh ../../../${DRIVER_PATH} ${COMPILE_FLAGS}')
+	                }
+	            }
+            }
+        }}}
+        
+        stage('Testing') { steps { script {
+	    System.setProperty("org.jenkinsci.plugins.durabletask.BourneShellScript.HEARTBEAT_CHECK_INTERVAL", "3800");
+            try {
+                prog_board()
+            
+                echo "Remove any existing driver"
+                remove_drivers()
+
+                node("${NODE_ADDRESS}") {
+                    echo "Starting Test Execution"
+                    dir("${SCRIPT_PATH}") {
+                        run_as_sudo('chmod +x ./stress_test_top.sh')
+                        run_as_sudo('./stress_test_top.sh ${PCI_BBDDF} $MODE ${TIME} $TOTAL_QUEUES $OVERRIDE_PF_NVF')
+                    }
+                    ignore_error({run_as_sudo('chmod 0777 ${SCRIPT_PATH}/stress_test_report_*.xlsx')})
+                    ignore_error({archiveArtifacts artifacts: "${SCRIPT_PATH}/stress_test_report_2*.xlsx", fingerprint: true})
+					ignore_error({run_as_sudo('chmod 0777 ${SCRIPT_PATH}/dmesg*.log')})
+					ignore_error({archiveArtifacts artifacts: "${SCRIPT_PATH}/dmesg*.log", fingerprint: true})
+					ignore_error({run_as_sudo('rm -f ${SCRIPT_PATH}/stress_test_report_*.xlsx')})
+					ignore_error({run_as_sudo('rm -f ${SCRIPT_PATH}/dmesg*.log')})
+					
+                }
+            } catch (e) {
+                echo "Error during test"
+                throw e
+            }
+        }}}
+    }
+    
+    post {
+    
+        always { script {
+            // EMAIL_RECIPIENTS can be set via jenkins job parameter
+            echo "Emailing build results to: ${EMAIL_RECIPIENTS}"
+            send_build_result_email("${EMAIL_RECIPIENTS}")
+        }}
+        
+    }
+}

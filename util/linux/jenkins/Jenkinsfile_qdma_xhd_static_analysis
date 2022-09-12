@@ -1,0 +1,123 @@
+#! /usr/bin/env groovy
+
+def get_changes_string() {
+    MAX_MSG_LEN = 100
+
+    def change_sets = currentBuild.changeSets.unique()
+    if (change_sets.size() == 0) {
+        return " - No new changes"
+    }
+
+    def change_string = ""
+    for (entry in change_sets[0].items) {
+        change_string += "${entry.commitId} [${entry.author}]:<br/>- ${entry.msg}<br/>"
+    }
+
+    return change_string
+}
+
+def run_as_sudo(shell_command) {
+    sh 'echo "#ces#2022#dsamd#" | sudo -S ' + shell_command
+}
+
+def reboot_target(target_hostname) {
+    try {
+        timeout(20) { //minutes
+            // assume running on master node
+            sh "ssh -t -o StrictHostKeyChecking=no -l cadman ${target_hostname} /usr/bin/sudo -S /sbin/reboot" //schedule reboot in 1 min
+        }
+    } catch (e) {        
+        sleep 300 // seconds, give some time for reboot
+        waitUntil { // wait until ssh port is open
+            def ret = sh script: "nc -w 20 -z ${target_hostname} 22 > /dev/null", returnStatus: true
+            return (ret == 0)
+        }
+    }
+
+    node(target_hostname) { // confirm jenkins slave is up
+        sh 'uptime; echo $(hostname) ONLINE'
+    }    
+}
+
+def ignore_error(func, err_msg = "ignored error") {
+    try {
+        func()
+    } catch (err) {
+        echo "$err_msg"
+    }
+}
+
+def send_build_result_email(recipients) {
+    emailext(to: "${recipients}",
+        mimeType: 'text/html',
+        from: 'jenkinsrobot@xilinx.com',
+        subject: "${currentBuild.fullDisplayName}: ${currentBuild.currentResult}",
+        attachmentsPattern: '**/*.xlsx',
+        body: """<p>Project: ${currentBuild.fullDisplayName}<br/>
+                Result: ${currentBuild.currentResult}<br/>
+                Changes:<br/>
+                ${get_changes_string()}<br/>
+                <br/>
+                For more details please go to <a href=${env.JOB_URL}>${env.JOB_NAME}</a></p>""");
+}
+
+pipeline {
+    agent { node { label 'master' } }
+    options {
+        disableConcurrentBuilds()
+        skipDefaultCheckout(true)
+    }
+    stages {
+        stage('Checkout') { steps { // 
+            node("${NODE_ADDRESS}") {
+                //deleteDir()
+                checkout scm
+            }
+        }}
+        
+        stage('Testing') { steps { script {
+	    System.setProperty("org.jenkinsci.plugins.durabletask.BourneShellScript.HEARTBEAT_CHECK_INTERVAL", "3800");
+            try {
+                node("${NODE_ADDRESS}") {
+                    echo "Starting Test Execution"
+                    dir("${DRIVER_PATH}") {
+					    run_as_sudo('rm -rf ../../util/common/coverity/config/output_*')
+						run_as_sudo('rm -rf output.tar.gz')
+                        run_as_sudo('chmod +x ./*.sh')
+                        if ("${STATIC_ANALYSIS}" == "1") {
+                            run_as_sudo('sed -i s/coverity_mandate=0/coverity_mandate=1/g make_libqdma.sh')
+						    run_as_sudo('sed -i s/cppchecker_mandate=0/cppchecker_mandate=1/g make_libqdma.sh')
+						    run_as_sudo('sed -i s/sparse_mandate=0/sparse_mandate=1/g make_libqdma.sh')
+                        }
+                        if ("${TEST_QDMA_ACCESS}" == "1") {
+						    run_as_sudo('sed -i s/qdma_access_test=0/qdma_access_test=1/g make_libqdma.sh')
+                        }
+                        if ("${TEST_KTF}" == "1") {
+						    run_as_sudo('sed -i s/ktf_test=0/ktf_test=1/g make_libqdma.sh')
+                        }
+                        run_as_sudo('./make_libqdma.sh')
+						run_as_sudo('tar -cvf output.tar.gz ../../util/common/coverity/config/output_*')
+						run_as_sudo('chmod -R 0777 output* cpp*.txt sparse*.txt')
+                    }
+				}
+            } catch (e) {
+                echo "Error during test"
+                throw e
+            }
+        }}}
+    }
+    
+    post {
+        always { script {
+			node("${NODE_ADDRESS}") {
+				ignore_error({archiveArtifacts artifacts: '${DRIVER_PATH}/output.tar.gz', fingerprint: true})
+				ignore_error({archiveArtifacts artifacts: '${DRIVER_PATH}/cpp*.txt', fingerprint: true})
+				ignore_error({archiveArtifacts artifacts: '${DRIVER_PATH}/sparse*.txt', fingerprint: true})
+			}	
+            // EMAIL_RECIPIENTS can be set via jenkins job parameter
+            echo "Emailing build results to: ${EMAIL_RECIPIENTS}"
+            send_build_result_email("${EMAIL_RECIPIENTS}")
+        }}
+        
+    }
+}
