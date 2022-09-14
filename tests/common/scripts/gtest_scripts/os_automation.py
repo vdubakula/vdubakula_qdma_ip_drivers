@@ -57,33 +57,33 @@ def test_os(pf_vf, src_dict, logs_dir, vm_img, printos=True):
 	global compile_once
 	drv_used = "linux"
 	nb_vms = nb_pf + 4
-	gtest_script_path = "/home/dpdk/Test/sw_test/common/scripts/gtest_scripts/"
+	gtest_script_path = "/home/dpdk/tests/common/scripts/gtest_scripts/"
 	gtest_cmd = ""
 	if pf_vf == "default_pf" :
 		os.system("rmmod vfio-pci")
 		os.system("rm /etc/modprobe.d/vfio.conf")
 		if EQDMA == 1:
 			os.system("echo \"options vfio-pci ids=10EE:903F,10EE:913F,10EE:923F,10EE:933F\" >> /etc/modprobe.d/vfio.conf")
-			gtest_cmd = "./gtest_top.sh pci_dev_list.txt gtest_configs_eqdma/os_automation/default_pf ../../../../sw_host/linux ../../../../sw_test/common/apps/qdma_test pf_vf linux 0"
+			gtest_cmd = "./gtest_top.sh pci_dev_list.txt gtest_configs_eqdma/os_automation/default_pf ../../../../drivers/linux ../../../../tests/common/apps/qdma_test pf_vf linux 0"
 		elif Ultrascale == 1:
 			os.system("echo \"options vfio-pci ids=10EE:903F,10EE:913F,10EE:923F,10EE:933F\" >> /etc/modprobe.d/vfio.conf")
-			gtest_cmd = "./gtest_top.sh pci_dev_list.txt gtest_configs_qdma_soft/os_automation/default_pf ../../../../sw_host/linux ../../../../sw_test/common/apps/qdma_test pf_vf linux 0"
+			gtest_cmd = "./gtest_top.sh pci_dev_list.txt gtest_configs_qdma_soft/os_automation/default_pf ../../../../drivers/linux ../../../../tests/common/apps/qdma_test pf_vf linux 0"
 		else :
 			os.system("echo \"options vfio-pci ids=10EE:B03F,10EE:B13F,10EE:B23F,10EE:B33F\" >> /etc/modprobe.d/vfio.conf")
-			gtest_cmd = "./gtest_top.sh pci_dev_list.txt gtest_configs_qdma_hard_s80/os_automation/default_pf ../../../../sw_host/linux ../../../../sw_test/common/apps/qdma_test pf_vf linux 0"
+			gtest_cmd = "./gtest_top.sh pci_dev_list.txt gtest_configs_qdma_hard_s80/os_automation/default_pf ../../../../drivers/linux ../../../../tests/common/apps/qdma_test pf_vf linux 0"
 		os.system("modprobe vfio-pci")
 	elif pf_vf == "default_vf" :
 		os.system("rmmod vfio-pci")
 		os.system("rm /etc/modprobe.d/vfio.conf")
 		if EQDMA == 1:
 			os.system("echo \"options vfio-pci ids=10EE:A03F,10EE:A13F,10EE:A23F,10EE:A33F\" >> /etc/modprobe.d/vfio.conf")
-			gtest_cmd = "./gtest_top.sh 00400 gtest_configs_eqdma/os_automation/default_vf ../../../../sw_host/linux ../../../../sw_test/common/apps/qdma_test vf linux 0"
+			gtest_cmd = "./gtest_top.sh 00400 gtest_configs_eqdma/os_automation/default_vf ../../../../drivers/linux ../../../../tests/common/apps/qdma_test vf linux 0"
 		elif Ultrascale == 1:
 			os.system("echo \"options vfio-pci ids=10EE:A03F,10EE:A13F,10EE:A23F,10EE:A33F\" >> /etc/modprobe.d/vfio.conf")
-			gtest_cmd = "./gtest_top.sh 00400 gtest_configs_qdma_soft/os_automation/default_vf ../../../../sw_host/linux ../../../../sw_test/common/apps/qdma_test vf linux 0"
+			gtest_cmd = "./gtest_top.sh 00400 gtest_configs_qdma_soft/os_automation/default_vf ../../../../drivers/linux ../../../../tests/common/apps/qdma_test vf linux 0"
 		else:
 			os.system("echo \"options vfio-pci ids=10EE:C03F,10EE:C13F,10EE:C23F,10EE:C33F\" >> /etc/modprobe.d/vfio.conf")
-			gtest_cmd = "./gtest_top.sh 00400 gtest_configs_qdma_hard_s80/os_automation/default_vf ../../../../sw_host/linux ../../../../sw_test/common/apps/qdma_test vf linux 0"
+			gtest_cmd = "./gtest_top.sh 00400 gtest_configs_qdma_hard_s80/os_automation/default_vf ../../../../drivers/linux ../../../../tests/common/apps/qdma_test vf linux 0"
 		os.system("modprobe vfio-pci")
 
 
@@ -149,21 +149,21 @@ def test_os(pf_vf, src_dict, logs_dir, vm_img, printos=True):
 		s.sendline ('rm -rf /home/dpdk/*')
 		s.prompt()
 		print s.before
-		s.sendline ('mkdir -p /home/dpdk/Test/{sw_host/{linux,qdma_access},sw_test/common/scripts/gtest_scripts,sw_test/common/apps/qdma_test}')
+		s.sendline ('mkdir -p /home/dpdk//{drivers/{linux,qdma_access},tests/common/scripts/gtest_scripts,tests/common/apps/qdma_test}')
 		s.prompt()
 		print s.before
-		s.sendline ('cd /home/dpdk/Test')
+		s.sendline ('cd /home/dpdk/')
 		s.prompt()
 		print s.before
 		s.sendline ('chmod -R 0777 ./*')
 		s.prompt()
 		print s.before
 		#checking if sw_host and sw_test dirs are present
-		if (os.path.isdir(src_dict + 'sw_host') and os.path.isdir(src_dict + 'sw_test')) :
-			os.system("sshpass -p dpdk scp -o StrictHostKeyChecking=no -P " + str(base_port) + " -r " + src_dict + "sw_host/linux/*  dpdk@127.0.0.1:/home/dpdk/Test/sw_host/linux/")
-			os.system("sshpass -p dpdk scp -o StrictHostKeyChecking=no -P " + str(base_port) + " -r " + src_dict + "sw_host/qdma_access/*  dpdk@127.0.0.1:/home/dpdk/Test/sw_host/qdma_access/")
-			os.system("sshpass -p dpdk scp -o StrictHostKeyChecking=no -P " + str(base_port) + " -r " + src_dict + "sw_test/common/scripts/gtest_scripts/*  dpdk@127.0.0.1:/home/dpdk/Test/sw_test/common/scripts/gtest_scripts/")							
-			os.system("sshpass -p dpdk scp -o StrictHostKeyChecking=no -P " + str(base_port) + " -r " + src_dict + "sw_test/common/apps/qdma_test/*  dpdk@127.0.0.1:/home/dpdk/Test/sw_test/common/apps/qdma_test/")
+		if (os.path.isdir(src_dict + 'drivers') and os.path.isdir(src_dict + 'tests')) :
+			os.system("sshpass -p dpdk scp -o StrictHostKeyChecking=no -P " + str(base_port) + " -r " + src_dict + "drivers/linux/*  dpdk@127.0.0.1:/home/dpdk/drivers/linux/")
+			os.system("sshpass -p dpdk scp -o StrictHostKeyChecking=no -P " + str(base_port) + " -r " + src_dict + "drivers/qdma_access/*  dpdk@127.0.0.1:/home/dpdk/drivers/qdma_access/")
+			os.system("sshpass -p dpdk scp -o StrictHostKeyChecking=no -P " + str(base_port) + " -r " + src_dict + "tests/common/scripts/gtest_scripts/*  dpdk@127.0.0.1:/home/dpdk/tests/common/scripts/gtest_scripts/")							
+			os.system("sshpass -p dpdk scp -o StrictHostKeyChecking=no -P " + str(base_port) + " -r " + src_dict + "tests/common/apps/qdma_test/*  dpdk@127.0.0.1:/home/dpdk/tests/common/apps/qdma_test/")
 		else :
 			print "Invalid Directory hence exiting"
 			s.sendline ("shutdown -h 1")
@@ -171,7 +171,7 @@ def test_os(pf_vf, src_dict, logs_dir, vm_img, printos=True):
 			print s.before
 			exit()
 
-		s.sendline ('ls /home/dpdk/Test/sw_test/common/apps/qdma_test/')
+		s.sendline ('ls /home/dpdk/tests/common/apps/qdma_test/')
 		s.prompt()
 		print s.before
 		s.sendline ('echo "OS Under Test"')
@@ -273,7 +273,7 @@ for vm_img in range(0, len(vm_imgs_path)):
 
 	os.system("tar -cvzf " + log_path[len(log_path) - 1] + "_logs.tar.gz " + log_path[len(log_path) - 1])
 
-os.system("cd " + driver_path +"/sw_host/linux ; make uninstall-mods")
+os.system("cd " + driver_path +"/drivers/linux ; make uninstall-mods")
 result_file.close()
 result_file = open("Result.txt", "r")	
 result = result_file.read()
