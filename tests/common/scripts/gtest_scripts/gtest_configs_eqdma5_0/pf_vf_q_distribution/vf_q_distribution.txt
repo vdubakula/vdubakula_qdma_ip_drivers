@@ -1,0 +1,15 @@
+name=vf_q_distribution
+test_mask=0x0D #bit 0 - auto mode, 1 - poll mode, bit 2 - intr mode, bit 3 - aggr mode
+repeat=1 #number of iterations
+filter=-*ST016_64B_desc*:*DMACTL*:*DEBUGFS*:*NT014*:*PCIE003*:*CFG002*
+master_pf=0
+run_gtest=1
+pf_qmax_cfg_en=(1 1 1 1)
+pf_qmax=(0 0 0 0)
+pf_nvf=(64 64 64 60) #number of VFs in PF
+vf_pf0_qmax=(2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 4 0 2 2 2 2 2 2 2 2 2 2 2 8 0 0 0 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 2 16 0 0 0 0 0 0 0) #q distribution for vf of pf1 - 128
+vf_pf1_qmax=(0 1 1 4 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 16 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 8 0 0 0 0 0 0 0) #q distribution for vf of pf2 - 64 queues
+vf_pf2_qmax=(0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 1 1 1 1 1 0 0 1 1 1 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 0) #q distribution for vf of pf3 - 32 queues
+vf_pf3_qmax=(1 1 1 1 0 0 0 0 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 0 1 1 1 0 0 0 0 1 1 1 1 0 0 0 0 0 0 0 4 0 0 0 0 0 1 1)  #q distribution for vf of pf3 - 32 queues
+valid_drv=(linux dpdk)
+#necessary dummy line
