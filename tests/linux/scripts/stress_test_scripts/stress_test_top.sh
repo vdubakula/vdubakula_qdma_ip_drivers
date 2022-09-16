@@ -48,7 +48,7 @@ cp stress_test_report_template.xlsx $test_report
 dmesg -w > dmesg_log_${timestamp}.log &
 dm_pid=$!
 trap kill_dmesg_dump EXIT
-cd ../../../../sw_host/linux/
+cd ../../../../drivers/linux/
 ./make_libqdma.sh clean
 ./make_libqdma.sh
 make install-apps
@@ -240,7 +240,7 @@ function run_stress_test()
 	rm -rf /etc/modprobe.d/qdma.conf
 	cp conf_file /etc/modprobe.d/qdma.conf
 	rm -rf conf_file
-	cd ../../../../sw_host/linux/
+	cd ../../../../drivers/linux/
 	make install-mods
 	if [[ ( "$target" == "pf" ) || ( "$target" == "pf_vf" ) ]]; then
 		modprobe qdma-pf
@@ -260,7 +260,7 @@ function run_stress_test()
 	if [[ ( "$target" == "pf" ) || ( "$target" == "pf_vf" ) ]]; then
 		rmmod qdma-pf
 	fi
-	cd ../../../../sw_host/linux/
+	cd ../../../../drivers/linux/
 	make uninstall-mods
 	cd -
 }

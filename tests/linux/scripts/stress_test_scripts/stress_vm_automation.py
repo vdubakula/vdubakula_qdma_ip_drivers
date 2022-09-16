@@ -23,7 +23,7 @@ VM_CFG_START = 8
 
 #-----------------------------------------------------
 #Path to /HEAD or /REL or /DEV branches
-workspace_path = "../../../../../../"
+workspace_path = "../../../../"
 
 program_name = sys.argv[0]
 arg_count = len(sys.argv)
@@ -32,7 +32,7 @@ if arg_count < 7 :
     print("Invalid commandline args !!\n")
     print("Python script will launch VM, run the stress test and store the result in tar file with the VM name\n")
     print("Usage : python " + program_name + " <stress_script_path>  <stress_command_command> <host_drv_path> <driver_used> <bdf> <vm_count(say n)> <vm1_config> <vm2_config> ... <vm-n_config>\n")
-    print("Example : python " + program_name + " \"/home/dpdk/stress_test/sw_test/linux/scripts/stress_test_scripts\" \"./stress_test_top.sh 04000 15 00:00:10 28 1 vf\" \"../../../../sw_host/linux/\" linux 06000 /scratch/ 1 \"1 1 1 1\"")
+    print("Example : python " + program_name + " \"/home/dpdk/tests/linux/scripts/stress_test_scripts\" \"./stress_test_top.sh 04000 15 00:00:10 28 1 vf\" \"../../../../drivers/linux/\" linux 06000 /scratch/ 1 \"1 1 1 1\"")
     sys.exit(0)
 
 #intitialize all Pfs numvfs to '0'.
@@ -129,10 +129,10 @@ try:
         s.sendline ('rm -rf /home/dpdk/*')
         s.prompt()
         print s.before
-        s.sendline ('mkdir -p /home/dpdk/stress_test/{sw_host/{linux,qdma_access},sw_test/linux/scripts/}')
+        s.sendline ('mkdir -p /home/dpdk/{drivers/{linux,qdma_access},tests/linux/scripts/}')
         s.prompt()
         print s.before
-        s.sendline ('cd /home/dpdk/stress_test')
+        s.sendline ('cd /home/dpdk/')
         s.prompt()
         print s.before
         s.sendline ('chmod -R 0777 ./*')
@@ -140,10 +140,10 @@ try:
         print s.before
         src_dict="../../../../"
         #checking if sw_host and sw_test dirs are present
-        if (os.path.isdir(src_dict + 'sw_host') and os.path.isdir(src_dict + 'sw_test')) :
-            os.system("sshpass -p dpdk scp -o StrictHostKeyChecking=no -P " + str(port) + " -r " + src_dict + "sw_host/linux/*  root@127.0.0.1:/home/dpdk/stress_test/sw_host/linux/")
-            os.system("sshpass -p dpdk scp -o StrictHostKeyChecking=no -P " + str(port) + " -r " + src_dict + "sw_host/qdma_access/*  root@127.0.0.1:/home/dpdk/stress_test/sw_host/qdma_access/")
-            os.system("sshpass -p dpdk scp -o StrictHostKeyChecking=no -P " + str(port) + " -r " + src_dict + "sw_test/linux/scripts/*  root@127.0.0.1:/home/dpdk/stress_test/sw_test/linux/scripts/")
+        if (os.path.isdir(src_dict + 'drivers') and os.path.isdir(src_dict + 'tests')) :
+            os.system("sshpass -p dpdk scp -o StrictHostKeyChecking=no -P " + str(port) + " -r " + src_dict + "drivers/linux/*  root@127.0.0.1:/home/dpdk/drivers/linux/")
+            os.system("sshpass -p dpdk scp -o StrictHostKeyChecking=no -P " + str(port) + " -r " + src_dict + "drivers/qdma_access/*  root@127.0.0.1:/home/dpdk/drivers/qdma_access/")
+            os.system("sshpass -p dpdk scp -o StrictHostKeyChecking=no -P " + str(port) + " -r " + src_dict + "tests/linux/scripts/*  root@127.0.0.1:/home/dpdk/tests/linux/scripts/")
         else :
             print "Invalid Directory hence exiting"
             s.sendline ("shutdown -h 1")
@@ -153,7 +153,7 @@ try:
         s.sendline ('echo --------------------------------------------vm_'+ str(vm_id) +'logs---------------------------------------------------------------')
         s.prompt()
         print s.before
-        s.sendline ('cd /home/dpdk/stress_test/sw_host/linux')
+        s.sendline ('cd /home/dpdk/drivers/linux')
         s.prompt()
         print s.before
         s.sendline ('ls -ll')
