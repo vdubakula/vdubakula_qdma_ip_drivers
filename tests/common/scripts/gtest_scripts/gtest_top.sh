@@ -77,7 +77,7 @@ if [ $enable_compile == 1 ]; then
 			exit 1
 		fi
 	elif [ $drv == "dpdk" ]; then
-		dpdk_src=../../../../../incoming/dpdk/dpdk-sources/
+		dpdk_src=../../../../incoming/dpdk/dpdk-sources/
 		./compile_source_dpdk.sh ${src_dir} ${test_dir} ${dpdk_src} ${target} ${config_bar} ${compile_flags}
 	else
 		echo "Invalid driver chosen"
