@@ -162,7 +162,7 @@ def test_os(pf_vf, src_dict, logs_dir, vm_img, printos=True):
 		if (os.path.isdir(src_dict + 'drivers') and os.path.isdir(src_dict + 'tests')) :
 			os.system("sshpass -p dpdk scp -o StrictHostKeyChecking=no -P " + str(base_port) + " -r " + src_dict + "drivers/linux/*  dpdk@127.0.0.1:/home/dpdk/drivers/linux/")
 			os.system("sshpass -p dpdk scp -o StrictHostKeyChecking=no -P " + str(base_port) + " -r " + src_dict + "drivers/qdma_access/*  dpdk@127.0.0.1:/home/dpdk/drivers/qdma_access/")
-			os.system("sshpass -p dpdk scp -o StrictHostKeyChecking=no -P " + str(base_port) + " -r " + src_dict + "tests/common/scripts/gtest_scripts/*  dpdk@127.0.0.1:/home/dpdk/tests/common/scripts/gtest_scripts/")							
+			os.system("sshpass -p dpdk scp -o StrictHostKeyChecking=no -P " + str(base_port) + " -r " + src_dict + "tests/common/scripts/gtest_scripts/*  dpdk@127.0.0.1:/home/dpdk/tests/common/scripts/gtest_scripts/")	
 			os.system("sshpass -p dpdk scp -o StrictHostKeyChecking=no -P " + str(base_port) + " -r " + src_dict + "tests/common/apps/qdma_test/*  dpdk@127.0.0.1:/home/dpdk/tests/common/apps/qdma_test/")
 		else :
 			print "Invalid Directory hence exiting"
@@ -269,13 +269,13 @@ for vm_img in range(0, len(vm_imgs_path)):
 	print "     Testing VF" 
 	##Test OS with VFs attached
 	test_os("default_vf", driver_path, log_path[len(log_path) - 1], vm_imgs_path[vm_img], False)
-	print "     Tested VF" 
+	print "     Tested VF"
 
 	os.system("tar -cvzf " + log_path[len(log_path) - 1] + "_logs.tar.gz " + log_path[len(log_path) - 1])
 
 os.system("cd " + driver_path +"/drivers/linux ; make uninstall-mods")
 result_file.close()
-result_file = open("Result.txt", "r")	
+result_file = open("Result.txt", "r")
 result = result_file.read()
 print "\n\n\n"
 print "--------------------------------------------------------------------------------------------------------"
