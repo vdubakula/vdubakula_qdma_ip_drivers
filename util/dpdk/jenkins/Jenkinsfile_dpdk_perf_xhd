@@ -1,0 +1,238 @@
+#! /usr/bin/env groovy
+
+def get_changes_string() {
+	MAX_MSG_LEN = 100
+
+	def change_sets = currentBuild.changeSets.unique()
+	if (change_sets.size() == 0) {
+		return " - No new changes"
+	}
+
+	def change_string = ""
+	for (entry in change_sets[0].items) {
+		change_string += "${entry.commitId} [${entry.author}]:<br/>- ${entry.msg}<br/>"
+	}
+
+	return change_string
+}
+
+def run_as_sudo(shell_command) {
+	sh 'echo "#ces#2022#dsamd#" | sudo -S ' + shell_command
+}
+
+def reboot_target(target_hostname) {
+	try {
+        timeout(20) { //minutes
+            // assume running on master node
+            //sh "ssh -o StrictHostKeyChecking=no -l cadman ${target_hostname} /usr/bin/sudo /sbin/reboot" //schedule reboot in 1 min
+					node("${NODE_ADDRESS}")  {
+			    run_as_sudo('reboot')
+			}
+
+        }
+    } catch (e) {
+        sleep 300 // seconds, give some time for reboot
+        waitUntil { // wait until ssh port is open
+            def ret = sh script: "nc -w 20 -z ${target_hostname} 22 > /dev/null", returnStatus: true
+            return (ret == 0)
+        }
+    }
+
+    node(target_hostname) { // confirm jenkins slave is up
+        sh 'uptime; echo $(hostname) ONLINE'
+    }
+}
+
+def ignore_error(func, err_msg = "ignored error") {
+	try {
+		func()
+	} catch (err) {
+		echo "$err_msg"
+	}
+}
+
+def send_build_result_email(recipients) {
+	mail(to: "${recipients}",
+	mimeType: 'text/html',
+	from: 'jenkinsrobot@xilinx.com',
+	subject: "${currentBuild.fullDisplayName}: ${currentBuild.currentResult}",
+	body: """<p>Project: ${currentBuild.fullDisplayName}<br/>
+	Result: ${currentBuild.currentResult}<br/>
+	Bitfile: ${BITFILE}<br/>
+	Changes:<br/>
+	${get_changes_string()}<br/>
+	<br/>
+	For more details please go to <a href=${env.JOB_URL}>${env.JOB_NAME}</a></p>""");
+}
+
+// Jenkin's JTest processor requires that a skipped test contains the <skipped> element and not just setting status to "notrun":
+def reformat_test_results(test_results_file) {
+	sh """awk '{ if (\$1 == "<testcase" && match(\$0, "notrun")) print substr(\$0,0,length(\$0)-2) "><skipped/></testcase>"; else print \$0;}' ${test_results_file} > tmp.xml"""
+	sh "rm -f ${test_results_file}"
+	sh "mv tmp.xml ${test_results_file}"
+}
+
+pipeline {
+	agent { node { label 'master' } }
+	options {
+		disableConcurrentBuilds()
+		skipDefaultCheckout(true)
+	}
+	stages {
+
+		stage('envsetup') {
+		 	when {
+			 	expression { env.env_setup }
+		}
+		steps { //
+			node("${NODE_ADDRESS}")  {
+				echo "update the grub"
+				run_as_sudo('cp /etc/default/grub-dpdk /etc/default/grub')
+				run_as_sudo('update-grub')
+				run_as_sudo('update-grub2')
+			}
+		}}
+
+		stage('checkout') { steps { //
+			node("${NODE_ADDRESS}")  {
+				//deleteDir()
+				checkout scm
+			}
+		}}
+
+		stage('build') { steps {
+			node("${NODE_ADDRESS}")  {script {
+
+				echo "Preparing the dpdk build sources"
+				sh "tar xzf ${DPDK_SRC}/dpdk-stable-${DPDK_VER}.tar.gz  -C ${DRIVER_PATH}/"
+				sh "tar xzf ${DPDK_SRC}/dpdk-kmods.tar.gz  -C ${DRIVER_PATH}/dpdk-stable-${DPDK_VER}"
+				dir("${DRIVER_PATH}") {
+					sh 'cp examples/qdma_testapp dpdk-stable-${DPDK_VER}/examples/ -rf'
+					sh 'cp drivers/net/qdma dpdk-stable-${DPDK_VER}/drivers/net/ -rf'
+					sh 'cp ../qdma_access/ dpdk-stable-${DPDK_VER}/drivers/net/qdma/. -rf'
+					sh 'cp build.sh dpdk-stable-${DPDK_VER}/ -rf'
+				}
+				echo "building dpdk qdma pmd"
+				dir("${DRIVER_PATH}/dpdk-stable-${DPDK_VER}") {
+					sh 'patch -p1 < ../patches/dpdk/0001-net-qdma-Integrate-qdma-pmd-to-dpdk-${DPDK_VER}.patch'
+					run_as_sudo('rm build -rf')
+					run_as_sudo('sh build.sh')
+				}
+			}
+			}
+		}}
+
+		stage('build_pktgen') {
+			when {
+				expression { env.PKTGEN_PERF }
+			}
+			steps { node("${NODE_ADDRESS}") {script {
+
+			sh "tar xzf ${DPDK_SRC}/pktgen-${PKT_GEN_VER}.tar.gz  -C ${DRIVER_PATH}/"
+			sh "cp ${PERF_SCRIPTS}/setup_env.sh ${DRIVER_PATH}/pktgen-${PKT_GEN_VER}/"
+
+			dir("${DRIVER_PATH}") {
+					sh 'cp patches/pktgen/* pktgen-${PKT_GEN_VER}/  -rf'
+				 }
+				 echo "building PKTGEN application"
+				 dir("${DRIVER_PATH}/pktgen-${PKT_GEN_VER}") {
+					 sh 'patch -p1 < 0001-PKTGEN-${PKT_GEN_VER}-Patch-to-add-Jumbo-packet-support.patch'
+					 sh 'patch -p1 < 0002-PKTGEN-${PKT_GEN_VER}-Change-Mbps-reporting.patch'
+
+					 run_as_sudo('chmod +x setup_env.sh')
+					 run_as_sudo('sh setup_env.sh ${DPDK_VER}')
+			 }
+		}}}}
+
+		stage('deploy') {
+		 	when {
+			 	expression { env.env_setup }
+		}
+		steps {
+			 node("${NODE_ADDRESS}")  {
+				 echo "uploading bitstream..."
+				 dir('.') { script {
+					 bitfile_dir ="${env.WORKSPACE}/${BITFILE}"
+					 echo "${bitfile_dir}" // BITFILE can be set via jenkins job parameter
+					if ("$DEVICETYPE" == "VERSAL") {
+						run_as_sudo('sh util/common/scripts/program_versal_pdi.sh ${TARGET_ID} util/common/scripts/spi2vjtag.tcl ${BITFILE} util/common/scripts/qdma_versal_mm_st_4pf_252vf.tcl util/common/scripts/qdma_versal_msix.tcl')
+					}
+					else
+						run_as_sudo('sh util/common/scripts/program_qdma_bitstream.sh ${TARGET_ID} ${BITFILE}')
+				 }}
+			 }
+
+			 script { // on master node
+			 echo "rebooting target machine..."
+			 reboot_target("${NODE_ADDRESS}")
+		 	}
+		}}
+
+		stage('Performance') { steps {
+			 node("${NODE_ADDRESS}")  { script {
+				echo "copy the tests cases to test directory"
+				sh "cp -rf ${PERF_SCRIPTS} ${DRIVER_PATH}/dpdk-stable-${DPDK_VER}/"
+				 echo "Setting up for testPMD performance"
+				 dir("${DRIVER_PATH}/dpdk-stable-${DPDK_VER}/perf_scripts/testpmd") { script {
+					 run_as_sudo('chmod +x *.sh')
+					 run_as_sudo('chmod +x *.expect')
+					 run_as_sudo('chmod +x PCIeWriter/rwio')
+					 run_as_sudo('chmod +x PCIeWriter/rwmem')
+					 ignore_error({run_as_sudo('sh ../setup.sh')})
+					 run_as_sudo('../../usertools/dpdk-devbind.py -b igb_uio ${PCI_ID}')
+					 ignore_error({run_as_sudo('sh ../dpdk_tune.sh')})
+					 run_as_sudo('sh testpmd_perf.sh ${PCI_ID} ${DESC_PFCH} ${TESTPMD_QUEUES}')
+
+					ignore_error({run_as_sudo('chmod 0777  ./testpmd_161.csv')})
+					echo "Archiving Testpmd performance test_16_1.csv "
+					archiveArtifacts artifacts: "testpmd_161.csv", fingerprint: true
+				 }}
+			 }}
+		 }}
+
+		 stage('Performance_pktgen') {
+		 	when {
+			 	expression { env.PKTGEN_PERF }
+		 	}
+		 	steps {
+		 		node("${NODE_ADDRESS}")  { script {
+				echo "Setting up for PKTGEN performance"
+				sh "cp -rf ${PERF_SCRIPTS}/pktgen/* ${DRIVER_PATH}/pktgen-${PKT_GEN_VER}"
+				dir("${DRIVER_PATH}/pktgen-${PKT_GEN_VER}") { script {
+					run_as_sudo('chmod +x *.sh')
+					run_as_sudo('chmod +x devmem')
+					run_as_sudo('chmod +x *.expect')
+					run_as_sudo('sh pktgen_perf.sh ${PCI_ID} ${PKTGEN_DESC_PFCH}')
+
+					ignore_error({run_as_sudo('chmod 0777  ./test_16_1.csv')})
+					echo "Archiving Pktgen performance test_16_1.csv "
+					archiveArtifacts artifacts: "test_16_1.csv", fingerprint: true
+				}}
+		 	}}
+		 }}
+	 }
+
+	 post {
+
+		 always { script {
+			// EMAIL_RECIPIENTS can be set via jenkins job parameter
+			echo "Emailing build results to: ${EMAIL_RECIPIENTS}"
+			send_build_result_email("${EMAIL_RECIPIENTS}")
+		}}
+
+        cleanup {
+				node("${NODE_ADDRESS}") {script {
+                echo "restore grub entry"
+
+				dir("${DRIVER_PATH}/dpdk-stable-${DPDK_VER}/") {
+					run_as_sudo('rmmod igb_uio.ko')
+					run_as_sudo('umount /mnt/huge')
+					run_as_sudo('cp /etc/default/grub-default /etc/default/grub')
+					run_as_sudo('update-grub')
+					run_as_sudo('update-grub2')
+                }
+                }
+             }
+        }
+    }
+}
