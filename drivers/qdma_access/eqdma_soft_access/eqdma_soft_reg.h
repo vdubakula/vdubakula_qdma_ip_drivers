@@ -418,7 +418,9 @@ struct xreg_info *eqdma_config_regs_get(void);
 #define EQDMA_GLBL_ERR_MASK_ADDR                           0x24C
 #define GLBL_ERR_MASK                            GENMASK(31, 0)
 #define EQDMA_GLBL_DSC_CFG_ADDR                            0x250
-#define GLBL_DSC_CFG_RSVD_1_MASK                           GENMASK(31, 10)
+#define GLBL_DSC_CFG_RSVD_1_MASK                           GENMASK(31, 30)
+#define GLBL_DSC_CFG_C2H_UODSC_LIMIT_MASK                  GENMASK(29, 20)
+#define GLBL_DSC_CFG_H2C_UODSC_LIMIT_MASK                  GENMASK(19, 10)
 #define GLBL_DSC_CFG_UNC_OVR_COR_MASK                      BIT(9)
 #define GLBL_DSC_CFG_CTXT_FER_DIS_MASK                     BIT(8)
 #define GLBL_DSC_CFG_RSVD_2_MASK                           GENMASK(7, 6)
