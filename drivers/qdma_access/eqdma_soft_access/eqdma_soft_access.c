@@ -50,6 +50,7 @@
 #define EQDMA5_H2C_THROT_REQ_THRESH        0xC0
 
 /* CSR Default values for QDMA 5.0 */
+#define EQDMA5_DEFAULT_H2C_UODSC_LIMIT     4
 #define EQDMA5_DEFAULT_MAX_DSC_FETCH       3
 #define EQDMA5_DEFAULT_WRB_INT             QDMA_WRB_INTERVAL_128
 
@@ -2139,10 +2140,12 @@ int eqdma_set_default_global_csr(void *dev_hndl)
 			 * is same except some performance optimizations
 			 */
 			reg_val =
+				FIELD_SET(GLBL_DSC_CFG_H2C_UODSC_LIMIT_MASK,
+					EQDMA5_DEFAULT_H2C_UODSC_LIMIT) |
 				FIELD_SET(GLBL_DSC_CFG_MAXFETCH_MASK,
-						EQDMA5_DEFAULT_MAX_DSC_FETCH) |
+					EQDMA5_DEFAULT_MAX_DSC_FETCH) |
 				FIELD_SET(GLBL_DSC_CFG_WB_ACC_INT_MASK,
-						EQDMA5_DEFAULT_WRB_INT);
+					EQDMA5_DEFAULT_WRB_INT);
 		} else {
 			qdma_log_error("%s: ip_type = %d is invalid, err:%d\n",
 				__func__, eqdma_ip_version,
