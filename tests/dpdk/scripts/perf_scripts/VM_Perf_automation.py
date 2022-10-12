@@ -35,7 +35,7 @@ vm_cfg = []
 #---------------------------------------------------------
 
 #Path to /HEAD or /REL or /DEV branches
-workspace_path = "./../../../../../../"
+workspace_path = "./../../../"
 
 program_name = sys.argv[0]
 arg_count = len(sys.argv)

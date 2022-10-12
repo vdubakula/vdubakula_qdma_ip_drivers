@@ -92,7 +92,7 @@ def test_os(pf_vf, src_dict, logs_dir, vm_img, printos=True):
 
 		if drv_used == "linux":
 			if compile_once == 1:
-				os.system("cd "  + driver_path + "/sw_host/linux ; sh make_libqdma.sh; make install-mods; cd -")
+				os.system("cd "  + driver_path + "drivers/linux ; sh make_libqdma.sh; make install-mods; cd -")
 				compile_once = 0
 			os.system("modprobe qdma_pf")
 
