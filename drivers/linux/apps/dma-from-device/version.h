@@ -13,7 +13,7 @@
 #define __DMA_FROM_DEVICE_VERSION_H
 
 #define PROGNAME "dma-from-device"
-#define VERSION "2022.1.0"
+#define VERSION "2022.2.0"
 #define COPYRIGHT "Copyright (c) 2018-2022 Xilinx Inc."
 
 #endif

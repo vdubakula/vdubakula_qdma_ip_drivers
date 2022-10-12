@@ -13,7 +13,7 @@
 #define __DMA_UTILS_VERSION_H
 
 #define LIBNAME "dma-utils"
-#define QDMATUILS_VERSION "2022.1.0"
+#define QDMATUILS_VERSION "2022.2.0"
 #define COPYRIGHT "Copyright (c) 2019-2022 Xilinx Inc."
 
 #endif

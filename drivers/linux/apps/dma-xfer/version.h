@@ -12,7 +12,7 @@
 #define __DMA_XFER_VERSION_H
 
 #define PROGNAME "dma-xfer"
-#define VERSION "2022.1.0"
+#define VERSION "2022.2.0"
 #define COPYRIGHT "Copyright (c) 2019-2022 Xilinx Inc."
 
 #endif
