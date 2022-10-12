@@ -64,8 +64,11 @@ for (( i=0; i<${#gtest_args[@]}; i++ ));
 do
 	if [[ ${gtest_args[$i]} == "CPM5" ]]; then
 		cpm5_flag=1
-		break
 	fi
+	if [[ ${gtest_args[$i]} == "TEST_64B_DESC_BYPASS=1" ]]; then
+		compile_flags=$8
+	fi
+
 done
 
 if [ $enable_compile == 1 ]; then
