@@ -17,6 +17,7 @@ driver_path = sys.argv[3]
 pf_vfs_cnt = [1, 1, 1, 1] 
 Ultrascale=0
 EQDMA=0
+EQDMA5_0=0
 if sys.argv[1] == "Ultrascale":
 	Ultrascale=1
 	pf_devids = ["903f", "913f", "923f", "933f"] 
@@ -35,6 +36,13 @@ elif sys.argv[1] == "EQDMA":
 	pf_bdfs = [[], [], [], []]
 	pf_vfs_devid = ["a03f", "a13f", "a23f", "a33f"]
 	pf_vfs_bdfs = [[], [], [], []]
+
+elif sys.argv[1] == "EQDMA5.0":
+        EQDMA5_0=1
+        pf_devids = ["903f", "913f", "923f", "933f"]
+        pf_bdfs = [[], [], [], []]
+        pf_vfs_devid = ["a03f", "a13f", "a23f", "a33f"]
+        pf_vfs_bdfs = [[], [], [], []]
 else:
 	print "Invalid device"
 	exit(1)
@@ -65,7 +73,10 @@ def test_os(pf_vf, src_dict, logs_dir, vm_img, printos=True):
 		if EQDMA == 1:
 			os.system("echo \"options vfio-pci ids=10EE:903F,10EE:913F,10EE:923F,10EE:933F\" >> /etc/modprobe.d/vfio.conf")
 			gtest_cmd = "./gtest_top.sh pci_dev_list.txt gtest_configs_eqdma/os_automation/default_pf ../../../../drivers/linux ../../../../tests/common/apps/qdma_test pf_vf linux 0"
-		elif Ultrascale == 1:
+                elif EQDMA5_0 == 1:
+                        os.system("echo \"options vfio-pci ids=10EE:903F,10EE:913F,10EE:923F,10EE:933F\" >> /etc/modprobe.d/vfio.conf")
+                        gtest_cmd = "./gtest_top.sh pci_dev_list.txt gtest_configs_eqdma5_0/os_automation/default_pf ../../../../drivers/linux ../../../../tests/common/apps/qdma_test pf_vf linux 0"
+                elif Ultrascale == 1:
 			os.system("echo \"options vfio-pci ids=10EE:903F,10EE:913F,10EE:923F,10EE:933F\" >> /etc/modprobe.d/vfio.conf")
 			gtest_cmd = "./gtest_top.sh pci_dev_list.txt gtest_configs_qdma_soft/os_automation/default_pf ../../../../drivers/linux ../../../../tests/common/apps/qdma_test pf_vf linux 0"
 		else :
@@ -78,7 +89,10 @@ def test_os(pf_vf, src_dict, logs_dir, vm_img, printos=True):
 		if EQDMA == 1:
 			os.system("echo \"options vfio-pci ids=10EE:A03F,10EE:A13F,10EE:A23F,10EE:A33F\" >> /etc/modprobe.d/vfio.conf")
 			gtest_cmd = "./gtest_top.sh 00400 gtest_configs_eqdma/os_automation/default_vf ../../../../drivers/linux ../../../../tests/common/apps/qdma_test vf linux 0"
-		elif Ultrascale == 1:
+                elif EQDMA5_0 == 1:
+                        os.system("echo \"options vfio-pci ids=10EE:A03F,10EE:A13F,10EE:A23F,10EE:A33F\" >> /etc/modprobe.d/vfio.conf")
+                        gtest_cmd = "./gtest_top.sh 00400 gtest_configs_eqdma5_0/os_automation/default_vf ../../../../drivers/linux ../../../../tests/common/apps/qdma_test vf linux 0"
+                elif Ultrascale == 1:
 			os.system("echo \"options vfio-pci ids=10EE:A03F,10EE:A13F,10EE:A23F,10EE:A33F\" >> /etc/modprobe.d/vfio.conf")
 			gtest_cmd = "./gtest_top.sh 00400 gtest_configs_qdma_soft/os_automation/default_vf ../../../../drivers/linux ../../../../tests/common/apps/qdma_test vf linux 0"
 		else:
