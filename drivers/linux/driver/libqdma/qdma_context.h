@@ -27,6 +27,14 @@
 #include "xdev.h"
 #include "qdma_mbox.h"
 
+/*
+ * fetch_max [40:37]
+ * Description: Maximum number of descriptor fetches outstanding for this queue.
+ * The max outstanding is fetch_max + 1 .
+ * Higher value can increase the single queue performance.
+ */
+#define FETCH_MAX_NUM 7
+
 /*****************************************************************************/
 /**
  * qdma_intr_context_setup() - handler to set the qdma interrupt context
