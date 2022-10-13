@@ -14,25 +14,25 @@ pci_bus = bbddff[:2]
 pci_dev = bbddff[2:4]
 nb_pf = 4
 driver_path = sys.argv[3]
-pf_vfs_cnt = [1, 1, 1, 1] 
+pf_vfs_cnt = [1, 1, 1, 1]
 Ultrascale=0
 EQDMA=0
 EQDMA5_0=0
 if sys.argv[1] == "Ultrascale":
 	Ultrascale=1
-	pf_devids = ["903f", "913f", "923f", "933f"] 
+	pf_devids = ["903f", "913f", "923f", "933f"]
 	pf_bdfs = [[], [], [], []]
 	pf_vfs_devid = ["a03f", "a13f", "a23f", "a33f"]
 	pf_vfs_bdfs = [[], [], [], []]
 elif sys.argv[1] == "Versal":
 	Ultrascale=0
-	pf_devids = ["b03f", "b13f", "b23f", "b33f"] 
+	pf_devids = ["b03f", "b13f", "b23f", "b33f"]
 	pf_bdfs = [[], [], [], []]
 	pf_vfs_devid = ["c03f", "c13f", "c23f", "c33f"]
 	pf_vfs_bdfs = [[], [], [], []]
 elif sys.argv[1] == "EQDMA":
 	EQDMA=1
-	pf_devids = ["903f", "913f", "923f", "933f"] 
+	pf_devids = ["903f", "913f", "923f", "933f"]
 	pf_bdfs = [[], [], [], []]
 	pf_vfs_devid = ["a03f", "a13f", "a23f", "a33f"]
 	pf_vfs_bdfs = [[], [], [], []]
