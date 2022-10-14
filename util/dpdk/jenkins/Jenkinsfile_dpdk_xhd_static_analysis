@@ -1,0 +1,144 @@
+#! /usr/bin/env groovy
+
+def get_changes_string() {
+    MAX_MSG_LEN = 100
+
+    def change_sets = currentBuild.changeSets.unique()
+    if (change_sets.size() == 0) {
+        return " - No new changes"
+    }
+
+    def change_string = ""
+    for (entry in change_sets[0].items) {
+        change_string += "${entry.commitId} [${entry.author}]:<br/>- ${entry.msg}<br/>"
+    }
+
+    return change_string
+}
+
+def run_as_sudo(shell_command) {
+    sh 'echo "#ces#2022#dsamd#" | sudo -S ' + shell_command
+}
+
+def reboot_target(target_hostname) {
+	try {
+        timeout(20) { //minutes
+            // assume running on master node
+            run_as_sudo("ssh -t -o StrictHostKeyChecking=no -l cadman ${target_hostname} /usr/bin/sudo -S /sbin/reboot") //schedule reboot in 1 min
+        }
+    } catch (e) {
+        sleep 200 // seconds, give some time for reboot
+        waitUntil { // wait until ssh port is open
+            def ret = sh script: "nc -w 20 -z ${target_hostname} 22 > /dev/null", returnStatus: true
+            return (ret == 0)
+        }
+    }
+
+    node(target_hostname) { // confirm jenkins slave is up
+        sh 'uptime; echo $(hostname) ONLINE'
+    }
+}
+
+def ignore_error(func, err_msg = "ignored error") {
+    try {
+        func()
+    } catch (err) {
+        echo "$err_msg"
+    }
+}
+
+def send_build_result_email(recipients) {
+    mail(to: "${recipients}",
+        mimeType: 'text/html',
+        from: 'jenkinsrobot@xilinx.com',
+        subject: "${currentBuild.fullDisplayName}: ${currentBuild.currentResult}",
+        body: """<p>Project: ${currentBuild.fullDisplayName}<br/>
+                Result: ${currentBuild.currentResult}<br/>
+                Changes:<br/>
+                ${get_changes_string()}<br/>
+                <br/>
+                For more details please go to <a href=${env.JOB_URL}>${env.JOB_NAME}</a></p>""");
+}
+
+// Jenkin's JTest processor requires that a skipped test contains the <skipped> element and not just setting status to "notrun":
+def reformat_test_results(test_results_file) {
+    sh """awk '{ if (\$1 == "<testcase" && match(\$0, "notrun")) print substr(\$0,0,length(\$0)-2) "><skipped/></testcase>"; else print \$0;}' ${test_results_file} > tmp.xml"""
+    sh "rm -f ${test_results_file}"
+    sh "mv tmp.xml ${test_results_file}"
+}
+
+pipeline {
+    agent { node { label 'master' } }
+    options {
+        disableConcurrentBuilds()
+        skipDefaultCheckout(true)
+    }
+
+    stages {
+        stage('checkout') { steps { //
+            node("${NODE_ADDRESS}")  {
+                //deleteDir()
+                checkout scm
+            }
+        }}
+
+        stage('build') { steps {
+            node("${NODE_ADDRESS}")  {script {
+                echo "Preparing the dpdk build sources"
+				sh "tar xzf ${DPDK_SRC}/dpdk-stable-${DPDK_VER}.tar.gz  -C ${DRIVER_PATH}/"
+                sh "tar xzf ${DPDK_SRC}/dpdk-kmods.tar.gz  -C ${DRIVER_PATH}/dpdk-stable-${DPDK_VER}/"
+                dir("${DRIVER_PATH}") {
+					run_as_sudo('rm dpdk-stable-${DPDK_VER}/drivers/net/qdma -rf')
+					run_as_sudo('rm dpdk-stable-${DPDK_VER}/examples/qdma_testapp -rf')
+
+					sh 'cp examples/qdma_testapp dpdk-stable-${DPDK_VER}/examples/ -rf'
+					sh 'cp drivers/net/qdma dpdk-stable-${DPDK_VER}/drivers/net/ -rf'
+					sh 'cp ../qdma_access/ dpdk-stable-${DPDK_VER}/drivers/net/qdma/. -rf'
+					sh 'cp build.sh dpdk-stable-${DPDK_VER}/ -rf'
+				}
+				echo "building dpdk qdma pmd"
+				dir("${DRIVER_PATH}/dpdk-stable-${DPDK_VER}") { script {
+					sh 'patch -p1 < ../patches/dpdk/0001-net-qdma-Integrate-qdma-pmd-to-dpdk-${DPDK_VER}.patch'
+					run_as_sudo('rm build -rf')
+					run_as_sudo('rm examples/qdma_testapp/build -rf')
+					run_as_sudo('sh build.sh')
+                }}
+            }}
+        }}
+
+		stage('Static Analysis') { steps { script {
+	        node("${NODE_ADDRESS}") {
+	            dir("${SCRIPT_PATH}") {
+	                run_as_sudo('chmod +x ./run_static_analysis_dpdk.sh')
+	                run_as_sudo("sh ./run_static_analysis_dpdk.sh ../../../../../${DRIVER_PATH}/dpdk-stable-${DPDK_VER} ./examples/qdma_testapp  ${COMPILE_FLAGS}")
+	            }
+
+				dir("${DRIVER_PATH}/dpdk-stable-${DPDK_VER}/drivers/net/qdma") { script {
+					ignore_error({run_as_sudo('chmod 0777  ./dpdk_cppchecker_err.txt')})
+					echo "Archiving dpdk_cppchecker_err "
+					archiveArtifacts artifacts: "dpdk_cppchecker_err.txt", fingerprint: true
+				}}
+
+				dir("${DRIVER_PATH}/dpdk-stable-${DPDK_VER}/examples/qdma_testapp") { script {
+					ignore_error({run_as_sudo('chmod 0777  ./testapp_cppchecker_err.txt')})
+					echo "Archiving testapp_cppchecker_err "
+					archiveArtifacts artifacts: "testapp_cppchecker_err.txt", fingerprint: true
+				}}
+
+				dir("${DRIVER_PATH}/dpdk-stable-${DPDK_VER}") { script {
+					ignore_error({run_as_sudo('chmod 0777  ./dpdk_checkpatch_log.txt')})
+					echo "Archiving dpdk_checkpatch_log "
+					archiveArtifacts artifacts: "dpdk_checkpatch_log.txt", fingerprint: true
+				}}
+			}
+        }}}
+	}
+
+	post {
+        always { script {
+            // EMAIL_RECIPIENTS can be set via jenkins job parameter
+            echo "Emailing build results to: ${EMAIL_RECIPIENTS}"
+            send_build_result_email("${EMAIL_RECIPIENTS}")
+        }}
+    }
+}

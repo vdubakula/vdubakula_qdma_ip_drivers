@@ -21,7 +21,7 @@ def run_as_sudo(shell_command) {
 }
 
 def reboot_target(target_hostname) {
-    try {
+	try {
         timeout(20) { //minutes
             // assume running on master node
             run_as_sudo("ssh -t -o StrictHostKeyChecking=no -l cadman ${target_hostname} /usr/bin/sudo -S /sbin/reboot") //schedule reboot in 1 min
@@ -76,20 +76,20 @@ pipeline {
     }
     stages {
 
-          stage('envsetup') { steps { script {//
+		  stage('envsetup') { steps { script {//
             node("${NODE_ADDRESS}")  {
-            echo "update the grub"
-            if ("$BIND_DRV" == "vfio-pci") {
-                run_as_sudo('cp /etc/default/grub-dpdk-vfio-pci /etc/default/grub')
-            } else {
-                run_as_sudo('cp /etc/default/grub-dpdk-igb-uio /etc/default/grub')
-            }
-                run_as_sudo('update-grub')
-                run_as_sudo('update-grub2')
+			echo "update the grub"
+			if ("$BIND_DRV" == "vfio-pci") {
+				run_as_sudo('cp /etc/default/grub-dpdk-vfio-pci /etc/default/grub')
+			} else {
+				run_as_sudo('cp /etc/default/grub-dpdk-igb-uio /etc/default/grub')
+			}
+				run_as_sudo('update-grub')
+				run_as_sudo('update-grub2')
             }
         }}}
 
-        stage('checkout') { steps { //
+		stage('checkout') { steps { //
             node("${NODE_ADDRESS}")  {
                 //deleteDir()
                 checkout scm
@@ -99,45 +99,42 @@ pipeline {
         stage('build') { steps {
             node("${NODE_ADDRESS}")  {script {
                 echo "Preparing the dpdk build sources"
-                sh "tar xzf ${DPDK_SRC}/dpdk-stable-${DPDK_VER}.tar.gz  -C ${DPDK_SRC}/../../../"
-                sh "tar xzf ${DPDK_SRC}/dpdk-kmods.tar.gz  -C ${DPDK_SRC}/../../../dpdk-stable-${DPDK_VER}"
-                dir("${DPDK_SRC}/../../../") {
-                    run_as_sudo('rm dpdk-stable-${DPDK_VER}/drivers/net/qdma -rf')
-                    run_as_sudo('rm dpdk-stable-${DPDK_VER}/examples/qdma_testapp -rf')
+				sh "tar xzf ${DPDK_SRC}/dpdk-stable-${DPDK_VER}.tar.gz  -C ${DRIVER_PATH}/"
+                sh "tar xzf ${DPDK_SRC}/dpdk-kmods.tar.gz  -C ${DRIVER_PATH}/dpdk-stable-${DPDK_VER}/"
+                dir("${DRIVER_PATH}") {
+					run_as_sudo('rm dpdk-stable-${DPDK_VER}/drivers/net/qdma -rf')
+					run_as_sudo('rm dpdk-stable-${DPDK_VER}/examples/qdma_testapp -rf')
 
-                    sh 'cp drivers/dpdk/examples/qdma_testapp dpdk-stable-${DPDK_VER}/examples/ -rf'
-                    sh 'cp drivers/dpdk/drivers/net/qdma dpdk-stable-${DPDK_VER}/drivers/net/ -rf'
-                    sh 'cp drivers/qdma_access/ dpdk-stable-${DPDK_VER}/drivers/net/qdma/. -rf'
-                    sh 'cp drivers/dpdk/build.sh dpdk-stable-${DPDK_VER}/ -rf'
-                    echo "copy the tests cases to test directory"
-                    run_as_sudo("cp ${TEST_CASES_PATH}/tests/* dpdk-stable-${DPDK_VER}/examples/qdma_testapp")
-                    run_as_sudo("cp ${TEST_CASES_PATH}/dev_tests/* dpdk-stable-${DPDK_VER}/examples/qdma_testapp")
-                }
-                echo "building dpdk qdma pmd"
-                dir("${DPDK_SRC}/../../../dpdk-stable-${DPDK_VER}") { script {
-                    sh 'patch -p1 < ../drivers/dpdk/patches/dpdk/0001-net-qdma-Integrate-qdma-pmd-to-dpdk-${DPDK_VER}.patch'
-                    run_as_sudo('rm build -rf')
-                    run_as_sudo('rm examples/qdma_testapp/build -rf')
-                    run_as_sudo('sh build.sh')
+					sh 'cp examples/qdma_testapp dpdk-stable-${DPDK_VER}/examples/ -rf'
+					sh 'cp drivers/net/qdma dpdk-stable-${DPDK_VER}/drivers/net/ -rf'
+					sh 'cp ../qdma_access/ dpdk-stable-${DPDK_VER}/drivers/net/qdma/. -rf'
+					sh 'cp build.sh dpdk-stable-${DPDK_VER}/ -rf'
+				}
+				echo "building dpdk qdma pmd"
+				dir("${DRIVER_PATH}/dpdk-stable-${DPDK_VER}") { script {
+					sh 'patch -p1 < ../patches/dpdk/0001-net-qdma-Integrate-qdma-pmd-to-dpdk-${DPDK_VER}.patch'
+					run_as_sudo('rm build -rf')
+					run_as_sudo('rm examples/qdma_testapp/build -rf')
+					run_as_sudo('sh build.sh')
                 }}
             }}
         }}
 
-        stage('Static Analysis') { steps { script {
+		stage('Static Analysis') { steps { script {
             if ("${STATIC_ANALYSIS}" == "1") {
-                node("${NODE_ADDRESS}") {
-                    dir("${SCRIPT_PATH}/../dpdk/") {
-                        run_as_sudo('chmod +x ./run_static_analysis_dpdk.sh')
-                        run_as_sudo("sh ./run_static_analysis_dpdk.sh ../../dpdk-stable-${DPDK_VER} ./examples/qdma_testapp  ${COMPILE_FLAGS}")
-                    }
+	            node("${NODE_ADDRESS}") {
+	                dir("${SCRIPT_PATH}") {
+	                    run_as_sudo('chmod +x ./run_static_analysis_dpdk.sh')
+	                    run_as_sudo("sh ./run_static_analysis_dpdk.sh ../../../../../${DRIVER_PATH}/dpdk-stable-${DPDK_VER} ./examples/qdma_testapp  ${COMPILE_FLAGS}")
+	                }
 
-                    dir("${DPDK_SRC}/../../../dpdk-stable-${DPDK_VER}") { script {
-                        ignore_error({run_as_sudo('chmod 0777  ./dpdk_checkpatch_log.txt')})
-                        echo "Archiving dpdk_checkpatch_log "
-                        archiveArtifacts artifacts: "dpdk_checkpatch_log.txt", fingerprint: true
-                    }
-                }
-                }
+					dir("${DRIVER_PATH}/dpdk-stable-${DPDK_VER}") { script {
+						ignore_error({run_as_sudo('chmod 0777  ./dpdk_checkpatch_log.txt')})
+						echo "Archiving dpdk_checkpatch_log "
+						archiveArtifacts artifacts: "dpdk_checkpatch_log.txt", fingerprint: true
+					}
+				}
+	            }
             }
         }}}
 
@@ -147,33 +144,34 @@ pipeline {
                 dir('.') { script {
                     bitfile_dir ="${env.WORKSPACE}/${BITFILE}"
                     echo "${bitfile_dir}" // BITFILE can be set via jenkins job parameter
-                    if ("$DEVICETYPE" == "VERSAL") {
+					if ("$DEVICETYPE" == "VERSAL") {
 						run_as_sudo('sh util/common/scripts/program_versal_pdi.sh ${TARGET_ID} util/common/scripts/spi2vjtag.tcl ${BITFILE} util/common/scripts/qdma_versal_mm_st_4pf_252vf.tcl util/common/scripts/qdma_versal_msix.tcl')
-                    }
-                    else {
+					}
+					else {
 						run_as_sudo('sh util/common/scripts/program_qdma_bitstream.sh ${TARGET_ID} ${BITFILE}')
-                    }
+					}
                 }}
             }
 
             script { // on master node
                 echo "rebooting target machine..."
-                reboot_target("${NODE_ADDRESS}")
+				reboot_target("${NODE_ADDRESS}")
             }
 
             node("${NODE_ADDRESS}")  { script {
-                dir("${DPDK_SRC}/../../../dpdk-stable-${DPDK_VER}/examples/qdma_testapp") {
-                    run_as_sudo('chmod +x *.sh')
-                }
 
-                echo "Starting Test Execution"
-                dir("${SCRIPT_PATH}/gtest_scripts") {
-                    run_as_sudo('chmod +x ./*.sh')
-                    run_as_sudo('chmod +x ./*.py')
-                    
-                    def vm_cnt = "$VM_COUNT"
+				echo "copy the tests cases to test directory"
+				run_as_sudo("cp ${TEST_CASES_PATH}/* ${DRIVER_PATH}/dpdk-stable-${DPDK_VER}/examples/qdma_testapp")
+
+				echo "build and run qdma test app"
+                dir("${DRIVER_PATH}/dpdk-stable-${DPDK_VER}/examples/qdma_testapp") {
+					run_as_sudo('chmod +x *.sh')
+                    if ("$BIND_DRV" == "vfio-pci") {
+                        run_as_sudo('modprobe vfio-pci')
+                    }
+					def vm_cnt = "$VM_COUNT"
                     def int_vm_cnt = vm_cnt.isInteger() ?  (vm_cnt as int) : null
-                    
+
                     if(int_vm_cnt == 1)
                          vm_cfg = "\"${VM_1_CONFIG}\""
                     if(int_vm_cnt == 2)
@@ -183,7 +181,7 @@ pipeline {
                     if(int_vm_cnt == 4)
                          vm_cfg = "\"${VM_1_CONFIG}\" \"${VM_2_CONFIG}\" \"${VM_3_CONFIG}\" \"${VM_4_CONFIG}\""
                     if(int_vm_cnt == 5)
-                         vm_cfg = "\"${VM_1_CONFIG}\" \"${VM_2_CONFIG}\" \"${VM_3_CONFIG}\" \"${VM_4_CONFIG}\" \"${VM_5_CONFIG}\""  
+                         vm_cfg = "\"${VM_1_CONFIG}\" \"${VM_2_CONFIG}\" \"${VM_3_CONFIG}\" \"${VM_4_CONFIG}\" \"${VM_5_CONFIG}\""
                     if(int_vm_cnt == 6)
                          vm_cfg = "\"${VM_1_CONFIG}\" \"${VM_2_CONFIG}\" \"${VM_3_CONFIG}\" \"${VM_4_CONFIG}\" \"${VM_5_CONFIG}\" \"${VM_6_CONFIG}\""
                     if(int_vm_cnt == 7)
@@ -196,14 +194,21 @@ pipeline {
                          vm_cfg = "\"${VM_1_CONFIG}\" \"${VM_2_CONFIG}\" \"${VM_3_CONFIG}\" \"${VM_4_CONFIG}\" \"${VM_5_CONFIG}\" \"${VM_6_CONFIG}\" \"${VM_7_CONFIG}\" \"${VM_8_CONFIG}\" \"${VM_9_CONFIG}\" \"${VM_10_CONFIG}\""
 
                     echo "vm config ${vm_cfg}"
-                    run_as_sudo("python vm_automation.py \"/home/dpdk/${SCRIPT_PATH}/gtest_scripts/\"  \"./gtest_top.sh 00040 ../../../../${GTEST_CONFIG_PATH} ../../../../${DRIVER_PATH} ../../../../${TEST_APP_PATH} vf dpdk ${CONFIG_BAR} ${BIND_DRV} ${COMPILE_FLAGS}\"  \"../../../../${DRIVER_PATH}/\" dpdk ${PCI_BBDDF} ${VM_IMAGE_PATH} ${VM_COUNT} ${CONFIG_FILE_IN} ${CONFIG_FILE_OUT} ${VM_RAM} ${NUM_PF} ${VF_QUEUES} ${vm_cfg} ${BIND_DRV} ${CONFIG_BAR}")
+					//un_as_sudo('sh stress_test_top.sh $PCI_BBDDF $BIND_DRV 4 8 96 00:10:00')
+					run_as_sudo("python vm_automation_stress.py $PCI_BBDDF $BIND_DRV $NUM_PF $TOTAL_QUEUES $EXECUTION_TIME $VM_RAM ${VM_IMAGE_PATH} $VM_COUNT ${vm_cfg}  > stress_test_log")
+					run_as_sudo('tar -cvzf stress_test_log.tar.gz stress_test_log')
+					run_as_sudo('rm stress_test_log -f')
+					run_as_sudo('chmod 777 stress_test_log.tar.gz')
+					echo "Archiving the error log files"
+					ignore_error({run_as_sudo('chmod 0777 *.tar.gz')})
+					ignore_error({archiveArtifacts artifacts: "*.tar.gz", fingerprint: true})
+					echo " artifacts stress testing log after compressed"
+					archiveArtifacts artifacts: "stress_test_log.tar.gz", fingerprint: true
                 }
-                ignore_error({run_as_sudo('chmod 0777 ${SCRIPT_PATH}/gtest_scripts/*.tar.gz')})
-                ignore_error({archiveArtifacts artifacts: "${SCRIPT_PATH}/gtest_scripts/*.tar.gz", fingerprint: true})
             }}
         }}
     }
-    post {
+	post {
 
         always { script {
             // EMAIL_RECIPIENTS can be set via jenkins job parameter
@@ -212,16 +217,16 @@ pipeline {
         }}
 
         cleanup {
-                node("${NODE_ADDRESS}") {script {
+				node("${NODE_ADDRESS}") {script {
                 echo "restore grub entry"
 
-                dir("${DPDK_SRC}/../../../dpdk-stable-${DPDK_VER}/examples/qdma_testapp") {
-                    run_as_sudo('rmmod igb_uio.ko')
-                    run_as_sudo('umount /mnt/huge')
-                    run_as_sudo('rm /mnt/huge -rf')
-                    run_as_sudo('cp /etc/default/grub-default /etc/default/grub')
-                    run_as_sudo('update-grub')
-                    run_as_sudo('update-grub2')
+				dir("${DRIVER_PATH}/dpdk-stable-${DPDK_VER}/examples/qdma_testapp") {
+					run_as_sudo('rmmod igb_uio.ko')
+					run_as_sudo('umount /mnt/huge')
+					run_as_sudo('rm /mnt/huge -rf')
+					run_as_sudo('cp /etc/default/grub-default /etc/default/grub')
+					run_as_sudo('update-grub')
+					run_as_sudo('update-grub2')
                 }
                 }
              }
