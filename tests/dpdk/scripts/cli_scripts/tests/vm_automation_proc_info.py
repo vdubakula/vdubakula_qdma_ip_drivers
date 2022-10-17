@@ -28,7 +28,7 @@ output_filename_vf = "M001_port1_qcount1_size262144.bin"
 
 #-----------------------------------------------------
 #Path to /HEAD or /REL or /DEV branches
-workspace_path = "./../../../../../../../HEAD/proj/sw_host/dpdk/"
+workspace_path = "./../../../../../drivers/dpdk/"
 
 program_name = sys.argv[0]
 arg_count = len(sys.argv)

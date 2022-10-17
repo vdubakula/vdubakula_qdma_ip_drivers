@@ -29,7 +29,7 @@ child = ""
 
 #-----------------------------------------------------
 #Path to /HEAD or /REL or /DEV branches
-workspace_path = "./../../../../../../../HEAD/proj/sw_host/dpdk/"
+workspace_path = "./../../../../../drivers/dpdk/"
 
 program_name = sys.argv[0]
 arg_count = len(sys.argv)
