@@ -30,7 +30,7 @@ def reboot_target(target_hostname) {
            }
         }
     } catch (e) {        
-        sleep 600 // seconds, give some time for reboot
+        sleep 200 // seconds, give some time for reboot
         waitUntil { // wait until ssh port is open
             def ret = sh script: "nc -w 20 -z ${target_hostname} 22 > /dev/null", returnStatus: true
             return (ret == 0)
@@ -184,7 +184,7 @@ pipeline {
 								run_as_sudo("python vm_performance.py \"/home/dpdk/tests/linux/scripts/perf_test_scripts/\" \"./run_qdma_linux_perf_tests.sh 00040 ${DRIVER_PATH} dmaperf_versal_configs_mm ${NODE_ADDRESS}_vm_mm_bram ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE} ${MARKER_EN} 1\" ../../../../drivers/linux/ linux ${PCI_BBDDF} ${VM_PATH} 1 ${VM_RAM} ${VM_CORES} ${NODE_ADDRESS}_vm_mm_bram 4 \"1 0 0 0\" vfio-pci 0")
 							} else {
 								//run_as_sudo('./run_qdma_linux_perf_tests.sh ${PCI_BBDDF} ${DRIVER_PATH} dmaperf_configs_mm ${NODE_ADDRESS}_mm_bram ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE}')
-								run_as_sudo("python vm_performance.py \"/home/dpdk/_tests/linux/scripts/perf_test_scripts/\" \"./run_qdma_linux_perf_tests.sh 00040 ${DRIVER_PATH} dmaperf_configs_mm ${NODE_ADDRESS}_vm_mm_bram ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE} ${MARKER_EN} 1\" ../../../../drivers/linux/ linux ${PCI_BBDDF} ${VM_PATH} 1 ${VM_RAM} ${VM_CORES} ${NODE_ADDRESS}_vm_mm_bram 4 \"1 0 0 0\" vfio-pci 0")
+								run_as_sudo("python vm_performance.py \"/home/dpdk/tests/linux/scripts/perf_test_scripts/\" \"./run_qdma_linux_perf_tests.sh 00040 ${DRIVER_PATH} dmaperf_configs_mm ${NODE_ADDRESS}_vm_mm_bram ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE} ${MARKER_EN} 1\" ../../../../drivers/linux/ linux ${PCI_BBDDF} ${VM_PATH} 1 ${VM_RAM} ${VM_CORES} ${NODE_ADDRESS}_vm_mm_bram 4 \"1 0 0 0\" vfio-pci 0")
 							}
 	                    }
 	                    ignore_error({run_as_sudo('chmod 0777 ${SCRIPT_PATH}/*.xlsx')})
