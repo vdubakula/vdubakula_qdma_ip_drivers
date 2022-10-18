@@ -110,7 +110,7 @@ pipeline {
 	        node("${NODE_ADDRESS}") {
 	            dir("${SCRIPT_PATH}") {
 	                run_as_sudo('chmod +x ./run_static_analysis_dpdk.sh')
-	                run_as_sudo("sh ./run_static_analysis_dpdk.sh ../../../../../${DRIVER_PATH}/dpdk-stable-${DPDK_VER} ./examples/qdma_testapp  ${COMPILE_FLAGS}")
+	                run_as_sudo("sh ./run_static_analysis_dpdk.sh ../../../${DRIVER_PATH}/dpdk-stable-${DPDK_VER} ./examples/qdma_testapp  ${COMPILE_FLAGS}")
 	            }
 
 				dir("${DRIVER_PATH}/dpdk-stable-${DPDK_VER}/drivers/net/qdma") { script {
