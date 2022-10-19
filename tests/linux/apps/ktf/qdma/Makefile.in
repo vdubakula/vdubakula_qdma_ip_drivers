@@ -20,13 +20,14 @@ DRV_KVER := $(shell uname -r)
 ifneq ($(SUBDIRS),)
         EXTRA_CFLAGS += -I.
         EXTRA_CFLAGS += -I$(KTF_DIR)
-        EXTRA_CFLAGS += -I$(SUBDIRS)/libqdma -I$(SUBDIRS)/qdma_access -I$(SUBDIRS)/qdma_access/qdma_soft_access -I$(SUBDIRS)/qdma_access/eqdma_soft_access -I$(SUBDIRS)/qdma_access/qdma_cpm4_access
+        EXTRA_CFLAGS += -I$(SUBDIRS)/libqdma -I$(SUBDIRS)/qdma_access -I$(SUBDIRS)/qdma_access/qdma_soft_access -I$(SUBDIRS)/qdma_access/eqdma_soft_access -I$(SUBDIRS)/qdma_access/qdma_cpm4_access -I$(SUBDIRS)/qdma_access/eqdma_cpm5_access
         CORE_OBJS := $(patsubst $(SUBDIRS)/%.c,%.o,$(wildcard $(SUBDIRS)/*.c))
         LIBQDMA_OBJS := $(patsubst $(SUBDIRS)/libqdma/%.c,libqdma/%.o,$(wildcard $(SUBDIRS)/libqdma/*.c))
         QDMA_ACCESS_OBJS := $(patsubst $(SUBDIRS)/qdma_access/%.c,qdma_access/%.o,$(wildcard $(SUBDIRS)/qdma_access/*.c))
         EQDMA_ACCESS_OBJS := $(patsubst $(SUBDIRS)/qdma_access/eqdma_soft_access/%.c,qdma_access/eqdma_soft_access/%.o,$(wildcard $(SUBDIRS)/qdma_access/eqdma_soft_access/*.c))
         QDMA_SOFT_ACCESS_OBJS := $(patsubst $(SUBDIRS)/qdma_access/qdma_soft_access/%.c,qdma_access/qdma_soft_access/%.o,$(wildcard $(SUBDIRS)/qdma_access/qdma_soft_access/*.c))
         QDMA_CPM4_ACCESS_OBJS := $(patsubst $(SUBDIRS)/qdma_access/qdma_cpm4_access/%.c,qdma_access/qdma_cpm4_access/%.o,$(wildcard $(SUBDIRS)/qdma_access/qdma_cpm4_access/*.c))
+	EQDMA_CPM5_ACCESS_OBJS := $(patsubst $(SUBDIRS)/qdma_access/eqdma_cpm5_access/%.c,qdma_access/eqdma_cpm5_access/%.o,$(wildcard $(SUBDIRS)/qdma_access/eqdma_cpm5_access/*.c))
 endif
 
 obj-m += $(MOD_NAME).o
@@ -36,6 +37,7 @@ $(MOD_NAME)-objs += $(QDMA_ACCESS_OBJS)
 $(MOD_NAME)-objs += $(EQDMA_ACCESS_OBJS)
 $(MOD_NAME)-objs += $(QDMA_SOFT_ACCESS_OBJS)
 $(MOD_NAME)-objs += $(QDMA_CPM4_ACCESS_OBJS)
+$(MOD_NAME)-objs += $(EQDMA_CPM5_ACCESS_OBJS)
 
 module:
 	make -C /lib/modules/$(KVER)/build M=$(DRV_HOME) SUBDIRS=$(shell pwd) $(EXTRASYMS) modules
