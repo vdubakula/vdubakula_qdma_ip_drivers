@@ -325,7 +325,8 @@ queue_ext::queue_ext(instance& drv, uint32_t dev_id, uint32_t q_id, queue::mode 
 
 	nb_buff += NUM_RX_PKTS;
 
-	nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 1.5));
+	/* Configure mbuf packet pool with minimum 2K size */
+	nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 4));
 	if (dir == qdma::queue_ext::direction::both){
 		snprintf(mem_pool, RTE_MEMPOOL_NAMESIZE, MBUF_POOL_NAME_PORT_QUEUE_DIR, m_dev_id, m_qid, (int)queue_ext::direction::host_to_card);
 		mbuf_pool = rte_pktmbuf_pool_create(mem_pool, nb_buff, MP_CACHE_SZ,

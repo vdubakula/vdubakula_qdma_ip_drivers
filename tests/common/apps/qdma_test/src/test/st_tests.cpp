@@ -1068,7 +1068,9 @@ TEST_P(qdma_neg_st_ring_size_test, h2c_c2h) {
 		nb_buff = ((tp.qcfg.idx_rngsz));
 
 		nb_buff += NUM_RX_PKTS;
-		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 1.5));
+
+		/* Configure mbuf packet pool with minimum 2K size */
+		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 4));
 
 		snprintf(mem_pool, RTE_MEMPOOL_NAMESIZE, MBUF_POOL_NAME_PORT_QUEUE_DIR, tx.pf, tx.q, (int)qdma::queue_ext::direction::host_to_card);
 		mbuf_pool = rte_pktmbuf_pool_create(mem_pool, nb_buff, MP_CACHE_SZ,
@@ -1194,7 +1196,9 @@ TEST_P(qdma_neg_inv_buf_size_test, h2c_c2h) {
 		nb_buff = ((tp.qcfg.idx_rngsz));
 
 		nb_buff += NUM_RX_PKTS;
-		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 1.5));
+
+		/* Configure mbuf packet pool with minimum 2K size */
+		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 4));
 
 		snprintf(mem_pool, RTE_MEMPOOL_NAMESIZE, MBUF_POOL_NAME_PORT_QUEUE_DIR, tx.pf, tx.q, (int)qdma::queue_ext::direction::card_to_host);
 		mbuf_pool = rte_pktmbuf_pool_create(mem_pool, nb_buff, MP_CACHE_SZ,
@@ -1303,7 +1307,9 @@ TEST_P(qdma_neg_inv_tmr_cnt_test, h2c_c2h) {
 		nb_buff = ((tp.qcfg.idx_rngsz));
 
 		nb_buff += NUM_RX_PKTS;
-		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 1.5));
+
+		/* Configure mbuf packet pool with minimum 2K size */
+		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 4));
 
 		snprintf(mem_pool, RTE_MEMPOOL_NAMESIZE, MBUF_POOL_NAME_PORT_QUEUE_DIR, tx.pf, tx.q, (int)qdma::queue_ext::direction::host_to_card);
 		mbuf_pool = rte_pktmbuf_pool_create(mem_pool, nb_buff, MP_CACHE_SZ,
@@ -1418,7 +1424,9 @@ TEST_P(qdma_neg_add_inv_qid_test, h2c_c2h) {
 		nb_buff = ((tp.qcfg.idx_rngsz));
 
 		nb_buff += NUM_RX_PKTS;
-		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 1.5));
+
+		/* Configure mbuf packet pool with minimum 2K size */
+		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 4));
 
 		snprintf(mem_pool, RTE_MEMPOOL_NAMESIZE, MBUF_POOL_NAME_PORT_QUEUE_DIR, tx.pf, tx.q, (int)qdma::queue_ext::direction::host_to_card);
 		mbuf_pool = rte_pktmbuf_pool_create(mem_pool, nb_buff, MP_CACHE_SZ,
@@ -1545,7 +1553,9 @@ TEST_P(qdma_neg_start_inv_qid_test, h2c_c2h) {
 		nb_buff = ((tp.qcfg.idx_rngsz));
 
 		nb_buff += NUM_RX_PKTS;
-		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 1.5));
+
+		/* Configure mbuf packet pool with minimum 2K size */
+		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 4));
 
 		snprintf(mem_pool, RTE_MEMPOOL_NAMESIZE, MBUF_POOL_NAME_PORT_QUEUE_DIR, tx.pf, tx.q, (int)qdma::queue_ext::direction::host_to_card);
 		mbuf_pool = rte_pktmbuf_pool_create(mem_pool, nb_buff, MP_CACHE_SZ,
@@ -1684,7 +1694,9 @@ TEST_P(qdma_neg_stop_inv_qid_test, h2c_c2h) {
 		nb_buff = ((tp.qcfg.idx_rngsz));
 
 		nb_buff += NUM_RX_PKTS;
-		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 1.5));
+
+		/* Configure mbuf packet pool with minimum 2K size */
+		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 4));
 
 		snprintf(mem_pool, RTE_MEMPOOL_NAMESIZE, MBUF_POOL_NAME_PORT_QUEUE_DIR, tx.pf, tx.q, (int)qdma::queue_ext::direction::host_to_card);
 		mbuf_pool = rte_pktmbuf_pool_create(mem_pool, nb_buff, MP_CACHE_SZ,
@@ -1839,7 +1851,9 @@ TEST_P(qdma_neg_dump_inv_qid_test, h2c_c2h) {
 		nb_buff = ((tp.qcfg.idx_rngsz));
 
 		nb_buff += NUM_RX_PKTS;
-		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 1.5));
+
+		/* Configure mbuf packet pool with minimum 2K size */
+		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 4));
 
 		snprintf(mem_pool, RTE_MEMPOOL_NAMESIZE, MBUF_POOL_NAME_PORT_QUEUE_DIR, tx.pf, tx.q, (int)qdma::queue_ext::direction::host_to_card);
 		mbuf_pool = rte_pktmbuf_pool_create(mem_pool, nb_buff, MP_CACHE_SZ,
@@ -2080,7 +2094,9 @@ TEST_P(qdma_neg_proc_without_start_test, h2c_c2h) {
 		nb_buff = ((tp.qcfg.idx_rngsz));
 
 		nb_buff += NUM_RX_PKTS;
-		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 1.5));
+
+		/* Configure mbuf packet pool with minimum 2K size */
+		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 4));
 
 		snprintf(mem_pool, RTE_MEMPOOL_NAMESIZE, MBUF_POOL_NAME_PORT_QUEUE_DIR, tx.pf, tx.q, (int)qdma::queue_ext::direction::host_to_card);
 		mbuf_pool = rte_pktmbuf_pool_create(mem_pool, nb_buff, MP_CACHE_SZ,
