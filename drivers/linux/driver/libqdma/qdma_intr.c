@@ -254,10 +254,10 @@ static void data_intr_aggregate(struct xlnx_dma_dev *xdev, int vidx, int irq,
 		queue_intr_cidx_update(descq->xdev,
 			descq->conf.qidx, &coal_entry->intr_cidx_info);
 	} else if (num_entries_processed == 0) {
-		pr_warn("No entries processed\n");
+		pr_debug("No entries processed\n");
 		descq = xdev->prev_descq;
 		if (descq) {
-			pr_warn("Doing stale update\n");
+			pr_debug("Doing stale update\n");
 			queue_intr_cidx_update(descq->xdev,
 				descq->conf.qidx, &coal_entry->intr_cidx_info);
 		}
