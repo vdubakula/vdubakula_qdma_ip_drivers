@@ -175,12 +175,11 @@ static int xnl_connect(struct xnl_cb *cb, int vf, void (*log_err)(const char *))
 	cb->family = CTRL_ATTR_FAMILY_NAME;
 
 	if (vf) {
-        	attr->nla_len = strlen(XNL_NAME_VF) + 1 + NLA_HDRLEN;
-        	strcpy((char *)(attr + 1), XNL_NAME_VF);
-
+		attr->nla_len = strlen(XNL_NAME_VF) + 1 + NLA_HDRLEN;
+		memcpy((char *)(attr + 1), XNL_NAME_VF, sizeof(XNL_NAME_VF) - 1);
 	} else {
-        	attr->nla_len = strlen(XNL_NAME_PF) + 1 + NLA_HDRLEN;
-        	strcpy((char *)(attr + 1), XNL_NAME_PF);
+		attr->nla_len = strlen(XNL_NAME_PF) + 1 + NLA_HDRLEN;
+		memcpy((char *)(attr + 1), XNL_NAME_PF, sizeof(XNL_NAME_PF) - 1);
 	}
         hdr->n.nlmsg_len += NLMSG_ALIGN(attr->nla_len);
 
