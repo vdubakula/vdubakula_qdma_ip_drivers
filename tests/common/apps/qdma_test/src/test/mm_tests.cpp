@@ -311,7 +311,7 @@ TEST_P(qdma_neg_mm_inv_ring_size_test, h2c_c2h) {
 		nb_buff += NUM_RX_PKTS;
 
 		/* Configure mbuf packet pool with minimum 2K size */
-		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 4));
+		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 2.5));
 
 		snprintf(mem_pool, RTE_MEMPOOL_NAMESIZE, MBUF_POOL_NAME_PORT_QUEUE_DIR, tx.pf, tx.q, (int)qdma::queue_ext::direction::host_to_card);
 		mbuf_pool = rte_pktmbuf_pool_create(mem_pool, nb_buff, MP_CACHE_SZ,
@@ -807,7 +807,7 @@ TEST_P(qdma_neg_mm_proc_without_start_test, h2c_c2h) {
 		nb_buff += NUM_RX_PKTS;
 
 		/* Configure mbuf packet pool with minimum 2K size */
-		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 4));
+		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 2.5));
 
 		snprintf(mem_pool, RTE_MEMPOOL_NAMESIZE, MBUF_POOL_NAME_PORT_QUEUE_DIR, tx.pf, tx.q, (int)qdma::queue_ext::direction::host_to_card);
 		mbuf_pool = rte_pktmbuf_pool_create(mem_pool, nb_buff, MP_CACHE_SZ,
