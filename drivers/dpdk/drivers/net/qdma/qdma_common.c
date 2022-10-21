@@ -74,7 +74,8 @@ uint32_t qdma_pci_read_reg(struct rte_eth_dev *dev, uint32_t bar, uint32_t reg)
 		printf("Error: PCI BAR number:%u not mapped\n", bar);
 		return -1;
 	}
-	val = *((volatile uint32_t *)(baseaddr + reg));
+
+	val = *((volatile uint64_t *)(baseaddr + reg));
 
 	return val;
 }
@@ -96,7 +97,7 @@ void qdma_pci_write_reg(struct rte_eth_dev *dev, uint32_t bar,
 		printf("Error: PCI BAR number:%u not mapped\n", bar);
 		return;
 	}
-	*((volatile uint32_t *)(baseaddr + reg)) = val;
+	*((volatile uint64_t *)(baseaddr + reg)) = val;
 }
 
 void qdma_reset_rx_queue(struct qdma_rx_queue *rxq)
