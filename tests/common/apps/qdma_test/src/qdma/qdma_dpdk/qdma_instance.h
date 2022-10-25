@@ -4,7 +4,10 @@
 #include "qdma_instance_abs.h"
 
 #define NUM_DESC_PER_RING 1024
-#define MAX_NUM_QUEUES 2048
+
+/* Though the MAX queues are specified as 4095, HW/SW supports 4096 queues */
+#define MAX_NUM_QUEUES 4095
+
 #define DEFAULT_NUM_QUEUES 64
 #define NUM_RX_PKTS 32
 #define MP_CACHE_SZ		512

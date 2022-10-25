@@ -34,7 +34,9 @@
 
 #define DEFAULT_QDMA_CMPT_DESC_LEN (RTE_PMD_QDMA_CMPT_DESC_LEN_8B)
 #define RX_TX_MAX_RETRY			(1000)
-#define QDMA_MAX_QUEUES 2048
+
+/* Though the MAX queues are specified as 4095, HW/SW supports 4096 queues */
+#define QDMA_MAX_QUEUES 4095
 
 #define  QDMA_DEVICE_SOFT               RTE_PMD_QDMA_DEVICE_SOFT
 #define  QDMA_DEVICE_VERSAL_CPM4         RTE_PMD_QDMA_DEVICE_VERSAL_CPM4

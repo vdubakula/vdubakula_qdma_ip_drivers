@@ -40,7 +40,7 @@
 #else
 #define NUM_RX_PKTS 32
 #endif
-#define MAX_NUM_QUEUES 2048
+#define MAX_NUM_QUEUES 4096
 #define DEFAULT_NUM_QUEUES 64
 #define RX_TX_MAX_RETRY			1500
 #define DEFAULT_RX_WRITEBACK_THRESH	(64)
