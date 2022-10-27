@@ -244,10 +244,17 @@ try:
                         def_no = def_no + 1
                     else:
                         fout.write(line)
-		os.system("ssh-keygen -f \"/root/.ssh/known_hosts\" -R \"[127.0.0.1]:" + str(base_port) + "\"")
+        os.system("ssh-keygen -f \"/root/.ssh/known_hosts\" -R \"[127.0.0.1]:" + str(base_port) + "\"")
         s = pxssh.pxssh(timeout = 5000)
         s.login ("127.0.0.1", "root", "dpdk", port = base_port + vm_id)
-        os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "  root@127.0.0.1:/home/dpdk/")
+
+        if drv_used == "dpdk":
+            os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "dpdk-stable-20.11" + "  root@127.0.0.1:/home/dpdk/")
+            os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "incoming" + "  root@127.0.0.1:/home/dpdk/")
+
+        os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "drivers" + "  root@127.0.0.1:/home/dpdk/")
+        os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "tests" + "  root@127.0.0.1:/home/dpdk/")
+        os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "util" + "  root@127.0.0.1:/home/dpdk/")
         os.system("sshpass -p dpdk scp -P " + str(base_port + vm_id) + " "+ config_file_out + " root@127.0.0.1:" + gtest_script_path + str(file_in))
         s.sendline ('echo --------------------------------------------vm_'+ str(vm_id) +'logs---------------------------------------------------------------')
         s.prompt()
