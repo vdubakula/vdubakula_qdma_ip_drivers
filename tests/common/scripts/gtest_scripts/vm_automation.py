@@ -272,7 +272,7 @@ try:
         s.prompt()
         print s.before
 
-        if dpdk_bind_drv == "vfio-pci":
+        if drv_used == "dpdk":
             time.sleep(600)
         else:
             time.sleep(60)
