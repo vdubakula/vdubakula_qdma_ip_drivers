@@ -41,8 +41,8 @@ void qdma_get_device_info(void *queue_hndl,
 		enum qdma_ip_type *ip_type);
 struct qdma_ul_st_h2c_desc *get_st_h2c_desc(void *queue_hndl);
 struct qdma_ul_mm_desc *get_mm_h2c_desc(void *queue_hndl);
-uint64_t get_mm_c2h_ep_addr(void *queue_hndl);
-uint64_t get_mm_h2c_ep_addr(void *queue_hndl);
+uint32_t get_mm_c2h_ep_addr(void *queue_hndl);
+uint32_t get_mm_h2c_ep_addr(void *queue_hndl);
 uint32_t get_mm_buff_size(void *queue_hndl);
 
 #endif /* QDMA_DPDK_RXTX_H_ */

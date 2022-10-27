@@ -199,7 +199,7 @@ struct qdma_rx_queue {
 
 	enum rte_pmd_qdma_bypass_desc_len	bypass_desc_sz:7;
 	uint8_t			func_id; /**< RX queue index. */
-	uint64_t		ep_addr;
+	uint32_t		ep_addr;
 
 	int8_t			ringszidx;
 	int8_t			cmpt_ringszidx;
@@ -252,7 +252,7 @@ struct qdma_tx_queue {
 
 	struct qdma_pkt_stats stats;
 
-	uint64_t			ep_addr;
+	uint32_t			ep_addr;
 	uint32_t			queue_id; /* TX queue index. */
 	uint32_t			num_queues; /* TX queue index. */
 	const struct rte_memzone	*tx_mz;

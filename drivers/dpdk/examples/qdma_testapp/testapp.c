@@ -522,11 +522,8 @@ int do_xmit(int port_id, int fd, int queueid, int ld_size, int tot_num_desc,
 #endif //DUMP_MEMPOOL_USAGE_STATS
 
 		total_tx = num_pkts;
-
-#ifndef TANDEM_BOOT_SUPPORTED
 		PciWrite(user_bar_idx, C2H_ST_QID_REG, (queueid + qbase),
 				port_id);
-#endif
 		/* try to transmit TX_BURST_SZ packets */
 
 #ifdef PERF_BENCHMARK
@@ -614,7 +611,6 @@ int do_xmit(int port_id, int fd, int queueid, int ld_size, int tot_num_desc,
 			rte_pktmbuf_free(mb[0]);
 	}
 
-#ifndef TANDEM_BOOT_SUPPORTED
 	reg_val = PciRead(user_bar_idx, C2H_CONTROL_REG, port_id);
 	reg_val &= C2H_CONTROL_REG_MASK;
 	if (!(reg_val & ST_LOOPBACK_EN)) {
@@ -625,7 +621,6 @@ int do_xmit(int port_id, int fd, int queueid, int ld_size, int tot_num_desc,
 		/** TO clear H2C DMA write **/
 		PciWrite(user_bar_idx, H2C_CONTROL_REG, 0x1, port_id);
 	}
-#endif
 
 	rte_spinlock_unlock(&pinfo[port_id].port_update_lock);
 	return 0;

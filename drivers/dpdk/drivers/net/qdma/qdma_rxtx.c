@@ -344,7 +344,7 @@ void qdma_get_device_info(void *queue_hndl,
 	*ip_type = (enum qdma_ip_type)qdma_dev->ip_type;
 }
 
-uint64_t get_mm_c2h_ep_addr(void *queue_hndl)
+uint32_t get_mm_c2h_ep_addr(void *queue_hndl)
 {
 	struct qdma_rx_queue *rxq = (struct qdma_rx_queue *)queue_hndl;
 
@@ -395,7 +395,7 @@ struct qdma_ul_mm_desc *get_mm_h2c_desc(void *queue_hndl)
 	return desc;
 }
 
-uint64_t get_mm_h2c_ep_addr(void *queue_hndl)
+uint32_t get_mm_h2c_ep_addr(void *queue_hndl)
 {
 	struct qdma_tx_queue *txq = (struct qdma_tx_queue *)queue_hndl;
 
@@ -1604,9 +1604,7 @@ uint16_t qdma_xmit_pkts_mm(struct qdma_tx_queue *txq, struct rte_mbuf **tx_pkts,
 		PMD_DRV_LOG(DEBUG, "xmit number of bytes:%ld, count:%d ",
 				len, count);
 
-#ifndef TANDEM_BOOT_SUPPORTED
 		txq->ep_addr = (txq->ep_addr + len) % DMA_BRAM_SIZE;
-#endif
 		id = txq->q_pidx_info.pidx;
 	}
 
