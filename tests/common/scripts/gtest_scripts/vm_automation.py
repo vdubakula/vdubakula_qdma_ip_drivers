@@ -222,6 +222,7 @@ for vm_id in range(1, nb_vms + 1):
     print vm_cmd
     os.system(vm_cmd)
 # Let vms up
+print("Entering to sleep for 3 minutes\n")
 time.sleep(180)
 
 try:
@@ -272,11 +273,13 @@ try:
         s.prompt()
         print s.before
 
+        print("Entering to sleep while test execution is in progress on vm " + str(vm_id) + " \n")
         if drv_used == "dpdk":
-            time.sleep(600)
+            time.sleep(1000)
         else:
             time.sleep(60)
 
+        print("Collecting logs from vm " + str(vm_id) + " \n")
         s.sendline ('echo --------------------------------------------vm_' + str(vm_id) + ' done---------------------------------------------------------------')
         os.system("sshpass -p dpdk scp -r -P " + str(base_port + vm_id) + " root@127.0.0.1:" + gtest_script_path + "/../../apps/qdma_test/logs ./vm" + str(vm_id) + "_logs/")
 
