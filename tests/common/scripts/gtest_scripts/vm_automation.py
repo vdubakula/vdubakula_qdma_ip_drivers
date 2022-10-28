@@ -249,13 +249,15 @@ try:
         s = pxssh.pxssh(timeout = 5000)
         s.login ("127.0.0.1", "root", "dpdk", port = base_port + vm_id)
 
-        if drv_used == "dpdk":
-            os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "dpdk-stable-20.11" + "  root@127.0.0.1:/home/dpdk/")
-            os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "incoming" + "  root@127.0.0.1:/home/dpdk/")
+        #if drv_used == "dpdk":
+        #    os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "dpdk-stable-20.11" + "  root@127.0.0.1:/home/dpdk/")
+        #    os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "incoming" + "  root@127.0.0.1:/home/dpdk/")
 
-        os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "drivers" + "  root@127.0.0.1:/home/dpdk/")
-        os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "tests" + "  root@127.0.0.1:/home/dpdk/")
-        os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "util" + "  root@127.0.0.1:/home/dpdk/")
+        if drv_used == "linux":
+            os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "drivers" + "  root@127.0.0.1:/home/dpdk/")
+            os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "tests" + "  root@127.0.0.1:/home/dpdk/")
+            os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "util" + "  root@127.0.0.1:/home/dpdk/")
+
         os.system("sshpass -p dpdk scp -P " + str(base_port + vm_id) + " "+ config_file_out + " root@127.0.0.1:" + gtest_script_path + str(file_in))
         s.sendline ('echo --------------------------------------------vm_'+ str(vm_id) +'logs---------------------------------------------------------------')
         s.prompt()
@@ -274,8 +276,8 @@ try:
         print s.before
 
         print("Entering to sleep while test execution is in progress on vm " + str(vm_id) + " \n")
-        if drv_used == "dpdk":
-            time.sleep(1000)
+        if dpdk_bind_drv == "vfio-pci":
+            time.sleep(600)
         else:
             time.sleep(60)
 
