@@ -99,23 +99,23 @@ pipeline {
         stage('build') { steps {
             node("${NODE_ADDRESS}")  {script {
                 echo "Preparing the dpdk build sources"
-                sh "tar xzf ${DPDK_SRC}/dpdk-stable-${DPDK_VER}.tar.gz  -C ${DPDK_SRC}/../../../../"
-                sh "tar xzf ${DPDK_SRC}/dpdk-kmods.tar.gz  -C ${DPDK_SRC}/../../../../dpdk-stable-${DPDK_VER}"
-                dir("${DPDK_SRC}/../../../../") {
+                sh "tar xzf ${DPDK_SRC}/dpdk-stable-${DPDK_VER}.tar.gz  -C ${DPDK_SRC}/../../../"
+                sh "tar xzf ${DPDK_SRC}/dpdk-kmods.tar.gz  -C ${DPDK_SRC}/../../../dpdk-stable-${DPDK_VER}"
+                dir("${DPDK_SRC}/../../../") {
                     run_as_sudo('rm dpdk-stable-${DPDK_VER}/drivers/net/qdma -rf')
                     run_as_sudo('rm dpdk-stable-${DPDK_VER}/examples/qdma_testapp -rf')
 
-                    sh 'cp HEAD/proj/sw_host/dpdk/examples/qdma_testapp dpdk-stable-${DPDK_VER}/examples/ -rf'
-                    sh 'cp HEAD/proj/sw_host/dpdk/drivers/net/qdma dpdk-stable-${DPDK_VER}/drivers/net/ -rf'
-                    sh 'cp HEAD/proj/sw_host/qdma_access/ dpdk-stable-${DPDK_VER}/drivers/net/qdma/. -rf'
-                    sh 'cp HEAD/proj/sw_host/dpdk/build.sh dpdk-stable-${DPDK_VER}/ -rf'
+                    sh 'cp drivers/dpdk/examples/qdma_testapp dpdk-stable-${DPDK_VER}/examples/ -rf'
+                    sh 'cp drivers/dpdk/drivers/net/qdma dpdk-stable-${DPDK_VER}/drivers/net/ -rf'
+                    sh 'cp drivers/qdma_access/ dpdk-stable-${DPDK_VER}/drivers/net/qdma/. -rf'
+                    sh 'cp drivers/dpdk/build.sh dpdk-stable-${DPDK_VER}/ -rf'
                     echo "copy the tests cases to test directory"
                     run_as_sudo("cp ${TEST_CASES_PATH}/tests/* dpdk-stable-${DPDK_VER}/examples/qdma_testapp")
                     run_as_sudo("cp ${TEST_CASES_PATH}/dev_tests/* dpdk-stable-${DPDK_VER}/examples/qdma_testapp")
                 }
                 echo "building dpdk qdma pmd"
-                dir("${DPDK_SRC}/../../../../dpdk-stable-${DPDK_VER}") { script {
-                    sh 'patch -p1 < ../HEAD/proj/sw_host/dpdk/patches/dpdk/0001-net-qdma-Integrate-qdma-pmd-to-dpdk-${DPDK_VER}.patch'
+                dir("${DPDK_SRC}/../../../dpdk-stable-${DPDK_VER}") { script {
+                    sh 'patch -p1 < ../drivers/dpdk/patches/dpdk/0001-net-qdma-Integrate-qdma-pmd-to-dpdk-${DPDK_VER}.patch'
                     run_as_sudo('rm build -rf')
                     run_as_sudo('rm examples/qdma_testapp/build -rf')
                     run_as_sudo('sh build.sh')
@@ -128,10 +128,10 @@ pipeline {
                 node("${NODE_ADDRESS}") {
                     dir("${SCRIPT_PATH}/../dpdk/") {
                         run_as_sudo('chmod +x ./run_static_analysis_dpdk.sh')
-                        run_as_sudo("sh ./run_static_analysis_dpdk.sh ../../../../../dpdk-stable-${DPDK_VER} ./examples/qdma_testapp  ${COMPILE_FLAGS}")
+                        run_as_sudo("sh ./run_static_analysis_dpdk.sh ../../dpdk-stable-${DPDK_VER} ./examples/qdma_testapp  ${COMPILE_FLAGS}")
                     }
 
-                    dir("${DPDK_SRC}/../../../../dpdk-stable-${DPDK_VER}") { script {
+                    dir("${DPDK_SRC}/../../../dpdk-stable-${DPDK_VER}") { script {
                         ignore_error({run_as_sudo('chmod 0777  ./dpdk_checkpatch_log.txt')})
                         echo "Archiving dpdk_checkpatch_log "
                         archiveArtifacts artifacts: "dpdk_checkpatch_log.txt", fingerprint: true
@@ -162,7 +162,7 @@ pipeline {
             }
 
             node("${NODE_ADDRESS}")  { script {
-                dir("${DPDK_SRC}/../../../../dpdk-stable-${DPDK_VER}/examples/qdma_testapp") {
+                dir("${DPDK_SRC}/../../../dpdk-stable-${DPDK_VER}/examples/qdma_testapp") {
                     run_as_sudo('chmod +x *.sh')
                 }
 
@@ -193,7 +193,7 @@ pipeline {
                 node("${NODE_ADDRESS}") {script {
                 echo "restore grub entry"
 
-                dir("${DPDK_SRC}/../../../../dpdk-stable-${DPDK_VER}/examples/qdma_testapp") {
+                dir("${DPDK_SRC}/../../../dpdk-stable-${DPDK_VER}/examples/qdma_testapp") {
                     run_as_sudo('cp /etc/default/grub-default /etc/default/grub')
                     run_as_sudo('update-grub')
                     run_as_sudo('update-grub2')
