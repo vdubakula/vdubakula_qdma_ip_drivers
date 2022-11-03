@@ -1,4 +1,4 @@
-From 9d14a7569e9fb7cca61f728d315f65e63073646e Mon Sep 17 00:00:00 2001
+From 0c3542a11749a2b2bf5d915cf381c180f11bca16 Mon Sep 17 00:00:00 2001
 From: Suryanarayana Raju Sangani <ssangani@xilinx.com>
 Date: Thu, 27 Feb 2020 23:36:43 -0700
 Subject: [PATCH] Add QDMA xdebug to proc-info of dpdk-20.11
@@ -7,8 +7,9 @@ Signed-off-by: Nikhil agarwal <nagarwal@xilinx.com>
 Signed-off-by: Thanneeru Srinivasulu <sthannee@xilinx.com>
 Signed-off-by: Sangani Suryanarayana Raju <ssangani@xilinx.com>
 ---
- app/proc-info/main.c | 172 +++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 165 insertions(+), 7 deletions(-)
+ app/proc-info/main.c      | 172 ++++++++++++++++++++++++++++++++++++--
+ app/proc-info/meson.build |   2 +-
+ 2 files changed, 166 insertions(+), 8 deletions(-)
 
 diff --git a/app/proc-info/main.c b/app/proc-info/main.c
 index d743209..09a6eac 100644
@@ -290,6 +291,16 @@ index d743209..09a6eac 100644
  	}
  
  	/* print port independent stats */
+diff --git a/app/proc-info/meson.build b/app/proc-info/meson.build
+index f050c4a..25ebda6 100644
+--- a/app/proc-info/meson.build
++++ b/app/proc-info/meson.build
+@@ -2,4 +2,4 @@
+ # Copyright(c) 2018 Intel Corporation
+ 
+ sources = files('main.c')
+-deps += ['ethdev', 'metrics', 'security']
++deps += ['ethdev', 'metrics', 'security', 'net_qdma']
 -- 
-2.17.1
+2.25.1
 
