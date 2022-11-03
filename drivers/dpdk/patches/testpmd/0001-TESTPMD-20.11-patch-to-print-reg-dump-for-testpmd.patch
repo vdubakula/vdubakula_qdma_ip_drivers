@@ -1,0 +1,58 @@
+From 3d3141edc87a5b90bd427fa78b5c967b67be41cc Mon Sep 17 00:00:00 2001
+From: root <root@xhdipdslab46.xilinx.com>
+Date: Thu, 3 Nov 2022 17:50:21 +0530
+Subject: [PATCH] TESTPMD 20.11 patch to print reg dump for testpmd
+
+---
+ app/test-pmd/meson.build | 2 +-
+ app/test-pmd/testpmd.c   | 7 +++++++
+ 2 files changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/app/test-pmd/meson.build b/app/test-pmd/meson.build
+index 7e9c7bd..c3d1314 100644
+--- a/app/test-pmd/meson.build
++++ b/app/test-pmd/meson.build
+@@ -24,7 +24,7 @@ sources = files('5tswap.c',
+ 	'txonly.c',
+ 	'util.c')
+ 
+-deps += ['ethdev', 'gro', 'gso', 'cmdline', 'metrics', 'meter', 'bus_pci']
++deps += ['ethdev', 'gro', 'gso', 'cmdline', 'metrics', 'meter', 'bus_pci', 'net_qdma']
+ if dpdk_conf.has('RTE_LIB_BITRATESTATS')
+ 	deps += 'bitratestats'
+ endif
+diff --git a/app/test-pmd/testpmd.c b/app/test-pmd/testpmd.c
+index 33fc0fd..0668e30 100644
+--- a/app/test-pmd/testpmd.c
++++ b/app/test-pmd/testpmd.c
+@@ -62,6 +62,7 @@
+ #endif
+ 
+ #include "testpmd.h"
++#include <rte_pmd_qdma.h>
+ 
+ #ifndef MAP_HUGETLB
+ /* FreeBSD may not have MAP_HUGETLB (in fact, it probably doesn't) */
+@@ -2570,6 +2571,9 @@ start_port(portid_t pid)
+ 				port->need_reconfig = 1;
+ 				return -1;
+ 			}
++
++			printf("\n *** Start_port:: Reg dump for port_id = %d ***\n", pi);
++			rte_pmd_qdma_dbg_regdump(pi);
+ 		}
+ 		if (port->need_reconfig_queues > 0) {
+ 			port->need_reconfig_queues = 0;
+@@ -2771,6 +2775,9 @@ stop_port(portid_t pid)
+ 
+ 	printf("Stopping ports...\n");
+ 
++	printf("\n *** Stop_port:: Reg dump for port_id = %d ***\n", pid);
++	rte_pmd_qdma_dbg_regdump(pid);
++
+ 	RTE_ETH_FOREACH_DEV(pi) {
+ 		if (pid != pi && pid != (portid_t)RTE_PORT_ALL)
+ 			continue;
+-- 
+2.25.1
+

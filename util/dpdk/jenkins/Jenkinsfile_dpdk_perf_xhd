@@ -115,6 +115,7 @@ pipeline {
 				echo "building dpdk qdma pmd"
 				dir("${DRIVER_PATH}/dpdk-stable-${DPDK_VER}") {
 					sh 'patch -p1 < ../patches/dpdk/0001-net-qdma-Integrate-qdma-pmd-to-dpdk-${DPDK_VER}.patch'
+					sh 'patch -p1 < ../patches/testpmd/0001-TESTPMD-20.11-patch-to-print-reg-dump-for-testpmd.patch'
 					run_as_sudo('rm build -rf')
 					run_as_sudo('sh build.sh')
 				}
