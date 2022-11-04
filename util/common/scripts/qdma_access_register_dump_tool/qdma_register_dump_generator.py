@@ -21,7 +21,8 @@ FEATURE_COL=29
 PF_VF_COL=30
 
 template_copyright = """/*
- * Copyright(c) 2019-2020 Xilinx, Inc. All rights reserved.
+ * Copyright (c) 2019-2022 Xilinx, Inc. All rights reserved.
+ * Copyright (c) 2022, Advanced Micro Devices, Inc. All rights reserved.
  */
 """
 
