@@ -323,7 +323,7 @@ queue_ext::queue_ext(instance& drv, uint32_t dev_id, uint32_t q_id, queue::mode 
 	/** Mbuf packet pool **/
 	nb_buff = ((qcfg.idx_rngsz));
 
-	nb_buff += (5 * NUM_RX_PKTS);
+	nb_buff += (6 * NUM_RX_PKTS);
 
 	/* Configure mbuf packet pool with minimum 2K size */
 	nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 1.5));

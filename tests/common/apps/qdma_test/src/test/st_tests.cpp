@@ -1067,7 +1067,7 @@ TEST_P(qdma_neg_st_ring_size_test, h2c_c2h) {
 		/** Mbuf packet pool **/
 		nb_buff = ((tp.qcfg.idx_rngsz));
 
-		nb_buff += (5 * NUM_RX_PKTS);
+		nb_buff += NUM_RX_PKTS;
 
 		/* Configure mbuf packet pool with minimum 2K size */
 		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 1.5));
@@ -1195,7 +1195,7 @@ TEST_P(qdma_neg_inv_buf_size_test, h2c_c2h) {
 		/** Mbuf packet pool **/
 		nb_buff = ((tp.qcfg.idx_rngsz));
 
-		nb_buff += (5 * NUM_RX_PKTS);
+		nb_buff += NUM_RX_PKTS;
 
 		/* Configure mbuf packet pool with minimum 2K size */
 		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 1.5));
@@ -1306,7 +1306,7 @@ TEST_P(qdma_neg_inv_tmr_cnt_test, h2c_c2h) {
 		/** Mbuf packet pool **/
 		nb_buff = ((tp.qcfg.idx_rngsz));
 
-		nb_buff += (5 * NUM_RX_PKTS);
+		nb_buff += NUM_RX_PKTS;
 
 		/* Configure mbuf packet pool with minimum 2K size */
 		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 1.5));
@@ -1423,7 +1423,7 @@ TEST_P(qdma_neg_add_inv_qid_test, h2c_c2h) {
 		/** Mbuf packet pool **/
 		nb_buff = ((tp.qcfg.idx_rngsz));
 
-		nb_buff += (5 * NUM_RX_PKTS);
+		nb_buff += NUM_RX_PKTS;
 
 		/* Configure mbuf packet pool with minimum 2K size */
 		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 1.5));
@@ -1552,7 +1552,7 @@ TEST_P(qdma_neg_start_inv_qid_test, h2c_c2h) {
 		/** Mbuf packet pool **/
 		nb_buff = ((tp.qcfg.idx_rngsz));
 
-		nb_buff += (5 * NUM_RX_PKTS);
+		nb_buff += NUM_RX_PKTS;
 
 		/* Configure mbuf packet pool with minimum 2K size */
 		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 1.5));
@@ -1693,7 +1693,7 @@ TEST_P(qdma_neg_stop_inv_qid_test, h2c_c2h) {
 		/** Mbuf packet pool **/
 		nb_buff = ((tp.qcfg.idx_rngsz));
 
-		nb_buff += (5 * NUM_RX_PKTS);
+		nb_buff += NUM_RX_PKTS;
 
 		/* Configure mbuf packet pool with minimum 2K size */
 		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 1.5));
@@ -1850,7 +1850,7 @@ TEST_P(qdma_neg_dump_inv_qid_test, h2c_c2h) {
 		/** Mbuf packet pool **/
 		nb_buff = ((tp.qcfg.idx_rngsz));
 
-		nb_buff += (5 * NUM_RX_PKTS);
+		nb_buff += NUM_RX_PKTS;
 
 		/* Configure mbuf packet pool with minimum 2K size */
 		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 1.5));
@@ -2093,7 +2093,7 @@ TEST_P(qdma_neg_proc_without_start_test, h2c_c2h) {
 		/** Mbuf packet pool **/
 		nb_buff = ((tp.qcfg.idx_rngsz));
 
-		nb_buff += (5 * NUM_RX_PKTS);
+		nb_buff += NUM_RX_PKTS;
 
 		/* Configure mbuf packet pool with minimum 2K size */
 		nb_buff = RTE_MAX(nb_buff, (RTE_MEMPOOL_CACHE_MAX_SIZE * 1.5));
