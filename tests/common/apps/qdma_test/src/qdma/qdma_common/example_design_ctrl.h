@@ -258,7 +258,7 @@ public:
     void set_prefetch_tag(const uint32_t qid, const uint32_t tag) {
         uint32_t regval = 0;
 
-        regval = (qid & 0x7FF) << 16 | (tag & 0x7F);
+        regval = (qid & 0xFFF) << 16 | (tag & 0xFF);
         user_bar.write<uint32_t>(0x24, regval);
     }
 
