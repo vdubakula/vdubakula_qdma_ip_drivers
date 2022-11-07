@@ -42,7 +42,7 @@ public:
 
     bool check_h2c(const uint32_t qid, bool is_zero_byte_xfer) {
         const auto match_reg = user_bar.read<uint32_t>(0x10);
-        const auto match_qid = get_bits(match_reg, 4, 11); // bits 4-14 = qid
+        const auto match_qid = get_bits(match_reg, 4, 12); // bits 4-15 = qid
         const bool zero_byte_match = is_zero_byte_xfer? is_bit_set(match_reg, 1) : true;
         return (match_qid == qid) && zero_byte_match && check_h2c_match(match_reg); // bit 0 = match
     }
