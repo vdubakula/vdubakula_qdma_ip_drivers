@@ -124,6 +124,8 @@ auto instance_ext::dev_info(unsigned dev_id) -> device::info {
 	info.dev_cap.device_type = dev_attr.device_type;
 	info.dev_cap.ip_type = dev_attr.ip_type;
 
+	info.max_num_queues = dev_attr.num_qs;
+
 	return info;
 }
 

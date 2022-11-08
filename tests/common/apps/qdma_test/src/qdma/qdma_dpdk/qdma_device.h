@@ -36,7 +36,7 @@ public:
         int dma_bar_idx = 0;
         int user_bar_idx = 0;
         int bypass_bar_idx = 0;
-        int max_num_queues = QDMA_MAX_QUEUES;
+        int max_num_queues = 0;
         struct rte_pmd_qdma_dev_attributes dev_cap;
     };
 
