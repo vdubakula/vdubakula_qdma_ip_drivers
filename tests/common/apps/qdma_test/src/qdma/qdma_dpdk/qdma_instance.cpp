@@ -126,6 +126,9 @@ auto instance_ext::dev_info(unsigned dev_id) -> device::info {
 
 	info.max_num_queues = dev_attr.num_qs;
 
+	if (info.max_num_queues > QDMA_MAX_QUEUES)
+		info.max_num_queues = QDMA_MAX_QUEUES;
+
 	return info;
 }
 
