@@ -53,7 +53,7 @@
 #define QDMA_QBASE 0
 #endif
 #ifndef QDMA_TOTAL_Q
-#define QDMA_TOTAL_Q 2048
+#define QDMA_TOTAL_Q 4095
 #endif
 #endif
 
