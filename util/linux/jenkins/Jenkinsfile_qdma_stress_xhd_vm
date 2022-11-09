@@ -173,7 +173,7 @@ pipeline {
                              vm_cfg = "\"${VM_1_CONFIG}\" \"${VM_2_CONFIG}\" \"${VM_3_CONFIG}\" \"${VM_4_CONFIG}\" \"${VM_5_CONFIG}\" \"${VM_6_CONFIG}\" \"${VM_7_CONFIG}\" \"${VM_8_CONFIG}\" \"${VM_9_CONFIG}\" \"${VM_10_CONFIG}\""			 
                         
 						run_as_sudo('chmod +x stress_vm_automation.py')
-                        run_as_sudo("python ./stress_vm_automation.py /home/dpdk/tests/linux/scripts/stress_test_scripts/ \"./stress_test_top.sh 00040 $MODE ${TIME} $TOTAL_QUEUES $OVERRIDE_PF_NVF vf\" \"../../../../sw_host/linux/\" linux ${VM_RAM} ${PCI_BBDDF} ${VM_IMAGE_PATH} ${VM_COUNT} ${vm_cfg}")
+                        run_as_sudo("python ./stress_vm_automation.py /home/dpdk/tests/linux/scripts/stress_test_scripts/ \"./stress_test_top.sh 00040 $MODE ${TIME} $TOTAL_QUEUES $OVERRIDE_PF_NVF vf\" \"../../../../drivers/linux/\" linux ${VM_RAM} ${PCI_BBDDF} ${VM_IMAGE_PATH} ${VM_COUNT} ${vm_cfg}")
 						
                     }
                     ignore_error({run_as_sudo('chmod 0777 ${SCRIPT_PATH}/stress_test_report_*.xlsx')})
