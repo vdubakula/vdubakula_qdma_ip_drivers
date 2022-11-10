@@ -53,7 +53,12 @@
 #define QDMA_QBASE 0
 #endif
 #ifndef QDMA_TOTAL_Q
-#define QDMA_TOTAL_Q 4095
+/**
+ * CPM5 supports 4095 Qs & all other designs supports 2048 Qs.
+ * Though the number here is given as 2K Qs,
+ * actual qmax is extracted from dev cap.
+ */
+#define QDMA_TOTAL_Q 2048
 #endif
 #endif
 
