@@ -89,11 +89,16 @@ def prog_board() {
         dir('.') { script {
             bitfile_dir ="${env.WORKSPACE}/${BITFILE}"
             echo "${bitfile_dir}" // BITFILE can be set via jenkins job parameter
-			if ("$DEVICETYPE" == "VERSAL") {
-				run_as_sudo('sh util/common/scripts/program_versal_pdi.sh ${TARGET_IDX} util/common/scripts/spi2vjtag.tcl ${BITFILE} util/common/scripts/qdma_versal_mm_st_4pf_252vf.tcl util/common/scripts/qdma_versal_msix.tcl')
+		if ("$DEVICETYPE" == "VERSAL_H10") {
+                	run_as_sudo('python3.6 util/common/scripts/pdu_auto_login.py -u ${PDU_IP} -a 5 -r ${PDU_RELAY}')
+                	sleep 5
+                	run_as_sudo('sh util/common/scripts/program_versal_h10_pdi.sh ${TARGET_IDX} ${BITFILE}')
+            }	
+		else if ("$DEVICETYPE" == "VERSAL") {
+			run_as_sudo('sh util/common/scripts/program_versal_pdi.sh ${TARGET_IDX} util/common/scripts/spi2vjtag.tcl ${BITFILE} util/common/scripts/qdma_versal_mm_st_4pf_252vf.tcl util/common/scripts/qdma_versal_msix.tcl')
             }
-            else {
-                run_as_sudo('sh util/common/scripts/program_qdma_bitstream.sh ${TARGET_IDX} ${BITFILE}')
+           	else {
+               	 	run_as_sudo('sh util/common/scripts/program_qdma_bitstream.sh ${TARGET_IDX} ${BITFILE}')
 				//run_as_sudo('"${VIVADO_PATH}" -nolog -nojournal -mode batch -source util/common/scripts/program_bitstream.tcl -tclargs ${BOARD_IDX} 0 ${BITFILE}')
             }
         }}
