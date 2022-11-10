@@ -256,7 +256,8 @@ int qdma_device_init(struct xlnx_dma_dev *xdev)
 	descq = (struct qdma_descq *)(qdev + 1);
 	qdev->h2c_descq = kmalloc(sizeof(struct qdma_descq) * qmax, GFP_KERNEL);
 	qdev->c2h_descq = kmalloc(sizeof(struct qdma_descq) * qmax, GFP_KERNEL);
-	qdev->cmpt_descq = kmalloc(sizeof(struct qdma_descq) * qmax, GFP_KERNEL);
+	qdev->cmpt_descq = kmalloc(sizeof(struct qdma_descq) * qmax,
+					GFP_KERNEL);
 
 	qdev->qmax = qmax;
 	qdev->init_qrange = 0;
@@ -317,9 +318,9 @@ void qdma_device_cleanup(struct xlnx_dma_dev *xdev)
 					  i + qdev->qmax, buf, QDMA_BUF_LEN);
 	}
 
-    kfree(qdev->h2c_descq);
-    kfree(qdev->c2h_descq);
-    kfree(qdev->cmpt_descq);
+	kfree(qdev->h2c_descq);
+	kfree(qdev->c2h_descq);
+	kfree(qdev->cmpt_descq);
 	xdev->dev_priv = NULL;
 	kfree(qdev);
 }
