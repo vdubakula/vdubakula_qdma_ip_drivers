@@ -1,4 +1,4 @@
-RELEASE: 2022.1.2
+RELEASE: 2022.1.3
 =================
 
 This release is based on DPDK v20.11 and contains QDMA poll mode driver and
@@ -7,6 +7,7 @@ QDMA test application.
 This release is validated for
 	- On VCU1525 for QDMA5.0 2022.1 example design
 	- On VCU1525 for QDMA4.0 2020.2 example design
+	- On VCU1525 for QDMA3.1 2019.2 example design
 	- On XCVP1202 for CPM5 2022.1 example design
 
 This release includes a patch file for dpdk-pktgen v20.12.0 that extends
@@ -105,6 +106,10 @@ CPM5
 2022.1.2 Patch Updates
 ----------------------
 - Added support for QDMA5.0 which has some performance optimization changes compared to QDMA4.0
+
+2022.1.3 Patch Updates
+----------------------
+- Added PF/VF 4K queues support for CPM5 design. This feature is applicable only when corresponding RTL support is added.
 
 KNOWN ISSUE:
 ============
