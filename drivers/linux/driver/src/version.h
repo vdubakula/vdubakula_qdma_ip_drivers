@@ -32,8 +32,8 @@
 #define DRV_MODULE_RELDATE	"Jun 2022"
 
 #define DRV_MOD_MAJOR		2022
-#define DRV_MOD_MINOR		2
-#define DRV_MOD_PATCHLEVEL	0
+#define DRV_MOD_MINOR		1
+#define DRV_MOD_PATCHLEVEL	5
 
 #define DRV_MODULE_VERSION      \
 	__stringify(DRV_MOD_MAJOR) "." \
