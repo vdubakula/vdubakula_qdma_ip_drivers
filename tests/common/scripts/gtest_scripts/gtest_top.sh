@@ -68,7 +68,9 @@ do
 	if [[ ${gtest_args[$i]} == "TEST_64B_DESC_BYPASS=1" ]]; then
 		compile_flags=$8
 	fi
-
+	if [[ ${gtest_args[$i]} == "EQDMA_CPM5_VF_GT_256Q_SUPPORTED=1" ]]; then
+		compile_flags=$8
+	fi
 done
 
 if [ $enable_compile == 1 ]; then
