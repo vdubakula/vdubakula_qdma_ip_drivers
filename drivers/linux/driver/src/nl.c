@@ -1673,8 +1673,16 @@ add_q:
 			}
 		}
 	}
-
-	cur += snprintf(cur, end - cur, "Added %u Queues.\n", i);
+/* Suppress Q additions prints if num_q's greater than 2048.
+ * And print only consolidated Q's added, to overcome attr failure.
+ * TODO: This is a workaround. Need to comeup with proper fix.
+ */
+	if (num_q > 2048) {
+		memset(buf, 0, strlen(buf) + 1);
+		snprintf(buf, 25, "Added %u Queues.\n", i);
+	} else {
+		cur += snprintf(cur, end - cur, "Added %u Queues.\n", i);
+	}
 
 send_resp:
 	rv2 = xnl_respond_buffer(info, buf, strlen(buf), rv);
