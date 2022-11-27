@@ -437,7 +437,7 @@ int do_xmit(int port_id, int fd, int queueid, int ld_size, int tot_num_desc,
 				int zbyte)
 {
 	struct rte_mempool *mp;
-	struct rte_mbuf *mb[NUM_RX_PKTS] = { NULL };
+	struct rte_mbuf *mb[NUM_TX_PKTS] = { NULL };
 	struct rte_device *dev;
 	int ret = 0, nb_tx, i = 0, tdesc, num_pkts = 0, total_tx = 0, reg_val;
 	int tmp = 0, user_bar_idx;
@@ -475,8 +475,8 @@ int do_xmit(int port_id, int fd, int queueid, int ld_size, int tot_num_desc,
 		tdesc--;
 
 	while (tdesc) {
-		if (tdesc > NUM_RX_PKTS)
-			num_pkts = NUM_RX_PKTS;
+		if (tdesc > NUM_TX_PKTS)
+			num_pkts = NUM_TX_PKTS;
 		else
 			num_pkts = tdesc;
 
@@ -883,11 +883,11 @@ int port_init(int port_id, int num_queues, int st_queues,
 	/* Mbuf packet pool */
 	nb_buff = ((nb_descs) * num_queues * 2);
 
-	/* NUM_RX_PKTS should be added to every queue as that many descriptors
+	/* NUM_TX_PKTS should be added to every queue as that many descriptors
 	 * can be pending with application after Rx processing but before
 	 * consumed by application or sent to Tx
 	 */
-	nb_buff += ((NUM_RX_PKTS) * num_queues);
+	nb_buff += ((NUM_TX_PKTS) * num_queues);
 
 	mbuf_pool = rte_pktmbuf_pool_create(pinfo[port_id].mem_pool, nb_buff,
 			MP_CACHE_SZ, 0, buff_size +
