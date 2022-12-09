@@ -2173,9 +2173,10 @@ int eqdma_set_default_global_csr(void *dev_hndl)
 			reg_val = qdma_reg_read(dev_hndl,
 					EQDMA_C2H_PFCH_CACHE_DEPTH_ADDR);
 			cfg_val = FIELD_GET(C2H_PFCH_CACHE_DEPTH_MASK, reg_val);
-			reg_val = FIELD_SET(C2H_PFCH_CFG_1_QCNT_MASK, (cfg_val >> 2)) |
-					  FIELD_SET(C2H_PFCH_CFG_1_EVT_QCNT_TH_MASK,
-							((cfg_val >> 2) - 4));
+			reg_val = FIELD_SET(C2H_PFCH_CFG_1_QCNT_MASK,
+					(cfg_val >> 2)) |
+				FIELD_SET(C2H_PFCH_CFG_1_EVT_QCNT_TH_MASK,
+						((cfg_val >> 2) - 4));
 		} else {
 			/* Performance optimization for EQDMA5.0. */
 			reg_val = FIELD_SET(C2H_PFCH_CFG_1_QCNT_MASK,
