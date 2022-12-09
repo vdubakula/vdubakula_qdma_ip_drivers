@@ -56,6 +56,10 @@
 #define EQDMA5_DEFAULT_MAX_DSC_FETCH       5
 #define EQDMA5_DEFAULT_WRB_INT             QDMA_WRB_INTERVAL_128
 
+/* C2H prefetch Throttle configuration. */
+#define EQDMA5_DEFAULT_C2H_EVT_QCNT_TH     0x38
+#define EQDMA5_DEFAULT_C2H_PFCH_QCNT       0x3c
+
 /** Auxillary Bitmasks for fields spanning multiple words */
 #define EQDMA_SW_CTXT_PASID_GET_H_MASK              GENMASK(21, 12)
 #define EQDMA_SW_CTXT_PASID_GET_L_MASK              GENMASK(11, 0)
@@ -2165,12 +2169,20 @@ int eqdma_set_default_global_csr(void *dev_hndl)
 				QDMA_NUM_C2H_BUFFER_SIZES, buf_sz);
 
 		/* Prefetch Configuration */
-		reg_val = qdma_reg_read(dev_hndl,
-				EQDMA_C2H_PFCH_CACHE_DEPTH_ADDR);
-		cfg_val = FIELD_GET(C2H_PFCH_CACHE_DEPTH_MASK, reg_val);
-		reg_val = FIELD_SET(C2H_PFCH_CFG_1_QCNT_MASK, (cfg_val >> 2)) |
+		if (eqdma_ip_version == EQDMA_IP_VERSION_4) {
+			reg_val = qdma_reg_read(dev_hndl,
+					EQDMA_C2H_PFCH_CACHE_DEPTH_ADDR);
+			cfg_val = FIELD_GET(C2H_PFCH_CACHE_DEPTH_MASK, reg_val);
+			reg_val = FIELD_SET(C2H_PFCH_CFG_1_QCNT_MASK, (cfg_val >> 2)) |
+					  FIELD_SET(C2H_PFCH_CFG_1_EVT_QCNT_TH_MASK,
+							((cfg_val >> 2) - 4));
+		} else {
+			/* Performance optimization for EQDMA5.0. */
+			reg_val = FIELD_SET(C2H_PFCH_CFG_1_QCNT_MASK,
+						EQDMA5_DEFAULT_C2H_PFCH_QCNT) |
 				  FIELD_SET(C2H_PFCH_CFG_1_EVT_QCNT_TH_MASK,
-						((cfg_val >> 2) - 4));
+						EQDMA5_DEFAULT_C2H_EVT_QCNT_TH);
+		}
 		qdma_reg_write(dev_hndl, EQDMA_C2H_PFCH_CFG_1_ADDR, reg_val);
 
 		reg_val = qdma_reg_read(dev_hndl, EQDMA_C2H_PFCH_CFG_2_ADDR);
