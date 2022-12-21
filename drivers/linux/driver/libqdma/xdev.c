@@ -1154,8 +1154,6 @@ int qdma_device_open(const char *mod_name, struct qdma_dev_conf *conf,
 		goto unmap_bars;
 	}
 
-	memcpy(conf, &xdev->conf, sizeof(*conf));
-
 	rv = qdma_device_online(pdev, (unsigned long)xdev, XDEV_FLR_INACTIVE);
 	if (rv < 0) {
 		pr_warn("Failed to set the dma device  online, err = %d", rv);
@@ -1167,6 +1165,8 @@ int qdma_device_open(const char *mod_name, struct qdma_dev_conf *conf,
 		pr_err("Failed to identify bars, err %d", rv);
 		goto unmap_bars;
 	}
+
+	memcpy(conf, &xdev->conf, sizeof(*conf));
 
 	pr_info("%s, %05x, pdev 0x%p, xdev 0x%p, ch %u, q %u, vf %u.\n",
 		dev_name(&pdev->dev), xdev->conf.bdf, pdev, xdev,

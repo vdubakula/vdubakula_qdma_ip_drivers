@@ -4,6 +4,7 @@
 #include <linux/debugfs.h>
 #include "ktf.h"
 #include "libqdma_export.h"
+#include <linux/slab.h>
 
 MODULE_LICENSE("GPL");
 
@@ -1599,7 +1600,9 @@ TEST(qdma_test, api031_qdma_q_dump)
 	int total_queues = 0;
 	unsigned long dev_hndl, qhndl;
 	struct pci_dev *pdev;
-	char buf[8000];
+	int buflen = 83000;
+	char *buf;
+	buf = kmalloc(buflen, GFP_KERNEL);
 	struct qdma_queue_conf qconf;
 	int qno;
 	struct qparam qp[2] = { {1, 0} , {1 , 1} };
@@ -1628,24 +1631,25 @@ TEST(qdma_test, api031_qdma_q_dump)
 
 		for(qno = 0; qno < _qdev->qdma_dev_conf.qsets_max; qno++) {
 			qconf_set_default(&qconf, qno, &qp[_i]);
-			rv = qdma_queue_add(dev_hndl, &qconf, &qhndl, buf, sizeof(buf));
+			rv = qdma_queue_add(dev_hndl, &qconf, &qhndl, buf, buflen);
 
 			strcpy(buf, "deadbeef");
-			rv = qdma_queue_dump(dev_hndl, qhndl, buf, sizeof(buf));
+			rv = qdma_queue_dump(dev_hndl, qhndl, buf, buflen);
 			pr_info("qdma_queue_dump rv %d", rv);
 			ASSERT_TRUE_GOTO((rv > 0), done);
 			pr_info("qdma_queue_dump buffer %s", buf);
 			ASSERT_TRUE_GOTO(strcmp(buf, "deadbeef") != 0, done);
 
-			rv = qdma_queue_remove(dev_hndl, qhndl, buf, sizeof(buf));
+			rv = qdma_queue_remove(dev_hndl, qhndl, buf, buflen);
 		}
 
 		qdma_device_offline(pdev, dev_hndl, 1);
 		qdma_device_close(pdev, dev_hndl);
 	}
+	kfree(buf);
 	return;
 done:
-	qdma_queue_remove(dev_hndl, qhndl, buf, sizeof(buf));
+	qdma_queue_remove(dev_hndl, qhndl, buf, buflen);
 	qdma_device_offline(pdev, dev_hndl, 1);
 	qdma_device_close(pdev, dev_hndl);
 }
