@@ -44,7 +44,7 @@ if len(sys.argv) < 2:
     sys.exit(0)
 
 
-drv_path = "../../../../sw_host/linux/"
+drv_path = "../../../../drivers/linux/"
 bdf = sys.argv[1]
 
 def load_drv():
@@ -70,7 +70,7 @@ def single_bit_err_intr(RAM_SBE_MSK_A):
             print("Error IRQ fired sucessfully")
         else:
             print("Failed to fire Error IRQ")
-        os.system("ln -sf ../../../../sw_host/linux/scripts/qdma_run_test_pf.sh")
+        os.system("ln -sf ../../../../drivers/linux/scripts/qdma_run_test_pf.sh")
         os.system("sed -i 's/^run_st_h2c/#run_st_h2c/' qdma_run_test_pf.sh")
         os.system("sed -i 's/^run_st_c2h/#run_st_c2h/' qdma_run_test_pf.sh")
         test_log = subprocess.check_output("./qdma_run_test_pf.sh 06000 0 5 0 1 1 0",shell=True)

@@ -41,7 +41,7 @@ intr_vec_no_neg = ["0x04040", "0x00202"]
 dev_list = []
 pci_bus = []
 pci_dev = []
-drv_path = "../../../../sw_host/linux/"
+drv_path = "../../../../drivers/linux/"
 bdf = sys.argv[1]
 
 def load_drv():
