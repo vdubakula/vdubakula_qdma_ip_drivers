@@ -1,0 +1,13 @@
+name=pf0_vf0_4kq
+test_mask=0x0f #bit 0 - auto mode, 1 - poll mode, bit 2 - intr mode, bit 3 - aggr mode
+repeat=1 #number of iterations
+filter=*VF*-*ST016_64B_desc*:*DMACTL*:*DEBUGFS*:*PCIE003*
+master_pf=0
+run_gtest=1
+pf_qmax_cfg_en=(1)
+pf_qmax=(0)
+pf_nvf=(1) #number of VFs in PF
+qmaxvfs=4095
+vf_pf0_qmax=(4095)
+valid_drv=(linux dpdk)
+#necessary dummy line

@@ -1,8 +1,8 @@
 /*
  * This file is part of the Xilinx DMA IP Core driver for Linux
  *
- * Copyright (c) 2017-2022,  Xilinx, Inc.
- * All rights reserved.
+ * Copyright (c) 2017-2022, Xilinx, Inc. All rights reserved.
+ * Copyright (c) 2022, Advanced Micro Devices, Inc. All rights reserved.
  *
  * This source code is free software; you can redistribute it and/or modify it
  * under the terms and conditions of the GNU General Public License,
@@ -119,9 +119,15 @@ static irqreturn_t user_intr_handler(int irq_index, int irq, void *dev_id)
 	pr_info("User IRQ fired on Funtion#%d: index=%d, vector=%d\n",
 		xdev->func_id, irq_index, irq);
 
-	if (xdev->conf.fp_user_isr_handler)
+	if (xdev->conf.fp_user_isr_handler) {
+#ifndef __XRT__
 		xdev->conf.fp_user_isr_handler((unsigned long)xdev,
 						xdev->conf.uld);
+#else
+		xdev->conf.fp_user_isr_handler((unsigned long)xdev,
+						irq_index, xdev->conf.uld);
+#endif
+	}
 
 	return IRQ_HANDLED;
 }

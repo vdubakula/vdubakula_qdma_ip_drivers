@@ -1,11 +1,11 @@
-name=pf3_4096
+name=pf3_4095
 test_mask=0x0f #bit 0 - auto mode, 1 - poll mode, bit 2 - intr mode, bit 3 - aggr mode
 repeat=1 #number of iterations
 filter=-*ST016_64B_desc*:*DMACTL*:*DEBUGFS*:*PCIE003*
 master_pf=1
 run_gtest=1
 pf_qmax_cfg_en=(0 0 0 1)
-pf_qmax=(0 0 0 4096)
+pf_qmax=(0 0 0 4095)
 pf_nvf=(0 0 0 0) #number of VFs in PF
 vf_pf0_qmax=()
 vf_pf1_qmax=()

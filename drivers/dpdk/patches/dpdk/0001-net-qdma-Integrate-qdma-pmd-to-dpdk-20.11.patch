@@ -68,7 +68,7 @@ index a0b5160..9bf0669 100644
  
  /* ether defines */
 -#define RTE_MAX_QUEUES_PER_PORT 1024
-+#define RTE_MAX_QUEUES_PER_PORT 2048
++#define RTE_MAX_QUEUES_PER_PORT 4096
  #define RTE_ETHDEV_QUEUE_STAT_CNTRS 16 /* max 256 */
  #define RTE_ETHDEV_RXTX_CALLBACKS 1
  
