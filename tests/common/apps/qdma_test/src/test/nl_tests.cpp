@@ -234,14 +234,17 @@ void q_add_del(xnl::socket& qdma_socket, qdma::instance_ext::type dev_type)
 void q_list(xnl::socket& qdma_socket, qdma::instance_ext::type dev_type)
 {
     std::vector<qdma::device> &devlist = env.get_dev_list(dev_type);
-
     // successful case - empty
     for(uint32_t func = 0; func < devlist.size(); func++) {
+        uint32_t q_flags = XNL_F_QMODE_MM | XNL_F_QDIR_H2C | XNL_F_QDIR_C2H;
         if (!devlist[func].max_num_queues)
             continue;
 
         auto cmd = qdma_socket.prepare_msg(XNL_CMD_Q_LIST);
         cmd.add_attribute(XNL_ATTR_DEV_IDX, devlist[func].dev_id);
+        cmd.add_attribute(XNL_ATTR_QIDX, 0u);
+        cmd.add_attribute(XNL_ATTR_NUM_Q, devlist[func].max_num_queues);
+        cmd.add_attribute(XNL_ATTR_QFLAG, q_flags);
         qdma_socket.send_msg(cmd);
         auto resp = qdma_socket.receive_msg(XNL_ATTR_MAX);
         char* resp_str = resp.get_attrib<char*>(XNL_ATTR_GENMSG);
@@ -249,7 +252,6 @@ void q_list(xnl::socket& qdma_socket, qdma::instance_ext::type dev_type)
         EXPECT_FALSE(qdma_socket.has_error());
         EXPECT_NE(resp_str, nullptr);
     }
-
     // successful case - add all queue pairs
     for(uint32_t func = 0; func < devlist.size(); func++) {
         uint32_t q_flags = XNL_F_QMODE_MM | XNL_F_QDIR_H2C | XNL_F_QDIR_C2H;
@@ -273,10 +275,14 @@ void q_list(xnl::socket& qdma_socket, qdma::instance_ext::type dev_type)
 
     // successful case - full
     for(uint32_t func = 0; func < devlist.size(); func++) {
+        uint32_t q_flags = XNL_F_QMODE_MM | XNL_F_QDIR_H2C | XNL_F_QDIR_C2H;
         if (!devlist[func].max_num_queues)
             continue;
         auto cmd = qdma_socket.prepare_msg(XNL_CMD_Q_LIST);
-		cmd.add_attribute(XNL_ATTR_DEV_IDX, devlist[func].dev_id);
+        cmd.add_attribute(XNL_ATTR_DEV_IDX, devlist[func].dev_id);
+        cmd.add_attribute(XNL_ATTR_QIDX, 0u);
+        cmd.add_attribute(XNL_ATTR_NUM_Q, devlist[func].max_num_queues);
+        cmd.add_attribute(XNL_ATTR_QFLAG, q_flags);
         qdma_socket.send_msg(cmd);
         auto resp = qdma_socket.receive_msg(XNL_ATTR_MAX);
         char* resp_str = resp.get_attrib<char*>(XNL_ATTR_GENMSG);
@@ -284,7 +290,22 @@ void q_list(xnl::socket& qdma_socket, qdma::instance_ext::type dev_type)
         EXPECT_FALSE(qdma_socket.has_error());
         EXPECT_NE(resp_str, nullptr);
     }
+    for(uint32_t func = 0; func < devlist.size(); func++) {
+        uint32_t q_flags = XNL_F_QMODE_MM | XNL_F_QDIR_H2C | XNL_F_QDIR_C2H;
+        if (!devlist[func].max_num_queues)
+            continue;
+        auto cmd = qdma_socket.prepare_msg(XNL_CMD_Q_LIST);
+        cmd.add_attribute(XNL_ATTR_DEV_IDX, devlist[func].dev_id);
+        cmd.add_attribute(XNL_ATTR_QIDX, 0u);
+        cmd.add_attribute(XNL_ATTR_NUM_Q, devlist[func].max_num_queues);
+        cmd.add_attribute(XNL_ATTR_QFLAG, q_flags);
+        qdma_socket.send_msg(cmd);
+        auto resp = qdma_socket.receive_msg(XNL_ATTR_MAX);
+        char* resp_str = resp.get_attrib<char*>(XNL_ATTR_GENMSG);
 
+        EXPECT_FALSE(qdma_socket.has_error());
+        EXPECT_NE(resp_str, nullptr);
+    }
     // successful case - delete all queue pairs
     for(uint32_t func = 0; func < devlist.size(); func++) {
         uint32_t q_flags = XNL_F_QMODE_MM | XNL_F_QDIR_H2C | XNL_F_QDIR_C2H;
@@ -308,6 +329,8 @@ void q_list(xnl::socket& qdma_socket, qdma::instance_ext::type dev_type)
     // Failure case 1: missing XNL_ATTR_DEV_IDX attribute
     {
         auto cmd = qdma_socket.prepare_msg(XNL_CMD_Q_LIST);
+        cmd.add_attribute(XNL_ATTR_QIDX, 0u);
+        cmd.add_attribute(XNL_ATTR_NUM_Q, 1);
         qdma_socket.send_msg(cmd);
         auto resp = qdma_socket.receive_msg(XNL_ATTR_MAX);
         char* resp_str = resp.get_attrib<char*>(XNL_ATTR_GENMSG);
@@ -321,11 +344,13 @@ void q_list(xnl::socket& qdma_socket, qdma::instance_ext::type dev_type)
     {
         auto cmd = qdma_socket.prepare_msg(XNL_CMD_Q_LIST);
         if (dev_type == qdma::instance_ext::type::pf) {
-        	cmd.add_attribute(XNL_ATTR_DEV_IDX, env.last_pf + 1);
+            cmd.add_attribute(XNL_ATTR_DEV_IDX, env.last_pf + 1);
         }
         else {
-        	cmd.add_attribute(XNL_ATTR_DEV_IDX, env.last_vf + 1);
+            cmd.add_attribute(XNL_ATTR_DEV_IDX, env.last_vf + 1);
         }
+        cmd.add_attribute(XNL_ATTR_QIDX, 0u);
+        cmd.add_attribute(XNL_ATTR_NUM_Q, 1);
         qdma_socket.send_msg(cmd);
         auto resp = qdma_socket.receive_msg(XNL_ATTR_MAX);
         char* resp_str = resp.get_attrib<char*>(XNL_ATTR_GENMSG);
