@@ -33,6 +33,7 @@
 
 #include "qdma_access_common.h"
 #include "qdma_platform.h"
+#include "rte_pmd_qdma.h"
 #include "qdma.h"
 #include <rte_malloc.h>
 #include <rte_spinlock.h>
@@ -248,4 +249,16 @@ int qdma_get_err_code(int acc_err_code)
 	acc_err_code *= -1;
 
 	return -(error_code_map_list[acc_err_code].err_code);
+}
+
+/*****************************************************************************/
+/**
+ * qdma_io_wmb() - Write memory barrier for IO device
+ *
+ * Return:	0   - success and < 0 - failure
+ *****************************************************************************/
+int qdma_io_wmb(void)
+{
+	rte_io_wmb();
+	return 0;
 }

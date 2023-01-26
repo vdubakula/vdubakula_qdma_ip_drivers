@@ -237,6 +237,10 @@ static int reclaim_tx_mbuf(struct qdma_tx_queue *txq,
 
 	id = txq->tx_fl_tail;
 	fl_desc = (int)cidx - id;
+
+	if (fl_desc == 0)
+		return 0;
+
 	if (fl_desc < 0)
 		fl_desc += (txq->nb_tx_desc - 1);
 
@@ -1467,6 +1471,12 @@ uint16_t qdma_xmit_pkts_st(struct qdma_tx_queue *txq, struct rte_mbuf **tx_pkts,
 #endif
 
 	id = txq->q_pidx_info.pidx;
+
+	/* Make sure reads to Tx ring are synchronized before
+	 * accessing the status descriptor.
+	 */
+	rte_rmb();
+
 	cidx = txq->wb_status->cidx;
 	PMD_DRV_LOG(DEBUG, "Xmit start on tx queue-id:%d, tail index:%d\n",
 			txq->queue_id, id);
@@ -1515,11 +1525,6 @@ uint16_t qdma_xmit_pkts_st(struct qdma_tx_queue *txq, struct rte_mbuf **tx_pkts,
 
 	txq->stats.pkts += count;
 	txq->stats.bytes += pkt_len;
-
-	/* Make sure writes to the H2C descriptors are synchronized
-	 * before updating PIDX
-	 */
-	rte_wmb();
 
 #if (MIN_TX_PIDX_UPDATE_THRESHOLD > 1)
 	rte_spinlock_lock(&txq->pidx_update_lock);

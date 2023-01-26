@@ -31,11 +31,11 @@
 
 cflags += ['-DRTE_LIBRTE_QDMA_PMD']
 cflags += ['-DDMA_BRAM_SIZE=524288']
+cflags += ['-DTHROUGHPUT_MEASUREMENT']
 
 # Enable vectorization in qdma data path to use 128-bit SIMD registers
 cflags += ['-DQDMA_RX_VEC_X86_64']
 cflags += ['-DQDMA_TX_VEC_X86_64']
-
 
 includes += include_directories('.')
 includes += include_directories('qdma_access')
