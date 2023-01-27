@@ -2342,7 +2342,8 @@ int sgl_map(struct pci_dev *pdev, struct qdma_sw_sg *sgl, unsigned int sgcnt,
 	 */
 	for (i = 0; i < sgcnt; i++, sg++) {
 		/* !! TODO  page size !! */
-		sg->dma_addr = dma_map_page(&pdev->dev, sg->pg, 0, PAGE_SIZE, dir);
+		sg->dma_addr = dma_map_page(&pdev->dev, sg->pg, 0, PAGE_SIZE,
+				dir);
 		if (unlikely(dma_mapping_error(&pdev->dev, sg->dma_addr))) {
 			pr_err("map sgl failed, sg %d, %u.\n", i, sg->len);
 			if (i)
