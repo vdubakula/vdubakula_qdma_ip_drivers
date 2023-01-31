@@ -1,3 +1,52 @@
+From fce606c78b3c6be2b9615c46975b8c5430e97924 Mon Sep 17 00:00:00 2001
+From: Prasad Pardeshi <prasadp@xilinx.com>
+Date: Wed, 1 Feb 2023 02:40:17 +0530
+Subject: [PATCH] PKTGEN-22.04.1: Patch to add Jumbo packet support
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This patch include:
+1. Jumbo frame support for Pktgen.
+2. Increase default number of RX_DESC to 2K.
+3. Disable RX classification.
+4. Set user provided packet size as DMA packet size i.e. not to remove
+CRC bytes Signed-off-by: Kumar Sanghvi <kumars@xilinx.com>
+Signed-off-by: Nikhil Agarwal <nagarwal@xilinx.com>
+Signed-off-by: Pankaj Darak <pankajd@xilinx.com>
+Signed-off-by: Thanneeru Srinivasulu <sthannee@xilinx.com>
+Signed-off-by: tarakr <tarakr@xilinx.com>
+Signed-off-by: Suryanarayana Raju Sangani <ssangani@xilinx.com>
+---
+ app/lpktgenlib.c        |  2 ++
+ app/pktgen-cmds.c       | 18 ++++++++++++++----
+ app/pktgen-constants.h  |  4 ++--
+ app/pktgen-latency.c    |  2 ++
+ app/pktgen-main.c       | 28 ++++++++++++++++++++--------
+ app/pktgen-port-cfg.c   | 15 ++++++++++-----
+ app/pktgen-port-cfg.h   |  2 +-
+ app/pktgen-range.c      |  3 ++-
+ app/pktgen-rate.c       |  2 ++
+ app/pktgen-stats.c      |  2 ++
+ app/pktgen.c            | 21 ++++++++++++++++++---
+ app/pktgen.h            |  5 +++--
+ lib/cli/cli_map.c       |  1 +
+ lib/common/pg_strings.c |  1 +
+ 14 files changed, 80 insertions(+), 26 deletions(-)
+
+diff --git a/app/lpktgenlib.c b/app/lpktgenlib.c
+index bc24433..add5a16 100644
+--- a/app/lpktgenlib.c
++++ b/app/lpktgenlib.c
+@@ -14,6 +14,8 @@
+ #include <pg_inet.h>
+ #include "lpktgenlib.h"
+ 
++#include <bus_driver.h>
++#include <bus_pci_driver.h>
+ #include <stdint.h>
+ #include <netinet/in.h>
+ 
 diff --git a/app/pktgen-cmds.c b/app/pktgen-cmds.c
 index 9708b28..f92b890 100644
 --- a/app/pktgen-cmds.c
@@ -80,11 +129,32 @@ index 6c02f82..16d5f5c 100644
      NUM_Q = 16, /**< Number of cores per port. */
  };
  #define DEFAULT_MBUF_SIZE                                                                         \
+diff --git a/app/pktgen-latency.c b/app/pktgen-latency.c
+index bafaf1c..7787a6f 100644
+--- a/app/pktgen-latency.c
++++ b/app/pktgen-latency.c
+@@ -8,6 +8,8 @@
+ 
+ #include <stdio.h>
+ 
++#include <bus_driver.h>
++#include <bus_pci_driver.h>
+ #include "lua_config.h"
+ 
+ #include "pktgen-cmds.h"
 diff --git a/app/pktgen-main.c b/app/pktgen-main.c
-index 7debdb3..58f81ed 100644
+index 7debdb3..33eac3a 100644
 --- a/app/pktgen-main.c
 +++ b/app/pktgen-main.c
-@@ -206,7 +206,7 @@ pktgen_parse_args(int argc, char **argv)
+@@ -10,6 +10,7 @@
+ #include <signal.h>
+ #include <locale.h>
+ 
++#include "ethdev_driver.h"
+ #include <lua_config.h>
+ #ifdef LUA_ENABLED
+ #include <lua_socket.h>
+@@ -206,7 +207,7 @@ pktgen_parse_args(int argc, char **argv)
      pktgen.mbuf_buf_size = RTE_MBUF_DEFAULT_BUF_SIZE;
  
      pktgen.verbose = 0;
@@ -93,7 +163,7 @@ index 7debdb3..58f81ed 100644
             EOF)
          switch (opt) {
          case 't':
-@@ -315,7 +315,12 @@ pktgen_parse_args(int argc, char **argv)
+@@ -315,7 +316,12 @@ pktgen_parse_args(int argc, char **argv)
  
          case 'h': /* print out the help message */
              pktgen_usage(prgname);
@@ -107,7 +177,7 @@ index 7debdb3..58f81ed 100644
  
          case 0: /* crc-strip for all ports */
              printf(">>> Strip CRC in hardware is the default\n");
-@@ -421,8 +426,10 @@ RTE_FINI(pktgen_fini)
+@@ -421,8 +427,10 @@ RTE_FINI(pktgen_fini)
  int
  main(int argc, char **argv)
  {
@@ -119,7 +189,7 @@ index 7debdb3..58f81ed 100644
  
      setlocale(LC_ALL, "");
  
-@@ -574,11 +581,13 @@ main(int argc, char **argv)
+@@ -574,12 +582,16 @@ main(int argc, char **argv)
      /* Wait for all of the cores to stop running and exit. */
      rte_eal_mp_wait_lcore();
  
@@ -136,13 +206,34 @@ index 7debdb3..58f81ed 100644
 +	    else
 +		    printf("successfully removed port '%d'\n", i);
  
++    }
++    
      cli_destroy();
  
+     return 0;
 diff --git a/app/pktgen-port-cfg.c b/app/pktgen-port-cfg.c
-index 7a61db3..d4fc0d1 100644
+index 7a61db3..3579d07 100644
 --- a/app/pktgen-port-cfg.c
 +++ b/app/pktgen-port-cfg.c
-@@ -93,23 +93,25 @@ pktgen_mbuf_pool_create(const char *type, uint8_t pid, uint8_t queue_id, uint32_
+@@ -10,6 +10,9 @@
+ #include <cli_scrn.h>
+ #include <lua_config.h>
+ 
++#include <bus_pci_driver.h>
++#include <bus_driver.h>
++
+ #include "pktgen-port-cfg.h"
+ 
+ #include "pktgen.h"
+@@ -41,7 +44,6 @@ static struct rte_eth_conf default_port_conf = {
+         {
+             .mq_mode          = RTE_ETH_MQ_RX_RSS,
+             .max_lro_pkt_size = RTE_ETHER_MAX_LEN,
+-            .split_hdr_size   = 0,
+         },
+ 
+     .rx_adv_conf =
+@@ -93,23 +95,25 @@ pktgen_mbuf_pool_create(const char *type, uint8_t pid, uint8_t queue_id, uint32_
      struct rte_mempool *mp;
      char name[RTE_MEMZONE_NAMESIZE];
      uint64_t sz;
@@ -171,7 +262,7 @@ index 7a61db3..d4fc0d1 100644
                                   socket_id);
      if (mp == NULL)
          pktgen_log_panic(
-@@ -194,7 +196,8 @@ pktgen_config_ports(void)
+@@ -194,7 +198,8 @@ pktgen_config_ports(void)
          pg_port_matrix_dump(pktgen.l2p);
  
          pktgen_log_info(">>>> Configuring %d ports, MBUF Size %d, MBUF Cache Size %d",
@@ -181,6 +272,19 @@ index 7a61db3..d4fc0d1 100644
      }
  
      /* For each lcore setup each port that is handled by that lcore. */
+diff --git a/app/pktgen-port-cfg.h b/app/pktgen-port-cfg.h
+index 820f131..6ee4f29 100644
+--- a/app/pktgen-port-cfg.h
++++ b/app/pktgen-port-cfg.h
+@@ -421,7 +421,7 @@ rte_get_rx_capa_list(uint64_t rx_capa, char *buf, size_t len)
+                     {RTE_ETH_RX_OFFLOAD_QINQ_STRIP, _(QINQ_STRIP)},
+                     {RTE_ETH_RX_OFFLOAD_OUTER_IPV4_CKSUM, _(OUTER_IPV4_CKSUM)},
+                     {RTE_ETH_RX_OFFLOAD_MACSEC_STRIP, _(MACSEC_STRIP)},
+-                    {RTE_ETH_RX_OFFLOAD_HEADER_SPLIT, _(HEADER_SPLIT)},
++                    {RTE_ETH_RX_OFFLOAD_BUFFER_SPLIT, _(HEADER_SPLIT)},
+                     {RTE_ETH_RX_OFFLOAD_VLAN_FILTER, _(VLAN_FILTER)},
+                     {RTE_ETH_RX_OFFLOAD_VLAN_EXTEND, _(VLAN_EXTEND)},
+                     {RTE_ETH_RX_OFFLOAD_SCATTER, _(SCATTER)},
 diff --git a/app/pktgen-range.c b/app/pktgen-range.c
 index 7d0ece0..5d9bf04 100644
 --- a/app/pktgen-range.c
@@ -195,8 +299,34 @@ index 7d0ece0..5d9bf04 100644
  
      range->vxlan_gid     = info->seq_pkt[SINGLE_PKT].group_id;
      range->vxlan_gid_inc = 0;
+diff --git a/app/pktgen-rate.c b/app/pktgen-rate.c
+index 4599f8e..4f5aecb 100644
+--- a/app/pktgen-rate.c
++++ b/app/pktgen-rate.c
+@@ -8,6 +8,8 @@
+ 
+ #include <stdio.h>
+ 
++#include <bus_driver.h>
++#include <bus_pci_driver.h>
+ #include "lua_config.h"
+ 
+ #include "pktgen-cmds.h"
+diff --git a/app/pktgen-stats.c b/app/pktgen-stats.c
+index e7f27ef..7840b08 100644
+--- a/app/pktgen-stats.c
++++ b/app/pktgen-stats.c
+@@ -8,6 +8,8 @@
+ 
+ #include <stdio.h>
+ 
++#include <bus_pci_driver.h>
++#include <bus_driver.h>
+ #include <pg_delay.h>
+ #include <lua_config.h>
+ 
 diff --git a/app/pktgen.c b/app/pktgen.c
-index 448cc7f..50caf8e 100644
+index 448cc7f..508d650 100644
 --- a/app/pktgen.c
 +++ b/app/pktgen.c
 @@ -75,6 +75,7 @@ pktgen_wire_size(port_info_t *info)
@@ -207,24 +337,24 @@ index 448cc7f..50caf8e 100644
      return size;
  }
  
-@@ -297,8 +298,8 @@ pktgen_send_burst(port_info_t *info, uint16_t qid)
+@@ -297,8 +298,9 @@ pktgen_send_burst(port_info_t *info, uint16_t qid)
      struct qstats_s *qstats = &info->qstats[qid];
      uint32_t ret, cnt, tap, rnd, tstamp, i;
      int32_t seq_idx;
 +    pkt_seq_t *pkt;
  
 -    tap = pktgen_tst_port_flags(info, PROCESS_TX_TAP_PKTS);
++    tap = pktgen_tst_port_flags(info, PROCESS_TX_TAP_PKTS);	
  
      if ((cnt = mtab->len) == 0)
          goto special_send;
-@@ -313,6 +314,11 @@ pktgen_send_burst(port_info_t *info, uint16_t qid)
+@@ -313,6 +315,10 @@ pktgen_send_burst(port_info_t *info, uint16_t qid)
      else
          seq_idx = SINGLE_PKT;
  
 +    pkt = &info->seq_pkt[seq_idx];
 +    for (i = 0; i < cnt; i++)
 +           rte_pktmbuf_pkt_len(pkts[i]) = pkt->pktSize;
-+    tap = pktgen_tst_port_flags(info, PROCESS_TX_TAP_PKTS);
 +
      rnd = pktgen_tst_port_flags(info, SEND_RANDOM_PKTS);
      tstamp =
@@ -249,11 +379,20 @@ index 448cc7f..50caf8e 100644
  
      m->pkt_len  = pkt->pktSize;
      m->data_len = pkt->pktSize;
+@@ -1144,7 +1154,7 @@ pktgen_main_receive(port_info_t *info, uint8_t lid, struct rte_mbuf *pkts_burst[
+ {
+     uint8_t pid;
+     uint16_t qid, nb_rx;
+-    capture_t *capture;
++    __rte_unused    capture_t *capture;
+     struct qstats_s *qstats;
+     int i;
+ 
 @@ -1163,6 +1173,10 @@ pktgen_main_receive(port_info_t *info, uint8_t lid, struct rte_mbuf *pkts_burst[
      for (i = 0; i < nb_rx; i++)
          qstats->rxbytes += rte_pktmbuf_data_len(pkts_burst[i]);
  
-+    info->sizes._64 += nb_rx;
++    info->qstats[qid].sizes._64 += nb_rx;
 +    rte_pktmbuf_free_bulk(pkts_burst, nb_rx);
 +
 +#if 0
@@ -292,3 +431,30 @@ index 1be8389..4a70a3a 100644
         CONFIG_PAGE_FLAG       = (1 << 16), /**< Display the configure page */
         SEQUENCE_PAGE_FLAG     = (1 << 17), /**< Display the Packet sequence page */
         RANGE_PAGE_FLAG        = (1 << 18), /**< Display the range page */
+diff --git a/lib/cli/cli_map.c b/lib/cli/cli_map.c
+index 50e30e1..44b924c 100644
+--- a/lib/cli/cli_map.c
++++ b/lib/cli/cli_map.c
+@@ -7,6 +7,7 @@
+ #include <_atoip.h>
+ 
+ #include "cli.h"
++#include "ctype.h"
+ 
+ int
+ cli_map_list_search(const char *fmt, char *item, int index)
+diff --git a/lib/common/pg_strings.c b/lib/common/pg_strings.c
+index a81acf2..3320c43 100644
+--- a/lib/common/pg_strings.c
++++ b/lib/common/pg_strings.c
+@@ -3,6 +3,7 @@
+  */
+ 
+ #include "pg_strings.h"
++#include "ctype.h"
+ 
+ #define SIZE_OF_PORTLIST      (sizeof(portlist_t) * 8)
+ 
+-- 
+2.27.0
+
