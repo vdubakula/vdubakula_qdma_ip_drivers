@@ -132,8 +132,6 @@ CPM5
 - Updated the queue list command for >2048 Q's.
 - Added support to accomodate H2C & C2H Q's offset with fixed intervals for dma-perf application.
 
-
-- Performance optimizations for QDMA5.0.
 KNOWN ISSUES:
 =============
 - CPM5 Only
