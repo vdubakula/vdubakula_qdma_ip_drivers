@@ -1,0 +1,44 @@
+diff --git a/app/test-pmd/meson.build b/app/test-pmd/meson.build
+index 8488efc..9c89440 100644
+--- a/app/test-pmd/meson.build
++++ b/app/test-pmd/meson.build
+@@ -68,7 +68,7 @@ if dpdk_conf.has('RTE_NET_IXGBE')
+     deps += 'net_ixgbe'
+ endif
+ if dpdk_conf.has('RTE_NET_DPAA')
+-    deps += ['bus_dpaa', 'mempool_dpaa', 'net_dpaa']
++    deps += ['bus_dpaa', 'mempool_dpaa', 'net_dpaa', 'net_qdma']
+ endif
+ 
+ # Driver-specific commands are located in driver directories.
+diff --git a/app/test-pmd/testpmd.c b/app/test-pmd/testpmd.c
+index 134d79a..83bb359 100644
+--- a/app/test-pmd/testpmd.c
++++ b/app/test-pmd/testpmd.c
+@@ -74,6 +74,7 @@
+ #endif
+ 
+ #include "testpmd.h"
++#include <rte_pmd_qdma.h>
+ 
+ #ifndef MAP_HUGETLB
+ /* FreeBSD may not have MAP_HUGETLB (in fact, it probably doesn't) */
+@@ -2963,6 +2964,8 @@ struct extmem_param {
+ 				port->need_reconfig = 1;
+ 				return -1;
+ 			}
++            printf("\n *** Start_port:: Reg dump for port_id = %d ***\n", pi);
++            rte_pmd_qdma_dbg_regdump(pi);
+ 			/* get device configuration*/
+ 			if (0 !=
+ 				eth_dev_conf_get_print_err(pi, &dev_conf)) {
+@@ -3205,7 +3208,8 @@ struct extmem_param {
+ 		return;
+ 
+ 	printf("Stopping ports...\n");
+-
++    printf("\n *** Stop_port:: Reg dump for port_id = %d ***\n", pid);
++    rte_pmd_qdma_dbg_regdump(pid);
+ 	RTE_ETH_FOREACH_DEV(pi) {
+ 		if (pid != pi && pid != (portid_t)RTE_PORT_ALL)
+ 			continue;
