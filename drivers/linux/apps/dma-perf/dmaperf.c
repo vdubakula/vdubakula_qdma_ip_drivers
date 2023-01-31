@@ -381,7 +381,7 @@ static void dump_thrd_info(struct io_info *_info) {
 	printf("q_ctrl = %u\n", _info->q_ctrl);
 	printf("q_added = %u\n", _info->q_added);
 	printf("q_started = %u\n", _info->q_started);
-	printf("offset = 0x%x\n", _info->offset);
+	printf("offset = 0x%lx\n", _info->offset);
 	if (stm_mode) {
 		printf("pipe_gl_max = %u\n", _info->pipe_gl_max);
 		printf("pipe_flow_id = %u\n", _info->pipe_flow_id);

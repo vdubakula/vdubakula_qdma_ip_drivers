@@ -205,7 +205,7 @@ static void __attribute__((noreturn)) usage(FILE *fp)
 		"\t\tstat                    statistics of qdma[N] device\n"
 		"\t\tstat clear              clear all statistics data of qdma[N} device\n"
 		"\t\tglobal_csr              dump the Global CSR of qdma[N} device\n"
-		"\t\tq list                  list all queues\n"
+		"\t\tq list <start_idx> <num_Qs>  - List <num_Qs> queues from idx <start_idx>\n"
 		"\t\tq add idx <N> [mode <mm|st>] [dir <h2c|c2h|bi|cmpt>] - add a queue\n"
 		"\t\t                                                  *mode default to mm\n"
 		"\t\t                                                  *dir default to h2c\n"
