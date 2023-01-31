@@ -34,12 +34,10 @@
 #include <stdint.h>
 #include <rte_malloc.h>
 #include <rte_common.h>
-#include <rte_ethdev_pci.h>
 #include <rte_cycles.h>
 #include <rte_kvargs.h>
 #include "qdma.h"
 #include "qdma_access_common.h"
-
 #include <fcntl.h>
 #include <unistd.h>
 

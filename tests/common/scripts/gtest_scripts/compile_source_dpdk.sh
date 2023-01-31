@@ -37,7 +37,7 @@ if [ ! -z $6 ]; then
 	compile_flags=$6
 fi
 
-
+DPDK_VER=${compile_flags:0:2}'.'${compile_flags:3:4}
 
 if [ ! -d $src_dir ]; then
 	echo "no such $src_dir directory exists"
@@ -65,16 +65,16 @@ rm -r ${test_dir}/${build_dir}/
 mkdir -p ${test_dir}/${build_dir}/DPDK
 
 cd ${test_dir}/${build_dir}/DPDK
-tar xzf ${dpdk_src}/dpdk-stable-20.11.tar.gz
-cd dpdk-stable-20.11
+tar xzf ${dpdk_src}/dpdk-stable-${DPDK_VER}.tar.gz
+cd dpdk-stable-${DPDK_VER}
 tar xzf ${dpdk_src}/dpdk-kmods.tar.gz
 cd dpdk-kmods/linux/igb_uio
 make
 chmod 777 igb_uio.ko
 cd ../../..
-patch -p1 < ${src_dir}/patches/dpdk/0001-net-qdma-Integrate-qdma-pmd-to-dpdk-20.11.patch
-patch -p1 < ${src_dir}/patches/testpmd/0001-TESTPMD-20.11-Patch-to-add-additional-rxtx-ops.patch
-patch -p1 < ${src_dir}/patches/proc-info/0001-Add-QDMA-xdebug-to-proc-info-of-dpdk-20.11.patch
+patch -p1 < ${src_dir}/patches/dpdk/0001-net-qdma-Integrate-qdma-pmd-to-dpdk-${DPDK_VER}.patch
+patch -p1 < ${src_dir}/patches/testpmd/0001-TESTPMD-${DPDK_VER}-Patch-to-add-additional-rxtx-ops.patch
+patch -p1 < ${src_dir}/patches/proc-info/0001-Add-QDMA-xdebug-to-proc-info-of-dpdk-${DPDK_VER}.patch
 
 rsync -av ${src_dir}/drivers/net/qdma drivers/net/
 rsync -av ${src_dir}/../qdma_access drivers/net/qdma/.
@@ -83,9 +83,13 @@ sed -i '/dev_info->max_mac_addrs = 1;/a\\tdev_info->dev_capa |= RTE_ETH_DEV_CAPA
 sed -i "s/#define DEFAULT_PF_CONFIG_BAR .*/#define DEFAULT_PF_CONFIG_BAR   (${config_bar})/"  drivers/net/qdma/qdma.h
 sed -i "s/#define DEFAULT_VF_CONFIG_BAR .*/#define DEFAULT_VF_CONFIG_BAR   (${config_bar})/"  drivers/net/qdma/qdma.h
 make config T=x86_64-native-linuxapp-gcc
-sed -i "s/struct rte_pci_device.*pci_dev = bus_device;/struct rte_pci_device *pci_dev = (struct rte_pci_device *)bus_device;/" lib/librte_ethdev/rte_ethdev_pci.h
+
+if [ ${DPDK_VER} == "20.11" ]; then
+	sed -i "s/struct rte_pci_device.*pci_dev = bus_device;/struct rte_pci_device *pci_dev = (struct rte_pci_device *)bus_device;/" lib/librte_ethdev/rte_ethdev_pci.h
+fi
+
 meson build
-meson configure build -Dc_args=${compile_flags}
+#meson configure build -Dc_args=${compile_flags}
 cd build
 ninja
 ninja install

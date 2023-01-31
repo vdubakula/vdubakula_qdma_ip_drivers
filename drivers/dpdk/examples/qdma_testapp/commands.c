@@ -1329,7 +1329,9 @@ static void cmd_obj_load_cmds_parsed(void *parsed_result,
 		return;
 	}
 
-	rdline_reset(&cl->rdl);
+
+	struct rdline *rdl = cmdline_get_rdline(cl);
+	rdline_reset(rdl);
 	{
 		cmdline_in(cl, "\r", 1);
 		while (fgets(buff, sizeof(buff), fp))

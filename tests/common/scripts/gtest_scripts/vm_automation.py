@@ -33,6 +33,7 @@ VM_CFG_START = 12
 dpdk_bind_drv = "igb_uio"
 dpdk_bind_drv_idx = 0
 child = ""
+DPDK_VER="22.11"
 
 #-----------------------------------------------------
 #Path to /HEAD or /REL or /DEV branches
@@ -138,7 +139,7 @@ if drv_used == "linux":
 
 else :#dpdk
     pwd = os.getcwd()
-    os.chdir(workspace_path + "dpdk-stable-20.11/examples/qdma_testapp/")
+    os.chdir(workspace_path + "dpdk-stable-"+DPDK_VER+"/examples/qdma_testapp/")
     dpdk_testapp_path = os.getcwd()
     os.system("chmod +x *.sh")
     os.system("sh setup.sh")
@@ -250,8 +251,8 @@ try:
         s.login ("127.0.0.1", "root", "dpdk", port = base_port + vm_id)
 
         if drv_used == "dpdk":
-            os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "dpdk-stable-20.11/drivers/net/qdma" + "  root@127.0.0.1:/home/dpdk/dpdk-stable-20.11/drivers/net/")
-            os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "dpdk-stable-20.11/examples/qdma_testapp" + "  root@127.0.0.1:/home/dpdk/dpdk-stable-20.11/examples/")
+            os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "dpdk-stable-"+DPDK_VER+"/drivers/net/qdma" + "  root@127.0.0.1:/home/dpdk/dpdk-stable-"+DPDK_VER+"/drivers/net/")
+            os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "dpdk-stable-"+DPDK_VER+"/examples/qdma_testapp" + "  root@127.0.0.1:/home/dpdk/dpdk-stable-"+DPDK_VER+"/examples/")
             os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "incoming" + "  root@127.0.0.1:/home/dpdk/")
             os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "drivers" + "  root@127.0.0.1:/home/dpdk/")
             os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "tests" + "  root@127.0.0.1:/home/dpdk/")
@@ -292,7 +293,7 @@ try:
         s.logout()
 
     if drv_used == "dpdk":
-        os.chdir(workspace_path + "dpdk-stable-20.11/examples/qdma_testapp/")
+        os.chdir(workspace_path + "dpdk-stable-"+DPDK_VER+"/examples/qdma_testapp/")
         os.system("rm -f test_status")
         child.timeout = 120
         if filter_out != "vf_2kq" and  filter_out != "vf_mm_completion" and filter_out != "vf_hw_loopback":

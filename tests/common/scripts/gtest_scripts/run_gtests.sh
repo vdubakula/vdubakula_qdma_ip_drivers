@@ -51,6 +51,11 @@ dpdk_bind_drv="igb_uio"
 multi_apps=0
 cpm5_flag=0
 
+#Possible DPDK Versions : 20.11, 21.11, 22.11
+#Default DPDK Version: 22.11
+#User can pass the input to change the version from Possible DPDK Versions
+DPDK_VER="22.11"
+
 if [ ! -z $3 ]; then
 	src_dir=${PWD}/$3
 fi
@@ -87,7 +92,7 @@ if [ ! -z $9 ]; then
 fi
 
 build_dir=build_${drv}_$target
-RTE_SDK=${test_dir}/${build_dir}/DPDK/dpdk-stable-20.11
+RTE_SDK=${test_dir}/${build_dir}/DPDK/dpdk-stable-${DPDK_VER}
 RTE_TARGET=build
 
 filename='.tmp.txt'

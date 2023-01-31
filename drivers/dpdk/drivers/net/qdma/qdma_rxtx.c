@@ -637,7 +637,7 @@ static int process_cmpt_ring(struct qdma_rx_queue *rxq,
 	return 0;
 }
 
-static uint32_t rx_queue_count(void *rx_queue)
+uint32_t rx_queue_count(void *rx_queue)
 {
 	struct qdma_rx_queue *rxq = rx_queue;
 	struct wb_status *wb_status;
@@ -687,24 +687,6 @@ static uint32_t rx_queue_count(void *rx_queue)
 	PMD_DRV_LOG(DEBUG, "%s: nb_desc_used = %d",
 			__func__, nb_desc_used);
 	return nb_desc_used;
-}
-
-/**
- * DPDK callback to get the number of used descriptors of a rx queue.
- *
- * @param dev
- *   Pointer to Ethernet device structure.
- * @param rx_queue_id
- *   The RX queue on the Ethernet device for which information will be
- *   retrieved
- *
- * @return
- *   The number of used descriptors in the specific queue.
- */
-uint32_t
-qdma_dev_rx_queue_count(struct rte_eth_dev *dev, uint16_t rx_queue_id)
-{
-	return rx_queue_count(dev->data->rx_queues[rx_queue_id]);
 }
 
 /**
@@ -1645,7 +1627,7 @@ uint16_t qdma_xmit_pkts_mm(struct qdma_tx_queue *txq, struct rte_mbuf **tx_pkts,
  * DPDK callback for transmitting packets in burst.
  *
  * @param tx_queue
- G*   Generic pointer to TX queue structure.
+ *   Generic pointer to TX queue structure.
  * @param[in] tx_pkts
  *   Packets to transmit.
  * @param nb_pkts

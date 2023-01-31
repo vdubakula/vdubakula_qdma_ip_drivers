@@ -784,12 +784,10 @@ static void cleanup_env(void)
 	}
 
 	for (i = 0; i < env.vfs.size(); i++) {
-		struct rte_device *dev;
 		auto& vf = env.vfs[i];
-		dev = rte_eth_devices[vf.dev_id].device;
 		printf("Removing VF device with dev id %d\n", vf.dev_id);
 		/*Detach the device, it will invoke device remove/uninit */
-		if (rte_dev_remove(dev))
+		if (rte_pmd_qdma_dev_remove(vf.dev_id))
 			printf("Failed to detach port '%d'\n", vf.dev_id);
 	}
 
@@ -803,12 +801,10 @@ static void cleanup_env(void)
 	}
 
 	for (i = 0; i < env.pfs.size(); i++) {
-		struct rte_device *dev;
 		auto& pf = env.pfs[i];
 		printf("Removing PF device with dev id %d\n", pf.dev_id);
-		dev = rte_eth_devices[pf.dev_id].device;
 		/*Detach the device, it will invoke device remove/uninit */
-		if (rte_dev_remove(dev))
+		if (rte_pmd_qdma_dev_remove(pf.dev_id))
 			printf("Failed to detach port '%d'\n", pf.dev_id);
 	}
 
@@ -1062,7 +1058,7 @@ int main (int argc, char* argv[])
 
     int dpdk_argc=1;
 #ifdef DPDK
-    struct rte_pci_device *vf_pci_dev;
+
     size_t i, j, pf_idx;
 #endif
 
@@ -1141,9 +1137,8 @@ int main (int argc, char* argv[])
 
 		for (i = 0, j=0; i < env.vfs.size(); i++) {
 			auto& vf = env.vfs[i];
-			vf_pci_dev = RTE_ETH_DEV_TO_PCI(&rte_eth_devices[vf.dev_id]);
 
-			auto pf = ((vf_pci_dev->id.device_id) >> 8) & 0x0F;
+			auto pf = (rte_pmd_qdma_get_dev_id(vf.dev_id) >> 8) & 0x0F;
 
 			uint8_t num_vf_pf = env.sys_cfg.pf_nvf_lst[pf];
 			vf.max_num_queues = env.sys_cfg.vf_pf_qmax_lst[pf][j];

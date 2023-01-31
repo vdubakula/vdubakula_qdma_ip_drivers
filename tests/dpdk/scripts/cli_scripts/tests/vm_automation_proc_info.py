@@ -25,7 +25,7 @@ iterations = 0
 input_filename = "mm_datafile_1MB.bin"
 output_filename = "M001_port0_qcount1_size262144.bin"
 output_filename_vf = "M001_port1_qcount1_size262144.bin"
-
+DPDK_VER="22.11"
 #-----------------------------------------------------
 #Path to /HEAD or /REL or /DEV branches
 workspace_path = "./../../../../../drivers/dpdk/"
@@ -60,7 +60,7 @@ print ("total_queues = " + str(total_queues))
 print ("st_queues = " + str(st_queues))
 print("DPDK bind driver: " + dpdk_bind_drv + " \n")
 
-os.chdir(workspace_path + "dpdk-stable-20.11/examples/qdma_testapp/")
+os.chdir(workspace_path + "dpdk-stable-"+DPDK_VER+"/examples/qdma_testapp/")
 os.system("chmod +x *.sh")
 os.system("sh setup.sh")
 pwd = os.getcwd()
@@ -154,7 +154,7 @@ try:
 	child.expect('xilinx-app>')
 	print child.before
 
-	os.chdir(workspace_path + "dpdk-stable-20.11/")
+	os.chdir(workspace_path + "dpdk-stable-"+DPDK_VER+"/")
 	pwd = os.getcwd()
 	print ("pwd = " + pwd)
 	sys.stdout.flush()

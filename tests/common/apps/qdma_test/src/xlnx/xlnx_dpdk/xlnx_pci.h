@@ -19,12 +19,12 @@
 #include <string>
 #include <system_error>
 
+
 #include <fcntl.h>
 #include <sys/mman.h>
 #include <unistd.h>
 #include <rte_eal.h> /**> rte_eal_init */
 #include <rte_debug.h> /**> for rte_panic */
-#include <rte_ethdev_pci.h>
 #include <rte_ethdev.h> /**> rte_eth_rx_burst */
 #include <rte_errno.h> /**> rte_errno global var */
 #include <rte_memzone.h> /**> rte_memzone_dump */
@@ -36,9 +36,6 @@
 #include <rte_mbuf.h>
 #include <getopt.h>
 #include "qdma_dpdk.h"
-
-
-extern struct rte_eth_dev rte_eth_devices[RTE_MAX_ETHPORTS];
 
 struct pci_id {
     unsigned bus = 0;
@@ -64,11 +61,7 @@ public:
 		bar_num = bar;
 		m_id = id;
 		pci_id bdf;
-		struct rte_pci_device *pci_dev;
-		pci_dev = RTE_ETH_DEV_TO_PCI(&rte_eth_devices[m_id]);
-		bdf.bus = pci_dev->addr.bus;
-		bdf.dev = pci_dev->addr.devid;
-		bdf.fn = pci_dev->addr.function;
+		rte_pmd_qdma_get_bdf(m_id, &bdf.bus, &bdf.dev, &bdf.fn);
 
 		const auto dev_path = get_device_resource_path(bdf);
 		const auto bar_path = get_bar_resource_path(bdf, bar);
@@ -121,13 +114,13 @@ public:
 
 	template<typename T = uint32_t>
     void write(size_t address, T t) {
-    	qdma_pci_write_reg(&rte_eth_devices[m_id], bar_num, address, t);
+	rte_pmd_qdma_compat_pci_write_reg(m_id, bar_num, address, t);
     }
 
 	template<typename T = uint32_t>
     T read(size_t address) {
-    	T reg_val = (T) qdma_pci_read_reg(&rte_eth_devices[m_id], bar_num, address);
-    	return reg_val;
+	T reg_val = (T) rte_pmd_qdma_compat_pci_read_reg(m_id, bar_num, address);
+    return reg_val;
     }
 
     template<typename T = uint32_t>

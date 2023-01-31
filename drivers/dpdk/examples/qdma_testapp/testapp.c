@@ -62,6 +62,8 @@
 #include "testapp.h"
 #include "../../drivers/net/qdma/rte_pmd_qdma.h"
 
+#define RTE_LIBRTE_QDMA_PMD 1
+
 int num_ports;
 char *filename;
 
@@ -70,7 +72,6 @@ struct port_info pinfo[QDMA_MAX_PORTS];
 int do_recv_mm(int port_id, int fd, int queueid, int ld_size, int tot_num_desc)
 {
 	struct rte_mbuf *pkts[NUM_RX_PKTS] = { NULL };
-	struct rte_device *dev;
 	int nb_rx = 0, i = 0, ret = 0, num_pkts;
 	int tdesc;
 #ifdef PERF_BENCHMARK
@@ -84,8 +85,7 @@ int do_recv_mm(int port_id, int fd, int queueid, int ld_size, int tot_num_desc)
 
 	rte_spinlock_lock(&pinfo[port_id].port_update_lock);
 
-	dev = rte_eth_devices[port_id].device;
-	if (dev == NULL) {
+	if (rte_pmd_qdma_get_device(port_id) == NULL) {
 		printf("Port id %d already removed. "
 			"Relaunch application to use the port again\n",
 			port_id);
@@ -185,7 +185,6 @@ int do_recv_st(int port_id, int fd, int queueid, int input_size)
 	int regval;
 	int user_bar_idx;
 	struct rte_mbuf *nxtmb;
-	struct rte_device *dev;
 	int qbase = pinfo[port_id].queue_base, diag;
 	unsigned int max_completion_size, last_pkt_size = 0, total_rcv_pkts = 0;
 	unsigned int max_rx_retry, rcv_count = 0, num_pkts_recv = 0;
@@ -197,8 +196,7 @@ int do_recv_st(int port_id, int fd, int queueid, int input_size)
 
 	rte_spinlock_lock(&pinfo[port_id].port_update_lock);
 
-	dev = rte_eth_devices[port_id].device;
-	if (dev == NULL) {
+	if (rte_pmd_qdma_get_device(port_id) == NULL) {
 		printf("Port id %d already removed. "
 			"Relaunch application to use the port again\n",
 			port_id);
@@ -438,7 +436,6 @@ int do_xmit(int port_id, int fd, int queueid, int ld_size, int tot_num_desc,
 {
 	struct rte_mempool *mp;
 	struct rte_mbuf *mb[NUM_TX_PKTS] = { NULL };
-	struct rte_device *dev;
 	int ret = 0, nb_tx, i = 0, tdesc, num_pkts = 0, total_tx = 0, reg_val;
 	int tmp = 0, user_bar_idx;
 	int qbase = pinfo[port_id].queue_base;
@@ -450,8 +447,7 @@ int do_xmit(int port_id, int fd, int queueid, int ld_size, int tot_num_desc,
 
 	rte_spinlock_lock(&pinfo[port_id].port_update_lock);
 
-	dev = rte_eth_devices[port_id].device;
-	if (dev == NULL) {
+	if (rte_pmd_qdma_get_device(port_id) == NULL) {
 		printf("Port id %d already removed. "
 			"Relaunch application to use the port again\n",
 			port_id);
@@ -684,14 +680,12 @@ static int dev_remove_callback(uint16_t port_id,
 void port_close(int port_id)
 {
 	struct rte_mempool *mp;
-	struct rte_device  *dev;
 	struct rte_pmd_qdma_dev_attributes dev_attr;
 	int user_bar_idx;
 	int reg_val;
 	int ret = 0;
 
-	dev = rte_eth_devices[port_id].device;
-	if (dev == NULL) {
+	if (rte_pmd_qdma_dev_remove(port_id)) {
 		printf("Port id %d already removed. "
 			"Relaunch application to use the port again\n",
 			port_id);
@@ -741,12 +735,10 @@ int port_reset(int port_id, int num_queues, int st_queues,
 				int nb_descs, int buff_size)
 {
 	int ret = 0;
-	struct rte_device   *dev;
 
 	printf("%s is received\n", __func__);
 
-	dev = rte_eth_devices[port_id].device;
-	if (dev == NULL) {
+	if (rte_pmd_qdma_get_device(port_id) == NULL) {
 		printf("Port id %d already removed. "
 			"Relaunch application to use the port again\n",
 			port_id);
@@ -780,15 +772,13 @@ int port_reset(int port_id, int num_queues, int st_queues,
 
 int port_remove(int port_id)
 {
-	struct rte_device *dev;
 	int ret = 0;
 
 	printf("%s is received\n", __func__);
 
 	/* Detach the port, it will invoke device remove/uninit */
 	printf("Removing a device with port id %d\n", port_id);
-	dev = rte_eth_devices[port_id].device;
-	if (dev == NULL) {
+	if (rte_pmd_qdma_dev_remove(port_id)) {
 		printf("Port id %d already removed\n", port_id);
 		return 0;
 	}
@@ -797,7 +787,7 @@ int port_remove(int port_id)
 
 	port_close(port_id);
 
-	ret = rte_dev_remove(dev);
+	ret = rte_pmd_qdma_dev_remove(port_id);
 	if (ret < 0)
 		printf("Failed to remove device on port_id: %d\n", port_id);
 
@@ -865,12 +855,10 @@ int port_init(int port_id, int num_queues, int st_queues,
 	struct rte_eth_rxconf   rx_conf;
 	int                     diag, x;
 	uint32_t                queue_base, nb_buff;
-	struct rte_device       *dev;
 
 	printf("Setting up port :%d.\n", port_id);
 
-	dev = rte_eth_devices[port_id].device;
-	if (dev == NULL) {
+	if (rte_pmd_qdma_get_device(port_id) == NULL) {
 		printf("Port id %d already removed. "
 			"Relaunch application to use the port again\n",
 			port_id);
@@ -1000,7 +988,8 @@ void load_file_cmds(struct cmdline *cl)
 		return;
 	}
 
-	rdline_reset(&cl->rdl);
+	struct rdline *rdl = cmdline_get_rdline(cl);
+	rdline_reset(rdl);
 	{
 		cmdline_in(cl, "\r", 1);
 		while (fgets(buff, sizeof(buff), fp))
@@ -1064,13 +1053,8 @@ int main(int argc, char **argv)
 	/* Make sure things are defined ... */
 	do_sanity_checks();
 
-	mz = rte_memzone_reserve_aligned("eth_devices", RTE_MAX_ETHPORTS *
-					  sizeof(*rte_eth_devices), 0, 0, 4096);
-	if (mz == NULL)
-		rte_exit(EXIT_FAILURE, "Failed to allocate aligned memzone\n");
-
-	memcpy(mz->addr, &rte_eth_devices[0], RTE_MAX_ETHPORTS *
-					sizeof(*rte_eth_devices));
+	/* Allocate aligned mezone */
+	rte_pmd_qdma_compat_memzone_reserve_aligned();
 
 	cl = cmdline_stdin_new(main_ctx, "xilinx-app> ");
 	if (cl == NULL)
@@ -1094,21 +1078,19 @@ int main(int argc, char **argv)
 		printf("Ports already removed\n");
 	else {
 		for (port_id = num_ports - 1; port_id >= 0; port_id--) {
-			struct rte_device *dev;
 
 			if (pinfo[port_id].num_queues)
 				port_close(port_id);
 
 			printf("Removing a device with port id %d\n", port_id);
-			dev = rte_eth_devices[port_id].device;
-			if (dev == NULL) {
+			if (rte_pmd_qdma_get_device(port_id) == NULL) {
 				printf("Port id %d already removed\n", port_id);
 				continue;
 			}
 			/* Detach the port, it will invoke
 			 * device remove/uninit
 			 */
-			if (rte_dev_remove(dev))
+			if (rte_pmd_qdma_dev_remove(port_id))
 				printf("Failed to detach port '%d'\n", port_id);
 		}
 	}

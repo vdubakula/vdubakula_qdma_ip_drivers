@@ -37,7 +37,6 @@
 #include <stdbool.h>
 #include <rte_dev.h>
 #include <rte_ethdev.h>
-#include <rte_ethdev_driver.h>
 #include <rte_spinlock.h>
 #include <rte_log.h>
 #include <rte_cycles.h>
@@ -49,6 +48,7 @@
 #include "qdma_mbox.h"
 #include "rte_pmd_qdma.h"
 #include "qdma_log.h"
+#include "qdma_dpdk_compat.h"
 
 #define QDMA_NUM_BARS          (6)
 #define DEFAULT_PF_CONFIG_BAR  (0)

@@ -102,12 +102,12 @@ int do_recv_st(int portid, void *buffer, int queueid, int input_size)
 	if(input_size == 0) /* zerobyte support uses one descriptor */
 		num_pkts = 1;
 	else
-		num_pkts = qdma_pci_read_reg(&rte_eth_devices[portid], user_bar_idx, C2H_PACKET_COUNT_REG);
+		num_pkts = rte_pmd_qdma_compat_pci_read_reg(portid, user_bar_idx, C2H_PACKET_COUNT_REG);
 /*	else if(input_size % MAX_WRITEBACK_SIZE != 0)
 		num_pkts = input_size/MAX_WRITEBACK_SIZE + 1;
 	else
 		num_pkts = input_size/MAX_WRITEBACK_SIZE;*/
-	reg_val = qdma_pci_read_reg(&rte_eth_devices[portid], user_bar_idx, C2H_CONTROL_REG);
+		reg_val = rte_pmd_qdma_compat_pci_read_reg(portid, user_bar_idx, C2H_CONTROL_REG);
 	//reg_val &= C2H_CONTROL_REG_MASK;
 	if (reg_val & ST_LOOPBACK_EN){
 		do{

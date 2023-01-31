@@ -46,4 +46,6 @@ uint64_t get_mm_c2h_ep_addr(void *queue_hndl);
 uint64_t get_mm_h2c_ep_addr(void *queue_hndl);
 uint32_t get_mm_buff_size(void *queue_hndl);
 
+uint32_t rx_queue_count(void *rx_queue);
+
 #endif /* QDMA_DPDK_RXTX_H_ */

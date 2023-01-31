@@ -37,6 +37,8 @@ cflags += ['-DTHROUGHPUT_MEASUREMENT']
 cflags += ['-DQDMA_RX_VEC_X86_64']
 cflags += ['-DQDMA_TX_VEC_X86_64']
 
+cflags += ['-DQDMA_DPDK_22_11']
+
 includes += include_directories('.')
 includes += include_directories('qdma_access')
 includes += include_directories('qdma_access/qdma_soft_access')
@@ -69,5 +71,6 @@ sources = files(
 	'qdma_access/qdma_access_common.c',
 	'qdma_mbox.c',
 	'qdma_platform.c',
-	'rte_pmd_qdma.c'
+	'rte_pmd_qdma.c',
+	'qdma_dpdk_compat.c'
 )

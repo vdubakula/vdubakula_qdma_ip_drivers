@@ -1595,9 +1595,7 @@ TEST_P(qdma_neg_start_inv_qid_test, h2c_c2h) {
 		if (ret < 0) {
 			FAIL() << "rte_eth_rx_queue_setup failed for port %d"<< tx.pf ;
 		}
-		struct rte_eth_dev *dev;
-		dev = &rte_eth_devices[tx.pf];
-		dev->data->dev_started = 1;
+		rte_pmd_qdma_dev_started(tx.pf, 1);
 		ret = rte_eth_dev_tx_queue_start(tx.pf, 65535);
 		if (ret < 0) {
 		}
@@ -1736,9 +1734,7 @@ TEST_P(qdma_neg_stop_inv_qid_test, h2c_c2h) {
 		if (ret < 0) {
 			FAIL() << "rte_eth_rx_queue_setup failed for port %d"<< tx.pf ;
 		}
-		struct rte_eth_dev *dev;
-		dev = &rte_eth_devices[tx.pf];
-		dev->data->dev_started = 1;
+		rte_pmd_qdma_dev_started(tx.pf, 1);
 		ret = rte_eth_dev_tx_queue_start(tx.pf, tx.q);
 		if (ret < 0) {
 			FAIL() << "rte_eth_dev_tx_queue_start failed for port %d"<< tx.pf ;
@@ -1774,7 +1770,7 @@ TEST_P(qdma_neg_stop_inv_qid_test, h2c_c2h) {
 		ret = rte_eth_dev_rx_queue_stop(tx.pf, tx.q);
 		if (ret < 0 )
 			throw std::runtime_error("Failed to stop C2H queue");
-		dev->data->dev_started = 0;
+		rte_pmd_qdma_dev_started(tx.pf, 0);
 		//freeing up memory
 		struct rte_mempool *mp;
 		int loop_cnt;
@@ -1893,9 +1889,7 @@ TEST_P(qdma_neg_dump_inv_qid_test, h2c_c2h) {
 		if (ret < 0) {
 			FAIL() << "rte_eth_rx_queue_setup failed for port %d"<< tx.pf ;
 		}
-		struct rte_eth_dev *dev;
-		dev = &rte_eth_devices[tx.pf];
-		dev->data->dev_started = 1;
+		rte_pmd_qdma_dev_started(tx.pf, 1);
 		ret = rte_eth_dev_tx_queue_start(tx.pf, tx.q);
 		if (ret < 0) {
 			FAIL() << "rte_eth_dev_tx_queue_start failed for port %d"<< tx.pf ;
@@ -1961,7 +1955,7 @@ TEST_P(qdma_neg_dump_inv_qid_test, h2c_c2h) {
 		ret = rte_eth_dev_rx_queue_stop(tx.pf, tx.q);
 		if (ret < 0 )
 			throw std::runtime_error("Failed to stop C2H queue");
-		dev->data->dev_started = 0;
+		rte_pmd_qdma_dev_started(tx.pf, 0);
 		//freeing up memory
 		struct rte_mempool *mp;
 		int loop_cnt;

@@ -250,14 +250,12 @@ unsigned instance_ext::start_queue(unsigned dev_id, unsigned queue_id, __rte_unu
 							  queue_ext::direction q_dir, __rte_unused const queue_ext::config& qcfg, bool throw_err) {
 
 	int ret;
-	struct rte_eth_dev *dev;
 
 	/* DPDK v18.11.0 expects rte_eth_dev_start() to be done before starting any queue,
 	 * gtest tests are acting on per qeueue base, so we explicitly mark device as started.
 	 */
 	(void)throw_err;
-	dev = &rte_eth_devices[dev_id];
-	dev->data->dev_started = 1;
+	rte_pmd_qdma_dev_started(dev_id, 1);
 
 	if (q_dir == queue_ext::direction::host_to_card){
 		ret = rte_eth_dev_tx_queue_start(dev_id, queue_id);
@@ -269,16 +267,19 @@ unsigned instance_ext::start_queue(unsigned dev_id, unsigned queue_id, __rte_unu
 		if (ret < 0 )
 			throw std::runtime_error("Failed to start C2H queue");
 	}
+
+	ret = rte_pmd_qdma_dev_fp_ops_config(dev_id);
+	if (ret < 0 )
+			throw std::runtime_error("Failed fp_ops due to wrong port id");
+
 	return 0;
 }
 
 unsigned instance_ext::stop_queue(unsigned dev_id, unsigned queue_id, queue_ext::direction q_dir, bool throw_err) {
 
 	int ret;
-	struct rte_eth_dev *dev;
 
 	(void)throw_err;
-	dev = &rte_eth_devices[dev_id];
 
 	if (q_dir == queue_ext::direction::host_to_card){
 			ret = rte_eth_dev_tx_queue_stop(dev_id, queue_id);
@@ -290,7 +291,7 @@ unsigned instance_ext::stop_queue(unsigned dev_id, unsigned queue_id, queue_ext:
 			if (ret < 0 )
 				throw std::runtime_error("Failed to stop C2H queue");
 		}
-	dev->data->dev_started = 0;
+	rte_pmd_qdma_dev_started(dev_id, 0);
 	return 0;
 }
 
