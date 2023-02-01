@@ -75,4 +75,4 @@ dma-perf tool takes a configuration file as input. The configuration file format
 - h2c_q_start_offset : Start address of H2C queue.
 - h2c_q_offset_intvl : Fixed interval for subsequent H2C queues offsets.
 - c2h_q_start_offset : Start address of C2H queue.
-- c2h_q_offset_intvl : Fixed interval for subsequent C2H queues offsets.   
+- c2h_q_offset_intvl : Fixed interval for subsequent C2H queues offsets.
