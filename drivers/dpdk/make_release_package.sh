@@ -1,4 +1,4 @@
-major_version=2022
+major_version=2023
 minor_version=1
 
 driver_name=dpdk
@@ -54,6 +54,8 @@ files_2_check=(
 		"drivers/net/qdma/qdma_common.c"
 		"drivers/net/qdma/qdma_devops.c"
 		"drivers/net/qdma/qdma_devops.h"
+		"drivers/net/qdma/qdma_dpdk_compat.c"
+		"drivers/net/qdma/qdma_dpdk_compat.h"
 		"drivers/net/qdma/qdma_ethdev.c"
 		"drivers/net/qdma/qdma_log.h"
 		"drivers/net/qdma/qdma_mbox.c"
@@ -109,7 +111,9 @@ files_2_check=(
 		"examples/qdma_testapp/testapp.c"
 		"examples/qdma_testapp/testapp.h"
 		"patches/pktgen/0001-PKTGEN-20.12.0-Patch-to-add-Jumbo-packet-support.patch"
+		"patches/pktgen/0001-PKTGEN-22.04.1-Patch-to-add-Jumbo-packet-support.patch"
 		"patches/pktgen/README.txt"
+		"docs/README.txt"
 		)
 
 echo "Checking all files to be released are present..."
@@ -145,6 +149,7 @@ mkdir -p $(pwd)/../$release_dir/drivers/net/qdma/qdma_access/qdma_soft_access
 mkdir -p $(pwd)/../$release_dir/examples
 mkdir -p $(pwd)/../$release_dir/examples/qdma_testapp
 mkdir -p $(pwd)/../$release_dir/tools
+mkdir -p $(pwd)/../$release_dir/docs
 
 echo "Copying the release contents to "$driver_name" Release directory..."
 sleep 1
@@ -153,72 +158,78 @@ cp RELEASE			$(pwd)/../$release_dir/
 
 # Copy DPDK Driver Code
 cp drivers/net/qdma/meson.build						$(pwd)/../$release_dir/drivers/net/qdma/
-cp drivers/net/qdma/qdma.h								$(pwd)/../$release_dir/drivers/net/qdma/
-cp drivers/net/qdma/qdma_common.c				$(pwd)/../$release_dir/drivers/net/qdma/
+cp drivers/net/qdma/qdma.h							$(pwd)/../$release_dir/drivers/net/qdma/
+cp drivers/net/qdma/qdma_common.c					$(pwd)/../$release_dir/drivers/net/qdma/
 cp drivers/net/qdma/qdma_devops.c					$(pwd)/../$release_dir/drivers/net/qdma/
 cp drivers/net/qdma/qdma_devops.h					$(pwd)/../$release_dir/drivers/net/qdma/
+cp drivers/net/qdma/qdma_dpdk_compat.c				$(pwd)/../$release_dir/drivers/net/qdma/
+cp drivers/net/qdma/qdma_dpdk_compat.h				$(pwd)/../$release_dir/drivers/net/qdma/
 cp drivers/net/qdma/qdma_ethdev.c					$(pwd)/../$release_dir/drivers/net/qdma/
 cp drivers/net/qdma/qdma_log.h						$(pwd)/../$release_dir/drivers/net/qdma/
-cp drivers/net/qdma/qdma_mbox.c					$(pwd)/../$release_dir/drivers/net/qdma/
-cp drivers/net/qdma/qdma_mbox.h					$(pwd)/../$release_dir/drivers/net/qdma/
-cp drivers/net/qdma/qdma_platform.c				$(pwd)/../$release_dir/drivers/net/qdma/
-cp drivers/net/qdma/qdma_platform_env.h		$(pwd)/../$release_dir/drivers/net/qdma/
+cp drivers/net/qdma/qdma_mbox.c						$(pwd)/../$release_dir/drivers/net/qdma/
+cp drivers/net/qdma/qdma_mbox.h						$(pwd)/../$release_dir/drivers/net/qdma/
+cp drivers/net/qdma/qdma_platform.c					$(pwd)/../$release_dir/drivers/net/qdma/
+cp drivers/net/qdma/qdma_platform_env.h				$(pwd)/../$release_dir/drivers/net/qdma/
 cp drivers/net/qdma/qdma_rxtx.c						$(pwd)/../$release_dir/drivers/net/qdma/
 cp drivers/net/qdma/qdma_rxtx.h						$(pwd)/../$release_dir/drivers/net/qdma/
 cp drivers/net/qdma/qdma_user.c						$(pwd)/../$release_dir/drivers/net/qdma/
 cp drivers/net/qdma/qdma_user.h						$(pwd)/../$release_dir/drivers/net/qdma/
 cp drivers/net/qdma/qdma_vf_ethdev.c				$(pwd)/../$release_dir/drivers/net/qdma/
 cp drivers/net/qdma/qdma_xdebug.c					$(pwd)/../$release_dir/drivers/net/qdma/
-cp drivers/net/qdma/rte_pmd_qdma.c				$(pwd)/../$release_dir/drivers/net/qdma/
-cp drivers/net/qdma/rte_pmd_qdma.h				$(pwd)/../$release_dir/drivers/net/qdma/
-cp drivers/net/qdma/version.h							$(pwd)/../$release_dir/drivers/net/qdma/
-cp drivers/net/qdma/version.map							$(pwd)/../$release_dir/drivers/net/qdma/
+cp drivers/net/qdma/rte_pmd_qdma.c					$(pwd)/../$release_dir/drivers/net/qdma/
+cp drivers/net/qdma/rte_pmd_qdma.h					$(pwd)/../$release_dir/drivers/net/qdma/
+cp drivers/net/qdma/version.h						$(pwd)/../$release_dir/drivers/net/qdma/
+cp drivers/net/qdma/version.map						$(pwd)/../$release_dir/drivers/net/qdma/
 
 # Copy QDMA Access Code
 cp ../qdma_access/eqdma_soft_access/eqdma_soft_access.c		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/eqdma_soft_access/
 cp ../qdma_access/eqdma_soft_access/eqdma_soft_access.h		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/eqdma_soft_access/
 cp ../qdma_access/eqdma_soft_access/eqdma_soft_reg.h		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/eqdma_soft_access/
-cp ../qdma_access/eqdma_soft_access/eqdma_soft_reg_dump.c		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/eqdma_soft_access/
+cp ../qdma_access/eqdma_soft_access/eqdma_soft_reg_dump.c	$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/eqdma_soft_access/
 cp ../qdma_access/qdma_cpm4_access/qdma_cpm4_access.c		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/qdma_cpm4_access/
 cp ../qdma_access/qdma_cpm4_access/qdma_cpm4_access.h		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/qdma_cpm4_access/
-cp ../qdma_access/qdma_cpm4_access/qdma_cpm4_reg.h		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/qdma_cpm4_access/
+cp ../qdma_access/qdma_cpm4_access/qdma_cpm4_reg.h			$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/qdma_cpm4_access/
 cp ../qdma_access/qdma_cpm4_access/qdma_cpm4_reg_dump.c		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/qdma_cpm4_access/
 cp ../qdma_access/eqdma_cpm5_access/eqdma_cpm5_access.c		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/eqdma_cpm5_access/
 cp ../qdma_access/eqdma_cpm5_access/eqdma_cpm5_access.h		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/eqdma_cpm5_access/
 cp ../qdma_access/eqdma_cpm5_access/eqdma_cpm5_reg.h		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/eqdma_cpm5_access/
-cp ../qdma_access/eqdma_cpm5_access/eqdma_cpm5_reg_dump.c		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/eqdma_cpm5_access/
+cp ../qdma_access/eqdma_cpm5_access/eqdma_cpm5_reg_dump.c	$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/eqdma_cpm5_access/
 cp ../qdma_access/qdma_soft_access/qdma_soft_access.c		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/qdma_soft_access/
 cp ../qdma_access/qdma_soft_access/qdma_soft_access.h		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/qdma_soft_access/
-cp ../qdma_access/qdma_soft_access/qdma_soft_reg.h		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/qdma_soft_access/
-cp ../qdma_access/qdma_access_common.c		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
-cp ../qdma_access/qdma_access_common.h		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
-cp ../qdma_access/qdma_access_errors.h		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
-cp ../qdma_access/qdma_access_export.h		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
-cp ../qdma_access/qdma_access_version.h		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
-cp ../qdma_access/qdma_list.c		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
-cp ../qdma_access/qdma_list.h		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
-cp ../qdma_access/qdma_mbox_protocol.c		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
-cp ../qdma_access/qdma_mbox_protocol.h		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
-cp ../qdma_access/qdma_platform.h		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
-cp ../qdma_access/qdma_reg_dump.h		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
-cp ../qdma_access/qdma_resource_mgmt.c		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
-cp ../qdma_access/qdma_resource_mgmt.h		$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
+cp ../qdma_access/qdma_soft_access/qdma_soft_reg.h			$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/qdma_soft_access/
+cp ../qdma_access/qdma_access_common.c						$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
+cp ../qdma_access/qdma_access_common.h						$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
+cp ../qdma_access/qdma_access_errors.h						$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
+cp ../qdma_access/qdma_access_export.h						$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
+cp ../qdma_access/qdma_access_version.h						$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
+cp ../qdma_access/qdma_list.c								$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
+cp ../qdma_access/qdma_list.h								$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
+cp ../qdma_access/qdma_mbox_protocol.c						$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
+cp ../qdma_access/qdma_mbox_protocol.h						$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
+cp ../qdma_access/qdma_platform.h							$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
+cp ../qdma_access/qdma_reg_dump.h							$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
+cp ../qdma_access/qdma_resource_mgmt.c						$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
+cp ../qdma_access/qdma_resource_mgmt.h						$(pwd)/../$release_dir/drivers/net/qdma/qdma_access/
 
 # Copy QDMA Test Application Code
 cp examples/qdma_testapp/Makefile				$(pwd)/../$release_dir/examples/qdma_testapp/
 cp examples/qdma_testapp/commands.c				$(pwd)/../$release_dir/examples/qdma_testapp/
 cp examples/qdma_testapp/commands.h				$(pwd)/../$release_dir/examples/qdma_testapp/
-cp examples/qdma_testapp/parse_obj_list.c				$(pwd)/../$release_dir/examples/qdma_testapp/
-cp examples/qdma_testapp/parse_obj_list.h				$(pwd)/../$release_dir/examples/qdma_testapp/
+cp examples/qdma_testapp/parse_obj_list.c		$(pwd)/../$release_dir/examples/qdma_testapp/
+cp examples/qdma_testapp/parse_obj_list.h		$(pwd)/../$release_dir/examples/qdma_testapp/
 cp examples/qdma_testapp/pcierw.c				$(pwd)/../$release_dir/examples/qdma_testapp/
 cp examples/qdma_testapp/pcierw.h				$(pwd)/../$release_dir/examples/qdma_testapp/
-cp examples/qdma_testapp/qdma_regs.h				$(pwd)/../$release_dir/examples/qdma_testapp/
+cp examples/qdma_testapp/qdma_regs.h			$(pwd)/../$release_dir/examples/qdma_testapp/
 cp examples/qdma_testapp/testapp.c				$(pwd)/../$release_dir/examples/qdma_testapp/
 cp examples/qdma_testapp/testapp.h				$(pwd)/../$release_dir/examples/qdma_testapp/
 
 # Copy tools Code
 cp patches/pktgen/0001-PKTGEN-20.12.0-Patch-to-add-Jumbo-packet-support.patch			$(pwd)/../$release_dir/tools/
+cp patches/pktgen/0001-PKTGEN-22.04.1-Patch-to-add-Jumbo-packet-support.patch			$(pwd)/../$release_dir/tools/
 cp patches/pktgen/README.txt			$(pwd)/../$release_dir/tools/
+
+# Copy Docs
+cp docs/README.txt						$(pwd)/../$release_dir/docs/
 
 chmod 777 -R $(pwd)/../$release_dir/
 chmod -R 0777 $(pwd)/../$release_dir/drivers/net/qdma/qdma_access

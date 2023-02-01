@@ -220,7 +220,7 @@ void rte_pmd_qdma_compat_memzone_reserve_aligned(void)
 
 void rte_pmd_qdma_get_bdf(uint32_t m_id, uint32_t *bus, uint32_t *dev, uint32_t *fn)
 {
-	struct rte_pci_device *pci_dev;
+    struct rte_pci_device *pci_dev;
     pci_dev = RTE_ETH_DEV_TO_PCI(&rte_eth_devices[m_id]);
     *bus = pci_dev->addr.bus;
     *dev = pci_dev->addr.devid;
