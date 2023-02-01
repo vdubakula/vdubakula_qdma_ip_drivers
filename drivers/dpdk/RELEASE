@@ -120,10 +120,10 @@ CPM5
 KNOWN ISSUE:
 ============
 - CPM5:
-	- Performance optimizations are not finalized yet.
+	- Performance optimizations are not finalized, Performance report with optimizations will be available in next patch release.
 
 - QDMA5.0:
-	- Performance optimizations are not finalized yet.
+	- Performance optimizations are not finalized, Performance report with optimizations will be available in next patch release.
 
 - All Designs
 	- Function Level Reset(FLR) of PF device when VFs are attached to this PF results in mailbox communication failure
