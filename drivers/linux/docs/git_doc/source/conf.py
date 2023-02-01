@@ -29,14 +29,14 @@ sys.path.insert(0, os.path.abspath('docs'))
 # -- Project information -----------------------------------------------------
 
 project = u'QDMA Linux Driver'
-copyright = '2018-2022, Xilinx, Inc'
+copyright = '2022-2023 Advanced Micro Devices Inc.'
 author = 'Xilinx, Inc'
 
 # The short X.Y version
 #version = u''
-version = '2022.1'
+version = '2023.1'
 # The full version, including alpha/beta/rc tags
-release = u'2022.1'
+release = u'2023.1'
 html_last_updated_fmt = '%B %d, %Y'
 
 # -- General configuration ---------------------------------------------------
@@ -61,7 +61,7 @@ extensions = [
 	'recommonmark',
 	#'edit_on_github',
     # Auto-generate section labels.
-    'sphinx.ext.autosectionlabel',	
+    'sphinx.ext.autosectionlabel',
     #'sphinx.ext.imgmath',
     'doxyrest',
     #'cpplexer',
