@@ -190,8 +190,10 @@ Setup: Make Commands
 
 * Compile DPDK & QDMA driver
 
-	Make sure to delete all the rte and cmdline header files from /usr/local/include before switching to different dpdk framework versions.
-        Execute the following to compile the driver.
+	- Make sure to delete all the rte and cmdline header files from /usr/local/include before switching to different dpdk framework versions.
+
+
+	- Execute the following to compile the driver.
 
 	::
 
@@ -211,7 +213,7 @@ Setup: Make Commands
 	- Verify that ``librte_net_qdma.a`` is installed in ``./build/drivers`` directory.
 
 
-	Execute the following to compile the igb_uio kernel driver.
+	- Execute the following to compile the igb_uio kernel driver.
 
 	::
 
