@@ -126,7 +126,7 @@ support 2K queues and populate Xilinx devices for binding.
 
 		'qdma',
 
-	e. Add below line to ``./drivers/net/meson.build``, to support required DPDK framework version
+	e. Add below line to ``./drivers/net/qdma/meson.build``, to support required DPDK framework version
 
 	::
 
@@ -190,7 +190,8 @@ Setup: Make Commands
 
 * Compile DPDK & QDMA driver
 
-	Execute the following to compile the driver.
+	Make sure to delete all the rte and cmdline header files from /usr/local/include before switching to different dpdk framework versions.
+        Execute the following to compile the driver.
 
 	::
 
