@@ -95,6 +95,84 @@
 #define EQDMA_GLBL2_IP_VERSION_MASK             GENMASK(23, 20)
 #define EQDMA_GLBL2_VF_IP_VERSION_MASK          GENMASK(7, 4)
 
+#define EQDMA_PFTCH_CACHE_DEPTH				64
+#define GLBL_DSC_CFG_RSVD_1_DFLT			0
+#define EQDMA_GLBL_DSC_CFG_C2H_UODSC_LIMIT		5
+#define EQDMA_GLBL_DSC_CFG_H2C_UODSC_LIMIT              8
+#define GLBL_DSC_CFG_UNC_OVR_COR_DFLT                   0
+#define GLBL_DSC_CFG_CTXT_FER_DIS_DFLT			0
+#define GLBL_DSC_CFG_RSVD_2_DFLT                        0
+#define EQDMA_GLBL_DSC_CFG_MAXFETCH                     2
+#define EQDMA_GLBL_DSC_CFG_WB_ACC_INT			5
+#define CFG_BLK_MISC_CTL_RSVD_1_DFLT                       0
+#define CFG_BLK_MISC_CTL_10B_TAG_DFLT                      0
+#define CFG_BLK_MISC_CTL_RSVD_2_DFLT                       0
+#define CFG_BLK_MISC_CTL_AXI_WBK_DFLT                      0
+#define CFG_BLK_MISC_CTL_AXI_DSC_DFLT                      0
+#define CFG_BLK_MISC_CTL_NUM_TAG_DFLT                      256
+#define CFG_BLK_MISC_CTL_RSVD_3_DFLT                       0
+#define EQDMA_CFG_BLK_MISC_CTL_RQ_METERING_MUL             9
+
+#define EQDMA_PFTCH_CFG_EVT_PFTH_FL_TH                    256
+#define C2H_PFCH_CFG_FL_TH_DFLT                           256
+
+#define EQDMA_C2H_PFCH_CFG_1_QCNT_MASK		(EQDMA_PFTCH_CACHE_DEPTH - 4)
+#define EQDMA_C2H_PFCH_CFG_1_EVNT_QCNT_TH	EQDMA_C2H_PFCH_CFG_1_QCNT_MASK
+
+#define EQDMA_C2H_PFCH_CFG_2_FENCE_EN               1
+#define C2H_PFCH_CFG_2_RSVD_DFLT                    0
+#define C2H_PFCH_CFG_2_VAR_DESC_NO_DROP_DFLT        0
+#define C2H_PFCH_CFG_2_LL_SZ_TH_DFLT                1024
+#define C2H_PFCH_CFG_2_VAR_DESC_NUM                 15
+#define C2H_PFCH_CFG_2_NUM_DFLT                     8
+
+#define PFCH_CFG_3_RSVD_DFLT                               0
+#define PFCH_CFG_3_VAR_DESC_FL_FREE_CNT_TH_DFLT            256
+#define PFCH_CFG_3_VAR_DESC_LG_PKT_CAM_CN_TH_DFLT          0
+
+#define EQDMA_PFCH_CFG_4_GLB_EVT_TIMER_TICK             64
+#define PFCH_CFG_4_DISABLE_GLB_EVT_TIMER_DFLT           0
+#define EQDMA_PFCH_CFG_4_EVT_TIMER_TICK                 400
+#define PFCH_CFG_4_DISABLE_EVT_TIMER_DFLT               0
+
+/**************** SET_2 *******************/
+#define C2H_CRDT_COAL_CFG_1_RSVD_1_DFLT             0
+#define C2H_CRDT_COAL_CFG_1_PLD_FIFO_TH_DFLT        16
+#define EQDMA_C2H_CRDT_COAL_CFG_1_TIMER_TH          16 //64
+
+#define C2H_CRDT_COAL_CFG_2_RSVD_1_DFLT                   0
+#define EQDMA_C2H_CRDT_COAL_CFG_2_FIFO_TH	(EQDMA_PFTCH_CACHE_DEPTH - 8)
+#define C2H_CRDT_COAL_CFG_2_RESERVED1_DFLT                0
+#define EQDMA_C2H_CRDT_COAL_CFG_2_CRDT_TH                 96
+/**************** SET_3 *******************/
+#define EQDMA_GLBL2_RRQ_PCIE_THROT_REQ_EN                  0
+#define GLBL2_RRQ_PCIE_THROT_REQ_DFLT                      192
+#define GLBL2_RRQ_PCIE_THROT_DAT_EN_DFLT                   1
+#define GLBL2_RRQ_PCIE_THROT_DAT_DFLT                      20480
+
+#define GLBL2_RRQ_AXIMM_THROT_REQ_EN_DFLT                  0
+#define GLBL2_RRQ_AXIMM_THROT_REQ_DFLT                     0
+#define GLBL2_RRQ_AXIMM_THROT_DAT_EN_DFLT                  0
+#define GLBL2_RRQ_AXIMM_THROT_DAT_DFLT                     0
+
+#define GLBL2_RRQ_BRG_THROT_REQ_EN_DFLT                    1
+#define GLBL2_RRQ_BRG_THROT_REQ_DFLT             GLBL2_RRQ_PCIE_THROT_REQ_DFLT
+#define GLBL2_RRQ_BRG_THROT_DAT_EN_DFLT                    1
+
+#define EQDMA_H2C_REQ_THROT_PCIE_EN_REQ                     1
+#define EQDMA_H2C_REQ_THROT_PCIE_REQ_TH          GLBL2_RRQ_PCIE_THROT_REQ_DFLT
+#define EQDMA_H2C_REQ_THROT_PCIE_EN_DATA                    1
+#define EQDMA_H2C_REQ_THROT_PCIE_DATA_TH                    24576
+
+#define EQDMA_H2C_REQ_THROT_AXIMM_EN_REQ            1
+#define EQDMA_H2C_REQ_THROT_AXIMM_REQ_TH            64
+#define EQDMA_H2C_REQ_THROT_AXIMM_EN_DATA           1
+#define EQDMA_H2C_REQ_THROT_AXIMM_DATA_TH           16384
+
+#define H2C_MM_DATA_THROTTLE_RSVD_1_DFLT        0
+#define EQDMA_H2C_MM_DATA_TH_EN		      GLBL2_RRQ_PCIE_THROT_DAT_EN_DFLT
+#define EQDMA_H2C_MM_DATA_TH		      GLBL2_RRQ_PCIE_THROT_DAT_DFLT
+
 static void eqdma_hw_st_h2c_err_process(void *dev_hndl);
 static void eqdma_hw_st_c2h_err_process(void *dev_hndl);
 static void eqdma_hw_desc_err_process(void *dev_hndl);
@@ -1721,32 +1799,11 @@ static uint32_t eqdma_intr_context_buf_len(void)
 
 static void eqdma_set_perf_opt(void *dev_hndl)
 {
-	uint32_t reg_val = 0, data_th = 0;
+	uint32_t reg_val = 0, data_th = 0, pfch_cache_dpth = 0;
 	/****
 	 * TODO: All the below settings are for QDMA5.0
 	 * Need to add the QDMA4.0 settings
 	 */
-#define EQDMA_PFTCH_CACHE_DEPTH				64
-/**************** SET_0 *******************/
-/*
-#define EQDMA_GLBL_DSC_CFG_ADDR						0x250
-#define GLBL_DSC_CFG_RSVD_1_MASK					GENMASK(31, 30)
-#define GLBL_DSC_CFG_C2H_UODSC_LIMIT_MASK			GENMASK(29, 20)
-#define GLBL_DSC_CFG_H2C_UODSC_LIMIT_MASK			GENMASK(19, 10)
-#define GLBL_DSC_CFG_UNC_OVR_COR_MASK				BIT(9)
-#define GLBL_DSC_CFG_CTXT_FER_DIS_MASK				BIT(8)
-#define GLBL_DSC_CFG_RSVD_2_MASK					GENMASK(7, 6)
-#define GLBL_DSC_CFG_MAXFETCH_MASK					GENMASK(5, 3)
-#define GLBL_DSC_CFG_WB_ACC_INT_MASK				GENMASK(2, 0)
-*/
-#define GLBL_DSC_CFG_RSVD_1_DFLT						0
-#define EQDMA_GLBL_DSC_CFG_C2H_UODSC_LIMIT		     	5
-#define EQDMA_GLBL_DSC_CFG_H2C_UODSC_LIMIT              8
-#define GLBL_DSC_CFG_UNC_OVR_COR_DFLT                   0
-#define GLBL_DSC_CFG_CTXT_FER_DIS_DFLT				    0
-#define GLBL_DSC_CFG_RSVD_2_DFLT                        0
-#define EQDMA_GLBL_DSC_CFG_MAXFETCH                     2
-#define EQDMA_GLBL_DSC_CFG_WB_ACC_INT			 		5
 	reg_val =
 		FIELD_SET(GLBL_DSC_CFG_RSVD_1_MASK, GLBL_DSC_CFG_RSVD_1_DFLT) |
 		FIELD_SET(GLBL_DSC_CFG_C2H_UODSC_LIMIT_MASK,
@@ -1758,199 +1815,117 @@ static void eqdma_set_perf_opt(void *dev_hndl)
 		FIELD_SET(GLBL_DSC_CFG_CTXT_FER_DIS_MASK,
 					GLBL_DSC_CFG_CTXT_FER_DIS_DFLT) |
 		FIELD_SET(GLBL_DSC_CFG_RSVD_2_MASK, GLBL_DSC_CFG_RSVD_2_DFLT) |
-		FIELD_SET(GLBL_DSC_CFG_MAXFETCH_MASK, EQDMA_GLBL_DSC_CFG_MAXFETCH) |
-		FIELD_SET(GLBL_DSC_CFG_WB_ACC_INT_MASK, EQDMA_GLBL_DSC_CFG_WB_ACC_INT);
+		FIELD_SET(GLBL_DSC_CFG_MAXFETCH_MASK,
+				EQDMA_GLBL_DSC_CFG_MAXFETCH) |
+		FIELD_SET(GLBL_DSC_CFG_WB_ACC_INT_MASK,
+				EQDMA_GLBL_DSC_CFG_WB_ACC_INT);
 	qdma_reg_write(dev_hndl, EQDMA_GLBL_DSC_CFG_ADDR, reg_val);
 	reg_val = qdma_reg_read(dev_hndl, EQDMA_GLBL_DSC_CFG_ADDR);
 	qdma_log_info("%s: reg = 0x%08X val = 0x%08X\n",
-						__func__, EQDMA_GLBL_DSC_CFG_ADDR, reg_val);
+			__func__, EQDMA_GLBL_DSC_CFG_ADDR, reg_val);
 
-/*
-#define EQDMA_CFG_BLK_MISC_CTL_ADDR                     0x4C
-#define CFG_BLK_MISC_CTL_RSVD_1_MASK					GENMASK(31, 24)
-#define CFG_BLK_MISC_CTL_10B_TAG_EN_MASK				BIT(23)
-#define CFG_BLK_MISC_CTL_RSVD_2_MASK					BIT(22)
-#define CFG_BLK_MISC_CTL_AXI_WBK_MASK					BIT(21)
-#define CFG_BLK_MISC_CTL_AXI_DSC_MASK					BIT(20)
-#define CFG_BLK_MISC_CTL_NUM_TAG_MASK					GENMASK(19, 8)
-#define CFG_BLK_MISC_CTL_RSVD_3_MASK					GENMASK(7, 5)
-#define CFG_BLK_MISC_CTL_RQ_METERING_MULTIPLIER_MASK	GENMASK(4, 0)
-*/
-#define CFG_BLK_MISC_CTL_RSVD_1_DFLT                       0
-#define CFG_BLK_MISC_CTL_10B_TAG_DFLT                      0
-#define CFG_BLK_MISC_CTL_RSVD_2_DFLT                       0
-#define CFG_BLK_MISC_CTL_AXI_WBK_DFLT                      0
-#define CFG_BLK_MISC_CTL_AXI_DSC_DFLT                      0
-#define CFG_BLK_MISC_CTL_NUM_TAG_DFLT                      256
-#define CFG_BLK_MISC_CTL_RSVD_3_DFLT                       0
-#define EQDMA_CFG_BLK_MISC_CTL_RQ_METERING_MUL		       9
 	reg_val =
-		FIELD_SET(CFG_BLK_MISC_CTL_RSVD_1_MASK, CFG_BLK_MISC_CTL_RSVD_1_DFLT) |
+		FIELD_SET(CFG_BLK_MISC_CTL_RSVD_1_MASK,
+				CFG_BLK_MISC_CTL_RSVD_1_DFLT) |
 		FIELD_SET(CFG_BLK_MISC_CTL_10B_TAG_EN_MASK,
 					CFG_BLK_MISC_CTL_10B_TAG_DFLT) |
-		FIELD_SET(CFG_BLK_MISC_CTL_RSVD_2_MASK, CFG_BLK_MISC_CTL_RSVD_2_DFLT) |
+		FIELD_SET(CFG_BLK_MISC_CTL_RSVD_2_MASK,
+				CFG_BLK_MISC_CTL_RSVD_2_DFLT) |
 		FIELD_SET(CFG_BLK_MISC_CTL_AXI_WBK_MASK,
 					CFG_BLK_MISC_CTL_AXI_WBK_DFLT) |
 		FIELD_SET(CFG_BLK_MISC_CTL_AXI_DSC_MASK,
 					CFG_BLK_MISC_CTL_AXI_DSC_DFLT) |
 		FIELD_SET(CFG_BLK_MISC_CTL_NUM_TAG_MASK,
 					CFG_BLK_MISC_CTL_NUM_TAG_DFLT) |
-		FIELD_SET(CFG_BLK_MISC_CTL_RSVD_3_MASK, CFG_BLK_MISC_CTL_RSVD_3_DFLT) |
+		FIELD_SET(CFG_BLK_MISC_CTL_RSVD_3_MASK,
+				CFG_BLK_MISC_CTL_RSVD_3_DFLT) |
 		FIELD_SET(CFG_BLK_MISC_CTL_RQ_METERING_MULTIPLIER_MASK,
-					EQDMA_CFG_BLK_MISC_CTL_RQ_METERING_MUL);
+				EQDMA_CFG_BLK_MISC_CTL_RQ_METERING_MUL);
 	qdma_reg_write(dev_hndl, EQDMA_CFG_BLK_MISC_CTL_ADDR, reg_val);
 	reg_val = qdma_reg_read(dev_hndl, EQDMA_CFG_BLK_MISC_CTL_ADDR);
 	qdma_log_info("%s: reg = 0x%08X val = 0x%08X\n",
-						__func__, EQDMA_CFG_BLK_MISC_CTL_ADDR, reg_val);
+			__func__, EQDMA_CFG_BLK_MISC_CTL_ADDR, reg_val);
 
 
-/************** SET#1 **********************/
-/** EQDMA_C2H_PFCH_CFG_ADDR	0xB08   0x01000100
-#define EQDMA_C2H_PFCH_CFG_ADDR					0xB08
-#define C2H_PFCH_CFG_EVTFL_TH_MASK				GENMASK(31, 16)
-#define C2H_PFCH_CFG_FL_TH_MASK					GENMASK(15, 0)
-*/
-#define EQDMA_PFTCH_CFG_EVT_PFTH_FL_TH 					  256
-#define C2H_PFCH_CFG_FL_TH_DFLT                           256
 	reg_val =
-		FIELD_SET(C2H_PFCH_CFG_EVTFL_TH_MASK, EQDMA_PFTCH_CFG_EVT_PFTH_FL_TH) |
+		FIELD_SET(C2H_PFCH_CFG_EVTFL_TH_MASK,
+				EQDMA_PFTCH_CFG_EVT_PFTH_FL_TH) |
 		FIELD_SET(C2H_PFCH_CFG_FL_TH_MASK, C2H_PFCH_CFG_FL_TH_DFLT);
 
 	qdma_reg_write(dev_hndl, EQDMA_C2H_PFCH_CFG_ADDR, reg_val);
 	reg_val = qdma_reg_read(dev_hndl, EQDMA_C2H_PFCH_CFG_ADDR);
 	qdma_log_info("%s: reg = 0x%08X val = 0x%08X\n",
-						__func__, EQDMA_C2H_PFCH_CFG_ADDR, reg_val);
+			__func__, EQDMA_C2H_PFCH_CFG_ADDR, reg_val);
 
-/*  EQDMA_C2H_PFCH_CFG_1_ADDR 0xA80  0x003C003C
-#define EQDMA_C2H_PFCH_CFG_1_ADDR				0xA80
-#define C2H_PFCH_CFG_1_EVT_QCNT_TH_MASK			GENMASK(31, 16)
-#define C2H_PFCH_CFG_1_QCNT_MASK				GENMASK(15, 0)
-*/
-#define EQDMA_C2H_PFCH_CFG_1_QCNT_MASK		(EQDMA_PFTCH_CACHE_DEPTH - 4)
-#define EQDMA_C2H_PFCH_CFG_1_EVNT_QCNT_TH	EQDMA_C2H_PFCH_CFG_1_QCNT_MASK
+	pfch_cache_dpth = qdma_reg_read(dev_hndl,
+			EQDMA_C2H_PFCH_CACHE_DEPTH_ADDR);
 
 	reg_val =
 		FIELD_SET(C2H_PFCH_CFG_1_EVT_QCNT_TH_MASK,
-					EQDMA_C2H_PFCH_CFG_1_QCNT_MASK) |
-		FIELD_SET(C2H_PFCH_CFG_1_QCNT_MASK, EQDMA_C2H_PFCH_CFG_1_EVNT_QCNT_TH);
+				(pfch_cache_dpth - 4)) |
+		FIELD_SET(C2H_PFCH_CFG_1_QCNT_MASK, (pfch_cache_dpth - 4));
 	qdma_reg_write(dev_hndl, EQDMA_C2H_PFCH_CFG_1_ADDR, reg_val);
 	reg_val = qdma_reg_read(dev_hndl, EQDMA_C2H_PFCH_CFG_1_ADDR);
 	qdma_log_info("%s: reg = 0x%08X val = 0x%08X\n",
-						__func__, EQDMA_C2H_PFCH_CFG_1_ADDR, reg_val);
-
-/*  EQDMA_C2H_PFCH_CFG_2_ADDR  0xA84 0x804003C8
-#define EQDMA_C2H_PFCH_CFG_2_ADDR					0xA84
-#define C2H_PFCH_CFG_2_FENCE_MASK					BIT(31)
-#define C2H_PFCH_CFG_2_RSVD_MASK					GENMASK(30, 29)
-#define C2H_PFCH_CFG_2_VAR_DESC_NO_DROP_MASK		BIT(28)
-#define C2H_PFCH_CFG_2_LL_SZ_TH_MASK				GENMASK(27, 12)
-#define C2H_PFCH_CFG_2_VAR_DESC_NUM_MASK			GENMASK(11, 6)
-#define C2H_PFCH_CFG_2_NUM_MASK						GENMASK(5, 0)
-*/
-#define EQDMA_C2H_PFCH_CFG_2_FENCE_EN               1
-#define C2H_PFCH_CFG_2_RSVD_DFLT                    0
-#define C2H_PFCH_CFG_2_VAR_DESC_NO_DROP_DFLT        0
-#define C2H_PFCH_CFG_2_LL_SZ_TH_DFLT                1024
-#define C2H_PFCH_CFG_2_VAR_DESC_NUM                 15
-#define C2H_PFCH_CFG_2_NUM_DFLT                     8
-
+			__func__, EQDMA_C2H_PFCH_CFG_1_ADDR, reg_val);
 	reg_val =
-		FIELD_SET(C2H_PFCH_CFG_2_FENCE_MASK, EQDMA_C2H_PFCH_CFG_2_FENCE_EN) |
+		FIELD_SET(C2H_PFCH_CFG_2_FENCE_MASK,
+				EQDMA_C2H_PFCH_CFG_2_FENCE_EN) |
 		FIELD_SET(C2H_PFCH_CFG_2_RSVD_MASK, C2H_PFCH_CFG_2_RSVD_DFLT) |
 		FIELD_SET(C2H_PFCH_CFG_2_VAR_DESC_NO_DROP_MASK,
 					C2H_PFCH_CFG_2_VAR_DESC_NO_DROP_DFLT) |
-		FIELD_SET(C2H_PFCH_CFG_2_LL_SZ_TH_MASK, C2H_PFCH_CFG_2_LL_SZ_TH_DFLT) |
+		FIELD_SET(C2H_PFCH_CFG_2_LL_SZ_TH_MASK,
+				C2H_PFCH_CFG_2_LL_SZ_TH_DFLT) |
 		FIELD_SET(C2H_PFCH_CFG_2_VAR_DESC_NUM_MASK,
 					C2H_PFCH_CFG_2_VAR_DESC_NUM) |
 		FIELD_SET(C2H_PFCH_CFG_2_NUM_MASK, C2H_PFCH_CFG_2_NUM_DFLT);
 	qdma_reg_write(dev_hndl, EQDMA_C2H_PFCH_CFG_2_ADDR, reg_val);
 	reg_val = qdma_reg_read(dev_hndl, EQDMA_C2H_PFCH_CFG_2_ADDR);
 	qdma_log_info("%s: reg = 0x%08X val = 0x%08X\n",
-						__func__, EQDMA_C2H_PFCH_CFG_2_ADDR, reg_val);
+			__func__, EQDMA_C2H_PFCH_CFG_2_ADDR, reg_val);
 
-/*  EQDMA_PFCH_CFG_3_ADDR 0x147C    0x8000
-#define EQDMA_PFCH_CFG_3_ADDR							0x147C
-#define PFCH_CFG_3_RSVD_MASK							GENMASK(31, 16)
-#define PFCH_CFG_3_VAR_DESC_FL_FREE_CNT_TH_MASK			GENMASK(15, 7)
-#define PFCH_CFG_3_VAR_DESC_LG_PKT_CAM_CN_TH_MASK		GENMASK(6, 0)
-*/
-#define PFCH_CFG_3_RSVD_DFLT                               0
-#define PFCH_CFG_3_VAR_DESC_FL_FREE_CNT_TH_DFLT            256
-#define PFCH_CFG_3_VAR_DESC_LG_PKT_CAM_CN_TH_DFLT          0
 	reg_val =
 		FIELD_SET(PFCH_CFG_3_RSVD_MASK, PFCH_CFG_3_RSVD_DFLT) |
 		FIELD_SET(PFCH_CFG_3_VAR_DESC_FL_FREE_CNT_TH_MASK,
-					PFCH_CFG_3_VAR_DESC_FL_FREE_CNT_TH_DFLT) |
+				PFCH_CFG_3_VAR_DESC_FL_FREE_CNT_TH_DFLT) |
 		FIELD_SET(PFCH_CFG_3_VAR_DESC_LG_PKT_CAM_CN_TH_MASK,
-					PFCH_CFG_3_VAR_DESC_LG_PKT_CAM_CN_TH_DFLT);
+				PFCH_CFG_3_VAR_DESC_LG_PKT_CAM_CN_TH_DFLT);
 	qdma_reg_write(dev_hndl, EQDMA_PFCH_CFG_3_ADDR, reg_val);
 	reg_val = qdma_reg_read(dev_hndl, EQDMA_PFCH_CFG_3_ADDR);
 	qdma_log_info("%s: reg = 0x%08X val = 0x%08X\n",
-						__func__, EQDMA_C2H_PFCH_CFG_2_ADDR, reg_val);
+			__func__, EQDMA_C2H_PFCH_CFG_2_ADDR, reg_val);
 
-/*  EQDMA_PFCH_CFG_4_ADDR 0x1484   0x00800320
-#define EQDMA_PFCH_CFG_4_ADDR							0x1484
-#define PFCH_CFG_4_GLB_EVT_TIMER_TICK_MASK				GENMASK(31, 17)
-#define PFCH_CFG_4_DISABLE_GLB_EVT_TIMER_MASK			BIT(16)
-#define PFCH_CFG_4_EVT_TIMER_TICK_MASK					GENMASK(15, 1)
-#define PFCH_CFG_4_DISABLE_EVT_TIMER_MASK				BIT(0)
-*/
-#define EQDMA_PFCH_CFG_4_GLB_EVT_TIMER_TICK             64
-#define PFCH_CFG_4_DISABLE_GLB_EVT_TIMER_DFLT           0
-#define EQDMA_PFCH_CFG_4_EVT_TIMER_TICK                 400
-#define PFCH_CFG_4_DISABLE_EVT_TIMER_DFLT               0
 	reg_val =
 		FIELD_SET(PFCH_CFG_4_GLB_EVT_TIMER_TICK_MASK,
-					EQDMA_PFCH_CFG_4_GLB_EVT_TIMER_TICK) |
+				EQDMA_PFCH_CFG_4_GLB_EVT_TIMER_TICK) |
 		FIELD_SET(PFCH_CFG_4_DISABLE_GLB_EVT_TIMER_MASK,
-					PFCH_CFG_4_DISABLE_GLB_EVT_TIMER_DFLT) |
+				PFCH_CFG_4_DISABLE_GLB_EVT_TIMER_DFLT) |
 		FIELD_SET(PFCH_CFG_4_EVT_TIMER_TICK_MASK,
-					EQDMA_PFCH_CFG_4_EVT_TIMER_TICK) |
+				EQDMA_PFCH_CFG_4_EVT_TIMER_TICK) |
 		FIELD_SET(PFCH_CFG_4_DISABLE_EVT_TIMER_MASK,
-					PFCH_CFG_4_DISABLE_EVT_TIMER_DFLT);
+				PFCH_CFG_4_DISABLE_EVT_TIMER_DFLT);
 	qdma_reg_write(dev_hndl, EQDMA_PFCH_CFG_4_ADDR, reg_val);
 	reg_val = qdma_reg_read(dev_hndl, EQDMA_PFCH_CFG_4_ADDR);
 	qdma_log_info("%s: reg = 0x%08X val = 0x%08X\n",
-						__func__, EQDMA_PFCH_CFG_4_ADDR, reg_val);
+			__func__, EQDMA_PFCH_CFG_4_ADDR, reg_val);
 
-/**************** SET_2 *******************/
-/*
-#define EQDMA_C2H_CRDT_COAL_CFG_1_ADDR				0x1400
-#define C2H_CRDT_COAL_CFG_1_RSVD_1_MASK				GENMASK(31, 18)
-#define C2H_CRDT_COAL_CFG_1_PLD_FIFO_TH_MASK		GENMASK(17, 10)
-#define C2H_CRDT_COAL_CFG_1_TIMER_TH_MASK			GENMASK(9, 0)
-*/
-#define C2H_CRDT_COAL_CFG_1_RSVD_1_DFLT             0
-#define C2H_CRDT_COAL_CFG_1_PLD_FIFO_TH_DFLT        16
-#define EQDMA_C2H_CRDT_COAL_CFG_1_TIMER_TH          16 //64
 	reg_val =
 		FIELD_SET(C2H_CRDT_COAL_CFG_1_RSVD_1_MASK,
-					C2H_CRDT_COAL_CFG_1_RSVD_1_DFLT) |
+				C2H_CRDT_COAL_CFG_1_RSVD_1_DFLT) |
 		FIELD_SET(C2H_CRDT_COAL_CFG_1_PLD_FIFO_TH_MASK,
-					C2H_CRDT_COAL_CFG_1_PLD_FIFO_TH_DFLT) |
+				C2H_CRDT_COAL_CFG_1_PLD_FIFO_TH_DFLT) |
 		FIELD_SET(C2H_CRDT_COAL_CFG_1_TIMER_TH_MASK,
-					EQDMA_C2H_CRDT_COAL_CFG_1_TIMER_TH);
+				EQDMA_C2H_CRDT_COAL_CFG_1_TIMER_TH);
 	qdma_reg_write(dev_hndl, EQDMA_C2H_CRDT_COAL_CFG_1_ADDR, reg_val);
 	reg_val = qdma_reg_read(dev_hndl, EQDMA_C2H_CRDT_COAL_CFG_1_ADDR);
 	qdma_log_info("%s: reg = 0x%08X val = 0x%08X\n",
-						__func__, EQDMA_C2H_CRDT_COAL_CFG_1_ADDR, reg_val);
+			__func__, EQDMA_C2H_CRDT_COAL_CFG_1_ADDR, reg_val);
 
-/*  EQDMA_C2H_CRDT_COAL_CFG_2_ADDR 0x1404  0x00380060
-#define EQDMA_C2H_CRDT_COAL_CFG_2_ADDR				0x1404
-#define C2H_CRDT_COAL_CFG_2_RSVD_1_MASK				GENMASK(31, 24)
-#define C2H_CRDT_COAL_CFG_2_FIFO_TH_MASK			GENMASK(23, 16)
-#define C2H_CRDT_COAL_CFG_2_RESERVED1_MASK			GENMASK(15, 11)
-#define C2H_CRDT_COAL_CFG_2_NT_TH_MASK				GENMASK(10, 0)
-*/
-#define C2H_CRDT_COAL_CFG_2_RSVD_1_DFLT                   0
-#define EQDMA_C2H_CRDT_COAL_CFG_2_FIFO_TH	(EQDMA_PFTCH_CACHE_DEPTH - 8)
-#define C2H_CRDT_COAL_CFG_2_RESERVED1_DFLT                0
-#define EQDMA_C2H_CRDT_COAL_CFG_2_CRDT_TH	 			  96
 	reg_val =
 		FIELD_SET(C2H_CRDT_COAL_CFG_2_RSVD_1_MASK,
 					C2H_CRDT_COAL_CFG_2_RSVD_1_DFLT) |
 		FIELD_SET(C2H_CRDT_COAL_CFG_2_FIFO_TH_MASK,
-					EQDMA_C2H_CRDT_COAL_CFG_2_FIFO_TH) |
+					(pfch_cache_dpth - 8)) |
 		FIELD_SET(C2H_CRDT_COAL_CFG_2_RESERVED1_MASK,
 					C2H_CRDT_COAL_CFG_2_RESERVED1_DFLT) |
 		FIELD_SET(C2H_CRDT_COAL_CFG_2_NT_TH_MASK,
@@ -1958,21 +1933,9 @@ static void eqdma_set_perf_opt(void *dev_hndl)
 	qdma_reg_write(dev_hndl, EQDMA_C2H_CRDT_COAL_CFG_2_ADDR, reg_val);
 	reg_val = qdma_reg_read(dev_hndl, EQDMA_C2H_CRDT_COAL_CFG_2_ADDR);
 	qdma_log_info("%s: reg = 0x%08X val = 0x%08X\n",
-						__func__, EQDMA_C2H_CRDT_COAL_CFG_2_ADDR, reg_val);
+			__func__, EQDMA_C2H_CRDT_COAL_CFG_2_ADDR, reg_val);
 
 
-/**************** SET_3 *******************/
-/*  EQDMA_GLBL2_RRQ_PCIE_THROT_ADDR 0x15C  0x06045000
-#define EQDMA_GLBL2_RRQ_PCIE_THROT_ADDR				0x15C
-#define GLBL2_RRQ_PCIE_THROT_REQ_EN_MASK			BIT(31)
-#define GLBL2_RRQ_PCIE_THROT_REQ_MASK				GENMASK(30, 19)
-#define GLBL2_RRQ_PCIE_THROT_DAT_EN_MASK			BIT(18)
-#define GLBL2_RRQ_PCIE_THROT_DAT_MASK				GENMASK(17, 0)
-*/
-#define EQDMA_GLBL2_RRQ_PCIE_THROT_REQ_EN                  0
-#define GLBL2_RRQ_PCIE_THROT_REQ_DFLT                      192
-#define GLBL2_RRQ_PCIE_THROT_DAT_EN_DFLT                   1
-#define GLBL2_RRQ_PCIE_THROT_DAT_DFLT                      20480
 	reg_val =
 		FIELD_SET(GLBL2_RRQ_PCIE_THROT_REQ_EN_MASK,
 					EQDMA_GLBL2_RRQ_PCIE_THROT_REQ_EN) |
@@ -1985,19 +1948,8 @@ static void eqdma_set_perf_opt(void *dev_hndl)
 	qdma_reg_write(dev_hndl, EQDMA_GLBL2_RRQ_PCIE_THROT_ADDR, reg_val);
 	reg_val = qdma_reg_read(dev_hndl, EQDMA_GLBL2_RRQ_PCIE_THROT_ADDR);
 	qdma_log_info("%s: reg = 0x%08X val = 0x%08X\n",
-						__func__, EQDMA_GLBL2_RRQ_PCIE_THROT_ADDR, reg_val);
+			__func__, EQDMA_GLBL2_RRQ_PCIE_THROT_ADDR, reg_val);
 
-/*   EQDMA_GLBL2_RRQ_AXIMM_THROT_ADDR 0x160  0x0000
-#define EQDMA_GLBL2_RRQ_AXIMM_THROT_ADDR			0x160
-#define GLBL2_RRQ_AXIMM_THROT_REQ_EN_MASK			BIT(31)
-#define GLBL2_RRQ_AXIMM_THROT_REQ_MASK				GENMASK(30, 19)
-#define GLBL2_RRQ_AXIMM_THROT_DAT_EN_MASK			BIT(18)
-#define GLBL2_RRQ_AXIMM_THROT_DAT_MASK				GENMASK(17, 0)
-*/
-#define GLBL2_RRQ_AXIMM_THROT_REQ_EN_DFLT                  0
-#define GLBL2_RRQ_AXIMM_THROT_REQ_DFLT                     0
-#define GLBL2_RRQ_AXIMM_THROT_DAT_EN_DFLT                  0
-#define GLBL2_RRQ_AXIMM_THROT_DAT_DFLT                     0
 	reg_val =
 		FIELD_SET(GLBL2_RRQ_AXIMM_THROT_REQ_EN_MASK,
 					GLBL2_RRQ_AXIMM_THROT_REQ_EN_DFLT) |
@@ -2010,72 +1962,42 @@ static void eqdma_set_perf_opt(void *dev_hndl)
 	qdma_reg_write(dev_hndl, EQDMA_GLBL2_RRQ_AXIMM_THROT_ADDR, reg_val);
 	reg_val = qdma_reg_read(dev_hndl, EQDMA_GLBL2_RRQ_AXIMM_THROT_ADDR);
 	qdma_log_info("%s: reg = 0x%08X val = 0x%08X\n",
-						__func__, EQDMA_GLBL2_RRQ_AXIMM_THROT_ADDR, reg_val);
+			__func__, EQDMA_GLBL2_RRQ_AXIMM_THROT_ADDR, reg_val);
 
-/*   EQDMA_GLBL2_RRQ_BRG_THROT_ADDR 0x158   0x86045000
-#define EQDMA_GLBL2_RRQ_BRG_THROT_ADDR				0x158
-#define GLBL2_RRQ_BRG_THROT_REQ_EN_MASK				BIT(31)
-#define GLBL2_RRQ_BRG_THROT_REQ_MASK				GENMASK(30, 19)
-#define GLBL2_RRQ_BRG_THROT_DAT_EN_MASK				BIT(18)
-#define GLBL2_RRQ_BRG_THROT_DAT_MASK				GENMASK(17, 0)
-*/
-#define GLBL2_RRQ_BRG_THROT_REQ_EN_DFLT                    1
-#define GLBL2_RRQ_BRG_THROT_REQ_DFLT                       192
-#define GLBL2_RRQ_BRG_THROT_DAT_EN_DFLT                    1
 	reg_val = qdma_reg_read(dev_hndl, EQDMA_GLBL2_RRQ_PCIE_THROT_ADDR);
 	qdma_log_info("%s: BF reg = 0x%08X val = 0x%08X\n",
-						__func__, EQDMA_GLBL2_RRQ_PCIE_THROT_ADDR, reg_val);
+			__func__, EQDMA_GLBL2_RRQ_PCIE_THROT_ADDR, reg_val);
 	data_th = FIELD_GET(GLBL2_RRQ_PCIE_THROT_DAT_MASK, reg_val);
 
 	reg_val =
 		FIELD_SET(GLBL2_RRQ_BRG_THROT_REQ_EN_MASK,
-					GLBL2_RRQ_BRG_THROT_REQ_EN_DFLT) |
+				GLBL2_RRQ_BRG_THROT_REQ_EN_DFLT) |
 		FIELD_SET(GLBL2_RRQ_BRG_THROT_REQ_MASK,
-					GLBL2_RRQ_BRG_THROT_REQ_DFLT) |
+				GLBL2_RRQ_BRG_THROT_REQ_DFLT) |
 		FIELD_SET(GLBL2_RRQ_BRG_THROT_DAT_EN_MASK,
-					GLBL2_RRQ_BRG_THROT_DAT_EN_DFLT) |
+				GLBL2_RRQ_BRG_THROT_DAT_EN_DFLT) |
 		FIELD_SET(GLBL2_RRQ_BRG_THROT_DAT_MASK, data_th);
 	qdma_reg_write(dev_hndl, EQDMA_GLBL2_RRQ_BRG_THROT_ADDR, reg_val);
 	reg_val = qdma_reg_read(dev_hndl, EQDMA_GLBL2_RRQ_BRG_THROT_ADDR);
 	qdma_log_info("%s: reg = 0x%08X val = 0x%08X\n",
-						__func__, EQDMA_GLBL2_RRQ_BRG_THROT_ADDR, reg_val);
+			__func__, EQDMA_GLBL2_RRQ_BRG_THROT_ADDR, reg_val);
 
 /******************* SET_4 *************************/
-/*   EQDMA_H2C_REQ_THROT_PCIE_ADDR 0xE24   0x82044000
-#define EQDMA_H2C_REQ_THROT_PCIE_ADDR					0xE24
-#define H2C_REQ_THROT_PCIE_EN_REQ_MASK					BIT(31)
-#define H2C_REQ_THROT_PCIE_MASK							GENMASK(30, 19)
-#define H2C_REQ_THROT_PCIE_EN_DATA_MASK					BIT(18)
-#define H2C_REQ_THROT_PCIE_DATA_THRESH_MASK				GENMASK(17, 0)
-*/
-#define EQDMA_H2C_REQ_THROT_PCIE_EN_REQ                     1
-#define EQDMA_H2C_REQ_THROT_PCIE_REQ_TH                     192
-#define EQDMA_H2C_REQ_THROT_PCIE_EN_DATA                    1
-#define EQDMA_H2C_REQ_THROT_PCIE_DATA_TH                    24576
+
 	reg_val =
 		FIELD_SET(H2C_REQ_THROT_PCIE_EN_REQ_MASK,
-					EQDMA_H2C_REQ_THROT_PCIE_EN_REQ) |
-		FIELD_SET(H2C_REQ_THROT_PCIE_MASK, EQDMA_H2C_REQ_THROT_PCIE_REQ_TH) |
+				EQDMA_H2C_REQ_THROT_PCIE_EN_REQ) |
+		FIELD_SET(H2C_REQ_THROT_PCIE_MASK,
+				EQDMA_H2C_REQ_THROT_PCIE_REQ_TH) |
 		FIELD_SET(H2C_REQ_THROT_PCIE_EN_DATA_MASK,
-					EQDMA_H2C_REQ_THROT_PCIE_EN_DATA) |
+				EQDMA_H2C_REQ_THROT_PCIE_EN_DATA) |
 		FIELD_SET(H2C_REQ_THROT_PCIE_DATA_THRESH_MASK,
-					EQDMA_H2C_REQ_THROT_PCIE_DATA_TH);
+				EQDMA_H2C_REQ_THROT_PCIE_DATA_TH);
 	qdma_reg_write(dev_hndl, EQDMA_H2C_REQ_THROT_PCIE_ADDR, reg_val);
 	reg_val = qdma_reg_read(dev_hndl, EQDMA_H2C_REQ_THROT_PCIE_ADDR);
 	qdma_log_info("%s: reg = 0x%08X val = 0x%08X\n",
-						__func__, EQDMA_H2C_REQ_THROT_PCIE_ADDR, reg_val);
+			__func__, EQDMA_H2C_REQ_THROT_PCIE_ADDR, reg_val);
 
-/*   EQDMA_H2C_REQ_THROT_AXIMM_ADDR 0xE2C   0x82044000
-#define EQDMA_H2C_REQ_THROT_AXIMM_ADDR				0xE2C
-#define H2C_REQ_THROT_AXIMM_EN_REQ_MASK				BIT(31)
-#define H2C_REQ_THROT_AXIMM_MASK					GENMASK(30, 19)
-#define H2C_REQ_THROT_AXIMM_EN_DATA_MASK			BIT(18)
-#define H2C_REQ_THROT_AXIMM_DATA_THRESH_MASK		GENMASK(17, 0)
-*/
-#define EQDMA_H2C_REQ_THROT_AXIMM_EN_REQ            1
-#define EQDMA_H2C_REQ_THROT_AXIMM_REQ_TH            64
-#define EQDMA_H2C_REQ_THROT_AXIMM_EN_DATA           1
-#define EQDMA_H2C_REQ_THROT_AXIMM_DATA_TH           16384
 	reg_val =
 		FIELD_SET(H2C_REQ_THROT_AXIMM_EN_REQ_MASK,
 					EQDMA_H2C_REQ_THROT_AXIMM_EN_REQ) |
@@ -2088,26 +2010,18 @@ static void eqdma_set_perf_opt(void *dev_hndl)
 	qdma_reg_write(dev_hndl, EQDMA_H2C_REQ_THROT_AXIMM_ADDR, reg_val);
 	reg_val = qdma_reg_read(dev_hndl, EQDMA_H2C_REQ_THROT_AXIMM_ADDR);
 	qdma_log_info("%s: reg = 0x%08X val = 0x%08X\n",
-						__func__, EQDMA_H2C_REQ_THROT_AXIMM_ADDR, reg_val);
+			__func__, EQDMA_H2C_REQ_THROT_AXIMM_ADDR, reg_val);
 
-/*   EQDMA_H2C_MM_DATA_THROTTLE_ADDR 0x12EC     0x00015000
-#define EQDMA_H2C_MM_DATA_THROTTLE_ADDR			0x12EC
-#define H2C_MM_DATA_THROTTLE_RSVD_1_MASK		GENMASK(31, 17)
-#define H2C_MM_DATA_THROTTLE_DAT_EN_MASK		BIT(16)
-#define H2C_MM_DATA_THROTTLE_DAT_MASK			GENMASK(15, 0)
-*/
-#define H2C_MM_DATA_THROTTLE_RSVD_1_DFLT        0
-#define EQDMA_H2C_MM_DATA_TH_EN					1
-#define EQDMA_H2C_MM_DATA_TH					20480
 	reg_val =
 		FIELD_SET(H2C_MM_DATA_THROTTLE_RSVD_1_MASK,
-					H2C_MM_DATA_THROTTLE_RSVD_1_DFLT) |
-		FIELD_SET(H2C_MM_DATA_THROTTLE_DAT_EN_MASK, EQDMA_H2C_MM_DATA_TH_EN) |
+				H2C_MM_DATA_THROTTLE_RSVD_1_DFLT) |
+		FIELD_SET(H2C_MM_DATA_THROTTLE_DAT_EN_MASK,
+				EQDMA_H2C_MM_DATA_TH_EN) |
 		FIELD_SET(H2C_MM_DATA_THROTTLE_DAT_MASK, EQDMA_H2C_MM_DATA_TH);
 	qdma_reg_write(dev_hndl, EQDMA_H2C_MM_DATA_THROTTLE_ADDR, reg_val);
 	reg_val = qdma_reg_read(dev_hndl, EQDMA_H2C_MM_DATA_THROTTLE_ADDR);
 	qdma_log_info("%s: reg = 0x%08X val = 0x%08X\n",
-						__func__, EQDMA_H2C_MM_DATA_THROTTLE_ADDR, reg_val);
+			__func__, EQDMA_H2C_MM_DATA_THROTTLE_ADDR, reg_val);
 
 }
 
@@ -2540,7 +2454,8 @@ int eqdma_set_default_global_csr(void *dev_hndl)
 				FIELD_SET(GLBL_DSC_CFG_WB_ACC_INT_MASK,
 						DEFAULT_WRB_INT);
 
-			qdma_reg_write(dev_hndl, EQDMA_GLBL_DSC_CFG_ADDR, reg_val);
+			qdma_reg_write(dev_hndl, EQDMA_GLBL_DSC_CFG_ADDR,
+					reg_val);
 		}
 	}
 
@@ -2559,11 +2474,14 @@ int eqdma_set_default_global_csr(void *dev_hndl)
 				FIELD_SET(C2H_PFCH_CFG_1_EVT_QCNT_TH_MASK,
 						((cfg_val >> 2) - 4));
 
-			qdma_reg_write(dev_hndl, EQDMA_C2H_PFCH_CFG_1_ADDR, reg_val);
+			qdma_reg_write(dev_hndl, EQDMA_C2H_PFCH_CFG_1_ADDR,
+					reg_val);
 
-			reg_val = qdma_reg_read(dev_hndl, EQDMA_C2H_PFCH_CFG_2_ADDR);
+			reg_val = qdma_reg_read(dev_hndl,
+					EQDMA_C2H_PFCH_CFG_2_ADDR);
 			reg_val |= FIELD_SET(C2H_PFCH_CFG_2_FENCE_MASK, 1);
-			qdma_reg_write(dev_hndl, EQDMA_C2H_PFCH_CFG_2_ADDR, reg_val);
+			qdma_reg_write(dev_hndl, EQDMA_C2H_PFCH_CFG_2_ADDR,
+					reg_val);
 		}
 
 		/* C2H interrupt timer tick */
