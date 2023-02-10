@@ -2128,6 +2128,9 @@ TEST_P(qdma_neg_proc_without_start_test, h2c_c2h) {
 			FAIL() << "rte_eth_rx_queue_setup failed for port %d"<< tx.pf ;
 		}
 
+                ret = rte_pmd_qdma_dev_fp_ops_config(tx.pf);
+                if (ret < 0 )
+                        throw std::runtime_error("Failed fp_ops due to wrong port id\n");
 		// tx burst
 		struct rte_mempool *mp;
 		struct rte_mbuf *mb[NUM_RX_PKTS] = { NULL };
