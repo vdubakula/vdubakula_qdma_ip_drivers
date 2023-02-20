@@ -22,7 +22,6 @@
 #include "qdma_platform.h"
 #include "qdma_devops.h"
 
-#define UNUSED(param)	param
 
 #if defined(QDMA_DPDK_21_11) || defined(QDMA_DPDK_22_11)
 
@@ -273,34 +272,29 @@ void rte_pmd_qdma_dev_started(int port_id, bool status)
 int rte_pmd_qdma_dev_fp_ops_config(int port_id)
 {
 #if (defined(QDMA_DPDK_21_11) || defined(QDMA_DPDK_22_11))
+    struct rte_eth_dev *dev;
+    struct rte_eth_fp_ops *fpo = rte_eth_fp_ops;
 
-        struct rte_eth_dev *dev;
-        struct rte_eth_fp_ops *fpo = rte_eth_fp_ops;
+    if (port_id < 0 || port_id >= rte_eth_dev_count_avail()) {
+            PMD_DRV_LOG(ERR, "%s:%d Wrong port id %d\n", __func__, __LINE__,
+                    port_id);
+            return -ENOTSUP;
+    }
+    dev = &rte_eth_devices[port_id];
 
-        if (port_id < 0 || port_id >= rte_eth_dev_count_avail()) {
-                PMD_DRV_LOG(ERR, "%s:%d Wrong port id %d\n", __func__, __LINE__,
-                        port_id);
-                return -ENOTSUP;
-        }
-        dev = &rte_eth_devices[port_id];
+    fpo[port_id].rx_pkt_burst = dev->rx_pkt_burst;
+    fpo[port_id].tx_pkt_burst = dev->tx_pkt_burst;
+    fpo[port_id].rx_queue_count = dev->rx_queue_count;
+    fpo[port_id].rx_descriptor_status = dev->rx_descriptor_status;
+    fpo[port_id].tx_descriptor_status = dev->tx_descriptor_status;
+    fpo[port_id].rxq.data = dev->data->rx_queues;
+    fpo[port_id].txq.data = dev->data->tx_queues;
 
-        fpo[port_id].rx_pkt_burst = dev->rx_pkt_burst;
-        fpo[port_id].tx_pkt_burst = dev->tx_pkt_burst;
-        fpo[port_id].rx_queue_count = dev->rx_queue_count;
-        fpo[port_id].rx_descriptor_status = dev->rx_descriptor_status;
-        fpo[port_id].tx_descriptor_status = dev->tx_descriptor_status;
-        fpo[port_id].rxq.data = dev->data->rx_queues;
-        fpo[port_id].txq.data = dev->data->tx_queues;
-
-        return 0;
-
+    return 0;
 #endif
 
 #ifdef QDMA_DPDK_20_11
-
-        UNUSED(port_id);
+	RTE_SET_USED(port_id);
 	return 0;
-
 #endif
-
 }
