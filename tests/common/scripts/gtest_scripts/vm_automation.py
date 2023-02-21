@@ -157,12 +157,20 @@ else :#dpdk
         os.system("modprobe vfio-pci")
         for pf in range(0, total_pfs):
             os.system("../../usertools/dpdk-devbind.py -b vfio-pci " + pci_bus[pf] + ":" + pci_dev[pf] + "." + str(pf%nb_pf))
-            eal_options = eal_options + " -w " + pci_bus[pf] + ":" + pci_dev[pf] + "." + str(pf%nb_pf) + ",config_bar="+ str(config_bar)
+
+            if DPDK_VER == "20_11":
+		eal_options = eal_options + " -w " + pci_bus[pf] + ":" + pci_dev[pf] + "." + str(pf%nb_pf) + ",config_bar="+ str(config_bar)
+	    else:
+	        eal_options = eal_options + " -a " + pci_bus[pf] + ":" + pci_dev[pf] + "." + str(pf%nb_pf) + ",config_bar="+ str(config_bar)
 
     else:
         for pf in range(0, total_pfs):
             os.system("../../usertools/dpdk-devbind.py -b igb_uio " + pci_bus[pf] + ":" + pci_dev[pf] + "." + str(pf%nb_pf))
-            eal_options = eal_options + " -w " + pci_bus[pf] + ":" + pci_dev[pf] + "." + str(pf%nb_pf) + ",config_bar="+ str(config_bar)
+
+	    if DPDK_VER == "20_11":
+                eal_options = eal_options + " -w " + pci_bus[pf] + ":" + pci_dev[pf] + "." + str(pf%nb_pf) + ",config_bar="+ str(config_bar)
+	    else:
+	        eal_options = eal_options + " -a " + pci_bus[pf] + ":" + pci_dev[pf] + "." + str(pf%nb_pf) + ",config_bar="+ str(config_bar)
 
         for pf in range(0, total_pfs):
             #set num_vfs for each pf

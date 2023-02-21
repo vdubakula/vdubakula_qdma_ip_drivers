@@ -40,6 +40,7 @@ input_filename = "mm_datafile_1MB.bin"
 output_filename = "M001_port0_qcount1_size262144.bin"
 output_filename_vf = "M001_port1_qcount1_size262144.bin"
 test_mode = "vf_reset"
+DPDK_VER = "22.11"
 
 #-----------------------------------------------------
 #Path to /HEAD or /REL or /DEV branches
@@ -112,7 +113,7 @@ for vm_id in range(1, nb_vms + 1):
         vm_num_vfs[vm_id - 1] = vm_num_vfs[vm_id - 1] + int(vm_vfs[pf])
 
 pwd = os.getcwd()
-os.chdir(workspace_path + "dpdk-stable-20.11/examples/qdma_testapp/")
+os.chdir(workspace_path + "dpdk-stable-" + DPDK_VER + "/examples/qdma_testapp/")
 os.system("chmod +x *.sh")
 os.system("sh setup.sh")
 
@@ -234,9 +235,9 @@ try:
 			vm_sid[vm_id] = pxssh.pxssh(timeout = 5000)
 			vm_sid[vm_id].login ("127.0.0.1", "root", "dpdk", port = base_port + vm_id)
 			os.chdir(pwd)
-			os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "dpdk-stable-20.11" + "   root@127.0.0.1:/home/dpdk/")
+			os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "dpdk-stable-" + DPDK_VER + "   root@127.0.0.1:/home/dpdk/")
 
-			vm_sid[vm_id].sendline('cd /home/dpdk/dpdk-stable-20.11')
+			vm_sid[vm_id].sendline('cd /home/dpdk/dpdk-stable-' + DPDK_VER)
 			vm_sid[vm_id].prompt()
 			print vm_sid[vm_id].before
 			vm_sid[vm_id].sendline('rm -rf build')
@@ -259,7 +260,7 @@ try:
 				vm_sid[vm_id].sendline('bash ' + "echo 1 > /sys/module/vfio/parameters/enable_unsafe_noiommu_mode")
 				vm_sid[vm_id].sendline('bash ' + "./usertools/dpdk-devbind.py -b vfio-pci 00:04.0")
 
-			vm_sid[vm_id].sendline('cd /home/dpdk/dpdk-stable-20.11/examples/qdma_testapp/')
+			vm_sid[vm_id].sendline('cd /home/dpdk/dpdk-stable-' + DPDK_VER + '/examples/qdma_testapp/')
 			vm_sid[vm_id].sendline('chmod +x *.sh')
 			vm_sid[vm_id].sendline('sh setup.sh')
 			vm_sid[vm_id].sendline('sh dpdk_bind_devices.sh')
@@ -276,15 +277,15 @@ try:
 			print vm_sid[vm_id].before
 
 			os.chdir(pwd)
-			os.chdir(workspace_path + "dpdk-stable-20.11/examples/qdma_testapp/")
+			os.chdir(workspace_path + "dpdk-stable-" + DPDK_VER + "/examples/qdma_testapp/")
 			os.system("mkdir -p vm" + str(vm_id) + "_logs/")
-			os.system("sshpass -p dpdk scp -r -P " + str(base_port + vm_id) + " root@127.0.0.1:/home/dpdk/dpdk-stable-20.11/examples/qdma_testapp/dpdk_error_log.txt ./vm" + str(vm_id) + "_logs/")
-			os.system("sshpass -p dpdk scp -r -P " + str(base_port + vm_id) + " root@127.0.0.1:/home/dpdk/dpdk-stable-20.11/examples/qdma_testapp/dpdk_reset_shutdown_vm_log.txt ./vm" + str(vm_id) + "_logs/")
+			os.system("sshpass -p dpdk scp -r -P " + str(base_port + vm_id) + " root@127.0.0.1:/home/dpdk/dpdk-stable-" + DPDK_VER + "/examples/qdma_testapp/dpdk_error_log.txt ./vm" + str(vm_id) + "_logs/")
+			os.system("sshpass -p dpdk scp -r -P " + str(base_port + vm_id) + " root@127.0.0.1:/home/dpdk/dpdk-stable-" + DPDK_VER + "/examples/qdma_testapp/dpdk_reset_shutdown_vm_log.txt ./vm" + str(vm_id) + "_logs/")
 			os.system("tar -cvzf vm" + str(vm_id) + "_logs.tar.gz vm" + str(vm_id) + "_logs/")
 			print ("echo --------------------------------------------vm_" + str(vm_id) + " done---------------------------------------------------------------")
 
     os.chdir(pwd)
-    os.chdir(workspace_path + "dpdk-stable-20.11/examples/qdma_testapp/")
+    os.chdir(workspace_path + "dpdk-stable-" + DPDK_VER + "/examples/qdma_testapp/")
     #child.send('\r')
     if (test_mode == "pf_reset"):
         print cmd_port_reset
