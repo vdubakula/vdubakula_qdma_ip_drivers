@@ -23,6 +23,7 @@ dpdk_bind_drv = "igb_uio"
 child = ""
 child1 = ""
 vm_cfg = []
+DPDK_VER="22.11"
 
 #------------------Notes(Pre-conditions)------------------
 #1. Atleast 30 Huge pages should be alocated in the host
@@ -107,7 +108,7 @@ if nb_vms > MAX_VMS:
     sys.exit(0)
 
 pwd = os.getcwd()
-os.chdir(workspace_path + "dpdk-stable-20.11/examples/qdma_testapp/")
+os.chdir(workspace_path + "dpdk-stable-" + DPDK_VER + "/examples/qdma_testapp/")
 dpdk_testapp_path = os.getcwd()
 os.system("chmod +x *.sh")
 os.system("sh setup_host.sh")
@@ -210,9 +211,9 @@ try:
         vm_sid[vm_id] = pxssh.pxssh(timeout = 5000)
         vm_sid[vm_id].login ("127.0.0.1", "root", "dpdk", port = base_port + vm_id)
         # vm_sid[vm_id].sendline ('rm -rf /home/dpdk/dpdk-stable-20.11/')
-        os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "dpdk-stable-20.11" + "   root@127.0.0.1:/home/dpdk/")
+        os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "dpdk-stable-" + DPDK_VER + "   root@127.0.0.1:/home/dpdk/")
 
-        vm_sid[vm_id].sendline ('cd /home/dpdk/dpdk-stable-20.11')
+        vm_sid[vm_id].sendline ('cd /home/dpdk/dpdk-stable-' + DPDK_VER)
         vm_sid[vm_id].prompt()
         print vm_sid[vm_id].before
         vm_sid[vm_id].sendline ('rm -rf build')
@@ -246,27 +247,27 @@ try:
             vm_sid[vm_id].sendline ('usertools/dpdk-devbind.py -b igb_uio 00:04.0')
         vm_sid[vm_id].prompt()
         print vm_sid[vm_id].before
-        vm_sid[vm_id].sendline ('cd /home/dpdk/dpdk-stable-20.11/perf_scripts')
+        vm_sid[vm_id].sendline ('cd /home/dpdk/dpdk-stable-' + DPDK_VER + '/perf_scripts')
         vm_sid[vm_id].sendline ('chmod -R 777 *')
         #vm_sid[vm_id].sendline ('./dpdk_tune.sh')
         vm_sid[vm_id].prompt()
         print vm_sid[vm_id].before
     os.chdir(pwd)
-    os.chdir(workspace_path + "dpdk-stable-20.11/perf_scripts/")
+    os.chdir(workspace_path + "dpdk-stable-" + DPDK_VER + "/perf_scripts/")
     #os.system("./dpdk_tune.sh")
     # Measurement for testpmd
     if (testpmd_enable == 1):
         print "Executing testpmd\n"
         os.chdir(pwd)
         if (testpmd_host_num_queues == 0):
-            os.chdir(workspace_path + "dpdk-stable-20.11/examples/qdma_testapp/")
+            os.chdir(workspace_path + "dpdk-stable-" + DPDK_VER + "/examples/qdma_testapp/")
             child = pexpect.spawn("./build/qdma_testapp -c 0xf -n 4")
             child.expect('xilinx-app>')
             print child.before
         else:
             cores = testpmd_host_num_queues + 1
             core_mask = hex((0xFFFFFFFF >> (31-cores)))
-            os.chdir(workspace_path + "dpdk-stable-20.11")
+            os.chdir(workspace_path + "dpdk-stable-" + DPDK_VER)
             child = pexpect.spawn("./build/app/dpdk-testpmd -c" + str(core_mask) +" -n4 -a "+ str(bbddf) + ",desc_prefetch=1,cmpt_desc_len=16 --iova-mode=pa -- -i --nb-cores=" + str(cores) + " --rxq=" + str(testpmd_host_num_queues) + " --txq=" + str(testpmd_host_num_queues) + " --rxd=2048 --txd=2048 --burst=64 --mbuf-size=4224 --total-num-mbufs=32768")
             child.expect('testpmd>')
             print child.before
@@ -282,7 +283,7 @@ try:
                 cores = queues + 1
                 core_mask = hex((0xFFFFFFFF >> (31-cores)))
                 print ("core_mask = " + str(core_mask))
-                vm_sid[vm_id].sendline ('cd /home/dpdk/dpdk-stable-20.11/')
+                vm_sid[vm_id].sendline ('cd /home/dpdk/dpdk-stable-' + DPDK_VER + '/')
                 vm_sid[vm_id].prompt()
                 print vm_sid[vm_id].before
                 testpmd_cmd = "./build/app/dpdk-testpmd -c" + str(core_mask) +" -n4 -a 00:04.0,desc_prefetch=1,cmpt_desc_len=16 --iova-mode=pa -- -i --nb-cores=" + str(cores) + " --rxq=" + str(queues) + " --txq=" + str(queues) + " --rxd=2048 --txd=2048 --burst=64 --mbuf-size=4224 --total-num-mbufs=131072"
@@ -297,7 +298,7 @@ try:
             os.chdir(pwd)
             perf_queues=(nb_vms * queues)
             vm_cfg.append(perf_queues)
-            os.chdir(workspace_path + "dpdk-stable-20.11/perf_scripts/testpmd/")
+            os.chdir(workspace_path + "dpdk-stable-" + DPDK_VER + "/perf_scripts/testpmd/")
             child1 = pexpect.spawn("./perf_lat.sh " + str(perf_queues) + " " + str(addr))
             child1.timeout = 2000
             child1.expect(pexpect.EOF)
@@ -310,19 +311,19 @@ try:
             idx = idx + 1
         vm_cfg_final = ",".join(str(item) for item in vm_cfg)
         os.chdir(pwd)
-        os.chdir(workspace_path + "dpdk-stable-20.11/perf_scripts/testpmd/")
+        os.chdir(workspace_path + "dpdk-stable-" + DPDK_VER + "/perf_scripts/testpmd/")
         print ("VM queue config = "+ str(vm_cfg_final))
         os.system("sh ./final_data_vm.sh " + str(vm_cfg_final))
         if (testpmd_host_num_queues == 0):
             os.chdir(pwd)
-            os.chdir(workspace_path + "dpdk-stable-20.11/examples/qdma_testapp/")
+            os.chdir(workspace_path + "dpdk-stable-" + DPDK_VER + "/examples/qdma_testapp/")
             child.send('\r')
             child.expect('xilinx-app>')
             child.sendcontrol('d')
             time.sleep(10)
         else:
             os.chdir(pwd)
-            os.chdir(workspace_path + "dpdk-stable-20.11/")
+            os.chdir(workspace_path + "dpdk-stable-" + DPDK_VER + "/")
             child.send('\r')
             child.expect ('testpmd>')
             print child.before
@@ -333,23 +334,23 @@ try:
         print "Executing pktgen\n"
         os.chdir(pwd)
         if (pktgen_host_num_queues == 0):
-            os.chdir(workspace_path + "dpdk-stable-20.11/examples/qdma_testapp/")
+            os.chdir(workspace_path + "dpdk-stable-" + DPDK_VER + "/examples/qdma_testapp/")
             child = pexpect.spawn("./build/qdma_testapp -c 0xf -n 4")
             child.expect('xilinx-app>')
             print child.before
         else:
-            os.chdir(workspace_path + "pktgen-20.12.0")
+            os.chdir(workspace_path + "pktgen-22.04.1")
             child = pexpect.spawn("./pktgen_perf_vm.sh "+ bbddf + " " + str(pktgen_host_num_queues) + " 16_1 ")
 
         os.chdir(pwd)
         for vm_id in range(1, nb_vms + 1):
             print("VM ID =" + str(vm_id))
             print vm_sid[vm_id].before
-            os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "pktgen-20.12.0" + "   root@127.0.0.1:/home/dpdk/")
-            vm_sid[vm_id].sendline ('cd /home/dpdk/pktgen-20.12.0')
+            os.system("sshpass -p dpdk rsync -avz  -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "pktgen-22.04.1" + "   root@127.0.0.1:/home/dpdk/")
+            vm_sid[vm_id].sendline ('cd /home/dpdk/pktgen-22.04.1')
             vm_sid[vm_id].prompt()
             print vm_sid[vm_id].before
-            vm_sid[vm_id].sendline ('export RTE_SDK=/home/dpdk/dpdk-stable-20.11')
+            vm_sid[vm_id].sendline ('export RTE_SDK=/home/dpdk/dpdk-stable-' + DPDK_VER )
             vm_sid[vm_id].prompt()
             print vm_sid[vm_id].before
             vm_sid[vm_id].sendline ('export RTE_TARGET=build')
@@ -366,7 +367,7 @@ try:
             vm_sid[vm_id].sendline (pktgen_cmd)
         time.sleep(30)
         os.chdir(pwd)
-        os.chdir(workspace_path + "pktgen-20.12.0")
+        os.chdir(workspace_path + "pktgen-22.04.1")
         os.system("chmod -R 777 *")
         child1 = pexpect.spawn("./perf_lat_pktgen.sh  " + str(addr))
         child1.timeout = 10000
@@ -377,19 +378,19 @@ try:
         time.sleep(50)
         for vm_id in range(1, nb_vms + 1):
             os.chdir(pwd)
-            os.chdir(workspace_path + "pktgen-20.12.0")
+            os.chdir(workspace_path + "pktgen-22.04.1")
             os.system("mkdir -p vm" + str(vm_id) + "_logs/")
-            os.system("sshpass -p dpdk scp -r -P " + str(base_port + vm_id) + " root@127.0.0.1:/home/dpdk/pktgen-20.12.0/test*.csv ./vm" + str(vm_id) + "_logs/")
+            os.system("sshpass -p dpdk scp -r -P " + str(base_port + vm_id) + " root@127.0.0.1:/home/dpdk/pktgen-22.04.1/test*.csv ./vm" + str(vm_id) + "_logs/")
             os.system("tar -cvzf vm" + str(vm_id) + "_logs.tar.gz vm" + str(vm_id) + "_logs/")
             vm_sid[vm_id].prompt()
             print vm_sid[vm_id].before
         os.chdir(pwd)
-        os.chdir(workspace_path + "pktgen-20.12.0")
+        os.chdir(workspace_path + "pktgen-22.04.1")
         if (pktgen_host_num_queues != 0):
             os.system("mv -f test_"+ str(pktgen_host_num_queues) + ".csv test_" + str(pktgen_host_num_queues) + "_" + str(vm_pktgen_queue) + ".csv")
         if (pktgen_host_num_queues == 0):
             os.chdir(pwd)
-            os.chdir(workspace_path + "dpdk-stable-20.11/examples/qdma_testapp/")
+            os.chdir(workspace_path + "dpdk-stable-" + DPDK_VER + "/examples/qdma_testapp/")
             child.send('\r')
             child.expect('xilinx-app>')
             child.sendcontrol('d')
