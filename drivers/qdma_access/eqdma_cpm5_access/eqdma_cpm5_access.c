@@ -1860,7 +1860,7 @@ static void eqdma_cpm5_set_perf_opt(void *dev_hndl)
 #define C2H_PFCH_CFG_2_VAR_DESC_NO_DROP_DFLT   0
 #define C2H_PFCH_CFG_2_LL_SZ_TH_DFLT           1024
 #define C2H_PFCH_CFG_2_VAR_DESC_NUM            15
-#define C2H_PFCH_CFG_2_NUM_DFLT                8
+#define C2H_PFCH_CFG_2_NUM_PFCH_DFLT           16
 	reg_val =
 		FIELD_SET(C2H_PFCH_CFG_2_FENCE_MASK,
 				C2H_PFCH_CFG_2_FENCE_EN) |
@@ -1873,7 +1873,7 @@ static void eqdma_cpm5_set_perf_opt(void *dev_hndl)
 		FIELD_SET(C2H_PFCH_CFG_2_VAR_DESC_NUM_MASK,
 				C2H_PFCH_CFG_2_VAR_DESC_NUM) |
 		FIELD_SET(C2H_PFCH_CFG_2_NUM_MASK,
-				C2H_PFCH_CFG_2_NUM_DFLT);
+				C2H_PFCH_CFG_2_NUM_PFCH_DFLT);
 	qdma_reg_write(dev_hndl, EQDMA_CPM5_C2H_PFCH_CFG_2_ADDR, reg_val);
 	reg_val = qdma_reg_read(dev_hndl, EQDMA_CPM5_C2H_PFCH_CFG_2_ADDR);
 	qdma_log_info("%s: reg = 0x%08X val = 0x%08X\n",
@@ -1914,8 +1914,9 @@ static void eqdma_cpm5_set_perf_opt(void *dev_hndl)
  */
 #define C2H_CRDT_COAL_CFG_2_RSVD_1_DFLT            0
 #define C2H_CRDT_COAL_CFG_2_RESERVED1_DFLT         0
+#define C2H_CRDT_COAL_CFG_2_CRDT_CNT_TH_DFLT       156
 	crdt_coal_fifo_th = pftch_cache_depth - 8;
-	crdt_coal_crdt_th = 2 * crdt_coal_fifo_th;
+	crdt_coal_crdt_th = C2H_CRDT_COAL_CFG_2_CRDT_CNT_TH_DFLT;
 	reg_val =
 		FIELD_SET(C2H_CRDT_COAL_CFG_2_RSVD_1_MASK,
 				C2H_CRDT_COAL_CFG_2_RSVD_1_DFLT) |
