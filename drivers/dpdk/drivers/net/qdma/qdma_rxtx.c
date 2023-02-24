@@ -1198,9 +1198,6 @@ uint16_t qdma_recv_pkts_st(void *rx_queue, struct rte_mbuf **rx_pkts,
 	if (unlikely(ret))
 		return 0;
 
-	if (process_cmpt_ring(rxq, nb_pkts) != 0)
-		return 0;
-
 	if (rxq->status != RTE_ETH_QUEUE_STATE_STARTED) {
 		PMD_DRV_LOG(DEBUG, "%s(): %d: rxq->status = %d\n",
 				__func__, __LINE__, rxq->status);
