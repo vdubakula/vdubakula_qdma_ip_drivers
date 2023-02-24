@@ -240,6 +240,17 @@ struct rte_device* rte_pmd_qdma_get_device(int port_id)
 	return dev;
 }
 
+bool rte_pmd_qdma_validate_dev(int port_id)
+{
+	struct rte_device *device = rte_pmd_qdma_get_device(port_id);
+
+	if (device && ((!strcmp(device->driver->name, "net_qdma")) ||
+	     (!strcmp(device->driver->name, "net_qdma_vf"))))
+		return true;
+	else
+		return false;
+}
+
 uint16_t rte_pmd_qdma_get_dev_id(int port_id)
 {
 	struct rte_pci_device *pci_dev;
@@ -298,3 +309,4 @@ int rte_pmd_qdma_dev_fp_ops_config(int port_id)
 	return 0;
 #endif
 }
+

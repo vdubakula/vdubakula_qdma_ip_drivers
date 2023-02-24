@@ -1,5 +1,5 @@
 diff --git a/app/test-pmd/cmdline.c b/app/test-pmd/cmdline.c
-index b32dc8b..7ffc5c0 100755
+index b32dc8b..21a08a5 100755
 --- a/app/test-pmd/cmdline.c
 +++ b/app/test-pmd/cmdline.c
 @@ -12550,6 +12550,151 @@ struct cmd_showport_macs_result {
@@ -159,62 +159,68 @@ index b32dc8b..7ffc5c0 100755
  	(cmdline_parse_inst_t *)&cmd_show_set_raw,
  	(cmdline_parse_inst_t *)&cmd_show_set_raw_all,
 +	(cmdline_parse_inst_t *)&cmd_show_descriptor_status,
-+	(cmdline_parse_inst_t *)&cmd_cleanup_tx_done,	
++	(cmdline_parse_inst_t *)&cmd_cleanup_tx_done,
  	(cmdline_parse_inst_t *)&cmd_config_tx_dynf_specific,
  	(cmdline_parse_inst_t *)&cmd_show_fec_mode,
  	(cmdline_parse_inst_t *)&cmd_set_fec_mode,
 diff --git a/app/test-pmd/config.c b/app/test-pmd/config.c
-index acccb6b..5938a56 100755
+index acccb6b..8dad5f5 100755
 --- a/app/test-pmd/config.c
 +++ b/app/test-pmd/config.c
-@@ -282,12 +282,20 @@
+@@ -17,7 +17,6 @@
+ #include <sys/stat.h>
+ #include <fcntl.h>
+ #include <unistd.h>
+-
+ #include <rte_common.h>
+ #include <rte_byteorder.h>
+ #include <rte_debug.h>
+@@ -282,12 +281,25 @@
  	uint64_t mpps_rx, mpps_tx, mbps_rx, mbps_tx;
  	struct rte_eth_stats stats;
  	static const char *nic_stats_border = "########################";
 -	int ret;
-+	int ret,i;
++	int ret, i;
  
  	if (port_id_is_invalid(port_id, ENABLED_WARN)) {
  		print_valid_ports();
  		return;
  	}
-+	struct rte_eth_dev *dev = &rte_eth_devices[port_id];
-+	for (i = 0; i < dev->data->nb_rx_queues; i++) {
-+		ret = rte_eth_rx_queue_count(port_id, i);
++
++	struct rte_eth_dev_info dev_info;
++	ret = eth_dev_info_get_print_err(port_id, &dev_info);
++	if (ret != 0)
++		return;
++	for (i = 0; i < dev_info.nb_rx_queues; i++) {
++	    ret = rte_eth_rx_queue_count(port_id, i);
 +		if (ret < 0)
-+			printf("Error %d retrieving Rx queue count for queue %d\n", ret, i);
-+		else
-+			printf("Rx queue: %d\t Num descriptors used = %d\n", i, ret);
-+	}	
++            printf("Error %d retrieving Rx queue count for queue %d\n", ret, i);
++        else
++             printf("Rx queue: %d\t Num descriptors used = %d\n", i, ret);
++    }
++
  	ret = rte_eth_stats_get(port_id, &stats);
  	if (ret != 0) {
  		fprintf(stderr,
 diff --git a/app/test-pmd/testpmd.c b/app/test-pmd/testpmd.c
-index 134d79a..c2afbb7 100755
+index 134d79a..50aa1d4 100755
 --- a/app/test-pmd/testpmd.c
 +++ b/app/test-pmd/testpmd.c
-@@ -74,6 +74,7 @@
- #endif
- 
- #include "testpmd.h"
-+#include <ethdev_driver.h>
- 
- #ifndef MAP_HUGETLB
- /* FreeBSD may not have MAP_HUGETLB (in fact, it probably doesn't) */
-@@ -3617,9 +3618,11 @@ struct extmem_param {
+@@ -3617,9 +3617,10 @@ struct extmem_param {
  void
  pmd_test_exit(void)
  {
 -	portid_t pt_id;
-+    struct rte_device *device;
+-	unsigned int i;
+-	int ret;
 +    int pt_id;
- 	unsigned int i;
- 	int ret;
++    unsigned int i;
++    int ret;
 +    uint32_t nb_ports;
  
  	if (test_done == 0)
  		stop_packet_forwarding();
-@@ -3635,15 +3638,20 @@ struct extmem_param {
+@@ -3635,15 +3636,18 @@ struct extmem_param {
  #endif
  	if (ports != NULL) {
  		no_link_check = 1;
@@ -230,10 +236,21 @@ index 134d79a..c2afbb7 100755
  			printf("\nShutting down port %d...\n", pt_id);
  			fflush(stdout);
  			close_port(pt_id);
-+            device = rte_eth_devices[pt_id].device;
-+            if (device && (!strcmp(device->driver->name, "net_qdma") ||
-+                            !strcmp(device->driver->name, "net_qdma_vf")))
-+                    detach_port_device(pt_id);
++            if(rte_pmd_qdma_validate_dev(pt_id))
++                detach_port_device(pt_id);
  		}
  	}
  
+diff --git a/app/test-pmd/testpmd.h b/app/test-pmd/testpmd.h
+index 7d24d25..adc6def 100755
+--- a/app/test-pmd/testpmd.h
++++ b/app/test-pmd/testpmd.h
+@@ -26,6 +26,8 @@
+ #include <jansson.h>
+ #endif
+ 
++#include "../../drivers/net/qdma/rte_pmd_qdma.h"
++
+ #define RTE_PORT_ALL            (~(portid_t)0x0)
+ 
+ #define RTE_PORT_STOPPED        (uint16_t)0

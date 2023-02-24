@@ -841,6 +841,16 @@ struct rte_pci_device* rte_pmd_qdma_eth_dev_to_pci(int port_id);
  ******************************************************************************/
 struct rte_device* rte_pmd_qdma_get_device(int port_id);
 
+/*****************************************************************************/
+/**
+ * DPDK PMD compatibility function to validate rte device
+ *
+ * @param   port_id Port ID
+ * @return  bool true/false
+ *
+ ******************************************************************************/
+bool rte_pmd_qdma_validate_dev(int port_id);
+
 #ifdef __cplusplus
 }
 #endif
