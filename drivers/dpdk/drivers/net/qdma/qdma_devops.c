@@ -379,9 +379,6 @@ int qdma_dev_rx_queue_setup(struct rte_eth_dev *dev, uint16_t rx_queue_id,
 	rxq->dev = dev;
 	rxq->st_mode = qdma_dev->q_info[rx_queue_id].queue_mode;
 
-	/* Override rx_pkt_burst with direct call based on st or mm mode */
-	dev->rx_pkt_burst = (rxq->st_mode) ? &qdma_recv_pkts_st : &qdma_recv_pkts_mm;
-
 	rxq->nb_rx_desc = (nb_rx_desc + 1);
 	/* <= 2018.2 IP
 	 * double the cmpl ring size to avoid run out of cmpl entry while
@@ -754,9 +751,6 @@ int qdma_dev_tx_queue_setup(struct rte_eth_dev *dev, uint16_t tx_queue_id,
 	}
 
 	txq->st_mode = qdma_dev->q_info[tx_queue_id].queue_mode;
-
-	/* Override tx_pkt_burst with direct call based on st or mm mode */
-	dev->tx_pkt_burst = (txq->st_mode) ? &qdma_xmit_pkts_st : &qdma_xmit_pkts_mm;
 
 	txq->en_bypass = (qdma_dev->q_info[tx_queue_id].tx_bypass_mode) ? 1 : 0;
 	txq->bypass_desc_sz = qdma_dev->q_info[tx_queue_id].tx_bypass_desc_sz;
