@@ -1132,8 +1132,8 @@ static int rearm_c2h_ring(struct qdma_rx_queue *rxq, uint16_t num_desc)
 }
 
 /* Receive API for Streaming mode */
-uint16_t qdma_recv_pkts_st(struct qdma_rx_queue *rxq, struct rte_mbuf **rx_pkts,
-				uint16_t nb_pkts)
+uint16_t qdma_recv_pkts_st(struct qdma_rx_queue *rxq,
+		struct rte_mbuf **rx_pkts, uint16_t nb_pkts)
 {
 	uint16_t count_pkts;
 	struct wb_status *wb_status;
@@ -1234,8 +1234,8 @@ uint16_t qdma_recv_pkts_st(struct qdma_rx_queue *rxq, struct rte_mbuf **rx_pkts,
 }
 
 /* Receive API for Memory mapped mode */
-uint16_t qdma_recv_pkts_mm(struct qdma_rx_queue *rxq, struct rte_mbuf **rx_pkts,
-			uint16_t nb_pkts)
+uint16_t qdma_recv_pkts_mm(struct qdma_rx_queue *rxq,
+		struct rte_mbuf **rx_pkts, uint16_t nb_pkts)
 {
 	struct rte_mbuf *mb;
 	uint32_t count, id;
@@ -1432,8 +1432,8 @@ qdma_dev_tx_descriptor_status(void *tx_queue, uint16_t offset)
 }
 
 /* Transmit API for Streaming mode */
-uint16_t qdma_xmit_pkts_st(struct qdma_tx_queue *txq, struct rte_mbuf **tx_pkts,
-			uint16_t nb_pkts)
+uint16_t qdma_xmit_pkts_st(struct qdma_tx_queue *txq,
+		struct rte_mbuf **tx_pkts, uint16_t nb_pkts)
 {
 	struct rte_mbuf *mb;
 	uint64_t pkt_len = 0;
@@ -1532,8 +1532,8 @@ uint16_t qdma_xmit_pkts_st(struct qdma_tx_queue *txq, struct rte_mbuf **tx_pkts,
 }
 
 /* Transmit API for Memory mapped mode */
-uint16_t qdma_xmit_pkts_mm(struct qdma_tx_queue *txq, struct rte_mbuf **tx_pkts,
-			uint16_t nb_pkts)
+uint16_t qdma_xmit_pkts_mm(struct qdma_tx_queue *txq,
+		struct rte_mbuf **tx_pkts, uint16_t nb_pkts)
 {
 	struct rte_mbuf *mb;
 	uint32_t count, id;

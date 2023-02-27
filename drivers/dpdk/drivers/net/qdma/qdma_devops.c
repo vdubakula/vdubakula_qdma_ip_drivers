@@ -234,9 +234,9 @@ int qdma_dev_notify_qdel(struct rte_eth_dev *dev, uint32_t qidx_hw,
 uint8_t qmda_get_desc_sz_idx(enum rte_pmd_qdma_bypass_desc_len size)
 {
 	return ((size == RTE_PMD_QDMA_BYPASS_DESC_LEN_64B) ? 3 :
-                (size == RTE_PMD_QDMA_BYPASS_DESC_LEN_32B) ? 2 :
-                (size == RTE_PMD_QDMA_BYPASS_DESC_LEN_16B) ? 1 :
-                /* (size == RTE_PMD_QDMA_BYPASS_DESC_LEN_8B) */0);
+			(size == RTE_PMD_QDMA_BYPASS_DESC_LEN_32B) ? 2 :
+			(size == RTE_PMD_QDMA_BYPASS_DESC_LEN_16B) ? 1 :
+			/* (size == RTE_PMD_QDMA_BYPASS_DESC_LEN_8B) */0);
 }
 
 static inline int

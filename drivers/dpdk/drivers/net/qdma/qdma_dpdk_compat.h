@@ -63,7 +63,7 @@ void qdma_dev_tx_queue_release(struct rte_eth_dev *dev, uint16_t queue_id);
 
 #include <rte_ethdev_pci.h>
 #include <rte_ethdev_driver.h>
-#define pci_dev_intr_handle &pci_dev->intr_handle
+#define pci_dev_intr_handle (&pci_dev->intr_handle)
 #define	qdma_dev_rx_queue_count qdma_dev_rx_queue_count_v2011
 #define qdma_dev_rx_queue_release qdma_dev_rx_queue_release_v2011
 #define qdma_dev_tx_queue_release qdma_dev_tx_queue_release_v2011

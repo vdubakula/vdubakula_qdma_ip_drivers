@@ -282,7 +282,7 @@ struct queue_info {
 	int8_t		trigger_mode;
 };
 
-struct __attribute__((aligned(RTE_CACHE_LINE_SIZE),packed)) qdma_pci_dev {
+struct qdma_pci_dev {
 	void *bar_addr[QDMA_NUM_BARS]; /* memory mapped I/O addr for BARs */
 	int config_bar_idx;
 	int user_bar_idx;
