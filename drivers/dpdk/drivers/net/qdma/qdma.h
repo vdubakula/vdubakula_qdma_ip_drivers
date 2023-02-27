@@ -376,7 +376,7 @@ int qdma_identify_bars(struct rte_eth_dev *dev);
 int qdma_get_hw_version(struct rte_eth_dev *dev);
 
 /* implemented in rxtx.c */
-uint16_t qdma_recv_pkts_st(struct qdma_rx_queue *rxq, struct rte_mbuf **rx_pkts
+uint16_t qdma_recv_pkts_st(struct qdma_rx_queue *rxq, struct rte_mbuf **rx_pkts,
 				uint16_t nb_pkts);
 uint16_t qdma_recv_pkts_mm(struct qdma_rx_queue *rxq, struct rte_mbuf **rx_pkts,
 				uint16_t nb_pkts);
