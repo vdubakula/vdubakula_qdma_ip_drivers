@@ -43,9 +43,6 @@ do
         fi
 done
 
-echo $cpm5_flag
-exit
-
 #variables
 mode=mm
 dir=bi
