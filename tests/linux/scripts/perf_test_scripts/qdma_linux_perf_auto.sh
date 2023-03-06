@@ -41,6 +41,9 @@ do
         if [[ ${qtest_args[$i]} == "CPM5" ]]; then
                 cpm5_flag=1
         fi
+        if [[ ${vf_perf} == "CPM5" ]]; then
+                vf_perf=0
+        fi
 done
 
 #variables

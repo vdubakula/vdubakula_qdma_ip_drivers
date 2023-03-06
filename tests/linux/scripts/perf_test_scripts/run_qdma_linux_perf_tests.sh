@@ -62,7 +62,6 @@ do
                 cpm5_flag=CPM5
         fi
         if [[ ${vf_perf} == "CPM5" ]]; then
-		echo ${vf_perf}
                 vf_perf=0
         fi
 done
