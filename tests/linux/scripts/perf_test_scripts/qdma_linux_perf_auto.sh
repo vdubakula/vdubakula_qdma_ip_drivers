@@ -33,6 +33,19 @@ if [ ! -z $8 ]; then
 	vf_perf=$8
 fi;
 
+cpm5_flag=0
+qtest_args=( "$@" )
+
+for (( i=0; i<${#qtest_args[@]}; i++ ));
+do
+        if [[ ${qtest_args[$i]} == "CPM5" ]]; then
+                cpm5_flag=1
+        fi
+done
+
+echo $cpm5_flag
+exit
+
 #variables
 mode=mm
 dir=bi
@@ -77,14 +90,14 @@ while IFS= read -r line; do
 		#skip comment lines
 		continue
 	fi
-	
+
 	cmd_arr=($(awk -F# '{$1=$1} 1' <<<"${line}"))
 	line=${cmd_arr[0]} #strip comments in line
 
 	cmd_arr=($(awk -F= '{$1=$1} 1' <<<"${line}"))
 	cmd=${cmd_arr[0]} #extract variable
 	val=${cmd_arr[1]} #extract value
-	
+
 	case $cmd in
 		mode)
 			mode=${val}
@@ -211,7 +224,7 @@ do
 		fi
 	fi;
 	i=$(( i+1 ))
-	
+
 	if [[ ( $dir == bi ) || ( $dir == h2c ) ]]; then
 		echo "Running ${cfg_name}-h2c for io_size ${io_sz}"
 		cfg_file_name=h2c_${cfg_name}_${io_sz}
@@ -325,12 +338,12 @@ do
 done
 
 if [ $mode == st ]; then
-	if [ $vf_perf -eq 0 ]; then
+	if [ $cmp5_flag != 1 && $vf_perf -eq 0 ]; then
 	    dma-ctl qdma${pci_bbddf} reg write bar 2 0x08 0x80000000
 	fi;
 	echo ""
 else
-	if [ $vf_perf -eq 0 ]; then
+	if [ $cpm5_flag != 1 &&  $vf_perf -eq 0 ]; then
 	    dma-ctl qdma${pci_bbddf} reg write bar 2 0xA0 0x00000001
 	fi;
 fi;

@@ -53,6 +53,20 @@ if [ ! -z ${10} ]; then
 	vf_perf=${10}
 fi;
 
+cpm5_flag=""
+ptest_args=( "$@" )
+
+for (( i=0; i<${#ptest_args[@]}; i++ ));
+do
+        if [[ ${ptest_args[$i]} == "CPM5" ]]; then
+                cpm5_flag=CPM5
+        fi
+        if [[ ${vf_perf} == "CPM5" ]]; then
+		echo ${vf_perf}
+                vf_perf=0
+        fi
+done
+
 start=$SECONDS
 CONFIG_FILES=$PWD/${cfg_dir}/*
 poll_mode=0
@@ -85,7 +99,7 @@ run_tests()
 			if [[ $fname == DISABLED_* ]]; then
 				continue
 			fi
-			
+
 			if [ $vf_perf -eq 1 ]; then
 				echo -n "options qdma-vf mode=" > conf_file
 				for ((j = 0; j < ${num_pfs}; j++))
@@ -93,7 +107,7 @@ run_tests()
 					echo -n "0x${pci_bus}:${j}:1" >> conf_file
 					if [ $j != $((${num_pfs} - 1)) ]; then
 						echo -n "," >> conf_file
-					fi	
+					fi
 				done
 				echo -e "" >> conf_file
 				echo -n "options qdma-vf config_bar=" >> conf_file
@@ -102,7 +116,7 @@ run_tests()
 					echo -n "0x${pci_bus}:${j}:0" >> conf_file
 					if [ $j != $((${num_pfs} - 1)) ]; then
 						echo -n "," >> conf_file
-					fi	 
+					fi
 				done
 				rm -rf /etc/modprobe.d/qdma.conf
 				cp conf_file /etc/modprobe.d/qdma.conf
@@ -111,7 +125,7 @@ run_tests()
 				if [ $? -ne 0 ]; then
 					exit 1
 				fi
-				./qdma_linux_perf_auto.sh ${bbddf} $f qdma_perf_results/out_poll_${testname}/${itr} ${runtime} ${bidir_en} ${burst_size} ${marker_en} $vf_perf
+				./qdma_linux_perf_auto.sh ${bbddf} $f qdma_perf_results/out_poll_${testname}/${itr} ${runtime} ${bidir_en} ${burst_size} ${marker_en} $vf_perf ${cpm5_flag}
 				rmmod qdma-vf
 			else
 				echo -n "options qdma-pf mode=" > conf_file
@@ -120,7 +134,7 @@ run_tests()
 					echo -n "0x${pci_bus}:${j}:1" >> conf_file
 					if [ $j != $((${num_pfs} - 1)) ]; then
 						echo -n "," >> conf_file
-					fi	
+					fi
 				done
 				echo -e "" >> conf_file
 				echo -n "options qdma-pf config_bar=" >> conf_file
@@ -129,7 +143,7 @@ run_tests()
 					echo -n "0x${pci_bus}:${j}:0" >> conf_file
 					if [ $j != $((${num_pfs} - 1)) ]; then
 						echo -n "," >> conf_file
-					fi	 
+					fi
 				done
 				echo -e "" >> conf_file
 				echo -n "options qdma-pf master_pf=0x${pci_bus}:0" >> conf_file
@@ -140,17 +154,17 @@ run_tests()
 				if [ $? -ne 0 ]; then
 					exit 1
 				fi
-				./qdma_linux_perf_auto.sh ${bbddf} $f qdma_perf_results/out_poll_${testname}/${itr} ${runtime} ${bidir_en} ${burst_size} ${marker_en}
+				./qdma_linux_perf_auto.sh ${bbddf} $f qdma_perf_results/out_poll_${testname}/${itr} ${runtime} ${bidir_en} ${burst_size} ${marker_en} ${cpm5_flag}
 				rmmod qdma-pf
 			fi
 		done
 		chmod -R 0777 qdma_perf_results/out_poll_${testname}
 		echo "parsing performance results..."
-		python qdma_linux_gen_perf_result.py -d ${PWD}/qdma_perf_results/out_poll_${testname}/${itr}/dmaperf_results/unidir -t ${PWD}/templates -o ${testname} 
+		python qdma_linux_gen_perf_result.py -d ${PWD}/qdma_perf_results/out_poll_${testname}/${itr}/dmaperf_results/unidir -t ${PWD}/templates -o ${testname}
 		python qdma_linux_gen_perf_result.py -d ${PWD}/qdma_perf_results/out_poll_${testname}/${itr}/dmaperf_results/bidir -t ${PWD}/templates -o ${testname}
-	
+
 	fi;
-	
+
 	if [ ${intr_mode} -eq 1 ]; then
 		echo "=========================================================================="
 		echo "Intr Mode"
@@ -162,7 +176,7 @@ run_tests()
 			if [[ $fname == DISABLED_* ]]; then
 				continue
 			fi
-						
+
 			if [ $vf_perf -eq 1 ]; then
 				echo -n "options qdma-vf mode=" > conf_file
 				for ((j = 0; j < ${num_pfs}; j++))
@@ -170,7 +184,7 @@ run_tests()
 					echo -n "0x${pci_bus}:${j}:2" >> conf_file
 					if [ $j != $((${num_pfs} - 1)) ]; then
 						echo -n "," >> conf_file
-					fi	
+					fi
 				done
 				echo -e "" >> conf_file
 				echo -n "options qdma-vf config_bar=" >> conf_file
@@ -179,7 +193,7 @@ run_tests()
 					echo -n "0x${pci_bus}:${j}:0" >> conf_file
 					if [ $j != $((${num_pfs} - 1)) ]; then
 						echo -n "," >> conf_file
-					fi	 
+					fi
 				done
 				rm -rf /etc/modprobe.d/qdma.conf
 				cp conf_file /etc/modprobe.d/qdma.conf
@@ -188,7 +202,7 @@ run_tests()
 				if [ $? -ne 0 ]; then
 					exit 1
 				fi
-				./qdma_linux_perf_auto.sh ${bbddf} $f qdma_perf_results/out_intr_${testname}/${itr} ${runtime} ${bidir_en} ${burst_size} ${marker_en} $vf_perf
+				./qdma_linux_perf_auto.sh ${bbddf} $f qdma_perf_results/out_intr_${testname}/${itr} ${runtime} ${bidir_en} ${burst_size} ${marker_en} $vf_perf ${cpm5_flag}
 				rmmod qdma-vf
 			else
 				echo -n "options qdma-pf mode=" > conf_file
@@ -197,7 +211,7 @@ run_tests()
 					echo -n "0x${pci_bus}:${j}:2" >> conf_file
 					if [ $j != $((${num_pfs} - 1)) ]; then
 						echo -n "," >> conf_file
-					fi	
+					fi
 				done
 				echo -e "" >> conf_file
 				echo -n "options qdma-pf config_bar=" >> conf_file
@@ -206,7 +220,7 @@ run_tests()
 					echo -n "0x${pci_bus}:${j}:0" >> conf_file
 					if [ $j != $((${num_pfs} - 1)) ]; then
 						echo -n "," >> conf_file
-					fi	 
+					fi
 				done
 				echo -e "" >> conf_file
 				echo -n "options qdma-pf master_pf=0x${pci_bus}:0" >> conf_file
@@ -217,17 +231,17 @@ run_tests()
 				if [ $? -ne 0 ]; then
 					exit 1
 				fi
-				./qdma_linux_perf_auto.sh ${bbddf} $f qdma_perf_results/out_intr_${testname}/${itr} ${runtime} ${bidir_en} ${burst_size} ${marker_en}
+				./qdma_linux_perf_auto.sh ${bbddf} $f qdma_perf_results/out_intr_${testname}/${itr} ${runtime} ${bidir_en} ${burst_size} ${marker_en} ${cpm5_flag}
 				rmmod qdma-pf
 			fi
-			
+
 		done
 		chmod -R 0777 qdma_perf_results/out_intr_${testname}
 		echo "parsing performance results..."
 		python qdma_linux_gen_perf_result.py -d ${PWD}/qdma_perf_results/out_intr_${testname}/${itr}/dmaperf_results/unidir -t ${PWD}/templates -o ${testname}
 		python qdma_linux_gen_perf_result.py -d ${PWD}/qdma_perf_results/out_intr_${testname}/${itr}/dmaperf_results/bidir -t ${PWD}/templates -o ${testname}
 	fi;
-	
+
 	if [ ${intr_aggr} -eq 1 ]; then
 		echo "=========================================================================="
 		echo "Aggr Mode"
@@ -239,7 +253,7 @@ run_tests()
 			if [[ $fname == DISABLED_* ]]; then
 				continue
 			fi
-			
+
 			if [ $vf_perf -eq 1 ]; then
 				echo -n "options qdma-vf mode=" > conf_file
 				for ((j = 0; j < ${num_pfs}; j++))
@@ -247,7 +261,7 @@ run_tests()
 					echo -n "0x${pci_bus}:${j}:3" >> conf_file
 					if [ $j != $((${num_pfs} - 1)) ]; then
 						echo -n "," >> conf_file
-					fi	
+					fi
 				done
 				echo -e "" >> conf_file
 				echo -n "options qdma-vf config_bar=" >> conf_file
@@ -256,7 +270,7 @@ run_tests()
 					echo -n "0x${pci_bus}:${j}:0" >> conf_file
 					if [ $j != $((${num_pfs} - 1)) ]; then
 						echo -n "," >> conf_file
-					fi	 
+					fi
 				done
 				rm -rf /etc/modprobe.d/qdma.conf
 				cp conf_file /etc/modprobe.d/qdma.conf
@@ -265,7 +279,7 @@ run_tests()
 				if [ $? -ne 0 ]; then
 					exit 1
 				fi
-				./qdma_linux_perf_auto.sh ${bbddf} $f qdma_perf_results/out_intr_aggr_${testname}/${itr} ${runtime} ${bidir_en} ${burst_size} ${marker_en} $vf_perf
+				./qdma_linux_perf_auto.sh ${bbddf} $f qdma_perf_results/out_intr_aggr_${testname}/${itr} ${runtime} ${bidir_en} ${burst_size} ${marker_en} $vf_perf ${cpm5_flag}
 				rmmod qdma-vf
 			else
 				echo -n "options qdma-pf mode=" > conf_file
@@ -274,7 +288,7 @@ run_tests()
 					echo -n "0x${pci_bus}:${j}:3" >> conf_file
 					if [ $j != $((${num_pfs} - 1)) ]; then
 						echo -n "," >> conf_file
-					fi	
+					fi
 				done
 				echo -e "" >> conf_file
 				echo -n "options qdma-pf config_bar=" >> conf_file
@@ -283,7 +297,7 @@ run_tests()
 					echo -n "0x${pci_bus}:${j}:0" >> conf_file
 					if [ $j != $((${num_pfs} - 1)) ]; then
 						echo -n "," >> conf_file
-					fi	 
+					fi
 				done
 				echo -e "" >> conf_file
 				echo -n "options qdma-pf master_pf=0x${pci_bus}:0" >> conf_file
@@ -294,7 +308,7 @@ run_tests()
 				if [ $? -ne 0 ]; then
 					exit 1
 				fi
-				./qdma_linux_perf_auto.sh ${bbddf} $f qdma_perf_results/out_intr_aggr_${testname}/${itr} ${runtime} ${bidir_en} ${burst_size} ${marker_en}
+				./qdma_linux_perf_auto.sh ${bbddf} $f qdma_perf_results/out_intr_aggr_${testname}/${itr} ${runtime} ${bidir_en} ${burst_size} ${marker_en} ${cpm5_flag}
 				rmmod qdma-pf
 			fi
 		done
@@ -314,7 +328,7 @@ run_tests()
 			if [[ $fname == DISABLED_* ]]; then
 				continue
 			fi
-			
+
 			if [ $vf_perf -eq 1 ]; then
 				echo -n "options qdma-vf mode=" > conf_file
 				for ((j = 0; j < ${num_pfs}; j++))
@@ -322,7 +336,7 @@ run_tests()
 					echo -n "0x${pci_bus}:${j}:0" >> conf_file
 					if [ $j != $((${num_pfs} - 1)) ]; then
 						echo -n "," >> conf_file
-					fi	
+					fi
 				done
 				echo -e "" >> conf_file
 				echo -n "options qdma-vf config_bar=" >> conf_file
@@ -331,7 +345,7 @@ run_tests()
 					echo -n "0x${pci_bus}:${j}:0" >> conf_file
 					if [ $j != $((${num_pfs} - 1)) ]; then
 						echo -n "," >> conf_file
-					fi	 
+					fi
 				done
 				rm -rf /etc/modprobe.d/qdma.conf
 				cp conf_file /etc/modprobe.d/qdma.conf
@@ -340,7 +354,7 @@ run_tests()
 				if [ $? -ne 0 ]; then
 					exit 1
 				fi
-				./qdma_linux_perf_auto.sh ${bbddf} $f qdma_perf_results/out_auto_${testname}/${itr} ${runtime} ${bidir_en} ${burst_size} ${marker_en} $vf_perf
+				./qdma_linux_perf_auto.sh ${bbddf} $f qdma_perf_results/out_auto_${testname}/${itr} ${runtime} ${bidir_en} ${burst_size} ${marker_en} $vf_perf ${cpm5_flag}
 				rmmod qdma-vf
 			else
 				echo -n "options qdma-pf mode=" > conf_file
@@ -349,7 +363,7 @@ run_tests()
 					echo -n "0x${pci_bus}:${j}:0" >> conf_file
 					if [ $j != $((${num_pfs} - 1)) ]; then
 						echo -n "," >> conf_file
-					fi	
+					fi
 				done
 				echo -e "" >> conf_file
 				echo -n "options qdma-pf config_bar=" >> conf_file
@@ -358,7 +372,7 @@ run_tests()
 					echo -n "0x${pci_bus}:${j}:0" >> conf_file
 					if [ $j != $((${num_pfs} - 1)) ]; then
 						echo -n "," >> conf_file
-					fi	 
+					fi
 				done
 				echo -e "" >> conf_file
 				echo -n "options qdma-pf master_pf=0x${pci_bus}:0" >> conf_file
@@ -369,7 +383,7 @@ run_tests()
 				if [ $? -ne 0 ]; then
 					exit 1
 				fi
-				./qdma_linux_perf_auto.sh ${bbddf} $f qdma_perf_results/out_auto_${testname}/${itr} ${runtime} ${bidir_en} ${burst_size} ${marker_en}
+				./qdma_linux_perf_auto.sh ${bbddf} $f qdma_perf_results/out_auto_${testname}/${itr} ${runtime} ${bidir_en} ${burst_size} ${marker_en} ${cpm5_flag}
 				rmmod qdma-pf
 			fi
 		done

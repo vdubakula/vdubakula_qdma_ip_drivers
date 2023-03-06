@@ -78,7 +78,7 @@ def prog_board(mode) {
 
         echo "uploading bitstream..."
         dir('.') { script {
-            if ("$DEVICETYPE" == "VERSAL_H10") {
+            if ("$DEVICETYPE" == "CPM5") {
                 run_as_sudo('python3.6 util/common/scripts/pdu_auto_login.py -u ${PDU_IP} -a 5 -r ${PDU_RELAY}')
                 sleep 5
                 if ("${mode}" == "mm_bram") {
@@ -173,13 +173,13 @@ pipeline {
 	                    dir("${SCRIPT_PATH}") {
 	                        if ("$DEVICETYPE" == "VERSAL") {
                                 if ("$KEYHOLE_EN" == "1") {
-								    run_as_sudo('./run_qdma_linux_perf_tests.sh ${PCI_BBDDF} ${DRIVER_PATH} dmaperf_configs_mm_keyhole ${NODE_ADDRESS}_mm_bram ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE}')
+								    run_as_sudo('./run_qdma_linux_perf_tests.sh ${PCI_BBDDF} ${DRIVER_PATH} dmaperf_configs_mm_keyhole ${NODE_ADDRESS}_mm_bram ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE} ${DEVICETYPE}')
                                 }
                                 else {
-								    run_as_sudo('./run_qdma_linux_perf_tests.sh ${PCI_BBDDF} ${DRIVER_PATH} dmaperf_versal_configs_mm ${NODE_ADDRESS}_mm_bram ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE}')
+								    run_as_sudo('./run_qdma_linux_perf_tests.sh ${PCI_BBDDF} ${DRIVER_PATH} dmaperf_versal_configs_mm ${NODE_ADDRESS}_mm_bram ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE} ${DEVICETYPE}')
                                 }
 							} else {
-								run_as_sudo('./run_qdma_linux_perf_tests.sh ${PCI_BBDDF} ${DRIVER_PATH} dmaperf_configs_mm ${NODE_ADDRESS}_mm_bram ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE}')
+								run_as_sudo('./run_qdma_linux_perf_tests.sh ${PCI_BBDDF} ${DRIVER_PATH} dmaperf_configs_mm ${NODE_ADDRESS}_mm_bram ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE} ${DEVICETYPE}')
 							}
 	                    }
 	                    ignore_error({run_as_sudo('chmod 0777 ${SCRIPT_PATH}/qdma_perf_results/out_auto_${NODE_ADDRESS}_mm_bram/0/dmaperf_results/*.xlsx')})
@@ -207,13 +207,13 @@ pipeline {
 	                    dir("${SCRIPT_PATH}") {
 							if ("$DEVICETYPE" == "VERSAL") {
                                 if ("$KEYHOLE_EN" == "1") {
-								    run_as_sudo('./run_qdma_linux_perf_tests.sh ${PCI_BBDDF} ${DRIVER_PATH} dmaperf_configs_mm_keyhole ${NODE_ADDRESS}_mm_ddr ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE}')
+								    run_as_sudo('./run_qdma_linux_perf_tests.sh ${PCI_BBDDF} ${DRIVER_PATH} dmaperf_configs_mm_keyhole ${NODE_ADDRESS}_mm_ddr ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE} ${DEVICETYPE}')
                                 }
                                 else {
-                                    run_as_sudo('./run_qdma_linux_perf_tests.sh ${PCI_BBDDF} ${DRIVER_PATH} dmaperf_versal_configs_mm ${NODE_ADDRESS}_mm_ddr ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE}')
+                                    run_as_sudo('./run_qdma_linux_perf_tests.sh ${PCI_BBDDF} ${DRIVER_PATH} dmaperf_versal_configs_mm ${NODE_ADDRESS}_mm_ddr ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE} ${DEVICETYPE}')
                                 }
 							} else {
-                                run_as_sudo('./run_qdma_linux_perf_tests.sh ${PCI_BBDDF} ${DRIVER_PATH} dmaperf_configs_mm ${NODE_ADDRESS}_mm_ddr ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE}')
+                                run_as_sudo('./run_qdma_linux_perf_tests.sh ${PCI_BBDDF} ${DRIVER_PATH} dmaperf_configs_mm ${NODE_ADDRESS}_mm_ddr ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE} ${DEVICETYPE}')
 							}
 	                    }
 	                    ignore_error({run_as_sudo('chmod 0777 ${SCRIPT_PATH}/qdma_perf_results/out_auto_${NODE_ADDRESS}_mm_ddr/0/dmaperf_results/*.xlsx')})
@@ -240,11 +240,11 @@ pipeline {
 	                    echo "Running ST performance tests"
 	                    dir("${SCRIPT_PATH}") {
 							if ("$DEVICETYPE" == "VERSAL") {
-								run_as_sudo('./run_qdma_linux_perf_tests.sh ${PCI_BBDDF} ${DRIVER_PATH} dmaperf_versal_pfetch_configs_st ${NODE_ADDRESS}_st ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE} ${MARKER_EN}')
+								run_as_sudo('./run_qdma_linux_perf_tests.sh ${PCI_BBDDF} ${DRIVER_PATH} dmaperf_versal_pfetch_configs_st ${NODE_ADDRESS}_st ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE} ${MARKER_EN} ${DEVICETYPE}')
 							} else  if ("$DEVICETYPE" == "EQDMA") {
-								run_as_sudo('./run_qdma_linux_perf_tests.sh ${PCI_BBDDF} ${DRIVER_PATH} dmaperf_eqdma_pfetch_configs_st ${NODE_ADDRESS}_st ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE} ${MARKER_EN}')
+								run_as_sudo('./run_qdma_linux_perf_tests.sh ${PCI_BBDDF} ${DRIVER_PATH} dmaperf_eqdma_pfetch_configs_st ${NODE_ADDRESS}_st ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE} ${MARKER_EN} ${DEVICETYPE}')
 							} else {
-								run_as_sudo('./run_qdma_linux_perf_tests.sh ${PCI_BBDDF} ${DRIVER_PATH} dmaperf_pfetch_configs_st ${NODE_ADDRESS}_st ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE} ${MARKER_EN}')
+								run_as_sudo('./run_qdma_linux_perf_tests.sh ${PCI_BBDDF} ${DRIVER_PATH} dmaperf_pfetch_configs_st ${NODE_ADDRESS}_st ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE} ${MARKER_EN} ${DEVICETYPE}')
 							}	
 	                    }
 	                    ignore_error({run_as_sudo('chmod 0777 ${SCRIPT_PATH}/qdma_perf_results/out_auto_${NODE_ADDRESS}_st/0/dmaperf_results/*.xlsx')})
