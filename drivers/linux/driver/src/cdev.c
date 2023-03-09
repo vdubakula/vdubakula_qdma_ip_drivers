@@ -135,7 +135,7 @@ static int qdma_req_completed(struct qdma_request *req,
 		res2 = caio->res2;
 #ifdef RHEL_RELEASE_VERSION
 #if RHEL_RELEASE_VERSION(9, 0) < RHEL_RELEASE_CODE
-                caio->iocb->ki_complete(caio->iocb, res);
+		caio->iocb->ki_complete(caio->iocb, res);
 #endif
 #else
 #if KERNEL_VERSION(5, 16, 0) <= LINUX_VERSION_CODE
