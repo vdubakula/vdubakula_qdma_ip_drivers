@@ -105,8 +105,8 @@ static struct nla_policy xnl_policy[XNL_ATTR_MAX] = {
 };
 #endif
 #else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
+#if ((KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE) || (LINUX_VERSION_CODE > \
+		KERNEL_VERSION(5, 9, 0)))
 static struct nla_policy xnl_policy[XNL_ATTR_MAX] = {
 	[XNL_ATTR_GENMSG] =		{ .type = NLA_NUL_STRING },
 
@@ -221,343 +221,139 @@ static int xnl_en_st(struct sk_buff *skb2, struct genl_info *info);
 static int xnl_err_induce(struct sk_buff *skb2, struct genl_info *info);
 #endif
 
+#ifdef RHEL_RELEASE_VERSION
+#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
+#define GENL_OPS_POLICY
+#endif
+#else
+#if ((KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE) || (LINUX_VERSION_CODE > \
+		KERNEL_VERSION(5, 9, 0)))
+#define GENL_OPS_POLICY
+#endif
+#endif
+
+#ifdef GENL_OPS_POLICY
 static struct genl_ops xnl_ops[] = {
 	{
 		.cmd = XNL_CMD_DEV_LIST,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_dev_list,
 	},
 	{
 		.cmd = XNL_CMD_DEV_CAP,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_dev_version_capabilities,
 	},
 	{
 		.cmd = XNL_CMD_DEV_INFO,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_dev_info,
 	},
 	{
 		.cmd = XNL_CMD_DEV_STAT,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_dev_stat,
 	},
 	{
 		.cmd = XNL_CMD_DEV_STAT_CLEAR,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_dev_stat_clear,
 	},
 	{
 		.cmd = XNL_CMD_Q_LIST,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_q_list,
 	},
 	{
 		.cmd = XNL_CMD_Q_ADD,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_q_add,
 	},
 	{
 		.cmd = XNL_CMD_Q_START,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_q_start,
 	},
 	{
 		.cmd = XNL_CMD_Q_STOP,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_q_stop,
 	},
 	{
 		.cmd = XNL_CMD_Q_DEL,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_q_del,
 	},
 	{
 		.cmd = XNL_CMD_Q_DUMP,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_q_dump,
 	},
 	{
 		.cmd = XNL_CMD_Q_DESC,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_q_dump_desc,
 	},
 	{
 		.cmd = XNL_CMD_REG_DUMP,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_config_reg_dump,
 	},
 	{
 		.cmd = XNL_CMD_REG_INFO_READ,
-	#ifdef RHEL_RELEASE_VERSION
-	#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-	#endif
-	#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-	#endif
-	#endif
 		.doit = xnl_config_reg_info_dump,
 	},
 	{
 		.cmd = XNL_CMD_Q_CMPT,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_q_dump_cmpt,
 	},
 	{
 		.cmd = XNL_CMD_Q_UDD,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_q_read_udd,
 	},
 	{
 		.cmd = XNL_CMD_Q_RX_PKT,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_q_read_pkt,
 	},
 	{
 		.cmd = XNL_CMD_Q_CMPT_READ,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_q_cmpt_read,
 	},
 	{
 		.cmd = XNL_CMD_INTR_RING_DUMP,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_intr_ring_dump,
 	},
 	{
 		.cmd = XNL_CMD_REG_RD,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_register_read,
 	},
 	{
 		.cmd = XNL_CMD_REG_WRT,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_register_write,
 	},
 	{
 		.cmd = XNL_CMD_GLOBAL_CSR,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_get_global_csr,
 	},
 	{
 		.cmd = XNL_CMD_GET_Q_STATE,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_get_queue_state,
 	},
 
 #ifdef TANDEM_BOOT_SUPPORTED
 	{
 		.cmd = XNL_CMD_EN_ST,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_en_st,
 	},
 #endif
@@ -565,20 +361,121 @@ static struct genl_ops xnl_ops[] = {
 #ifdef ERR_DEBUG
 	{
 		.cmd = XNL_CMD_Q_ERR_INDUCE,
-#ifdef RHEL_RELEASE_VERSION
-#if RHEL_RELEASE_VERSION(8, 3) > RHEL_RELEASE_CODE
 		.policy = xnl_policy,
-#endif
-#else
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
-		.policy = xnl_policy,
-#endif
-#endif
 		.doit = xnl_err_induce,
 	}
 #endif
 };
+#else
+static struct genl_ops xnl_ops[] = {
+	{
+		.cmd = XNL_CMD_DEV_LIST,
+		.doit = xnl_dev_list,
+	},
+	{
+		.cmd = XNL_CMD_DEV_CAP,
+		.doit = xnl_dev_version_capabilities,
+	},
+	{
+		.cmd = XNL_CMD_DEV_INFO,
+		.doit = xnl_dev_info,
+	},
+	{
+		.cmd = XNL_CMD_DEV_STAT,
+		.doit = xnl_dev_stat,
+	},
+	{
+		.cmd = XNL_CMD_DEV_STAT_CLEAR,
+		.doit = xnl_dev_stat_clear,
+	},
+	{
+		.cmd = XNL_CMD_Q_LIST,
+		.doit = xnl_q_list,
+	},
+	{
+		.cmd = XNL_CMD_Q_ADD,
+		.doit = xnl_q_add,
+	},
+	{
+		.cmd = XNL_CMD_Q_START,
+		.doit = xnl_q_start,
+	},
+	{
+		.cmd = XNL_CMD_Q_STOP,
+		.doit = xnl_q_stop,
+	},
+	{
+		.cmd = XNL_CMD_Q_DEL,
+		.doit = xnl_q_del,
+	},
+	{
+		.cmd = XNL_CMD_Q_DUMP,
+		.doit = xnl_q_dump,
+	},
+	{
+		.cmd = XNL_CMD_Q_DESC,
+		.doit = xnl_q_dump_desc,
+	},
+	{
+		.cmd = XNL_CMD_REG_DUMP,
+		.doit = xnl_config_reg_dump,
+	},
+	{
+		.cmd = XNL_CMD_REG_INFO_READ,
+		.doit = xnl_config_reg_info_dump,
+	},
+	{
+		.cmd = XNL_CMD_Q_CMPT,
+		.doit = xnl_q_dump_cmpt,
+	},
+	{
+		.cmd = XNL_CMD_Q_UDD,
+		.doit = xnl_q_read_udd,
+	},
+	{
+		.cmd = XNL_CMD_Q_RX_PKT,
+		.doit = xnl_q_read_pkt,
+	},
+	{
+		.cmd = XNL_CMD_Q_CMPT_READ,
+		.doit = xnl_q_cmpt_read,
+	},
+	{
+		.cmd = XNL_CMD_INTR_RING_DUMP,
+		.doit = xnl_intr_ring_dump,
+	},
+	{
+		.cmd = XNL_CMD_REG_RD,
+		.doit = xnl_register_read,
+	},
+	{
+		.cmd = XNL_CMD_REG_WRT,
+		.doit = xnl_register_write,
+	},
+	{
+		.cmd = XNL_CMD_GLOBAL_CSR,
+		.doit = xnl_get_global_csr,
+	},
+	{
+		.cmd = XNL_CMD_GET_Q_STATE,
+		.doit = xnl_get_queue_state,
+	},
+
+#ifdef TANDEM_BOOT_SUPPORTED
+	{
+		.cmd = XNL_CMD_EN_ST,
+		.doit = xnl_en_st,
+	},
+#endif
+
+#ifdef ERR_DEBUG
+	{
+		.cmd = XNL_CMD_Q_ERR_INDUCE,
+		.doit = xnl_err_induce,
+	}
+#endif
+};
+#endif
 
 static struct genl_family xnl_family = {
 #ifdef GENL_ID_GENERATE
@@ -706,8 +603,8 @@ static int xnl_dump_attrs(struct genl_info *info)
 		struct nlattr *na = info->attrs[i];
 
 		if (na) {
-#if KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE || LINUX_VERSION_CODE > \
-		KERNEL_VERSION(5, 9, 0)
+#if ((KERNEL_VERSION(5, 2, 0) > LINUX_VERSION_CODE) || (LINUX_VERSION_CODE > \
+		KERNEL_VERSION(5, 9, 0)))
 			if (xnl_policy[i].type == NLA_NUL_STRING) {
 #else
 			if (1) {
