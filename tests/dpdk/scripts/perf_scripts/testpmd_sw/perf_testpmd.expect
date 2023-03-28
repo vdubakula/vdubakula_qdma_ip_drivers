@@ -1,0 +1,62 @@
+#!/usr/bin/expect
+
+set timeout -1
+
+set arg1 [lindex $argv 0]
+set arg2 [lindex $argv 1]
+set arg3 [lindex $argv 2]
+set arg4 [lindex $argv 3]
+set arg5 [lindex $argv 4]
+set arg6 [lindex $argv 5]
+set arg7 [lindex $argv 6]
+spawn /bin/bash ./clean.sh
+expect eof
+set queue $arg5;
+set pkt_sz_offset 64
+set usrbarctrl [expr { int($arg4 + 0x8) }]
+set usrbarpktsize [expr { int($arg4 + 0x90) }]
+puts "device $arg1 pfch = $arg3 desc_len = $arg2 addr: $arg4 NumQueues = $arg5 usrbarctnl = $usrbarctrl usrbarpktsize = $usrbarpktsize\n"
+while {$queue > 0 } {
+	set out_file [open "sw_port_stats$queue" a]
+	# set nb-cores to "online-cores - 1".
+	set cores [expr $arg6 - 1];
+	if { [expr $queue + 1] < $cores } {
+			set cores [expr $queue+ 1];
+	}
+
+	set n 64
+	puts "NumQueues : $queue NumbCores : $cores\n";
+	spawn ../../build/app/dpdk-testpmd -n 4 -a $arg1,desc_prefetch=$arg3,cmpt_desc_len=$arg2 --log-level=3 -l 7-31 -- --burst=256 -i --nb-cores=$cores --rxq=$queue --txq=$queue --forward-mode=io --rxd=2048 --txd=2048 --mbcache=512
+	set	ids(1) $spawn_id
+	expect -i $ids(1) "testpmd>"
+	sleep 1
+	send start\r
+	sleep 1
+	expect -i $ids(1) "testpmd>"
+	while {$n < 4097} {
+		spawn /bin/bash ./set_pkt_size.sh $arg4 $n
+		set ids(2) $spawn_id
+		expect -i $ids(2) eof
+		sleep 5
+		send -i $ids(1) \r
+		expect -i $ids(1) "testpmd>"
+		send -i $ids(1) "show port stats all\r"
+		sleep 1
+		expect -i $ids(1) "testpmd>"
+		puts "Packet Size: $n"
+		send -i $ids(1) "show port stats all\r"
+		sleep 1
+		expect -i $ids(1) "testpmd>"
+		puts $out_file $expect_out(buffer)
+		incr n $pkt_sz_offset
+	}
+	sleep 1
+	send -i $ids(1) stop\r
+	sleep 1
+	expect -i $ids(1) "testpmd>"
+	send -i $ids(1) quit\r
+	expect -i $ids(1) eof
+	spawn ./PCIeWriter/rwmem $usrbarctrl 0x120000
+	expect eof
+	set queue [expr $queue/2];
+}
