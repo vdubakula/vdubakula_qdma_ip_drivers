@@ -232,13 +232,14 @@ static int reclaim_tx_mbuf(struct qdma_tx_queue *txq,
 			uint16_t cidx, uint16_t free_cnt)
 {
 	int fl_desc = 0;
+	uint16_t fl_desc_cnt;
 	uint16_t count;
 	int id;
 
 	id = txq->tx_fl_tail;
 	fl_desc = (int)cidx - id;
 
-	if (fl_desc == 0)
+	if (unlikely(!fl_desc))
 		return 0;
 
 	if (fl_desc < 0)
@@ -247,25 +248,30 @@ static int reclaim_tx_mbuf(struct qdma_tx_queue *txq,
 	if (free_cnt && (fl_desc > free_cnt))
 		fl_desc = free_cnt;
 
-	if ((id + fl_desc) < (txq->nb_tx_desc - 1)) {
-		for (count = 0; count < ((uint16_t)fl_desc & 0xFFFF);
-				count++) {
-			rte_pktmbuf_free(txq->sw_ring[id]);
+	if ((id + fl_desc) < (txq->nb_tx_desc - 1))
+	{
+		fl_desc_cnt = ((uint16_t)fl_desc & 0xFFFF);
+		rte_pktmbuf_free_bulk(&txq->sw_ring[id], fl_desc_cnt);
+		for (count = 0; count < fl_desc_cnt; count++)
+		{
 			txq->sw_ring[id++] = NULL;
 		}
-	} else {
-		fl_desc -= (txq->nb_tx_desc - 1 - id);
-		for (; id < (txq->nb_tx_desc - 1); id++) {
-			rte_pktmbuf_free(txq->sw_ring[id]);
-			txq->sw_ring[id] = NULL;
-		}
+		txq->tx_fl_tail = id;
+		return fl_desc;
+	}
 
-		id -= (txq->nb_tx_desc - 1);
-		for (count = 0; count < ((uint16_t)fl_desc & 0xFFFF);
-				count++) {
-			rte_pktmbuf_free(txq->sw_ring[id]);
-			txq->sw_ring[id++] = NULL;
-		}
+	/* Handle Tx queue ring wrap case */
+	fl_desc -= (txq->nb_tx_desc - 1 - id);
+	rte_pktmbuf_free_bulk(&txq->sw_ring[id], (txq->nb_tx_desc - 1 - id));
+	for (; id < (txq->nb_tx_desc - 1); id++) {
+		txq->sw_ring[id] = NULL;
+	}
+
+	id -= (txq->nb_tx_desc - 1);
+	fl_desc_cnt = ((uint16_t)fl_desc & 0xFFFF);
+	rte_pktmbuf_free_bulk(&txq->sw_ring[id], fl_desc_cnt);
+	for (count = 0; count < fl_desc_cnt; count++) {
+		txq->sw_ring[id++] = NULL;
 	}
 	txq->tx_fl_tail = id;
 
