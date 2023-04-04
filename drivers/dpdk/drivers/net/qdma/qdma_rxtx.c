@@ -124,7 +124,7 @@ static int dma_wb_monitor(void *xq, uint8_t dir, uint16_t expected_count)
 	return -1;
 }
 
-int qdma_extract_st_cmpt_info(void *ul_cmpt_entry, void *cmpt_info)
+static int qdma_extract_st_cmpt_info(void *ul_cmpt_entry, void *cmpt_info)
 {
 	union qdma_ul_st_cmpt_ring *cmpt_data, *cmpt_desc;
 
@@ -165,8 +165,11 @@ int reclaim_tx_mbuf(struct qdma_tx_queue *txq,
 			txq->sw_ring[id++] = NULL;
 
 		txq->tx_fl_tail = id;
+
 		return fl_desc;
 	}
+
+	txq->qstats.ring_wrap_cnt++;
 
 	/* Handle Tx queue ring wrap case */
 	fl_desc -= (txq->nb_tx_desc - 1 - id);
@@ -785,8 +788,10 @@ static int rearm_c2h_ring(struct qdma_rx_queue *rxq, uint16_t num_desc)
 	 */
 	if ((id + num_desc) < (rxq->nb_rx_desc - 1))
 		rearm_descs = num_desc;
-	else
+	else {
 		rearm_descs = (rxq->nb_rx_desc - 1) - id;
+		rxq->qstats.ring_wrap_cnt++;
+	}
 
 	/* allocate new buffer */
 	if (rte_mempool_get_bulk(rxq->mb_pool, (void *)&rxq->sw_ring[id],
@@ -900,6 +905,16 @@ uint16_t qdma_recv_pkts_st(void *rx_queue, struct rte_mbuf **rx_pkts,
 #endif
 	cmpt_pidx = wb_status->pidx;
 
+#ifdef LATENCY_MEASUREMENT
+	if (cmpt_pidx != rxq->qstats.wrb_pidx) {
+		/* stop the timer */
+		rxq->qstats.pkt_lat.curr = rte_get_timer_cycles();
+		rxq_sw_pidx_to_cmpt_pidx_latency[rxq->queue_id][rxq->qstats.lat_cnt] =
+				rxq->qstats.pkt_lat.curr - rxq->qstats.pkt_lat.prev;
+		rxq->qstats.lat_cnt = ((rxq->qstats.lat_cnt + 1) % LATENCY_CNT);
+	}
+#endif
+
 	if (rx_cmpt_tail < cmpt_pidx)
 		nb_pkts_avail = cmpt_pidx - rx_cmpt_tail;
 	else if (rx_cmpt_tail > cmpt_pidx)
@@ -946,6 +961,14 @@ uint16_t qdma_recv_pkts_st(void *rx_queue, struct rte_mbuf **rx_pkts,
 	if (rxq->rx_tail < (c2h_pidx + 1))
 		pending_desc = rxq->nb_rx_desc - 2 + rxq->rx_tail -
 				c2h_pidx;
+
+	rxq->qstats.pidx = rxq->q_pidx_info.pidx;
+	rxq->qstats.wrb_pidx = rxq->wb_status->pidx;
+	rxq->qstats.wrb_cidx = rxq->wb_status->cidx;
+	rxq->qstats.rxq_cmpt_tail = rx_cmpt_tail;
+	rxq->qstats.pending_desc = pending_desc;
+	rxq->qstats.mbuf_avail_cnt = rte_mempool_avail_count(rxq->mb_pool);
+	rxq->qstats.mbuf_in_use_cnt = rte_mempool_in_use_count(rxq->mb_pool);
 
 	/* Batch the PIDX updates, this minimizes overhead on
 	 * descriptor engine
@@ -1197,6 +1220,17 @@ uint16_t qdma_xmit_pkts_st(void *tx_queue, struct rte_mbuf **tx_pkts,
 	rte_rmb();
 
 	cidx = txq->wb_status->cidx;
+
+#ifdef LATENCY_MEASUREMENT
+	if (cidx != txq->qstats.wrb_cidx) {
+		/* stop the timer */
+		txq->qstats.pkt_lat.curr = rte_get_timer_cycles();
+		txq_sw_pidx_to_hw_cidx_latency[txq->queue_id][txq->qstats.lat_cnt] =
+				txq->qstats.pkt_lat.curr - txq->qstats.pkt_lat.prev;
+		txq->qstats.lat_cnt = ((txq->qstats.lat_cnt + 1) % LATENCY_CNT);
+	}
+#endif
+
 	PMD_DRV_LOG(DEBUG, "Xmit start on tx queue-id:%d, tail index:%d\n",
 			txq->queue_id, id);
 
@@ -1215,6 +1249,7 @@ uint16_t qdma_xmit_pkts_st(void *tx_queue, struct rte_mbuf **tx_pkts,
 	avail = txq->nb_tx_desc - 2 - in_use;
 
 	if (unlikely(!avail)) {
+		txq->qstats.txq_full_cnt++;
 		PMD_DRV_LOG(DEBUG, "Tx queue full, in_use = %d", in_use);
 		return 0;
 	}
@@ -1242,6 +1277,12 @@ uint16_t qdma_xmit_pkts_st(void *tx_queue, struct rte_mbuf **tx_pkts,
 	txq->stats.pkts += count;
 	txq->stats.bytes += pkt_len;
 
+	txq->qstats.pidx = id;
+	txq->qstats.wrb_cidx = cidx;
+	txq->qstats.txq_tail = txq->tx_fl_tail;
+	txq->qstats.in_use_desc = in_use;
+	txq->qstats.nb_pkts = nb_pkts;
+
 #if (MIN_TX_PIDX_UPDATE_THRESHOLD > 1)
 	rte_spinlock_lock(&txq->pidx_update_lock);
 #endif
@@ -1256,6 +1297,10 @@ uint16_t qdma_xmit_pkts_st(void *tx_queue, struct rte_mbuf **tx_pkts,
 			txq->queue_id, 0, &txq->q_pidx_info);
 
 		txq->tx_desc_pend = 0;
+#ifdef LATENCY_MEASUREMENT
+		/* start the timer */
+		txq->qstats.pkt_lat.prev = rte_get_timer_cycles();
+#endif
 	}
 #if (MIN_TX_PIDX_UPDATE_THRESHOLD > 1)
 	rte_spinlock_unlock(&txq->pidx_update_lock);

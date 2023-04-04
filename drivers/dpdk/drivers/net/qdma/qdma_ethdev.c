@@ -63,6 +63,13 @@
 
 #define MAX_PCIE_CAPABILITY    (48)
 
+#ifdef LATENCY_MEASUREMENT
+const struct rte_memzone *txq_lat_buf_mz = NULL;
+const struct rte_memzone *rxq_lat_buf_mz = NULL;
+double (*txq_sw_pidx_to_hw_cidx_latency)[LATENCY_CNT] = NULL;
+double (*rxq_sw_pidx_to_cmpt_pidx_latency)[LATENCY_CNT] = NULL;
+#endif
+
 static void qdma_device_attributes_get(struct rte_eth_dev *dev);
 
 /* Poll for any QDMA errors */
@@ -774,6 +781,34 @@ int qdma_eth_dev_init(struct rte_eth_dev *dev)
 		}
 	}
 
+#ifdef LATENCY_MEASUREMENT
+    /* Create a shared memory zone for the txq latency buffer */
+    txq_lat_buf_mz = rte_memzone_reserve("TXQ_LAT_BUFFER_ZONE",
+		LATENCY_MAX_QUEUES * LATENCY_CNT * sizeof(double),
+		rte_socket_id(), 0);
+    if (txq_lat_buf_mz == NULL) {
+		PMD_DRV_LOG(ERR, "Failed to allocate txq latency buffer memzone\n");
+        return -1;
+    }
+
+    /* Get the virtual address of the txq latency buffer */
+    txq_sw_pidx_to_hw_cidx_latency =
+		(double(*)[LATENCY_CNT])txq_lat_buf_mz->addr;
+
+    /* Create a shared memory zone for the rxq latency buffer */
+    rxq_lat_buf_mz = rte_memzone_reserve("RXQ_LAT_BUFFER_ZONE",
+		LATENCY_MAX_QUEUES * LATENCY_CNT * sizeof(double),
+		rte_socket_id(), 0);
+    if (rxq_lat_buf_mz == NULL) {
+		PMD_DRV_LOG(ERR, "Failed to allocate rxq latency buffer memzone\n");
+        return -1;
+    }
+
+    /* Get the virtual address of the rxq latency buffer */
+    rxq_sw_pidx_to_cmpt_pidx_latency =
+		(double(*)[LATENCY_CNT])rxq_lat_buf_mz->addr;
+#endif
+
 	dma_priv->reset_in_progress = 0;
 
 	return 0;
@@ -886,6 +921,12 @@ int qdma_eth_dev_uninit(struct rte_eth_dev *dev)
 		rte_free(qdma_dev->hw_access);
 		qdma_dev->hw_access = NULL;
 	}
+
+#ifdef LATENCY_MEASUREMENT
+	rte_memzone_free(txq_lat_buf_mz);
+	rte_memzone_free(rxq_lat_buf_mz);
+#endif
+
 	return 0;
 }
 
