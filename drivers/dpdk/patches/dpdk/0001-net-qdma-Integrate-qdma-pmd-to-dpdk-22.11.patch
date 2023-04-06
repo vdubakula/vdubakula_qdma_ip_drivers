@@ -1,5 +1,26 @@
+From 5959bf5453ca80f8dad566c769bcb75e800000f9 Mon Sep 17 00:00:00 2001
+From: Suryanarayana Raju Sangani <ssangani@xilinx.com>
+Date: Wed, 5 Apr 2023 21:51:56 +0530
+Subject: [PATCH] net/qdma : Integrate qdma pmd to dpdk 22.11
+
+This patch adds Xilinx specific QDMA PCIe functions and
+configuration updates to 22.11.
+Apply this patch after moving QDMA PMD and test app to respective
+directories.
+
+Signed-off-by: Pankaj Darak <pankajd@xilinx.com>
+Signed-off-by:  Prasad Pardeshi <prasadp@xilinx.com>
+Signed-off-by: Sangani Suryanarayana Raju <ssangani@xilinx.com>
+---
+ config/meson.build        |  4 ++--
+ config/rte_config.h       | 12 +++++++++---
+ config/x86/meson.build    |  2 +-
+ drivers/net/meson.build   |  1 +
+ usertools/dpdk-devbind.py |  6 +++++-
+ 5 files changed, 18 insertions(+), 7 deletions(-)
+
 diff --git a/config/meson.build b/config/meson.build
-index 6d9ffd4..1a7ff90 100755
+index 6d9ffd4..1a7ff90 100644
 --- a/config/meson.build
 +++ b/config/meson.build
 @@ -300,11 +300,11 @@ foreach arg: warning_flags
@@ -17,7 +38,7 @@ index 6d9ffd4..1a7ff90 100755
  dpdk_conf.set('RTE_LIBRTE_DPAA2_USE_PHYS_IOVA', true)
  if dpdk_conf.get('RTE_ARCH_64')
 diff --git a/config/rte_config.h b/config/rte_config.h
-index 3c4876d..c412749 100755
+index 3c4876d..c412749 100644
 --- a/config/rte_config.h
 +++ b/config/rte_config.h
 @@ -34,11 +34,11 @@
@@ -56,8 +77,19 @@ index 3c4876d..c412749 100755
  /* DLB2 defines */
  // RTE_LIBRTE_PMD_DLB2_QUELL_STATS is not set
  
+diff --git a/config/x86/meson.build b/config/x86/meson.build
+index 54345c4..3fb74ac 100644
+--- a/config/x86/meson.build
++++ b/config/x86/meson.build
+@@ -71,5 +71,5 @@ else
+ endif
+ 
+ dpdk_conf.set('RTE_CACHE_LINE_SIZE', 64)
+-dpdk_conf.set('RTE_MAX_LCORE', 128)
++dpdk_conf.set('RTE_MAX_LCORE', 256)
+ dpdk_conf.set('RTE_MAX_NUMA_NODES', 32)
 diff --git a/drivers/net/meson.build b/drivers/net/meson.build
-index 6470bf3..1d31b2c 100755
+index 6470bf3..1d31b2c 100644
 --- a/drivers/net/meson.build
 +++ b/drivers/net/meson.build
 @@ -51,6 +51,7 @@ drivers = [
@@ -92,3 +124,6 @@ index 4d9c1be..9c9d5bc 100755
  baseband_devices = [acceleration_class]
  crypto_devices = [encryption_class, intel_processor_class]
  dma_devices = [cnxk_dma, hisilicon_dma,
+-- 
+2.27.0
+
