@@ -345,6 +345,9 @@ struct qdma_pci_dev {
 
 	int16_t tx_qid_statid_map[RTE_ETHDEV_QUEUE_STAT_CNTRS];
 	int16_t rx_qid_statid_map[RTE_ETHDEV_QUEUE_STAT_CNTRS];
+
+	uint8_t rx_vec_allowed:1;
+	uint8_t tx_vec_allowed:1;
 };
 
 void qdma_dev_ops_init(struct rte_eth_dev *dev);
@@ -414,4 +417,27 @@ bool is_vf_device_supported(struct rte_eth_dev *dev);
 bool is_pf_device_supported(struct rte_eth_dev *dev);
 
 void qdma_check_errors(void *arg);
+
+struct rte_mbuf *prepare_segmented_packet(struct qdma_rx_queue *rxq,
+		uint16_t pkt_length, uint16_t *tail);
+int reclaim_tx_mbuf(struct qdma_tx_queue *txq,
+		uint16_t cidx, uint16_t free_cnt);
+int qdma_extract_st_cmpt_info(void *ul_cmpt_entry, void *cmpt_info);
+int qdma_ul_extract_st_cmpt_info(void *ul_cmpt_entry, void *cmpt_info);
+
+/* Transmit API for Streaming mode */
+uint16_t qdma_xmit_pkts_vec(void *tx_queue,
+		struct rte_mbuf **tx_pkts, uint16_t nb_pkts);
+uint16_t qdma_xmit_pkts_st_vec(void *tx_queue,
+		struct rte_mbuf **tx_pkts, uint16_t nb_pkts);
+
+/* Receive API for Streaming mode */
+uint16_t qdma_recv_pkts_vec(void *rx_queue,
+		struct rte_mbuf **rx_pkts, uint16_t nb_pkts);
+uint16_t qdma_recv_pkts_st_vec(void *rx_queue,
+		struct rte_mbuf **rx_pkts, uint16_t nb_pkts);
+
+void __rte_cold qdma_set_tx_function(struct rte_eth_dev *dev);
+void __rte_cold qdma_set_rx_function(struct rte_eth_dev *dev);
+
 #endif /* ifndef __QDMA_H__ */
