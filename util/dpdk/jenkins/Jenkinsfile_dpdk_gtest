@@ -17,7 +17,7 @@ def get_changes_string() {
 }
 
 def run_as_sudo(shell_command) {
-    sh 'echo "#ces#2023#dsamd#" | sudo -S ' + shell_command
+    sh 'echo "!2023!cns!xhd!sw!" | sudo -S ' + shell_command
 }
 
 def reboot_target(target_hostname) {
@@ -25,7 +25,7 @@ def reboot_target(target_hostname) {
     try {
         timeout(20) { //minutes
             // assume running on master node
-            run_as_sudo("ssh -t -o StrictHostKeyChecking=no -l cadman ${target_hostname} /usr/bin/sudo -S /sbin/reboot") //schedule reboot in 1 min
+            run_as_sudo("ssh -t -o StrictHostKeyChecking=no -l icons_cadman ${target_hostname} /usr/bin/sudo -S /sbin/reboot") //schedule reboot in 1 min
         }
     } catch (e) {
         sleep 200 // seconds, give some time for reboot
@@ -129,7 +129,7 @@ pipeline {
 					}
 					ignore_error({run_as_sudo('chmod 0777 ${TEST_APP_PATH}/build_dpdk_pf_vf/ -R ')})
 				    ignore_error({run_as_sudo('chmod 0777 ${TEST_APP_PATH}/logs/ -R ')})
-				    ignore_error({run_as_sudo('chown -R cadman:xds ${TEST_APP_PATH}/* ')})
+				    ignore_error({run_as_sudo('chown -R icons_cadman:shine_icons ${TEST_APP_PATH}/* ')})
 
 				    echo "Archiving build products..."
 				    archiveArtifacts artifacts: "${TEST_APP_PATH}/build_dpdk_pf_vf/src/qdma_test", fingerprint: true

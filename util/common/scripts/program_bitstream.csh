@@ -14,5 +14,5 @@ if ($# != 3) then
     exit 1
 endif
 
-cadman add -t xilinx -v 2018.2_daily_latest
+icons_cadman add -t xilinx -v 2018.2_daily_latest
 vivado -nolog -nojournal -mode batch -source program_bitstream.tcl -tclargs $1 $2 $3
