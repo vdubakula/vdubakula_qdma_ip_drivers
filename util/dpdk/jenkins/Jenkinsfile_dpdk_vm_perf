@@ -144,7 +144,7 @@ pipeline {
                 echo "copy the tests cases to test directory"
                 sh "cp -rf ${PERF_SCRIPTS} ${DPDK_SRC}/../../../dpdk-stable-${DPDK_VER}/"
                  echo "Setting up for testPMD performance"
-                 dir("${DPDK_SRC}/../../../dpdk-stable-${DPDK_VER}/perf_scripts/testpmd") { script {
+                 dir("${DPDK_SRC}/../../../dpdk-stable-${DPDK_VER}/perf_scripts/testpmd_sw") { script {
                      run_as_sudo('chmod +x *.sh')
                      run_as_sudo('chmod +x *.expect')
                      run_as_sudo('chmod +x PCIeWriter/rwio')
@@ -198,9 +198,9 @@ pipeline {
 
                     run_as_sudo("$SHELL vm_automation_perf_top.sh ${PCI_BBDDF} ${VM_COUNT} ${VM_IMAGE_PATH} ${TESTPMD_ENABLE} ${PKTGEN_ENABLE} ${TESTPMD_HOST_QUEUES} ${TESTPMD_VM_QUEUE_CFG} ${PKTGEN_HOST_QUEUES} ${PKTGEN_VM_QUEUES} ${BIND_DRV} ${NUM_VM_CORES} ${VM_RAM} ${NUM_PF}")
                 }
-                ignore_error({run_as_sudo('chmod 0777  ${DPDK_SRC}/../../../dpdk-stable-${DPDK_VER}/perf_scripts/testpmd/testpmd.csv')})
+                ignore_error({run_as_sudo('chmod 0777  ${DPDK_SRC}/../../../dpdk-stable-${DPDK_VER}/perf_scripts/testpmd_sw/testpmd.csv')})
                 echo "Archiving Testpmd performance testpmd.csv "
-                ignore_error({archiveArtifacts artifacts: "dpdk-stable-${DPDK_VER}/perf_scripts/testpmd/testpmd.csv", fingerprint: true})
+                ignore_error({archiveArtifacts artifacts: "dpdk-stable-${DPDK_VER}/perf_scripts/testpmd_sw/testpmd.csv", fingerprint: true})
 
                 ignore_error({run_as_sudo('chmod 0777 ${DPDK_SRC}/../../../pktgen-${PKT_GEN_VER}/*')})
                 echo "Archiving pktgen performance vm logs"

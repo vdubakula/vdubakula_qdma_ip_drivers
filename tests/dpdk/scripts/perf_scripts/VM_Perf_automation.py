@@ -298,7 +298,7 @@ try:
             os.chdir(pwd)
             perf_queues=(nb_vms * queues)
             vm_cfg.append(perf_queues)
-            os.chdir(workspace_path + "dpdk-stable-" + DPDK_VER + "/perf_scripts/testpmd/")
+            os.chdir(workspace_path + "dpdk-stable-" + DPDK_VER + "/perf_scripts/testpmd_sw/")
             child1 = pexpect.spawn("./perf_lat.sh " + str(perf_queues) + " " + str(addr))
             child1.timeout = 2000
             child1.expect(pexpect.EOF)
@@ -311,7 +311,7 @@ try:
             idx = idx + 1
         vm_cfg_final = ",".join(str(item) for item in vm_cfg)
         os.chdir(pwd)
-        os.chdir(workspace_path + "dpdk-stable-" + DPDK_VER + "/perf_scripts/testpmd/")
+        os.chdir(workspace_path + "dpdk-stable-" + DPDK_VER + "/perf_scripts/testpmd_sw/")
         print ("VM queue config = "+ str(vm_cfg_final))
         os.system("sh ./final_data_vm.sh " + str(vm_cfg_final))
         if (testpmd_host_num_queues == 0):

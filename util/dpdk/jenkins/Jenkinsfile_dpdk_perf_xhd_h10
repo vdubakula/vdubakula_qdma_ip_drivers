@@ -170,7 +170,7 @@ pipeline {
 				echo "copy the tests cases to test directory"
 				sh "cp -rf ${PERF_SCRIPTS} ${DRIVER_PATH}/dpdk-stable-${DPDK_VER}/"
 				 echo "Setting up for testPMD performance"
-				 dir("${DRIVER_PATH}/dpdk-stable-${DPDK_VER}/perf_scripts/testpmd") { script {
+				 dir("${DRIVER_PATH}/dpdk-stable-${DPDK_VER}/perf_scripts/testpmd_sw") { script {
 					 run_as_sudo('chmod +x *.sh')
 					 run_as_sudo('chmod +x *.expect')
 					 run_as_sudo('chmod +x PCIeWriter/rwio')
