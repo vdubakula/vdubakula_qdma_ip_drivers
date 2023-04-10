@@ -5,7 +5,10 @@ import sys
 import subprocess
 from array import array
 
-if sys.argv[1] == "EQDMA" :
+if sys.argv[1] == "EQDMA5.0" :
+	pf_devids = ["903f", "913f", "923f", "933f"]
+	pf_bdfs = [[], [], [], []]
+elif sys.argv[1] == "EQDMA" :
 	pf_devids = ["903f", "913f", "923f", "933f"]
 	pf_bdfs = [[], [], [], []]
 elif sys.argv[1] == "Ultrascale" :
@@ -35,4 +38,4 @@ for k, v in pci_dic.iteritems():
 			cmd1 = "echo \"Card" + str(pf + 1) +":" + bdf1 + "\" >> pci_dev_list.txt "
 			subprocess.Popen(cmd1, shell = True, stdout = subprocess.PIPE, stderr = subprocess.STDOUT)
 
-			
+
