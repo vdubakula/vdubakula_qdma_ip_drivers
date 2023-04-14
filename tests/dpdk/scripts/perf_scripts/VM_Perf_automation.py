@@ -17,6 +17,7 @@ vm_sid = ["", "", "", "", "", "", "", "", ""]
 pf_vfs_devid = ["a03f", "a13f", "a23f", "a33f", "a038", "a138", "a238", "a338", "a034", "a134", "a234", "a334"]
 pf_vfs_devid_h10 = ["c03f", "c13f", "c23f", "c33f", "c038", "c138", "c238", "c338", "c034", "c134", "c234", "c334"]
 pf_vfs_bdfs = [[], [], [], []]
+pkt_sz_offset = 64
 host_num_queues = 1
 MAX_VMS = 16 # existing VM images on a given system.
 dpdk_bind_drv = "igb_uio"
@@ -95,6 +96,9 @@ os.system("devmem2 " + str(usrbarctrl) +" w 96")
 usrbar = int(addr, 16) + 0x50
 usrbarctrl = hex(usrbar)
 os.system("devmem2 " + str(usrbarctrl) +" w 1")
+usrbar = int(addr, 16) + 0x90
+usrbar_pktsz_ctrl = hex(usrbar)
+
 
 p=os.popen("qemu-system-x86_64 --version")
 qemu_ver = p.read()
@@ -277,6 +281,7 @@ try:
         os.chdir(pwd)
         idx = 0
         while(idx < len_queues):
+            print ("idx = " + str(idx) +" len_queues = " + str(len_queues))
             queues = int(vm_queue_cfg[idx])
             for vm_id in range(1, nb_vms + 1):
                 print ("queues = " + str(queues))
@@ -286,7 +291,8 @@ try:
                 vm_sid[vm_id].sendline ('cd /home/dpdk/dpdk-stable-' + DPDK_VER + '/')
                 vm_sid[vm_id].prompt()
                 print vm_sid[vm_id].before
-                testpmd_cmd = "./build/app/dpdk-testpmd -c" + str(core_mask) +" -n4 -a 00:04.0,desc_prefetch=1,cmpt_desc_len=16 --iova-mode=pa -- -i --nb-cores=" + str(cores) + " --rxq=" + str(queues) + " --txq=" + str(queues) + " --rxd=2048 --txd=2048 --burst=64 --mbuf-size=4224 --total-num-mbufs=131072"
+                time.sleep(2)
+                testpmd_cmd = "./build/app/dpdk-testpmd -l 1-17 --socket-mem=4096 " +" -n 4 -a 00:04.0,desc_prefetch=1,cmpt_desc_len=16 --log-level=3 -- --burst=256 -i --nb-cores=" + str(queues) + " --rxq=" + str(queues) + " --txq=" + str(queues) + " --rxd=2048 --txd=2048 --mbcache=512 --enable-drop-en --port-numa-config=0,0 --no-rmv-interrupt --no-mlockall --no-lsc-interrupt --rss-udp"
                 print testpmd_cmd
                 vm_sid[vm_id].sendline (testpmd_cmd)
                 vm_sid[vm_id].expect ('testpmd>')
@@ -294,25 +300,51 @@ try:
                 vm_sid[vm_id].sendline ('start')
                 vm_sid[vm_id].expect ('testpmd>')
                 print vm_sid[vm_id].before
-
-            os.chdir(pwd)
+                #vm_sid[vm_id].interact()
+                pkt_sz = 64
+                output_file = "sw_port_stats" + str(queues) + ".txt"
+                print ("Output file name: " + str(output_file))
+                print ("Start perf measurement for Queues: " + str(queues))
+                while(pkt_sz < 4097):
+                    devmem2_cmd = "devmem2 " + str(usrbar_pktsz_ctrl) +" w " + str(pkt_sz)
+                    print devmem2_cmd
+                    os.system(devmem2_cmd)
+                    time.sleep(2)
+                    vm_sid[vm_id].sendline ('show port stats all')
+                    vm_sid[vm_id].expect ('testpmd>')
+                    print vm_sid[vm_id].before
+                    vm_sid[vm_id].sendline ('show port stats all')
+                    vm_sid[vm_id].expect ('testpmd>')
+                    print vm_sid[vm_id].before
+                    with open(output_file, "a") as f:
+                        original_stdout = sys.stdout
+                        sys.stdout = f
+                        print ("Packet size: " + str(pkt_sz))
+                        f.write(vm_sid[vm_id].before)
+                        sys.stdout = original_stdout
+                    pkt_sz += pkt_sz_offset
             perf_queues=(nb_vms * queues)
             vm_cfg.append(perf_queues)
-            os.chdir(workspace_path + "dpdk-stable-" + DPDK_VER + "/perf_scripts/testpmd_sw/")
-            child1 = pexpect.spawn("./perf_lat.sh " + str(perf_queues) + " " + str(addr))
-            child1.timeout = 2000
-            child1.expect(pexpect.EOF)
-            print child1.before
-
+            base_name, extension = os.path.splitext(output_file)
+            if extension == ".txt":
+                new_out_file = base_name
+            else:
+                new_out_file = output_file
+            os.system("mv " + str(output_file) + " " + str(new_out_file))
+            os.system("mv " + str(new_out_file) + " testpmd_sw/")
+            print ("Forwarding perf numbers collected for queues: " + str(queues))
             for vm_id in range(1, nb_vms + 1):
                 vm_sid[vm_id].sendline ('quit')
                 vm_sid[vm_id].prompt()
                 print vm_sid[vm_id].before
             idx = idx + 1
+            time.sleep(10)
         vm_cfg_final = ",".join(str(item) for item in vm_cfg)
         os.chdir(pwd)
-        os.chdir(workspace_path + "dpdk-stable-" + DPDK_VER + "/perf_scripts/testpmd_sw/")
+        os.chdir(pwd + "/testpmd_sw/")
         print ("VM queue config = "+ str(vm_cfg_final))
+        for item in vm_cfg_final:
+            os.system("sh ./get_sw_port_stats.sh " + str(item))
         os.system("sh ./final_data_vm.sh " + str(vm_cfg_final))
         if (testpmd_host_num_queues == 0):
             os.chdir(pwd)
