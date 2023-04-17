@@ -1,5 +1,19 @@
+From 8be7e16ef31c316ac901906dc411a8c13ed47cda Mon Sep 17 00:00:00 2001
+From: Suryanarayana Raju Sangani <ssangani@xilinx.com>
+Date: Mon, 17 Apr 2023 23:41:41 +0530
+Subject: [PATCH] Add QDMA xdebug to proc-info of dpdk-22.11
+
+Signed-off-by: Nikhil agarwal <nagarwal@xilinx.com>
+Signed-off-by: Prasad Pardeshi <prasadp@xilinx.com>
+Signed-off-by: Sangani Suryanarayana Raju <ssangani@xilinx.com>
+---
+ app/proc-info/main.c      | 175 ++++++++++++++++++++++++++++++++++++--
+ app/proc-info/meson.build |   2 +-
+ app/test-pmd/config.c     |   2 +
+ 3 files changed, 169 insertions(+), 10 deletions(-)
+
 diff --git a/app/proc-info/main.c b/app/proc-info/main.c
-index 53e852a..fd6edca 100755
+index 53e852a..fdeb47d 100644
 --- a/app/proc-info/main.c
 +++ b/app/proc-info/main.c
 @@ -32,6 +32,7 @@
@@ -39,7 +53,7 @@ index 53e852a..fd6edca 100755
  /* Enable xstats. */
  static uint32_t enable_xstats;
  /* Enable collectd format */
-@@ -76,6 +95,8 @@
+@@ -76,6 +95,8 @@ static uint32_t reset_stats;
  static uint32_t reset_xstats;
  /* Enable memory info. */
  static uint32_t mem_info;
@@ -48,7 +62,7 @@ index 53e852a..fd6edca 100755
  /* Enable displaying xstat name. */
  static uint32_t enable_xstats_name;
  static char *xstats_name;
-@@ -138,8 +159,13 @@ struct desc_param {
+@@ -138,8 +159,13 @@ proc_info_usage(const char *prgname)
  {
  	printf("%s [EAL options] -- -p PORTMASK\n"
  		"  -m to display DPDK memory zones, segments and TAILQ information\n"
@@ -62,7 +76,7 @@ index 53e852a..fd6edca 100755
  		"  --xstats: to display extended port statistics, disabled by "
  			"default\n"
  #ifdef RTE_LIB_METRICS
-@@ -179,7 +205,7 @@ struct desc_param {
+@@ -179,7 +205,7 @@ proc_info_usage(const char *prgname)
  /*
   * Parse the portmask provided at run time.
   */
@@ -71,10 +85,11 @@ index 53e852a..fd6edca 100755
  parse_portmask(const char *portmask)
  {
  	char *end = NULL;
-@@ -197,6 +223,71 @@ struct desc_param {
+@@ -196,6 +222,71 @@ parse_portmask(const char *portmask)
+ 	return 0;
  }
  
- /*
++/*
 + *  * Parse the QID provided at run time.
 + **/
 +static int
@@ -139,11 +154,10 @@ index 53e852a..fd6edca 100755
 +	return 0;
 +}
 +
-+/*
+ /*
   * Parse ids value list into array
   */
- static int
-@@ -273,11 +364,15 @@ struct desc_param {
+@@ -273,11 +364,15 @@ proc_info_preparse_args(int argc, char **argv)
  static int
  proc_info_parse_args(int argc, char **argv)
  {
@@ -160,7 +174,7 @@ index 53e852a..fd6edca 100755
  		{"stats-reset", 0, NULL, 0},
  		{"xstats", 0, NULL, 0},
  #ifdef RTE_LIB_METRICS
-@@ -309,7 +404,7 @@ struct desc_param {
+@@ -309,7 +404,7 @@ proc_info_parse_args(int argc, char **argv)
  		proc_info_usage(prgname);
  
  	/* Parse command line */
@@ -169,7 +183,7 @@ index 53e852a..fd6edca 100755
  			long_option, &option_index)) != EOF) {
  		switch (opt) {
  		/* portmask */
-@@ -322,11 +417,46 @@ struct desc_param {
+@@ -322,11 +417,46 @@ proc_info_parse_args(int argc, char **argv)
  		case 'm':
  			mem_info = 1;
  			break;
@@ -216,7 +230,7 @@ index 53e852a..fd6edca 100755
  			/* Print xstats */
  			else if (!strncmp(long_option[option_index].name, "xstats",
  					MAX_LONG_OPT_SZ))
-@@ -425,6 +555,24 @@ struct desc_param {
+@@ -425,6 +555,24 @@ proc_info_parse_args(int argc, char **argv)
  					return -1;
  				}
  				enable_shw_tx_desc_dump = 1;
@@ -241,7 +255,7 @@ index 53e852a..fd6edca 100755
  			}
  			break;
  		default:
-@@ -1791,7 +1939,6 @@ static void collectd_resolve_cnt_type(char *cnt_type, size_t cnt_type_len,
+@@ -1791,7 +1939,6 @@ main(int argc, char **argv)
  
  	if (mem_info) {
  		meminfo_display();
@@ -249,7 +263,7 @@ index 53e852a..fd6edca 100755
  	}
  
  	nb_ports = rte_eth_dev_count_avail();
-@@ -1807,7 +1954,7 @@ static void collectd_resolve_cnt_type(char *cnt_type, size_t cnt_type_len,
+@@ -1807,7 +1954,7 @@ main(int argc, char **argv)
  	for (i = 0; i < RTE_MAX_ETHPORTS; i++) {
  
  		/* Skip if port is not in mask */
@@ -258,7 +272,7 @@ index 53e852a..fd6edca 100755
  			continue;
  
  		/* Skip if port is unused */
-@@ -1832,6 +1979,19 @@ static void collectd_resolve_cnt_type(char *cnt_type, size_t cnt_type_len,
+@@ -1832,6 +1979,19 @@ main(int argc, char **argv)
  			metrics_display(i);
  #endif
  
@@ -278,8 +292,18 @@ index 53e852a..fd6edca 100755
  		if (enable_shw_rx_desc_dump)
  			nic_rx_descriptor_display(i, &rx_desc_param);
  		if (enable_shw_tx_desc_dump)
+@@ -1870,9 +2030,6 @@ main(int argc, char **argv)
+ 	if (enable_shw_module_eeprom)
+ 		show_module_eeprom_info();
+ 
+-	RTE_ETH_FOREACH_DEV(i)
+-		rte_eth_dev_close(i);
+-
+ 	ret = rte_eal_cleanup();
+ 	if (ret)
+ 		printf("Error from rte_eal_cleanup(), %d\n", ret);
 diff --git a/app/proc-info/meson.build b/app/proc-info/meson.build
-index 1563ce6..340b9ab 100755
+index 1563ce6..340b9ab 100644
 --- a/app/proc-info/meson.build
 +++ b/app/proc-info/meson.build
 @@ -8,7 +8,7 @@ if is_windows
@@ -292,7 +316,7 @@ index 1563ce6..340b9ab 100755
      deps += 'metrics'
  endif
 diff --git a/app/test-pmd/config.c b/app/test-pmd/config.c
-index acccb6b..6d51d62 100755
+index acccb6b..6d51d62 100644
 --- a/app/test-pmd/config.c
 +++ b/app/test-pmd/config.c
 @@ -58,6 +58,8 @@
@@ -304,3 +328,6 @@ index acccb6b..6d51d62 100755
  #define ETHDEV_FWVERS_LEN 32
  
  #ifdef CLOCK_MONOTONIC_RAW /* Defined in glibc bits/time.h */
+-- 
+2.27.0
+
