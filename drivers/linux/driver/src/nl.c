@@ -33,7 +33,7 @@
 #define QDMA_C2H_DEFAULT_BUF_SZ (4096)
 #define DUMP_LINE_SZ			(81)
 #define QDMA_Q_DUMP_MAX_QUEUES	(100)
-#define QDMA_Q_DUMP_LINE_SZ	(24 * 1024)
+#define QDMA_Q_DUMP_LINE_SZ	(25 * 1024)
 #define QDMA_Q_LIST_LINE_SZ	(200)
 
 static int xnl_dev_list(struct sk_buff *skb2, struct genl_info *info);
