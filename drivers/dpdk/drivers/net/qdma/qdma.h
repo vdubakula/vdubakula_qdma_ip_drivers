@@ -388,6 +388,11 @@ uint16_t qdma_xmit_pkts_st(void *tx_queue, struct rte_mbuf **tx_pkts,
 uint16_t qdma_xmit_pkts_mm(void *tx_queue, struct rte_mbuf **tx_pkts,
 				uint16_t nb_pkts);
 
+#ifdef TEST_64B_DESC_BYPASS
+uint16_t qdma_xmit_64B_desc_bypass(struct qdma_tx_queue *txq,
+				struct rte_mbuf **tx_pkts, uint16_t nb_pkts);
+#endif
+
 uint32_t qdma_pci_read_reg(struct rte_eth_dev *dev, uint32_t bar, uint32_t reg);
 void qdma_pci_write_reg(struct rte_eth_dev *dev, uint32_t bar,
 				uint32_t reg, uint32_t val);

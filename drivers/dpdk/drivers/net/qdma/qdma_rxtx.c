@@ -186,8 +186,8 @@ int reclaim_tx_mbuf(struct qdma_tx_queue *txq,
 }
 
 #ifdef TEST_64B_DESC_BYPASS
-static uint16_t qdma_xmit_64B_desc_bypass(struct qdma_tx_queue *txq,
-			struct rte_mbuf **tx_pkts, uint16_t nb_pkts)
+uint16_t qdma_xmit_64B_desc_bypass(struct qdma_tx_queue *txq,
+		struct rte_mbuf **tx_pkts, uint16_t nb_pkts)
 {
 	uint16_t count, id;
 	uint8_t *tx_ring_st_bypass = NULL;

@@ -9,6 +9,7 @@ src_dir=${PWD}/../../../../drivers/dpdk
 test_dir=${PWD}/../../apps/qdma_test
 target="pf_vf"
 compile_flags=
+DPDK_VER=
 config_bar=0
 
 if [ ! -z $1 ]; then
@@ -37,7 +38,13 @@ if [ ! -z $6 ]; then
 	compile_flags=$6
 fi
 
-DPDK_VER=${compile_flags:0:2}'.'${compile_flags:3:4}
+dpdk_test_args=( "$@" )
+
+if [[ ${#dpdk_test_args[@]} -lt 7 ]]; then
+	DPDK_VER=${6//_/.}
+else
+	DPDK_VER=${7//_/.}
+fi
 
 if [ ! -d $src_dir ]; then
 	echo "no such $src_dir directory exists"
@@ -89,7 +96,9 @@ if [ ${DPDK_VER} == "20.11" ]; then
 fi
 
 meson build
-#meson configure build -Dc_args=${compile_flags}
+if [ ${compile_flags} == "-DTEST_64B_DESC_BYPASS=1" ]; then
+	meson configure build -Dc_args=${compile_flags}
+fi
 cd build
 ninja
 ninja install

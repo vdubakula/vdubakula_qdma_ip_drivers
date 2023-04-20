@@ -15,7 +15,7 @@ multi_apps=0
 cpm5_flag=0
 
 if [ $# -lt 2 ]; then
-echo "usage: $0 <pci_bbddf> <cfg_dir> [<src dir>] [<gtest dir>] [pf_vf|pf|vf] [linux|dpdk] [Config BAR] [Compile Flags] [dpdk_bind_drv/multi_app] [Compile Flags] [cpm5_flag]"
+	echo "usage: $0 <pci_bbddf> <cfg_dir> [<src dir>] [<gtest dir>] [pf_vf|pf|vf] [linux|dpdk] [Config BAR] [dpdk_bind_drv/multi_app] [Compile Flags] [cpm5_flag]"
 	exit
 fi
 if [ ! -z $1 ]; then
@@ -83,6 +83,10 @@ if [ $enable_compile == 1 ]; then
 		fi
 	elif [ $drv == "dpdk" ]; then
 		dpdk_src=../../../../incoming/dpdk/dpdk-sources/
+		for (( i=9; i<${#gtest_args[@]}; i++ ));
+		do
+			compile_flags+=" ${gtest_args[i]}"
+		done
 		./compile_source_dpdk.sh ${src_dir} ${test_dir} ${dpdk_src} ${target} ${config_bar} ${compile_flags}
 	else
 		echo "Invalid driver chosen"
