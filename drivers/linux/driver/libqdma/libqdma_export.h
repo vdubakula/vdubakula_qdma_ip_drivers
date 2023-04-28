@@ -1345,6 +1345,8 @@ int qdma_queue_get_config(unsigned long dev_hndl, unsigned long id,
  * Display all configured queues in a string buffer
  *
  * @param dev_hndl	dev_hndl returned from qdma_device_open()
+ * @param qidx		Queue index
+ * @param num_q		Number of Queues to list
  * @param buflen	length of the input buffer
  * @param buf		message buffer
  *
