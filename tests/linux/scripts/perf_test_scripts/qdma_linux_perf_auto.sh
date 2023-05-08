@@ -338,7 +338,7 @@ do
 done
 
 if [ $mode == st ]; then
-	if [[ ( $cmp5_flag != 1 ) && ( $vf_perf -eq 0 ) ]]; then
+	if [[ ( $cpm5_flag != 1 ) && ( $vf_perf -eq 0 ) ]]; then
 	    dma-ctl qdma${pci_bbddf} reg write bar 2 0x08 0x80000000
 	fi;
 	echo ""
