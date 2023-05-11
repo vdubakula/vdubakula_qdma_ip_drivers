@@ -26,7 +26,7 @@ while {$queue > 0 } {
 
 	set n 64
 	puts "NumQueues : $queue NumbCores : $cores\n";
-	spawn ../../build/app/dpdk-testpmd -l 1-17 --socket-mem=4096 -n 4 -a $arg1,desc_prefetch=$arg3,cmpt_desc_len=$arg2 --log-level=3 -- --burst=256 -i --nb-cores=$cores --rxq=$queue --txq=$queue --forward-mode=io --rxd=2048 --txd=2048 --mbcache=512 --enable-drop-en --port-numa-config=0,0 --no-rmv-interrupt --no-mlockall --no-lsc-interrupt --rss-udp
+	spawn ../../build/app/dpdk-testpmd -l 1-17 --socket-mem=4096 -n 4 -a $arg1,desc_prefetch=$arg3,cmpt_desc_len=$arg2 --log-level=3 -- --burst=256 -i --nb-cores=$cores --rxq=$queue --txq=$queue --forward-mode=io --rxd=2048 --txd=2048 --mbuf-size=4224 --mbcache=512 --enable-drop-en --port-numa-config=0,0 --no-rmv-interrupt --no-mlockall --no-lsc-interrupt --rss-udp
 	set	ids(1) $spawn_id
 	expect -i $ids(1) "testpmd>"
 	sleep 1
