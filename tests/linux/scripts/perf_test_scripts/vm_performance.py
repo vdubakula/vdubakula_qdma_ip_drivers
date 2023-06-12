@@ -13,7 +13,7 @@ base_port = 5555
 vm_ram = 25534
 nb_pf = 1
 pf_vfs_cnt = array('i')
-pf_vfs_devid = ["a03f", "a13f", "a23f", "a33f", "a038", "a138", "a238", "a338", "a034", "a134", "a234", "a334"]
+pf_vfs_devid = ["c03f", "c13f", "c23f", "c33f", "a03f", "a13f", "a23f", "a33f", "a038", "a138", "a238", "a338", "a034", "a134", "a234", "a334"]
 pf_vfs_bdfs = [[], [], [], []]
 
 
@@ -98,7 +98,7 @@ for vm_id in range(1, nb_vms + 1):
     idx = VM_CFG_START + vm_id #vm config starts from index 8
     vm_cfg = str(sys.argv[idx]) # vm_cfg = "3 0 1 1"
     vm_vfs = vm_cfg.split()
-    
+
     for pf in range(0, total_pfs):
         pf_vfs_cnt[pf] = pf_vfs_cnt[pf] + int(vm_vfs[pf])
 #--------------------------- linux specific started here ----------------------------
@@ -107,7 +107,7 @@ if drv_used == "linux":
     os.system("cd " + host_drv_path + ";rmmod qdma_pf; rmmod qdma_vf; make uninstall-mods;sh make_libqdma.sh; make install-mods;./scripts/qdma_generate_conf_file.sh " + str(bbddf[:2]) + " " + str(nb_pf) + " 0 " + str(config_bar)+ ";cd -")
     for pf in range(0, bddf_array_length):
         bbddf = (str)(bbddf_array[pf])
-    os.system("modprobe qdma_pf") 
+    os.system("modprobe qdma_pf")
     for pf in range(0, total_pfs):
         #set num_vfs for each pf
         num_vf_cmd = "echo " + str(pf_vfs_cnt[pf]) + " > /sys/bus/pci/devices/0000:" + pci_bus[pf] + ":" + pci_dev[pf] + "." + str(pf%nb_pf) + "/sriov_numvfs"
@@ -127,13 +127,13 @@ pci_dic = dict(zip( * [iter(out)] * 2))
 for k, v in pci_dic.iteritems():
     for pf in range(0, nb_pf):
         if (v == pf_vfs_devid[pf]):
-            print ("Gen 3x16, idx=" + str(pf)) 
+            print ("Gen 3x16, idx=" + str(pf))
             pf_vfs_bdfs[pf].append(k)
-        elif (v == pf_vfs_devid[pf+4]):     
-            print ("Gen 3x8, idx=" + str(pf)) 
+        elif (v == pf_vfs_devid[pf+4]):
+            print ("Gen 3x8, idx=" + str(pf))
             pf_vfs_bdfs[pf].append(k)
-        elif (v == pf_vfs_devid[pf+8]):     
-            print ("Gen 3x4 idx=" + str(pf)) 
+        elif (v == pf_vfs_devid[pf+8]):
+            print ("Gen 3x4 idx=" + str(pf))
             pf_vfs_bdfs[pf].append(k)
 
 for vm_id in range(1, nb_vms + 1):
@@ -167,7 +167,7 @@ try:
         def_no = 0
         idx = VM_CFG_START + vm_id #vm config starts from index 9
         vm_cfg = str(sys.argv[idx])
-    
+
         s = pxssh.pxssh(timeout = 200000)
         s.login ("127.0.0.1", "root", "dpdk", port = base_port + vm_id)
         os.system("sshpass -p dpdk rsync -avz  --exclude 'incoming' -e 'ssh -p " + str(base_port + vm_id) + " ' "+ workspace_path + "  root@127.0.0.1:/home/dpdk/")
@@ -210,16 +210,16 @@ try:
         print s.before
         os.system("sshpass -p dpdk scp -r -P " + str(base_port + vm_id) + " root@127.0.0.1:" + script_path + "/qdma_perf_results/out_auto_" + testname + "/0/dmaperf_results/*.xlsx .")
         os.system("sshpass -p dpdk scp -r -P " + str(base_port + vm_id) + " root@127.0.0.1:" + script_path + "dmesg_log.txt ./dmesg_vm.log")
-        
+
         os.system("dmesg > dmesg_host.log")
         s.sendline('shutdown 1')
         s.prompt()
         print s.before
         s.logout()
-		
+
         time.sleep(1)
 
-    
+
 
 except pxssh.ExceptionPxssh, e:
     print "pxssh failed on login."

@@ -83,7 +83,7 @@ def prog_board(mode) {
 		
         echo "uploading bitstream..."
         dir('.') { script {
-            if ("$DEVICETYPE" == "VERSAL_H10") {
+            if ("$DEVICETYPE" == "CPM5") {
                 run_as_sudo('python3.6 util/common/scripts/pdu_auto_login.py -u ${PDU_IP} -a 5 -r ${PDU_RELAY}')
                 sleep 5
                 if ("${mode}" == "mm_bram") {
@@ -235,8 +235,9 @@ pipeline {
 								
 								run_as_sudo("python vm_performance.py \"/home/dpdk/tests/linux/scripts/perf_test_scripts/\" \"./run_qdma_linux_perf_tests.sh 00040 ${DRIVER_PATH} dmaperf_versal_pfetch_configs_st ${NODE_ADDRESS}_vm_st ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE} ${MARKER_EN} 1\" ../../../../drivers/linux/ linux ${PCI_BBDDF} ${VM_PATH} 1 ${VM_RAM} ${VM_CORES} ${NODE_ADDRESS}_vm_st 4 \"1 0 0 0\" vfio-pci 0")
 							} else if ("$DEVICETYPE" == "EQDMA") {
-								
 								run_as_sudo("python vm_performance.py \"/home/dpdk/tests/linux/scripts/perf_test_scripts/\" \"./run_qdma_linux_perf_tests.sh 00040 ${DRIVER_PATH} dmaperf_eqdma_pfetch_configs_st ${NODE_ADDRESS}_vm_st ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE} ${MARKER_EN} 1\" ../../../../drivers/linux/ linux ${PCI_BBDDF} ${VM_PATH} 1 ${VM_RAM} ${VM_CORES} ${NODE_ADDRESS}_vm_st 4 \"1 0 0 0\" vfio-pci 0")
+							} else if ("$DEVICETYPE" == "CPM5") {
+								run_as_sudo("python vm_performance.py \"/home/dpdk/tests/linux/scripts/perf_test_scripts/\" \"./run_qdma_linux_perf_tests.sh 00040 ${DRIVER_PATH} dmaperf_eqdma_pfetch_configs_st ${NODE_ADDRESS}_vm_st ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE} ${MARKER_EN} 1 ${DEVICETYPE}\" ../../../../drivers/linux/ linux ${PCI_BBDDF} ${VM_PATH} 1 ${VM_RAM} ${VM_CORES} ${NODE_ADDRESS}_vm_st 4 \"1 0 0 0\" vfio-pci 0")
 							} else {
 								run_as_sudo("python vm_performance.py \"/home/dpdk/tests/linux/scripts/perf_test_scripts/\" \"./run_qdma_linux_perf_tests.sh 00040 ${DRIVER_PATH} dmaperf_pfetch_configs_st ${NODE_ADDRESS}_vm_st ${IO_RUNTIME} ${BIDI_ANALYSIS_EN} 1 ${BURST_SIZE} ${MARKER_EN} 1\" ../../../../drivers/linux/ linux ${PCI_BBDDF} ${VM_PATH} 1 ${VM_RAM} ${VM_CORES} ${NODE_ADDRESS}_vm_st 4 \"1 0 0 0\" vfio-pci 0")
 							}
