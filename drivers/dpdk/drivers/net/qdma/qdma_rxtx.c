@@ -909,8 +909,8 @@ uint16_t qdma_recv_pkts_st(void *rx_queue, struct rte_mbuf **rx_pkts,
 	if (cmpt_pidx != rxq->qstats.wrb_pidx) {
 		/* stop the timer */
 		rxq->qstats.pkt_lat.curr = rte_get_timer_cycles();
-		rxq_sw_pidx_to_cmpt_pidx_latency[rxq->queue_id][rxq->qstats.lat_cnt] =
-				rxq->qstats.pkt_lat.curr - rxq->qstats.pkt_lat.prev;
+		c2h_pidx_to_cmpt_pidx_lat[rxq->queue_id][rxq->qstats.lat_cnt] =
+			rxq->qstats.pkt_lat.curr - rxq->qstats.pkt_lat.prev;
 		rxq->qstats.lat_cnt = ((rxq->qstats.lat_cnt + 1) % LATENCY_CNT);
 	}
 #endif
@@ -1225,8 +1225,8 @@ uint16_t qdma_xmit_pkts_st(void *tx_queue, struct rte_mbuf **tx_pkts,
 	if (cidx != txq->qstats.wrb_cidx) {
 		/* stop the timer */
 		txq->qstats.pkt_lat.curr = rte_get_timer_cycles();
-		txq_sw_pidx_to_hw_cidx_latency[txq->queue_id][txq->qstats.lat_cnt] =
-				txq->qstats.pkt_lat.curr - txq->qstats.pkt_lat.prev;
+		h2c_pidx_to_hw_cidx_lat[txq->queue_id][txq->qstats.lat_cnt] =
+			txq->qstats.pkt_lat.curr - txq->qstats.pkt_lat.prev;
 		txq->qstats.lat_cnt = ((txq->qstats.lat_cnt + 1) % LATENCY_CNT);
 	}
 #endif

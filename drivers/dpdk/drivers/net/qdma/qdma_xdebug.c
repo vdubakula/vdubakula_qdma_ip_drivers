@@ -454,6 +454,7 @@ static int qdma_txq_stats_dump(uint8_t port_id, uint16_t queue)
 	double txq_avg_lat_ms = 0;
 	const struct rte_memzone *memzone;
 	double (*lat_data)[LATENCY_CNT] = NULL;
+	uint64_t hz;
 	int i;
 #endif
 
@@ -510,16 +511,17 @@ static int qdma_txq_stats_dump(uint8_t port_id, uint16_t queue)
 
 	xdebug_info("\n\t**** TxQ SW PIDX to HW CIDX Latency for qid: %d ****\n",
 			queue);
+	hz = rte_get_timer_hz();
 	for (i = 0; i < LATENCY_CNT; i++) {
 		pkt_lat_val_ms =
-			((double)lat_data[queue][i]*1000000 / (double)rte_get_timer_hz());
+			((double)lat_data[queue][i]*1000000/hz);
 		txq_avg_lat_ms += pkt_lat_val_ms;
-		xdebug_info("\t\t txq_sw_pidx_to_hw_cidx_latency[%d][%d] : %f ms\n",
+		xdebug_info("\t\t h2c_sw_pidx_to_hw_cidx_latency[%d][%d] : %f ms\n",
 			queue, i, pkt_lat_val_ms);
 	}
 
 	xdebug_info(
-			"\n\t Avg txq_sw_pidx_to_hw_cidx_latency for qid:%d is %f ms\n",
+			"\n\t Avg h2c_sw_pidx_to_hw_cidx_latency for qid:%d is %f ms\n",
 			queue, (txq_avg_lat_ms/LATENCY_CNT));
 #endif
 
@@ -535,6 +537,7 @@ static int qdma_rxq_stats_dump(uint8_t port_id, uint16_t queue)
 	double rxq_avg_lat_ms = 0;
 	const struct rte_memzone *memzone;
 	double (*lat_data)[LATENCY_CNT] = NULL;
+	uint64_t hz;
 	int i;
 #endif
 
@@ -594,16 +597,17 @@ static int qdma_rxq_stats_dump(uint8_t port_id, uint16_t queue)
 
 	xdebug_info("\n\t*** RxQ SW PIDX to CMPT PIDX Latency for qid: %d ***\n",
 		queue);
+	hz = rte_get_timer_hz();
 	for (i = 0; i < LATENCY_CNT; i++) {
 		pkt_lat_val_ms =
-			((double)lat_data[queue][i]*1000000 / (double)rte_get_timer_hz());
+			((double)lat_data[queue][i]*1000000/hz);
 		rxq_avg_lat_ms += pkt_lat_val_ms;
-		xdebug_info("\t\t rxq_sw_pidx_to_cmpt_pidx_latency[%d][%d] : %f ms\n",
+		xdebug_info("\t\t c2h_sw_pidx_to_cmpt_pidx_latency[%d][%d] : %f ms\n",
 			queue, i, pkt_lat_val_ms);
 	}
 
 	xdebug_info(
-			"\n\t Avg rxq_sw_pidx_to_cmpt_pidx_latency for qid:%d is %f ms\n",
+			"\n\t Avg c2h_sw_pidx_to_cmpt_pidx_latency for qid:%d is %f ms\n",
 			queue, (rxq_avg_lat_ms/LATENCY_CNT));
 #endif
 

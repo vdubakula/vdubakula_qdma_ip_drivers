@@ -64,10 +64,10 @@
 #define MAX_PCIE_CAPABILITY    (48)
 
 #ifdef LATENCY_MEASUREMENT
-const struct rte_memzone *txq_lat_buf_mz = NULL;
-const struct rte_memzone *rxq_lat_buf_mz = NULL;
-double (*txq_sw_pidx_to_hw_cidx_latency)[LATENCY_CNT] = NULL;
-double (*rxq_sw_pidx_to_cmpt_pidx_latency)[LATENCY_CNT] = NULL;
+const struct rte_memzone *txq_lat_buf_mz;
+const struct rte_memzone *rxq_lat_buf_mz;
+double (*h2c_pidx_to_hw_cidx_lat)[LATENCY_CNT] = NULL;
+double (*c2h_pidx_to_cmpt_pidx_lat)[LATENCY_CNT] = NULL;
 #endif
 
 static void qdma_device_attributes_get(struct rte_eth_dev *dev);
@@ -782,30 +782,30 @@ int qdma_eth_dev_init(struct rte_eth_dev *dev)
 	}
 
 #ifdef LATENCY_MEASUREMENT
-    /* Create a shared memory zone for the txq latency buffer */
-    txq_lat_buf_mz = rte_memzone_reserve("TXQ_LAT_BUFFER_ZONE",
+	/* Create a shared memory zone for the txq latency buffer */
+	txq_lat_buf_mz = rte_memzone_reserve("TXQ_LAT_BUFFER_ZONE",
 		LATENCY_MAX_QUEUES * LATENCY_CNT * sizeof(double),
 		rte_socket_id(), 0);
-    if (txq_lat_buf_mz == NULL) {
+	if (txq_lat_buf_mz == NULL) {
 		PMD_DRV_LOG(ERR, "Failed to allocate txq latency buffer memzone\n");
-        return -1;
-    }
+		return -1;
+	}
 
-    /* Get the virtual address of the txq latency buffer */
-    txq_sw_pidx_to_hw_cidx_latency =
+	/* Get the virtual address of the txq latency buffer */
+	h2c_pidx_to_hw_cidx_lat =
 		(double(*)[LATENCY_CNT])txq_lat_buf_mz->addr;
 
-    /* Create a shared memory zone for the rxq latency buffer */
-    rxq_lat_buf_mz = rte_memzone_reserve("RXQ_LAT_BUFFER_ZONE",
+	/* Create a shared memory zone for the rxq latency buffer */
+	rxq_lat_buf_mz = rte_memzone_reserve("RXQ_LAT_BUFFER_ZONE",
 		LATENCY_MAX_QUEUES * LATENCY_CNT * sizeof(double),
 		rte_socket_id(), 0);
-    if (rxq_lat_buf_mz == NULL) {
+	if (rxq_lat_buf_mz == NULL) {
 		PMD_DRV_LOG(ERR, "Failed to allocate rxq latency buffer memzone\n");
-        return -1;
-    }
+		return -1;
+	}
 
-    /* Get the virtual address of the rxq latency buffer */
-    rxq_sw_pidx_to_cmpt_pidx_latency =
+	/* Get the virtual address of the rxq latency buffer */
+	c2h_pidx_to_cmpt_pidx_lat =
 		(double(*)[LATENCY_CNT])rxq_lat_buf_mz->addr;
 #endif
 

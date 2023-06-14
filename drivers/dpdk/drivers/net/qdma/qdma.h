@@ -114,8 +114,8 @@
 #ifdef LATENCY_MEASUREMENT
 extern const struct rte_memzone *txq_lat_buf_mz;
 extern const struct rte_memzone *rxq_lat_buf_mz;
-extern double (*txq_sw_pidx_to_hw_cidx_latency)[LATENCY_CNT];
-extern double (*rxq_sw_pidx_to_cmpt_pidx_latency)[LATENCY_CNT];
+extern double (*h2c_pidx_to_hw_cidx_lat)[LATENCY_CNT];
+extern double (*c2h_pidx_to_cmpt_pidx_lat)[LATENCY_CNT];
 #endif
 
 enum dma_data_direction {
