@@ -445,10 +445,51 @@ static int qdma_device_dump(uint8_t port_id)
 	return 0;
 }
 
-static int qdma_txq_stats_dump(uint8_t port_id, uint16_t queue)
+static int qdma_tx_qstats_dump(struct qdma_tx_queue *txq)
 {
-	struct rte_eth_dev *dev;
+	if (txq == NULL) {
+		xdebug_info("Caught NULL pointer for queue_id: %d\n", txq->queue_id);
+		return -1;
+	}
+
+	xdebug_info("\n***** QDMA Tx Qstats on port_id: %d for qid: %d *****\n",
+		txq->port_id, txq->queue_id);
+	xdebug_info("\t\t txq_pidx             :%u\n",
+			txq->qstats.pidx);
+	xdebug_info("\t\t txq_wrb_cidx         :%u\n",
+			txq->qstats.wrb_cidx);
+	xdebug_info("\t\t txq_tail             :%u\n",
+			txq->qstats.txq_tail);
+	xdebug_info("\t\t in_use_desc          :%u\n",
+			txq->qstats.in_use_desc);
+	xdebug_info("\t\t nb_pkts              :%u\n",
+			txq->qstats.nb_pkts);
+	xdebug_info("\t\t ring_wrap_cnt        :%u\n",
+			txq->qstats.ring_wrap_cnt);
+	xdebug_info("\t\t txq_full_cnt         :%u\n",
+			txq->qstats.txq_full_cnt);
+
+#ifdef LATENCY_MEASUREMENT
+	xdebug_info("\n\t***** wrb cidx counts *****\n");
+	xdebug_info("\t\t wrb_cidx_cnt_no_change     :%u\n",
+			txq->qstats.wrb_cidx_cnt_no_change);
+	xdebug_info("\t\t wrb_cidx_cnt_lt_8          :%u\n",
+			txq->qstats.wrb_cidx_cnt_lt_8);
+	xdebug_info("\t\t wrb_cidx_cnt_8_to_32       :%u\n",
+			txq->qstats.wrb_cidx_cnt_8_to_32);
+	xdebug_info("\t\t wrb_cidx_cnt_32_to_64      :%u\n",
+			txq->qstats.wrb_cidx_cnt_32_to_64);
+	xdebug_info("\t\t wrb_cidx_cnt_gt_64         :%u\n",
+			txq->qstats.wrb_cidx_cnt_gt_64);
+#endif
+
+	return 0;
+}
+
+static int qdma_tx_qstats_latency_dump(struct rte_eth_dev *dev, uint16_t queue)
+{
 	struct qdma_tx_queue *txq;
+	int ret;
 #ifdef LATENCY_MEASUREMENT
 	double pkt_lat_val_ms = 0;
 	double txq_avg_lat_ms = 0;
@@ -458,12 +499,10 @@ static int qdma_txq_stats_dump(uint8_t port_id, uint16_t queue)
 	int i;
 #endif
 
-	if (port_id >= rte_eth_dev_count_avail()) {
-		xdebug_error("Wrong port id %d\n", port_id);
+	if (dev == NULL) {
+		xdebug_error("Caught NULL pointer for dev\n");
 		return -EINVAL;
 	}
-
-	dev = &rte_eth_devices[port_id];
 
 	if (queue >= dev->data->nb_tx_queues) {
 		xdebug_info("TX queue_id=%d not configured\n", queue);
@@ -477,26 +516,15 @@ static int qdma_txq_stats_dump(uint8_t port_id, uint16_t queue)
 	}
 
 	if (txq->status != RTE_ETH_QUEUE_STATE_STARTED) {
-		xdebug_info("Queue_id %d is not yet started\n", queue);
+		xdebug_info("Queue_id %d is not yet started\n", txq->queue_id);
 		return -1;
 	}
 
-	xdebug_info("\n***** QDMA TxQ stats on port_id: %d for qid: %d *****\n",
-		port_id, queue);
-	xdebug_info("\t\t txq_pidx             :%d\n",
-			txq->qstats.pidx);
-	xdebug_info("\t\t txq_wrb_cidx         :%d\n",
-			txq->qstats.wrb_cidx);
-	xdebug_info("\t\t txq_tail             :%d\n",
-			txq->qstats.txq_tail);
-	xdebug_info("\t\t in_use_desc          :%d\n",
-			txq->qstats.in_use_desc);
-	xdebug_info("\t\t nb_pkts              :%d\n",
-			txq->qstats.nb_pkts);
-	xdebug_info("\t\t ring_wrap_cnt        :%d\n",
-			txq->qstats.ring_wrap_cnt);
-	xdebug_info("\t\t txq_full_cnt         :%d\n",
-			txq->qstats.txq_full_cnt);
+	ret = qdma_tx_qstats_dump(txq);
+	if (ret < 0) {
+		xdebug_info("Failed to dump Tx qstats for queue_id: %d\n", queue);
+		return -1;
+	}
 
 #ifdef LATENCY_MEASUREMENT
 	/* Find the memzone created by the primary application */
@@ -528,10 +556,40 @@ static int qdma_txq_stats_dump(uint8_t port_id, uint16_t queue)
 	return 0;
 }
 
-static int qdma_rxq_stats_dump(uint8_t port_id, uint16_t queue)
+static int qdma_rx_qstats_dump(struct qdma_rx_queue *rxq)
 {
-	struct rte_eth_dev *dev;
+	if (rxq == NULL) {
+		xdebug_info("Caught NULL pointer for queue_id: %d\n", rxq->queue_id);
+		return -1;
+	}
+
+	xdebug_info("\n***** QDMA Rx Qstats on port_id: %d for qid: %d *****\n",
+		rxq->port_id, rxq->queue_id);
+
+	xdebug_info("\t\t rxq_pidx             :%u\n",
+			rxq->qstats.pidx);
+	xdebug_info("\t\t rxq_wrb_pidx         :%u\n",
+			rxq->qstats.wrb_pidx);
+	xdebug_info("\t\t rxq_wrb_cidx         :%u\n",
+			rxq->qstats.wrb_cidx);
+	xdebug_info("\t\t rxq_cmpt_tail        :%u\n",
+			rxq->qstats.rxq_cmpt_tail);
+	xdebug_info("\t\t pending_desc         :%u\n",
+			rxq->qstats.pending_desc);
+	xdebug_info("\t\t ring_wrap_cnt        :%u\n",
+			rxq->qstats.ring_wrap_cnt);
+	xdebug_info("\t\t mbuf_avail_cnt       :%u\n",
+			rxq->qstats.mbuf_avail_cnt);
+	xdebug_info("\t\t mbuf_in_use_cnt      :%u\n",
+			rxq->qstats.mbuf_in_use_cnt);
+
+	return 0;
+}
+
+static int qdma_rx_qstats_latency_dump(struct rte_eth_dev *dev, uint16_t queue)
+{
 	struct qdma_rx_queue *rxq;
+	int ret;
 #ifdef LATENCY_MEASUREMENT
 	double pkt_lat_val_ms = 0;
 	double rxq_avg_lat_ms = 0;
@@ -541,12 +599,10 @@ static int qdma_rxq_stats_dump(uint8_t port_id, uint16_t queue)
 	int i;
 #endif
 
-	if (port_id >= rte_eth_dev_count_avail()) {
-		xdebug_error("Wrong port id %d\n", port_id);
+	if (dev == NULL) {
+		xdebug_error("Caught NULL pointer for dev\n");
 		return -EINVAL;
 	}
-
-	dev = &rte_eth_devices[port_id];
 
 	if (queue >= dev->data->nb_rx_queues) {
 		xdebug_info("RX queue_id=%d not configured\n", queue);
@@ -560,29 +616,15 @@ static int qdma_rxq_stats_dump(uint8_t port_id, uint16_t queue)
 	}
 
 	if (rxq->status != RTE_ETH_QUEUE_STATE_STARTED) {
-		xdebug_info("Queue_id %d is not yet started\n", queue);
+		xdebug_info("Queue_id %d is not yet started\n", rxq->queue_id);
 		return -1;
 	}
 
-	xdebug_info("\n***** QDMA RxQ stats on port_id: %d for qid: %d *****\n",
-		port_id, queue);
-
-	xdebug_info("\t\t rxq_pidx             :%d\n",
-			rxq->qstats.pidx);
-	xdebug_info("\t\t rxq_wrb_pidx         :%d\n",
-			rxq->qstats.wrb_pidx);
-	xdebug_info("\t\t rxq_wrb_cidx         :%d\n",
-			rxq->qstats.wrb_cidx);
-	xdebug_info("\t\t rxq_cmpt_tail        :%d\n",
-			rxq->qstats.rxq_cmpt_tail);
-	xdebug_info("\t\t pending_desc         :%d\n",
-			rxq->qstats.pending_desc);
-	xdebug_info("\t\t ring_wrap_cnt        :%d\n",
-			rxq->qstats.ring_wrap_cnt);
-	xdebug_info("\t\t mbuf_avail_cnt       :%d\n",
-			rxq->qstats.mbuf_avail_cnt);
-	xdebug_info("\t\t mbuf_in_use_cnt      :%d\n",
-			rxq->qstats.mbuf_in_use_cnt);
+	ret = qdma_rx_qstats_dump(rxq);
+	if (ret < 0) {
+		xdebug_info("Failed to dump Rx qstats for queue_id: %d\n", queue);
+		return -1;
+	}
 
 #ifdef LATENCY_MEASUREMENT
 	/* Find the memzone created by the primary application */
@@ -1204,23 +1246,115 @@ int rte_pmd_qdma_dbg_qdevice(uint8_t port_id)
 
 int rte_pmd_qdma_qstats(uint8_t port_id, uint16_t queue)
 {
-	int err;
+	struct rte_eth_dev *dev;
+	int ret;
 
 	if (port_id >= rte_eth_dev_count_avail()) {
 		xdebug_error("Wrong port id %d\n", port_id);
 		return -EINVAL;
 	}
 
-	err = qdma_txq_stats_dump(port_id, queue);
-	if (err) {
-		xdebug_error("Error dumping QDMA Tx queue stats\n");
-		return err;
+	dev = &rte_eth_devices[port_id];
+	if (dev == NULL) {
+		xdebug_error("Caught NULL pointer for dev\n");
+		return -EINVAL;
 	}
 
-	err = qdma_rxq_stats_dump(port_id, queue);
-	if (err) {
+	ret = qdma_tx_qstats_latency_dump(dev, queue);
+	if (ret) {
+		xdebug_error("Error dumping QDMA Tx queue stats\n");
+		return ret;
+	}
+
+	ret = qdma_rx_qstats_latency_dump(dev, queue);
+	if (ret) {
 		xdebug_error("Error dumping QDMA Rx queue stats\n");
-		return err;
+		return ret;
+	}
+
+	return 0;
+}
+
+int qdma_tx_qstats_clear(struct rte_eth_dev *dev, uint16_t queue)
+{
+	struct qdma_tx_queue *txq;
+	int ret;
+
+	if (queue >= dev->data->nb_tx_queues) {
+		xdebug_info("TX queue_id=%d not configured\n", queue);
+		return -EINVAL;
+	}
+
+	txq = (struct qdma_tx_queue *)dev->data->tx_queues[queue];
+	if (txq == NULL) {
+		xdebug_info("Caught NULL pointer for queue_id: %d\n", queue);
+		return -EINVAL;
+	}
+
+	memset(&txq->qstats, 0, sizeof(struct qdma_txq_stats));
+
+	xdebug_info("\nCleared Tx queue stats for  qid: %d\n", queue);
+
+	ret = qdma_tx_qstats_dump(txq);
+	if (ret < 0) {
+		xdebug_info("Failed to dump Tx qstats for queue_id: %d\n", queue);
+		return -1;
+	}
+
+	return 0;
+}
+
+int qdma_rx_qstats_clear(struct rte_eth_dev *dev, uint16_t queue)
+{
+	struct qdma_rx_queue *rxq;
+	int ret;
+
+	if (queue >= dev->data->nb_rx_queues) {
+		xdebug_info("RX queue_id=%d not configured\n", queue);
+		return -EINVAL;
+	}
+
+	rxq = (struct qdma_rx_queue *)dev->data->rx_queues[queue];
+	if (rxq == NULL) {
+		xdebug_info("Caught NULL pointer for queue_id: %d\n", queue);
+		return -EINVAL;
+	}
+
+	memset(&rxq->qstats, 0, sizeof(struct qdma_rxq_stats));
+
+	xdebug_info("\nCleared Rx queue stats for  qid: %d\n", queue);
+
+	ret = qdma_rx_qstats_dump(rxq);
+	if (ret < 0) {
+		xdebug_info("Failed to dump Rx qstats for queue_id: %d\n", queue);
+		return -1;
+	}
+
+	return 0;
+}
+
+int rte_pmd_qdma_qstats_clear(uint8_t port_id, uint16_t queue)
+{
+	struct rte_eth_dev *dev;
+	int ret;
+
+	if (port_id >= rte_eth_dev_count_avail()) {
+		xdebug_error("Wrong port id %d\n", port_id);
+		return -EINVAL;
+	}
+
+	dev = &rte_eth_devices[port_id];
+
+	ret = qdma_tx_qstats_clear(dev, queue);
+	if (ret) {
+		xdebug_error("Failed to clear QDMA Tx queue stats\n");
+		return ret;
+	}
+
+	ret = qdma_rx_qstats_clear(dev, queue);
+	if (ret) {
+		xdebug_error("Failed to clear QDMA Rx queue stats\n");
+		return ret;
 	}
 
 	return 0;

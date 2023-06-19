@@ -160,6 +160,11 @@ struct qdma_txq_stats {
 	uint32_t ring_wrap_cnt;
 	uint32_t txq_full_cnt;
 #ifdef LATENCY_MEASUREMENT
+	uint32_t wrb_cidx_cnt_no_change;
+	uint32_t wrb_cidx_cnt_lt_8;
+	uint32_t wrb_cidx_cnt_8_to_32;
+	uint32_t wrb_cidx_cnt_32_to_64;
+	uint32_t wrb_cidx_cnt_gt_64;
 	struct qdma_pkt_lat pkt_lat;
 #endif
 };
@@ -488,5 +493,8 @@ uint16_t qdma_recv_pkts_st_vec(void *rx_queue,
 
 void __rte_cold qdma_set_tx_function(struct rte_eth_dev *dev);
 void __rte_cold qdma_set_rx_function(struct rte_eth_dev *dev);
+
+int qdma_tx_qstats_clear(struct rte_eth_dev *dev, uint16_t queue);
+int qdma_rx_qstats_clear(struct rte_eth_dev *dev, uint16_t queue);
 
 #endif /* ifndef __QDMA_H__ */

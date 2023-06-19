@@ -649,6 +649,14 @@ int qdma_dev_rx_queue_setup(struct rte_eth_dev *dev, uint16_t rx_queue_id,
 
 	dev->data->rx_queues[rx_queue_id] = rxq;
 
+	err = qdma_rx_qstats_clear(dev, rx_queue_id);
+	if (err) {
+		PMD_DRV_LOG(ERR,
+			"Failed to clear QDMA Rx queue stats for qid: %d\n",
+			rx_queue_id);
+		return err;
+	}
+
 	return 0;
 
 rx_setup_err:
@@ -899,6 +907,14 @@ int qdma_dev_tx_queue_setup(struct rte_eth_dev *dev, uint16_t tx_queue_id,
 
 	rte_spinlock_init(&txq->pidx_update_lock);
 	dev->data->tx_queues[tx_queue_id] = txq;
+
+	err = qdma_tx_qstats_clear(dev, tx_queue_id);
+	if (err) {
+		PMD_DRV_LOG(ERR,
+			"Failed to clear QDMA Tx queue stats for qid: %d\n",
+			tx_queue_id);
+		return err;
+	}
 
 	return 0;
 

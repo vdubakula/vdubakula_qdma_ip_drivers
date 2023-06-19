@@ -716,12 +716,28 @@ uint16_t qdma_xmit_pkts_st_vec(void *tx_queue,
 	cidx = txq->wb_status->cidx;
 
 #ifdef LATENCY_MEASUREMENT
+	uint32_t cidx_cnt = 0;
 	if (cidx != txq->qstats.wrb_cidx) {
+		if ((cidx - txq->qstats.wrb_cidx) > 0) {
+			cidx_cnt = cidx - txq->qstats.wrb_cidx;
+
+			if (cidx_cnt <= 8)
+				txq->qstats.wrb_cidx_cnt_lt_8++;
+			else if (cidx_cnt > 8 && cidx_cnt <= 32)
+				txq->qstats.wrb_cidx_cnt_8_to_32++;
+			else if (cidx_cnt > 32 && cidx_cnt <= 64)
+				txq->qstats.wrb_cidx_cnt_32_to_64++;
+			else
+				txq->qstats.wrb_cidx_cnt_gt_64++;
+		}
+
 		/* stop the timer */
 		txq->qstats.pkt_lat.curr = rte_get_timer_cycles();
 		h2c_pidx_to_hw_cidx_lat[txq->queue_id][txq->qstats.lat_cnt] =
 			txq->qstats.pkt_lat.curr - txq->qstats.pkt_lat.prev;
 		txq->qstats.lat_cnt = ((txq->qstats.lat_cnt + 1) % LATENCY_CNT);
+	} else {
+		txq->qstats.wrb_cidx_cnt_no_change++;
 	}
 #endif
 
