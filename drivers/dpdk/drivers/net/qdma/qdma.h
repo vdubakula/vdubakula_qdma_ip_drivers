@@ -70,6 +70,13 @@
 
 #define MIN_RX_PIDX_UPDATE_THRESHOLD (1)
 #define MIN_TX_PIDX_UPDATE_THRESHOLD (1)
+
+#define MIN_RX_PIDX_UPDATE_THRESHOLD_8 (8)
+#define MIN_TX_PIDX_UPDATE_THRESHOLD_8 (8)
+
+#define MIN_RX_PIDX_UPDATE_THRESHOLD_32 (32)
+#define MIN_TX_PIDX_UPDATE_THRESHOLD_32 (32)
+
 #define DEFAULT_MM_CMPT_CNT_THRESHOLD	(2)
 #define QDMA_TXQ_PIDX_UPDATE_INTERVAL	(1000) //100 uSec
 
@@ -222,6 +229,7 @@ struct qdma_rx_queue {
 	struct rte_mbuf		**sw_ring; /**< address of RX software ring. */
 	enum rte_pmd_qdma_bypass_desc_len	bypass_desc_sz:7;
 
+	uint16_t		rx_pidx_thresh;
 	uint16_t		rx_tail;
 	uint16_t		cmpt_desc_len;
 	uint16_t		rx_buff_size;
@@ -291,6 +299,7 @@ struct qdma_tx_queue {
 	struct wb_status		*wb_status;
 	struct rte_mbuf			**sw_ring;/* SW ring virtual address*/
 	uint16_t			tx_desc_pend;
+	uint16_t			tx_pidx_thresh;
 	uint16_t			nb_tx_desc; /* No of TX descriptors.*/
 	rte_spinlock_t			pidx_update_lock;
 	uint64_t			offloads; /* Tx offloads */
