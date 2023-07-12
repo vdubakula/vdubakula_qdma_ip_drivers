@@ -650,18 +650,8 @@ int qdma_eth_dev_init(struct rte_eth_dev *dev)
 	/* Getting the device attributes from the Hardware */
 	qdma_device_attributes_get(dev);
 
-	if (dma_priv->dev_cap.cmpt_trig_count_timer) {
-		/* Setting default Mode to
-		 * RTE_PMD_QDMA_TRIG_MODE_USER_TIMER_COUNT
-		 */
-		dma_priv->trigger_mode =
-					RTE_PMD_QDMA_TRIG_MODE_USER_TIMER_COUNT;
-	} else{
-		/* Setting default Mode to RTE_PMD_QDMA_TRIG_MODE_USER_TIMER */
-		dma_priv->trigger_mode = RTE_PMD_QDMA_TRIG_MODE_USER_TIMER;
-	}
-	if (dma_priv->trigger_mode == RTE_PMD_QDMA_TRIG_MODE_USER_TIMER_COUNT)
-		dma_priv->timer_count = DEFAULT_TIMER_CNT_TRIG_MODE_COUNT_TIMER;
+	/* Setting default Mode to RTE_PMD_QDMA_TRIG_MODE_USER_TIMER */
+	dma_priv->trigger_mode = RTE_PMD_QDMA_TRIG_MODE_USER_TIMER;
 
 	/* Create master resource node for queue management on the given
 	 * bus number. Node will be created only once per bus number.
