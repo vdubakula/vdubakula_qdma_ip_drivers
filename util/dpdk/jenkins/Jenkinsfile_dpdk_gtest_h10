@@ -100,12 +100,19 @@ pipeline {
 
         	stage('deploy') { steps {
             		node("${NODE_ADDRESS}")  {
-                                run_as_sudo('python3 util/common/scripts/pdu_auto_login.py -u ${PDU_IP} -a 5 -r ${PDU_RELAY}')
+                                ignore_error({run_as_sudo('python3 util/common/scripts/pdu_auto_login.py -u ${PDU_IP} -a 5 -r ${PDU_RELAY}')})
+				sleep 5
                 		echo "uploading bitstream..."
                 		dir('.') { script {
                     			bitfile_dir ="${env.WORKSPACE}/${BITFILE}"
                     			echo "${bitfile_dir}" // BITFILE can be set via jenkins job parameter
-									run_as_sudo('sh util/common/scripts/program_versal_h10_pdi.sh ${TARGET_ID} ${BITFILE}')
+					if ("$DEVICETYPE" == "VERSAL_H10") {
+						run_as_sudo('sh util/common/scripts/program_versal_h10_pdi.sh ${TARGET_ID} ${BITFILE}')
+					}else if ("$DEVICETYPE" == "VERSAL_ES2") {
+						      run_as_sudo('sh util/common/scripts/program_versal_es2_pdi.sh ${TARGET_ID} util/common/scripts/versal_es2_jtag_boot.tcl ${BITFILE}')
+        }
+	sleep 5
+
 									//run_as_sudo('/proj/xbuilds/2018.2_daily_latest/installs/lin64/Vivado/2018.2/bin/vivado -nolog -nojournal -mode batch -source util/common/scripts/program_bitstream.tcl -tclargs ${TARGET_ID} 0 ${BITFILE}')
                 		}}
             		}
