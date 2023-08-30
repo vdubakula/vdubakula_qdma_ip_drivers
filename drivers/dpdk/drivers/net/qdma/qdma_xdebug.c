@@ -448,7 +448,8 @@ static int qdma_device_dump(uint8_t port_id)
 static int qdma_tx_qstats_dump(struct qdma_tx_queue *txq)
 {
 	if (txq == NULL) {
-		xdebug_info("Caught NULL pointer for queue_id: %d\n", txq->queue_id);
+		xdebug_info("Caught NULL pointer for queue_id: %d\n",
+			txq->queue_id);
 		return -1;
 	}
 
@@ -522,7 +523,8 @@ static int qdma_tx_qstats_latency_dump(struct rte_eth_dev *dev, uint16_t queue)
 
 	ret = qdma_tx_qstats_dump(txq);
 	if (ret < 0) {
-		xdebug_info("Failed to dump Tx qstats for queue_id: %d\n", queue);
+		xdebug_info("Failed to dump Tx qstats for queue_id: %d\n",
+			queue);
 		return -1;
 	}
 
@@ -559,7 +561,8 @@ static int qdma_tx_qstats_latency_dump(struct rte_eth_dev *dev, uint16_t queue)
 static int qdma_rx_qstats_dump(struct qdma_rx_queue *rxq)
 {
 	if (rxq == NULL) {
-		xdebug_info("Caught NULL pointer for queue_id: %d\n", rxq->queue_id);
+		xdebug_info("Caught NULL pointer for queue_id: %d\n",
+			rxq->queue_id);
 		return -1;
 	}
 
@@ -622,7 +625,8 @@ static int qdma_rx_qstats_latency_dump(struct rte_eth_dev *dev, uint16_t queue)
 
 	ret = qdma_rx_qstats_dump(rxq);
 	if (ret < 0) {
-		xdebug_info("Failed to dump Rx qstats for queue_id: %d\n", queue);
+		xdebug_info("Failed to dump Rx qstats for queue_id: %d\n",
+			queue);
 		return -1;
 	}
 
@@ -1293,11 +1297,13 @@ int qdma_tx_qstats_clear(struct rte_eth_dev *dev, uint16_t queue)
 
 	memset(&txq->qstats, 0, sizeof(struct qdma_txq_stats));
 
-	xdebug_info("\nCleared Tx queue stats for  qid: %d\n", queue);
+	xdebug_info("\nCleared Tx queue stats for  qid: %d\n",
+		queue);
 
 	ret = qdma_tx_qstats_dump(txq);
 	if (ret < 0) {
-		xdebug_info("Failed to dump Tx qstats for queue_id: %d\n", queue);
+		xdebug_info("Failed to dump Tx qstats for queue_id: %d\n",
+			queue);
 		return -1;
 	}
 
@@ -1322,11 +1328,13 @@ int qdma_rx_qstats_clear(struct rte_eth_dev *dev, uint16_t queue)
 
 	memset(&rxq->qstats, 0, sizeof(struct qdma_rxq_stats));
 
-	xdebug_info("\nCleared Rx queue stats for  qid: %d\n", queue);
+	xdebug_info("\nCleared Rx queue stats for  qid: %d\n",
+		queue);
 
 	ret = qdma_rx_qstats_dump(rxq);
 	if (ret < 0) {
-		xdebug_info("Failed to dump Rx qstats for queue_id: %d\n", queue);
+		xdebug_info("Failed to dump Rx qstats for queue_id: %d\n",
+			queue);
 		return -1;
 	}
 
