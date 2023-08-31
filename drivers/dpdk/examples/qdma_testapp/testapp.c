@@ -877,6 +877,14 @@ int port_init(int port_id, int num_queues, int st_queues,
 	 */
 	nb_buff += ((NUM_TX_PKTS) * num_queues);
 
+	/*
+	* rte_mempool_create_empty() has sanity check to refuse large cache
+	* size compared to the number of elements.
+	* CACHE_FLUSHTHRESH_MULTIPLIER (1.5) is defined in a C file, so using a
+	* constant number 2 instead.
+	*/
+	nb_buff = RTE_MAX(nb_buff, MP_CACHE_SZ * 2);
+
 	mbuf_pool = rte_pktmbuf_pool_create(pinfo[port_id].mem_pool, nb_buff,
 			MP_CACHE_SZ, 0, buff_size +
 			RTE_PKTMBUF_HEADROOM,
