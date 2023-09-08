@@ -538,7 +538,7 @@ static int rearm_c2h_ring_vec(struct qdma_rx_queue *rxq, uint16_t num_desc)
 }
 
 /* Receive API for Streaming mode */
-uint16_t qdma_recv_pkts_st_vec(void *rx_queue,
+uint16_t qdma_recv_pkts_st_vec(struct qdma_rx_queue *rxq,
 		struct rte_mbuf **rx_pkts, uint16_t nb_pkts)
 {
 	uint16_t count_pkts;
@@ -547,7 +547,6 @@ uint16_t qdma_recv_pkts_st_vec(void *rx_queue,
 	uint16_t rx_cmpt_tail = 0;
 	uint16_t cmpt_pidx, c2h_pidx;
 	uint16_t pending_desc;
-	struct qdma_rx_queue *rxq = rx_queue;
 #ifdef TEST_64B_DESC_BYPASS
 	int bypass_desc_sz_idx = qmda_get_desc_sz_idx(rxq->bypass_desc_sz);
 #endif
@@ -678,15 +677,15 @@ uint16_t qdma_recv_pkts_vec(void *rx_queue, struct rte_mbuf **rx_pkts,
 	uint32_t count;
 
 	if (rxq->st_mode)
-		count = qdma_recv_pkts_st_vec(rx_queue, rx_pkts, nb_pkts);
+		count = qdma_recv_pkts_st_vec(rxq, rx_pkts, nb_pkts);
 	else
-		count = qdma_recv_pkts_mm(rx_queue, rx_pkts, nb_pkts);
+		count = qdma_recv_pkts_mm(rxq, rx_pkts, nb_pkts);
 
 	return count;
 }
 
 /* Transmit API for Streaming mode */
-uint16_t qdma_xmit_pkts_st_vec(void *tx_queue,
+uint16_t qdma_xmit_pkts_st_vec(struct qdma_tx_queue *txq,
 		struct rte_mbuf **tx_pkts, uint16_t nb_pkts)
 {
 	struct rte_mbuf *mb;
@@ -694,7 +693,6 @@ uint16_t qdma_xmit_pkts_st_vec(void *tx_queue,
 	int avail, in_use, ret, nsegs;
 	uint16_t cidx = 0;
 	uint16_t count = 0, id;
-	struct qdma_tx_queue *txq = tx_queue;
 	struct qdma_pci_dev *qdma_dev = txq->dev->data->dev_private;
 
 #ifdef TEST_64B_DESC_BYPASS
@@ -845,9 +843,9 @@ uint16_t qdma_xmit_pkts_vec(void *tx_queue, struct rte_mbuf **tx_pkts,
 		return 0;
 
 	if (txq->st_mode)
-		count =	qdma_xmit_pkts_st_vec(tx_queue, tx_pkts, nb_pkts);
+		count =	qdma_xmit_pkts_st_vec(txq, tx_pkts, nb_pkts);
 	else
-		count =	qdma_xmit_pkts_mm(tx_queue, tx_pkts, nb_pkts);
+		count =	qdma_xmit_pkts_mm(txq, tx_pkts, nb_pkts);
 
 	return count;
 }

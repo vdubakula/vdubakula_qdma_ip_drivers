@@ -482,13 +482,13 @@ int qdma_ul_extract_st_cmpt_info(void *ul_cmpt_entry, void *cmpt_info);
 /* Transmit API for Streaming mode */
 uint16_t qdma_xmit_pkts_vec(void *tx_queue,
 		struct rte_mbuf **tx_pkts, uint16_t nb_pkts);
-uint16_t qdma_xmit_pkts_st_vec(void *tx_queue,
+uint16_t qdma_xmit_pkts_st_vec(struct qdma_tx_queue *txq,
 		struct rte_mbuf **tx_pkts, uint16_t nb_pkts);
 
 /* Receive API for Streaming mode */
 uint16_t qdma_recv_pkts_vec(void *rx_queue,
 		struct rte_mbuf **rx_pkts, uint16_t nb_pkts);
-uint16_t qdma_recv_pkts_st_vec(void *rx_queue,
+uint16_t qdma_recv_pkts_st_vec(struct qdma_rx_queue *rxq,
 		struct rte_mbuf **rx_pkts, uint16_t nb_pkts);
 
 void __rte_cold qdma_set_tx_function(struct rte_eth_dev *dev);
