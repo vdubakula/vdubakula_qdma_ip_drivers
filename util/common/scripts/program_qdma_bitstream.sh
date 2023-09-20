@@ -12,5 +12,5 @@ echo "targets $1" >> program_bitfile.tcl
 echo "fpga -f $2" >> program_bitfile.tcl
 echo "exit" >> program_bitfile.tcl
 
-/proj/xbuilds/2019.2_INT_daily_latest/installs/lin64/Vivado/2019.2/bin/xsdb program_bitfile.tcl
+/proj/xbuilds/2023.1.1_INT_daily_latest/installs/lin64/Vivado/2023.1.1/bin/xsdb program_bitfile.tcl
 rm program_bitfile.tcl
