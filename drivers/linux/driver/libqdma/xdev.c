@@ -1143,17 +1143,6 @@ int qdma_device_open(const char *mod_name, struct qdma_dev_conf *conf,
 	}
 #endif
 
-#ifdef __QDMA_VF__
-	if ((conf->qdma_drv_mode != POLL_MODE) &&
-		(xdev->version_info.ip_type == QDMA_VERSAL_HARD_IP) &&
-		(xdev->version_info.device_type == QDMA_DEVICE_VERSAL_CPM4)) {
-		pr_warn("VF is not supported in %s mode\n",
-				mode_name_list[conf->qdma_drv_mode].name);
-		pr_info("Switching VF to poll mode\n");
-		xdev->conf.qdma_drv_mode = POLL_MODE;
-	}
-#endif
-
 	if ((conf->qdma_drv_mode == LEGACY_INTR_MODE) &&
 			(!xdev->dev_cap.legacy_intr)) {
 		dev_err(&pdev->dev, "Legacy mode interrupts are not supported\n");
