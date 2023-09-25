@@ -636,7 +636,8 @@ uint16_t qdma_recv_pkts_st_vec(struct qdma_rx_queue *rxq,
 	rxq->qstats.mbuf_in_use_cnt = rte_mempool_in_use_count(rxq->mb_pool);
 
 	rxq->rx_pidx_thresh = (nb_pkts >= rxq->nb_rx_desc/2) ?
-		MIN_RX_PIDX_UPDATE_THRESHOLD_32 : MIN_RX_PIDX_UPDATE_THRESHOLD_8;
+		MIN_RX_PIDX_UPDATE_THRESHOLD_32 :
+		MIN_RX_PIDX_UPDATE_THRESHOLD_8;
 
 	/* Batch the PIDX updates, this minimizes overhead on
 	 * descriptor engine
@@ -805,7 +806,8 @@ uint16_t qdma_xmit_pkts_st_vec(struct qdma_tx_queue *txq,
 	txq->tx_desc_pend += count;
 
 	txq->tx_pidx_thresh = (in_use >= txq->nb_tx_desc/2) ?
-		MIN_TX_PIDX_UPDATE_THRESHOLD_32 : MIN_TX_PIDX_UPDATE_THRESHOLD_8;
+		MIN_TX_PIDX_UPDATE_THRESHOLD_32 :
+		MIN_TX_PIDX_UPDATE_THRESHOLD_8;
 
 	/* Send PIDX update only if pending desc is more than threshold
 	 * Saves frequent Hardware transactions
