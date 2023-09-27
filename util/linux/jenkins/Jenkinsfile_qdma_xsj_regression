@@ -22,7 +22,7 @@ def run_as_sudo(shell_command) {
 
 def reboot_target(target_hostname) {
     try {
-        timeout(20) { //minutes
+        timeout(333) { //minutes
             // assume running on master node
             //run_as_sudo("ssh -o StrictHostKeyChecking=no -l icons_cadman ${target_hostname} /usr/bin/sudo -S /sbin/reboot") //schedule reboot in 1 min
 			node(target_hostname) {
