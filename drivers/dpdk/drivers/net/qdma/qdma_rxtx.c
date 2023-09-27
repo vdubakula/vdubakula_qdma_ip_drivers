@@ -969,16 +969,10 @@ uint16_t qdma_recv_pkts_st(struct qdma_rx_queue *rxq,
 	rxq->qstats.mbuf_avail_cnt = rte_mempool_avail_count(rxq->mb_pool);
 	rxq->qstats.mbuf_in_use_cnt = rte_mempool_in_use_count(rxq->mb_pool);
 
-	rxq->rx_pidx_thresh = (nb_pkts >= rxq->nb_rx_desc/2) ?
-		MIN_RX_PIDX_UPDATE_THRESHOLD_32 : MIN_RX_PIDX_UPDATE_THRESHOLD_8;
-
 	/* Batch the PIDX updates, this minimizes overhead on
 	 * descriptor engine
 	 */
-	if (pending_desc >= rxq->rx_pidx_thresh)
-		rearm_c2h_ring(rxq, pending_desc);
-	else if ((rxq->q_pidx_info.pidx == rxq->wb_status->cidx) &&
-			(pending_desc >= MIN_RX_PIDX_UPDATE_THRESHOLD))
+	if (pending_desc >= MIN_RX_PIDX_UPDATE_THRESHOLD)
 		rearm_c2h_ring(rxq, pending_desc);
 
 #ifdef DUMP_MEMPOOL_USAGE_STATS
@@ -1291,34 +1285,20 @@ uint16_t qdma_xmit_pkts_st(struct qdma_tx_queue *txq,
 #endif
 	txq->tx_desc_pend += count;
 
-	txq->tx_pidx_thresh = (in_use >= txq->nb_tx_desc/2) ?
-		MIN_TX_PIDX_UPDATE_THRESHOLD_32 : MIN_TX_PIDX_UPDATE_THRESHOLD_8;
-
 	/* Send PIDX update only if pending desc is more than threshold
 	 * Saves frequent Hardware transactions
 	 */
-	if (txq->tx_desc_pend >= txq->tx_pidx_thresh) {
+	if (txq->tx_desc_pend >= MIN_TX_PIDX_UPDATE_THRESHOLD) {
 		qdma_dev->hw_access->qdma_queue_pidx_update(txq->dev,
 			qdma_dev->is_vf,
 			txq->queue_id, 0, &txq->q_pidx_info);
 
-		txq->tx_desc_pend = 0;
-#ifdef LATENCY_MEASUREMENT
-		/* start the timer */
-		txq->qstats.pkt_lat.prev = rte_get_timer_cycles();
-#endif
-	} else if ((txq->q_pidx_info.pidx == cidx) &&
-			(txq->tx_desc_pend >= MIN_TX_PIDX_UPDATE_THRESHOLD)) {
-		qdma_dev->hw_access->qdma_queue_pidx_update(txq->dev,
-			qdma_dev->is_vf,
-			txq->queue_id, 0, &txq->q_pidx_info);
 		txq->tx_desc_pend = 0;
 #ifdef LATENCY_MEASUREMENT
 		/* start the timer */
 		txq->qstats.pkt_lat.prev = rte_get_timer_cycles();
 #endif
 	}
-
 #if (MIN_TX_PIDX_UPDATE_THRESHOLD > 1)
 	rte_spinlock_unlock(&txq->pidx_update_lock);
 #endif
