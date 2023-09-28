@@ -36,9 +36,9 @@ author = 'Xilinx, Inc'
 
 # The short X.Y version
 #version = u''
-version = '2023.1'
+version = '2023.2'
 # The full version, including alpha/beta/rc tags
-release = u'2023.1'
+release = u'2023.2'
 html_last_updated_fmt = '%B %d, %Y'
 
 # -- General configuration ---------------------------------------------------
