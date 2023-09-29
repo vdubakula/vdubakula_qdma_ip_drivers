@@ -450,10 +450,9 @@ bool qdma_mbox_is_irq_availabe(struct xlnx_dma_dev *xdev)
 	if (((xdev->version_info.device_type == QDMA_DEVICE_SOFT) &&
 		(xdev->version_info.vivado_release >= QDMA_VIVADO_2019_1)))
 		return true;
-
+	/*MBOX is available in all Versal Hard IP from CPM5 onwards */
 	if ((xdev->version_info.ip_type == QDMA_VERSAL_HARD_IP) &&
-		((xdev->version_info.device_type == QDMA_DEVICE_VERSAL_CPM4) ||
-		(xdev->version_info.device_type == QDMA_DEVICE_VERSAL_CPM5)))
+		(xdev->version_info.device_type == QDMA_DEVICE_VERSAL_CPM5))
 		return true;
 
 	return false;
