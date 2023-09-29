@@ -62,6 +62,7 @@ files_2_check=(
 		"drivers/net/qdma/qdma_mbox.h"
 		"drivers/net/qdma/qdma_platform.c"
 		"drivers/net/qdma/qdma_platform_env.h"
+		"drivers/net/qdma/qdma_rxtx_vec_sse.c"
 		"drivers/net/qdma/qdma_rxtx.c"
 		"drivers/net/qdma/qdma_rxtx.h"
 		"drivers/net/qdma/qdma_user.c"
@@ -171,6 +172,7 @@ cp drivers/net/qdma/qdma_mbox.c						$(pwd)/../$release_dir/drivers/net/qdma/
 cp drivers/net/qdma/qdma_mbox.h						$(pwd)/../$release_dir/drivers/net/qdma/
 cp drivers/net/qdma/qdma_platform.c					$(pwd)/../$release_dir/drivers/net/qdma/
 cp drivers/net/qdma/qdma_platform_env.h				$(pwd)/../$release_dir/drivers/net/qdma/
+cp drivers/net/qdma/qdma_rxtx_vec_sse.c				$(pwd)/../$release_dir/drivers/net/qdma/
 cp drivers/net/qdma/qdma_rxtx.c						$(pwd)/../$release_dir/drivers/net/qdma/
 cp drivers/net/qdma/qdma_rxtx.h						$(pwd)/../$release_dir/drivers/net/qdma/
 cp drivers/net/qdma/qdma_user.c						$(pwd)/../$release_dir/drivers/net/qdma/
