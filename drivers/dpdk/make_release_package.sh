@@ -1,5 +1,5 @@
 major_version=2023
-minor_version=1
+minor_version=2
 
 driver_name=dpdk
 append=2000-0160
@@ -110,6 +110,7 @@ files_2_check=(
 		"examples/qdma_testapp/qdma_regs.h"
 		"examples/qdma_testapp/testapp.c"
 		"examples/qdma_testapp/testapp.h"
+		"patches/proc-info/0001-Add-QDMA-xdebug-to-proc-info-of-dpdk-22.11.patch"
 		"patches/pktgen/0001-PKTGEN-20.12.0-Patch-to-add-Jumbo-packet-support.patch"
 		"patches/pktgen/0001-PKTGEN-22.04.1-Patch-to-add-Jumbo-packet-support.patch"
 		"patches/pktgen/README.txt"
@@ -224,6 +225,7 @@ cp examples/qdma_testapp/testapp.c				$(pwd)/../$release_dir/examples/qdma_testa
 cp examples/qdma_testapp/testapp.h				$(pwd)/../$release_dir/examples/qdma_testapp/
 
 # Copy tools Code
+cp patches/proc-info/0001-Add-QDMA-xdebug-to-proc-info-of-dpdk-22.11.patch				$(pwd)/../$release_dir/tools/
 cp patches/pktgen/0001-PKTGEN-20.12.0-Patch-to-add-Jumbo-packet-support.patch			$(pwd)/../$release_dir/tools/
 cp patches/pktgen/0001-PKTGEN-22.04.1-Patch-to-add-Jumbo-packet-support.patch			$(pwd)/../$release_dir/tools/
 cp patches/pktgen/README.txt			$(pwd)/../$release_dir/tools/
