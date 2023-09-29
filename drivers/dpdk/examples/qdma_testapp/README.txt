@@ -273,25 +273,25 @@ Instructions on how to use proc-info test for driver debugging:
 
 3. Run the proc info as secondary application on another linux terminal as mentioned below with diferent port combinations.
 One port:
-	./build/app/dpdk-proc-info -a 81:00.0 -- -p 1 -q 0 -g
-	./build/app/dpdk-proc-info -a 81:00.0 -- -p 1 -q 0 --qdevice
-	./build/app/dpdk-proc-info -a 81:00.0 -- -p 1 -q 0 --qinfo
-	./build/app/dpdk-proc-info -a 81:00.0 -- -p 1 -q 0 --qstats_clr
-	./build/app/dpdk-proc-info -a 81:00.0 -- -p 1 -q 0 --qstats
-	./build/app/dpdk-proc-info -a 81:00.0 -- -p 1 -q 0 --desc-dump tx
-	./build/app/dpdk-proc-info -a 81:00.0 -- -p 1 -q 0 --desc-dump rx
-	./build/app/dpdk-proc-info -a 81:00.0 -- -p 1 -q 0 --desc-dump cmpt
-	./build/app/dpdk-proc-info -a 81:00.0 -- -p 1 -q 0 --stats
+	./build/app/dpdk-proc-info -a 81:00.0 --log-level=7 -- -p 1 -q 0 -g
+	./build/app/dpdk-proc-info -a 81:00.0 --log-level=7 -- -p 1 -q 0 --qdevice
+	./build/app/dpdk-proc-info -a 81:00.0 --log-level=7 -- -p 1 -q 0 --qinfo
+	./build/app/dpdk-proc-info -a 81:00.0 --log-level=7 -- -p 1 -q 0 --qstats_clr
+	./build/app/dpdk-proc-info -a 81:00.0 --log-level=7 -- -p 1 -q 0 --qstats
+	./build/app/dpdk-proc-info -a 81:00.0 --log-level=7 -- -p 1 -q 0 --desc-dump tx
+	./build/app/dpdk-proc-info -a 81:00.0 --log-level=7 -- -p 1 -q 0 --desc-dump rx
+	./build/app/dpdk-proc-info -a 81:00.0 --log-level=7 -- -p 1 -q 0 --desc-dump cmpt
+	./build/app/dpdk-proc-info -a 81:00.0 --log-level=7 -- -p 1 -q 0 --stats
 Two ports:
-	./build/app/dpdk-proc-info -a 81:00.0, -a 81:00.1, -- -p 3 -q 0 -g
-	./build/app/dpdk-proc-info -a 81:00.0, -a 81:00.1, -- -p 3 -q 0 --qdevice
-	./build/app/dpdk-proc-info -a 81:00.0, -a 81:00.1, -- -p 3 -q 0 --qinfo
-	./build/app/dpdk-proc-info -a 81:00.0, -a 81:00.1, -- -p 3 -q 0 --qstats_clr
-	./build/app/dpdk-proc-info -a 81:00.0, -a 81:00.1, -- -p 3 -q 0 --qstats
-	./build/app/dpdk-proc-info -a 81:00.0, -a 81:00.1, -- -p 3 -q 0 --desc-dump tx
-	./build/app/dpdk-proc-info -a 81:00.0, -a 81:00.1, -- -p 3 -q 0 --desc-dump rx
-	./build/app/dpdk-proc-info -a 81:00.0, -a 81:00.1, -- -p 3 -q 0 --desc-dump cmpt
-	./build/app/dpdk-proc-info -a 81:00.0, -a 81:00.1, -- -p 3 -q 0 --stats
+	./build/app/dpdk-proc-info -a 81:00.0, -a 81:00.1, --log-level=7 -- -p 3 -q 0 -g
+	./build/app/dpdk-proc-info -a 81:00.0, -a 81:00.1, --log-level=7 -- -p 3 -q 0 --qdevice
+	./build/app/dpdk-proc-info -a 81:00.0, -a 81:00.1, --log-level=7 -- -p 3 -q 0 --qinfo
+	./build/app/dpdk-proc-info -a 81:00.0, -a 81:00.1, --log-level=7 -- -p 3 -q 0 --qstats_clr
+	./build/app/dpdk-proc-info -a 81:00.0, -a 81:00.1, --log-level=7 -- -p 3 -q 0 --qstats
+	./build/app/dpdk-proc-info -a 81:00.0, -a 81:00.1, --log-level=7 -- -p 3 -q 0 --desc-dump tx
+	./build/app/dpdk-proc-info -a 81:00.0, -a 81:00.1, --log-level=7 -- -p 3 -q 0 --desc-dump rx
+	./build/app/dpdk-proc-info -a 81:00.0, -a 81:00.1, --log-level=7 -- -p 3 -q 0 --desc-dump cmpt
+	./build/app/dpdk-proc-info -a 81:00.0, -a 81:00.1, --log-level=7 -- -p 3 -q 0 --stats
 3. Available commands for proc info are mentioned below.
 		-m to display DPDK memory zones, segments and TAILQ information
 		-g to display DPDK QDMA PMD global CSR info
