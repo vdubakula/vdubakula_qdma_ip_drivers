@@ -158,7 +158,7 @@ pipeline {
 
         stage('deploy') { steps {
             node("${NODE_ADDRESS}")  {
-                run_as_sudo('python3 util/common/scripts/pdu_auto_login.py -u ${PDU_IP} -a 5 -r ${PDU_RELAY}')
+                ignore_error({run_as_sudo('python3 util/common/scripts/pdu_auto_login.py -u ${PDU_IP} -a 5 -r ${PDU_RELAY}')})
                 echo "uploading bitstream..."
                 dir('.') { script {
                     bitfile_dir ="${env.WORKSPACE}/${BITFILE}"
