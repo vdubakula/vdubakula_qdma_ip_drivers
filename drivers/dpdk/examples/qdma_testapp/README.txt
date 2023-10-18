@@ -156,6 +156,8 @@ Supported Commands:
 	dma_from_device		<port-id>	<num-queues> <output-filename> <src-addr> <size> <iterations> :to-recv
 	reg_dump			<port-id>							: to dump all the valid registers
 	queue_dump			<port-id>  <queue-id>				: to dump the queue-context of a queue-number
+	qstats				<port-id>  <queue-id>				: to dump the queue-stats of a queue-number
+	qstats_clr			<port-id>  <queue-id>				: to clear the queue-stats of a queue-number
 	desc_dump			<port-id>  <queue-id>				: to dump the descriptor-fields of a queue-number
 	load_cmds			<file-name>							: to execute the list of commands from the file
 	help
