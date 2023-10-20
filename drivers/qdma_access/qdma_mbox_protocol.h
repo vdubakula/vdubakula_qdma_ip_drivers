@@ -92,6 +92,8 @@ struct mbox_descq_conf {
 	uint16_t intr_id:11;
 	/** @intr_aggr: interrupt aggregation */
 	uint16_t intr_aggr:1;
+	/** @qid2vec_valid: Set when qid2vec context programming required */
+	uint16_t qid2vec_valid:1;
 	/** @filler: filler bits */
 	uint16_t filler:4;
 	/** @ringsz: ring size */
