@@ -1301,9 +1301,8 @@ int qdma_tx_qstats_clear(struct rte_eth_dev *dev, uint16_t queue)
 	memset(&txq->qstats, 0, sizeof(struct qdma_txq_stats));
 
 #ifdef LATENCY_MEASUREMENT
-	for (i = 0; i < LATENCY_CNT; i++) {
+	for (i = 0; i < LATENCY_CNT; i++)
 		h2c_pidx_to_hw_cidx_lat[queue][i] = 0;
-	}
 #endif
 
 	xdebug_info("\nCleared Tx queue stats for  qid: %d\n",
@@ -1341,9 +1340,8 @@ int qdma_rx_qstats_clear(struct rte_eth_dev *dev, uint16_t queue)
 	memset(&rxq->qstats, 0, sizeof(struct qdma_rxq_stats));
 
 #ifdef LATENCY_MEASUREMENT
-	for (i = 0; i < LATENCY_CNT; i++) {
+	for (i = 0; i < LATENCY_CNT; i++)
 		c2h_pidx_to_cmpt_pidx_lat[queue][i] = 0;
-	}
 #endif
 
 	xdebug_info("\nCleared Rx queue stats for  qid: %d\n",
