@@ -541,42 +541,6 @@ static int mbox_compose_sw_context(void *dev_hndl,
 	return QDMA_SUCCESS;
 }
 
-
-static int mbox_compose_qid2vec_context(void *dev_hndl,
-				   struct mbox_msg_qctxt *qctxt,
-				   struct qdma_qid2vec *qid2vec_ctxt)
-{
-	if (!qctxt || !qid2vec_ctxt) {
-		qdma_log_error("%s: qctxt=%p qid2vec_ctxt=%p, err:%d\n",
-						__func__,
-						qctxt, qid2vec_ctxt,
-						-QDMA_ERR_INV_PARAM);
-
-		return -QDMA_ERR_INV_PARAM;
-	}
-
-	qdma_mbox_memset(qid2vec_ctxt, 0, sizeof(struct qdma_qid2vec));
-
-	if (qctxt->c2h) {
-		qid2vec_ctxt->c2h_en_coal = qctxt->descq_conf.intr_aggr;
-		qid2vec_ctxt->c2h_vector = qctxt->descq_conf.intr_id;
-	} else {
-		qid2vec_ctxt->h2c_en_coal = qctxt->descq_conf.intr_aggr;
-		qid2vec_ctxt->h2c_vector = qctxt->descq_conf.intr_id;
-	}
-
-	qdma_log_debug("qid2vec context :\n c2h_vector = %x\n"
-		"c2h_en_coal = %x\n"
-		"h2c_vector = %x\nh2c_en_coal = %x\n",
-		qid2vec_ctxt->c2h_vector,
-		qid2vec_ctxt->c2h_en_coal,
-		qid2vec_ctxt->h2c_vector,
-		qid2vec_ctxt->h2c_en_coal);
-
-	return QDMA_SUCCESS;
-
-}
-
 static int mbox_compose_prefetch_context(void *dev_hndl,
 					 struct mbox_msg_qctxt *qctxt,
 				 struct qdma_descq_prefetch_ctxt *pfetch_ctxt)
@@ -889,13 +853,6 @@ static int mbox_write_queue_contexts(void *dev_hndl, uint8_t dma_device_index,
 		if (rv < 0)
 			return rv;
 
-		if (qctxt->descq_conf.qid2vec_valid) {
-			rv = mbox_compose_qid2vec_context(dev_hndl, qctxt,
-					&descq_ctxt.qid2vec);
-			if (rv < 0)
-				return rv;
-		}
-
 		if (qctxt->st && qctxt->c2h) {
 			rv = mbox_compose_prefetch_context(dev_hndl, qctxt,
 						&descq_ctxt.pfetch_ctxt);
@@ -926,16 +883,6 @@ static int mbox_write_queue_contexts(void *dev_hndl, uint8_t dma_device_index,
 			qdma_log_error("%s: write sw ctxt, err:%d\n",
 						__func__, rv);
 			return rv;
-		}
-
-		if (qctxt->descq_conf.qid2vec_valid) {
-			rv = hw->qdma_qid2vec_conf(dev_hndl, qctxt->c2h, qid_hw,
-				&descq_ctxt.qid2vec, QDMA_HW_ACCESS_WRITE);
-			if (rv < 0) {
-				qdma_log_error("%s: write sw ctxt, err:%d\n",
-							__func__, rv);
-				return rv;
-			}
 		}
 
 		if (qctxt->st && qctxt->c2h) {
