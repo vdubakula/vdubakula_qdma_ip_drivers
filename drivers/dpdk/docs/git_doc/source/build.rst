@@ -177,7 +177,7 @@ support 2K queues and populate Xilinx devices for binding.
 
 		cflags += ['-DLATENCY_MEASUREMENT']
 
-	d. To enable 10 bit tag support in qdma dpdk driver for Gen5x8 performance measurements, add below line to ./drivers/net/qdma/meson.build
+	d. To enable 10 bit tag support in qdma dpdk driver for Gen5x8 performance measurements for CPM5 design, add below line to ./drivers/net/qdma/meson.build
 
 	::
 
