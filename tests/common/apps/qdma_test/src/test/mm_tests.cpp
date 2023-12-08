@@ -266,9 +266,9 @@ public:
     static const auto mode = qdma::queue_ext::mode::memory_mapped;
 };
 
-#ifdef DPDK
-	GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(qdma_neg_inv_qid_ops);
-#endif
+// #ifdef DPDK
+// 	GTEST_ALLOW_UNINSTANTIATED_PARAMETERIZED_TEST(qdma_neg_inv_qid_ops);
+// #endif
 
 TEST_P(qdma_neg_mm_inv_ring_size_test, h2c_c2h) {
 

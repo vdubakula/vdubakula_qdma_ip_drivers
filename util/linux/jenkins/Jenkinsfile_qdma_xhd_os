@@ -113,18 +113,18 @@ def prog_board() {
         echo "make BAR resources accessible for jenkins user"
         run_as_sudo("chmod a+rw /sys/bus/pci/devices/0000:${PCI_ID}/resource*") 
     }
-    
+
     echo "HW programming done"
 }
 
 pipeline {
-    agent { node { label 'master' } }
+    agent { node { label 'built-in' } }
     options {
         disableConcurrentBuilds()
         skipDefaultCheckout(true)
     }
     stages {
-        stage('Checkout') { steps { // 
+        stage('Checkout') { steps { //
             node("${NODE_ADDRESS}") {
                 //deleteDir()
                 checkout scm

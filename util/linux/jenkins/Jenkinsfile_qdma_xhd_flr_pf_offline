@@ -113,7 +113,7 @@ def prog_board() {
 }
 
 pipeline {
-    agent { node { label 'master' } }
+    agent { node { label 'built-in' } }
     options {
         disableConcurrentBuilds()
         skipDefaultCheckout(true)
