@@ -520,7 +520,7 @@ static int mbox_compose_sw_context(void *dev_hndl,
 	sw_ctxt->bypass = qctxt->descq_conf.en_bypass;
 	sw_ctxt->wbk_en = qctxt->descq_conf.wbk_en;
 	sw_ctxt->irq_en = qctxt->descq_conf.irq_en;
-	sw_ctxt->is_mm = ~qctxt->st;
+	sw_ctxt->is_mm = ((qctxt->st) ? 0 : 1);
 	sw_ctxt->mm_chn = 0;
 	sw_ctxt->qen = 1;
 	sw_ctxt->frcd_en = qctxt->descq_conf.forced_en;
@@ -610,6 +610,9 @@ static int mbox_compose_cmpt_context(void *dev_hndl,
 	cmpt_ctxt->desc_sz = qctxt->descq_conf.cmpt_desc_sz;
 
 	cmpt_ctxt->valid = 1;
+
+	if((qctxt->st) && (qctxt->c2h))
+		cmpt_ctxt->dir_c2h = 1;
 
 	cmpt_ctxt->ovf_chk_dis = qctxt->descq_conf.dis_overflow_check;
 	cmpt_ctxt->vec = qctxt->descq_conf.intr_id;

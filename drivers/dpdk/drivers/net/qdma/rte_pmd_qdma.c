@@ -1511,7 +1511,8 @@ static int qdma_pf_cmptq_context_write(struct rte_eth_dev *dev, uint32_t qid)
 	q_cmpt_ctxt.bs_addr = (uint64_t)cmptq->cmpt_mz->iova;
 	q_cmpt_ctxt.desc_sz = cmpt_desc_fmt;
 	q_cmpt_ctxt.valid = 1;
-
+	if(cmptq->st_mode)
+		q_cmpt_ctxt.dir_c2h = 1;
 	if (qdma_dev->dev_cap.cmpt_ovf_chk_dis)
 		q_cmpt_ctxt.ovf_chk_dis = cmptq->dis_overflow_check;
 
