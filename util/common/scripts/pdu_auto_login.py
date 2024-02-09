@@ -1,11 +1,10 @@
-#!/usr/bin/python3.6
-
 import time
 import os
 import argparse
 from argparse import RawTextHelpFormatter
 from selenium import webdriver
 from selenium.webdriver.support.select import Select
+from selenium.webdriver.chrome.options import Options
 
 user_name = "apc"
 pswd = "apc"
@@ -19,7 +18,7 @@ args = parser.parse_args()
 
 def select_outlet_action(driver, val):
     parse_outlet(driver)
-    ctrl_outlet = Select(driver.find_element_by_name("outlet_control_option"))
+    ctrl_outlet = Select(driver.find_element("name", "outlet_control_option"))
     if (val == 1):
         # On Immediate
         ctrl_outlet.select_by_value("01000000")
@@ -46,56 +45,55 @@ def select_outlet_action(driver, val):
 
 def select_outlet(driver, val):
     if (val == 1):
-        driver.find_element_by_xpath("//input[@value='?1']").click()
+        driver.find_element("xpath", "//input[@value='?1']").click()
     elif (val == 2):
-        driver.find_element_by_xpath("//input[@value='?2']").click()
+        driver.find_element("xpath", "//input[@value='?2']").click()
     elif (val == 3):
-        driver.find_element_by_xpath("//input[@value='?3']").click()
+        driver.find_element("xpath", "//input[@value='?3']").click()
     elif (val == 4):
-        driver.find_element_by_xpath("//input[@value='?4']").click()
+        driver.find_element("xpath", "//input[@value='?4']").click()
     elif (val == 5):
-        driver.find_element_by_xpath("//input[@value='?5']").click()
+        driver.find_element("xpath", "//input[@value='?5']").click()
     elif (val == 6):
-        driver.find_element_by_xpath("//input[@value='?6']").click()
+        driver.find_element("xpath", "//input[@value='?6']").click()
     elif (val == 7):
-        driver.find_element_by_xpath("//input[@value='?7']").click()
+        driver.find_element("xpath", "//input[@value='?7']").click()
     elif (val == 8):
-        driver.find_element_by_xpath("//input[@value='?8']").click()
+        driver.find_element("xpath", "//input[@value='?8']").click()
     else:
         print("Invalid outlet")
 
 def init_chrome():
     print ("Initializing chrome....")
     options = webdriver.ChromeOptions()
-# Enable below line to hide chrome window.
-    options.headless = True
+    # Enable below line to hide chrome window.
+    #options.headless = True
+    options.add_argument('headless')
     options.add_argument('--no-sandbox')
-    options.binary_location = '/opt/google/chrome/google-chrome'
+    #options.add_argument('--user-data-dir=/tmp/profile')
+    options.binary_location = '/usr/bin/google-chrome'
     service_log_path = "./chromedriver.log"
     service_args = ['--verbose']
-    driver = webdriver.Chrome('/scratch/chromedriver',
-            chrome_options=options,
-            service_args=service_args,
-            service_log_path=service_log_path)
+    driver = webdriver.Chrome(options=options)
     driver.get(args.url)
     return driver
 
 
 def login_pdu(driver):
-    driver.find_element_by_name("login_username").send_keys(user_name)
-    driver.find_element_by_name("login_password").send_keys(pswd)
-    driver.find_element_by_name("submit").click()
+    driver.find_element("name", "login_username").send_keys(user_name)
+    driver.find_element("name", "login_password").send_keys(pswd)
+    driver.find_element("name", "submit").click()
     time.sleep(3)
 
 def parse_outlet(driver):
-    driver.find_element_by_xpath("//a[normalize-space()='Control']").click()
-    driver.find_element_by_xpath("//li[@class='dropdown open']//a[@class='dropdown-toggle'][normalize-space()='RPDU']").click()
-    driver.find_element_by_xpath("//a[@href='outlctrl.htm']").click()
+    driver.find_element("xpath", "//a[normalize-space()='Control']").click()
+    driver.find_element("xpath", "//li[@class='dropdown open']//a[@class='dropdown-toggle'][normalize-space()='RPDU']").click()
+    driver.find_element("xpath", "//a[@href='outlctrl.htm']").click()
     time.sleep(3)
 
 def apply_changes(driver):
-    driver.find_element_by_xpath("//input[@name='submit']").click()
-    driver.find_element_by_xpath("//input[@value='Apply']").click()
+    driver.find_element("xpath", "//input[@name='submit']").click()
+    driver.find_element("xpath", "//input[@value='Apply']").click()
     time.sleep(5)
 
 if __name__ == "__main__":
@@ -104,6 +102,10 @@ if __name__ == "__main__":
     print ("Login sucessfull")
     select_outlet_action(driver,args.action)
     select_outlet(driver, args.relay)
+    time.sleep(3)
     apply_changes(driver)
     print ("Relay %s has been sucessfully updated." % args.relay)
     driver.close()
+
+# Follow below page to install require module for this script
+# https://tecadmin.net/setup-selenium-with-python-on-ubuntu-debian/
