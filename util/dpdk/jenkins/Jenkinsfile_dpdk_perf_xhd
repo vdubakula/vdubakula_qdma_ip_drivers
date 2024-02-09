@@ -17,14 +17,14 @@ def get_changes_string() {
 }
 
 def run_as_sudo(shell_command) {
-	sh 'echo "#2023#ntsg#xhd#sw#" | sudo -S ' + shell_command
+	sh 'echo "#2023#aecg#xhd#pcie#" | sudo -S ' + shell_command
 }
 
 def reboot_target(target_hostname) {
 	try {
         timeout(20) { //minutes
             // assume running on master node
-            //sh "ssh -o StrictHostKeyChecking=no -l icons_cadman ${target_hostname} /usr/bin/sudo /sbin/reboot" //schedule reboot in 1 min
+            //sh "ssh -o StrictHostKeyChecking=no -l icons_pcieapps ${target_hostname} /usr/bin/sudo /sbin/reboot" //schedule reboot in 1 min
 					node("${NODE_ADDRESS}")  {
 			    run_as_sudo('reboot')
 			}
@@ -73,7 +73,7 @@ def reformat_test_results(test_results_file) {
 }
 
 pipeline {
-	agent { node { label 'master' } }
+	agent { node { label 'built-in' } }
 	options {
 		disableConcurrentBuilds()
 		skipDefaultCheckout(true)
