@@ -611,7 +611,7 @@ static int mbox_compose_cmpt_context(void *dev_hndl,
 
 	cmpt_ctxt->valid = 1;
 
-	if((qctxt->st) && (qctxt->c2h))
+	if ((qctxt->st) && (qctxt->c2h))
 		cmpt_ctxt->dir_c2h = 1;
 
 	cmpt_ctxt->ovf_chk_dis = qctxt->descq_conf.dis_overflow_check;
