@@ -94,6 +94,9 @@ if [ $enable_compile == 1 ]; then
 	fi
 fi
 
+echo "killing force fully after compiling linux source."
+exit 1
+
 dm_pid=
 
 kill_dmesg_dump()
