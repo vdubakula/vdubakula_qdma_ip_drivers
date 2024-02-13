@@ -604,7 +604,7 @@ run_test()
 	do
 		for ((i = 0; i < num_cards; i++))
 		do
-			if [ ${pf_nvf[${j}]} -ne 0 ]; then
+			if [[ ${pf_nvf[${j}]} -ne 0 ]]; then
 				if [ $1 == "intr" ]; then
 					echo -n "0x${pci_bus[i]}:${j}:2," >> conf_file
 				elif [ $1 == "aggr" ]; then
@@ -635,7 +635,7 @@ run_test()
 	do
 		for ((i = 0; i < num_cards; i++))
 		do
-			if [ ${pf_nvf[${j}]} -ne 0 ]; then
+			if [[ ${pf_nvf[${j}]} -ne 0 ]]; then
 				echo -n "0x${pci_bus[i]}:${j}:${config_bar}," >> conf_file
 			fi
 		done
