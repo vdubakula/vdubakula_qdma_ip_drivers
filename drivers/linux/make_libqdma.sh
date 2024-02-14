@@ -122,7 +122,7 @@ function run_cppchecker() {
 function qdma_test() {
 	pwd=`pwd`
 	echo "Running qdma_test"
-	cd ../../sw_test/linux/apps/unit_test/
+	cd ../../tests/linux/apps/unit_test/
 	tar -zxf third_party/release-1.8.0.tar.gz
 	cd googletest-release-1.8.0
 	mkdir build
@@ -157,11 +157,11 @@ function qdma_test() {
 
 function ktf_test() {
 	echo "Running KTF test"
-    if [ -d "../../sw_test/linux/apps/ktf/build" ]; then
-        rm -rf ../../sw_test/linux/apps/ktf/build
+    if [ -d "../../tests/linux/apps/ktf/build" ]; then
+        rm -rf ../../tests/linux/apps/ktf/build
     fi
 	pwd=`pwd`
-	cd ../../sw_test/linux/apps/ktf/
+	cd ../../tests/linux/apps/ktf/
 	autoreconf
 	cd ..
 	mkdir -p build/ktf
