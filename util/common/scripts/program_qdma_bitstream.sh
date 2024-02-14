@@ -5,6 +5,11 @@ echo "usage: $0 <target_id> <bitstream_file>"
         exit
 fi
 
+if [ ! -e $2 ]; then
+echo "bitfile $2 not exists"
+        exit
+fi
+
 rm program_bitfile.tcl
 echo "connect" > program_bitfile.tcl
 echo "targets" >> program_bitfile.tcl
