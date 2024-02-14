@@ -2,12 +2,12 @@
 
 if [ $# -lt 2 ]; then
 echo "usage: $0 <target_id> <bitstream_file>"
-        exit
+        exit 1
 fi
 
 if [ ! -e $2 ]; then
 echo "bitfile $2 not exists"
-        exit
+        exit 1
 fi
 
 rm program_bitfile.tcl
