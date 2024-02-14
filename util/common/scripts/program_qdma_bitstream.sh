@@ -1,13 +1,13 @@
 #!/bin/bash
 
 if [ $# -lt 2 ]; then
-echo "usage: $0 <target_id> <bitstream_file>"
-        exit 1
+    echo "usage: $0 <target_id> <bitstream_file>"
+    exit 1
 fi
 
 if [ ! -e $2 ]; then
-echo "bitfile $2 not exists"
-        exit 1
+    echo "\r\n Bitfile:$2 not exists to program"
+    exit 1
 fi
 
 rm program_bitfile.tcl
